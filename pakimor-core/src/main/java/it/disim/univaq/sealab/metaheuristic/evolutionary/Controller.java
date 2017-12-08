@@ -295,9 +295,9 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		// model_file_name = getBasePath();
 
-		sourceValPath = prop.getProperty("sourceValPath");
-		sourceRewPath = prop.getProperty("sourceRewPath");
-		sourceAemPath = prop.getProperty("sourceAemPath");
+		sourceValPath = getBasePath() + prop.getProperty("sourceValPath");
+		sourceRewPath = getBasePath() + prop.getProperty("sourceRewPath");
+		sourceAemPath = getBasePath() + prop.getProperty("sourceAemPath");
 		// = getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.aem.val";
 
 		if (!new File(sourceValPath).exists()) {
@@ -320,7 +320,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		if (model_file_name == null || model_file_name.isEmpty()) {
-			model_file_name = prop.getProperty("model_path");
+			model_file_name = getBasePath() +  prop.getProperty("model_path");
 		}
 		logger_.info("model_file_name is set to " + model_file_name);
 

@@ -29,12 +29,15 @@ ARCHI_ELEM_TYPES
 	
 		BEHAVIOR
  
-			[if (not(elem.behaviorDecl.equations->oclIsUndefined()))]		
-			[for (current_par: BehavEquation | elem.behaviorDecl.equations)]
-
-			[let first_behav: BehavEquation = elem.behaviorDecl.equations->first()][current_par.name/]([if (current_par.bHeader.left.initVar->size() > 0 and current_par = first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())][generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/][else][generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/],[/if][/for][elseif (current_par.bHeader.left.initVar->size() > 0 and current_par <> first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())][generateData(current.initVarType).trim()/] [current.name/][else][generateData(current.initVarType).trim()/] [current.name/],[/if][/for][else] void[/if];[if (current_par.bHeader.right.localDef->size() > 0)][for (current: Local | current_par.bHeader.right.localDef)][if (current = current_par.bHeader.right.localDef->last())]  local [generateData(current.localType).trim()/] [current.name/][else] local [generateData(current.localType).trim()/] [current.name/],[/if][/for][else] void[/if])[/let] = 
-					[check_process_term(current_par.pt)/]
-			[/for]
+			[if (not(elem.behaviorDecl.equations->oclIsUndefined()))]	
+				[let last_par : BehavEquation = elem.behaviorDecl.equations->last()]	
+					[for (current_par: BehavEquation | elem.behaviorDecl.equations)]
+						[if(current_par = last_par)]
+					[let first_behav: BehavEquation = elem.behaviorDecl.equations->first()][current_par.name/](	[if (current_par.bHeader.left.initVar->size() > 0 and current_par = first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())][generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/][else][generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/],[/if][/for][elseif (current_par.bHeader.left.initVar->size() > 0 and current_par <> first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())][generateData(current.initVarType).trim()/] [current.name/][else][generateData(current.initVarType).trim()/] [current.name/],[/if][/for][else] void[/if];[if (current_par.bHeader.right.localDef->size() > 0)][for (current: Local | current_par.bHeader.right.localDef)][if (current = current_par.bHeader.right.localDef->last())]  local [generateData(current.localType).trim()/] [current.name/][else]local [generateData(current.localType).trim()/] [current.name/],[/if][/for][else]void[/if])[/let] = [check_process_term(current_par.pt)/][else][let first_behav: BehavEquation = elem.behaviorDecl.equations->first()][current_par.name/]([if (current_par.bHeader.left.initVar->size() > 0 and current_par = first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())]	[generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/][else][generateData(current.initVarType).trim()/] [current.name/] := [check_condition_type(current.initVarExpr).trim()/],[/if][/for][elseif (current_par.bHeader.left.initVar->size() > 0 and current_par <> first_behav)][for (current: VarInit | current_par.bHeader.left.initVar)][if (current = current_par.bHeader.left.initVar->last())][generateData(current.initVarType).trim()/] [current.name/][else][generateData(current.initVarType).trim()/] [current.name/],[/if][/for][else] void[/if];[if (current_par.bHeader.right.localDef->size() > 0)][for (current: Local | current_par.bHeader.right.localDef)][if (current = current_par.bHeader.right.localDef->last())]  local [generateData(current.localType).trim()/] [current.name/][else]local [generateData(current.localType).trim()/] [current.name/],[/if][/for][else]void[/if])
+	[/let] = [check_process_term(current_par.pt)/];
+						[/if]
+					[/for]
+				[/let]
 			[else]
 			ERROR : The "behav_equation_sequence" must be non-empty	
 			[/if]
@@ -231,7 +234,7 @@ array([generateData(e.oclAsType(Array).length)/], [generateData(e.oclAsType(Arra
 ERROR : The length must be greater than zero
 [/if]
 [/if]
-[comment rivedere in futuro i tipi di dato Array (soprattutto questo è da gestire ancora), Lista e Record (mai usati e quindi in dubbio)/]
+[comment rivedere in futuro i tipi di dato Array (soprattutto questo � da gestire ancora), Lista e Record (mai usati e quindi in dubbio)/]
 [/template]
 
 [comment serve a controllare il tipo di process_term e reagire di conseguenza/]

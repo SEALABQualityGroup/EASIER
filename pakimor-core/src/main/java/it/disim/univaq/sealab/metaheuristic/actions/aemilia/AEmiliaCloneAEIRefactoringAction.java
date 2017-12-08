@@ -59,9 +59,9 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 			this.sourceAEI = null;
 		} else {
 			this.sourceAEI = listOfClonableAEI.get(randomInt);
-			//this.setRandomCloneIndex(rand);
+			// this.setRandomCloneIndex(rand);
 			this.setRandomCloneIndex(getSaltString());
-			//this.setRandomCloneIndex(RandomUtils.nextInt(0, 100));
+			// this.setRandomCloneIndex(RandomUtils.nextInt(0, 100));
 			if (sourceAEI.getSelector() != null) {
 				setSelector();
 			}
@@ -74,21 +74,19 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		}
 
 	}
-	
-	protected String getSaltString() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
 
-    }
-	
-	
+	protected String getSaltString() {
+		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		StringBuilder salt = new StringBuilder();
+		Random rnd = new Random();
+		while (salt.length() < 18) { // length of the random string.
+			int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+			salt.append(SALTCHARS.charAt(index));
+		}
+		String saltStr = salt.toString();
+		return saltStr;
+
+	}
 
 	public void execute() {
 
@@ -135,7 +133,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 	public void log() {
 		Controller.logger_.info("AEMiliaCloneAEIRefactoringAction");
-//		Controller.logger_.info("Model --> " + this.getModel());
+		// Controller.logger_.info("Model --> " + this.getModel());
 	}
 
 	/**
@@ -171,7 +169,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 		for (Attachment att : listOfAtts) {
 			for (InputInteraction ii : listOFII) {
-				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName())) {
+				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName()) && att.getEnd().getToInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
 					att.getStart().getIsOutput().setType(metamodel.mmaemilia.InteractionType.OR);
 
 					Attachment newAtt = mmaemiliaFactory.eINSTANCE.createAttachment();
@@ -206,9 +204,8 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		// EList<Attachment> clonedAtts = new BasicEList<Attachment>();
 		for (Attachment att : listOfAtts) {
 			for (OutputInteraction oi : listOfOI) {
-
-				if (oi.getIntName().equals(att.getStart().getIsOutput().getIntName())) {
-
+				if (oi.getIntName().equals(att.getStart().getIsOutput().getIntName())
+						&& att.getStart().getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
 					// listOfOI.contains(att.getStart().getIsOutput())) {
 					att.getEnd().getIsInput().setType(metamodel.mmaemilia.InteractionType.OR);
 
@@ -339,7 +336,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	}
 
 	public boolean isApplicable() {
-		//return !getListOfClonableInstances().isEmpty();
+		// return !getListOfClonableInstances().isEmpty();
 		return isClonable(this.getSourceAEI());
 	}
 
@@ -430,7 +427,8 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	}
 
 	public AEmiliaCloneAEIRefactoringAction clone(RSolution solution) {
-//		long rand = ((AemiliaManager) Manager.getInstance(null).getMetamodelManager()).getNextUniqueIndex();
+		// long rand = ((AemiliaManager)
+		// Manager.getInstance(null).getMetamodelManager()).getNextUniqueIndex();
 		AEmiliaCloneAEIRefactoringAction newAction = new AEmiliaCloneAEIRefactoringAction(this.solution);
 
 		for (ArchiElemInstance aei : ((AEmiliaSpecification) solution.getModel()).getArchiTypeDecl().getAtDeclaration()

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/MapMeasuresToIndices/src"
+    modelPluginID="MapMeasuresToIndices" modelName="MapMeasuresToIndices" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="../../metamodel/model/mmAEmilia.genmodel#//mmaemilia">
+  <foreignModel>../../TTEP/mapMeasuresToIndices/MapMeasuresToIndices.ecore</foreignModel>
+  <genPackages prefix="Mapmeasurestoindices" disposableProviderFactory="true" ecorePackage="MapMeasuresToIndices.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MapMeasuresToIndices.ecore#//IndexType">
+      <genEnumLiterals ecoreEnumLiteral="MapMeasuresToIndices.ecore#//IndexType/ResponseTime"/>
+      <genEnumLiterals ecoreEnumLiteral="MapMeasuresToIndices.ecore#//IndexType/Utilization"/>
+      <genEnumLiterals ecoreEnumLiteral="MapMeasuresToIndices.ecore#//IndexType/Throughput"/>
+    </genEnums>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//MeasureMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MapMeasuresToIndices.ecore#//MeasureMapping/measureName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//MeasureMapping/selector"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//MeasureMapping/instances"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//MeasureMapping/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//MeasureMapping/archiInteractions"/>
+    </genClasses>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//MeasureToArchiElemInstance"/>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//MeasureToAction"/>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//RewMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//RewMapping/mappings"/>
+    </genClasses>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//ActionMeasure">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MapMeasuresToIndices.ecore#//ActionMeasure/index"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//ActionMeasure/action"/>
+    </genClasses>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//AeiMeasure">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MapMeasuresToIndices.ecore#//AeiMeasure/index"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//AeiMeasure/aei"/>
+    </genClasses>
+    <genClasses ecoreClass="MapMeasuresToIndices.ecore#//ArchiIntMeasure">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MapMeasuresToIndices.ecore#//ArchiIntMeasure/index"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MapMeasuresToIndices.ecore#//ArchiIntMeasure/archiInteraction"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

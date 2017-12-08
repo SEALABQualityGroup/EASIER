@@ -1,48 +1,104 @@
-MEASURE APP_Type_Single_throughput_APP_send_auth_req IS ENABLED (APP.send_auth_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_throughput_APP_send_auth_req IS ENABLED (APP.send_auth_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_utilization_APP_send_auth_req IS ENABLED (APP.send_auth_req) ->STATE_REWARD(1.0);
 
-MEASURE APP_Type_Single_throughput_APP_send_monitor_req IS ENABLED (APP.send_monitor_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_throughput_APP_send_monitor_req IS ENABLED (APP.send_monitor_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_utilization_APP_send_monitor_req IS ENABLED (APP.send_monitor_req) ->STATE_REWARD(1.0);
 
-MEASURE APP_Type_Single_throughput_APP_send_change_req IS ENABLED (APP.send_change_req) ->TRANS_REWARD(1.0);
-MEASURE APP_Type_Multiple_throughput_APP IS
-	ENABLED (APP.send_auth_req) ->TRANS_REWARD(1.0)
-	ENABLED (APP.send_monitor_req) ->TRANS_REWARD(1.0)
-	ENABLED (APP.send_change_req) ->TRANS_REWARD(1.0);
-MEASURE Net_Type_Single_throughput_NET_send_auth_req IS ENABLED (NET.send_auth_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_throughput_APP_send_change_req IS ENABLED (APP.send_change_req) ->TRANS_REWARD(1.0);
+										MEASURE APP_Type_Single_utilization_APP_send_change_req IS ENABLED (APP.send_change_req) ->STATE_REWARD(1.0);
+												MEASURE APP_Type_Multiple_throughput_APP IS 
+												ENABLED (APP.send_auth_req) ->TRANS_REWARD(1.0)
+												ENABLED (APP.send_monitor_req) ->TRANS_REWARD(1.0)
+												ENABLED (APP.send_change_req) ->TRANS_REWARD(1.0);
+												MEASURE APP_Type_Multiple_utilization_APP IS 
+												ENABLED (APP.send_auth_req) ->STATE_REWARD(1.0)
+												ENABLED (APP.send_monitor_req) ->STATE_REWARD(1.0)
+												ENABLED (APP.send_change_req) ->STATE_REWARD(1.0);
 
-MEASURE Net_Type_Single_throughput_NET_send_auth_resp IS ENABLED (NET.send_auth_resp) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_throughput_NET_send_auth_req IS ENABLED (NET.send_auth_req) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_utilization_NET_send_auth_req IS ENABLED (NET.send_auth_req) ->STATE_REWARD(1.0);
 
-MEASURE Net_Type_Single_throughput_NET_send_change_req IS ENABLED (NET.send_change_req) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_throughput_NET_send_auth_resp IS ENABLED (NET.send_auth_resp) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_utilization_NET_send_auth_resp IS ENABLED (NET.send_auth_resp) ->STATE_REWARD(1.0);
 
-MEASURE Net_Type_Single_throughput_NET_send_monitor_req IS ENABLED (NET.send_monitor_req) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_throughput_NET_send_change_req IS ENABLED (NET.send_change_req) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_utilization_NET_send_change_req IS ENABLED (NET.send_change_req) ->STATE_REWARD(1.0);
 
-MEASURE Net_Type_Single_throughput_NET_send_monitor_resp IS ENABLED (NET.send_monitor_resp) ->TRANS_REWARD(1.0);
-MEASURE Net_Type_Multiple_throughput_NET IS
-	ENABLED (NET.send_auth_req) ->TRANS_REWARD(1.0)
-	ENABLED (NET.send_auth_resp) ->TRANS_REWARD(1.0)
-	ENABLED (NET.send_change_req) ->TRANS_REWARD(1.0)
-	ENABLED (NET.send_monitor_req) ->TRANS_REWARD(1.0)
-	ENABLED (NET.send_monitor_resp) ->TRANS_REWARD(1.0);
-MEASURE Sec_Type_Single_throughput_SEC_send_auth_resp IS ENABLED (SEC.send_auth_resp) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_throughput_NET_send_monitor_req IS ENABLED (NET.send_monitor_req) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_utilization_NET_send_monitor_req IS ENABLED (NET.send_monitor_req) ->STATE_REWARD(1.0);
 
-MEASURE Sec_Type_Single_throughput_SEC_send_account_req IS ENABLED (SEC.send_account_req) ->TRANS_REWARD(1.0);
-MEASURE Sec_Type_Multiple_throughput_SEC IS
-	ENABLED (SEC.send_auth_resp) ->TRANS_REWARD(1.0)
-	ENABLED (SEC.send_account_req) ->TRANS_REWARD(1.0);
-MEASURE GH_Type_Single_throughput_GH_send_monitor_resp IS ENABLED (GH.send_monitor_resp) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_throughput_NET_send_monitor_resp IS ENABLED (NET.send_monitor_resp) ->TRANS_REWARD(1.0);
+										MEASURE Net_Type_Single_utilization_NET_send_monitor_resp IS ENABLED (NET.send_monitor_resp) ->STATE_REWARD(1.0);
+												MEASURE Net_Type_Multiple_throughput_NET IS 
+												ENABLED (NET.send_auth_req) ->TRANS_REWARD(1.0)
+												ENABLED (NET.send_auth_resp) ->TRANS_REWARD(1.0)
+												ENABLED (NET.send_change_req) ->TRANS_REWARD(1.0)
+												ENABLED (NET.send_monitor_req) ->TRANS_REWARD(1.0)
+												ENABLED (NET.send_monitor_resp) ->TRANS_REWARD(1.0);
+												MEASURE Net_Type_Multiple_utilization_NET IS 
+												ENABLED (NET.send_auth_req) ->STATE_REWARD(1.0)
+												ENABLED (NET.send_auth_resp) ->STATE_REWARD(1.0)
+												ENABLED (NET.send_change_req) ->STATE_REWARD(1.0)
+												ENABLED (NET.send_monitor_req) ->STATE_REWARD(1.0)
+												ENABLED (NET.send_monitor_resp) ->STATE_REWARD(1.0);
 
-MEASURE GH_Type_Single_throughput_GH_send_data_req IS ENABLED (GH.send_data_req) ->TRANS_REWARD(1.0);
-MEASURE GH_Type_Multiple_throughput_GH IS
-	ENABLED (GH.send_monitor_resp) ->TRANS_REWARD(1.0)
-	ENABLED (GH.send_data_req) ->TRANS_REWARD(1.0);
-MEASURE DB_Type_Single_throughput_DB_send_data_resp IS ENABLED (DB.send_data_resp) ->TRANS_REWARD(1.0);
+										MEASURE Sec_Type_Single_throughput_SEC_send_auth_resp IS ENABLED (SEC.send_auth_resp) ->TRANS_REWARD(1.0);
+										MEASURE Sec_Type_Single_utilization_SEC_send_auth_resp IS ENABLED (SEC.send_auth_resp) ->STATE_REWARD(1.0);
 
-MEASURE DB_Type_Single_throughput_DB_send_account_resp IS ENABLED (DB.send_account_resp) ->TRANS_REWARD(1.0);
-MEASURE DB_Type_Multiple_throughput_DB IS
-	ENABLED (DB.send_data_resp) ->TRANS_REWARD(1.0)
-	ENABLED (DB.send_account_resp) ->TRANS_REWARD(1.0);
-MEASURE Sensor_Type_Multiple_utilization_S IS
-	ENABLED (S[1].send_update_req) ->STATE_REWARD(1.0)
-ENABLED (S[2].send_update_req) ->STATE_REWARD(1.0)
-	ENABLED (S[3].send_update_req) ->STATE_REWARD(1.0)
-	ENABLED (S[4].send_update_req) ->STATE_REWARD(1.0)
-	ENABLED (S[5].send_update_req) ->STATE_REWARD(1.0)
+										MEASURE Sec_Type_Single_throughput_SEC_send_account_req IS ENABLED (SEC.send_account_req) ->TRANS_REWARD(1.0);
+										MEASURE Sec_Type_Single_utilization_SEC_send_account_req IS ENABLED (SEC.send_account_req) ->STATE_REWARD(1.0);
+												MEASURE Sec_Type_Multiple_throughput_SEC IS 
+												ENABLED (SEC.send_auth_resp) ->TRANS_REWARD(1.0)
+												ENABLED (SEC.send_account_req) ->TRANS_REWARD(1.0);
+												MEASURE Sec_Type_Multiple_utilization_SEC IS 
+												ENABLED (SEC.send_auth_resp) ->STATE_REWARD(1.0)
+												ENABLED (SEC.send_account_req) ->STATE_REWARD(1.0);
+
+										MEASURE GH_Type_Single_throughput_GH_send_monitor_resp IS ENABLED (GH.send_monitor_resp) ->TRANS_REWARD(1.0);
+										MEASURE GH_Type_Single_utilization_GH_send_monitor_resp IS ENABLED (GH.send_monitor_resp) ->STATE_REWARD(1.0);
+
+										MEASURE GH_Type_Single_throughput_GH_send_data_req IS ENABLED (GH.send_data_req) ->TRANS_REWARD(1.0);
+										MEASURE GH_Type_Single_utilization_GH_send_data_req IS ENABLED (GH.send_data_req) ->STATE_REWARD(1.0);
+												MEASURE GH_Type_Multiple_throughput_GH IS 
+												ENABLED (GH.send_monitor_resp) ->TRANS_REWARD(1.0)
+												ENABLED (GH.send_data_req) ->TRANS_REWARD(1.0);
+												MEASURE GH_Type_Multiple_utilization_GH IS 
+												ENABLED (GH.send_monitor_resp) ->STATE_REWARD(1.0)
+												ENABLED (GH.send_data_req) ->STATE_REWARD(1.0);
+
+										MEASURE DB_Type_Single_throughput_DB_send_data_resp IS ENABLED (DB.send_data_resp) ->TRANS_REWARD(1.0);
+										MEASURE DB_Type_Single_utilization_DB_send_data_resp IS ENABLED (DB.send_data_resp) ->STATE_REWARD(1.0);
+
+										MEASURE DB_Type_Single_throughput_DB_send_account_resp IS ENABLED (DB.send_account_resp) ->TRANS_REWARD(1.0);
+										MEASURE DB_Type_Single_utilization_DB_send_account_resp IS ENABLED (DB.send_account_resp) ->STATE_REWARD(1.0);
+												MEASURE DB_Type_Multiple_throughput_DB IS 
+												ENABLED (DB.send_data_resp) ->TRANS_REWARD(1.0)
+												ENABLED (DB.send_account_resp) ->TRANS_REWARD(1.0);
+												MEASURE DB_Type_Multiple_utilization_DB IS 
+												ENABLED (DB.send_data_resp) ->STATE_REWARD(1.0)
+												ENABLED (DB.send_account_resp) ->STATE_REWARD(1.0);
+
+													MEASURE Sensor_Type_Multiple_utilization_S IS
+													ENABLED (S[1].send_update_req) ->STATE_REWARD(1.0)
+													ENABLED (S[2].send_update_req) ->STATE_REWARD(1.0)
+														ENABLED (S[3].send_update_req) ->STATE_REWARD(1.0)
+														ENABLED (S[4].send_update_req) ->STATE_REWARD(1.0)
+														ENABLED (S[5].send_update_req) ->STATE_REWARD(1.0);
+										
+													MEASURE Sensor_Type_Multiple_throughput_S IS
+													ENABLED (S[1].send_update_req) ->TRANS_REWARD(1.0)
+													ENABLED (S[2].send_update_req) ->TRANS_REWARD(1.0)
+													
+															ENABLED (S[3].send_update_req) ->TRANS_REWARD(1.0)
+													
+															ENABLED (S[4].send_update_req) ->TRANS_REWARD(1.0)
+													
+															ENABLED (S[5].send_update_req) ->TRANS_REWARD(1.0)
+
+										
+
+										
+
+										
+
+

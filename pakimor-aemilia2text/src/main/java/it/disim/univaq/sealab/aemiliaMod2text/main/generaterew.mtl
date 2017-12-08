@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [**
- * The documentation of the module generaterew. 
+ * The documentation of the module generaterew.
  */]
 [module generaterew('http://mmaemilia.ecore')]
 [**
@@ -10,143 +10,147 @@
 [template public generaterew(anAEmiliaSpecification : AEmiliaSpecification) post(trim())]
 [comment @main/]
 [file (anAEmiliaSpecification.archiTypeDecl.atName.concat('_result.rew'), false, 'UTF-8')]
-[let list_elem: OrderedSet(ArchiElemInstance) = self.archiTypeDecl.atDeclaration.aeiDecl]
-[if (not(self.archiTypeDecl.atDeclaration.aeiDecl->oclIsUndefined()))]
-[let last_elem: ArchiElemInstance = self.archiTypeDecl.atDeclaration.aeiDecl->last()]
-[comment NOTA: Probabilmente necessito anche qui di una condizione di controllo prima di entrare nel for al fine di controllare quali istanze prendere in considerazione/]
-[comment Ciclo su tutte le "Architectural Element Instances"/]
-[for (elem: ArchiElemInstance | self.archiTypeDecl.atDeclaration.aeiDecl)]
-[comment Inserire qui la condizione desiderata (quantomeno l'indice da misurare al fine di verificare se sull'elemento corrente � possibile fare questa misurazione)/]
-[if (1=1)]
-[if (elem = last_elem)]
-[if (elem.selector->isEmpty())]
-[if (not(elem.TypeOf.oiDecl->isEmpty()))]
-[comment Istanze singole - Azioni singole/]
-[let last_interaction: OutputInteraction = elem.TypeOf.oiDecl->last()]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[if (interaction = last_interaction and elem.TypeOf.oiDecl->size() > 1)]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);	
-[comment Aggiungere anche TRANS_REWARD per utilization e STATE_REWARD per throughput?? --> Non ha molto senso!!/]
-[elseif (interaction = last_interaction and not(elem.TypeOf.oiDecl->size() > 1) and elem = last_elem)]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[elseif (interaction = last_interaction and not(elem.TypeOf.oiDecl->size() > 1))]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[else]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);
-[/if]
-[/for]
-[/let]
-[comment Istanze singole - Azioni multiple (throughput e utilization)/]
-[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS 
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
-[elseif (interaction = elem.TypeOf.oiDecl->last())]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
-[else]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
-[/if]
-[/for]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS 
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[elseif (interaction = elem.TypeOf.oiDecl->last())]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[else]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[/if]
-[/for]
-[/if]
-[/if]
-[else]
-[if (elem.selector->isEmpty())]
-[if (not(elem.TypeOf.oiDecl->isEmpty()))]
-[comment Istanze singole - Azioni singole/]
-[let last_interaction: OutputInteraction = elem.TypeOf.oiDecl->last()]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[if (interaction = last_interaction and elem.TypeOf.oiDecl->size() > 1)]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);	
-[comment Aggiungere anche TRANS_REWARD per utilization e STATE_REWARD per throughput?? --> Non ha molto senso!!/]
-[elseif (interaction = last_interaction and not(elem.TypeOf.oiDecl->size() > 1) and elem = last_elem)]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[elseif (interaction = last_interaction and not(elem.TypeOf.oiDecl->size() > 1))]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
-[else]
-MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);
-[/if]
-[/for]
-[/let]
-[else]
-[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
-[comment Istanze multiple (da gestire successivamente)/]
-[if (check_condition_type(elem.selector) = '1')]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
-[check_similar_objects_utilization(elem, list_elem, interaction)/]
-[/if]
-[/if]
-[/for]
 
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
-[comment Istanze multiple (da gestire successivamente)/]
-[if (check_condition_type(elem.selector) = '1')]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->TRANS_REWARD(1.0)
-[check_similar_objects_throughput(elem, list_elem, interaction)/]
-[/if]
-[/if]
-[/for]
-[/if]
-[/if]
-[/if]
-[/if]
-[else]
-[if (elem.selector->isEmpty())]
-[if (not(elem.TypeOf.oiDecl->isEmpty()))]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
-MEASURE [elem.TypeOf.etName/]_Single_throughput_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
-[comment Aggiungere anche TRANS_REWARD per utilization e STATE_REWARD per throughput?? --> Non ha molto senso!!/]
-[/for]
-[comment Istanze singole - Azioni multiple (throughput e utilization)/]
-[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS 
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
-[elseif (interaction = elem.TypeOf.oiDecl->last())]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
-[else]
-	ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
-[/if]
-[/for]
-[/if]
-[/if]
-[else]
-[comment Selettore non vuoto, dunque ci sono diverse istanze di un certo tipo/]
-[if (not(elem.TypeOf.oiDecl->isEmpty()))]
-[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
-[comment Istanze multiple (da gestire successivamente)/]
-[if (check_condition_type(elem.selector) = '1')]
-[if (interaction = elem.TypeOf.oiDecl->first())]
-MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
-[check_similar_objects_utilization(elem, list_elem, interaction)/]
-[/if]
-[/if]
-[/for]
-[/if]
-[/if]
-[/if]
-[/if]
-[/for]
-[/let]
-[/if]
-[/let]			
+	[let list_elem: OrderedSet(ArchiElemInstance) = self.archiTypeDecl.atDeclaration.aeiDecl]
+		[if (not(self.archiTypeDecl.atDeclaration.aeiDecl->oclIsUndefined()))]
+			[let last_elem: ArchiElemInstance = self.archiTypeDecl.atDeclaration.aeiDecl->last()]
+			[comment NOTA: Probabilmente necessito anche qui di una condizione di controllo prima di entrare nel for al fine di controllare quali istanze prendere in considerazione/]
+			[comment Ciclo su tutte le "Architectural Element Instances"/]
+				[for (elem: ArchiElemInstance | self.archiTypeDecl.atDeclaration.aeiDecl) separator('\n')]
+				[comment Inserire qui la condizione desiderata (quantomeno l'indice da misurare al fine di verificare se sull'elemento corrente � possibile fare questa misurazione)/]
+				[if (1=1)]
+					[if (elem = last_elem)]
+							[if (elem.selector->isEmpty())]
+								[if (not(elem.TypeOf.oiDecl->isEmpty()))]
+								[comment Istanze singole - Azioni singole/]
+									[let last_interaction: OutputInteraction = elem.TypeOf.oiDecl->last()]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+											[if (interaction = last_interaction and elem.TypeOf.oiDecl->size() > 1)]
+											MEASURE [elem.TypeOf.etName/]_Single_throughput_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
+											MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);	
+											[comment Aggiungere anche TRANS_REWARD per utilization e STATE_REWARD per throughput?? --> Non ha molto senso!!/]
+											[elseif (interaction = last_interaction and not(elem.TypeOf.oiDecl->size() > 1))]
+											MEASURE [elem.TypeOf.etName/]_Single_throughput_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
+											MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+											[else]
+											MEASURE [elem.TypeOf.etName/]_Single_throughput_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
+											MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);
+											[/if]
+										[/for]
+									[/let]
+								[comment Istanze singole - Azioni multiple (throughput e utilization)/]
+									[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
+											[if (interaction = elem.TypeOf.oiDecl->first())]
+											MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS 
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
+											[elseif (interaction = elem.TypeOf.oiDecl->last())]
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0) [elem/] paperino
+											[else]
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
+											[/if]
+										[/for]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
+											[if (interaction = elem.TypeOf.oiDecl->first())]
+											MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS 
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+											[elseif (interaction = elem.TypeOf.oiDecl->last())]
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+											[else]
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+											[/if]
+										[/for]
+									[/if]
+								[/if]
+								[else]
+									[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+											[comment Istanze multiple (da gestire successivamente)/]
+											[if (check_condition_type(elem.selector) = '1')]
+												[if (interaction = elem.TypeOf.oiDecl->first())]
+												MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
+												ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
+												[check_similar_objects_utilization(elem, list_elem, interaction)/]
+												[/if]
+											[/if]
+										[/for]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+											[comment Istanze multiple (da gestire successivamente)/]
+											[if (check_condition_type(elem.selector) = '1')]
+												[if (interaction = elem.TypeOf.oiDecl->first())]
+												MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS
+												ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->TRANS_REWARD(1.0)
+												[check_similar_objects_throughput(elem, list_elem, interaction)/]
+												[/if]
+											[/if]
+										[/for]
+									[/if]
+								[/if]
+								[else]
+								[if (elem.selector->isEmpty())]
+									[if (not(elem.TypeOf.oiDecl->isEmpty()))]
+										[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+										MEASURE [elem.TypeOf.etName/]_Single_throughput_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
+										MEASURE [elem.TypeOf.etName/]_Single_utilization_[elem.instanceName/]_[interaction.intName/] IS ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);
+										[comment Aggiungere anche TRANS_REWARD per utilization e STATE_REWARD per throughput?? --> Non ha molto senso!!/]
+										[/for]
+									[comment Istanze singole - Azioni multiple (throughput e utilization)/]
+										[if (not(elem.TypeOf.oiDecl->isEmpty()) and elem.TypeOf.oiDecl->size() > 1)]
+											[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
+												[if (interaction = elem.TypeOf.oiDecl->first())]
+												MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS 
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
+												[elseif (interaction = elem.TypeOf.oiDecl->last())]
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0);
+												[else]
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
+												[/if]
+											[/for]
+											[for (interaction: OutputInteraction | elem.TypeOf.oiDecl)]
+												[if (interaction = elem.TypeOf.oiDecl->first())]
+												MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS 
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+												[elseif (interaction = elem.TypeOf.oiDecl->last())]
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0);
+												[else]
+												ENABLED ([elem.instanceName/].[interaction.intName/]) ->STATE_REWARD(1.0)
+												[/if]
+											[/for]
+										[/if]
+									[/if]
+									[else]
+								[comment Selettore non vuoto, dunque ci sono diverse istanze di un certo tipo/]
+										[if (not(elem.TypeOf.oiDecl->isEmpty()))]
+											[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+												[comment Istanze multiple (da gestire successivamente)/]
+												[if (check_condition_type(elem.selector) = '1')]
+													[if (interaction = elem.TypeOf.oiDecl->first())]
+													MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
+													ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
+													[check_similar_objects_utilization(elem, list_elem, interaction)/]
+													[/if]
+												[/if]
+											[/for]
+										
+											[for (interaction: OutputInteraction | elem.TypeOf.oiDecl) separator('\n')]
+											[comment Istanze multiple (da gestire successivamente)/]
+												[if (check_condition_type(elem.selector) = '1')]
+													[if (interaction = elem.TypeOf.oiDecl->first())]
+													MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS
+													ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->TRANS_REWARD(1.0)
+													[check_similar_objects_throughput(elem, list_elem, interaction)/]
+													[/if]
+												[/if]
+											[/for]
+										[/if]
+									[/if]
+						[/if]
+					[/if]
+				[/for]
+			[/let]
+		[/if]
+	[/let]			
+
 [/file]
 [/template]
 
@@ -156,9 +160,9 @@ MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
 [for (elem: ArchiElemInstance | list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName))]
 [if (elem.selector->notEmpty() and elem<>e)]
 [if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0);
+ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0);
 [else]
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0)
+ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0)
 [/if]
 [/if]
 [/for]
@@ -169,9 +173,9 @@ MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
 [for (elem: ArchiElemInstance | list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName))]
 [if (elem.selector->notEmpty() and elem<>e)]
 [if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0);
+ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0);
 [else]
-	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
+ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
 [/if]
 [/if]
 [/for]

@@ -1,222 +1,184 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                               %
-% BGCS															                            %
-%                                                               %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-ARCHI_TYPE BGCS(const weight change_prob := 0.7,
-								const rate net_rate := 1500,
-								const rate sec_rate := 300,
-								const rate gh_rate := 1000,
-								const rate db_rate := 2000,
-								const rate sensing_rate := 500,
-								const integer nb_sensors := 5,
-								const integer buffer_size := 10)			
-
+ARCHI_TYPE BGCS(
+		   const weight change_prob := 0.7,	
+		   const rate net_rate := 1500,	
+		   const rate sec_rate := 300,	
+		   const rate gh_rate := 1000,	
+		   const rate db_rate := 2000,	
+		   const rate sensing_rate := 500,	
+		   const integer nb_sensors := 5,	
+		   const integer buffer_size := 10)	
+			
 
 ARCHI_ELEM_TYPES
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Application
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	ELEM_TYPE APP_Type(const weight change_prob)
-
-	    BEHAVIOR
-
-			Start(void; void) = <generate_auth_req, inf> . <send_auth_req, inf> . <receive_auth_resp, _> . Authenticated();
-
-			Authenticated(void; void) = <generate_monitor_req, inf> . Monitor();
-
-			Monitor(void; void) = <send_monitor_req, inf> . <receive_monitor_resp, _> . choice
-			{
-				% After monitoring, decide to change some settings or not
-				<change, inf(1,	change_prob)> . Change(),
-				<restart, inf(1, 1 - change_prob)> . Start()
-			};
-
-			Change(void; void) = <send_change_req, inf> . Start()
-
-	    INPUT_INTERACTIONS
-
+    ELEM_TYPE APP_Type(const weight change_prob)
+	
+		BEHAVIOR
+ 
+Start( void;void)
+ = <generate_auth_req, inf> . <send_auth_req, inf> . <receive_auth_resp, _> . Authenticated();
+Authenticated( void;void)
+ = <generate_monitor_req, inf> . Monitor();
+Monitor( void;void)
+ = <send_monitor_req, inf> . <receive_monitor_resp, _> . choice
+ {
+ 	<change, inf (1, change_prob)> . Change(),
+ 	<restart, inf (1, 1 - change_prob)> . Start()		
+ };
+					Change(	 void;void) = <send_change_req, inf> . Start()	
+		INPUT_INTERACTIONS	
+					
 			UNI receive_auth_resp;
-					receive_monitor_resp
+			receive_monitor_resp
 
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_auth_req;
-					send_monitor_req;
-					send_change_req
+			send_monitor_req;
+			send_change_req
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Network
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	ELEM_TYPE Net_Type(const rate net_rate)
-
-	    BEHAVIOR
-			
-			Forward (void; void) = choice
-			{
-				<receive_auth_req, _> . <send_auth_req, exp(net_rate)> . Forward(),
-				<receive_auth_resp, _> . <send_auth_resp, exp(net_rate)> . Forward(),
-				<receive_monitor_req, _> . <send_monitor_req, exp(net_rate)> . Forward(),
-				<receive_monitor_resp, _> . <send_monitor_resp, exp(net_rate)> . Forward(),
-				<receive_change_req, _> . <send_change_req, exp(net_rate)> . Forward()
-			}
-
-	    INPUT_INTERACTIONS
-
+    ELEM_TYPE Net_Type(const rate net_rate)
+	
+		BEHAVIOR
+ 
+					Forward(	 void;void) = choice
+					{
+						<receive_auth_req, _> . <send_auth_req, exp(net_rate)> . Forward(),
+						<receive_auth_resp, _> . <send_auth_resp, exp(net_rate)> . Forward(),
+						<receive_monitor_req, _> . <send_monitor_req, exp(net_rate)> . Forward(),
+						<receive_monitor_resp, _> . <send_monitor_resp, exp(net_rate)> . Forward(),
+						<receive_change_req, _> . <send_change_req, exp(net_rate)> . Forward()		
+					}	
+		INPUT_INTERACTIONS	
+					
 			UNI receive_auth_req;
-					receive_auth_resp;
-					receive_change_req;
-					receive_monitor_req;
-					receive_monitor_resp		
+			receive_auth_resp;
+			receive_change_req;
+			receive_monitor_req;
+			receive_monitor_resp
 
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_auth_req;
-					send_auth_resp;
-					send_change_req;
-					send_monitor_req;
-					send_monitor_resp
+			send_auth_resp;
+			send_change_req;
+			send_monitor_req;
+			send_monitor_resp
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Security
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	ELEM_TYPE Sec_Type(const integer buffer_size, const rate sec_rate)
-
-	    BEHAVIOR
-			
-			Authenticate (integer(0..buffer_size) buffer_index := 0; void) = choice
-			{
-				cond(buffer_index < buffer_size) ->	<receive_auth_req, _> . Authenticate(buffer_index + 1),
-				cond(buffer_index > 0) ->	<send_account_req, inf> . <receive_account_resp, _> . <send_auth_resp, exp(sec_rate)> . Authenticate(buffer_index - 1)
-			}
-
-	    INPUT_INTERACTIONS
-
+    ELEM_TYPE Sec_Type(const integer buffer_size,const rate sec_rate)
+	
+		BEHAVIOR
+ 
+					Authenticate(	integer(0..buffer_size) buffer_index := 0;void) = choice
+					{
+						cond(buffer_index < buffer_size) ->		<receive_auth_req, _> . Authenticate(buffer_index + 1),
+						cond(buffer_index > 0) ->		<send_account_req, inf> . <receive_account_resp, _> . <send_auth_resp, exp(sec_rate)> . Authenticate(buffer_index - 1)		
+					}	
+		INPUT_INTERACTIONS	
+					
 			UNI receive_auth_req;
-					receive_account_resp	
+			receive_account_resp
 
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_auth_resp;
-					send_account_req
+			send_account_req
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Greenhouse
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	ELEM_TYPE GH_Type(const rate gh_rate)
-
-	    BEHAVIOR
-
-			Start(void; void) = choice
-			{
-				<receive_monitor_req, _> . <send_data_req, exp(gh_rate)> . Wait(),
-				<receive_change_req, _> . <handle_change_req, exp(gh_rate)> . Start()
-			};
-
-			Wait(void; void) = <receive_data_resp, _> . <send_monitor_resp, exp(gh_rate)> . Start()
-
-	    INPUT_INTERACTIONS
-
+    ELEM_TYPE GH_Type(const rate gh_rate)
+	
+		BEHAVIOR
+ 
+Start( void;void)
+ = choice
+ {
+ 	<receive_monitor_req, _> . <send_data_req, exp(gh_rate)> . Wait(),
+ 	<receive_change_req, _> . <handle_change_req, exp(gh_rate)> . Start()		
+ };
+					Wait(	 void;void) = <receive_data_resp, _> . <send_monitor_resp, exp(gh_rate)> . Start()	
+		INPUT_INTERACTIONS	
+					
 			UNI receive_monitor_req;
-					receive_change_req;
-					receive_data_resp		
+			receive_change_req;
+			receive_data_resp
 
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_monitor_resp;
-					send_data_req
+			send_data_req
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Database
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	ELEM_TYPE DB_Type(const rate db_rate)
-
-	    BEHAVIOR
-
-			Fetch(void; void) = 
-			choice
-			{
-				<receive_account_req, _> . <fetch_account, exp(db_rate)> . <send_account_resp, inf> . Fetch(),
-				<receive_data_req, _> . <fetch_data, exp(db_rate)> . <send_data_resp, inf> . Fetch(),
-				<receive_update_req, _> . <handle_update, exp(db_rate)> . Fetch()
-			}
-
-	    INPUT_INTERACTIONS
-
+    ELEM_TYPE DB_Type(const rate db_rate)
+	
+		BEHAVIOR
+ 
+					Fetch(	 void;void) = choice
+					{
+						<receive_account_req, _> . <fetch_account, exp(db_rate)> . <send_account_resp, inf> . Fetch(),
+						<receive_data_req, _> . <fetch_data, exp(db_rate)> . <send_data_resp, inf> . Fetch(),
+						<receive_update_req, _> . <handle_update, exp(db_rate)> . Fetch()		
+					}	
+		INPUT_INTERACTIONS	
+					
 			UNI receive_data_req;
-					receive_account_req
+			receive_account_req
+			OR receive_update_req
 
-			OR	receive_update_req	
-
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_data_resp;
-					send_account_resp
+			send_account_resp
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% Sensors
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ELEM_TYPE Sensor_Type(const rate sensing_rate)
+	
+		BEHAVIOR
+ 
+					Sensing(	 void;void) = <sense, exp(sensing_rate)> . <send_update_req, inf> . Sensing()	
+		INPUT_INTERACTIONS	
+					
+			void
 
-	ELEM_TYPE Sensor_Type(const rate sensing_rate)
-
-	    BEHAVIOR
-
-			Sensing (void; void) = <sense, exp(sensing_rate)> . <send_update_req, inf> . Sensing()
-
-	    INPUT_INTERACTIONS	
-				void
-
-	    OUTPUT_INTERACTIONS
-
+		OUTPUT_INTERACTIONS
+					
 			UNI send_update_req
 
+				
 
-ARCHI_TOPOLOGY 
+ARCHI_TOPOLOGY
+				
+           ARCHI_ELEM_INSTANCES
+					APP : APP_Type( change_prob);
+                    NET : Net_Type( net_rate);
+                    SEC : Sec_Type( buffer_size, sec_rate);
+                    GH : GH_Type( gh_rate);
+                    DB : DB_Type( db_rate);
+                    S[1] : Sensor_Type( sensing_rate);
+                    S[2] : Sensor_Type( sensing_rate);
+                    S[3] : Sensor_Type( sensing_rate);
+                    S[4] : Sensor_Type( sensing_rate);
+                    S[5] : Sensor_Type( sensing_rate)
 
-	ARCHI_ELEM_INSTANCES
-		APP : APP_Type(change_prob);
-		NET : Net_Type(net_rate);
-		SEC : Sec_Type(buffer_size, sec_rate);
-		GH  : GH_Type(gh_rate);
-		DB  : DB_Type(db_rate);
-		FOR_ALL i IN 1..nb_sensors
-			S[i] : Sensor_Type(sensing_rate)
+		   ARCHI_INTERACTIONS	
+					void
 
-	ARCHI_INTERACTIONS
-		void
-
-	ARCHI_ATTACHMENTS 
-
-		% App <-> Network
-		FROM APP.send_auth_req TO NET.receive_auth_req;
-		FROM NET.send_auth_resp TO APP.receive_auth_resp;
-		FROM APP.send_monitor_req TO NET.receive_monitor_req;
-		FROM NET.send_monitor_resp TO APP.receive_monitor_resp;
-		FROM APP.send_change_req TO NET.receive_change_req;
-		% Network <-> Security
-		FROM NET.send_auth_req TO SEC.receive_auth_req;
-		FROM SEC.send_auth_resp TO NET.receive_auth_resp;
-		% Network <-> Greenhouse
-		FROM NET.send_monitor_req TO GH.receive_monitor_req;
-		FROM GH.send_monitor_resp TO NET.receive_monitor_resp;
-		FROM NET.send_change_req TO GH.receive_change_req;
-		% Security <-> Database
-		FROM SEC.send_account_req TO DB.receive_account_req;
-		FROM DB.send_account_resp TO SEC.receive_account_resp;
-		% Greenhouse <-> Database
-		FROM GH.send_data_req TO DB.receive_data_req;
-		FROM DB.send_data_resp TO GH.receive_data_resp;
-		% Sensors <-> Database
-		FOR_ALL i IN 1..nb_sensors
-					FROM S[i].send_update_req TO DB.receive_update_req
-
+		   ARCHI_ATTACHMENTS
+					FROM APP.send_auth_req TO NET.receive_auth_req;
+					FROM NET.send_auth_resp TO APP.receive_auth_resp;
+					FROM APP.send_monitor_req TO NET.receive_monitor_req;
+					FROM NET.send_monitor_resp TO APP.receive_monitor_resp;
+					FROM APP.send_change_req TO NET.receive_change_req;
+					FROM NET.send_auth_req TO SEC.receive_auth_req;
+					FROM SEC.send_auth_resp TO NET.receive_auth_resp;
+					FROM NET.send_monitor_req TO GH.receive_monitor_req;
+					FROM GH.send_monitor_resp TO NET.receive_monitor_resp;
+					FROM NET.send_change_req TO GH.receive_change_req;
+					FROM SEC.send_account_req TO DB.receive_account_req;
+					FROM DB.send_account_resp TO SEC.receive_account_resp;
+					FROM GH.send_data_req TO DB.receive_data_req;
+					FROM DB.send_data_resp TO GH.receive_data_resp;
+					FROM S[1].send_update_req TO DB.receive_update_req;
+					FROM S[2].send_update_req TO DB.receive_update_req;
+					FROM S[3].send_update_req TO DB.receive_update_req;
+					FROM S[4].send_update_req TO DB.receive_update_req;
+					FROM S[5].send_update_req TO DB.receive_update_req
+				
 END
-
 
