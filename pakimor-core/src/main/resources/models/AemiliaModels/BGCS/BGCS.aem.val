@@ -1,0 +1,61 @@
+Stationary value of the performance measures for BGCS:
+
+- Value of measure "APP_Type_Single_throughput_APP_send_auth_req":
+	47.8137
+
+- Value of measure "APP_Type_Single_throughput_APP_send_monitor_req":
+	47.8137
+
+- Value of measure "APP_Type_Single_throughput_APP_send_change_req":
+	33.4696
+
+- Value of measure "APP_Type_Multiple_throughput_APP":
+	129.097
+
+- Value of measure "Net_Type_Single_throughput_NET_send_auth_req":
+	47.8137
+
+- Value of measure "Net_Type_Single_throughput_NET_send_auth_resp":
+	47.8137
+
+- Value of measure "Net_Type_Single_throughput_NET_send_change_req":
+	33.4696
+
+- Value of measure "Net_Type_Single_throughput_NET_send_monitor_req":
+	47.8137
+
+- Value of measure "Net_Type_Single_throughput_NET_send_monitor_resp":
+	47.8137
+
+- Value of measure "Net_Type_Multiple_throughput_NET":
+	224.724
+
+- Value of measure "Sec_Type_Single_throughput_SEC_send_auth_resp":
+	47.8137
+
+- Value of measure "Sec_Type_Single_throughput_SEC_send_account_req":
+	47.8137
+
+- Value of measure "Sec_Type_Multiple_throughput_SEC":
+	95.6274
+
+- Value of measure "GH_Type_Single_throughput_GH_send_monitor_resp":
+	47.8137
+
+- Value of measure "GH_Type_Single_throughput_GH_send_data_req":
+	47.8137
+
+- Value of measure "GH_Type_Multiple_throughput_GH":
+	95.6274
+
+- Value of measure "DB_Type_Single_throughput_DB_send_data_resp":
+	47.8137
+
+- Value of measure "DB_Type_Single_throughput_DB_send_account_resp":
+	47.8137
+
+- Value of measure "DB_Type_Multiple_throughput_DB":
+	95.6274
+
+- Value of measure "Sensor_Type_Multiple_utilization_S":
+	0

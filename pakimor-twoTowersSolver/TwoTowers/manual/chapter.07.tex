@@ -1,0 +1,677 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\chapter{The Performance Evaluator}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Introduction}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is able to evaluate the performance of correct \aemilia\ specifications in two different ways.
+
+In the first case instant-of-time, stationary/transient performance measures, which are defined through
+state and transitions rewards~\cite{How} in a {\tt .rew} file, are computed by solving the Markov chain
+underlying the \aemilia\ specification. The value of each such performance measure, which is written to a
+{\tt .val} file, is given by the sum of the stationary/transient state probabilities and transition
+frequencies of the Markov chain, each weighed by the corresponding state reward or transition reward,
+respectively. A state reward represents the rate at which gain is cumulated while staying in a certain
+state, whereas a transition reward represents the gain that is instantaneously earned when executing a
+certain transition. In TwoTowers~5.1 three methods are available for solving Markov chains: Gaussian
+elimination, an adaptive variant of symmetric stochastic over-relaxation, and uniformization~\cite{Ste1}.
+Gaussian elimination is an exact method for computing the stationary solution of small Markov chains (up to
+a few thousands of states), while symmetric stochastic over-relaxation is an iterative method for computing
+the stationary solution of larger Markov chains. On the contrary, uniformization is an iterative method for
+computing the transient solution of Markov chains. The state probability distribution representing the
+solution of a Markov chain is written to a {\tt .dis} file. The Markovian performance evaluation can be
+applied only to (correct and) performance closed \aemilia\ specifications in which all the possible variable
+formal parameters and local variables are of type bounded integer, boolean, or array or record based on the
+two previous basic types.
+
+In the second case the method of independent replications~\cite{Wel}, based on simulation experiments
+described in a {\tt .sim} file, is applied to estimate with 90\% confidence level the mean, variance or
+distribution of performance measures, which are specified through an extension of state and transition
+rewards in the same {\tt .sim} file. The discrete event simulation can be trace driven, which means that
+certain values are taken from a {\tt .trc} file instead of being sampled from pseudo-random number
+generators. The result of the simulation is written to a {\tt .est} file. Unlike the Markovian performance
+evaluation, the simulation-based performance evaluation can be applied to any (correct) \aemilia\
+specification with no open and deadlock states, thus making it possible the estimation of the performance
+measures of systems with generally distributed delays. Besides the compile-time crashes mentioned in
+Sect.~\ref{ct_crashes}, the discrete event simulation of an \aemilia\ specification can be interrupted --
+during the construction of the portion of the integrated semantic model that is necessary to make the
+simulation advance -- because of the generation of a deadlock state, the generation of an open state, or the
+absence of sufficiently many values to be read from a {\tt .trc} file.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Syntax of {\tt .rew} Specifications}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A {\tt .rew} specification is a non-empty sequence of semicolon-separated measure definitions, each of the
+following form:
+
+        \begin{verbatim}
+    <measure_def> ::= "MEASURE" <identifier> ["[" <expr> "]"] "IS" <reward_structure>
+                   |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                      "MEASURE" <identifier> "[" <expr> "]" "IS" <reward_structure>
+        \end{verbatim}
+
+In its simpler form, a measure definition contains the identifier of the measure, a possible
+integer-valued expression enclosed in square brackets, which represents a selector and must be free of
+undeclared identifiers and invocations to pseudo-random number generators, and the reward structure. The
+only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header of the \aemilia\ specification to which the Markovian
+performance evaluation is applied.
+
+The second form is useful to concisely define several variants of the same measure through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression and in the reward structure, together with its range, which is given by two
+integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations to
+pseudo-random number generators, with the value of the first expression being not greater than the value of
+the second expression.
+
+We observe that the identifier of a measure can be augmented with a selector expression also in the simpler
+form of measure definition. This is useful whenever it is desirable to define a set of indexed variants of
+the same measure, but only some of them have a common selector expression.
+
+The reward structure is a non-empty sequence of reward assignments, each of the following form:
+
+        \begin{verbatim}
+    <reward_assign> ::= "ENABLED" "(" <identifier> ["[" <expr> "]"] "." <identifier> ")"
+                        "->" <reward_type> "(" <expr> ")"
+                     |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                        "ENABLED" "(" <identifier> "[" <expr> "]" "." <identifier> ")"
+                        "->" <reward_type> "(" <expr> ")"
+      <reward_type> ::= "STATE_REWARD"
+                     |  "TRANS_REWARD"
+        \end{verbatim}
+
+In its simpler form, a reward assignment contains the identifier of an action type preceded by the
+identifier of an AEI possibly augmented with an integer-valued selector expression enclosed in square
+brackets, which must be free of undeclared identifiers and invocations to pseudo-random number generators.
+The AEI must be declared in the \aemilia\ specification to which the Markovian performance evaluation is
+applied, and the action type must occur in the behavior of the type of the AEI within non-passive actions.
+The only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header of the \aemilia\ specification.
+
+The meaning is that, whenever an action with the specified type is enabled in a state, then that state
+(resp.\ the transition that leaves that state and is originated from the considered action) is associated a
+state (resp.\ transition) reward given by the value of the expression following symbol {\tt ->}. The reward
+expression must be real valued as well as free of undeclared identifiers and invocations to pseudo-random
+number generators. The only identifiers that can occur in the reward expression are the ones of the constant
+formal parameters declared in the architectural type header of the \aemilia\ specification, together with
+the index possibly occurring at the beginning of the measure definition. An action type can occur at most
+once in the reward structure specified within a measure definition.
+
+The second form is useful to concisely define several variants of the same reward assignment through an
+indexing mechanism. This additionally requires the specification of the index identifier, which can then
+occur in the selector expression and in the reward expression, together with its range, which is given by
+two integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations
+to pseudo-random number generators, with the value of the first expression being not greater than the value
+of the second expression. The index for the reward assignment must be different from the index possibly
+occurring at the beginning of the measure definition.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Syntax of {\tt .sim} Specifications}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A {\tt .sim} specification is composed of five sections:
+
+        \begin{verbatim}
+    <clock_act_type>
+    <sim_run_length>
+    <sim_run_number>
+    <measure_def_sequence>
+    [<trace_def_sequence>]
+        \end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Clock Action Type}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The clock action type represents the action type on the basis of which time is assumed to progress during
+the simulation. Every execution of a transition labeled with the clock action type (or a type involving or
+renaming it) corresponds to a clock tick.
+
+The clock action type is defined through the following syntax:
+
+        \begin{verbatim}
+    "RUN_LENGTH_ON_EXEC" <identifier> ["[" <expr> "]"] "." <identifier>
+        \end{verbatim}
+
+\noindent which contains the identifier of an action type preceded by the identifier of an AEI possibly
+augmented with an integer-valued selector expression enclosed in square brackets, which must be free of
+undeclared identifiers and invocations to pseudo-random number generators. The AEI must be declared in the
+\aemilia\ specification to which the simulation-based performance evaluation is applied, and the action type
+must occur in the behavior of the type of the AEI within non-passive actions. The action type cannot be
+hidden or restricted in the \aemilia\ specification. The only identifiers that can occur in the possible
+selector expression are the ones of the constant formal parameters declared in the architectural type header
+of the \aemilia\ specification.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Simulation Run Length}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The simulation run length specifies the number of times that a transition labeled with the clock action type
+(or a type involving or renaming it) must be executed in order for a simulation run to be considered
+terminated.
+
+The simulation run length is defined through the following syntax:
+
+        \begin{verbatim}
+    "RUN_LENGTH" <expr>
+        \end{verbatim}
+
+\noindent where the expression must be integer valued as well as free of undeclared identifiers and
+invocations to pseudo-random number generators. The only identifiers that can occur in the expression are
+the ones of the constant formal parameters declared in the architectural type header of the \aemilia\
+specification to which the simulation-based performance evaluation is applied. The value of the expression
+must be greater than zero.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Simulation Run Number}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The simulation run number specifies the number of independent simulation runs that have to be carried out
+in order for the simulation to be considered terminated.
+
+The simulation run number is defined through the following syntax:
+
+        \begin{verbatim}
+    "RUN_NUMBER" <expr>
+        \end{verbatim}
+
+\noindent where the expression must be integer valued as well as free of undeclared identifiers and
+invocations to pseudo-random number generators. The only identifiers that can occur in the expression are
+the ones of the constant formal parameters declared in the architectural type header of the \aemilia\
+specification to which the simulation-based performance evaluation is applied. The value of the expression
+must be between~1 and~30.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Measure Definition Sequence}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The fourth section is a non-empty sequence of semicolon-separated measure definitions, each of the following
+form:
+
+        \begin{verbatim}
+    <measure_def> ::= "MEASURE" <identifier> ["[" <expr> "]"] "IS" <measure_expr>
+                   |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                      "MEASURE" <identifier> "[" <expr> "]" "IS" <measure_expr>
+        \end{verbatim}
+
+In its simpler form, a measure definition contains the identifier of the measure, a possible
+integer-valued expression enclosed in square brackets, which represents a selector and must be free of
+undeclared identifiers and invocations to pseudo-random number generators, and the measure expression. The
+only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header of the \aemilia\ specification to which the
+simulation-based performance evaluation is applied.
+
+The second form is useful to concisely define several variants of the same measure through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression and in the measure expression, together with its range, which is given by two
+integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations to
+pseudo-random number generators, with the value of the first expression being not greater than the value of
+the second expression.
+
+We observe that the identifier of a measure can be augmented with a selector expression also in the simpler
+form of measure definition. This is useful whenever it is desirable to define a set of indexed variants of
+the same measure, but only some of them have a common selector expression.
+
+The measure expression has the following syntax:
+
+        \begin{verbatim}
+    <measure_expr> ::= "MEAN" "(" <sim_expr> "," <expr> ".." <expr> ")"
+                    |  "VARIANCE" "(" <sim_expr> "," <expr> ".." <expr> ")"
+                    |  "DISTRIBUTION" "(" <sim_expr> "," <expr> ".." <expr> "," <expr> ")"
+        \end{verbatim}
+
+\noindent where {\tt <sim\_expr>} is the expression whose mean, variance, or distribution has to be
+estimated during the simulation, while the other expressions, which must be integer valued as well as free
+of undeclared identifiers and invocations to pseudo-random number generators, delimit the observation
+interval within a simulation run. The first expression represents the beginning of the observation interval,
+whose value must be between zero and the simulation run length decremented by one. The second expression
+represents the end of the observation interval, whose value must be between one and the simulation run
+length, and greater than the value of the previous expression. The third expression, which is present only
+in the case of the distribution, represents the width of the subintervals -- within the observation interval
+-- at the end of which the distribution must be estimated. Its value must be greater than zero and a divisor
+of the length of the observation interval, which is given by the difference between the values of the two
+previous expressions. The only identifiers that can occur in these expressions are the ones of the constant
+formal parameters declared in the architectural type header of the \aemilia\ specification to which the
+simulation-based performance evaluation is applied, together with the index possibly occurring at the
+beginning of the measure definition.
+
+The syntax for {\tt <sim\_expr>} is the same as the syntax for {\tt <expr>}, with in addition the following
+reward-based production:
+
+        \begin{verbatim}
+      <sim_expr> ::= "REWARD" "(" "EXECUTED" "(" <identifier> ["[" <expr> "]"] "."
+                     <identifier> ")" "->" <reward_expr> "," <cumulative> ")"
+    <cumulative> ::= "CUMULATIVE"
+                  |  "NON_CUMULATIVE"
+        \end{verbatim}
+
+\noindent which contains the identifier of an action type preceded by the identifier of an AEI possibly
+augmented with an integer-valued selector expression enclosed in square brackets, which must be free of
+undeclared identifiers and invocations to pseudo-random number generators. The AEI must be declared in the
+\aemilia\ specification to which the simulation-based performance evaluation is applied, and the action type
+must occur in the behavior of the type of the AEI within non-passive actions. The only identifiers that can
+occur in the possible selector expression are the ones of the constant formal parameters declared in the
+architectural type header of the \aemilia\ specification, together with the index possibly occurring at the
+beginning of the measure definition.
+
+The meaning is that, whenever a transition labeled with the specified action type (or a type involving or
+renaming it) is executed, then a reward is earned whose value is given by the expression following symbol
+{\tt ->}. All the values of the reward expression collected during a run are summed up at the end of the run
+-- with this sum being divided by the number of collected values if the measure is not cumulative -- then
+all the sums are involved in a statistical inference process at the end of the simulation in order to derive
+the measure estimate with 90\% confidence level. The reward expression must be real valued as well as free
+of undeclared identifiers and invocations to pseudo-random number generators. The only identifiers that can
+occur in the reward expression are the ones of the constant formal parameters declared in the architectural
+type header of the \aemilia\ specification, together with the index possibly occurring at the beginning of
+the measure definition.
+
+The syntax for {\tt <reward\_expr>} is the same as the syntax for {\tt <expr>}, with in addition the
+following variable-based production:
+
+        \begin{verbatim}
+    <reward_expr> ::= <identifier> ["[" <expr> "]"] "." <identifier> "." <identifier>
+        \end{verbatim}
+
+\noindent which contains the identifier of a variable formal parameter or local variable preceded by the
+identifier of a behavior, which is in turn preceded by the identifier of an AEI possibly augmented with an
+integer-valued selector expression enclosed in square brackets, which must be free of undeclared identifiers
+and invocations to pseudo-random number generators. The AEI must be declared in the \aemilia\ specification
+to which the simulation-based performance evaluation is applied, the behavior must be defined within the
+type of the AEI, and the variable formal parameter or local variable must be declared in the behavior
+header. Upon evaluation, this denotes the value hold in the variable formal parameter or local variable at
+the time of the evaluation. The only identifiers that can occur in the possible selector expression are the
+ones of the constant formal parameters declared in the architectural type header of the \aemilia\
+specification, together with the index possibly occurring at the beginning of the measure definition.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Trace Definition Sequence}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The fifth section, which is optional, is a possibly empty list of semicolon-separated trace definitions,
+each of the following form:
+
+        \begin{verbatim}
+    <trace_def> ::= "DRAW" <trace_expr> "FROM" <trace_file_path> ["[" <expr> "]"] ".trc"
+                 |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                    "DRAW" <trace_expr> "FROM" <trace_file_path> "[" <expr> "]" ".trc"
+        \end{verbatim}
+
+In its simpler form, a trace definition contains the trace expression to be sampled, the trace file path --
+without extension -- from which the values for the trace expression are to be read during simulation, a
+possible integer-valued expression enclosed in square brackets, which represents a selector and must be free
+of undeclared identifiers and invocations to pseudo-random number generators, and the {\tt .trc} extension.
+The only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header of the \aemilia\ specification to which the
+simulation-based performance evaluation is applied.
+
+The second form is useful to concisely define several variants of the same trace through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression, together with its range, which is given by two integer-valued expressions. These two
+expressions must be free of undeclared identifiers and invocations to pseudo-random number generators, with
+the value of the first expression being not greater than the value of the second expression.
+
+The path of a trace file is relative to the directory containing the {\tt .sim} specification, must start
+with {\tt ./}, and must contain {\tt /} (rather than \verb+\+) as separator for directory names. The trace
+file path can be augmented with a selector expression also in the simpler form of trace definition. This is
+useful whenever it is desirable to associate different trace files with a set of indexed variants of the
+same trace expression belonging to different AEIs, but only some of them have a common selector expression.
+
+The syntax for {\tt <trace\_expr>} is the same as the syntax for {\tt <expr>}, except that it must start
+with an invocation to a pseudo-random number generator and has the following constant-based production in
+place of the production for a simple identifier:
+
+        \begin{verbatim}
+    <trace_expr> ::= <identifier> ["[" <expr> "]"] "." <identifier>
+        \end{verbatim}
+
+\noindent which contains the identifier of a constant formal parameter preceded by the identifier of an AEI
+possibly augmented with an integer-valued selector expression enclosed in square brackets, which must be
+free of undeclared identifiers and invocations to pseudo-random number generators. The AEI must be declared
+in the \aemilia\ specification to which the simulation-based performance evaluation is applied, and the
+constant formal parameter must be declared in the header of the type of the AEI. The overall trace
+expression must occur in the behavior of the type of some AEI of the \aemilia\ specification, and at most
+one trace file can be associated with it. Note that no variable formal parameter or local variable can occur
+in the trace expression. The only identifiers that can occur in the possible selector expression are the
+ones of the constant formal parameters declared in the architectural type header of the \aemilia\
+specification, together with the index possibly occurring at the beginning of the trace definition.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Syntax of {\tt .trc} Specifications}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A {\tt .trc} file must contain sufficiently many real numbers in fixed point notation, each starting at the
+beginning of a new line.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example A: The Alternating Bit Protocol}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we evaluate the performance of the alternating bit protocol.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Markovian Performance Evaluation}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The performance measures of interest for the \aemilia\ specification {\tt abp.aem} of Sect.~\ref{abp} can be
+defined through the following {\tt abp.rew}:
+
+        \begin{verbatim}
+    MEASURE throughput IS
+      ENABLED(S.generate_msg) -> TRANS_REWARD(1);
+
+    MEASURE utilization IS
+      ENABLED(LM.propagate_0) -> STATE_REWARD(1)
+      ENABLED(LM.propagate_1) -> STATE_REWARD(1)
+        \end{verbatim}
+
+\noindent The throughput represents the number of messages that are delivered per unit of time. It is
+obtained by associating an instantaneous unit reward with the transitions originated from
+{\tt S.generate\_msg}. Equivalently, it could have been obtained by associating a reward rate equal to the
+rate of {\tt S.generate\_msg} with every state in which {\tt S.generate\_msg} is enabled. The utilization
+represents instead the percentage of time during which the channel is busy because of message propagation.
+It is obtained by associating a unit reward rate with every state in which {\tt LM.propagate\_0} or
+{\tt LM.propagate\_1} is enabled.
+
+The following is the result of the Markovian performance evaluation at steady state:
+
+        \begin{verbatim}
+    Stationary value of the performance measures for ABP_Type:
+
+    - Value of measure "throughput":
+        1.88226
+
+    - Value of measure "utilization":
+        0.26291
+        \end{verbatim}
+
+\noindent As we can see, the throughput is much less than the maximum potential value (i.e.\ the rate of
+{\tt S.generate\_msg}) and the utilization is about~26\%.
+
+Similar results are obtained when considering the value passing \aemilia\ specification {\tt abp\_vp.aem}
+of Sect.~\ref{abp_vp} in place of {\tt abp.aem}, provided that the following {\tt abp\_vp.rew} is used:
+
+        \begin{verbatim}
+    MEASURE throughput IS
+      ENABLED(S.generate_msg) -> TRANS_REWARD(1);
+
+    MEASURE utilization IS
+      ENABLED(LM.propagate) -> STATE_REWARD(1)
+        \end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Simulation-Based Performance Evaluation}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The mean, variance, and distribution of the same performance measures as before can be defined for the
+\aemilia\ specification {\tt abp\_gd.aem} with general delays of Sect.~\ref{abp_gd} through the following
+{\tt abp\_gd.sim}:
+
+        \begin{verbatim}
+    RUN_LENGTH_ON_EXEC
+      C.elapse_tick
+
+    RUN_LENGTH
+      10000
+
+    RUN_NUMBER
+      20
+
+    MEASURE throughput_avg IS
+      MEAN
+      {
+        REWARD(EXECUTED(MG.generate_msg) -> 1,
+               CUMULATIVE) / 10,
+        0..10000
+      };
+
+    MEASURE throughput_var IS
+      VARIANCE
+      {
+        REWARD(EXECUTED(MG.generate_msg) -> 1,
+               CUMULATIVE) / 10,
+        0..10000
+      };
+
+    MEASURE throughput_distr IS
+      DISTRIBUTION
+      {
+        REWARD(EXECUTED(MG.generate_msg) -> 1,
+               CUMULATIVE) / 1,
+        0..10000,
+        1000
+      };
+
+    MEASURE utilization_avg IS
+      MEAN
+      {
+        REWARD(EXECUTED(LM.propagate) -> 1,
+               CUMULATIVE) / 10000,
+        0..10000
+      };
+
+    MEASURE utilization_var IS
+      VARIANCE
+      {
+        REWARD(EXECUTED(LM.propagate) -> 1,
+               CUMULATIVE) / 10000,
+        0..10000
+      };
+
+    MEASURE utilization_distr IS
+      DISTRIBUTION
+      {
+        REWARD(EXECUTED(LM.propagate) -> 1,
+               CUMULATIVE) / 1000,
+        0..10000,
+        1000
+      }
+        \end{verbatim}
+
+\noindent Note that the duration of each run corresponds to 10000~msec of execution of the protocol and that
+the throughput is expressed in number of messages delivered per second, hence the division by~10 instead
+of~10000. The distributions of the throughput and of the utilization are estimated at the end of each of the
+10~seconds.
+
+The following is the result of the simulation-based performance evaluation, where the 90\% confidence
+intervals are shown in square brackets:
+
+        \begin{verbatim}
+    90% confidence estimate of the performance measures for ABP_GD_Type:
+
+    - Estimate of measure "throughput_avg":
+        3.005
+                [2.75757, 3.25243]
+
+    - Estimate of measure "throughput_var":
+        0.455237
+                [0.258599, 0.651874]
+
+    - Estimate of measure "throughput_distr":
+        3.25
+                [2.80682, 3.69318]
+        2.5
+                [1.98826, 3.01174]
+        3.05
+                [2.46139, 3.63861]
+        2.8
+                [2.20989, 3.39011]
+        3.25
+                [2.64479, 3.85521]
+        3
+                [2.31652, 3.68348]
+        3.2
+                [2.65999, 3.74001]
+        2.6
+                [1.84376, 3.35624]
+        3.75
+                [3.24697, 4.25303]
+        2.65
+                [2.02863, 3.27137]
+
+    - Estimate of measure "utilization_avg":
+        0.33745
+                [0.31401, 0.36089]
+
+    - Estimate of measure "utilization_var":
+        0.00408571
+                [0.00233904, 0.00583238]
+
+    - Estimate of measure "utilization_distr":
+        0.30735
+                [0.255711, 0.358989]
+        0.3047
+                [0.253016, 0.356384]
+        0.2883
+                [0.219288, 0.357312]
+        0.336
+                [0.277625, 0.394375]
+        0.36775
+                [0.30015, 0.43535]
+        0.3422
+                [0.283319, 0.401081]
+        0.373
+                [0.317583, 0.428417]
+        0.3199
+                [0.253941, 0.385859]
+        0.4162
+                [0.36628, 0.46612]
+        0.3191
+                [0.262867, 0.375333]
+        \end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example B: The NRL Pump}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In order to measure the bandwidth of the covert channel of the \aemilia\ specification {\tt nrl\_pump.aem}
+of Sect.~\ref{nrl_pump}, we use the following {\tt nrl\_pump.rew}:
+
+        \begin{verbatim}
+    MEASURE closed_connections_per_time_unit IS
+      ENABLED(LW.send_conn_close) -> TRANS_REWARD(1);
+
+    MEASURE aborted_connections_per_time_unit IS
+      ENABLED(TLT.send_conn_exit) -> TRANS_REWARD(1)
+        \end{verbatim}
+
+\noindent The two measures above are strictly related to the connect/disconnect strategy that a malicious
+high user may exploit to pass confidential information to low users. The number of connections that can be
+closed or aborted per unit of time represents an estimate of how many bits can be leaked in a certain
+period. We recall that the low users can deduce the presence of the high users only if some connections are
+correctly terminated, as in that case the high users must have sent acknowledgments.
+
+The following is the result of the Markovian performance evaluation at steady state:
+
+        \begin{verbatim}
+    Stationary value of the performance measures for NRL_Pump_Type:
+
+    - Value of measure "closed_connections_per_time_unit":
+        4.37617
+
+    - Value of measure "aborted_connections_per_time_unit":
+        2.27526
+        \end{verbatim}
+
+\noindent This means that a malicious high user can set up a one-bit covert channel by means of which the
+high user can leak about 6~bits per second.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example C: Dining Philosophers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the case of the \aemilia\ specification {\tt dining\_philosophers.aem} of Sect.~\ref{dp}, it is
+interesting to assess the degree of concurrency between non-adjacent philosophers, which can be expressed
+through the following {\tt dining\_philosophers.rew}:
+
+        \begin{verbatim}
+    MEASURE mean_number_eating_philosophers IS
+      FOR_ALL i IN 0..philosopher_num - 1
+        ENABLED(P[i].eat) -> STATE_REWARD(1)
+        \end{verbatim}
+
+\noindent The degree of concurrency is obtained by counting the number of philosophers that are eating in
+each state.
+
+The following is the result of the Markovian performance evaluation conducted with the adaptive variant of
+symmetric stochastic over-relaxation at steady state when there are 10~philosophers:
+
+        \begin{verbatim}
+    Stationary value of the performance measures for LR_Dining_Philosophers_Type:
+
+    - Value of measure "mean_number_eating_philosophers":
+        4.16684
+        \end{verbatim}
+
+\noindent This means that on average there are about 4~non-adjacent philosophers that are simultaneously
+eating at each instant.

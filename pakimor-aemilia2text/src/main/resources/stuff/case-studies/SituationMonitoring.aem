@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+% FTA System AEmilia model - UC SituationMonitoring
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+ARCHI_TYPE FTASystem_Type(const rate   msg_gen_rate  := 5,
+		    const rate   forward_rate     := 5,
+		    const rate   prop_rate_lo     := 1,
+		    const rate   prop_rate_hi     := 5,
+		    const weight emrg_prob := 0.2)
+
+
+ARCHI_ELEM_TYPES
+
+	% FTA_Type modella l'FTA Server
+	ELEM_TYPE FTA_Type(const weight emrg_prob, const rate forward_rate)
+
+	    BEHAVIOR
+
+	      % modella il processo decisionale, a fronte della ricezione dei dati dai sensori, per valutare se ci si trovi in una situazione di emergenza o meno
+	      Forward(void; void) =
+	      <forward, exp(forward_rate)> .
+	      choice{	      
+	      	<inFTA1, _> . <outFTA1, inf(1, 1 - emrg_prob)> . Forward(),
+	      	<inFTA2, _> . <outFTA2, inf(1, emrg_prob)> . Forward()
+	      }
+
+	    INPUT_INTERACTIONS
+
+	      UNI inFTA1;
+	      inFTA2
+
+	    OUTPUT_INTERACTIONS
+
+	      UNI outFTA1;
+	      outFTA2
+
+
+	% NetHi_Type modella la rete a bassa priorita'
+	ELEM_TYPE NetLo_Type(const rate prop_rate_lo)
+
+	    BEHAVIOR
+
+	      % modella l'instradamento dei dati nelle direzioni di upstream e downstream attraverso rete
+	      Transmit(void; void) =
+	      choice{
+	      	<inNetL1, _> . <downstream, exp(prop_rate_lo)> . <outNetL1, inf> . Transmit(),
+	      	<inNetL2, _> . <upstream, exp(prop_rate_lo)> . <outNetL2, inf> . Transmit()
+	      }
+
+	    INPUT_INTERACTIONS
+
+	      UNI inNetL1;
+		  inNetL2
+
+	    OUTPUT_INTERACTIONS
+
+	      UNI outNetL1;
+		  outNetL2
+
+
+	% NetHi_Type modella la rete ad alta priorita'
+	ELEM_TYPE NetHi_Type(const rate prop_rate_hi)
+
+	    BEHAVIOR
+
+	      % modella l'instradamento dei dati nelle direzioni di upstream e downstream attraverso rete
+	      Transmit(void; void) =
+	      choice{
+	      	<inNetH1, _> . <downstreamH, exp(prop_rate_hi)> . <outNetH1, inf> . Transmit(),
+	      	<inNetH2, _> . <upstreamH, exp(prop_rate_hi)> . <outNetH2, inf> . Transmit()
+	      }
+
+	    INPUT_INTERACTIONS
+
+	      UNI inNetH1;
+		  inNetH2
+
+	    OUTPUT_INTERACTIONS
+
+	      UNI outNetH1;
+		  outNetH2
+	
+	
+	% MobApp_Type modella l'applicazione mobile
+	ELEM_TYPE MobApp_Type(void)
+
+	    BEHAVIOR
+
+	      % riceve i dati dalla reti a bassa o alta priorita'
+	      GetData(void; void) = 
+	      choice{
+	      	<inMA1, _> . GetData(),
+	      	<inMA2, _> . GetData()
+	      }
+
+	    INPUT_INTERACTIONS
+
+	      UNI inMA1;
+	      inMA2
+
+	    OUTPUT_INTERACTIONS
+
+	      void
+		  
+	
+	% LOC_FTA_Type modella il Local FTA server
+	ELEM_TYPE LOC_FTA_Type(const rate msg_gen_rate, const weight emrg_prob)
+
+	    BEHAVIOR
+
+	      % invia i dati sulle reti ad alta o bassa priorita' in base al fatto che i dati provenienti dai sensori superino o meno la soglia di sicurezza
+	      SendData(void; void) =
+	      <send, exp(msg_gen_rate)> .
+	      choice{
+	      	<outLFTA1, inf(1, 1 - emrg_prob)> . SendData(),
+	      	<outLFTA2, inf(1, emrg_prob)> . SendData()
+	      }
+
+	    INPUT_INTERACTIONS
+
+	      void
+
+	    OUTPUT_INTERACTIONS
+
+	      UNI outLFTA1;
+	      outLFTA2
+
+
+ARCHI_TOPOLOGY
+
+
+	% definisce le istanze 
+	ARCHI_ELEM_INSTANCES
+
+	  FTA  : FTA_Type(emrg_prob, forward_rate);
+	  NETL : NetLo_Type(prop_rate_lo);
+	  MA : MobApp_Type();
+	  LFTA  : LOC_FTA_Type(msg_gen_rate, emrg_prob);
+	  NETH : NetHi_Type(prop_rate_hi)
+
+
+	ARCHI_INTERACTIONS
+
+	  void
+
+
+	% modella i collegamenti tra le istanze
+	ARCHI_ATTACHMENTS
+
+	  FROM LFTA.outLFTA1	TO NETL.inNetL1;
+	  FROM NETL.outNetL1    TO FTA.inFTA1;
+	  FROM FTA.outFTA1		TO NETL.inNetL2;
+	  FROM NETL.outNetL2	TO MA.inMA1;
+	  FROM LFTA.outLFTA2	TO NETH.inNetH1;
+	  FROM NETH.outNetH1    TO FTA.inFTA2;
+	  FROM FTA.outFTA2		TO NETH.inNetH2;
+	  FROM NETH.outNetH2	TO MA.inMA2
+
+
+END

@@ -1,0 +1,139 @@
+ARCHI_TYPE ABP_VP_Type(const boolean starting_bit  := false,
+                       const rate    msg_gen_rate  := 5,
+                       const rate    timeout_rate  := 1,
+                       const rate    prop_rate     := 9.375,
+                       const weight  delivery_prob := 0.95)
+
+
+ARCHI_ELEM_TYPES
+
+  
+   ELEM_TYPE Sender_Type(const boolean starting_bit,
+                         const rate    msg_gen_rate,
+                         const rate    timeout_rate)
+      BEHAVIOR
+
+
+         Sender(boolean ent_bit:=starting_bit;void) =
+             <generate_msg, exp(msg_gen_rate)> . <transmit_msg!(sent_bit), inf> . Sender_Waiting(sent_bit);
+
+         Sender_Waiting( boolean sent_bit;
+                         local boolean received_bit) =
+               choice
+               {
+                   <receive_ack?(received_bit), _> . Sender_Checking(sent_bit, received_bit),
+                   <timeout, exp(timeout_rate)> . Sender_Retransmitting(sent_bit)
+               }; 
+         
+         Sender_Checking(boolean sent_bit,
+                         boolean received_bit;
+                         void) =
+             choice
+             {
+                  cond(received_bit = sent_bit) -> <check_bit,inf> . Sender(!sent_bit),
+	                cond(received_bit != sent_bit) -> <check_bit,inf> . Sender_Waiting(sent_bit)
+             };  
+    
+         Sender_Retransmitting(boolean       sent_bit;
+                               local boolean received_bit) = 
+             choice
+             {
+               <transmit_msg!(sent_bit), inf> . Sender_Waiting(sent_bit),
+               <receive_ack?(received_bit), _> . Sender_Checking(sent_bit,received_bit)
+             
+             }
+
+      INPUT_INTERACTIONS
+                         
+        UNI generate_msg;
+            receive_ack
+          
+
+      OUTPUT_INTERACTIONS
+                         
+        UNI transmit_msg
+            
+    
+   ELEM_TYPE Line_Type(const rate    prop_rate,
+                       const weight  delivery_prob)
+      BEHAVIOR
+
+         Line( void;
+               local boolean tagging_bit) =
+ 
+           <receive?(tagging_bit), _> . <propagate, exp(prop_rate)>. 
+               choice
+                {
+                 <keep, inf(1,delivery_prob)> . <delivery!(tagging_bit), inf> . Line(),
+                 <lose, inf(1,1 - delivery_prob)> . Line()
+                }
+ 
+      INPUT_INTERACTIONS
+                         
+        UNI receive
+            
+
+      OUTPUT_INTERACTIONS
+                         
+        UNI deliver
+          
+   ELEM_TYPE Receiver_Type(const boolean starting_bit)
+
+      BEHAVIOR
+
+         Receiver(boolean       expected_bit:= starting_bit;
+                  local boolean received_bit ) = 
+          <receive_msg?(received_bit), _> .
+          choice
+             {
+                  cond(received_bit = expected_bit) ->
+                    <consume_msg,inf> . <transmit_ack!(received_bit), inf> . Receiver(!expected_bit),
+	                cond(received_bit != expected_bit) ->
+                    <transmit_ack!(received_bit),inf> . Receiver(expected_bit)
+             }  
+ 
+      INPUT_INTERACTIONS
+                         
+        UNI receive_msg
+
+      OUTPUT_INTERACTIONS
+                         
+        UNI consume_msg;
+            transmit_ack
+
+ARCHI_TOPOLOGY
+
+     ARCHI_ELEM_INSTANCES
+
+        S  : Sender_Type(starting_bit,  
+                         msg_gen_rate,
+                         timeout_rate);
+
+        LM : Line_Type(prop_rate,
+                       delivery_prob);
+
+
+        LA : Line_Type(prop_rate,
+                       delivery_prob);
+
+
+        R  : Receiver_Type(starting_bit)
+
+
+     ARCHI_INTERACTIONS
+       
+        S.generate_msg;
+        R.consume_msg
+
+
+     ARCHI_ATTACHMENTS
+        
+        FROM S.transmit_msg  TO LM.receive;
+       
+        FROM LM.deliver      TO R.receive_msg;
+        
+        FROM R.transmit_ack  TO LA.receive;      
+       
+        FROM LA.deliver      TO S.receive_ack
+
+     END

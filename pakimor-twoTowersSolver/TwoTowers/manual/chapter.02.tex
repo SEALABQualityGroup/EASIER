@@ -1,0 +1,326 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\chapter{Tool Installation and Execution}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Introduction}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this chapter we explain how to install and run TwoTowers~5.1 on a computer with the Linux or Windows
+operating system.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Source Distribution}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is distributed through the compressed file {\tt TwoTowers.tar.gz}. After moving this
+compressed file into a new directory, the source files can be extracted together with the related
+documentation and utilities through the following two commands (symbol {\tt >} denotes the prompt of the
+operating system shell):
+
+	\begin{verbatim}
+  > gunzip TwoTowers.tar.gz
+  > tar -xvf TwoTowers.tar
+	\end{verbatim}
+
+\noindent which should result in the following directory structure:
+
+	\begin{verbatim}
+  . bin
+  |_. TTKernel.exe
+  . docs
+  |_. license.txt
+    . manual.pdf
+    . readme.txt
+  . gui
+  |_. TTGUI
+  . src
+  |_. Makefile
+    . compiler
+    |_. Makefile
+      . aemilia_compiler.c
+      . aemilia_parser.y
+      . aemilia_scanner.l
+      . listing_generator.c
+      . ltl_parser.y
+      . ltl_scanner.l
+      . rew_parser.y
+      . rew_scanner.l
+      . sec_parser.y
+      . sec_scanner.l
+      . sim_parser.y
+      . sim_scanner.l
+      . symbol_handler.c
+    . driver
+    |_. Makefile
+      . driver.c
+    . equivalence_verifier
+    |_. Makefile
+      . equivalence_verifier.c
+    . headers
+    |_. Library.h
+      . aemilia_compiler.h
+      . aemilia_parser.h
+      . aemilia_scanner.h
+      . driver.h
+      . equivalence_verifier.h
+      . file_handler.h
+      . list_handler.h
+      . listing_generator.h
+      . ltl_parser.h
+      . ltl_scanner.h
+      . markov_solver.h
+      . memory_handler.h
+      . number_handler.h
+      . nusmv_connector.h
+      . rew_parser.h
+      . rew_scanner.h
+      . sec_parser.h
+      . sec_scanner.h
+      . security_analyzer.h
+      . sim_parser.h
+      . sim_scanner.h
+      . simulator.h
+      . string_handler.h
+      . symbol_handler.h
+      . table_handler.h
+    . model_checker
+    |_. Makefile
+      . nusmv_connector.c
+    . performance_evaluator
+    |_. Makefile
+      . markov_solver.c
+      . simulator.c
+    . security_analyzer
+    |_. Makefile
+      . security_analyzer.c
+    . utilities
+    |_. Makefile
+      . file_handler.c
+      . list_handler.c
+      . memory_handler.c
+      . number_handler.c
+      . string_handler.c
+      . table_handler.c
+  . win_utils
+  |_. cp.bat
+    . mv.bat
+    . rm.bat
+    . tt_compile.bat
+    . tt_exec.bat
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Installation Procedure}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The procedure for installing TwoTowers~5.1 comprises a couple of quick and easy steps.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Linux}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+On a Linux machine, make sure that the following packages are available:
+
+	\begin{verbatim}
+  flex     (lexical analyzer generator,
+            http://www.gnu.org/software/flex/flex.html)
+  bison    (parser generator,
+            http://www.gnu.org/software/bison/bison.html)
+  make     (program maintainance utility,
+            http://www.gnu.org/software/make/make.html)
+  gcc      (C compiler,
+            http://www.gnu.org/software/gcc/gcc.html)
+	\end{verbatim}
+
+\noindent
+The first step consists of compiling the ANSI C source files through the following commands:
+
+	\begin{verbatim}
+  > cd <TwoTowers 5.1 directory>/src/
+  > make
+  > make clean
+	\end{verbatim}
+
+\noindent
+which should result in the following executable file:
+
+	\begin{verbatim}
+  <TwoTowers 5.1 directory>/bin/TTKernel
+	\end{verbatim}
+
+\noindent
+The second step consists of creating a symbolic link to the above executable file through the following
+command:
+
+	\begin{verbatim}
+  > ln -s <TwoTowers 5.1 directory>/bin/TTKernel TTKernel
+	\end{verbatim}
+
+\noindent
+given in a directory whose pathname occurs in the shell variable {\tt path}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Windows}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The executable file for Windows is already available at:
+
+	\begin{verbatim}
+  <TwoTowers 5.1 directory>\bin\TTKernel.exe
+	\end{verbatim}
+
+\noindent
+Should you need to generate it again, make sure that the following packages are available in \linebreak
+\verb+\+\verb+Program Files\GnuWin32+:
+
+	\begin{verbatim}
+  flex     (lexical analyzer generator,
+            http://gnuwin32.sourceforge.net/packages/flex.htm)
+  bison    (parser generator,
+            http://gnuwin32.sourceforge.net/packages/bison.htm)
+	\end{verbatim}
+
+\noindent
+and that the following packages are available as well:
+
+	\begin{verbatim}
+  make     (program maintainance utility,
+            http://www.mingw.org/)
+  gcc      (C compiler,
+            http://www.mingw.org/)
+	\end{verbatim}
+
+\noindent
+Then compile the C source files through the following commands:
+
+	\begin{verbatim}
+  <double click> <TwoTowers 5.1 directory>\win_utils\tt_compile
+  > make
+  > make clean
+	\end{verbatim}
+
+\noindent
+which should create the following executable file:
+
+	\begin{verbatim}
+  <TwoTowers 5.1 directory>\bin\TTKernel.exe
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Running the Tool}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Running the tool is very simple.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Linux}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+On a Linux machine, make sure that the following packages are available:
+
+	\begin{verbatim}
+  wish           (windowing shell for Tcl/Tk 8.0 or higher,
+                  http://www.tcl.tk/software/tcltk/8.0.tml)
+  NuSMV 2.2.5    (symbolic model checker,
+                  http://nusmv.irst.itc.it/)
+	\end{verbatim}
+
+\noindent
+Then type the following command to run the tool:
+
+	\begin{verbatim}
+  > wish <TwoTowers 5.1 directory>/gui/TTGUI &
+	\end{verbatim}
+
+\noindent
+To simplify this, we suggest to define an alias like the following:
+
+	\begin{verbatim}
+  alias tt 'wish <TwoTowers 5.1 directory>/gui/TTGUI &'
+	\end{verbatim}
+
+\noindent
+so that the command to run the tool simply becomes:
+
+	\begin{verbatim}
+  > tt
+	\end{verbatim}
+
+\noindent
+In order to be able to use to model checker, we also suggest to make sure that the following symbolic links:
+
+	\begin{verbatim}
+  > ln -s <NuSMV 2.2.5 directory>/NuSMV NuSMV
+  > ln -s <NuSMV 2.2.5 directory>/src/ltl/ltl2smv/ltl2smv ltl2smv
+	\end{verbatim}
+
+\noindent
+have been created in a directory whose pathname occurs in the shell variable {\tt path}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Windows}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+On a Windows machine, make sure that the following package is available in \verb+\Program Files\Tcl+:
+
+	\begin{verbatim}
+  wish           (windowing shell for Tcl/Tk 8.0 or higher,
+                  http://www.tcl.tk/software/tcltk/8.0.tml)
+	\end{verbatim}
+
+\noindent
+and that the following package is available in \verb+\Program Files\NuSMV-2.2.5+:
+
+	\begin{verbatim}
+  NuSMV 2.2.5    (symbolic model checker,
+                  http://nusmv.irst.itc.it/)
+	\end{verbatim}
+
+\noindent
+Then give the following command to run the tool:
+
+	\begin{verbatim}
+  <double click> <TwoTowers 5.1 directory>\win_utils\tt_exec
+	\end{verbatim}

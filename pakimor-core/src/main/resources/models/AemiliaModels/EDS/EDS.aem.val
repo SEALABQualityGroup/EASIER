@@ -1,0 +1,31 @@
+Stationary value of the performance measures for eds:
+
+- Value of measure "Clock_Type_Single_throughput_CK_elapse_tick":
+	349.273
+
+- Value of measure "RDA_Type_Multiple_utilization_RD":
+	0
+
+- Value of measure "TLDA_Type_Single_throughput_TL_send_sample":
+	4.65697
+
+- Value of measure "TLDA_Type_Single_throughput_TL_send_feedback":
+	4.65697
+
+- Value of measure "TLDA_Type_Multiple_throughput_TL":
+	9.31394
+
+- Value of measure "TLWPC_Type_Single_throughput_WP_send_feedback":
+	4.65697
+
+- Value of measure "NetDownRT_Type_Single_throughput_TR_forward":
+	4.65697
+
+- Value of measure "NetUpRT_Type_Single_throughput_RT_forward":
+	4.65697
+
+- Value of measure "NetDownTT_Type_Single_throughput_WT_forward":
+	4.65697
+
+- Value of measure "NetUpTT_Type_Single_utilization_TW_forward":
+	0.386791

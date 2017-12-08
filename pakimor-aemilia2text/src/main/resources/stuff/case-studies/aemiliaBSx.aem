@@ -1,0 +1,136 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+% Bus System
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%Here is the header of the Æmilia description for the considered bus subsystem and the inputs parameters%
+	ARCHI_TYPE BS_Type(	
+						const integer Num_req := 1					
+						,			%numbers of check-in request
+						const rate basic_lambda:=1.25,		% the average interval of time between a system response and the following check-in request
+						const rate sigmaM := 0.7,			%service rate of master_f type componet
+						const rate sigmaMR :=0.9,			%service rate of master_r type component
+						const rate sigmaN := 0.9,			%service rate ok network type component
+						const weight  prob := 0.95)			%, prob is the probability of check_in_ok
+		
+		
+% we have defined four AETs %	
+		ARCHI_ELEM_TYPES
+
+				ELEM_TYPE RFID_read_Type(	 const weight prob,const rate lambda)
+					BEHAVIOR
+						
+						Sender_i(void;void)  =  <receive_request_check,exp(lambda)>.Sender_t();
+	
+						
+						Sender_t(void;void)=<send_request,inf>.Sender_waiting();
+						
+						Sender_waiting(void;local boolean response)=
+	
+									<receive_outcome?(response),_>.
+										choice{
+											cond(response = false) -> <view_check_in_no, inf(1,1-prob)>.Sender_i(),
+											cond(response =true) -> <view_check_in_ok, inf(1,prob)>.Sender_i()
+										}
+								
+							
+					INPUT_INTERACTIONS
+						UNI receive_outcome 
+						
+					 OR receive_request_check
+					OUTPUT_INTERACTIONS
+						UNI send_request ;view_check_in_no; view_check_in_ok
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%					
+%RFID reader receives a check-in request , submits requests at a rate lambda, waits for receiving back an outcome,% 
+%then repeats this behavior. The definitions of Sender and Sender_t have neither formal parameters nor local      %
+%variables, hence the two occurrences of void in its header. The action with type send_request is                 %
+%exponentially timed and is declared to be an output uni-interaction, i.e. it can synchronize                     %
+%only with one input interaction of another AEI. The definition of  Sender_waiting has  local variable.           %
+%The action with type receive_outcome, instead, is passive( its rate is unspecified)and is declared to            %
+%be an input																									  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%				
+		
+%The behavior and the interactions of the master_f component type are specified as follows%		
+				
+				ELEM_TYPE Master_Type_F( const rate sigmaM )
+					BEHAVIOR
+						
+						Master(void;void) =<receive, _>.Master_S();
+						
+						Master_S(void;void)=<send_data, exp(sigmaM)>.Master() 
+					INPUT_INTERACTIONS
+						OR receive
+					OUTPUT_INTERACTIONS
+						UNI send_data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Initially (Master_i), the master_f waits for a request to arrive, instantaneously propagate it.  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				ELEM_TYPE Master_Type_R(const rate sigmaMR)
+					BEHAVIOR
+						Master_R(void;local boolean response) =<receive_par?(response),_>.Master_P(response);
+						Master_P(boolean response;void)= <send_data_par!(response), exp(sigmaMR)> . Master_R()
+
+					INPUT_INTERACTIONS
+						UNI receive_par
+					OUTPUT_INTERACTIONS
+						OR send_data_par
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%The definition of the master_r component type is similar to the previous one but with parameters	%
+%The definitions of Master_R has neither a local variables(local Boolean response), 				%
+%the definitions of Master_P has formal parameters.													%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%The behavior and the interactions of the Network component type are specified as follows%	
+				
+				ELEM_TYPE Networking_Type(const weight prob ,const rate sigmaN)
+					BEHAVIOR
+						Network(void ;void ) = 
+						 <receive_request,_>.<send_request_p,inf>.Network_t();
+				
+						
+						Network_t(void;void)=  <check_response,inf>.
+							choice{
+								<propagate!(true),inf(1,prob)>.<send_response!(true),exp(sigmaN)>.Network(),
+								<propagate!(false),inf(1,1-prob)>.<send_response!(false),exp(sigmaN)>.Network()	
+							}
+								
+					INPUT_INTERACTIONS
+						UNI receive_request; check_response
+					OUTPUT_INTERACTIONS
+						UNI send_response; send_request_p
+						
+%Finally, here is the architectural topology section of the Æmilia description:	%
+		ARCHI_TOPOLOGY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+%In this second section of the Æmilia specification we describe %
+%the system topology by declaring the instances of the			%
+%previously defined AETs:										&
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			ARCHI_ELEM_INSTANCES
+				FOR_ALL i IN 1..Num_req
+					F[i]: RFID_read_Type(prob,basic_lambda * i);
+					M1: Master_Type_F( sigmaM);
+					M2: Master_Type_R( sigmaMR);
+					N: Networking_Type(prob,sigmaN)
+%as well as the attachments between their interactions%
+			ARCHI_INTERACTIONS
+				FOR_ALL i IN 1..Num_req
+				F[i].receive_request_check;
+				FOR_ALL i IN 1..Num_req
+				F[i].view_check_in_no;
+				FOR_ALL i IN 1..Num_req
+				F[i].view_check_in_ok;
+				N.send_request_p;
+				N.check_response
+			ARCHI_ATTACHMENTS
+				 FOR_ALL i IN 1..Num_req
+				 FROM F[i].send_request 				TO M1.receive;
+				  FROM M1.send_data					TO N.receive_request;
+				  FROM N.send_response				TO M2.receive_par ;
+				 FOR_ALL i IN 1..Num_req
+				  FROM M2.send_data_par			TO F[i].receive_outcome 
+				
+END
+

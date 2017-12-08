@@ -1,0 +1,58 @@
+                   TWOTOWERS 5.1 LICENSE AGREEMENT
+
+This is the license agreement for the distribution and use of the
+software tool TwoTowers 5.1 (the software) between you (the licensee)
+and Marco Bernardo (the licensor).
+
+The software is being made available to the licensee by the licensor
+under a site license free of charge, provided that the licensee is
+an employee of an educational or non-profit organization (like e.g.
+university, school, public research center).
+
+The licensee may network the software on as many computers at the
+licensee organization site as the licensee wishes, and may make as many
+copies as needed for installation and backup purposes, but the software
+may not be used at all off site. The licensee may not use the software
+as the basis for a commercial product of any kind without prior
+permission of the licensor. The licensee may merge the software
+with other programs but may not distribute any program that
+contains the software, nor may the licensee modify the software
+in order to derive a benefit not granted by this license.
+
+Title to the software, including intellectual properties (copyrights,
+trademarks, and patentable material), shall remain with the licensor
+at all times. If the licensee makes any copies of the software, the
+licensor copyright notices shall be included on the copies. If the
+licensee publishes results of use of the software, the licensee will
+include the licensor copyright notices on such publications and will
+acknowledge the licensor as the source of the software.
+
+The licensor may not be expected to provide any support for the
+software. The licensee agrees to report any problem with the software
+to the licensor, but the licensor is under no obligation to correct
+those problems. Should patches be developed by the licensor, the
+licensor agrees to provide the licensee with them free of charge.
+
+The licensee acknowledges and understands that the software and
+related documentation are provided "as is" and without warranty of
+any kind. The licensor expressly disclaims all warranties, expressed
+or implied, including, but not limited to, the implied warranty of
+merchantability or fitness for a particular purpose, and the warranty
+that use of the software will not infringe the intellectual property
+rights of a third party. Under no circumstances, including negligence,
+shall the licensor be liable for any incidental, special, or
+consequential damages that result from the use or inability to use
+the software or related documentation, even if the licensor has been
+advised of the possibility of such damages.
+
+This is a legal agreement between the licensee and the licensor.
+Should any dispute arise under this agreement, such a dispute shall
+be settled according to the laws of the Italian Republic. The licensee
+agrees to abide by all of the terms as stated herein.
+
+
+ DATE   LICENSEE SIGNATURE  LICENSEE ORGANIZATION  LICENSOR SIGNATURE
+
+______  __________________  _____________________  __________________
+
+                            _____________________

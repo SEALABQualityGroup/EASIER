@@ -1,0 +1,321 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\chapter{The Model Checker}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Introduction}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is able to check whether certain functional properties, each expressed as a LTL
+formula~\cite{CGP} in a {\tt .ltl} file, are satisfied by a correct \aemilia\ specification, in which all
+the possible variable formal parameters and local variables are of type bounded integer, boolean, or array
+or record based on the two previous basic types. The verification is carried out by invoking the symbolic
+model checker NuSMV~2.2.5~\cite{CCOPR} and the result of the check is written to a {\tt .mcr} file, together
+with a counterexample for each property that is not satisfied.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Syntax of {\tt .ltl} Specifications}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A {\tt .ltl} specification is a non-empty sequence of semicolon-separated property definitions, each of the
+following form:
+
+        \begin{verbatim}
+    <property_def> ::= "PROPERTY" <identifier> ["[" <expr> "]"] "IS" <property_expr>
+                    |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                       "PROPERTY" <identifier> "[" <expr> "]" "IS" <property_expr>
+        \end{verbatim}
+
+In its simpler form, a property definition contains the identifier of the property, a possible
+integer-valued expression enclosed in square brackets, which represents a selector and must be free of
+undeclared identifiers and invocations to pseudo-random number generators, and the property expression. The
+only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header of the \aemilia\ specification to which the model
+checking is applied.
+
+The second form is useful to concisely define several variants of the same property through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression and in the property expression, together with its range, which is given by two
+integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations to
+pseudo-random number generators, with the value of the first expression being not greater than the value of
+the second expression.
+
+We observe that the identifier of a property can be augmented with a selector expression also in the simpler
+form of property definition. This is useful whenever it is desirable to define a set of indexed variants of
+the same property, but only some of them have a common selector expression.
+
+The property expression is based on propositional and LTL operators and has the following verbose syntax:
+
+        \begin{verbatim}
+    <property_expr> ::= "TRUE"
+                     |  "FALSE"
+                     |  <property_expr> "/\" <property_expr>
+                     |  <property_expr> "\/" <property_expr>
+                     |  "NOT" "(" <property_expr> ")"
+                     |  <property_expr> "\_/" <property_expr>
+                     |  <property_expr> "->" <property_expr>
+                     |  <property_expr> "<->" <property_expr>
+                     |  "DEADLOCK_FREE"
+                     |  <identifier> ["[" <expr> "]"] "." <identifier>
+                     |  "NEXT_STATE_SAT" "(" <property_expr> ")"
+                     |  "ALL_FUTURE_STATES_SAT" "(" <property_expr> ")"
+                     |  "SOME_FUTURE_STATE_SAT" "(" <property_expr> ")"
+                     |  <property_expr> "UNTIL" <property_expr>
+                     |  <property_expr> "RELEASES" <property_expr>
+                     |  "PREV_STATE_SAT" "(" <property_expr> ")"
+                     |  "ALL_PAST_STATES_SAT" "(" <property_expr> ")"
+                     |  "SOME_PAST_STATE_SAT" "(" <property_expr> ")"
+                     |  <property_expr> "SINCE" <property_expr>
+                     |  <property_expr> "TRIGGERED" <property_expr>
+        \end{verbatim}
+
+\noindent where the satisfaction relation with respect to a given state of the functional semantic model of
+an \aemilia\ specification is defined as follows:
+
+	\begin{itemize}
+
+\item Constant {\tt TRUE} is satisfied in every state, while constant {\tt FALSE} is never satisfied.
+
+\item The logical conjunction (\verb+/\+) of two properties is satisfied in a given state if so are both
+properties.
+
+\item The logical disjunction (\verb+\/+) of two properties is satisfied in a given state if so is at least
+one of the two properties.
+
+\item The logical negation ({\tt NOT}) of a property is satisfied in a given state if the property is not
+satisfied in that state.
+
+\item The logical exclusive disjunction (\verb+\_/+) of two properties is satisfied in a given state if so
+is exactly one of the two properties.
+
+\item The logical implication (\verb+->+) between two properties is satisfied in a given state if it is not
+the case that the first property is satisfied while the second one is not.
+
+\item The logical equivalence (\verb+<->+) between two properties is satisfied in a given state if both
+properties are satisfied or none of them is.
+
+\item Constant {\tt DEADLOCK\_FREE} is satisfied in a given state if no computation path starting from that
+state deadlocks.
+
+\item The property expression after {\tt DEADLOCK\_FREE} in the syntax above represents an action type,
+which is denoted through its identifier preceded by the identifier of the AEI possibly augmented with an
+integer-valued selector expression enclosed in square brackets, which must be free of undeclared identifiers
+and invocations to pseudo-random number generators. The AEI must be declared in the \aemilia\ specification
+to which the model checking is applied, and the action type must occur in the behavior of the type of the
+AEI. This property is satisfied in a given state if, along every computation path starting from that state,
+the state executes an action with the specified type (or a synchronizing type involving it, or a type
+renaming it).
+
+\item Operator {\tt NEXT\_STATE\_SAT} expresses with respect to a given state the fact that, for every
+computation path traversing that state, the next state along the path satisfies a certain property.
+
+\item Operator {\tt ALL\_FUTURE\_STATES\_SAT} expresses with respect to a given state the fact that, for
+every computation path traversing that state, the traversed state and all the subsequent ones along the path
+satisfy a certain property.
+
+\item Operator {\tt SOME\_FUTURE\_STATE\_SAT} expresses with respect to a given state the fact that, for
+every computation path traversing that state, there exists a state among the traversed one and all the
+subsequent ones along the path that satisfies a certain property.
+
+\item Operator {\tt UNTIL} expresses with respect to a given state the fact that, for every computation path
+traversing that state, there exists a state among the traversed one and all the subsequent ones along the
+path that satisfies the second property, with all the states between the traversed one and the one that
+satisfies the second property satisfying the first property.
+
+\item Operator {\tt RELEASES} expresses with respect to a given state the fact that, for every computation
+path starting from that state, all the states among the traversed one and the subsequent ones along the path
+satisfy the second property up to and including the first state (if any) that satisfies the first property.
+
+\item Operator {\tt PREV\_STATE\_SAT} expresses with respect to a given state the fact that, for every
+computation path traversing that state, the previous state along the path satisfied a certain property.
+
+\item Operator {\tt ALL\_PAST\_STATES\_SAT} expresses with respect to a given state the fact that, for every
+computation path traversing that state, the traversed state and all the previous ones along the path
+satisfied a certain property.
+
+\item Operator {\tt SOME\_PAST\_STATE\_SAT} expresses with respect to a given state the fact that, for every
+computation path traversing that state, there exists a state among the traversed one and all the previous
+ones along the path that satisfied a certain property.
+
+\item Operator {\tt SINCE} expresses with respect to a given state the fact that, for every computation path
+traversing that state, there exists a state among the traversed one and all the previous ones along the path
+that satisfied the second property, with all the states between the traversed one and the one that satisfied
+the second property satisfying the first property.
+
+\item Operator {\tt TRIGGERED} expresses with respect to a given state the fact that, for every computation
+path traversing that state, all the states among the traversed one and the previous ones along the path
+satisfied the second property up to and including the first state (if any) that satisfied the first
+property.
+
+	\end{itemize}
+
+The infix temporal operators {\tt UNTIL}, {\tt RELEASES}, {\tt SINCE}, and {\tt TRIGGERED} take precedence
+over the logical conjunction operator, which takes precedence over the two logical disjunction operators,
+which takes precedende over the logical equivalence operator, which takes precedence over the logical
+implication operator. All the mentioned infix operators are left associative, except for the logical
+implication one, which is right associative. The precedence and associativity of such operators can be
+altered using parentheses {\tt ( )}.
+
+When checked against an \aemilia\ specification, a property expressed in a {\tt .ltl} file holds if it is
+satisfied by the initial global state of the functional semantic model of the \aemilia\ specification.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example A: The Alternating Bit Protocol}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The correctness of the \aemilia\ specification {\tt abp.aem} of Sect.~\ref{abp} can be checked against the
+following {\tt abp.ltl}:
+
+	\begin{verbatim}
+    PROPERTY deadlock_freedom IS
+      DEADLOCK_FREE;
+
+    PROPERTY always_consumes_after_generating IS
+      ALL_FUTURE_STATES_SAT(R.consume_msg -> SOME_PAST_STATE_SAT(S.generate_msg));
+
+    PROPERTY correct_alternation IS
+      ALL_FUTURE_STATES_SAT(
+        (S.generate_msg -> (NEXT_STATE_SAT((NOT(S.generate_msg) UNTIL R.consume_msg) \_/
+                                           ALL_FUTURE_STATES_SAT(NOT(S.generate_msg) /\
+                                                                 NOT(R.consume_msg))))) /\
+        (R.consume_msg -> (NEXT_STATE_SAT((NOT(R.consume_msg) UNTIL S.generate_msg) \_/
+                                          ALL_FUTURE_STATES_SAT(NOT(R.consume_msg) /\
+                                                                NOT(S.generate_msg))))))
+	\end{verbatim}
+
+\noindent The first property ensures that the protocol never causes a deadlock to occur. The second property
+guarantees that, whenever a message is consumed at the receiver side, then it must have been previously
+generated at the sender side. The third property establishes that message generations and consumptions
+correctly alternate. Whenever a message is generated at the sender side, then along every computation path
+it must be the case the either no new message is generated until the considered one is consumed at the
+receiver side, or no further message generations and consumptions take place. Likewise, whenever a message
+is consumed at the receiver side, then along every computation path it must be the case the either no
+message is consumed until a new one is generated at the sender side, or no further message generations and
+consumptions take place.
+
+The following is the result of the model checking:
+
+	\begin{verbatim}
+    Validity of the properties for ABP_Type:
+
+    - Property "deadlock_freedom" is satisfied.
+
+    - Property "always_consumes_after_generating" is satisfied.
+
+    - Property "correct_alternation" is satisfied.
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example C: Dining Philosophers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The correctness of the \aemilia\ specification {\tt dining\_philosophers.aem} of Sect.~\ref{dp} can be
+checked against the following {\tt dining\_philosophers.ltl}:
+
+	\begin{verbatim}
+    PROPERTY deadlock_freedom IS
+      DEADLOCK_FREE;
+
+    FOR_ALL i IN 0..philosopher_num - 1
+      PROPERTY starvation_freedom[i] IS
+        ALL_FUTURE_STATES_SAT(SOME_FUTURE_STATE_SAT(P[i].eat));
+
+    FOR_ALL i IN 0..philosopher_num - 1
+      PROPERTY no_adjacent_philosopher_simultaneously_eating[i] IS
+        ALL_FUTURE_STATES_SAT(
+          P[i].eat -> NEXT_STATE_SAT(
+                        NOT(P[mod(i + 1, philosopher_num)].eat \/
+                            P[mod((philosopher_num + i) - 1, philosopher_num)].eat)
+                        UNTIL P[i].put_down_left))
+	\end{verbatim}
+
+\noindent The first property ensures that the algorithm avoids deadlock, in the sense that whenever several
+philosophers are hungry, at least one of them manages to get the chopsticks and eat. The second set of
+properties guarantees that no philosopher starves, i.e.\ whenever a philosopher is hungry, it eventually
+manages to eat. The third set of properties establishes the mutual exclusive usage of the chopsticks, in the
+sense that whenever a philosopher eats, then none of its two neighbors can eat until the philosopher
+releases both chopsticks.
+
+What follows is the result of the model checking, where for each unsatisfied property a computation path
+violating it is printed as the sequence of the types of the actions executed along the path, together with
+the indication of possible loops in the path:
+
+	\begin{verbatim}
+    Validity of the properties for LR_Dining_Philosophers_Type:
+
+    - Property "deadlock_freedom" is satisfied.
+
+    - Property "starvation_freedom[0]" isn't satisfied
+      as demonstrated by the following execution sequence:
+        <<loop starts here>>
+        P[1].think
+        P[1].flip_tail
+        C[2].pick_up_first.2#P[1].pick_up_left_first
+        C[1].pick_up_then.1#P[1].pick_up_right_then
+        P[1].eat
+        C[1].put_down.1#P[1].put_down_right
+        C[2].put_down.2#P[1].put_down_left
+        P[1].think
+
+    - Property "starvation_freedom[1]" isn't satisfied
+      as demonstrated by the following execution sequence:
+        P[1].think
+        P[1].flip_head
+        C[1].pick_up_first.1#P[1].pick_up_right_first
+        C[2].pick_up_then.2#P[1].pick_up_left_then
+        P[2].think
+        P[2].flip_head
+        P[0].think
+        <<loop starts here>>
+        P[0].flip_head
+        C[0].pick_up_first.1#P[0].pick_up_right_first
+        C[0].put_down.1#P[0].put_down_right
+        P[0].flip_head
+
+    - Property "starvation_freedom[2]" isn't satisfied
+      as demonstrated by the following execution sequence:
+        <<loop starts here>>
+        P[1].think
+        P[1].flip_tail
+        C[2].pick_up_first.2#P[1].pick_up_left_first
+        C[1].pick_up_then.1#P[1].pick_up_right_then
+        P[1].eat
+        C[1].put_down.1#P[1].put_down_right
+        C[2].put_down.2#P[1].put_down_left
+        P[1].think
+
+    - Property "no_adjacent_philosopher_simultaneously_eating[0]" is satisfied.
+
+    - Property "no_adjacent_philosopher_simultaneously_eating[1]" is satisfied.
+
+    - Property "no_adjacent_philosopher_simultaneously_eating[2]" is satisfied.
+	\end{verbatim}

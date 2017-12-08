@@ -1,0 +1,267 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\pagenumbering{arabic}
+\chapter{Tool Description}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{What TwoTowers~5.1 Is}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is an open-source software tool for the functional verification, security analysis, and
+performance evaluation of computer, communication and software systems modeled in the architectural
+description language \aemilia~\cite{BCD,AB,BDC,BBS}, which is based on the stochastic process algebra
+\empagr~\cite{Ber1,BB2,BB1}.
+
+The study of the properties of the \aemilia\ specifications is conducted in TwoTowers~5.1 through 
+equivalence verification with diagnostics~\cite{CS}, symbolic model checking with diagnostics~\cite{CGP} via
+NuSMV~2.2.5~\cite{CCOPR}, information flow analysis with diagnostics~\cite{FG}, reward Markov chain
+solution~\cite{Ste1,How}, and discrete event simulation~\cite{Wel}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Architecture of TwoTowers~5.1}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is composed of about 45,000 lines of ANSI~C~\cite{KR} code organized as depicted in
+Fig.~\ref{archi}.
+
+TwoTowers~5.1 is equipped with a simple graphical user interface written in Tcl/Tk~\cite{Ous} through which
+the user can invoke the analysis routines by means of suitable menus. Each routine needs input files of
+certain types and writes its results onto files of other types. The graphical user interface takes care of
+the integrated management of the various file types needed by the different routines, which belong to the
+\aemilia\ compiler, the equivalence verifier, the model checker, the security analyzer, and the performance
+evaluator.
+
+The compiler is in charge of parsing \aemilia\ specifications stored in {\tt .aem} files and signalling
+possible lexical, syntax and static semantic errors through a {\tt .lis} file. Based on the translation
+semantics for \aemilia\ into \empagr\ and the operational semantics for \empagr, if an \aemilia\
+specification is correct the compiler can generate its integrated, functional or performance semantic model,
+which is written to a {\tt .ism}, {\tt .fsm} or {\tt .psm} file, respectively. As a faster option that does
+not require printing the state space onto a file, the compiler can show only the size -- in terms of number
+of states and transitions -- of the semantic model, which is written to a {\tt .siz} file. The integrated
+semantic model of an \aemilia\ specification for a given system is a state transition graph whose
+transitions are labeled with the name and the duration/priority/probability of the corresponding system
+activities. The functional semantic model is a state transition graph in which only the activity names label
+the transitions. The performance semantic model, which can be extracted only if the \aemilia\ specification
+is performance closed, is a continuous- or discrete-time Markov chain~\cite{Ste1}.
+
+The equivalence verifier checks through the application of the Kanellakis-Smolka algorithm~\cite{KS}
+whether two correct, finite-state \aemilia\ specifications are equivalent according to one of four different
+behavioral equivalences: strong bisimulation equivalence, weak bisimulation equivalence, strong (extended)
+Markovian bisimulation equivalence, and weak (extended) Markovian bisimulation
+equivalence~\cite{Mil,BB2,Ber3}. The result of the verification is written to a {\tt .evr} file. In the case
+of non-equivalence a distinguishing modal logic formula is reported as well, which is computed on the basis
+of the algorithm of~\cite{Cle} and is expressed in a verbose variant of the Hennessy-Milner logic~\cite{HM}
+or one of its probabilistic extensions~\cite{LS,CGH}.
+
+The equivalence verifier allows a comparative study of two \aemilia\ specifications to be conducted, aiming
+at establishing whether they possess the same functional, security and performance properties in general.
+Should the two \aemilia\ specifications be equivalent, in order to know whether they satisfy a particular
+functional property, security requirement, or performance guarantee, it is necessary to apply to one of the
+two \aemilia\ specifications the model checker, the security analyzer, or the performance evaluator,
+respectively.
+
+	\begin{figure}[thb]
+
+\centerline{\epsfbox{twotowers.eps}}
+\caption{Tool architecture}\label{archi}
+
+	\end{figure}
+
+The model checker verifies through the BDD-based routines of NuSMV~2.2.5~\cite{CCOPR} whether a set of
+functional properties expressed through verbose LTL formulas~\cite{CGP}, which are stored in a {\tt .ltl}
+file, are satisfied by a correct, finite-state \aemilia\ specification. The result of the check, together
+with a counterexample for each property that is not met, is written to a {\tt .mcr} file.
+
+The security analyzer checks through the equivalence verifier whether a correct, finite-state \aemilia\
+specification satisfies non-interference or non-deducibility on composition~\cite{FG}, both of which
+establish the absence of illegal information flows from high security system components to low security
+system components. This requires the classification in an additional {\tt .sec} file of the system
+activities that are high and low with respect to the security level. The result of the analysis is written
+to a {\tt .sar} file, together with a modal logic formula expressed in a verbose variant of the
+Hennessy-Milner logic to explain a possible security violation.
+
+Finally, the performance evaluator assesses the quantitative characteristics of correct, finite-state and
+performance closed \aemilia\ specifications. First, it can calculate the stationary/transient probability
+distribution for the state space of the performance semantic model of an \aemilia\ specification. The
+distribution is written to a {\tt .dis} file. Second, the performance evaluator can calculate for an
+\aemilia\ specification a set of instant-of-time, stationary/transient performance measures specified
+through state and transition rewards~\cite{How} stored in a {\tt .rew} file. The values of the measures are
+written to a {\tt .val} file. The solution methods implemented for the stationary case are Gaussian
+elimination and an adaptive variant of symmetric stochastic over-relaxation, while for the transient case
+uniformization is available~\cite{Ste1}. Third, the performance evaluator can estimate via discrete event
+simulation the mean, variance or distribution of a set of performance measures specified through an
+extension of state and transition rewards, which are stored in a {\tt .sim} file together with the number
+and the length of the simulation runs. The simulation, which can be applied also to \aemilia\ specifications
+with infinitely many states and general distributions, is based on the method of independent replications
+with 90\% confidence level~\cite{Wel} and can be trace driven, in which case the traces are stored in
+{\tt .trc} files. The result of the simulation is written to a {\tt .est} file.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{What TwoTowers~5.1 Offers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+From the user viewpoint, TwoTowers~5.1 supplies the following capabilities:
+
+	\begin{itemize}
+
+\item Component-oriented modeling with \aemilia:
+
+		\begin{itemize}
+
+\item Separation of system component behavior specification from system topology specification.
+
+\item Support for the parameterization of system component behavior.
+
+\item Indexing mechanism for defining parameterized system topologies.
+
+\item Several data types: integer, bounded integer, real, boolean, list, array, and record.
+
+\item Representation of continuous- and discrete-time systems.
+
+\item Component activities with exponentially distributed, zero or unspecified durations.
+
+\item Random number generators for sampling durations/probabilities from other distributions~\cite{Jai}.
+
+\item Prioritized and probabilistic choices among component activities.
+
+\item Generative-reactive synchronizations among component activities~\cite{BB2}.
+
+\item Value passing across components (compiled concretely -- if possible -- or symbolically~\cite{Ber2}).
+
+		\end{itemize}
+
+\item Companion languages for the parameterized specification of:
+
+		\begin{itemize}
+
+\item Functional properties expressed in a verbose variant of LTL.
+
+\item Security levels.
+
+\item Performance measures based on state and transition rewards~\cite{BB1}.
+
+\item Simulation experiments.
+
+		\end{itemize}
+
+\item Parsing of \aemilia\ and companion specifications with the generation of listings that pinpoint
+lexical, syntactical and static semantical errors.
+
+\item Compilation of \aemilia\ specifications into state transition graphs that are shown in a readable
+format, through the indication for each global state of the constituting local states of the components.
+
+\item Integrated framework for the study of functional, security and performance properties of \aemilia\
+specifications and the provision of diagnostic information in the case of negative outcome.
+
+	\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Case Studies}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A complete and updated list of the case studies conducted with TwoTowers~5.1 (or earlier versions) is
+maintained at \verb+http://www.sti.uniurb.it/bernardo/twotowers/+, where their \aemilia\ and companion
+specifications as well as the related papers can be found.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{History of TwoTowers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The development of TwoTowers started in~1996, then restarted from scratch in~1997. Its name stems from the
+two medieval towers -- Asinelli (97~mt.) and Garisenda (48~mt.) -- that are the symbol of Bologna, the city
+where the implementation of the tool started.
+
+Version~1.0 was distributed in July~2001 for Linux and Unix operating systems only. Its input language was
+\empagr, enriched with the symbolically treated data types integer, real, boolean, list, array, and record.
+Its graphical user interface contained a menu for a parser and a compiler of \empagr\ specifications into
+state transition graphs, an integrated analyzer for equivalence checking (strong Markovian bisimulation
+equivalence), a functional analyzer based on CWB-NC~1.2~\cite{CS} for model checking ($\mu$-calculus and
+GCTL*~\cite{CGP}) and equivalence/preorder checking with diagnostics (strong/weak bisimulation equivalence,
+may/must testing equivalence and preorder~\cite{DH}), and a performance analyzer in charge of reward-based
+Markovian analysis through the solution methods of the commercial tool MarCA~3.0~\cite{Ste2} as well as
+discrete event simulation.
+
+Version~2.0 was distributed in November~2002. As a faster compilation option not requiring any possibly huge
+file to be written, it provided the capability to report only the size of the semantic models underlying an
+\empagr\ specification. Unlike the previous version, it no longer relied on MarCA~3.0, as it had three
+built-in analysis routines -- Gaussian elimination, an adaptive variant of symmetric stochastic
+over-relaxation, and uniformization -- for the solution of reward Markov chains of arbitrary size. This
+allowed TwoTowers to be distributed free of charge to educational and non-profit organizations.
+
+Version~3.0 was completed in October~2003 but not distributed. In this version \empagr\ was replaced by
+\aemilia, thus adopting a component-oriented modeling style leading to more confidence in the correctness of
+the system specifications as well as a higher degree of parameterization and reuse. Also the companion
+languages for the specification of functional properties and performance measures were modified according to
+the adopted component-oriented style and became more verbose, thus increasing their ease of use. The
+component-orientation reflected on a more readable state representation, as each global state could be
+described through its constituting local states corresponding to the components. On the data type side,
+bounded integers were introduced and the concrete treatment of data values of type different from integer,
+real, and list was implemented in addition to the original symbolic treatment.
+
+Version~4.0 was completed in January~2004 but not distributed. Its graphical user interface was reorganized
+in order to contain a menu for equivalence verification with diagnostics fully based on built-in routines
+(strong/weak functional/Markovian bisimulation equivalence), a menu for model checking (based on CWB-NC~1.2
+as before), a novel menu for security analysis, and a menu for performance evaluation (as before). The
+routines for security analysis required a companion language for the specification of the security levels of
+the component activities, and employed weak bisimulation equivalence checking to assess non-interference and
+non-deducibility on composition.
+
+Version~5.0 was distributed in May~2004. In this version a symbolic model checker was adopted by replacing
+the one of CWB-NC~1.2 with NuSMV~2.1.2. Consequently, the companion language for the specification of
+functional properties was modified to express LTL formulas instead of $\mu$-calculus and GCTL* formulas.
+
+Version~5.1 is being distributed since January~2006. Some minor modifications were done in order to make the
+tool available for the Windows operating system as well. Moreover the use of NuSMV~2.1.2 was replaced by the
+use of NuSMV~2.2.5.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Acknowledgments}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following people worked with Marco Bernardo for the definition of \aemilia\ and \empagr, the development
+of the case studies, and the integration of TwoTowers with other tools: Pietro Abate, Andrea Acquaviva,
+Alessandro Aldini, Simonetta Balsamo, Alessandro Bogliolo, Edoardo Bont\`a, Mario Bravetti, Nadia Busi,
+Paolo Ciancarini, Alessandro Cimatti, Rance Cleaveland, Marcello Colucci, Lorenzo Donatiello, Francesco
+Franz\`e, Roberto Gorrieri, Emanuele Lattanzi, Simone Mecozzi, Claudio Premici, Marina Ribaudo, Marco
+Roccetti, Marta Simeoni, Steve Sims, and Billy Stewart.

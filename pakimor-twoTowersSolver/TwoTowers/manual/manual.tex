@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%								%
+%								%
+%								%
+%			   manual.tex				%
+%								%
+%								%
+%								%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{book}
+
+\usepackage{fullpage}
+\usepackage{epsf}
+\input{macro}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\title{\huge\bf TwoTowers 5.1 \\
+		User Manual}
+
+\author{\Large Marco Bernardo}
+
+\date{\textit{January 2006} \\[12.0cm]
+      \copyright \hspace{0.01cm} 2006}
+
+\maketitle
+
+\tableofcontents
+%%%\listoffigures
+%%%\listoftables
+
+%%%\includeonly{chapter.01}
+\include{chapter.01}
+\include{chapter.02}
+\include{chapter.03}
+\include{chapter.04}
+\include{chapter.05}
+\include{chapter.06}
+\include{chapter.07}
+\include{biblio}
+
+\end{document}

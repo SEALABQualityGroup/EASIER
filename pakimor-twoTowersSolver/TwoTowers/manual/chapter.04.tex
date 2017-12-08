@@ -1,0 +1,360 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\chapter{The Equivalence Verifier}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Introduction}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 is able to check whether two correct \aemilia\ specifications -- in which all the possible
+variable formal parameters and local variables are of type bounded integer, boolean, or array or record
+based on the two previous basic types -- are equivalent. The verification is carried out by applying the
+partition refinement algorithm by Kanellakis and Smolka~\cite{KS} and the result of the check is written to
+a {\tt .evr} file, together with a distinguishing modal logic formula~\cite{Cle} -- in the case of
+non-equivalence -- expressed in a verbose variant of the Hennessy-Milner logic~\cite{HM} or one of its
+probabilistic extensions~\cite{LS,CGH}.
+
+The equivalence verifier allows a comparative study of two \aemilia\ specifications to be conducted, aiming
+at establishing whether they possess the same functional, security and performance properties in general.
+Should the two \aemilia\ specifications be equivalent, in order to know whether they satisfy a particular
+functional property, security requirement, or performance guarantee, it is necessary to apply to one of them
+the model checker, the security analyzer, or the performance evaluator, respectively.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Bisimulation-Based Behavioral Equivalences}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Four different bisimulation-based behavioral equivalences are available in TwoTowers~5.1: strong
+bisimulation equivalence, weak bisimulation equivalence, strong (extended) Markovian bisimulation
+equivalence, and weak (extended) Markovian bisimulation equivalence~\cite{Mil,BB2,Ber3}.
+
+Strong bisimulation equivalence relates two \aemilia\ specifications if they are able to simulate each
+other's functional behavior. For each pair of strongly bisimilar states of the integrated semantic models of
+the two \aemilia\ specifications, it must be the case that, whenever one of the two states is able to
+perform an action of a certain type, then the other state is able to perform an action of the same type,
+with the two reached states being again strongly bisimilar.
+
+Weak bisimulation equivalence is a coarser variant of the previous equivalence, in which it is possible --
+to some extent -- to abstract from the execution of invisible actions, i.e.\ those actions whose type has
+been hidden in the behavioral section of the \aemilia\ specifications to which equivalence checking is
+applied. In essence, given a pair of weakly bisimilar states of the integrated semantic models of two
+\aemilia\ specifications, it must be the case that, whenever one of the two states is able to perform an
+action of a certain type, then the other state is able to perform an action of the same type possibly
+preceded and followed by the execution of invisible actions, with the two reached states being again weakly
+bisimilar.
+
+Strong Markovian bisimulation equivalence is a finer variant of the first equivalence, which takes into
+account timing/probabilistic aspects as well. Given a pair of strongly Markovian bisimilar states of the
+integrated semantic models of two \aemilia\ specifications, it must be the case that, whenever one of the
+two states is able to perform a set of actions of a certain type and priority, then the other state is able
+to perform a set of actions of the same type and priority, with both states reaching the same equivalence
+class of states with the same aggregated rate.
+
+Weak Markovian bisimulation equivalence is a coarser variant of the previous equivalence, in which it is
+possible -- to some extent -- to abstract from the execution of invisible immediate actions in the
+continuous-time case. Basically, given a pair of weakly Markovian bisimilar states of the integrated
+semantic models of two \aemilia\ specifications, it must be the case that, whenever one of the two states is
+able to perform a set of actions of a certain type and priority, then the other state is able to perform a
+set of actions of the same type and priority, each possibly preceded and followed by the execution of
+invisible immediate actions, with both states reaching the same equivalence class of states with the same
+aggregated rate.
+
+Two \aemilia\ specifications are equivalent in accordance with one of the four equivalences above whenever
+so are the initial global states of their integrated semantic models. We recall that each of the four
+bisimulation-based equivalences is deadlock sensitive, i.e.\ it never equates a deadlock-free \aemilia\
+specification to an \aemilia\ specification that can deadlock, and that the two Markovian ones comply with
+the notion of exact aggregation for Markov chains known as ordinary lumping~\cite{Buc,Hil}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Syntax of Distinguishing Formulas}\label{disting_formula}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Whenever two \aemilia\ specifications are not found to be equivalent, a distinguishing modal logic formula
+is produced, which has the following syntax:
+
+	\begin{verbatim}
+      <formula_expr> ::= "TRUE"
+                      |  "FALSE"
+                      |  <formula_expr> "/\" <formula_expr>
+                      |  <formula_expr> "\/" <formula_expr>
+                      |  "NOT" "(" <formula_expr> ")"
+                      |  "EXISTS_TRANS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         "REACHED_STATE_SAT" "(" <formula_expr> ")" ")"
+                      |  "EXISTS_WEAK_TRANS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         "REACHED_STATE_SAT" "(" <formula_expr> ")" ")"
+                      |  "FOR_ALL_TRANS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         "REACHED_STATE_SAT" "(" <formula_expr> ")" ")"
+                      |  "FOR_ALL_WEAK_TRANS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         "REACHED_STATE_SAT" "(" <formula_expr> ")" ")"
+                      |  "EXISTS_TRANS_SET" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         <min_value_type> "(" <pos_real_number> ")" ";"
+                         "REACHED_STATES_SAT" "(" <formula_expr> ")" ")"
+                      |  "EXISTS_WEAK_TRANS_SET" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         <min_value_type> "(" <pos_real_number> ")" ";"
+                         "REACHED_STATES_SAT" "(" <formula_expr> ")" ")"
+                      |  "FOR_ALL_TRANS_SETS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         <min_value_type> "(" <pos_real_number> ")" ";"
+                         "REACHED_STATES_SAT" "(" <formula_expr> ")" ")"
+                      |  "FOR_ALL_WEAK_TRANS_SETS" "(" "LABEL" "(" <action_type_label> ")" ";"
+                         <min_value_type> "(" <pos_real_number> ")" ";"
+                         "REACHED_STATES_SAT" "(" <formula_expr> ")" ")"
+    <min_value_type> ::= "MIN_AGGR_EXP_RATE"
+                      |  "MIN_AGGR_GEN_PROB"
+                      |  "MIN_AGGR_REA_PROB"
+        \end{verbatim}
+
+\noindent where the satisfaction relation with respect to a given state of the integrated semantic model of
+an \aemilia\ specification is defined as follows:
+
+        \begin{itemize}
+
+\item Constant {\tt TRUE} is satisfied in every state, while constant {\tt FALSE} is never satisfied.
+
+\item The logical conjunction (\verb+/\+) of two properties is satisfied in a given state if so are both
+properties.
+
+\item The logical disjunction (\verb+\/+) of two properties is satisfied in a given state if so is at least
+one of the two properties.
+
+\item The logical negation ({\tt NOT}) of a property is satisfied in a given state if the property is not
+satisfied in that state.
+
+\item Quantifier {\tt EXISTS\_TRANS} expresses, with respect to a given state, the fact that from that state
+it is possible to reach a state satisfying a certain property by traversing a transition that is labeled
+with a certain action type.
+
+\item Quantifier {\tt EXISTS\_WEAK\_TRANS} expresses, with respect to a given state, the fact that from that
+state it is possible to reach a state satisfying a certain property by traversing a sequence of transitions,
+with one of them being labeled with a certain action type and all the others being invisible.
+
+\item Quantifier {\tt FOR\_ALL\_TRANS} expresses, with respect to a given state, the fact that whenever a
+transition labeled with a certain action type can be traversed from that state, the reached state
+necessarily satisfies a certain property.
+
+\item Quantifier {\tt FOR\_ALL\_WEAK\_TRANS} expresses, with respect to a given state, the fact that
+whenever a sequence of transitions, with one of them being labeled with a certain action type and all the
+others being invisible, can be traversed from that state, the reached state necessarily satisfies a certain
+property.
+
+\item Quantifier {\tt EXISTS\_TRANS\_SET} expresses, with respect to a given state, the fact that from that
+state it is possible to reach a set of states satisfying a certain property by traversing a set of
+transitions that are labeled with a certain action type of a certain priority, whose aggregated rate is
+above a certain threshold.
+
+\item Quantifier {\tt EXISTS\_WEAK\_TRANS\_SET} expresses, with respect to a given state, the fact that from
+that state it is possible to reach a set of states satisfying a certain property by traversing a set of
+sequences of transitions whose aggregated rate is above a certain threshold, with every sequence having one
+transition labeled with a certain action type of a certain priority and all the other transitions in the
+sequence being invisible and immediate.
+
+\item Quantifier {\tt FOR\_ALL\_TRANS\_SETS} expresses, with respect to a given state, the fact that
+whenever a set of transitions, labeled with a certain action type of a certain priority and having an
+aggregated rate above a certain threshold, can be traversed from that state, the reached states necessarily
+satisfy a certain property.
+
+\item Quantifier {\tt FOR\_ALL\_WEAK\_TRANS\_SETS} expresses, with respect to a given state, the fact that
+whenever a set of sequences of transitions whose aggregated rate is above a certain threshold, with every
+sequence having one transition labeled with a certain action type of a certain priority and all the other
+transitions in the sequence being invisible and immediate, can be traversed from that state, the reached
+states necessarily satisfy a certain property.
+
+        \end{itemize}
+
+\noindent The last four formulas specify a lower bound for the aggregated rate of the considered set of
+transitions or transition sequences, which is a positive real number interpreted as an aggregated
+exponential rate, a generative probability, or a reactive probability depending on whether the considered
+action type refers to an exponentially timed, immediate or passive action, respectively.
+
+When concerned with an \aemilia\ specification, a modal logic formula expressed in the syntax above holds if
+it is satisfied by the initial global state of the integrated semantic model of the \aemilia\ specification.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example A: The Alternating Bit Protocol}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+From an abstract point of view, the system behavior enforced by the application of the alternating bit
+protocol is the same as the behavior of a one-position buffer, in which messages are alternately generated
+and consumed. This can be formalized through the following {\tt abp\_spec.aem}:
+
+	\begin{verbatim}
+    ARCHI_TYPE ABP_Spec_Type(const rate msg_gen_rate := 5)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE One_Pos_Buffer_Type(const rate msg_gen_rate)
+
+        BEHAVIOR
+
+          One_Pos_Buffer(void;
+                         void) =
+            <generate_msg, exp(msg_gen_rate)> . <consume_msg, inf> . One_Pos_Buffer()
+
+        INPUT_INTERACTIONS
+
+          UNI generate_msg
+
+        OUTPUT_INTERACTIONS
+
+          UNI consume_msg
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        OPB : One_Pos_Buffer_Type(msg_gen_rate)
+
+      ARCHI_INTERACTIONS
+
+        OPB.generate_msg;
+        OPB.consume_msg
+
+      ARCHI_ATTACHMENTS
+
+        void
+
+    END
+	\end{verbatim}
+
+Now the question is whether the \aemilia\ specification {\tt abp.aem} of Sect.~\ref{abp} is equivalent to
+the \aemilia\ specification {\tt abp\_spec.aem}, which would imply the correctness of {\tt abp.aem}. Before
+applying equivalence verification, we need to modify both specifications to get rid of the dot notation for
+the observable action types, and in {\tt abp.aem} we have to hide all the action types not related to
+message generation or consumption, as these are the only ones occurring in {\tt abp\_spec.aem} -- hence the
+only ones that can be matched in the bisimulation setting. Therefore, we rewrite {\tt abp.aem} into
+{\tt abp\_impl.aem} by defining a new architectural type called {\tt ABP\_Impl\_Type} with the same
+parameters, AETs, and architectural topology as before, and in addition the following behavioral variations:
+
+	\begin{verbatim}
+    BEHAV_VARIATIONS
+
+      BEHAV_HIDINGS
+
+        HIDE LM.ALL;
+        HIDE LA.ALL;
+        HIDE S.timeout
+
+      BEHAV_RENAMINGS
+
+        RENAME S.generate_msg AS generate_msg;
+        RENAME R.consume_msg  AS consume_msg
+	\end{verbatim}
+
+\noindent Then we add the following behavioral variations to {\tt abp\_spec.aem}:
+
+	\begin{verbatim}
+    BEHAV_VARIATIONS
+
+      BEHAV_RENAMINGS
+
+        RENAME OPB.generate_msg AS generate_msg;
+        RENAME OPB.consume_msg  AS consume_msg
+	\end{verbatim}
+
+The result of the strong bisimulation equivalence verification is the following:
+
+	\begin{verbatim}
+    ABP_Impl_Type isn't strongly bisimulation equivalent to ABP_Spec_Type
+    as demonstrated by the following modal logic formula
+    satisfied by ABP_Impl_Type but not by ABP_Spec_Type:
+
+      NOT(EXISTS_TRANS(
+            LABEL(generate_msg); 
+            REACHED_STATE_SAT(
+              EXISTS_TRANS(
+                LABEL(consume_msg); 
+                REACHED_STATE_SAT(TRUE)
+              )
+            )
+          )
+      )
+	\end{verbatim}
+
+\noindent which means that the second specification can consume a message right after its generation, while
+this is not possible in the case of the first specification because of its actions explicitly modeling
+message transmission, propagation, loss, and delivery. In other words, we cannot expect the two \aemilia\
+specifications to be strongly bisimulation equivalent, as the invisible actions -- modeling details related
+to the message flow -- of {\tt abp\_impl.aem} cannot be matched by any of the actions of
+{\tt abp\_spec.aem}.
+
+The result of the weak bisimulation equivalence verification is the following:
+
+	\begin{verbatim}
+    ABP_Impl_Type is weakly bisimulation equivalent to ABP_Spec_Type.
+	\end{verbatim}
+
+\noindent This ensures that the two specifications have the same functional behavior up to invisible
+actions. So, it is now worth investigating whether the two specifications guarantees the same performance.
+
+The following are the results of the strong and weak Markovian bisimulation equivalence verifications:
+
+	\begin{verbatim}
+    ABP_Impl_Type isn't strongly Markovian bisimulation equivalent to ABP_Spec_Type
+    as demonstrated by the following modal logic formula
+    satisfied by ABP_Impl_Type but not by ABP_Spec_Type:
+
+      NOT(EXISTS_TRANS_SET(
+            LABEL(generate_msg); 
+            MIN_AGGR_EXP_RATE(5.000000); 
+            REACHED_STATES_SAT(
+              EXISTS_TRANS_SET(
+                LABEL(consume_msg); 
+                MIN_AGGR_GEN_PROB(1.000000); 
+                REACHED_STATES_SAT(TRUE)
+              )
+            )
+          )
+      )
+
+    ABP_Impl_Type isn't weakly Markovian bisimulation equivalent to ABP_Spec_Type
+    as demonstrated by the following modal logic formula
+    satisfied by ABP_Impl_Type but not by ABP_Spec_Type:
+
+      NOT(EXISTS_WEAK_TRANS_SET(
+            LABEL(generate_msg); 
+            MIN_AGGR_EXP_RATE(5.000000); 
+            REACHED_STATES_SAT(
+              EXISTS_WEAK_TRANS_SET(
+                LABEL(consume_msg); 
+                MIN_AGGR_GEN_PROB(1.000000); 
+                REACHED_STATES_SAT(TRUE)
+              )
+            )
+          )
+      )
+	\end{verbatim}
+
+\noindent As we should have expected, the two \aemilia\ specifications are not equivalent from the
+performance viewpoint. The reason is that {\tt abp\_spec.aem} completely abstracts from message losses as
+well as propagation delays.
+
+The same results are obtained when considering the value passing \aemilia\ specification {\tt abp\_vp.aem}
+of Sect.~\ref{abp_vp} -- enriched with suitable behavioral variations -- in place of {\tt abp\_impl.aem}.

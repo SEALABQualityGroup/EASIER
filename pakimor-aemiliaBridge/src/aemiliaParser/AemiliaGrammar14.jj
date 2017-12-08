@@ -1,0 +1,2588 @@
+options {
+//  LOOKAHEAD = 3;
+//  CHOICE_AMBIGUITY_CHECK = 4;
+//  OTHER_AMBIGUITY_CHECK = 4;
+  STATIC = false;				/* default: true */
+//  DEBUG_PARSER = true;			/* default: false */
+//  DEBUG_LOOKAHEAD = true;       /* default: false */
+//  DEBUG_TOKEN_MANAGER = false;
+//  ERROR_REPORTING = true;
+	JAVA_UNICODE_ESCAPE = true;	/* default: false*/
+//  UNICODE_INPUT = false;
+//  IGNORE_CASE = false;
+//  USER_TOKEN_MANAGER = false;
+//  USER_CHAR_STREAM = false;
+//  BUILD_PARSER = true;
+//  BUILD_TOKEN_MANAGER = true;
+//  SANITY_CHECK = true;
+//  FORCE_LA_CHECK = true;	    /* default: false */
+}
+
+PARSER_BEGIN(AEMparser)
+
+package aemiliaParser;
+
+import specificheAEmilia.*;
+
+public class AEMparser {
+
+  public static void main(String args[]) throws ParseException
+  {
+    AEMparser parser;
+		if (args.length == 1) {
+      System.out.println("AEmilia Parser Version 1.0:  Reading from file " + args[0] + " . . .");
+      try {
+        parser = new AEMparser(new java.io.FileInputStream(args[0]));
+      } 
+      catch (java.io.FileNotFoundException e) {
+        System.out.println("AEmilia Parser Version 1.0:  File " + args[0] + " not found.");
+        return;
+      }
+    } 
+    else {
+      System.out.println("AEmilia Parser Version 1.0:  Usage is one of:");
+      System.out.println("         java AEMparser < inputfile");
+      System.out.println("OR");
+      System.out.println("         java AEMparser inputfile");
+      return;
+    }
+    try {
+      parser.ArchiType();
+      System.out.println("AEmilia Parser Version 1.0:  Ruby program parsed successfully.");
+    } 
+    catch (ParseException e) {
+      System.out.println(e.getMessage());
+      System.out.println("AEmilia Parser Version 1.0:  Encountered errors during parse.");
+    }
+  }
+
+}
+
+PARSER_END(AEMparser)
+
+SKIP :
+{
+  " "
+| "\t"	/*Tab orizzontale*/
+| "\r"	/*Carriage Return*/
+| "\f"  /*Formfeed*/
+| "\n"  /*Newline*/
+| <("\n")* "%" (~["\n","\r"])* ("\n"|"\r"|"\r\n")("\n")* > /*Comments*/
+}
+
+
+/* SEPARATORS */
+
+TOKEN :
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < LBRACKET: "[" >
+| < RBRACKET: "]" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < DOT: "." >
+| < COLON: ":" >
+| < DOUBLE_COLON: "::">
+| < DOTDOT : ".." >
+| <UNDERSCORE : "_"> /* symbol */
+| < EQUAL : "=" >
+| < LESS : "<" >
+| < GREATER : ">" >
+| <QUESTION						: "?">/* symbol */
+| <EXCLAMATION					: "!">/* symbol */
+| <MULTIPLICATION				: "*">/* symbol */
+| <DIVISION 					: "/">/* symbol */
+| <ADDITION 					: "+">/* symbol */
+| <SUBTRACTION  				: "-">/* symbol */
+}
+
+/****************************************************************/
+/* 6. Definition of tokens.					*/
+/****************************************************************/
+TOKEN :
+{
+  <T_ARCHITECTURAL_TYPE   : "ARCHI_TYPE">/* keyword */
+| <T_ARCHI_ELEM_TYPES		  : "ARCHI_ELEM_TYPES">/* keyword */
+| <T_ELEM_TYPE			      : "ELEM_TYPE">/* keyword */
+| <T_BEHAVIOR			        : "BEHAVIOR">/* keyword */
+| <T_INPUT_INTERACTIONS	  : "INPUT_INTERACTIONS">/* keyword */
+| <T_OUTPUT_INTERACTIONS  : "OUTPUT_INTERACTIONS">/* keyword */
+| <T_UNI								  : "UNI">/* keyword */
+| <T_AND				          : "AND">/* keyword */
+| <T_OR				            : "OR">/* keyword */
+| <T_ARCHI_TOPOLOGY		    : "ARCHI_TOPOLOGY">/* keyword */
+| <T_ARCHI_ELEM_INSTANCES : "ARCHI_ELEM_INSTANCES">/* keyword */
+| <T_ARCHI_INTERACTIONS		: "ARCHI_INTERACTIONS">/* keyword */
+| <T_ARCHI_ATTACHMENTS		: "ARCHI_ATTACHMENTS">/* keyword */
+| <T_FROM				          : "FROM">/* keyword */
+| <T_TO				            : "TO">/* keyword */
+| <T_BEHAV_VARIATIONS		  : "BEHAV_VARIATIONS">/* keyword */
+| <T_BEHAV_HIDINGS			  : "BEHAV_HIDINGS">/* keyword */
+| <T_HIDE				          : "HIDE">/* keyword */
+| <T_INTERNALS			      : "INTERNALS">/* keyword */
+| <T_INTERACTIONS			    : "INTERACTIONS">/* keyword */
+| <T_ALL				          : "ALL">/* keyword */
+| <T_BEHAV_RESTRICTIONS		: "BEHAV_RESTRICTIONS">/* keyword */
+| <T_RESTRICT			        : "RESTRICT">/* keyword */
+| <T_OBS_INTERNALS			  : "OBS_INTERNALS">/* keyword */
+| <T_OBS_INTERACTIONS		  : "OBS_INTERACTIONS">/* keyword */
+| <T_ALL_OBSERVABLES		  : "ALL_OBSERVABLES">/* keyword */
+| <T_BEHAV_RENAMINGS		  : "BEHAV_RENAMINGS">/* keyword */
+| <T_RENAME			          : "RENAME">/* keyword */
+| <T_AS				            : "AS">/* keyword */
+| <T_FOR_ALL			        : "FOR_ALL">/* keyword */
+| <T_IN				            : "IN">/* keyword */
+| <T_END				          : "END">/* keyword */
+| <T_CONST				        : "const">/* keyword */
+| <T_LOCAL				        : "local">/* keyword */
+| <T_STOP				          : "stop">/* keyword */
+| <T_EXP				          : "exp">/* keyword */
+| <T_INF				          : "inf">/* keyword */
+| <T_CHOICE			          : "choice">/* keyword */
+| <T_COND				          : "cond">/* keyword */
+| <T_VOID				          : "void">/* keyword */
+| <T_PRIO				          : "prio">/* keyword */
+| <T_RATE				          : "rate">/* keyword */
+| <T_WEIGHT			          : "weight">/* keyword */
+| <T_INTEGER			        : "integer">/* keyword */
+| <T_REAL				          : "real">/* keyword */
+| <T_MOD				          : "mod">/* keyword */
+| <T_MIN				          : "min">/* keyword */
+| <T_MAX			            : "max">/* keyword */
+| <T_ABS				          : "abs">/* keyword */
+| <T_CEIL				          : "ceil">/* keyword */
+| <T_FLOOR				        : "floor">/* keyword */
+| <T_POWER				        : "power">/* keyword */
+| <T_EPOWER			          : "epower">/* keyword */
+| <T_LOGE				          : "loge">/* keyword */
+| <T_LOG10				        : "log10">/* keyword */
+| <T_SQRT				          : "sqrt">/* keyword */
+| <T_SIN				          : "sin">/* keyword */
+| <T_COS				          : "cos">/* keyword */
+| <T_C_UNIFORM		        : "c_uniform">/* keyword */
+| <T_ERLANG			          : "erlang">/* keyword */
+| <T_GAMMA				        : "gamma">/* keyword */
+| <T_EXPONENTIAL			    : "exponential">/* keyword */
+| <T_WEIBULL			        : "weibull">/* keyword */
+| <T_BETA				          : "beta">/* keyword */
+| <T_NORMAL			          : "normal">/* keyword */
+| <T_PARETO			          : "pareto">/* keyword */
+| <T_B_PARETO			        : "b_pareto">/* keyword */
+| <T_D_UNIFORM		      	: "d_uniform">/* keyword */
+| <T_BERNOULLI			      : "bernoulli">/* keyword */
+| <T_BINOMIAL			        : "binomial">/* keyword */
+| <T_POISSON			        : "poisson">/* keyword */
+| <T_NEG_BINOMIAL			    : "neg_binomial">/* keyword */
+| <T_GEOMETRIC			      : "geometric">/* keyword */
+| <T_PASCAL			          : "pascal">/* keyword */
+| <T_BOOLEAN			        : "boolean">/* keyword */
+| <T_TRUE				          : "true">/* keyword */
+| <T_FALSE				        : "false">/* keyword */
+| <T_LIST				          : "list">/* keyword */
+| <T_LIST_CONS			      : "list_cons">/* keyword */
+| <T_FIRST				        : "first">/* keyword */
+| <T_TAIL				          : "tail">/* keyword */
+| <T_CONCAT			          : "concat">/* keyword */
+| <T_INSERT			          : "insert">/* keyword */
+| <T_REMOVE			          : "remove">/* keyword */
+| <T_LENGTH			          : "length">/* keyword */
+| <T_ARRAY				        : "array">/* keyword */
+| <T_ARRAY_CONS			      : "array_cons">/* keyword */
+| <T_READ				          : "read">/* keyword */
+| <T_WRITE				        : "write">/* keyword */
+| <T_RECORD			          : "record">/* keyword */
+| <T_RECORD_CONS			    : "record_cons">/* keyword */
+| <T_GET				          : "get">/* keyword */
+| <T_PUT				          : "put">/* keyword */
+| <ASSIGN				          : ":=">/* symbol */
+| <NE				              : "!=">/* symbol */
+| <LE				              : "<=">/* symbol */
+| <GE				              : ">=">/* symbol */
+| <AND				            : "&&">/* symbol */
+| <OR				              : "||">/* symbol */
+| <IMPL				            : "->">/* symbol */
+}
+
+TOKEN : /* LITERALS */
+{
+	<T_NUMBER:
+				<INTEGER_LITERAL>
+			| <FLOATING_POINT_LITERAL>
+	>
+|
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+      | <HEX_LITERAL> (["l","L"])?
+      | <OCTAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+|
+  < FLOATING_POINT_LITERAL:
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+      | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+|
+  < CHARACTER_LITERAL:
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )
+      "'"
+  >
+|
+  < STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < T_ID: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:
+      [
+       "\u0041"-"\u005a", /* "A"-"Z" */
+       "\u005f", /* "_" */
+       "\u0061"-"\u007a", /* "a"-"z" */
+       "\u00c0"-"\u00d6", /* "e'"-"e'" */
+       "\u00d8"-"\u00f6", /* "e'"-"e'" */
+       "\u00f8"-"\u00ff", /* "e'"-"e'" */
+       "\u0100"-"\u1fff", 
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+
+
+/****************************************************************
+7. Association of attributes with nonterminals with a short description
+*****************************************************************
+									ArchiElemTypes()
+									ArchiTopology()
+									BehaveVariations()
+									Interactions()
+									ActionRate()
+									ActionPrioWeight()
+									UNIinteractions()
+									ANDinteractions()
+									ORinteractions()
+									ActionTypeList()
+									ArchiElemInstances()
+									ArchiInteractions()
+									ArchiAttachments()
+									AttachmentList()
+									Attachment()
+									SimpleAttachment()
+									BehaveHidings()
+									BehaveHidingList()
+									Hiding()
+									SimpleHiding()
+									BehaveRestrictions()
+									RestrictionList()
+									Restriction()
+									SimpleRestriction()
+									BehaveRenamings()
+									RenamingList()
+									Renaming()
+									SimpleRenaming()
+
+<boolean>					IterativeRenaming()	  // body of an iterative renaming 
+									ArchiParList()	      // p.e. list of architectural type parameters 
+									AETdefList()	        // list of AET definitions 
+									AETparList()	        // p.e. list of AET parameters 
+									Behavior()	          // list of behavior definitions 
+									BehavDefList()	      // p.e. list of behavior definitions after the first one 
+									FormalBehavParList()	// p.e. list of formal parameters of the first behavior 
+									BehavParList()	      // p.e. list of behavior formal parameters 
+									BehavVarList()	      // p.e. list of behavior local variables 
+									FieldDeclList()	      // p.e. list of record field declarations 
+									BehavAparList()	      // p.e. list of behavior actual parameters 
+									ActionInputOutput()   // p.e. list of action parameters 
+									ActionInputList()	    // n.e. list of input action parameters 
+									ActionOutputList()	  // n.e. list of output action parameters 
+									AEIdeclList()	        // list of AEI declarations 
+									AEIdecl()	            // AEI declaration 
+									AEIparList()	        // p.e. list of AEI actual parameters 
+									AEIparList()	        // n.e. list of AEI actual parameters 
+									ArchInteractionList()	// p.e. list of architectural interactions 
+									ArchInteraction()	    // architectural interaction 
+									
+<st_bucket2_cell>	IterativeAttach()	                // body of an iterative attachment declaration 
+									ArchiTypeParam()	                // architectural type parameter 
+									AETdef()		                      // AET definition 
+									AETformalPar()		                // AET formal parameter 
+									FirstBehaveDef()	                // definition of the first behavior 
+									SubsequentBehaveDef()	            // definition of a subsequent behavior 
+									FirstBehaveFormalPar()            // formal parameter of the first behavior 
+									SubsequentBehaveFormalPar()	      // formal parameter of a subsequent behavior 
+									BehaveLocalVar()	                // behavior local variable 
+									RecordFieldDecl()	                // record field 
+									SimpleAEIdecl()	                  // simple AEI declaration 
+									IterativeAEIdecl()	              // body of an iterative AEI declaration 
+									SimpleArchiInteraction()	        // simple architectural interaction 
+									IterativeArchiInteraction()	      // body of an iterative architectural interaction 
+									IterativeHiding()	                // body of an iterative hiding 
+									ActionTypeSetHidden()	            // action type set to be hidden 
+									IterativeRestriction()	          // body of an iterative restriction 
+									ActionTypeSetRestricted()	        // action type set to be restricted 
+<expr>						ArbitraryDataType()	              // arbitrary data type 
+<expr>						ParVarDataType()	                // data type for behavior parameters and variables 
+<expr>						NumDataType()	                    // data type for priorities/rates/weights 
+<term_parse_info>	ProcessTerm()		                  // term excluding behavior invocations 
+<expr_parse_info>	Guard()		                        // boolean condition of a term e.c.i. 
+<action_parse_info>	Action()		                    // action 
+<expr_parse_info>	AEIindex()	                      // AEI index 
+<expr_parse_info>	Expr()		                        // expression 
+<expr_parse_info>	ExprSequence()	                  // expression list 
+
+
+****************************************************************
+8. Definition of operator precedence and associativity.
+****************************************************************
+
+%nonassoc		<ASSIGN>
+%left			<AND>
+			<OR>
+%right			"!"
+%nonassoc		"="
+			<NE>
+			"<"
+			<LE>
+			">"
+			<GE>
+%left			"+"
+			"-"
+%left			"*"
+			"/"
+
+
+****************************************************************
+* 9. Definition of the start symbol.				
+****************************************************************
+
+%start			ArchiType()
+
+****************************************************************/
+
+
+
+
+
+/****************************************************************/
+/* 10. Definition of grammar rules.				                      */
+/****************************************************************/
+
+
+
+ArchiType ArchiType()	:
+	{
+	Header archiHeader;
+	ArchiElemTypes archiElemTypes;
+	ArchiTopology archiTopology;
+	BehavVariations behavVariations = null;
+	} 
+	{	
+	archiHeader = ArchiHeader()
+	archiElemTypes = ArchiElemTypes()
+	archiTopology = ArchiTopology()
+	[behavVariations = BehaveVariations()]
+	<T_END> <EOF>
+		{
+		ArchiType architype = new ArchiType();
+		architype.setArchiElemTypes(archiElemTypes);
+		architype.setArchiTypeHeader(archiHeader);
+		architype.setBehavVariations(behavVariations);
+		architype.setTopologia(archiTopology);
+		return architype;
+		}
+	}
+
+Header ArchiHeader()	:
+	{
+	Token typeName;
+	ParamDeclaration[] parametri;
+	Header header;
+	} 
+	{	
+	<T_ARCHITECTURAL_TYPE>
+	typeName = <T_ID> <LPAREN>
+	parametri = ArchiParList() <RPAREN>
+		{
+		header = new Header();
+		header.setName(typeName.image);
+		header.setParameters(parametri);
+		return header; 
+		}
+	}
+
+ParamDeclaration[] ArchiParList():
+	{
+	ParamDeclaration[] parametriFinali;
+	ParamDeclaration first;
+	ParamDeclaration[] ris = null;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	}
+	{
+    <T_VOID>
+    	{
+    	ris = new ParamDeclaration[1];
+    	return ris;
+    	}
+	|
+	first = ArchiTypeParam() {list.add(first);}
+	( LOOKAHEAD(<COMMA> ArchiParList2()) <COMMA>
+	parametriFinali = ArchiParList2()
+		{
+		for (ParamDeclaration paramDeclaration : parametriFinali)
+			{
+			list.add(paramDeclaration);			}
+		}
+	)*
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;
+		} 
+	}
+
+ParamDeclaration[] ArchiParList2():
+	{
+	ParamDeclaration[] parametriFinali;
+	ParamDeclaration first;
+	ParamDeclaration[] ris = null;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	}
+	{
+	(
+	first = ArchiTypeParam() {list.add(first);}
+	(
+	LOOKAHEAD(<COMMA> ArchiParList2()) <COMMA>
+	parametriFinali = ArchiParList2()
+		{
+		for (ParamDeclaration paramDeclaration : parametriFinali)
+			{
+			list.add(paramDeclaration);
+			}
+		}
+	)*
+	)
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;
+		} 
+	}
+
+ParamDeclaration ArchiTypeParam()	:
+	{
+	ConstInit paramDeclaration;
+	DataType dataType;
+	Token pName;
+	Expression expression;
+	} 
+	{	
+	<T_CONST>
+	dataType = ArbitraryDataType()
+	pName = <T_ID>
+	<ASSIGN>
+	expression = E()
+		{
+		paramDeclaration = new ConstInit();
+		paramDeclaration.setName(pName.image);
+		paramDeclaration.setType(dataType);
+		paramDeclaration.setExpr(expression);
+		return paramDeclaration;		}
+	}
+
+ArchiElemTypes ArchiElemTypes():
+	{
+	ArchiElemTypes archiElemTypes;
+	ElemType[] elemTypes;
+	} 
+	{	
+	<T_ARCHI_ELEM_TYPES>
+	elemTypes = AETdefList()
+		{
+		archiElemTypes = new ArchiElemTypes();
+		archiElemTypes.setElementTypes(elemTypes);
+		return archiElemTypes;		}		
+	}
+
+
+ElemType[] AETdefList()	:
+	{
+	java.util.List<ElemType> list = new java.util.ArrayList<ElemType>();
+	ElemType[] ris;
+	ElemType elemType;
+	} 
+	{	
+	(elemType = AETdef()	{list.add(elemType);})+
+		{
+		ris = new ElemType[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+ElemType AETdef()		:
+	{
+	Token tName;
+	ParamDeclaration[] paramDeclarations;
+	AETbehavior behavior;
+	AETinteractions interactions;
+	Interactions interazioniInput;
+	InputInteractions inputInteractions;
+	Interactions interazioniOutput;
+	OutputInteractions outputInteractions;
+	Header header;
+	ElemType ris;
+	} 
+	{	
+	<T_ELEM_TYPE>
+	tName = <T_ID> <LPAREN>
+	paramDeclarations = AETparList() <RPAREN>
+	behavior = Behavior()
+	<T_INPUT_INTERACTIONS> interazioniInput = Interactions()
+		{
+		if (interazioniInput != null)
+			{			inputInteractions = new InputInteractions();
+			inputInteractions.setUni(interazioniInput.getUni());
+			inputInteractions.setOr(interazioniInput.getOr());
+			inputInteractions.setAnd(interazioniInput.getAnd());
+			}
+		else
+			{
+			inputInteractions = null;			}		}
+	<T_OUTPUT_INTERACTIONS> interazioniOutput = Interactions()
+		{
+		if (interazioniOutput != null)
+			{
+			outputInteractions = new OutputInteractions();
+			outputInteractions.setUni(interazioniOutput.getUni());
+			outputInteractions.setOr(interazioniOutput.getOr());
+			outputInteractions.setAnd(interazioniOutput.getAnd());
+			}
+		else
+			{
+			outputInteractions = null;
+			}
+		}
+		{
+		interactions = new AETinteractions();
+		interactions.setInIn(inputInteractions);
+		interactions.setOuIn(outputInteractions);
+		header = new Header();
+		header.setName(tName.image);
+		header.setParameters(paramDeclarations);
+		ris = new ElemType();
+		ris.setHeader(header);
+		ris.setBehavior(behavior);
+		ris.setInteractions(interactions);
+		return ris;		}
+	}
+
+ParamDeclaration[] AETparList() :
+	{
+	ParamDeclaration[] ris;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	ParamDeclaration first;
+	ParamDeclaration[] tail;
+	}
+	{
+	<T_VOID>
+		{
+		ris = new ParamDeclaration[1];
+		return ris;
+		}
+	|
+	LOOKAHEAD(AETformalPar()) first = AETformalPar()
+		{
+		list.add(first);
+		}
+	(LOOKAHEAD(<COMMA> AETparList()) <COMMA> tail = AETparList()
+		{
+		for (ParamDeclaration param : tail)
+			{
+			list.add(param);			}		})*
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+ParamDeclaration AETformalPar()		:
+	{
+	Const parFormale;
+	Token idPar;
+	DataType tipoDato;
+	} 
+	{	
+	<T_CONST> tipoDato = ArbitraryDataType() idPar = <T_ID>
+		{
+		parFormale = new Const();
+		parFormale.setName(idPar.image);
+		parFormale.setType(tipoDato);
+		return parFormale;		}
+	}
+
+AETbehavior Behavior()	:
+	{
+	AETbehavior ris;
+	BehavEquation first;
+	BehavEquation[] tail;
+	java.util.List<BehavEquation> list = new java.util.ArrayList<BehavEquation>();
+	BehavEquation[] tot;
+	} 
+	{	
+	<T_BEHAVIOR> first = FirstBehaveDef()
+		{
+		list.add(first);		}
+	(<SEMICOLON> tail = BehavDefList()
+		{
+		for (BehavEquation behavEquation : tail)
+			{
+			list.add(behavEquation);			}		})*
+		{
+		tot = new BehavEquation[list.size()];
+		list.toArray(tot);
+		ris = new AETbehavior();
+		ris.setBehaviors(tot);
+		return ris;		}
+	}
+
+
+BehavEquation FirstBehaveDef()	:
+	{
+	Header intestazione;
+	ProcessTerm termineProcesso;
+	BehavEquation ris;
+	Token nome;
+	ParamDeclaration[] parInizs;
+	ParamDeclaration[] parLocs;
+	ParamDeclaration[] tot;
+	java.util.List<ParamDeclaration> pars = new java.util.ArrayList<ParamDeclaration>();
+	} 
+	{	
+	nome = <T_ID>
+	<LPAREN> parInizs = FormalBehavParList()		{
+		for (ParamDeclaration par : parInizs)
+			{
+			pars.add(par);			}		}
+	<SEMICOLON> parLocs = BehavVarList()
+		{
+		for (ParamDeclaration par : parLocs)
+			{
+			pars.add(par);			}		}
+	<RPAREN>
+		{
+		intestazione = new Header();
+		intestazione.setName(nome.image);
+		tot = new ParamDeclaration[pars.size()];
+		pars.toArray(tot);
+		intestazione.setParameters(tot);		}
+	<EQUAL> termineProcesso = ProcessTerm()
+		{
+		ris = new BehavEquation();
+		ris.setBehavHeader(intestazione);
+		ris.setTermineProcesso(termineProcesso);
+		return ris;		}
+	}
+
+
+ParamDeclaration[] FormalBehavParList()	:
+	{
+	ParamDeclaration[] ris;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	ParamDeclaration first;
+	ParamDeclaration[] tail;	
+	}
+	{
+	(	
+	<T_VOID>
+		{
+		list.add(null);		}
+	|	first = FirstBehaveFormalPar()
+		{
+		list.add(first);		}
+	( LOOKAHEAD(<COMMA> FormalBehavParList()) <COMMA>
+	tail = FormalBehavParList()
+		{
+		for (ParamDeclaration par : tail)
+			{
+			list.add(par);			}		})*
+	)
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+ParamDeclaration FirstBehaveFormalPar()	:
+	{
+	VarInit ris;
+	NormalType tipo;
+	Token nome;
+	Expression espressione;
+	} 
+	{	
+	tipo = ParVarDataType()
+	nome = <T_ID>
+	<ASSIGN>
+	espressione = E()
+		{
+		ris = new VarInit();
+		ris.setType(tipo);
+		ris.setName(nome.image);
+		ris.setExpr(espressione);
+		return ris;		}
+	}
+
+BehavEquation[] BehavDefList()	:
+	{
+	java.util.List<BehavEquation> list = new java.util.ArrayList<BehavEquation>();
+	BehavEquation first;
+	BehavEquation[] ris; 
+	}
+	{
+	(	
+	first = SubsequentBehaveDef()
+		{
+		list.add(first);		}
+	( LOOKAHEAD(<SEMICOLON> SubsequentBehaveDef()) <SEMICOLON> first = SubsequentBehaveDef()
+		{
+		list.add(first);		})*
+	)
+		{
+		ris = new BehavEquation[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+BehavEquation SubsequentBehaveDef()	:
+	{
+	Token nome;
+	ParamDeclaration[] variabili;
+	ParamDeclaration[] locali;
+	ParamDeclaration[] tot;
+	ProcessTerm termine;
+	BehavEquation ris;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	Header intestazione;
+	} 
+	{	
+	nome = <T_ID> <LPAREN>
+	variabili = BehavParList()
+		{
+		for (ParamDeclaration parametro : variabili)
+			{
+			list.add(parametro);			}		}
+	<SEMICOLON>
+	locali = BehavVarList()
+		{
+		for (ParamDeclaration parametro : locali)
+			{
+			list.add(parametro);			}		}
+	<RPAREN> <EQUAL>
+	termine = ProcessTerm()
+		{
+		intestazione = new Header();
+		intestazione.setName(nome.image);
+		tot = new ParamDeclaration[list.size()];
+		list.toArray(tot);
+		intestazione.setParameters(tot);
+		ris = new BehavEquation();
+		ris.setBehavHeader(intestazione);
+		ris.setTermineProcesso(termine);
+		return ris;		}
+	}
+
+
+ParamDeclaration[] BehavParList()	:
+	{
+	ParamDeclaration var;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	ParamDeclaration[] ris;
+	} 
+	{
+	(	
+	<T_VOID>
+		{
+		list.add(null);
+		}
+	|
+	var = SubsequentBehaveFormalPar()
+		{
+		list.add(var);		}
+	( LOOKAHEAD(<COMMA> SubsequentBehaveFormalPar()) <COMMA>
+	var = SubsequentBehaveFormalPar()
+		{
+		list.add(var);		}
+	)*
+	)
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+ParamDeclaration SubsequentBehaveFormalPar()	:
+	{
+	VariableDeclaration ris;
+	NormalType tipo;
+	Token nome;
+	} 
+	{	
+	tipo = ParVarDataType()
+	nome = <T_ID>
+		{
+		ris = new VariableDeclaration();
+		ris.setName(nome.image);
+		ris.setType(tipo);
+		return ris;		}
+	}
+
+
+ParamDeclaration[] BehavVarList()	:
+	{
+	ParamDeclaration[] ris;
+	java.util.List<ParamDeclaration> list = new java.util.ArrayList<ParamDeclaration>();
+	ParamDeclaration par; 
+	} 
+	{
+	(
+	<T_VOID>
+		{
+		list.add(null);
+		}
+	|	par = BehaveLocalVar()
+		{
+		list.add(par);		}
+	(<COMMA> par = BehaveLocalVar()
+		{
+		list.add(par);		})*
+	)
+		{
+		ris = new ParamDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+ParamDeclaration BehaveLocalVar()	:
+	{
+	Local ris;
+	NormalType tipo;
+	Token nome;
+	} 
+	{	
+	<T_LOCAL> tipo = ParVarDataType() nome = <T_ID>
+		{
+		ris = new Local();
+		ris.setName(nome.image);
+		ris.setType(tipo);
+		return ris;		}
+	}
+
+DataType ArbitraryDataType()	:
+	{
+	DataType ris;
+	} 
+	{
+	(	
+		ris = ParVarDataType()
+		|
+		ris = NumDataType()
+	)
+		{
+		return ris;		}
+	}
+
+NormalType ParVarDataType()	:
+	{
+	NormalType ris;
+	Expression e1;
+	Expression e2;
+	NormalType nt;
+	Expression e;
+	VariableDeclaration[] vds;
+	} 
+	{
+	(
+	LOOKAHEAD(<T_INTEGER> <LPAREN> E() <DOTDOT> E() <RPAREN>) <T_INTEGER> <LPAREN>
+		e1 = E()
+		<DOTDOT>
+		e2 = E()
+		<RPAREN>
+		{
+		ris = new IntegerRangeType();
+		((IntegerRangeType)ris).setBeginningInt(e1);
+		((IntegerRangeType)ris).setEndingInt(e1);
+		}
+	|	<T_INTEGER>
+		{
+		ris = new IntegerType();
+		}	  	
+	|	<T_REAL>
+		{
+		ris = new RealType();		}
+	|	<T_BOOLEAN>
+		{
+		ris = new BooleanType();		}
+	|	<T_LIST> <LPAREN> nt = ParVarDataType() <RPAREN>
+		{
+		ris = new ListType();
+		((ListType)ris).setType(nt);		}
+	|	<T_ARRAY> <LPAREN> e = E() <COMMA> nt = ParVarDataType() <RPAREN>
+		{
+		ris = new ArrayType();
+		((ArrayType)ris).setLength(e);
+		((ArrayType)ris).setType(nt);		}
+	|	<T_RECORD> <LPAREN> vds = FieldDeclList() <RPAREN>
+		{
+		ris = new RecordType();
+		((RecordType)ris).setVariableDeclarations(vds);		}
+	)
+		{
+		return ris;		}
+	}
+
+
+VariableDeclaration[] FieldDeclList()	:
+	{
+	VariableDeclaration vd;
+	java.util.List<VariableDeclaration> list = new java.util.ArrayList<VariableDeclaration>();
+	VariableDeclaration[] ris;
+	} 
+	{	
+	vd = RecordFieldDecl()
+		{
+		list.add(vd);		}
+		( <COMMA>
+	vd = RecordFieldDecl()
+		{
+		list.add(vd);		})*
+		{
+		ris = new VariableDeclaration[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+VariableDeclaration RecordFieldDecl()	:
+	{
+	VariableDeclaration ris;
+	NormalType nt;
+	Token nome;
+	} 
+	{	
+	nt = ParVarDataType() nome = <T_ID>
+		{
+		ris = new VariableDeclaration();
+		ris.setName(nome.image);
+		ris.setType(nt);
+		return ris;		}
+	}
+
+SpecialType NumDataType()	:
+	{
+	SpecialType ris;
+	} 
+	{	
+	(	  <T_PRIO>
+		{
+		ris = new PrioType();		}
+	|	<T_RATE>
+		{
+		ris = new RateType();		}
+	|	<T_WEIGHT>
+		{
+		ris = new WeightType();		}
+	)
+		{
+		return ris;		}
+	}
+
+
+ProcessTerm ProcessTerm()		:
+	{
+	ProcessTerm ris;
+	Action azione;
+	ProcessTerm pt;
+	ProcessTerm[] pts;
+	java.util.List<ProcessTerm> list = new java.util.ArrayList<ProcessTerm>();
+	Token comportamento;
+	Expression[] parAttuali = new Expression[0];
+	Expression guardia = new specificheAEmilia.Boolean(true);
+	}
+	{
+	(	
+	<T_STOP>
+		{
+		ris = new Stop();		}
+	|	azione = Action() <DOT>
+		pt = ProcessTerm()
+		{
+		ris = new ActionProcess();
+		((ActionProcess)ris).setAzione(azione);
+		((ActionProcess)ris).setProcesso(pt);		}
+	|	<T_CHOICE> <LBRACE> [guardia = Guard()] pt = ProcessTerm() 
+		{
+		pt.setCondition(guardia);
+		list.add(pt);		}
+		( <COMMA> [guardia = Guard()] pt = ProcessTerm()
+			{
+			pt.setCondition(guardia);
+			list.add(pt);
+			})+	<RBRACE>
+			{
+			ris = new ChoiceProcess();
+			pts = new ProcessTerm[list.size()];
+			list.toArray(pts);
+			((ChoiceProcess)ris).setProcesses(pts);
+			} 
+	| comportamento = <T_ID> <LPAREN> [ parAttuali = BehavAparList()] <RPAREN>
+		{
+		ris = new BehavProcess();
+		((BehavProcess)ris).setName(comportamento.image);
+		((BehavProcess)ris).setExprs(parAttuali);
+		}
+	)
+		{
+		return ris;		}
+	}
+
+Expression Guard()		:
+	{
+	Expression ris;
+	} 
+	{
+	<T_COND> <LPAREN> ris = E()	<RPAREN> <IMPL>
+		{
+		return ris;		} 
+	}
+
+Action Action()		:
+	{
+	Action ris;
+	ActionType tipo;
+	ActionRate tasso;
+	} 
+	{	
+	<LESS> tipo = ActionType() <COMMA> tasso = ActionRate() <GREATER>
+		{
+		ris = new Action();
+		ris.setType(tipo);
+		ris.setRate(tasso);
+		return ris;		}
+	}
+
+ActionType ActionType():
+	{
+	ActionType ris;
+	Token name;
+	String[] variabili;
+	Expression[] outputs;
+	}
+	{
+	LOOKAHEAD(<T_ID> <QUESTION> <LPAREN> ActionInputList() <RPAREN>)
+	name = <T_ID> <QUESTION> <LPAREN> variabili = ActionInputList() <RPAREN>
+		{
+		ris = new ActionInput();
+		((ActionInput)ris).setName(name.image);
+		((ActionInput)ris).setInputVariables(variabili);		}
+	|
+	LOOKAHEAD(<T_ID> <EXCLAMATION> <LPAREN> ActionOutputList() <RPAREN>)
+	name = <T_ID> <EXCLAMATION> <LPAREN> outputs = ActionOutputList() <RPAREN>
+		{
+		ris = new ActionOutput();
+		((ActionOutput)ris).setName(name.image);
+		((ActionOutput)ris).setOutputExprs(outputs);		}
+	|
+	name = <T_ID>
+		{
+		ris = new ActionType();
+		ris.setName(name.image);		}
+		{
+		return ris;		}
+	}
+
+String[] ActionInputList()	:
+	{
+	Token t1;
+	String[] strings;
+	java.util.List<String> list = new java.util.ArrayList<String>();
+	String[] ris;
+	} 
+	{
+	LOOKAHEAD(<T_ID>)	
+	t1 = <T_ID>
+		{
+		list.add(t1.image);		}	|
+	LOOKAHEAD(<T_ID> <COMMA> ActionInputList())
+	t1 = <T_ID>
+		{
+		list.add(t1.image);
+		}
+	<COMMA> strings = ActionInputList()
+		{
+		for (String s1 : strings)
+			{
+			list.add(s1);			}
+		}
+		{
+		ris = new String[list.size()];
+		list.toArray(ris);
+		return ris;		}	}
+
+
+Expression[] ActionOutputList()	:
+	{
+	Expression[] exprs;
+	Expression[] ris;
+	Expression e1;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	} 
+	{	
+	LOOKAHEAD(2) e1 = E()
+		{
+		list.add(e1);		}
+	|
+	LOOKAHEAD(E() <COMMA> ActionOutputList())
+	e1 = E()
+		{
+		list.add(e1);		}
+		<COMMA> exprs = ActionOutputList()
+			{
+			for (Expression expression : exprs)
+				{
+				list.add(expression);				}			}
+		{
+		ris = new Expression[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+ActionRate ActionRate()	:
+	{
+	ActionRate ris;
+	Expression expression1 = new specificheAEmilia.Integer(1);
+	Expression expression2 = new Real(1.0);
+	} 
+	{
+	(	
+	<T_EXP> <LPAREN>
+	expression1 = E()
+	<RPAREN>
+		{
+		ris = new RateExp();
+		((RateExp)ris).setExpr(expression1);		}
+	|	<T_INF> [<LPAREN>
+		expression1 = E() <COMMA>
+		expression2 = E() <RPAREN>]
+			{
+			ris = new RateInf();
+			((RateInf)ris).setPrio(expression1);
+			((RateInf)ris).setWeight(expression2);			}
+	|	<UNDERSCORE> [<LPAREN>
+		expression1 = E() <COMMA>
+		expression2 = E() <RPAREN>]
+			{
+			ris = new Rate_();
+			((Rate_)ris).setPrio(expression1);
+			((Rate_)ris).setWeight(expression2);
+			}
+//	| LOOKAHEAD(2) <UNDERSCORE>
+//		{
+//		ris = new Rate_();
+//		((Rate_)ris).setPrio(new specificheAEmilia.Integer(1));
+//		((Rate_)ris).setWeight(new Real(1.0));//		}
+//	| LOOKAHEAD(2) <UNDERSCORE> <LPAREN> expression1 = E() <COMMA> expression2 = E()	<RPAREN>
+//		{
+//		ris = new Rate_();
+//		((Rate_)ris).setPrio(expression1);
+//		((Rate_)ris).setWeight(expression2);
+//		}
+	)
+		{
+		return ris;
+		}
+	}
+
+Expression[] BehavAparList():
+	{
+	Expression e1;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	Expression[] ris;
+	} 
+	{	
+	e1 = E()
+		{
+		list.add(e1);			}
+	( <COMMA>
+	e1 = E()
+		{
+		list.add(e1);		}
+		)*
+		{
+		ris = new Expression[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+Interactions Interactions()	:
+	{
+	Interactions interactions;
+	UNIinteractions uniinteractions = null;
+	ANDinteractions andinteractions = null;
+	ORinteractions orinteractions = null;
+	} 
+	{
+	(	
+	<T_VOID>		{
+		return null;		}
+	|
+	LOOKAHEAD(ORinteractions())
+	orinteractions = ORinteractions()
+	|
+	LOOKAHEAD(UNIinteractions())
+	uniinteractions = UNIinteractions()
+	|
+	LOOKAHEAD(ANDinteractions())
+	andinteractions = ANDinteractions()
+	|
+	LOOKAHEAD(ANDinteractions() ORinteractions())
+	andinteractions = ANDinteractions()
+	orinteractions = ORinteractions()
+	|
+	LOOKAHEAD(UNIinteractions() ORinteractions())
+	uniinteractions = UNIinteractions()
+	orinteractions = ORinteractions() 
+	|
+	LOOKAHEAD(UNIinteractions() ANDinteractions())
+	uniinteractions = UNIinteractions()
+	andinteractions = ANDinteractions()			
+	|
+	LOOKAHEAD(UNIinteractions() ANDinteractions() ORinteractions())
+	uniinteractions = UNIinteractions()
+	andinteractions = ANDinteractions()
+	orinteractions = ORinteractions()
+	)
+		{
+		interactions = new Interactions();
+		interactions.setUni(uniinteractions);
+		interactions.setAnd(andinteractions);
+		interactions.setOr(orinteractions);
+		return interactions;		}
+	}
+
+
+UNIinteractions UNIinteractions()	:
+	{
+	UNIinteractions uniinteractions;
+	String[] azioni = new String[0];
+	} 
+	{	
+	<T_UNI> azioni = ActionTypeList()
+		{
+		uniinteractions = new UNIinteractions();
+		uniinteractions.setActions(azioni);
+		return uniinteractions;		}
+	}
+
+
+ANDinteractions ANDinteractions()	:
+	{
+	ANDinteractions andinteractions;
+	String[] azioni = new String[0];
+	} 
+	{	
+	<T_AND> azioni = ActionTypeList()
+		{
+		andinteractions = new ANDinteractions();
+		andinteractions.setActions(azioni);
+		return andinteractions;		}
+	}
+
+
+ORinteractions ORinteractions()	:
+	{
+	ORinteractions orinteractions;
+	String[] azioni = new String[0];
+	}
+	{	
+	<T_OR> azioni = ActionTypeList()
+		{
+		orinteractions = new ORinteractions();
+		orinteractions.setActions(azioni);
+		return orinteractions;		}
+	}
+
+
+String[] ActionTypeList()	:
+	{
+	Token tAction;
+	java.util.List<String> list = new java.util.ArrayList<String >();
+	String[] azioniFinali;
+	String[] ris;	
+	} 
+	{	
+	tAction = <T_ID>		{
+		list.add(tAction.image);
+		}
+	( LOOKAHEAD(<SEMICOLON> ActionTypeList()) <SEMICOLON>
+	azioniFinali = ActionTypeList()
+		{
+		for (String azione : azioniFinali)
+			{
+			list.add(azione);  			}		})*
+		{
+		ris = new String[list.size()];
+		list.toArray(ris);
+		return ris;
+		}
+	}
+
+
+ArchiTopology ArchiTopology()	:
+	{
+	ArchiTopology ris;
+	ArchiElemInstances aeis;
+	ArchiInteractions ais;
+	ArchiAttachments aas; 
+	}
+	{	
+	<T_ARCHI_TOPOLOGY>
+	aeis = ArchiElemInstances()
+	ais = ArchiInteractions()
+	aas = ArchiAttachments()
+		{
+		ris = new ArchiTopology();
+		ris.setAEIs(aeis);
+		ris.setArchiInteractions(ais);
+		ris.setAttachments(aas);
+		return ris;		}
+	}
+
+
+ArchiElemInstances ArchiElemInstances():
+	{
+	AEIdecl[] aEIdeclSeq;
+	ArchiElemInstances ris;
+	} 
+	{	
+	<T_ARCHI_ELEM_INSTANCES>
+	aEIdeclSeq = AEIdeclList()
+		{
+		ris = new ArchiElemInstances();
+		ris.setAEIdeclSeq(aEIdeclSeq);
+		return ris;		}
+	}
+
+
+AEIdecl[] AEIdeclList()	:
+	{
+	AEIdecl aeid;
+	java.util.List<AEIdecl> list = new java.util.ArrayList<AEIdecl>();
+	AEIdecl[] ris;
+	} 
+	{	
+	aeid = AEIdecl()
+		{
+		list.add(aeid);		}
+	( LOOKAHEAD(<SEMICOLON> AEIdecl()) <SEMICOLON>
+	aeid = AEIdecl()
+		{
+		list.add(aeid);		})*
+		{
+		ris = new AEIdecl[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+AEIdecl AEIdecl()	:
+	{
+	AEIdecl ris;
+	Token indice1;
+	Expression e1;
+	Expression e2;
+	AEIdecl iaeid;
+	}
+	{
+	(	
+	ris = SimpleAEIdecl()
+	|
+	<T_FOR_ALL> indice1 = <T_ID> <T_IN>
+	e1 = E() <DOTDOT> e2 = E()
+	iaeid = IterativeAEIdecl()
+		{
+		ris = new AEIdeclInd();
+		((AEIdeclInd)ris).setIndex(indice1.image);		((AEIdeclInd)ris).setBeginningExpr(e1);
+		((AEIdeclInd)ris).setEndingExpr(e2);
+		((AEIdeclInd)ris).setAeIident(iaeid.getAeIident());
+		((AEIdeclInd)ris).setAET(iaeid.getAET());
+		((AEIdeclInd)ris).setActualParams(iaeid.getActualParams());
+		}
+	)
+		{
+		return ris;		}	
+	}
+
+
+AEIdecl SimpleAEIdecl()	:
+	{
+	AEIdecl ris;
+	AEIident aeiIdent;
+	Token t2;
+	Expression[] parsAct = new Expression[0];
+	} 
+	{
+	aeiIdent = AEIident()	
+	<COLON>
+	t2 = <T_ID>
+	<LPAREN>
+	[parsAct = AEIparList()]
+	<RPAREN>
+		{
+		ris = new AEIdecl();
+		ris.setAeIident(aeiIdent);
+		ris.setAET(t2.image);
+		ris.setActualParams(parsAct);
+		return ris;		} 
+	}
+
+
+AEIdecl IterativeAEIdecl()	:
+	{
+	AEIdecl ris;
+	AEIident aeiIdent;
+	Token t2;
+	Expression[] parsAct = new Expression[0];
+	} 
+	{	
+	aeiIdent = AEIident()
+	<COLON>
+	t2 = <T_ID>
+	<LPAREN> [parsAct = AEIparList()] <RPAREN>
+		{
+		ris = new AEIdecl();
+		ris.setAeIident(aeiIdent);
+		ris.setAET(t2.image);
+		ris.setActualParams(parsAct);
+		return ris;
+		}
+	}
+
+AEIident AEIident() :
+	{
+	AEIident ris;
+	Expression e = null;
+	Token name;	}
+	{
+	name = <T_ID>
+	[<LBRACKET> e = E() <RBRACKET>]
+		{
+		ris = new AEIident(name.image,e);
+		return ris;		}	}
+
+Expression[] AEIparList()	:
+	{
+	Expression[] ris;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	Expression e;
+	}
+	{	
+	e = E()
+		{
+		list.add(e);		}
+	( LOOKAHEAD(<COMMA> E()) <COMMA> e = E()		{
+		list.add(e);		})*
+		{
+		ris = new Expression[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+ArchiInteractions ArchiInteractions()	:
+	{
+	ArchiInteractions ris;
+	InteractionDecl[] interactions;
+	} 
+	{	
+	<T_ARCHI_INTERACTIONS> interactions = ArchInteractionList()
+		{
+		ris = new ArchiInteractions();
+		ris.setInteractions(interactions);
+		return ris;		}
+	}
+
+
+InteractionDecl[] ArchInteractionList()	:
+	{
+	InteractionDecl[] ris;
+	InteractionDecl interactionDecl;
+	java.util.List<InteractionDecl> list = new java.util.ArrayList<InteractionDecl>();
+	} 
+	{	
+	<T_VOID>
+		{
+		return null;		}
+	|	interactionDecl = ArchInteraction()
+			{
+			list.add(interactionDecl);			}
+		( <SEMICOLON> interactionDecl = ArchInteraction()			{
+			list.add(interactionDecl);			})*
+			{
+			ris = new InteractionDecl[list.size()];
+			list.toArray(ris);
+			return ris;			}
+	}
+
+
+InteractionDecl ArchInteraction()	:
+	{
+	InteractionDecl ris;
+	Token index;
+	Expression beginningExpr;
+	Expression endingExpr;
+	InteractionDecl id;
+	} 
+	{	
+	ris = SimpleArchiInteraction()
+		{
+		return ris;		}
+	|	<T_FOR_ALL> index = <T_ID> <T_IN>
+		beginningExpr = E() <DOTDOT> endingExpr = E()
+		id = IterativeArchiInteraction()
+			{
+			ris = new InteractionDeclInd();
+			((InteractionDeclInd)ris).setIndex(index.image);
+			((InteractionDeclInd)ris).setExprInizio(beginningExpr);			((InteractionDeclInd)ris).setExprFine(endingExpr);
+			((InteractionDeclInd)ris).setAei(id.getAei());
+			((InteractionDeclInd)ris).setInteraction(id.getInteraction());
+			return ris;    			}
+	}
+
+
+InteractionDecl SimpleArchiInteraction()	:
+	{
+	InteractionDecl ris;
+	AEIident aeiIdent;
+	Token interaction;
+	} 
+	{
+	aeiIdent = AEIident()
+	<DOT>
+	interaction = <T_ID>
+		{
+		ris = new InteractionDecl();
+		ris.setAei(aeiIdent);
+		ris.setInteraction(interaction.image);
+		return ris;		}
+	}
+
+
+InteractionDecl IterativeArchiInteraction()	:
+	{
+	InteractionDecl ris;
+	AEIident aeiIdent;
+	Token interaction;
+	} 
+	{
+	aeiIdent = AEIident()
+	<DOT>
+	interaction = <T_ID>
+		{
+		ris = new InteractionDecl();
+		ris.setAei(aeiIdent);
+		ris.setInteraction(interaction.image);
+		return ris;
+		}
+	}
+
+
+ArchiAttachments ArchiAttachments()	:
+	{
+	ArchiAttachments ris;
+	AttacDecl[] attachments;
+	} 
+	{	
+	<T_ARCHI_ATTACHMENTS> attachments = AttachmentList()
+		{
+		ris = new ArchiAttachments();
+		ris.setAttachments(attachments);
+		return ris;		}
+	}
+
+
+AttacDecl[] AttachmentList()	:
+	{
+	AttacDecl[] ris;
+	java.util.List<AttacDecl> list = new java.util.ArrayList<AttacDecl>();
+	AttacDecl attacDecl;
+	} 
+	{	
+	<T_VOID>
+		{
+		return null;		}
+	|	attacDecl = Attachment()
+		{
+		list.add(attacDecl);		}
+	 ( <SEMICOLON> attacDecl = Attachment()
+	 	{
+	 	list.add(attacDecl);	 	})*
+	 		{
+	 		ris = new AttacDecl[list.size()];
+	 		list.toArray(ris);
+	 		return ris;	 		}
+	}
+
+
+
+AttacDecl Attachment()		:
+	{
+	AttacDecl ris;
+	Token index1;
+	Expression beginningExpr1;
+	Expression endingExpr1;
+	Token index2 = null;
+	Expression beginningExpr2 = null;
+	Expression endingExpr2 = null;
+	AttacDecl ad;
+	} 
+	{	
+	ris = SimpleAttachment()
+		{
+		return ris;		}
+	|	<T_FOR_ALL> index1 = <T_ID> <T_IN> beginningExpr1 = E() <DOTDOT> endingExpr1 = E()
+	[<T_AND>	<T_FOR_ALL> index2 = <T_ID> <T_IN> beginningExpr2 = E()
+	<DOTDOT> endingExpr2 = E()] ad = SimpleAttachment()
+		{
+		ris = new AttacDeclInd();
+		((AttacDeclInd)ris).setIndex1(index1.image);
+		((AttacDeclInd)ris).setBeginningExpr1(beginningExpr1);
+		((AttacDeclInd)ris).setEndingExpr1(endingExpr1);
+		if (index2 != null)
+			((AttacDeclInd)ris).setIndex2(index2.image);
+		((AttacDeclInd)ris).setBeginningExpr2(beginningExpr2);
+		((AttacDeclInd)ris).setEndingExpr2(endingExpr2);
+		((AttacDeclInd)ris).setOutputAei(ad.getOutputAei());
+		((AttacDeclInd)ris).setInputInteraction(ad.getInputInteraction());
+		((AttacDeclInd)ris).setInputAei(ad.getInputAei());
+		((AttacDeclInd)ris).setOutputInteraction(ad.getOutputInteraction());
+		return ris;		}
+	}
+
+
+AttacDecl SimpleAttachment()	:
+	{
+	AttacDecl ris;
+	AEIident aeiIdentOutput;
+	Token outputInteraction;
+	AEIident aeiIdentInput;
+	Token inputInteraction;
+	} 
+	{	
+	<T_FROM> aeiIdentOutput = AEIident() <DOT>
+	outputInteraction = <T_ID>	<T_TO>
+	aeiIdentInput = AEIident() <DOT> inputInteraction = <T_ID>
+		{
+		ris = new AttacDecl();
+		ris.setOutputAei(aeiIdentOutput);
+		ris.setOutputInteraction(outputInteraction.image);
+		ris.setInputAei(aeiIdentInput);
+		ris.setInputInteraction(inputInteraction.image);
+		return ris;		}
+	}
+
+BehavVariations BehaveVariations():
+	{
+	BehavVariations ris;
+	BehavHidings behavHidings = null;
+	BehavRestrictions behavRestrictions = null;
+	BehavRenamings behavRenamings = null;
+	} 
+	{	
+	<T_BEHAV_VARIATIONS>
+	[behavHidings = BehaveHidings()]
+	[behavRestrictions = BehaveRestrictions()]
+	[behavRenamings = BehaveRenamings()]
+		{
+		ris = new BehavVariations();
+		ris.setBehavHidings(behavHidings);
+		ris.setBehavRestrictions(behavRestrictions);
+		ris.setBehavRenamings(behavRenamings);
+		return ris;		}
+	}
+
+
+BehavHidings BehaveHidings()	:
+	{
+	BehavHidings ris;
+	BehavHidingDecl[] behavHidingDecls;
+	} 
+	{	
+	<T_BEHAV_HIDINGS> behavHidingDecls = BehaveHidingList()
+		{
+		ris = new BehavHidings();
+		ris.setBehavHidingDecls(behavHidingDecls);
+		return ris;		}
+	}
+
+BehavHidingDecl[] BehaveHidingList()	:
+	{
+	BehavHidingDecl[] ris;
+	BehavHidingDecl behavHidingDecl;
+	java.util.List<BehavHidingDecl> list = new java.util.ArrayList<BehavHidingDecl>();
+	} 
+	{	
+	behavHidingDecl = Hiding()
+		{
+		list.add(behavHidingDecl);		}
+	 ( <SEMICOLON> behavHidingDecl = Hiding()
+	 	{
+	 	list.add(behavHidingDecl);	 	} )*
+	 	{
+	 	ris = new BehavHidingDecl[list.size()];
+	 	list.toArray(ris);
+	 	return ris;	 	}
+	}
+
+
+BehavHidingDecl Hiding()		:
+	{
+	BehavHidingDecl ris;
+	Token index;
+	Expression beginningExpr;
+	Expression endingExpr;
+	Hide hide;
+	} 
+	{	
+	ris = SimpleHiding()
+		{
+		return ris;		}
+	|	<T_FOR_ALL> index = <T_ID> <T_IN>
+	beginningExpr = E() <DOTDOT>
+	endingExpr = E()
+	hide = IterativeHiding()
+		{
+		ris = new HideInd();
+		((HideInd)ris).setIndex(index.image);		((HideInd)ris).setBeginningExpr(beginningExpr);
+		((HideInd)ris).setEndingExpr(endingExpr);
+		((HideInd)ris).setAei(hide.getAei());
+		((HideInd)ris).setActionTypeSetH(hide.getActionTypeSetH());
+		return ris;		}
+	}
+
+
+BehavHidingDecl SimpleHiding()	:
+	{
+	BehavHidingDecl ris;
+	AEIident aeIident;
+	ActionTypeSetH actionTypeSetH;
+	} 
+	{	
+	LOOKAHEAD(<T_HIDE> AEIident() <DOT> ActionTypeSetHidden())
+	<T_HIDE>
+	aeIident = AEIident()
+	<DOT>
+	actionTypeSetH = ActionTypeSetHidden()
+		{
+		ris = new Hide();
+		((Hide)ris).setAei(aeIident);
+		((Hide)ris).setActionTypeSetH(actionTypeSetH);
+		return ris;		}
+	|
+	LOOKAHEAD(<T_HIDE> <T_INTERNALS>)
+	<T_HIDE> <T_INTERNALS>
+		{
+		ris = new HideInternals();
+		return ris;		}
+	|
+	LOOKAHEAD(<T_HIDE> <T_INTERACTIONS>)
+	<T_HIDE> <T_INTERACTIONS>
+		{
+		ris = new HideInteractions();
+		return ris;		}
+	|
+	LOOKAHEAD(<T_HIDE> <T_ALL>)
+	<T_HIDE> <T_ALL>
+		{
+		ris = new HideAll();
+		return ris;		}
+	}
+
+
+Hide IterativeHiding()	:
+	{
+	Hide ris;
+	AEIident aeIident;
+	ActionTypeSetH actionTypeSetH;
+	} 
+	{	
+	<T_HIDE> aeIident = AEIident() <DOT>
+	actionTypeSetH = ActionTypeSetHidden()
+		{
+		ris = new Hide();
+		ris.setAei(aeIident);
+		ris.setActionTypeSetH(actionTypeSetH);
+		return ris;		}
+	}
+
+
+ActionTypeSetH ActionTypeSetHidden()	:
+	{
+	ActionTypeSetH ris;
+	Token actionType;
+	} 
+	{	
+	actionType = <T_ID>
+		{
+		ris = new ActionTypeH();
+		((ActionTypeH)ris).setActionType(actionType.image);
+		return ris;		}
+	|	<T_INTERNALS>
+		{
+		ris = new HInternals();
+		return ris;		}
+	|	<T_INTERACTIONS>
+		{
+		ris = new HInteractions();
+		return ris;		}
+	|	<T_ALL>
+		{
+		ris = new HAll();
+		return ris;		}
+	}
+
+
+BehavRestrictions BehaveRestrictions()	:
+	{
+	BehavRestrictions ris;
+	BehavRestrictionDecl[] behavRestrictionDecls;
+	} 
+	{
+	<T_BEHAV_RESTRICTIONS> behavRestrictionDecls = RestrictionList()
+		{
+		ris = new BehavRestrictions();
+		ris.setBehavRestrictionDecls(behavRestrictionDecls);
+		return ris;		}
+	}
+
+
+BehavRestrictionDecl[] RestrictionList()	:
+	{
+	BehavRestrictionDecl[] ris;
+	BehavRestrictionDecl behavRestrictionDecl;
+	java.util.List<BehavRestrictionDecl> list = new java.util.ArrayList<BehavRestrictionDecl>();
+	} 
+	{	
+	behavRestrictionDecl = Restriction()
+		{
+		list.add(behavRestrictionDecl);		}
+	 ( <SEMICOLON> Restriction()
+	 	{
+	 	list.add(behavRestrictionDecl);	 	})*
+	 	{
+	 	ris = new BehavRestrictionDecl[list.size()];
+	 	list.toArray(ris);
+	 	return ris;	 	}
+	}
+
+
+BehavRestrictionDecl Restriction()	:
+	{
+	BehavRestrictionDecl ris;
+	Token index;
+	Expression beginningExpr;
+	Expression endingExpr;
+	Restrict restrict;
+	}
+	{	
+	ris = SimpleRestriction()
+		{
+		return ris;		}
+	|	<T_FOR_ALL> index = <T_ID> <T_IN>
+	beginningExpr = E() <DOTDOT>
+	endingExpr = E()
+	restrict = IterativeRestriction()
+		{
+		ris = new RestrictInd();
+		((RestrictInd)ris).setIndex(index.image);
+		((RestrictInd)ris).setBeginningExpr(beginningExpr);
+		((RestrictInd)ris).setEndingExpr(endingExpr);
+		((RestrictInd)ris).setAei(restrict.getAei());
+		((RestrictInd)ris).setActionTypeSetR(restrict.getActionTypeSetR());
+		return ris;		}
+	}
+
+
+BehavRestrictionDecl SimpleRestriction()	:
+	{
+	BehavRestrictionDecl ris;
+	AEIident aeiIdent;
+	Token aei;
+	Expression selector;
+	ActionTypeSetR actionTypeSetR;
+	}
+	{	
+	LOOKAHEAD(<T_RESTRICT> AEIident() <DOT> ActionTypeSetRestricted())
+	<T_RESTRICT>   aeiIdent = AEIident()
+	<DOT>
+	actionTypeSetR = ActionTypeSetRestricted()
+		{
+		ris = new Restrict();
+		((Restrict)ris).setActionTypeSetR(actionTypeSetR);		((Restrict)ris).setAei(aeiIdent);
+		return ris;		}
+	|
+	LOOKAHEAD(<T_RESTRICT> <T_OBS_INTERNALS>)
+	<T_RESTRICT> <T_OBS_INTERNALS>
+		{
+		ris = new RestrictInternals();
+		return ris;		}
+	|
+	LOOKAHEAD(<T_RESTRICT> <T_OBS_INTERACTIONS>)
+	<T_RESTRICT> <T_OBS_INTERACTIONS>
+		{
+		ris = new RestrictInteractions();
+		return ris;		}
+	|
+	LOOKAHEAD(<T_RESTRICT> <T_ALL_OBSERVABLES>)
+	<T_RESTRICT> <T_ALL_OBSERVABLES>
+		{
+		ris = new RestrictAll();
+		return ris;		}
+	}
+
+
+Restrict IterativeRestriction()	:
+	{
+	Restrict ris;
+	AEIident aeiIdent;
+	Token aei;
+	Expression selector;
+	ActionTypeSetR actionTypeSetR;
+	} 
+	{	
+	<T_RESTRICT> aeiIdent = AEIident() <DOT>
+	actionTypeSetR = ActionTypeSetRestricted()
+		{
+		ris = new Restrict();
+		ris.setAei(aeiIdent);
+		ris.setActionTypeSetR(actionTypeSetR);
+		return ris;		}
+	}
+
+
+ActionTypeSetR ActionTypeSetRestricted()	:
+	{
+	ActionTypeSetR ris;
+	Token actionType;
+	} 
+	{	
+	actionType = <T_ID>
+		{
+		ris = new ActionTypeR();
+		((ActionTypeR)ris).setActionType(actionType.image);
+		return ris;		}    	
+	|	<T_OBS_INTERNALS>
+		{
+		ris = new RInternals();
+		return ris;
+		}	|	<T_OBS_INTERACTIONS>
+		{
+		ris = new RInteractions();
+		return ris;		}
+	|	<T_ALL_OBSERVABLES>
+		{
+		ris = new RAll();
+		return ris;		}
+	}
+
+
+BehavRenamings BehaveRenamings()	:
+	{
+	BehavRenamings ris;
+	BehavRenamingDecl[] behavRenamingDecls;
+	} 
+	{	
+	<T_BEHAV_RENAMINGS> behavRenamingDecls = RenamingList()
+		{
+		ris = new BehavRenamings();
+		ris.setBehavRenamingDecls(behavRenamingDecls);
+		return ris;		}
+	}
+
+
+BehavRenamingDecl[] RenamingList()	:
+	{
+	BehavRenamingDecl[] ris;
+	java.util.List<BehavRenamingDecl> list = new java.util.ArrayList<BehavRenamingDecl>();
+	BehavRenamingDecl behavRenamingDecl;
+	} 
+	{	
+	behavRenamingDecl = Renaming()
+		{
+		list.add(behavRenamingDecl);		}
+	( <SEMICOLON> behavRenamingDecl = Renaming()
+		{
+		list.add(behavRenamingDecl);		} )*
+		{
+		ris = new BehavRenamingDecl[list.size()];
+		list.toArray(ris);
+		return ris;		}
+	}
+
+
+BehavRenamingDecl Renaming()	:
+	{
+	BehavRenamingDecl ris;
+	Token index;
+	Expression beginningExpr;
+	Expression endingExpr;
+	BehavRenamingDecl brd;
+	} 
+	{	
+	ris = SimpleRenaming()
+		{
+		return ris;		}
+	|	<T_FOR_ALL> index = <T_ID> <T_IN>
+	beginningExpr = E() <DOTDOT>
+	endingExpr = E()
+	brd = IterativeRenaming()
+		{
+		ris = new BehavRenamingDeclInd();
+		((BehavRenamingDeclInd)ris).setBeginningExpr(beginningExpr);
+		((BehavRenamingDeclInd)ris).setEndingExpr(endingExpr);
+		((BehavRenamingDeclInd)ris).setIndex(index.image);
+		((BehavRenamingDeclInd)ris).setAei(brd.getAei());
+		((BehavRenamingDeclInd)ris).setOriginalActionType(
+		  brd.getOriginalActionType());
+		((BehavRenamingDeclInd)ris).setOriginalSelector(
+		  brd.getOriginalSelector());
+		((BehavRenamingDeclInd)ris).setRenamingActionType(
+		  brd.getRenamingActionType());
+		((BehavRenamingDeclInd)ris).setRenamingSelector(
+		  brd.getRenamingSelector());
+		return ris;		}
+	}
+
+
+BehavRenamingDecl SimpleRenaming()	:
+	{
+	BehavRenamingDecl ris;
+	Token aei;
+	Expression originalSelector;
+	Token originalActionType;
+	Token renamingActionType;
+	Expression renamingSelector;
+	} 
+	{	
+	<T_RENAME> aei = <T_ID>
+	originalSelector = AEIindex() <DOT>
+	originalActionType = <T_ID>	<T_AS>
+	renamingActionType = <T_ID>
+	renamingSelector = AEIindex()
+		{
+		ris = new BehavRenamingDecl();
+		ris.setAei(aei.image);
+		ris.setOriginalActionType(originalActionType.image);
+		ris.setOriginalSelector(originalSelector);
+		ris.setRenamingActionType(renamingActionType.image);
+		ris.setRenamingSelector(renamingSelector);
+		return ris;		}
+	}
+
+
+BehavRenamingDecl IterativeRenaming()	:
+	{
+	BehavRenamingDecl ris;
+	Token aei;
+	Expression originalSelector;
+	Token originalActionType;
+	Token renamingActionType;
+	Expression renamingSelector;
+	} 
+	{
+	<T_RENAME> aei = <T_ID> originalSelector = AEIindex()
+	<DOT> originalActionType = <T_ID> <T_AS>
+	renamingActionType = <T_ID> renamingSelector = AEIindex()
+		{
+		ris = new BehavRenamingDecl();
+		ris.setAei(aei.image);
+		ris.setOriginalActionType(originalActionType.image);
+		ris.setOriginalSelector(originalSelector);
+		ris.setRenamingActionType(renamingActionType.image);
+		ris.setRenamingSelector(renamingSelector);
+		return ris;
+		}
+	}
+
+Expression AEIindex()	:
+	{
+	Expression ris;
+	} 
+	{	
+	<LBRACKET> ris = E() <RBRACKET>
+		{
+		return ris;		}
+	}
+
+/*
+ * Expression syntax follows.
+ */
+IdentExpr IdentExpr() :
+	{
+	IdentExpr ris;
+	Token t;  
+	}
+	{
+	t = <T_ID>
+		{
+		ris = new IdentExpr(t.image);
+		return ris;
+		}
+	}
+
+Expression Erecord() :
+	{
+	Expression ris;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	Expression expression;
+	IdentExpr identExpr;
+	Token t1;
+	Token t2;
+	}
+	{
+	<T_RECORD_CONS> <LPAREN> expression = E() {list.add(expression);} (<COMMA> expression = E() {list.add(expression);})* <RPAREN>
+		{
+		Expression[] expressions = new Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			Expression exp1 = list.get(i);
+			expressions[i] = exp1;  
+			}
+		RecordCons recordCons = new RecordCons(expressions);
+		ris = recordCons;
+		return ris;
+		}
+	|
+	<T_PUT> <LPAREN> t1 = <T_ID> <COMMA> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		Put put = new Put(t1.image,expression,identExpr);
+		ris = put;
+		return ris;
+		}
+	}
+
+Expression Earr() :
+	{
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	Expression expression;
+	Expression expression2;
+	IdentExpr identExpr;
+	}
+	{
+	<T_ARRAY_CONS> <LPAREN> expression = E() {list.add(expression);} (<COMMA> expression = E() {list.add(expression);})* <RPAREN>
+		{
+		Expression[] expressions = new Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			Expression exp1 = list.get(i);
+			expressions[i] = exp1;  
+			}
+		ArrayCons arrayCons = new ArrayCons(expressions);
+		return arrayCons;
+		}
+	|
+	<T_WRITE> <LPAREN> expression = E() <COMMA> expression2 = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		Write write = new Write(expression,expression2,identExpr);
+		return write;
+		}
+	}
+
+Expression El() :
+	{
+	Expression expression;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	Token t1;
+	IdentExpr identExpr;
+	Token t2;
+	IdentExpr identExpr2;
+	}
+	{
+	<T_LIST_CONS> <LPAREN> (expression = E() {list.add(expression);} ( <COMMA> expression = E() {list.add(expression);})*)? <RPAREN>
+		{
+		Expression[] expressions = new Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			Expression exp1 = list.get(i);
+			expressions[i] = exp1;
+			}
+		ListCons listCons = new ListCons(expressions);
+		return listCons;
+		}
+	|
+	<T_TAIL> <LPAREN> identExpr = IdentExpr() <RPAREN>
+		{
+		Tail tail = new Tail(identExpr);
+		return tail;
+		}
+	|
+	<T_CONCAT> <LPAREN> identExpr = IdentExpr() <COMMA> identExpr2 = IdentExpr() <RPAREN>
+		{
+		Concat concat = new Concat(identExpr,identExpr2);
+		return concat;
+		}
+	|
+	<T_INSERT> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		Insert insert = new Insert(expression,identExpr);
+		return insert;
+		}
+	|
+	<T_REMOVE> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		Remove remove = new Remove(expression,identExpr);
+		return remove;
+		}
+	}
+
+Expression Eatf() :
+	{
+	Expression ris;
+	Token t1;
+	IdentExpr identExpr;
+	}
+	{
+	LOOKAHEAD(<LPAREN> E() <RPAREN>)
+	<LPAREN> ris = E() <RPAREN>
+		{
+		return ris;
+		}
+	|
+	ris = IdentExpr()
+		{
+		return ris;
+		}
+	|
+	t1 = <T_NUMBER>
+		{
+		try {
+		  	java.lang.Long number = java.lang.Long.parseLong(t1.image);
+		  	specificheAEmilia.Integer integer = new specificheAEmilia.Integer(number.intValue());
+		  	return integer;	
+		 	}
+		catch (NumberFormatException e1)
+			{
+			try {
+			  	java.lang.Double double1 = java.lang.Double.parseDouble(t1.image);
+			  	Real real = new Real(double1);
+			  	return real;
+			  	}
+			catch (NumberFormatException e2)
+				{
+				return null;				}			}
+		return null;
+		}
+	|
+	LOOKAHEAD(<T_LENGTH> <LPAREN> IdentExpr() <RPAREN>)
+	<T_LENGTH> <LPAREN> identExpr = IdentExpr() <RPAREN>
+		{
+		Length length = new Length(identExpr);
+		return length;
+		}
+	}
+
+Expression Eat() :
+	{
+	Expression e1;
+	Expression e2;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	}
+	{
+	e1 = Eatf()
+		{
+		list.add(e1);
+		}
+	(
+	  LOOKAHEAD(<MULTIPLICATION> Eatf())
+	  <MULTIPLICATION> e2 = Eatf()
+		{
+		Expression exp1 = list.get(list.size() - 1);
+		Moltiplicazione moltiplicazione = new Moltiplicazione(exp1,e2);
+		list.add(moltiplicazione);
+		}
+	|
+	LOOKAHEAD(<DIVISION> Eatf())
+	<DIVISION> e2 = Eatf()
+		{
+		Expression exp2 = list.get(list.size() - 1);
+		Divisione divisione = new Divisione(exp2,e2);
+		list.add(divisione);
+		}
+	) *
+		{
+		Expression exp3 = list.get(list.size() - 1);
+		return exp3;
+		}
+	}
+
+Expression Ea() :
+	{
+	Expression e1;
+	Expression e2;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	}
+	{
+	e1 = Eat()
+		{
+		list.add(e1);
+		}
+	(
+	LOOKAHEAD(<ADDITION> Eat())
+	<ADDITION> e2 = Eat()
+		{
+		Expression exp1 = list.get(list.size() - 1);
+		Somma somma = new Somma(exp1,e2);
+		list.add(somma);
+		}
+	|
+	LOOKAHEAD(<SUBTRACTION> Eat())
+	<SUBTRACTION> e2 = Eat()
+		{
+		Expression exp2 = list.get(list.size() - 1);
+		Sottrazione sottrazione = new Sottrazione(exp2,e2);
+		list.add(sottrazione);
+		}
+	) *
+		{
+		Expression exp3 = list.get(list.size() - 1);
+		return exp3;
+		}
+	}
+
+Expression Ebt() :
+	{
+	Expression e1;
+	Expression e2;
+	Token t1;
+	}
+	{
+	t1 = <T_TRUE>
+		{
+		specificheAEmilia.Boolean b1 = new specificheAEmilia.Boolean(true);
+		return b1;
+		}
+	| 
+	t1 = <T_FALSE>
+		{
+		specificheAEmilia.Boolean b2 = new specificheAEmilia.Boolean(false);
+		return b2;
+		}
+	|
+	LOOKAHEAD(Ea() <LESS> Ea())
+	e1 = Ea() <LESS> e2 = Ea()
+		{
+		Minore minore = new Minore(e1,e2);
+		return minore;
+		}
+	|
+	LOOKAHEAD(Ea() <LE> Ea())
+	e1 = Ea() <LE> e2 = Ea()
+		{
+		MinoreUguale minoreUguale = new MinoreUguale(e1,e2);
+		return minoreUguale;
+		}
+	|
+	LOOKAHEAD(Ea() <GREATER> Ea())
+	e1 = Ea() <GREATER> e2 = Ea()
+		{
+		Maggiore maggiore = new Maggiore(e1,e2);
+		return maggiore;
+		}
+	|
+	LOOKAHEAD(Ea() <GE> Ea())
+	e1 = Ea() <GE> e2 = Ea()
+		{
+		MaggioreUguale maggioreUguale = new MaggioreUguale(e1,e2);
+		return maggioreUguale;
+		}
+	|
+	LOOKAHEAD(Ea() <EQUAL> Ea())
+	e1 = Ea() <EQUAL> e2 = Ea()
+		{
+		Equal equal = new Equal(e1,e2);
+		return equal;
+		}
+	|
+	LOOKAHEAD(Ea() <NE> Ea())
+	e1 = Ea() <NE> e2 = Ea()
+		{
+		Different different = new Different(e1,e2);
+		return different;
+		}
+	|
+	LOOKAHEAD(<LPAREN> Eb() <RPAREN>)
+	<LPAREN> e1 = Eb() <RPAREN>
+		{
+		return e1;
+		}
+	|
+	LOOKAHEAD(<EXCLAMATION> Ebt())
+	<EXCLAMATION> e1 = Ebt()
+		{
+		return e1;
+		} 
+	}
+
+Expression Eb() :
+	{
+	Expression e1;
+	Expression e2;
+	java.util.List<Expression> list = new java.util.ArrayList<Expression>();
+	}
+	{
+	e1 = Ebt()
+		{
+		list.add(e1);
+		}
+	(
+	 LOOKAHEAD(<AND> Ebt())
+	 <AND> e2 = Ebt()
+		{
+		Expression exp1 = list.get(list.size() - 1);
+		And and = new And(exp1,e2);
+		list.add(and);
+		}
+	|
+	LOOKAHEAD(<OR> Ebt())
+	<OR> e2 = Ebt()
+		{
+		Expression exp2 = list.get(list.size() - 1);		  
+		Or or = new Or(exp2,e2);
+		list.add(or);
+		}
+	) *
+		{
+		Expression exp3 = list.get(list.size() - 1);
+		return exp3;
+		}
+	}
+
+Expression E() :
+	{
+	Expression ris;
+	Expression expression;
+	IdentExpr identExpr;
+	Token t1;
+	Token t2;  
+	}
+	{
+	LOOKAHEAD(Ea(),		{		getToken(2).kind != LESS && getToken(2).kind != LE &&
+		getToken(2).kind != GREATER && getToken(2).kind != GE &&
+		getToken(2).kind != EQUAL && getToken(2).kind != NE		}	)
+	ris = Ea()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(Eb())
+	ris = Eb()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(El())
+	ris = El()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(Earr())
+	ris = Earr()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(Erecord())
+	ris = Erecord()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(<T_FIRST> <LPAREN> IdentExpr() <RPAREN>)
+	<T_FIRST> <LPAREN> identExpr = IdentExpr() <RPAREN>
+		{
+		ris = new First(identExpr);
+		return ris;
+		}
+	|
+	LOOKAHEAD(<T_READ> <LPAREN> E() <COMMA> IdentExpr() <RPAREN>)
+	<T_READ> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		ris = new Read(expression,identExpr);
+		return ris;  
+		}
+	|
+	LOOKAHEAD(<T_GET> <LPAREN> <T_ID > <COMMA > IdentExpr() <RPAREN>)
+	<T_GET> <LPAREN> t1 = <T_ID > <COMMA > identExpr = IdentExpr() <RPAREN>
+		{
+		ris = new Get(t1.image,identExpr);
+		return ris;
+		}         
+	}

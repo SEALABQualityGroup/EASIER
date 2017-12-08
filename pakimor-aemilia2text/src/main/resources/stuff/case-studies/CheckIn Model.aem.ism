@@ -1,0 +1,184 @@
+Integrated semantic model underlying BoA_CheckIn
+(the data variables are assigned concrete values in the local states):
+
+
+>> Global state 1:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num < Bus_MainSubSystem.SubS_buffer_size) -> <Bus_MainSubSystem.receive_identification, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num + 1), choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.forward_id, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), choice{<Bus_MainSubSystem.communicate_buffer_state!(Bus_MainSubSystem.InternalBuffer.customer_num), inf(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.receive_response, exp(Bus_MainSubSystem.BMMS_TG_rate)> . <Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)}}}
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 0
+
+	- Local state of TG:
+
+		<ThreeG_Network.receive_packet, exp(ThreeG_Network.BMMS_TG_rate)> . <ThreeG_Network.read_buffer_state?(ThreeG_Network.ThreeG_sender.customer_num), _(1, 1)> . <ThreeG_Network.checkInfo, exp(ThreeG_Network.TG_CS_communication_rate * (ThreeG_Network.ThreeG_sender.customer_num + 1))> . <ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <BMSS.receive_identification.1#CR.give_identification, exp(1.000000)>
+
+		- Derivative global state: 2
+
+
+>> Global state 2:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num < Bus_MainSubSystem.SubS_buffer_size) -> <Bus_MainSubSystem.receive_identification, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num + 1), choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.forward_id, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), choice{<Bus_MainSubSystem.communicate_buffer_state!(Bus_MainSubSystem.InternalBuffer.customer_num), inf(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.receive_response, exp(Bus_MainSubSystem.BMMS_TG_rate)> . <Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)}}}
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 1
+
+	- Local state of TG:
+
+		<ThreeG_Network.receive_packet, exp(ThreeG_Network.BMMS_TG_rate)> . <ThreeG_Network.read_buffer_state?(ThreeG_Network.ThreeG_sender.customer_num), _(1, 1)> . <ThreeG_Network.checkInfo, exp(ThreeG_Network.TG_CS_communication_rate * (ThreeG_Network.ThreeG_sender.customer_num + 1))> . <ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <BMSS.forward_id#TG.receive_packet, exp(4.500000)>
+
+		- Derivative global state: 3
+
+
+>> Global state 3:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num < Bus_MainSubSystem.SubS_buffer_size) -> <Bus_MainSubSystem.receive_identification, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num + 1), choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.forward_id, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), choice{<Bus_MainSubSystem.communicate_buffer_state!(Bus_MainSubSystem.InternalBuffer.customer_num), inf(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.receive_response, exp(Bus_MainSubSystem.BMMS_TG_rate)> . <Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)}}}
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 1
+
+	- Local state of TG:
+
+		<ThreeG_Network.read_buffer_state?(ThreeG_Network.ThreeG_sender.customer_num), _(1, 1)> . <ThreeG_Network.checkInfo, exp(ThreeG_Network.TG_CS_communication_rate * (ThreeG_Network.ThreeG_sender.customer_num + 1))> . <ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <BMSS.communicate_buffer_state#TG.read_buffer_state!(1), inf(1, 1)>
+
+		- Derivative global state: 4
+
+
+>> Global state 4:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num < Bus_MainSubSystem.SubS_buffer_size) -> <Bus_MainSubSystem.receive_identification, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num + 1), choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.forward_id, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), choice{<Bus_MainSubSystem.communicate_buffer_state!(Bus_MainSubSystem.InternalBuffer.customer_num), inf(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.receive_response, exp(Bus_MainSubSystem.BMMS_TG_rate)> . <Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)}}}
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 1
+
+	- Local state of TG:
+
+		<ThreeG_Network.checkInfo, exp(ThreeG_Network.TG_CS_communication_rate * (ThreeG_Network.ThreeG_sender.customer_num + 1))> . <ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where the following concrete values are assigned to the data variables:
+
+		TG.ThreeG_sender.customer_num := 1
+
+	- Transition:
+
+		- Action:		   <TG.checkInfo, exp(1.333200)>
+
+		- Derivative global state: 5
+
+
+>> Global state 5:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num < Bus_MainSubSystem.SubS_buffer_size) -> <Bus_MainSubSystem.receive_identification, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num + 1), choice{cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.forward_id, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), choice{<Bus_MainSubSystem.communicate_buffer_state!(Bus_MainSubSystem.InternalBuffer.customer_num), inf(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num), cond(Bus_MainSubSystem.InternalBuffer.customer_num > 0) -> <Bus_MainSubSystem.receive_response, exp(Bus_MainSubSystem.BMMS_TG_rate)> . <Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)}}}
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 1
+
+	- Local state of TG:
+
+		<ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where the following concrete values are assigned to the data variables:
+
+		TG.ThreeG_sender.customer_num := 1
+
+	- Transition:
+
+		- Action:		   <BMSS.receive_response#TG.send_response_packet, exp(4.500000)>
+
+		- Derivative global state: 6
+
+
+>> Global state 6:
+
+	- Local state of CR:
+
+		choice{<Card_Reader.give_identification, exp(Card_Reader.lambda)> . Card_Reader.CheckIn(), <Card_Reader.get_response, exp(Card_Reader.CR_BMSS_rate)> . Card_Reader.CheckIn()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of BMSS:
+
+		<Bus_MainSubSystem.give_response, _(1, 1)> . Bus_MainSubSystem.InternalBuffer(Bus_MainSubSystem.InternalBuffer.customer_num - 1)
+
+	  where the following concrete values are assigned to the data variables:
+
+		BMSS.InternalBuffer.customer_num := 1
+
+	- Local state of TG:
+
+		<ThreeG_Network.receive_packet, exp(ThreeG_Network.BMMS_TG_rate)> . <ThreeG_Network.read_buffer_state?(ThreeG_Network.ThreeG_sender.customer_num), _(1, 1)> . <ThreeG_Network.checkInfo, exp(ThreeG_Network.TG_CS_communication_rate * (ThreeG_Network.ThreeG_sender.customer_num + 1))> . <ThreeG_Network.send_response_packet, _(1, 1)> . ThreeG_Network.ThreeG_sender()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <CR.get_response#BMSS.give_response, exp(4.500000)>
+
+		- Derivative global state: 1
+
+
+>>>> 6 states (5 tangible, 1 vanishing, 0 open, 0 deadlocked)
+>>>> 6 transitions (6 observable, 0 invisible; 5 exp. timed, 1 immediate, 0 passive)

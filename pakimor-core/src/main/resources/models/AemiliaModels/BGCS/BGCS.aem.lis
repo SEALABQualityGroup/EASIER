@@ -1,0 +1,261 @@
+(1)	ARCHI_TYPE BGCS(
+(2)			   const weight change_prob := 0.7,
+(3)			   const rate net_rate := 1500,
+(4)			   const rate sec_rate := 300,
+(5)			   const rate gh_rate := 1000,
+(6)			   const rate db_rate := 2000,
+(7)			   const rate sensing_rate := 500,
+(8)			   const integer nb_sensors := 5,
+(9)			   const integer buffer_size := 10)
+(10)
+(11)
+(12)	ARCHI_ELEM_TYPES
+(13)
+(14)	    ELEM_TYPE APP_Type(const weight change_prob)
+(15)
+(16)			BEHAVIOR
+(17)
+(18)
+(19)				Start( void; void) =
+(20)						<generate_auth_req, inf> . <send_auth_req, inf> . <receive_auth_resp, _> . Authenticated()
+(21)
+(22)				Authenticated
+--->				            ^Error: unexpected character
+(22)				             ( void;
+--->				                   ^Resuming after: unexpected character (the above definition/declaration is illegal)
+(22)				                     void
+--->				                        ^Error: unexpected character
+(22)				                         ) =
+(23)						<generate_monitor_req, inf> . Monitor()
+(24)
+(25)				Monitor( void;
+--->				             ^Resuming after: unexpected character (the above definition/declaration is illegal)
+(25)				               void
+--->				                  ^Error: unexpected character
+(25)				                   ) =
+(26)						<send_monitor_req, inf> . <receive_monitor_resp, _> . choice
+(27)						{
+(28)							<change, inf (1, change_prob)> . Change(),
+(29)							<restart, inf (1, 1 - change_prob)> . Start()
+(30)						}
+(31)
+(32)				Change( void;
+--->				            ^Resuming after: unexpected character (the above definition/declaration is illegal)
+(32)				              void
+--->				                 ^Error: unexpected character
+(32)				                  ) =
+(33)						<send_change_req, inf> . Start()
+(34)
+(35)			INPUT_INTERACTIONS
+--->			                 ^Resuming after: unexpected character (the above section is illegal)
+(36)
+(37)				UNI receive_auth_resp;
+(38)				receive_monitor_resp
+(39)
+(40)			OUTPUT_INTERACTIONS
+(41)
+(42)				UNI send_auth_req;
+(43)				send_monitor_req;
+(44)				send_change_req
+(45)
+(46)	    ELEM_TYPE Net_Type(const rate net_rate)
+(47)
+(48)			BEHAVIOR
+(49)
+(50)
+(51)				Forward( void; void) =
+(52)						choice
+(53)						{
+(54)							<receive_auth_req, _> . <send_auth_req, exp(net_rate)> . Forward(),
+(55)							<receive_auth_resp, _> . <send_auth_resp, exp(net_rate)> . Forward(),
+(56)							<receive_monitor_req, _> . <send_monitor_req, exp(net_rate)> . Forward(),
+(57)							<receive_monitor_resp, _> . <send_monitor_resp, exp(net_rate)> . Forward(),
+(58)							<receive_change_req, _> . <send_change_req, exp(net_rate)> . Forward()
+(59)						}
+(60)
+(61)			INPUT_INTERACTIONS
+(62)
+(63)				UNI receive_auth_req;
+(64)				receive_auth_resp;
+(65)				receive_change_req;
+(66)				receive_monitor_req;
+(67)				receive_monitor_resp
+(68)
+(69)			OUTPUT_INTERACTIONS
+(70)
+(71)				UNI send_auth_req;
+(72)				send_auth_resp;
+(73)				send_change_req;
+(74)				send_monitor_req;
+(75)				send_monitor_resp
+(76)
+(77)	    ELEM_TYPE Sec_Type(const integer buffer_size,const rate sec_rate)
+(78)
+(79)			BEHAVIOR
+(80)
+(81)
+(82)				Authenticate(integer(0..buffer_size) buffer_index := 0; void) =
+(83)						choice
+(84)						{
+(85)							cond(buffer_index < buffer_size) ->		<receive_auth_req, _> . Authenticate(buffer_index + 1),
+(86)							cond(buffer_index > 0) ->		<send_account_req, inf> . <receive_account_resp, _> . <send_auth_resp, exp(sec_rate)> . Authenticate(buffer_index - 1)
+(87)						}
+(88)
+(89)			INPUT_INTERACTIONS
+(90)
+(91)				UNI receive_auth_req;
+(92)				receive_account_resp
+(93)
+(94)			OUTPUT_INTERACTIONS
+(95)
+(96)				UNI send_auth_resp;
+(97)				send_account_req
+(98)
+(99)	    ELEM_TYPE GH_Type(const rate gh_rate)
+(100)
+(101)			BEHAVIOR
+(102)
+(103)
+(104)				Start( void; void) =
+(105)						choice
+(106)						{
+(107)							<receive_monitor_req, _> . <send_data_req, exp(gh_rate)> . Wait(),
+(108)							<receive_change_req, _> . <handle_change_req, exp(gh_rate)> . Start()
+(109)						}
+(110)
+(111)				Wait
+--->				   ^Error: unexpected character
+(111)				    ( void;
+--->				          ^Resuming after: unexpected character (the above definition/declaration is illegal)
+(111)				            void
+--->				               ^Error: unexpected character
+(111)				                ) =
+(112)						<receive_data_resp, _> . <send_monitor_resp, exp(gh_rate)> . Start()
+(113)
+(114)			INPUT_INTERACTIONS
+--->			                 ^Resuming after: unexpected character (the above section is illegal)
+(115)
+(116)				UNI receive_monitor_req;
+(117)				receive_change_req;
+(118)				receive_data_resp
+(119)
+(120)			OUTPUT_INTERACTIONS
+(121)
+(122)				UNI send_monitor_resp;
+(123)				send_data_req
+(124)
+(125)	    ELEM_TYPE DB_Type(const rate db_rate)
+(126)
+(127)			BEHAVIOR
+(128)
+(129)
+(130)				Fetch( void; void) =
+(131)						choice
+(132)						{
+(133)							<receive_account_req, _> . <fetch_account, exp(db_rate)> . <send_account_resp, inf> . Fetch(),
+(134)							<receive_data_req, _> . <fetch_data, exp(db_rate)> . <send_data_resp, inf> . Fetch(),
+(135)							<receive_update_req, _> . <handle_update, exp(db_rate)> . Fetch()
+(136)						}
+(137)
+(138)			INPUT_INTERACTIONS
+(139)
+(140)				UNI receive_data_req;
+(141)				receive_account_req
+(142)				OR receive_update_req
+(143)
+(144)			OUTPUT_INTERACTIONS
+(145)
+(146)				UNI send_data_resp;
+(147)				send_account_resp
+(148)
+(149)	    ELEM_TYPE Sensor_Type(const rate sensing_rate)
+(150)
+(151)			BEHAVIOR
+(152)
+(153)
+(154)				Sensing( void; void) =
+(155)						<sense, exp(sensing_rate)> . <send_update_req, inf> . Sensing()
+(156)
+(157)			INPUT_INTERACTIONS
+(158)
+(159)				void
+(160)
+(161)			OUTPUT_INTERACTIONS
+(162)
+(163)				UNI send_update_req
+(164)
+(165)
+(166)
+(167)	ARCHI_TOPOLOGY
+(168)
+(169)	           ARCHI_ELEM_INSTANCES
+(170)						APP : APP_Type( change_prob);
+(171)	                    NET : Net_Type( net_rate);
+(172)	                    SEC : Sec_Type( buffer_size, sec_rate);
+(173)	                    GH : GH_Type( gh_rate);
+(174)	                    DB : DB_Type( db_rate);
+(175)	                    S[1] : Sensor_Type( sensing_rate);
+(176)	                    S[2] : Sensor_Type( sensing_rate);
+(177)	                    S[3] : Sensor_Type( sensing_rate);
+(178)	                    S[4] : Sensor_Type( sensing_rate);
+(179)	                    S[5] : Sensor_Type( sensing_rate)
+(180)
+(181)			   ARCHI_INTERACTIONS
+(182)						void
+(183)
+(184)			   ARCHI_ATTACHMENTS
+(185)						FROM APP.send_auth_req TO NET.receive_auth_req;
+(186)						FROM NET.send_auth_resp TO APP.receive_auth_resp;
+(187)						FROM APP.send_monitor_req
+--->						                        ^Error: the action type does not occur in the behavior
+(187)						                          TO NET.receive_monitor_req;
+(188)						FROM NET.send_monitor_resp TO APP.receive_monitor_resp
+--->						                                                     ^Error: the action type does not occur in the behavior
+(188)						                                                      ;
+(189)						FROM APP.send_change_req
+--->						                       ^Error: the action type does not occur in the behavior
+(189)						                         TO NET.receive_change_req;
+(190)						FROM NET.send_auth_req TO SEC.receive_auth_req;
+(191)						FROM SEC.send_auth_resp TO NET.receive_auth_resp;
+(192)						FROM NET.send_monitor_req TO GH.receive_monitor_req;
+(193)						FROM GH.send_monitor_resp
+--->						                        ^Error: the action type does not occur in the behavior
+(193)						                          TO NET.receive_monitor_resp;
+(194)						FROM NET.send_change_req TO GH.receive_change_req;
+(195)						FROM SEC.send_account_req TO DB.receive_account_req;
+(196)						FROM DB.send_account_resp TO SEC.receive_account_resp;
+(197)						FROM GH.send_data_req TO DB.receive_data_req;
+(198)						FROM DB.send_data_resp TO GH.receive_data_resp
+--->						                                             ^Error: the action type does not occur in the behavior
+(198)						                                              ;
+(199)						FROM S[1].send_update_req TO DB.receive_update_req;
+(200)						FROM S[2].send_update_req TO DB.receive_update_req;
+(201)						FROM S[3].send_update_req TO DB.receive_update_req;
+(202)						FROM S[4].send_update_req TO DB.receive_update_req;
+(203)						FROM S[5].send_update_req TO DB.receive_update_req
+(204)
+(205)	END
+(206)
+
+
+Error: the behavior identifier GH_Type.Wait is not defined
+
+Warning: the interaction NET.receive_change_req does not occur in any attachment
+
+Warning: the interaction NET.send_monitor_resp does not occur in any attachment
+
+Warning: the interaction NET.receive_monitor_resp does not occur in any attachment
+
+Warning: the interaction NET.receive_monitor_req does not occur in any attachment
+
+Warning: the interaction DB.send_data_resp does not occur in any attachment
+
+Warning: the formal parameter identifier nb_sensors is not used
+
+Error: the behavior identifier APP_Type.Authenticated is not defined
+
+Warning: the formal parameter identifier APP_Type.change_prob is not used
+
+
+>>>> 13 errors
+>>>> 7 warnings

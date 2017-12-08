@@ -1,0 +1,2901 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+%                                                               %
+\chapter{The \aemilia\ Compiler}
+%                                                               %
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Introduction}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TwoTowers~5.1 accepts only system models that are written in the architectural description language
+\aemilia~\cite{BDC,BBS} and are stored in {\tt .aem} files.
+
+An \aemilia\ description represents an architectural type~\cite{BCD,AB}. This is an intermediate abstraction
+between a single system and an architectural style~\cite{SG}. It consists of a family of systems sharing
+certain constraints on the observable behavior of the system components as well as on the system topology.
+As shown in Table~\ref{text}, the description of an architectural type in \aemilia\ starts with the name and
+the formal parameters of the architectural type and is composed of three sections.
+
+	\begin{table}[thb]
+
+\[\begin{array}{|ll|}
+\hline
+{\tt ARCHI\_TYPE} & \triangleleft \textit{name and formal parameters} \triangleright \\[0.2cm]
+\hspace*{0.4cm} {\tt ARCHI\_ELEM\_TYPES} & \\
+\hspace*{0.8cm} {\tt ELEM\_TYPE} & \triangleleft \textit{definition of the first architectural element type}
+\triangleright \\
+\hspace*{1.0cm} \vdots & \hspace{0.2cm} \vdots \\
+\hspace*{0.8cm} {\tt ELEM\_TYPE} & \triangleleft \textit{definition of the last architectural element type}
+\triangleright \\[0.2cm]
+\hspace*{0.4cm} {\tt ARCHI\_TOPOLOGY} & \\
+\hspace*{0.8cm} {\tt ARCHI\_ELEM\_INSTANCES} & \triangleleft \textit{declaration of the architectural
+element instances} \triangleright \\
+\hspace*{0.8cm} {\tt ARCHI\_INTERACTIONS} & \triangleleft \textit{declaration of the architectural
+interactions} \triangleright \\
+\hspace*{0.8cm} {\tt ARCHI\_ATTACHMENTS} & \triangleleft \textit{declaration of the architectural
+attachments} \triangleright \\[0.2cm]
+\hspace*{0.4cm} [{\tt BEHAV\_VARIATIONS} & \\
+\hspace*{0.8cm} [{\tt BEHAV\_HIDINGS} & \triangleleft \textit{declaration of the behavioral hidings}
+\triangleright] \\
+\hspace*{0.8cm} [{\tt BEHAV\_RESTRICTIONS} & \triangleleft \textit{declaration of the behavioral
+restrictions} \triangleright] \\
+\hspace*{0.8cm} [{\tt BEHAV\_RENAMINGS} & \triangleleft \textit{declaration of the behavioral renamings}
+\triangleright]] \\[0.2cm]
+{\tt END} & \\
+\hline
+\end{array}\]
+
+\caption{Structure of an \aemilia\ description}\label{text}
+
+	\end{table}
+
+The first section defines the types of components that characterize the system family. In order to include
+both the computational components and the connectors among them, these types are called architectural
+element types (AETs). The definition of an AET starts with its name and formal parameters and consists of
+the specification of its behavior and its interactions. The behavior has to be provided in the form of a
+list of sequential defining equations written in a verbose variant of the stochastic process algebra
+\empagr~\cite{Ber1,BB2,BB1}. The interactions are those \empagr\ action types occurring in the behavior that
+act as interfaces for the AET. Each of them has to be equipped with two qualifiers, which establish whether
+it is an input or output interaction and the multiplicity of the communications in which it can be involved,
+respectively. All the other action types occurring in the behavior are assumed to represent internal
+activities.
+
+The second section defines the architectural topology. This is specified in three steps. First we have the
+declaration of the instances of the AETs (called AEIs) with their actual parameters, which represent the
+real system components and connectors. Then we have the declaration of the architectural (as opposed to
+local) interactions, which are those interactions of the AEIs that act as interfaces for the whole system
+family. Finally we have the declaration of the directed architectural attachments among the local
+interactions of the AEIs, which make the AEIs communicate with each other.
+
+The third section, which is optional, defines some variations of the observable behavior of the system
+family. This is accomplished by declaring some action types occurring in the behavior of certain AEIs to be
+unobservable, prevented from occurring, or renamed into other action types.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Keywords and Comments}\label{keywords}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Here is the complete list of the keywords of \aemilia\ that can occur in {\tt .aem} files:
+
+	\begin{verbatim}
+  ARCHI_TYPE           BEHAV_HIDINGS      const     max         beta         first
+  ARCHI_ELEM_TYPES     HIDE               local     abs         normal       tail
+  ELEM_TYPE            INTERNALS          stop      ceil        pareto       concat
+  BEHAVIOR             INTERACTIONS       invisible floor       b_pareto     insert
+  INPUT_INTERACTIONS   ALL                exp       power       d_uniform    remove
+  OUTPUT_INTERACTIONS  BEHAV_RESTRICTIONS inf       epower      bernoulli    length
+  UNI                  RESTRICT           choice    loge        binomial     array
+  AND                  OBS_INTERNALS      cond      log10       poisson      array_cons
+  OR                   OBS_INTERACTIONS   void      sqrt        neg_binomial read
+  ARCHI_TOPOLOGY       ALL_OBSERVABLES    prio      sin         geometric    write
+  ARCHI_ELEM_INSTANCES BEHAV_RENAMINGS    rate      cos         pascal       record
+  ARCHI_INTERACTIONS   RENAME             weight    c_uniform   boolean      record_cons
+  ARCHI_ATTACHMENTS    AS                 integer   erlang      true         get
+  FROM                 FOR_ALL            real      gamma       false        put
+  TO                   IN                 mod       exponential list
+  BEHAV_VARIATIONS     END                min       weibull     list_cons
+	\end{verbatim}
+
+\noindent where the upper-case keywords in the two leftmost columns refer in general to the three sections
+of an \aemilia\ specification, while the lower-case keywords of the other four columns are used within
+specific parts of an \aemilia\ specification like the architectural type formal parameters, the AET formal
+parameters, the AET behavior, and the AEI actual parameters.
+
+In addition to the keywords above, there are the following keywords that belong to the companion languages
+and can occur in {\tt .evr}, {\tt .ltl}, {\tt .sec}, {\tt .sar}, {\tt .rew}, and {\tt .sim} files:
+
+	\begin{verbatim}
+      PROPERTY                   DEADLOCK_FREE                   OBS_NRESTR_INTERNALS
+      IS                         FOR_ALL_PATHS                   OBS_NRESTR_INTERACTIONS
+      TRUE                       FOR_ALL_PATHS_ALL_STATES_SAT    ALL_OBS_NRESTR
+      FALSE                      FOR_ALL_PATHS_SOME_STATE_SAT    MEASURE
+      NOT                        EXISTS_PATH                     ENABLED
+      EXISTS_TRANS               EXISTS_PATH_ALL_STATES_SAT      STATE_REWARD
+      EXISTS_WEAK_TRANS          EXISTS_PATH_SOME_STATE_SAT      TRANS_REWARD
+      FOR_ALL_TRANS              STRONG_UNTIL                    RUN_LENGTH_ON_EXEC
+      FOR_ALL_WEAK_TRANS         WEAK_UNTIL                      RUN_LENGTH
+      EXISTS_TRANS_SET           NEXT_STATE_SAT                  RUN_NUMBER
+      EXISTS_WEAK_TRANS_SET      ALL_FUTURE_STATES_SAT           MEAN
+      FOR_ALL_TRANS_SETS         SOME_FUTURE_STATE_SAT           VARIANCE
+      FOR_ALL_WEAK_TRANS_SETS    UNTIL                           DISTRIBUTION
+      LABEL                      RELEASES                        REWARD
+      MIN_AGGR_REA_PROB          PREV_STATE_SAT                  EXECUTED
+      MIN_AGGR_EXP_RATE          ALL_PAST_STATES_SAT             CUMULATIVE
+      MIN_AGGR_GEN_PROB          SOME_PAST_STATE_SAT             NON_CUMULATIVE
+      REACHED_STATE_SAT          SINCE                           DRAW
+      REACHED_STATES_SAT         TRIGGERED                       trc
+      MIN_FIXPOINT               HIGH_SECURITY                   FOR_ALL
+      MAX_FIXPOINT               LOW_SECURITY                    IN
+	\end{verbatim}
+
+\noindent where the keywords in the two leftmost columns (except for the last two keywords) are used within
+modal and temporal logic formulas, while the other keywords are used to express security levels as well as
+performance measures and simulation experiments.
+
+Comments can be inserted wherever in a {\tt .aem}, {\tt .ltl}, {\tt .sec}, {\tt .rew} or {\tt .sim} file. A
+comment starts with symbol {\tt \%} and terminates at the end of the line.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Identifiers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The user-defined identifiers denote architectural type names, AET names, AEI names, behavior names, action
+type names, formal parameter names, local variable names, record field names, property names, and measure
+names. Every user-defined identifier occurring in a {\tt .aem}, {\tt .ltl}, {\tt .sec}, {\tt .rew} or
+{\tt .sim} file must be a sequence of upper- and lower-case letters, decimal digits, and underscores, which
+starts with a letter and is different from any of the keywords listed in Sect.~\ref{keywords}. Every
+user-defined identifier occurring in a {\tt .ltl}, {\tt .sec}, {\tt .rew} or {\tt .sim} file must have
+previously occurred in a {\tt .aem} file, unless it denotes a property or a measure.
+
+Except for architectural type names, AET names, and AEI names, every user-defined identifier is internally
+represented (and consequently written to output files) through the dot notation by prefixing it with the
+name of the context in which it is defined/used, hence the user is free to give the same name to several
+entities in different contexts. The internal representation of the type of an action stemming from the
+synchronization of several actions is given by the concatenation of the internal representation of the types
+of the synchronizing actions, using symbol {\tt \#} as a separator.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Data Types, Operators, and Expressions}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we provide the syntax for typed identifier declaration and expressions, we define the value
+domains for the data types available in \aemilia, and we introduce the related operators by specifying their
+precedence and associativity whenever necessary. In order to describe the syntax, we adopt the BNF~notation,
+with terminal symbols enclosed within double quotes, non-terminal symbols enclosed within angular
+parentheses, and optional parts enclosed within square brackets.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Typed Identifier Declarations and Expressions}\label{id_expr}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A typed identifier occurring in a {\tt .aem} file represents a constant formal parameter of the
+architectural type or one of its AETs, a variable formal parameter or a local variable of a behavior, or an
+action priority, rate, or weight. A typed identifier can be declared within the header of an architectural
+type, AET, or behavior in the following C-like way:
+
+	\begin{verbatim}
+    <data_type> <identifier>
+	\end{verbatim}
+
+\noindent with {\tt <data\_type>} being defined by:
+
+	\begin{verbatim}
+       <data_type> ::= <normal_type>
+                    |  <special_type>
+     <normal_type> ::= "integer"
+                    |  "integer" "(" <expr> ".." <expr> ")"
+                    |  "real"
+                    |  "boolean"
+                    |  "list" "(" <normal_type> ")"
+                    |  "array" "(" <expr> "," <normal_type> ")"
+                    |  "record" "(" <field_decl_sequence> ")"
+    <special_type> ::= "prio"
+                    |  "rate"
+                    |  "weight"
+	\end{verbatim}
+
+An expression -- denoted by {\tt <expr>} in the following -- is composed of atomic elements, given by typed
+identifiers, numeric constants, and truth values, possibly combined through the available operators. The
+type of an expression is determined by the type of its atomic elements and the codomain of the operators
+occurring in it, while the order in which the infix operators have to be applied to evaluate the expression
+is given by their precedence and associativity. The order can be altered using parentheses {\tt ( )}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Integers, Bounded Integers, and Reals}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt integer} denotes the set of integer numbers that can be represented in the used computer
+according to the ANSI~C standard. A special case is given by the bounded integer set defined as follows:
+
+	\begin{verbatim}
+    "integer" "(" <expr> ".." <expr> ")"
+	\end{verbatim}
+
+\noindent which denotes the set of integers between the value of the first expression and the value of the
+second expression. Both expressions must be integer valued, free of undeclared identifiers, and free of
+invocations to pseudo-random number generators. Moreover, the value of the first expression cannot be
+greater than the value of the second expression.
+
+The type {\tt real} denotes the set of real numbers in fixed-point notation that can be represented in the
+used computer according to the ANSI~C standard.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Arithmetical Operators}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following four binary arithmetical operators are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= <expr> "+" <expr>
+            |  <expr> "-" <expr>
+            |  <expr> "*" <expr>
+            |  <expr> "/" <expr>
+	\end{verbatim}
+
+\noindent with the division requiring the second operand to be different from zero and always returning a
+real number. All the operators above are left associative, with the multiplicative ones taking precedence
+over the additive ones. The unary {\tt -} operator is not explicitly available as its effect can be achieved
+through a multiplication by {\tt -1}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Relational Operators}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following six binary relational operators are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= <expr> "=" <expr>
+            |  <expr> "!=" <expr>
+            |  <expr> "<" <expr>
+            |  <expr> "<=" <expr>
+            |  <expr> ">" <expr>
+            |  <expr> ">=" <expr>
+	\end{verbatim}
+
+\noindent All of them are non-associative. The arithmetical operators take precedence over them.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Mathematical Functions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following thirteen mathematical functions are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= "mod" "(" <expr> "," <expr> ")"
+            |  "abs" "(" <expr> ")"
+            |  "ceil" "(" <expr> ")"
+            |  "floor" "(" <expr> ")"
+            |  "min" "(" <expr> "," <expr> ")"
+            |  "max" "(" <expr> "," <expr> ")"
+            |  "power" "(" <expr> "," <expr> ")"
+            |  "epower" "(" <expr> ")"
+            |  "loge" "(" <expr> ")"
+            |  "log10" "(" <expr> ")"
+            |  "sqrt" "(" <expr> ")"
+            |  "sin" "(" <expr> ")"
+            |  "cos" "(" <expr> ")"
+	\end{verbatim}
+
+\noindent where:
+
+	\begin{itemize}
+
+\item {\tt mod} computes the modulus of its first argument with respect to its second argument. Both
+arguments must be integer, with the second one greater than zero.
+
+\item {\tt abs} computes the absolute value of its argument.
+
+\item {\tt ceil} (resp.\ {\tt floor}) computes the smallest (resp.\ greatest) integer greater (resp.\
+smaller) than or equal to its argument.
+
+\item {\tt min} (resp.\ {\tt max}) computes the minimum (resp.\ maximum) of its two arguments.
+
+\item {\tt power} computes the power of its first argument raised to its second argument. It cannot be
+applied to a pair of arguments such that the first one is zero and the second one is not positive, or the
+first one is negative and the second one is real.
+
+\item {\tt epower} computes the power of $e$ raised to its argument.
+
+\item {\tt loge} (resp.\ {\tt log10}) computes the natural (resp.\ base-10) logarithm of its argument, which
+must be greater than zero.
+
+\item {\tt sqrt} computes the square root of its argument, which cannot be negative.
+
+\item {\tt sin} (resp.\ {\tt cos}) computes the sine (resp.\ cosine) of its argument expressed in radians.
+
+	\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Pseudo-random Number Generators}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following sixteen pseudo-random number generators~\cite{Jai} are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= "c_uniform" "(" <expr> "," <expr> ")"
+            |  "erlang" "(" <expr> "," <expr> ")"
+            |  "gamma" "(" <expr> "," <expr> ")"
+            |  "exponential" "(" <expr> ")"
+            |  "weibull" "(" <expr> "," <expr> ")"
+            |  "beta" "(" <expr> "," <expr> ")"
+            |  "normal" "(" <expr> "," <expr> ")"
+            |  "pareto" "(" <expr> ")"
+            |  "b_pareto" "(" <expr> "," <expr> "," <expr> ")"
+            |  "d_uniform" "(" <expr> "," <expr> ")"
+            |  "bernoulli" "(" <expr> "," <expr> "," <expr> ")"
+            |  "binomial" "(" <expr> "," <expr> ")"
+            |  "poisson" "(" <expr> ")"
+            |  "neg_binomial" "(" <expr> "," <expr> ")"
+            |  "geometric" "(" <expr> ")"
+            |  "pascal" "(" <expr> "," <expr> ")"
+	\end{verbatim}
+
+\noindent where:
+
+	\begin{itemize}
+
+\item {\tt c\_uniform} generates a random number following a continuous uniform distribution between its two
+arguments, with the second one greater than the first one:
+\cws{10}{18}{\ms{pdf}_{\tt c\_uniform}(x) = {1 \over {\tt expr2} - {\tt expr1}} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} {\tt expr1} \le x \le {\tt expr2}}
+
+\item {\tt erlang} generates a random number following an Erlang distribution with rate parameter given by
+its first argument, which must be greater than zero, and shape parameter given by its second argument, which
+cannot be less than one:
+\cws{10}{18}{\ms{pdf}_{\tt erlang}(x) = {x^{{\tt expr2} - 1} \cdot e^{- {\tt expr1} \cdot x} \over ({\tt
+expr2} - 1)! \cdot (1 / {\tt expr1})^{\tt expr2}} \hspace{0.6cm} {\tt for} \hspace{0.2cm} x \ge 0}
+
+\item {\tt gamma} generates a random number following a gamma distribution with rate parameter given by its
+first argument, which must be greater than zero, and shape parameter given by its second argument, which
+must be greater than zero:
+\cws{10}{18}{\ms{pdf}_{\tt gamma}(x) = {({\tt expr1} \cdot x)^{{\tt expr2} - 1} \cdot e^{- {\tt expr1} \cdot
+x} \over (1 / {\tt expr1}) \cdot \Gamma({\tt expr2})} \hspace{0.6cm} {\tt for} \hspace{0.2cm} x \ge 0,
+\hspace{0.2cm} {\tt where} \hspace{0.2cm} \Gamma(y) = \int_{0}^{\infty} z^{y - 1} \cdot e^{-z} \ms{dz}}
+
+\item {\tt exponential} generates a random number following an exponential distribution with rate parameter
+given by its argument, which must be greater than zero:
+\cws{12}{20}{\ms{pdf}_{\tt exponential}(x) = {\tt expr} \cdot e^{- {\tt expr} \cdot x} \hspace{0.6cm}
+{\tt for} \hspace{0.2cm} x \ge 0}
+
+\item {\tt weibull} generates a random number following a Weibull distribution with rate parameter given by
+its first argument, which must be greater than zero, and shape parameter given by its second argument, which
+must be greater than zero:
+\cws{10}{18}{\ms{pdf}_{\tt weibull}(x) = {{\tt expr2} \cdot x^{{\tt expr2} - 1} \over (1 /
+{\tt expr1})^{\tt expr2}} \cdot e^{- ({\tt expr1} \cdot x)^{\tt expr2}} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} x \ge 0}
+
+\item {\tt beta} generates a random number following a beta distribution with shape parameters given by its
+two arguments, which must be greater than zero:
+\cws{10}{18}{\ms{pdf}_{\tt beta}(x) = {x^{{\tt expr1} - 1} \cdot (1 - x)^{{\tt expr2} - 1} \over
+\beta({\tt expr1}, {\tt expr2})} \hspace{0.6cm} {\tt for} \hspace{0.2cm} 0 \le x \le 1, \hspace{0.2cm}
+{\tt where} \hspace{0.2cm} \beta(y, z) = {\Gamma(y) \cdot \Gamma(z) \over \Gamma(y + z)}}
+
+\item {\tt normal} generates a random number following a normal distribution with mean given by its first
+argument and standard deviation given by its second argument, which must be greater than zero:
+\cws{10}{18}{\ms{pdf}_{\tt normal}(x) = {1 \over {\tt expr2} \cdot \sqrt{2 \cdot \pi}} \cdot e^{-{(x -
+{\tt expr1})^{2} \over 2 \cdot {\tt expr2}^{2}}}}
+
+\item {\tt pareto} generates a random number following a Pareto distribution with shape parameter given by
+its argument, which must be greater than zero:
+\cws{12}{20}{\ms{pdf}_{\tt pareto}(x) = {\tt expr} \cdot x^{- ({\tt expr} + 1)} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} x \ge 1}
+
+\item {\tt b\_pareto} generates a random number following a Pareto distribution with shape parameter given
+by its first argument, which must be greater than zero, bounded between its other two arguments, with the
+second argument not less than one but less than the third argument:
+\cws{10}{18}{\ms{pdf}_{\tt b\_pareto}(x) = {{\tt expr1} \cdot {\tt expr2}^{\tt expr1} \over 1 - ({\tt expr2}
+/ {\tt expr3})^{\tt expr1}} \cdot x^{- ({\tt expr1} + 1)} \hspace{0.6cm} {\tt for} \hspace{0.2cm}
+{\tt expr2} \le x \le {\tt expr3}}
+
+\item {\tt d\_uniform} generates a random number following a discrete uniform distribution between its two
+arguments, which must be integer with the second one greater than the first one:
+\cws{10}{18}{\ms{pmf}_{\tt d\_uniform}(x) = {1 \over {\tt expr2} - {\tt expr1} + 1} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} {\tt expr1} \le x \le {\tt expr2}}
+
+\item {\tt bernoulli} generates a random number following a Bernoulli distribution where the two possible
+values are given by its first two arguments and the probability of choosing the first value is given by its
+third argument, which must be in the open interval between zero and one:
+\cws{12}{20}{\ms{pmf}_{\tt bernoulli}({\tt expr1}) = {\tt expr3} \hspace{0.2cm} {\tt and} \hspace{0.2cm}
+\ms{pmf}_{\tt bernoulli}({\tt expr2}) = 1 - {\tt expr3}}
+
+\item {\tt binomial} generates a random number following a binomial distribution with probability of success
+given by its first argument, which must be in the open interval between zero and one, and number of trials
+given by its second argument, which must be an integer not less than one:
+\cws{10}{18}{\ms{pmf}_{\tt binomial}(x) = \left( \begin{array}{c} {\tt expr2} \\ x \end{array} \right) \cdot
+{\tt expr1}^{x} \cdot (1 - {\tt expr1})^{{\tt expr2} - x} \hspace{0.6cm} {\tt for} \hspace{0.2cm} 0 \le x
+\le {\tt expr2}}
+
+\item {\tt poisson} generates a random number following a Poisson distribution with mean given by its
+argument, which must be greater than zero:
+\cws{10}{18}{\ms{pmf}_{\tt poisson}(x) = {{\tt expr}^{x} \over x!} \cdot e^{-{\tt expr}} \hspace{0.6cm}
+{\tt for} \hspace{0.2cm} x \ge 0}
+
+\item {\tt neg\_binomial} generates a random number following a negative binomial distribution with
+probability of success given by its first argument, which must be in the open interval between zero and one,
+and number of successes given by its second argument, which must be an integer not less than one:
+\cws{10}{18}{\ms{pmf}_{\tt neg\_binomial}(x) = \left( \begin{array}{c} {\tt expr2} + x - 1 \\ {\tt expr2} -
+1 \end{array} \right) \cdot {\tt expr1}^{\tt expr2} \cdot (1 - {\tt expr1})^{x} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} x \ge 0}
+
+\item {\tt geometric} generates a random number following a geometric distribution with probability of
+success given by its argument, which must be in the open interval between zero and one:
+\cws{12}{20}{\ms{pmf}_{\tt geometric}(x) = {\tt expr} \cdot (1 - {\tt expr})^{x - 1} \hspace{0.6cm}
+{\tt for} \hspace{0.2cm} x \ge 1}
+
+\item {\tt pascal} generates a random number following a Pascal distribution with probability of success
+given by its first argument, which must be in the open interval between zero and one, and number of
+successes given by its second argument, which must be an integer not less than one:
+\cws{10}{18}{\ms{pmf}_{\tt pascal}(x) = \left( \begin{array}{c} x - 1 \\ {\tt expr2} - 1 \end{array} \right)
+\cdot {\tt expr1}^{\tt expr2} \cdot (1 - {\tt expr1})^{x - {\tt expr2}} \hspace{0.6cm} {\tt for}
+\hspace{0.2cm} x \ge {\tt expr2}}
+
+	\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Booleans}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt boolean} denotes the set composed of the two truth values {\tt true} and {\tt false}. The
+following three logical operators are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= <expr> "&&" <expr>
+            |  <expr> "||" <expr>
+            |  "!" <expr>
+	\end{verbatim}
+
+\noindent with the logical negation ({\tt !}) being right associative and taking precedence over the logical
+conjunction ({\tt \&\&}) and the logical disjunction ({\tt ||}), which are left associative and subject to
+short-circuitation. The relational operators and the arithmetical operators take precedence over the logical
+ones.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Lists}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt list}, which denotes a possibly empty, variable-length sequence of elements of the same type,
+is defined as follows:
+
+	\begin{verbatim}
+    "list" "(" <normal_type> ")"
+	\end{verbatim}
+
+\noindent where {\tt <normal\_type>} is the type of its elements.
+
+The following seven list-related functions are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= "list_cons" "(" <pe_expr_sequence> ")"
+            |  "first" "(" <expr> ")"
+            |  "tail" "(" <expr> ")"
+            |  "concat" "(" <expr> "," <expr> ")"
+            |  "insert" "(" <expr> "," <expr> ")"
+            |  "remove" "(" <expr> "," <expr> ")"
+            |  "length" "(" <expr> ")"
+	\end{verbatim}
+
+\noindent where {\tt <pe\_expr\_sequence>} is a possibly empty sequence of comma-separated expressions and:
+
+	\begin{itemize}
+
+\item {\tt list\_cons} constructs a possibly empty list composed of the values of the expressions in its
+argument, which must be of the same type.
+
+\item {\tt first} returns the first element of its argument, which must be a non-empty list.
+
+\item {\tt tail} returns what follows the first element of its argument, which must be a list.
+
+\item {\tt concat} concatenates its arguments, which must be two lists whose elements are of the same type.
+
+\item {\tt insert} inserts the value of its first argument into its second argument, which must be a list
+whose elements are of the same type as the first argument. The position at which the insertion takes place
+is established according to the lexicographical order of the elements.
+
+\item {\tt remove} removes the value of the element whose position is given by its first argument, which
+must be an integer not less than one, from its second argument, which must be a list with sufficiently many
+elements.
+
+\item {\tt length} computes the number of elements of its argument, which must be a list.
+
+	\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Arrays}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt array}, which denotes a non-empty, fixed-length sequence of elements of the same type, is
+defined as follows:
+
+	\begin{verbatim}
+    "array" "(" <expr> "," <normal_type> ")"
+	\end{verbatim}
+
+\noindent where {\tt <expr>} is its length and {\tt <normal\_type>} is the type of its elements. The array
+length expression must be integer valued, free of undeclared identifiers, free of invocations to
+pseudo-random number generators, and not less than one.
+
+The following three array-related functions are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= "array_cons" "(" <expr_sequence> ")"
+            |  "read" "(" <expr> "," <expr> ")"
+            |  "write" "(" <expr> "," <expr> "," <expr> ")"
+	\end{verbatim}
+
+\noindent where {\tt <expr\_sequence>} is a non-empty sequence of comma-separated expressions and:
+
+	\begin{itemize}
+
+\item {\tt array\_cons} constructs an array composed of the values of the expressions in its argument, which
+must be of the same type.
+
+\item {\tt read} reads from its second argument, which must be an array with sufficiently many elements, the
+value of the element indexed by its first argument, which must be an integer between zero and the length of
+the second argument decremented by one.
+
+\item {\tt write} writes to its third argument, which must be an array with sufficiently many elements of
+the same type as the second argument, the value of its second argument in the position indexed by its first
+argument, which must be an integer between zero and the length of the third argument decremented by one.
+
+	\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Records}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt record}, which denotes a non-empty, fixed-length sequence of named elements of possibly
+different types called fields, is defined as follows:
+
+	\begin{verbatim}
+    "record" "(" <field_decl_sequence> ")"
+	\end{verbatim}
+
+\noindent where {\tt <field\_decl\_sequence>} is a non-empty sequence of comma-separated field declarations,
+each of the form defined in Sect.~\ref{id_expr}.
+
+The following three record-related functions are available in \aemilia:
+
+	\begin{verbatim}
+    <expr> ::= "record_cons" "(" <expr_sequence> ")"
+            |  "get" "(" <identifier> "," <expr> ")"
+            |  "put" "(" <identifier> "," <expr> "," <expr> ")"
+	\end{verbatim}
+
+\noindent where {\tt <expr\_sequence>} is a non-empty sequence of comma-separated expressions and:
+
+	\begin{itemize}
+
+\item {\tt record\_cons} constructs a record composed of the values of the expressions in its argument.
+
+\item {\tt get} gets from its second argument, which must be a record, the value of the field whose
+identifier is given by its first argument, which must belong to the second argument.
+
+\item {\tt put} puts into its third argument, which must be a record, the value of its second argument in
+the field whose identifier is given by its first argument, which must belong to the third argument must and
+be of the same type as the second argument.
+
+	\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Priorities, Rates, and Weights}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The type {\tt prio} denotes the set of immediate and passive action priorities, which coincides with the set
+of positive integers.
+
+The type {\tt rate} denotes the set of exponentially timed action rates, which coincides with the set of
+positive reals.
+
+The type {\tt weight} denotes the set of immediate and passive action weights, which coincides with the set
+of positive reals.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Architectural Type Header}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The architectural type header at the beginning of an \aemilia\ specification has the following syntax:
+
+	\begin{verbatim}
+    "ARCHI_TYPE" <identifier> "(" <init_const_formal_par_decl_sequence> ")"
+	\end{verbatim}
+
+\noindent where {\tt <identifier>} is the name of the architectural type and
+{\tt <init\_const\_formal\_par\_decl\_sequence>} is either {\tt void} or a non-empty sequence of
+comma-separated declarations of initialized constant formal parameters, each of the following form:
+
+	\begin{verbatim}
+    "const" <data_type> <identifier> ":=" <expr>
+	\end{verbatim}
+
+A constant formal parameter represents a formal parameter whose value, which stems in this case from the
+evaluation of the assigned expression, cannot change. The assigned expression must be of the same type as
+the identifier, free of undeclared identifiers, and free of invocations to pseudo-random number generators.
+As a consequence, the only identifiers that can occur in the assigned expression are those for the preceding
+constant formal parameters declared in the architectural type header.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Architectural Element Types}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The first section of an \aemilia\ specification starts with the keyword {\tt ARCHI\_ELEM\_TYPES} and is
+composed of a non-empty sequence of AET definitions, each of the following form:
+
+	\begin{verbatim}
+    <AET_header> <AET_behavior> <AET_interactions>
+	\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{AET Header}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Similarly to the architectural type header, the header of an AET has the following syntax:
+
+	\begin{verbatim}
+    "ELEM_TYPE" <identifier> "(" <const_formal_par_decl_sequence> ")"
+	\end{verbatim}
+
+\noindent where {\tt <identifier>} is the name of the AET and {\tt <const\_formal\_par\_decl\_sequence>} is
+either {\tt void} or a non-empty sequence of comma-separated declarations of constant formal parameters,
+each of the following form:
+
+	\begin{verbatim}
+    "const" <data_type> <identifier>
+	\end{verbatim}
+
+\noindent The value of each such formal constant parameter is defined upon declaration of the instances of
+the AET in the architectural topology section.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{AET Behavior: \empagr\ Operators and Actions}\label{aet_behavior}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The behavior of an AET has the following syntax:
+
+	\begin{verbatim}
+    "BEHAVIOR" <behav_equation_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <behav\_equation\_sequence>} is a non-empty sequence of semicolon-separated \empagr\
+behavioral equations, each of the following form:
+
+	\begin{verbatim}
+    <behav_equation_header> "=" <process_term>
+	\end{verbatim}
+
+\noindent The first behavioral equation in the sequence represents the initial behavior for the AET. Each of
+the other possible behavioral equations in the sequence must describe a behavior that can be directly or
+indirectly invoked by the initial one.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Behavioral Equation Header}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The header of the first behavioral equation has the following syntax:
+
+	\begin{verbatim}
+    <identifier> "(" <init_var_formal_par_decl_sequence> ";" <local_var_decl_sequence> ")"
+	\end{verbatim}
+
+\noindent whereas the header of any subsequent behavioral equation has the following syntax:
+
+	\begin{verbatim}
+    <identifier> "(" <var_formal_par_decl_sequence> ";" <local_var_decl_sequence> ")"
+	\end{verbatim}
+
+\noindent In both headers, {\tt <identifier>} is the name of the behavioral equation, while
+{\tt <local\_var\_decl\_sequence>} is either {\tt void} or a non-empty sequence of comma-separated
+declarations of local variables, each of the following form:
+
+	\begin{verbatim}
+    "local" <normal_type> <identifier>
+	\end{verbatim}
+
+A local variable is typically used to store one of the values received when synchronizing an input action of
+an instance of the AET with an output action of another AEI.
+
+In the header of the first behavioral equation, {\tt <init\_var\_formal\_par\_decl\_sequence>} is either
+{\tt void} or a non-empty sequence of comma-separated declarations of initialized variable formal
+parameters, each of the following form:
+
+	\begin{verbatim}
+    <normal_type> <identifier> ":=" <expr>
+	\end{verbatim}
+
+In the header of the subsequent behavioral equations, {\tt <var\_formal\_par\_decl\_sequence>} is either
+{\tt void} or a non-empty sequence of comma-separated declarations of variable formal parameters, each of
+the following form:
+
+	\begin{verbatim}
+    <normal_type> <identifier>
+	\end{verbatim}
+
+A variable formal parameter represents a formal parameter whose value can change and, in the case of the
+first behavioral equation, is initialized by evaluating the assigned expression. The assigned expression
+must be of the same type as the identifier and free of undeclared identifiers. The only identifiers that can
+occur in the assigned expression are those for the constant formal parameters declared in the AET header. No
+initializing expression is needed for the variable formal parameters of each subsequent behavioral equation,
+as they will be assigned the values of the actual parameters contained in the invocations of the related
+behavioral equation.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Process Terms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The syntax for the process term following the behavioral equation header is a verbose variant of the syntax
+for the \empagr\ dynamic operators -- stop, action prefix, alternative composition, and behavioral equation
+invocation:
+
+	\begin{verbatim}
+      <process_term> ::= "stop"
+                      |  <action> "." <process_term_1>
+                      |  "choice" "{" <process_term_2_sequence> "}"
+    <process_term_1> ::= <process_term>
+                      |  <identifier> "(" <actual_par_sequence> ")"
+    <process_term_2> ::= ["cond" "(" <expr> ")" "->"] <process_term>
+	\end{verbatim}
+
+Constant {\tt stop} represents the process term that cannot execute any action. The action prefix operator
+({\tt .}) represents a process term that can execute an action given by its first operand and then behaves
+as the process term given by its second operand. The alternative composition operator ({\tt choice})
+represents a process term that behaves as one of the elements of {\tt <process\_term\_2\_sequence>}, which
+is a sequence of at least two comma-separated process terms, each possibly preceded by a boolean expression
+establishing the condition under which it is available. The behavioral equation invocation represents a
+process term that behaves as the behavioral equation whose name is given by {\tt <identifier>}, when passing
+a possibly empty sequence of expressions represented by {\tt <actual\_par\_sequence>}. The actual parameters
+must match by number, order and type with the variable formal parameters of the invoked behavioral equation.
+Note that a behavioral equation invocation can occur only immediately after an action prefix operator.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Actions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The syntax for an action occurring in the process term of a behavioral equation is as follows:
+
+	\begin{verbatim}
+         <action> ::= "<" <action_type> "," <action_rate> ">"
+    <action_type> ::= <identifier>
+                   |  <identifier> "?" "(" <local_var_sequence> ")"
+                   |  <identifier> "!" "(" <expr_sequence> ")"
+    <action_rate> ::= "exp" "(" <expr> ")"
+                   |  "inf" "(" <expr> "," <expr> ")"
+                   |  "inf"
+                   |  "_" "(" <expr> "," <expr> ")"
+                   |  "_"
+	\end{verbatim}
+
+The action type is simply an identifier (unstructured action), an identifier followed by symbol {\tt ?}\ and
+a non-empty sequence of local variables (input action), or an identifier followed by symbol {\tt !}\ and a
+non-empty sequence of expressions (output action). Whenever a local variable occurs in an expression within
+an output action, a behavioral equation invocation, or a boolean guard without previously occurring in an
+input action, it evaluates to zero, false, empty list, null array, or null record depending on its type.
+
+The rate of an exponentially timed action ({\tt exp}) is given by an expression, whose value must be a
+positive real, that is interpreted as the rate of the exponentially distributed random variable describing
+the action duration. The rate of an immediate action ({\tt inf}) is expressed through a priority, given by
+an expression whose value must be an integer not less than one, and a weight, given by an expression whose
+value must be a positive real. The rate of a passive action ({\tt \_}) is again expressed through two
+expressions denoting a priority and a weight, respectively. If not specified, the values of the priority and
+the weight of an immediate or passive action are assumed to be one.
+
+There are three constraints to which the actions are subject. First, within the behavior of an AET, the
+actions in which an action type identifier occur must all be unstructured, input with the same number,
+order, and type of local variables, or output with the same number, order, and type of expressions. Second,
+within the behavior of an AET, the actions in which an action type identifier occur must all be
+exponentially timed, immediate with the same priority, or passive with the same priority. Third, every input
+action must be passive.
+
+If several actions are simultaneously enabled in the current AET behavior, as in the case of the alternative
+composition, the one to be executed is selected as follows~\cite{BB2}. If all the considered actions are
+exponentially timed, then the race policy applies: each considered action is selected with a probability
+proportional to its rate. If some of the considered actions are immediate, then such immediate actions take
+precedence over the exponentially timed ones and the generative preselection policy applies: each considered
+immediate action with the highest priority is selected with a probability proportional to its weight. If
+some of the considered actions are passive, then the reactive preselection policy applies to them: for every
+action type, each considered passive action of that type with the highest priority level is selected with a
+probability proportional to its weight (the choice among passive actions of different types is
+nondeterministic).
+
+An action of an AEI can synchronize with an action of another AEI, possibly exchanging values. Besides other
+constraints that we shall see in Sect.~\ref{attachments}, in accordance with the generative-reactive
+paradigm~\cite{BB2} it must be the case that at most one of the two actions is not passive, with both
+actions being unstructured, or both being structured with at most one of them being an output action and
+their parameters matching by number, order, and type. If both actions are passive, then the resulting
+synchronizing action is passive as well, otherwise the rate of the resulting action is the (possibly
+normalized) rate of the involved non-passive action. The identifier of the resulting action type is
+internally represented by concatenating the two original identifiers, using symbol {\tt \#} as a separator.
+If one of the two involved actions is an output action, then the resulting action is an output action with
+the same non-empty sequence of expressions as the original output action. If instead both involved actions
+are input actions, then the resulting action is an input action with the same non-empty sequence of local
+variables as one of the two original input actions.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{AET Interactions}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The identifiers of the types of the actions occurring in the behavior of an AET through which the instances
+of that AET can communicate with other AEIs are declared to be interactions as follows:
+
+	\begin{verbatim}
+    "INPUT_INTERACTIONS" <input_interactions> "OUTPUT_INTERACTIONS" <output_interactions>
+	\end{verbatim}
+
+Every interaction has two qualifiers associated with it. First, an interaction is classified to be either
+an input or an output interaction based on its communication direction, i.e.\ whether it tries to establish
+a communication or is willing to be involved in a communication. In the particular case of an interaction
+given by an action type identifier occurring in input (resp.\ output) actions, the action type must be
+declared to be an input (resp.\ output) interaction.
+
+Second, an input or output interaction is classified to be a uni-, and- or or-interaction depending on the
+multiplicity of the communications in which it can be involved. Syntactically speaking, each of
+{\tt <input\_interactions>} and {\tt <output\_interactions>} either is {\tt void} or has the following
+format:
+
+	\begin{verbatim}
+    <uni_interactions> <and_interactions> <or_interactions>
+	\end{verbatim}
+
+\noindent with at least one of the three elements, which basically represent sequences of action type
+identifiers, being non-empty.
+
+A uni-interaction of an instance of an AET can communicate only with one interaction of another AEI
+(point-to-point communication). If not empty, {\tt <uni\_interactions>} has the following syntax:
+
+	\begin{verbatim}
+    "UNI" <identifier_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <identifier\_sequence>} is a non-empty sequence of semicolon-separated action type
+identifiers.
+
+An and-interaction of an instance of an AET can simultaneously communicate with several interactions of
+other AEIs (broadcast communication). If not empty, {\tt <and\_interactions>} has the following syntax:
+
+	\begin{verbatim}
+    "AND" <identifier_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <identifier\_sequence>} is a non-empty sequence of semicolon-separated action type
+identifiers. Due to the adoption of the generative-reactive paradigm, the identifier of an action type
+occurring in input actions cannot be declared to be an (input) and-interaction.
+
+An or-interaction of an instance of an AET can communicate with one of several interactions of other AEIs
+(server-clients communication). If not empty, {\tt <or\_interactions>} has the following syntax:
+
+	\begin{verbatim}
+    "OR" <identifier_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <identifier\_sequence>} is a non-empty sequence of semicolon-separated action type
+identifiers. Internally, every occurrence of an or-interaction is replaced within the AET behavior by a
+choice among as many fresh uni-interactions as there are AEIs with which the original or-interaction can
+communicate. Each such fresh uni-interaction is represented through the identifier of the original
+or-interaction augmented with a dot followed by a unique index.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Architectural Topology}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The second section of an \aemilia\ specification has the following syntax:
+
+	\begin{verbatim}
+    "ARCHI_TOPOLOGY" <AEIs> <architectural_interactions> <architectural_attachments>
+	\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Architectural Element Instances}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The instances of the AETs defined in the first section of an \aemilia\ specification are declared as
+follows:
+
+	\begin{verbatim}
+    "ARCHI_ELEM_INSTANCES" <AEI_decl_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <AEI\_decl\_sequence>} is a non-empty sequence of semicolon-separated AEI declarations,
+each of the following form:
+
+	\begin{verbatim}
+    <AEI_decl> ::= <identifier> ["[" <expr> "]"] ":" <identifier> "(" <pe_expr_sequence> ")"
+                |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                   <identifier> "[" <expr> "]" ":" <identifier> "(" <pe_expr_sequence> ")"
+	\end{verbatim}
+
+In its simpler form, an AEI declaration contains the identifier of the AEI, a possible integer-valued
+expression enclosed in square brackets, which represents a selector and must be free of undeclared
+identifiers and invocations to pseudo-random number generators, the identifier of the related AET, which
+must have been defined in the first section of the \aemilia\ specification, and a possibly empty sequence of
+expressions free of invocations to pseudo-random number generators, which provide the actual values for the
+constant formal parameters of the AET and must match with them by number, order, and type. The only
+identifiers that can occur in the possible selector expression and in the actual parameters are the ones of
+the constant formal parameters declared in the architectural type header.
+
+The second form is useful to concisely declare several instances of the same AET through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression and in the actual parameters, together with its range, which is given by two
+integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations to
+pseudo-random number generators, with the value of the first expression being not greater than the value of
+the second expression.
+
+We observe that the identifier of an AEI can be augmented with a selector expression also in the simpler
+form of AEI declaration. This is useful whenever it is desirable to declare a set of indexed instances of
+the same AET, but only some of them have a common selector expression.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Architectural Interactions}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The architectural interactions are declared through the following syntax:
+
+	\begin{verbatim}
+    "ARCHI_INTERACTIONS" <pe_architectural_interaction_decl>
+	\end{verbatim}
+
+\noindent where {\tt <pe\_architectural\_interaction\_decl>} is either {\tt void} or a non-empty sequence of
+semicolon-separated architectural interaction declarations, each of the following form:
+
+	\begin{verbatim}
+    <architectural_interaction_decl> ::= <identifier> ["[" <expr> "]"] "." <identifier>
+                                      |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                                         <identifier> "[" <expr> "]" "." <identifier>
+	\end{verbatim}
+
+In its simpler form, an architectural interaction declaration contains the identifier of the AEI to which
+the interaction belongs, a possible integer-valued expression enclosed in square brackets, which represents
+a selector and must be free of undeclared identifiers and invocations to pseudo-random number generators,
+and the identifier of the interaction. Both the AEI and the interaction for the type of the AEI, whose
+identifier concatenation through the dot notation gives rise to the name of the architectural interaction,
+must have been previously declared. The only identifiers that can occur in the possible selector expression
+are the ones of the constant formal parameters declared in the architectural type header.
+
+The second form is useful to concisely declare several architectural interactions through an indexing
+mechanism. This additionally requires the specification of the index identifier, which can then occur in the
+selector expression, together with its range, which is given by two integer-valued expressions. These two
+expressions must be free of undeclared identifiers and invocations to pseudo-random number generators, with
+the value of the first expression being not greater than the value of the second expression.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Architectural Attachments}\label{attachments}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The architectural attachments are declared through the following syntax:
+
+	\begin{verbatim}
+    "ARCHI_ATTACHMENTS" <pe_architectural_attachment_decl>
+	\end{verbatim}
+
+\noindent where {\tt <pe\_architectural\_attachment\_decl>} is either {\tt void} or a non-empty sequence of
+semicolon-separated architectural attachment declarations, each of the following form:
+
+	\begin{verbatim}
+    <architectural_attachment_decl> ::= "FROM" <identifier> ["[" <expr> "]"] "." <identifier>
+                                        "TO" <identifier> ["[" <expr> "]"] "." <identifier>
+                                     |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                                        ["AND" "FOR_ALL" <identifier> "IN" <expr> ".." <expr>]
+                                        "FROM" <identifier> ["[" <expr> "]"] "." <identifier>
+                                        "TO" <identifier> ["[" <expr> "]"] "." <identifier>
+	\end{verbatim}
+
+In its simpler form, an architectural attachment declaration contains the indication of an output
+interaction followed by the indication of an input interaction. Each of the two interactions is expressed in
+dot notation through the identifier of the AEI to which the interaction belongs, a possible integer-valued
+expression enclosed in square brackets, which represents a selector and must be free of undeclared
+identifiers and invocations to pseudo-random number generators, and the identifier of the interaction. Both
+the AEI and the interaction for the type of the AEI must have been previously declared, with the interaction
+not being architectural. The two AEIs must be different from each other. At least one of the two
+interactions must be a uni-interaction, and at least one of them must occur in passive actions within the
+behavior of the AEI to which it belongs. The actions in which the two interactions occur within the behavior
+of the two AEIs must all be either unstructured or structured; in the latter case, the expressions of the
+output interaction must match with the local variables of the input interaction by number, order, and type.
+The only identifiers that can occur in the possible selector expression are the ones of the constant formal
+parameters declared in the architectural type header.
+
+The second form is useful to concisely declare several architectural attachments through an indexing
+mechanism. This additionally requires the specification of up to two different index identifiers, which can
+then occur in the selector expressions, together with their ranges, each of which is given by two
+integer-valued expressions. These two expressions must be free of undeclared identifiers and invocations to
+pseudo-random number generators, with the value of the first expression being not greater than the value of
+the second expression.
+
+All the non-architectural interactions should be involved at least in one architectural attachment, with the
+non-architectural uni-interactions being involved at most in one architectural attachment. All the
+uni-interactions attached to the same and- or or-interaction must belong to different AEIs. Among all the
+uni-interactions attached to the same passive and-interaction, at most one is admitted that occurs in
+non-passive actions within the behavior of the AEI to which it belongs. No isolated groups of AEIs should be
+present.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Behavioral Variations}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The third section of an \aemilia\ specification has the following syntax:
+
+	\begin{verbatim}
+    ["BEHAV_VARIATIONS" [<behav_hidings>] [<behav_restrictions>] [<behav_renamings>]]
+	\end{verbatim}
+
+\noindent This section is optional. If present, at least one of its three optional subsections must be
+there.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Behavioral Hidings}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The behavioral hidings are declared through the following syntax:
+
+	\begin{verbatim}
+    "BEHAV_HIDINGS" <behav_hiding_decl_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <behav\_hiding\_decl\_sequence>} is a non-empty sequence of semicolon-separated
+behavioral hiding declarations, each of the following form:
+
+	\begin{verbatim}
+    <behav_hiding_decl> ::= "HIDE" "INTERNALS"
+                         |  "HIDE" "INTERACTIONS"
+                         |  "HIDE" "ALL"
+                         |  "HIDE" <identifier> ["[" <expr> "]"] "." <action_type_set_h>
+                         |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                            "HIDE" <identifier> "[" <expr> "]" "." <action_type_set_h>
+    <action_type_set_h> ::= <identifier>
+                         |  "INTERNALS"
+                         |  "INTERACTIONS"
+                         |  "ALL"
+	\end{verbatim}
+
+In its simpler form, a behavioral hiding declaration consists of making unobservable all the action types
+that are internal to the AEIs of the \aemilia\ specification, all the non-architectural interactions of the
+AEIs of the \aemilia\ specification, or both of them. Alternatively, it is possible to hide a set of action
+types of a specific AEI. In this case, the behavioral hiding declaration contains the identifier of the AEI
+to which the action types to be hidden belong, a possible integer-valued expression enclosed in square
+brackets, which represents a selector and must be free of undeclared identifiers and invocations to
+pseudo-random number generators, and the identifier of the action type to be hidden or one of the three
+shorthands above for sets of action types to be hidden. If specified, the AEI must have been previously
+declared. If specified, the action type to be hidden must occur in the behavior of the AEI and cannot be an
+architectural interaction. The only identifiers that can occur in the possible selector expression are the
+ones of the constant formal parameters declared in the architectural type header.
+
+The more complex form is useful to concisely hide some of the action types of several AEIs through an
+indexing mechanism. This additionally requires the specification of the index identifier, which can then
+occur in the selector expression, together with its range, which is given by two integer-valued expressions.
+These two expressions must be free of undeclared identifiers and invocations to pseudo-random number
+generators, with the value of the first expression being not greater than the value of the second
+expression.
+
+If an internal action type is hidden, it is converted to the special action type {\tt invisible}. If a
+non-architectural interaction is hidden, all the synchronizing action types in which it is involved are
+converted to the special action type {\tt invisible}. In both cases, all the possible action type parameters
+are dropped.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Behavioral Restrictions}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The behavioral restrictions are declared through the following syntax:
+
+	\begin{verbatim}
+    "BEHAV_RESTRICTIONS" <behav_restriction_decl_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <behav\_restriction\_decl\_sequence>} is a non-empty sequence of semicolon-separated
+behavioral restriction declarations, each of the following form:
+
+	\begin{verbatim}
+    <behav_restriction_decl> ::= "RESTRICT" "OBS_INTERNALS"
+                              |  "RESTRICT" "OBS_INTERACTIONS"
+                              |  "RESTRICT" "ALL_OBSERVABLES"
+                              |  "RESTRICT" <identifier> ["[" <expr> "]"] "." <action_type_set_r>
+                              |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                                 "RESTRICT" <identifier> "[" <expr> "]" "." <action_type_set_r>
+         <action_type_set_r> ::= <identifier>
+                              |  "OBS_INTERNALS"
+                              |  "OBS_INTERACTIONS"
+                              |  "ALL_OBSERVABLES"
+	\end{verbatim}
+
+In its simpler form, a behavioral restriction declaration consists of preventing the execution of all the
+observable action types that are internal to the AEIs of the \aemilia\ specification, all the observable,
+non-architectural interactions of the AEIs of the \aemilia\ specification, or both of them. Alternatively,
+it is possible to restrict a set of action types of a specific AEI. In this case, the behavioral restriction
+declaration contains the identifier of the AEI to which the action types to be restricted belong, a possible
+integer-valued expression enclosed in square brackets, which represents a selector and must be free of
+undeclared identifiers and invocations to pseudo-random number generators, and the identifier of the action
+type to be restricted or one of the three shorthands above for sets of action types to be restricted. If
+specified, the AEI must have been previously declared. If specified, the action type to be hidden must occur
+in the behavior of the AEI and cannot be an architectural interaction or hidden. The only identifiers that
+can occur in the possible selector expression are the ones of the constant formal parameters declared in the
+architectural type header.
+
+The more complex form is useful to concisely restrict some of the action types of several AEIs through an
+indexing mechanism. This additionally requires the specification of the index identifier, which can then
+occur in the selector expression, together with its range, which is given by two integer-valued expressions.
+These two expressions must be free of undeclared identifiers and invocations to pseudo-random number
+generators, with the value of the first expression being not greater than the value of the second
+expression.
+
+If an observable internal action type is restricted, it cannot be executed. If an observable,
+non-architectural interaction is restricted, none of the synchronizing action types in which it is involved
+can be executed.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Behavioral Renamings}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The behavioral renamings are declared through the following syntax:
+
+	\begin{verbatim}
+    "BEHAV_RENAMINGS" <behav_renaming_decl_sequence>
+	\end{verbatim}
+
+\noindent where {\tt <behav\_renaming\_decl\_sequence>} is a non-empty sequence of semicolon-separated
+behavioral renaming declarations, each of the following form:
+
+	\begin{verbatim}
+    <behav_renaming_decl> ::= "RENAME" <identifier> ["[" <expr> "]"] "." <identifier>
+                              "AS" <identifier> ["[" <expr> "]"]
+                           |  "FOR_ALL" <identifier> "IN" <expr> ".." <expr>
+                              "RENAME" <identifier> "[" <expr> "]" "." <identifier>
+                              "AS" <identifier> ["[" <expr> "]"]
+	\end{verbatim}
+
+In its simpler form, a behavioral renaming declaration contains the identifier of the AEI to which the
+action type to be renamed belongs, a possible integer-valued expression enclosed in square brackets, which
+represents a selector and must be free of undeclared identifiers and invocations to pseudo-random number
+generators, and the identifier of the renaming action type possibly followed by another selector expression.
+The AEI must have been previously declared. The action type to be renamed must occur in the behavior of the
+AEI and cannot be hidden or restricted. The only identifiers that can occur in the possible selector
+expressions are the ones of the constant formal parameters declared in the architectural type header.
+
+The mroe complex form is useful to concisely rename some of the action types of several AEIs through an
+indexing mechanism. This additionally requires the specification of the index identifier, which can then
+occur in the selector expressions, together with its range, which is given by two integer-valued
+expressions. These two expressions must be free of undeclared identifiers and invocations to pseudo-random
+number generators, with the value of the first expression being not greater than the value of the second
+expression.
+
+An observable, non-restricted action type can be renamed to a single action type. If an observable,
+non-restricted, internal action type or an architectural interaction is renamed, it is converted to the
+specified renaming action type. If an observable, non-restricted, non-architectural interaction is renamed,
+all the synchronizing action types in which it is involved are converted to the specified renaming action
+type. Note that the renaming action type is not expressed in dot notation, which may turn out to be useful
+when checking for equivalence two \aemilia\ specifications whose AEIs have different identifiers. In the
+model checking case, instead, any renaming action type must be different from the NuSMV~2.2.5 keywords,
+which are listed below:
+
+	\begin{verbatim}
+                A               EG              LTLSPEC      Z
+                ABF             EVAL            LTLWFF       apropos
+                ABG             EX              MAX          array
+                AF              F               MIN          boolean
+                AG              FAIRNESS        MODULE       case
+                ASSIGN          FALSE           O            else
+                ASYNC           FORMAT          OUTPUT       esac
+                AX              G               RESET        if
+                BU              GOTO            S            in
+                CTLWFF          H               SIMPWFF      init
+                COMPASSION      IMPLEMENTS      SPEC         mod
+                COMPUTE         IN              STEP         next
+                COMPWFF         INIT            T            of
+                CONSTANT        INPUT           TRANS        process
+                CONSTRAINT      INVAR           TRUE         self
+                DEFINE          INVARSPEC       U            sigma
+                E               ISA             V            then
+                EBF             IVAR            VAR          union
+                EBG             JUSTICE         X            xnor
+                EF              LET             Y            xor
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Compiling \aemilia\ Specifications}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we briefly describe how correct \aemilia\ specifications are compiled into finite semantic
+models suited for analysis.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Parsing}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+While parsing an \aemilia\ (or companion) specification, a {\tt .lis} file is generated in which each line
+of the specification is reported by having it preceded by its line number. The parser is able to catch about
+300~types of lexical, syntax and static semantic error or warning, which are signalled through suitable
+messages in the {\tt .lis} file. The {\tt .lis} file is terminated with the indication of the total number
+of errors and warnings that have been detected. A specification with no errors is said to be correct.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Semantic Models}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A correct \aemilia\ specification can be compiled into three semantic models: the integrated semantic model,
+the functional semantic model, and the performance semantic model. All of them are state transition graphs,
+whose states are in correspondence with the vectors of the current behaviors of the AEIs. More precisely,
+the integrated semantic model is a state transition graph whose transitions are labeled with the type and
+the rate of the corresponding actions, with the lower priority transitions being pruned. The functional
+semantic model is a state transition graph in which only the action types label the transitions. The
+performance semantic model can be extracted in the form of a Markov chain~\cite{Ste1} only if the \aemilia\
+specification is performance closed, i.e.\ its integrated semantic model has no passive transitions and no
+non-determinism arises because of some boolean condition -- occurring in a behavioral choice -- that cannot
+be statically evaluated. In such a case, if the integrated semantic model has only exponentially timed
+transitions or both immediate and exponentially timed transitions, the performance semantic model is a
+continuous-time Markov chain obtained after removing the possible immediate transitions, with the
+transitions labeled with the rates of the corresponding actions. If instead the integrated semantic model
+has only immediate transitions, they are interpreted as taking one time unit and the performance semantic
+model is a discrete-time Markov chain, with the transitions labeled with the probabilities of the
+corresponding actions.
+
+Due to the process term syntax within the behavior of the AETs, which rules out static operators (hence
+recursion over them) as well as behavioral equation invocations outside the scope of an action prefix, the
+semantic model of an \aemilia\ specification with no variable formal parameters and local variables is
+guaranteed to be finitely branching and finite state.
+
+When printed to the related {\tt .ism}, {\tt .fsm} or {\tt .psm} file, the semantic model is a sequence of
+numbered global states with their outgoing transitions. Each global state is described through the vector of
+local states representing the current behavior of the AEIs. In the case of the integrated and functional
+semantic models, the global state numbered with one is the initial global state, which is composed of the
+local states representing the initial behavior of the AEIs. In the case of the performance semantic model,
+the concept of initial global state is replaced with an initial global state probability distribution -- as
+the initial global state may not be unique -- whose values are reported in the {\tt .psm} file for every
+global state. Each transition is represented through its action-based label and the number of its target
+global state.
+
+The {\tt .ism}, {\tt .fsm} or {\tt .psm} file is terminated with the indication of the total number of
+global states and transitions and their classification. The global states are divided into tangible (having
+exponentially timed transitions), vanishing (having immediate transitions), open (having passive
+transitions), and deadlocked (having no transitions). In the case of the performance semantic model, the
+global states with no outgoing transitions are called absorbing rather than deadlocked as they might have
+self-looping transitions. Based on their action types, the transitions are divided into observable and
+invisible. Based on their action rates, the transitions are divided into exponentially timed, immediate, and
+passive.
+
+The same global state and transition classification is reported, together with the related numbers, in a
+{\tt .siz} file whenever the user is interested only in the size of the semantic model.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Concrete and Symbolic Representation of Data Values}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the case in which variable formal parameters and local variables are present in the behavioral equations
+of the AETs of an \aemilia\ specification, they must be compiled in a way that keeps the underlying semantic
+models both finitely branching and finite state. This can be achieved in two different ways.
+
+If each of the occurring variable formal parameters and local variables has a finite value domain, i.e.\ its
+type is bounded integer, boolean, or array or record based on the two previous basic types, then a concrete
+treatment is applied. This means that every expression -- occurring in a behavioral equation invocation, a
+boolean guard, or an output action -- can be statically evaluated, after replacing every input action with a
+choice among as many instances of it as needed to instantiate all of its local variables in every possible
+way according to their finite value domains. In this case, the synchronization between an output action and
+an input action is possible only if their parameters have pairwise the same value. In the {\tt .ism},
+{\tt .fsm} or {\tt .psm} file, the current value of every variable formal parameter and local variable is
+represented through a concrete assignment -- an assignment whose right-hand side does not contain any
+variable -- printed immediately after the current behavior of the AEI to which the variable formal parameter
+or local variable belongs.
+
+If instead there is at least one variable formal parameter or local variable with an infinite value domain,
+i.e.\ whose type is integer, real, list, or array or record based on the three previous types, then a
+concrete treatment is not possible. To keep the semantic models finite, a symbolic treatment is
+applied~\cite{Ber2}. Every transition label is augmented with an expression and a sequence of symbolic
+assignments. The expression, which arises from the possible boolean guards of the alternative composition
+operator, represents the condition under which the transition can be executed. The symbolic assignments
+establish how the values of the variable formal parameters and of the local variables must be updated after
+executing the transition, due to behavioral equation invocations in the target global state or value passing
+between the synchronized structured actions involved in the transition. In the {\tt .ism}, {\tt .fsm} or
+{\tt .psm} file, every transition is printed together with its boolean guard and its sequence of symbolic
+assignments. Moreover, a list of initial symbolic assignments, based on the initialization of the variable
+formal parameters in the header of the first behavioral equation of every AEI, is printed at the beginning
+of the file. We remind that the performance semantic model cannot be generated in the case of symbolic
+treatment if there is at least one boolean guard that cannot be statically evaluated.
+
+We conclude by recalling that equivalence verification, model checking, security analysis, and
+Markov-chain-based performance evaluation can be applied only to correct \aemilia\ specifications in which
+all the possible variable formal parameters and local variables can be treated concretely. Simulation,
+instead, can be applied to any correct \aemilia\ specification (with no open and deadlock states), because
+the possible expressions -- including guards and symbolic assignments -- are directly evaluated while
+generating the portion of the integrated semantic model that is necessary to make the simulation advance.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Compile-Time Crashes}\label{ct_crashes}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The compilation of an \aemilia\ specification can be interrupted because of lack of memory, inability to
+open a file, illegal value of a symbolic action rate, or an error occurred during the evaluation of a
+concrete assignment, like out-of-range bounded integer, symbolic array length mismatch, or invalid argument
+of an arithmetical operator, a mathematical function, a pseudo-random number generator, or a list- or
+array-related function. In each of these cases, which cannot be detected at parsing time, a suitable message
+is displayed.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example A: The Alternating Bit Protocol}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we introduce a simple communication protocol and we present three different \aemilia\
+specifications for it, which exemplify the syntax of the language and illustrate its expressiveness.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Informal Description}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The alternating bit protocol~\cite{BSW} is a data-link-level communication protocol that establishes a means
+whereby two stations, one acting as a sender and the other acting as a receiver, connected by a full-duplex, FIFO communication channel that may lose messages, can cope with message loss. The name of the protocol
+stems from the fact that each message is augmented with an additional bit. Since consecutive messages that
+are not lost are tagged with additional bits that are pairwise complementary, it is easy to distinguish
+between an original message and its possible duplicates.
+
+Initially, if the data link level of the sender obtains a message from the upper level in the protocol
+stack, it augments the message with an additional bit set to~0, sends the tagged message to the receiver,
+and starts a timer. If an acknowledgment tagged with~0 is received before the timeout expires, then the
+subsequent message obtained from the upper level will be sent with an additional bit set to~1, otherwise the
+current tagged message is sent again. On the other side, the data link level of the receiver waits for a
+message tagged with~0. If it receives such a tagged message for the first time, then it passes the message
+to the upper level in the protocol stack, sends an acknowledgment tagged with~0 back to the sender, and
+waits for a message tagged with~1. On the contrary, if it receives a duplicate tagged message -- due to
+message loss, acknowledgment loss, or propagation taking an exceedingly long time -- then it sends an
+acknowledgment tagged with the same additional bit back to the sender and keeps waiting.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Pure \aemilia\ Description with Markovian Delays}\label{abp}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We show below a pure \aemilia\ specification of the alternating bit protocol called {\tt abp.aem}, where
+pure means that no variable formal parameters and local variables are used:
+
+	\begin{verbatim}
+    ARCHI_TYPE ABP_Type(const rate   msg_gen_rate  := 5,
+                        const rate   timeout_rate  := 1,
+                        const rate   prop_rate     := 9.375,
+                        const weight delivery_prob := 0.95)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE Sender_Type(const rate msg_gen_rate,
+                            const rate timeout_rate)
+
+        BEHAVIOR
+
+          Sender_0(void; void) =
+            <generate_msg, exp(msg_gen_rate)> . <transmit_msg_0, inf> . Sender_0_Waiting();
+
+          Sender_0_Waiting(void; void) =
+            choice
+            {
+              <receive_ack_0, _> . Sender_1(),
+              <receive_ack_1, _> . Sender_0_Waiting(),
+              <timeout, exp(timeout_rate)> . Sender_0_Retransmitting()
+            };
+
+          Sender_0_Retransmitting(void; void) =
+            choice
+            {
+              <transmit_msg_0, inf> . Sender_0_Waiting(),
+              <receive_ack_0, _> . Sender_1(),
+              <receive_ack_1, _> . Sender_0_Retransmitting()
+            };
+
+          Sender_1(void; void) =
+            <generate_msg, exp(msg_gen_rate)> . <transmit_msg_1, inf> . Sender_1_Waiting();
+
+          Sender_1_Waiting(void; void) =
+            choice
+            {
+              <receive_ack_1, _> . Sender_0(),
+              <receive_ack_0, _> . Sender_1_Waiting(),
+              <timeout, exp(timeout_rate)> . Sender_1_Retransmitting()
+            };
+
+          Sender_1_Retransmitting(void; void) =
+            choice
+            {
+              <transmit_msg_1, inf> . Sender_1_Waiting(),
+              <receive_ack_1, _> . Sender_0(),
+              <receive_ack_0, _> . Sender_1_Retransmitting()
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI generate_msg;
+              receive_ack_0;
+              receive_ack_1
+
+        OUTPUT_INTERACTIONS
+
+          UNI transmit_msg_0;
+              transmit_msg_1
+
+      ELEM_TYPE Line_Type(const rate   prop_rate,
+                          const weight delivery_prob)
+
+        BEHAVIOR
+
+          Line(void; void) =
+            choice
+            {
+              <receive_0, _> . <propagate_0, exp(prop_rate)> .
+                choice
+                {
+                  <keep_0, inf(1, delivery_prob)> . <deliver_0, inf> . Line(),
+                  <lose_0, inf(1, 1 - delivery_prob)> . Line()
+                },
+              <receive_1, _> . <propagate_1, exp(prop_rate)> .
+                choice
+                {
+                  <keep_1, inf(1, delivery_prob)> . <deliver_1, inf> . Line(),
+                  <lose_1, inf(1, 1 - delivery_prob)> . Line()
+                }
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_0;
+              receive_1
+
+        OUTPUT_INTERACTIONS
+
+          UNI deliver_0;
+              deliver_1
+
+      ELEM_TYPE Receiver_Type(void)
+
+        BEHAVIOR
+
+          Receiver_0(void; void) =
+            choice
+            {
+              <receive_msg_0, _> . <consume_msg, inf> . <transmit_ack_0, inf> . Receiver_1(),
+              <receive_msg_1, _> . <transmit_ack_1, inf> . Receiver_0()
+            };
+
+          Receiver_1(void; void) =
+            choice
+            {
+              <receive_msg_1, _> . <consume_msg, inf> . <transmit_ack_1, inf> . Receiver_0(),
+              <receive_msg_0, _> . <transmit_ack_0, inf> . Receiver_1()
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_msg_0;
+              receive_msg_1
+
+        OUTPUT_INTERACTIONS
+
+          UNI consume_msg;
+              transmit_ack_0;
+              transmit_ack_1
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        S  : Sender_Type(msg_gen_rate,
+                         timeout_rate);
+        LM : Line_Type(prop_rate,
+                       delivery_prob);
+        LA : Line_Type(prop_rate,
+                       delivery_prob);
+        R  : Receiver_Type()
+
+      ARCHI_INTERACTIONS
+
+        S.generate_msg;
+        R.consume_msg
+
+      ARCHI_ATTACHMENTS
+
+        FROM S.transmit_msg_0 TO LM.receive_0;
+        FROM S.transmit_msg_1 TO LM.receive_1;
+        FROM LM.deliver_0     TO R.receive_msg_0;
+        FROM LM.deliver_1     TO R.receive_msg_1;
+        FROM R.transmit_ack_0 TO LA.receive_0;
+        FROM R.transmit_ack_1 TO LA.receive_1;
+        FROM LA.deliver_0     TO S.receive_ack_0;
+        FROM LA.deliver_1     TO S.receive_ack_1
+
+    END
+	\end{verbatim}
+
+The \aemilia\ specification above is parameterized with respect to the message generation rate, the timeout
+rate, the propagation rate of a single message, and the delivery probability of a single message. In order
+to allow for a Markov-chain-based performance evaluation, the timeout delay and the message propagation
+delay are assumed to be exponentially distributed. Supposed that the protocol uses two 9.6~Kbps lines and
+that the average length of a message is 1024~bits, the propagation rate is 9.375~messages per second. We
+also assume that the generation rate is 5~messages per second, the timeout delay is 1~second on average, and
+the delivery probability is~0.95.
+
+We have three AETs: one for the sender, one for a half-duplex communication line, and one for the receiver.
+As far as {\tt Sender\_Type} is concerned, initially a message is generated (i.e.\ arrives from the upper
+level), which is then tagged with~0 and transmitted. Three cases arise. If an acknowledgment tagged with~0
+is received, then the same behavior is repeated for the next generated message, which will be tagged with~1.
+If an acknowledgment tagged with~1 is received, the acknowledgment is simply ignored. If the timeout
+expires, then the message is retransmitted unless an acknowledgment tagged with~0 is received in the
+meanwhile.
+
+{\tt Line\_Type} waits for the transmission of a message/acknowledgment tagged with~0 or~1, which is then
+propagated along the line. With probability~0.95 the message/acknowledgment reaches its destination, while
+with probability~0.05 the message/acknowledgment is lost. Afterwards, this behavior is repeated. Note that
+the types of the actions representing the fact that a message/acknowledgment is kept or lost are not
+declared to be interactions, as these events are not under the control of the protocol.
+
+{\tt Receiver\_Type} initially waits for a message tagged with~0. If it is received, then the message tagged
+with~0 is passed to the upper level, an acknowledgment tagged with~0 is sent back, and this behavior is
+repeated for the next expected message, which shall be tagged with~1. As long as a message tagged with~1 is
+received instead, the message is ignored and an acknowledgment tagged with~1 is sent back.
+
+The architectural topology section contains the declaration of one instance of {\tt Sender\_Type}, two
+instances of {\tt Line\_Type} -- one for the messages and one for the acknowledgments -- and one instance of
+{\tt Receiver\_Type}. The interactions {\tt S.generate\_msg} and {\tt R.consume\_msg} are declared to be
+architectural, as they are the access points for the upper levels of the protocol stack both at the sender
+side and at the receiver side.
+
+Here is the size of the semantic models of {\tt abp.aem}:
+
+	\begin{verbatim}
+    Size of the integrated semantic model underlying ABP_Type:
+
+    - 302 states: 
+      - 76 tangible, 
+      - 226 vanishing, 
+      - 0 open, 
+      - 0 deadlocked;
+
+    - 464 transitions:
+      - 464 observable,
+      - 0 invisible;
+      - 140 exponentially timed,
+      - 324 immediate,
+      - 0 passive.
+
+    Size of the functional semantic model underlying ABP_Type:
+
+    - 302 states: 
+      - 302 nondeadlocked, 
+      - 0 deadlocked;
+
+    - 464 transitions:
+      - 464 observable,
+      - 0 invisible.
+
+    Size of the homogeneous continuous-time Markov chain underlying ABP_Type:
+
+    - 76 states: 
+      - 76 nonabsorbing, 
+      - 0 absorbing;
+
+    - 204 transitions.
+	\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Value Passing \aemilia\ Description with Markovian Delays}\label{abp_vp}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A more concise \aemilia\ description can be obtained if the tagging bit is encoded through a boolean
+variable that is passed across the components, as shown in the following {\tt abp\_vp.aem}:
+
+	\begin{verbatim}
+    ARCHI_TYPE ABP_VP_Type(const boolean starting_bit  := false,
+                           const rate    msg_gen_rate  := 5,
+                           const rate    timeout_rate  := 1,
+                           const rate    prop_rate     := 9.375,
+                           const weight  delivery_prob := 0.95)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE Sender_Type(const boolean starting_bit,
+                            const rate    msg_gen_rate,
+                            const rate    timeout_rate)
+
+        BEHAVIOR
+
+          Sender(boolean sent_bit := starting_bit;
+                 void) =
+            <generate_msg, exp(msg_gen_rate)> . <transmit_msg!(sent_bit), inf> .
+              Sender_Waiting(sent_bit);
+
+          Sender_Waiting(boolean       sent_bit;
+                         local boolean received_bit) =
+            choice
+            {
+              <receive_ack?(received_bit), _> . Sender_Checking(sent_bit,
+                                                                received_bit),
+              <timeout, exp(timeout_rate)> . Sender_Retransmitting(sent_bit)
+            };
+
+          Sender_Checking(boolean sent_bit,
+                          boolean received_bit;
+                          void) =
+            choice
+            {
+              cond(received_bit = sent_bit)  ->
+                <check_bit, inf> . Sender(!sent_bit),
+              cond(received_bit != sent_bit) ->
+                <check_bit, inf> . Sender_Waiting(sent_bit)
+            };
+
+          Sender_Retransmitting(boolean       sent_bit;
+                                local boolean received_bit) =
+            choice
+            {
+              <transmit_msg!(sent_bit), inf> . Sender_Waiting(sent_bit),
+              <receive_ack?(received_bit), _> . Sender_Checking(sent_bit,
+                                                                received_bit)
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI generate_msg;
+              receive_ack
+
+        OUTPUT_INTERACTIONS
+
+          UNI transmit_msg
+
+      ELEM_TYPE Line_Type(const rate   prop_rate,
+                          const weight delivery_prob)
+
+        BEHAVIOR
+
+          Line(void;
+               local boolean tagging_bit) =
+            <receive?(tagging_bit), _> . <propagate, exp(prop_rate)> .
+              choice
+              {
+                <keep, inf(1, delivery_prob)> . <deliver!(tagging_bit), inf> . Line(),
+                <lose, inf(1, 1 - delivery_prob)> . Line()
+              }
+
+        INPUT_INTERACTIONS
+
+          UNI receive
+
+        OUTPUT_INTERACTIONS
+
+          UNI deliver
+
+      ELEM_TYPE Receiver_Type(const boolean starting_bit)
+
+        BEHAVIOR
+
+          Receiver(boolean       expected_bit := starting_bit;
+                   local boolean received_bit) =
+            <receive_msg?(received_bit), _> .
+              choice
+              {
+                cond(received_bit = expected_bit)  ->
+                  <consume_msg, inf> . <transmit_ack!(received_bit), inf> .
+                    Receiver(!expected_bit),
+                cond(received_bit != expected_bit) ->
+                  <transmit_ack!(received_bit), inf> . Receiver(expected_bit)
+              }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_msg
+
+        OUTPUT_INTERACTIONS
+
+          UNI consume_msg;
+              transmit_ack
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        S  : Sender_Type(starting_bit,
+                         msg_gen_rate,
+                         timeout_rate);
+        LM : Line_Type(prop_rate,
+                       delivery_prob);
+        LA : Line_Type(prop_rate,
+                       delivery_prob);
+        R  : Receiver_Type(starting_bit)
+
+      ARCHI_INTERACTIONS
+
+        S.generate_msg;
+        R.consume_msg
+
+      ARCHI_ATTACHMENTS
+
+        FROM S.transmit_msg TO LM.receive;
+        FROM LM.deliver     TO R.receive_msg;
+        FROM R.transmit_ack TO LA.receive;
+        FROM LA.deliver     TO S.receive_ack
+
+    END
+	\end{verbatim}
+
+Since all the occurring variable formal parameters and local variables are of type boolean, the concrete
+treatment of data values applies. Here is the size of the semantic models of {\tt abp\_vp.aem}:
+
+	\begin{verbatim}
+    Size of the integrated semantic model underlying ABP_VP_Type:
+
+    - 366 states: 
+      - 76 tangible, 
+      - 290 vanishing, 
+      - 0 open, 
+      - 0 deadlocked;
+
+    - 556 transitions:
+      - 556 observable,
+      - 0 invisible;
+      - 140 exponentially timed,
+      - 416 immediate,
+      - 0 passive.
+
+    Size of the functional semantic model underlying ABP_VP_Type:
+
+    - 366 states: 
+      - 366 nondeadlocked, 
+      - 0 deadlocked;
+
+    - 556 transitions:
+      - 556 observable,
+      - 0 invisible.
+
+    Size of the homogeneous continuous-time Markov chain underlying ABP_VP_Type:
+
+    - 76 states: 
+      - 76 nonabsorbing, 
+      - 0 absorbing;
+
+    - 214 transitions.
+	\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Value Passing \aemilia\ Description with General Delays}\label{abp_gd}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The value passing features are not only necessary to express data-driven computations and useful to obtain
+more concise \aemilia\ specifications. They also allow for the representation of systems in which some
+activities have generally distributed durations. As an example, in the case of the alternating bit protocol,
+it is reasonable to assume that the message generation time is exponentially distributed, while it is more
+realistic to describe the message propagation time through e.g.\ a normal distribution and the timeout
+period through a fixed duration.
+
+This is accomplished using a sub-language of \aemilia\ in which there are no exponentially timed actions. In
+other words, a system with generally distributed delays is represented through a discrete-time model, in
+which an explicit clock process marks the discrete-time steps for the whole system. The timed events are
+treated by means of suitable list-typed variables that store the occurrence times of such events, where the
+related occurrence times are expressed through suitable invocations to pseudo-random number generators.
+Timer variables are then used in the specification of the various system components to detect when the
+occurrence time of a timed event has come, in order to enable the particular action representing the
+occurrence of the event itself.
+
+The guidelines above are followed in {\tt abp\_gd.aem} shown below, in which the delays are expressed in
+milliseconds, the propagation time is described through a normal distribution, and the timeout period is
+described through a fixed duration:
+
+	\begin{verbatim}
+
+    ARCHI_TYPE ABP_GD_Type(const boolean starting_bit      := false,
+                           const real    msg_gen_rate      := 0.005,
+                           const integer timeout_period    := 1000,
+                           const real    prop_delay_mean   := 107.0,
+                           const real    prop_delay_st_dev := 7.0,
+                           const weight  delivery_prob     := 0.95)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE Msg_Gen_Type(const real msg_gen_rate)
+
+        BEHAVIOR
+
+          Msg_Gen(integer time_to_gen_next := ceil(exponential(msg_gen_rate)),
+                  integer msg_to_send      := 0;
+                  void) =
+            choice
+            {
+              cond(msg_to_send >= 1) ->
+                choice
+                {
+                  <generate_msg, inf(3, 1)> . Msg_Gen_Updating(time_to_gen_next,
+                                                               msg_to_send - 1),
+                  <idle, inf> . Msg_Gen_Updating(time_to_gen_next,
+                                                 msg_to_send)
+                },
+              cond(msg_to_send = 0)  ->
+                <idle, inf> . Msg_Gen_Updating(time_to_gen_next,
+                                               msg_to_send)
+            };
+
+          Msg_Gen_Updating(integer time_to_gen_next,
+                           integer msg_to_send;
+                           void) =
+            choice
+            {
+              cond(time_to_gen_next = 0) ->
+                <elapse_tick, _> . Msg_Gen(ceil(exponential(msg_gen_rate)),
+                                           msg_to_send + 1),
+              cond(time_to_gen_next > 0) ->
+                <elapse_tick, _> . Msg_Gen(time_to_gen_next - 1,
+                                           msg_to_send)
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI elapse_tick
+
+        OUTPUT_INTERACTIONS
+
+          UNI generate_msg
+
+
+      ELEM_TYPE Sender_Type(const boolean starting_bit,
+                            const integer timeout_period)
+
+        BEHAVIOR
+
+          Sender(boolean       sent_bit     := starting_bit;
+                 local boolean received_bit) =
+            choice
+            {
+              <get_msg, _> . Sender_Transmitting(sent_bit),
+              <receive_ack?(received_bit), _> . <elapse_tick, _> . Sender(sent_bit),
+              <elapse_tick, _> . Sender(sent_bit)
+            };
+
+          Sender_Transmitting(boolean       sent_bit;
+                              local boolean received_bit) =
+            choice
+            {
+              <transmit_msg!(sent_bit), inf(2, 1)> . <elapse_tick, _> .
+                Sender_Waiting(sent_bit,
+                               timeout_period),
+              <receive_ack?(received_bit), _> . <elapse_tick, _> .
+                Sender_Transmitting(sent_bit),
+              <elapse_tick, _> . Sender_Transmitting(sent_bit)
+            };
+
+          Sender_Waiting(boolean       sent_bit,
+                         integer       time_to_timeout;
+                         local boolean received_bit) =
+            choice
+            {
+              cond(time_to_timeout > 0) ->
+                choice
+                {
+                  <receive_ack?(received_bit), _> . Sender_Checking_1(sent_bit,
+                                                                      time_to_timeout,
+                                                                      received_bit),
+                  <elapse_tick, _> . Sender_Waiting(sent_bit,
+                                                    time_to_timeout - 1)
+                },
+              cond(time_to_timeout = 0) ->
+                choice
+                {
+                  <timeout, inf(2, 1)> . Sender_Retransmitting(sent_bit),
+                  <receive_ack?(received_bit), _> . Sender_Checking_2(sent_bit,
+                                                                      received_bit)
+                }
+            };
+
+          Sender_Checking_1(boolean sent_bit,
+                            integer time_to_timeout,
+                            boolean received_bit;
+                            void) =
+            choice
+            {
+              cond(received_bit = sent_bit)  ->
+                <elapse_tick, _> . Sender(!sent_bit),
+              cond(received_bit != sent_bit) ->
+                <elapse_tick, _> . Sender_Waiting(sent_bit,
+                                                  time_to_timeout - 1)
+            };
+
+          Sender_Checking_2(boolean sent_bit,
+                            boolean received_bit;
+                            void) =
+            choice
+            {
+              cond(received_bit = sent_bit)  ->
+                <elapse_tick, _> . Sender(!sent_bit),
+              cond(received_bit != sent_bit) ->
+                <idle, inf> . Sender_Retransmitting(sent_bit)
+            };
+
+          Sender_Retransmitting(boolean       sent_bit;
+                                local boolean received_bit) =
+            choice
+            {
+              <transmit_msg!(sent_bit), inf(2, 1)> . <elapse_tick, _> .
+                Sender_Waiting(sent_bit,
+                               timeout_period),
+              <receive_ack?(received_bit), _> . Sender_Checking_2(sent_bit,
+                                                                  received_bit),
+              <elapse_tick, _> . Sender_Retransmitting(sent_bit)
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI get_msg;
+              receive_ack;
+              elapse_tick
+
+        OUTPUT_INTERACTIONS
+
+          UNI transmit_msg
+
+      ELEM_TYPE Line_Type(const real   prop_delay_mean,
+                          const real   prop_delay_st_dev,
+                          const weight delivery_prob)
+
+        BEHAVIOR
+
+          Line(list(record(integer time_to_delivery,
+                           boolean tag))             prop_queue := list_cons();
+               local boolean                         tagging_bit) =
+            choice
+            {
+              <receive?(tagging_bit), _> .
+                choice
+                {
+                  <keep, inf(2, delivery_prob)> .
+                    Line_Delivering(concat(prop_queue,
+                                           list_cons(record_cons(ceil(normal(prop_delay_mean,
+                                                                             prop_delay_st_dev)),
+                                                                 tagging_bit)))),
+                  <lose, inf(2, 1 - delivery_prob)> . Line_Delivering(prop_queue)
+                },
+              <idle, inf> . Line_Delivering(prop_queue)
+            };
+
+          Line_Delivering(list(record(integer time_to_delivery,
+                                      boolean tag))             prop_queue;
+                          void) =
+            choice
+            {
+              cond((prop_queue != list_cons()) &&
+                   get(time_to_delivery,
+                       first(prop_queue)) <= 0) ->
+                <deliver!(get(tag,
+                              first(prop_queue))), inf(3, 1)> .
+                  Line_Propagating(tail(prop_queue)),
+              cond((prop_queue = list_cons()) ||
+                   get(time_to_delivery,
+                       first(prop_queue)) > 0) ->
+                <idle, inf> . Line_Propagating(prop_queue)
+            };
+
+          Line_Propagating(list(record(integer time_to_delivery,
+                                       boolean tag))             prop_queue;
+                           void) =
+            choice
+            {
+              cond(prop_queue != list_cons()) ->
+                <propagate, inf(2, 1)> . Line_Updating(prop_queue,
+                                                       list_cons()),
+              cond(prop_queue = list_cons())  ->
+                <elapse_tick, _> . Line(prop_queue)
+            };
+
+          Line_Updating(list(record(integer time_to_delivery,
+                                    boolean tag))             prop_queue,
+                        list(record(integer time_to_delivery,
+                                    boolean tag))             new_prop_queue;
+                        void) =
+            choice
+            {
+              cond(prop_queue != list_cons()) ->
+                <compute_time_to_delivery, inf(2, 1)> .
+                  Line_Updating(tail(prop_queue),
+                                concat(new_prop_queue,
+                                       list_cons(record_cons(get(time_to_delivery,
+                                                                 first(prop_queue)) - 1,
+                                                             get(tag,
+                                                                 first(prop_queue)))))),
+              cond(prop_queue = list_cons())  ->
+                <elapse_tick, _> . Line(new_prop_queue)
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI receive;
+              elapse_tick
+
+        OUTPUT_INTERACTIONS
+
+          UNI deliver
+
+      ELEM_TYPE Receiver_Type(const boolean starting_bit)
+
+        BEHAVIOR
+
+          Receiver(boolean       expected_bit := starting_bit;
+                   local boolean received_bit) =
+            choice
+            {
+              <receive_msg?(received_bit), _> . Receiver_Checking(expected_bit,
+                                                                  received_bit),
+              <elapse_tick, _> . Receiver(expected_bit)
+            };
+
+          Receiver_Checking(boolean expected_bit,
+                            boolean received_bit;
+                            void) =
+            choice
+            {
+              cond(received_bit = expected_bit)  ->
+                <consume_msg, inf(2, 1)> . Receiver_Transmitting(!expected_bit,
+                                                                 received_bit),
+              cond(received_bit != expected_bit) ->
+                <idle, inf> . Receiver_Transmitting(expected_bit,
+                                                    received_bit)
+            };
+
+          Receiver_Transmitting(boolean expected_bit,
+                                boolean received_bit;
+                                void) =
+            choice
+            {
+              <transmit_ack!(received_bit), inf(2, 1)> . <elapse_tick, _> .
+                Receiver(expected_bit),
+              <elapse_tick, _> . Receiver_Transmitting(expected_bit,
+                                                       received_bit)
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_msg;
+              elapse_tick
+
+        OUTPUT_INTERACTIONS
+
+          UNI consume_msg;
+              transmit_ack
+
+      ELEM_TYPE Clock_Type(void)
+
+        BEHAVIOR
+
+          Clock(void; void) =
+            <elapse_tick, inf> . Clock()
+
+        INPUT_INTERACTIONS
+
+          void
+
+        OUTPUT_INTERACTIONS
+
+          AND elapse_tick
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        MG : Msg_Gen_Type(msg_gen_rate);
+        S  : Sender_Type(starting_bit,
+                         timeout_period);
+        LM : Line_Type(prop_delay_mean,
+                       prop_delay_st_dev,
+                       delivery_prob);
+        LA : Line_Type(prop_delay_mean,
+                       prop_delay_st_dev,
+                       delivery_prob);
+        R  : Receiver_Type(starting_bit);
+        C  : Clock_Type()
+
+      ARCHI_INTERACTIONS
+
+        R.consume_msg
+
+      ARCHI_ATTACHMENTS
+
+        FROM MG.generate_msg TO S.get_msg;
+        FROM S.transmit_msg  TO LM.receive;
+        FROM LM.deliver      TO R.receive_msg;
+        FROM R.transmit_ack  TO LA.receive;
+        FROM LA.deliver      TO S.receive_ack;
+        FROM C.elapse_tick   TO MG.elapse_tick;
+        FROM C.elapse_tick   TO S.elapse_tick;
+        FROM C.elapse_tick   TO LM.elapse_tick;
+        FROM C.elapse_tick   TO LA.elapse_tick;
+        FROM C.elapse_tick   TO R.elapse_tick
+
+    END
+	\end{verbatim}
+
+\noindent Note that {\tt C.elapse\_tick} is an and-interaction, as it must simultaneously synchronize with
+the {\tt elapse\_tick} interactions of all the other AEIs in order to mark the discrete time steps for the
+whole system. Observe also that such an and-interaction is given the lowest priority, so that all the system
+activities logically belonging to the same time step can be completed before the clock ticks.
+
+Because of the presence of integer-, integer-based-, and list-typed variable formal parameters and local
+variables, only the symbolic treatment of data values applies. Moreover, the symbolic performance semantic
+model of {\tt abp\_gd.aem} cannot be generated as the specification is not performance closed, due to
+non-determinism arising from the boolean guards within the alternative compositions that cannot be
+statically evaluated. Here is the size of the other two semantic models of {\tt abp\_gd.aem}:
+
+	\begin{verbatim}
+    Size of the integrated semantic model underlying ABP_GD_Type:
+
+    - 701 states: 
+      - 0 tangible, 
+      - 701 vanishing, 
+      - 0 open, 
+      - 0 deadlocked;
+
+    - 2781 transitions:
+      - 2781 observable,
+      - 0 invisible;
+      - 0 exponentially timed,
+      - 2781 immediate,
+      - 0 passive.
+
+    Size of the functional semantic model underlying ABP_GD_Type:
+
+    - 701 states: 
+      - 701 nondeadlocked, 
+      - 0 deadlocked;
+
+    - 2781 transitions:
+      - 2781 observable,
+      - 0 invisible.
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example B: The NRL Pump}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we illustrate an extension of the alternating bit protocol used in a trusted device to
+guarantee a suitable replication of information from low security users to high security users.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Informal Description}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The NRL Pump~\cite{KMM} is a hardware device that interfaces a high security level LAN with a low security
+level LAN. In essence, the pump places a buffer between the low LAN and the high LAN, pumps data from the
+low LAN to the high LAN, and probabilistically modulates the timing of the acknowledgments from the high LAN
+to the low LAN on the basis of the average transmission delay from the high LAN to the pump. The low level
+and high level enclaves communicate with the pump through special interfacing software called wrappers,
+which implement the pump protocol. Each wrapper is made of an application-dependent part, which supports the
+set of functionalities that satisfy application-specific requirements, and a pump-dependent part, which is a
+library of routines that implement the pump protocol. For security reasons, each process that uses the pump
+must register its address with the pump administrator.
+
+In order to establish a connection, the low LAN has to send a connection request message to the main thread
+of the pump, which identifies the sending process and the address of the final destination. If both
+addresses are valid (i.e., they have been previously registered), the main thread sends back a connection
+valid message, otherwise it sends back a connection reject message. In the first case, the connection is
+managed by a trusted low thread and a trusted high thread, which are created during the connection setup
+phase to interact with the low LAN and the high LAN, respectively. Registered high processes are always
+ready to accept a connection from the pump through the same handshake mechanism seen above. Once the
+connection has been established, the pump sends a connection grant message to both LANs with initialization
+parameters for the communication. During the connection, the trusted low thread receives data messages from
+the low LAN, stores them in the connection buffer, and sends back the related acknowledgments by introducing
+an additional stochastic delay computed on the basis of the average rate at which the trusted high thread
+consumes messages. On the other hand, the trusted high thread delivers to the high LAN any data message
+contained in the connection buffer, and the high LAN has to send back to the trusted high thread the related
+acknowledgments before the expiration of a timeout. If the high LAN violates this protocol, the trusted high
+thread aborts the connection. In such a case, as soon as the trusted low thread detects that the trusted
+high thread is dead, it immediately sends to the low LAN all the remaining acknowledgments and a connection
+exit message. Another special message is connection close, which is sent by the low LAN to the pump at the
+end of a normal connection.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{\aemilia\ Description}\label{nrl_pump}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following \aemilia\ specification called {\tt nrl\_pump.aem} describes the scenario illustrated above,
+which comprises a low wrapper, a main thread, a trusted high thread, a trusted low thread, a connection
+buffer, a high channel, and a high wrapper:
+
+	\begin{verbatim}
+    ARCHI_TYPE NRL_Pump_Type(const integer buffer_size     := 1,
+                             const rate    conn_gen_rate   := 10,
+                             const rate    conn_init_rate  := 62.5,
+                             const rate    data_trans_rate := 125,
+                             const rate    ack_trans_rate  := 1306.12,
+                             const rate    ack_delay_rate  := 435.37,
+                             const rate    timeout_rate    := 57.04,
+                             const weight  valid_prob      := 0.99)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE LW_Type(const rate conn_gen_rate,
+                        const rate data_trans_rate)
+
+        BEHAVIOR
+
+          LW_Beh(void; void) =
+            <send_conn_request, exp(conn_gen_rate)>.
+              choice
+              {
+                <receive_conn_valid, _> . <receive_conn_grant, _> .
+                  <send_msg, exp(data_trans_rate)> . <receive_low_ack, _> .
+                    choice
+                    {
+                      <receive_conn_exit, _> . LW_Beh(),
+                      <send_conn_close, exp(data_trans_rate)> . LW_Beh()
+                    },
+                <receive_conn_reject, _> . LW_Beh()
+              }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_conn_valid;
+              receive_conn_grant;
+              receive_conn_reject;
+              receive_low_ack;
+              receive_conn_exit
+
+        OUTPUT_INTERACTIONS
+
+          UNI send_conn_request;
+              send_msg;
+              send_conn_close
+
+      ELEM_TYPE MT_Type(const rate   data_trans_rate,
+                        const weight valid_prob)
+
+        BEHAVIOR
+
+          MT_Beh(void; void) =
+             <receive_conn_request, _> .
+               choice
+               {
+                 <conn_is_valid, inf(1, valid_prob)> . <wakeup_tht, inf> .
+                   <send_conn_valid, exp(data_trans_rate)> . MT_Beh(),
+                 <conn_not_valid, inf(1, 1 - valid_prob)> .
+                   <send_conn_reject, exp(data_trans_rate)> . MT_Beh()
+               }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_conn_request
+
+        OUTPUT_INTERACTIONS
+
+          UNI wakeup_tht;
+              send_conn_valid;
+              send_conn_reject
+
+      ELEM_TYPE THT_Type(const rate conn_init_rate,
+                         const rate timeout_rate)
+
+        BEHAVIOR
+
+          THT_Beh(void; void) =
+            choice
+            {
+              <receive_high_wakeup, _> . <init_high_conn, exp(conn_init_rate)> .
+                <wakeup_tlt, inf> . THT_Beh(),
+              <read_msg, _> . <forward_msg, inf> .
+                choice
+                {
+                  <receive_high_ack, _> . <delete_msg, inf> .
+                    <send_ok_to_tlt, inf> . THT_Beh(),
+                  <wait_for_timeout, exp(timeout_rate)> . <comm_timeout, inf> .
+                    <delete_msg, inf> . <send_abort_to_tlt, inf> . THT_Beh()
+                }
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_high_wakeup;
+              read_msg;
+              receive_high_ack
+
+        OUTPUT_INTERACTIONS
+
+          UNI wakeup_tlt;
+              forward_msg;
+              delete_msg;
+              send_ok_to_tlt;
+              comm_timeout;
+              send_abort_to_tlt
+
+      ELEM_TYPE TLT_Type(const rate data_trans_rate,
+                         const rate ack_trans_rate,
+                         const rate ack_delay_rate)
+
+        BEHAVIOR
+
+          TLT_Beh(void; void) =
+            <receive_low_wakeup, _> . <send_conn_grant, exp(data_trans_rate)> .
+              <receive_msg, _> . <store_msg, inf> .
+                choice
+                {
+                  <wait_delay, exp(ack_delay_rate)> . <send_low_ack, exp(ack_trans_rate)> .
+                    choice
+                    {
+                      <receive_abort_from_tht, _> . <send_conn_exit, exp(data_trans_rate)> .
+                        TLT_Beh(),
+                      <receive_ok_from_tht, _> . <receive_conn_close, _> . TLT_Beh()
+                    },
+                  <receive_abort_from_tht, _> . <send_low_ack, exp(ack_trans_rate)> .
+                    <send_conn_exit, exp(data_trans_rate)> . TLT_Beh(),
+                  <receive_ok_from_tht, _> . <wait_delay, exp(ack_delay_rate)> .
+                    <send_low_ack, exp(ack_trans_rate)> . <receive_conn_close, _> . TLT_Beh()
+                }
+
+        INPUT_INTERACTIONS
+
+          UNI receive_low_wakeup;
+              receive_msg;
+              receive_abort_from_tht;
+              receive_ok_from_tht;
+              receive_conn_close
+
+        OUTPUT_INTERACTIONS
+
+          UNI send_conn_grant;
+              store_msg;
+              send_low_ack;
+              send_conn_exit
+
+      ELEM_TYPE Buffer_Type(const integer buffer_size)
+
+        BEHAVIOR
+
+          Buffer_Beh(integer(0..buffer_size) msg_num := 0;
+                     void) =
+            choice
+            {
+              cond(msg_num < buffer_size) ->
+                <accept_msg, _> . Buffer_Beh(msg_num + 1),
+              cond(msg_num > 0) ->
+                choice
+                {
+                  <read_msg, inf> . Buffer_Beh(msg_num),
+                  <delete_msg, _> . Buffer_Beh(msg_num - 1)
+                }
+            }
+
+        INPUT_INTERACTIONS
+
+          UNI accept_msg;
+              delete_msg
+
+        OUTPUT_INTERACTIONS
+
+          UNI read_msg
+
+      ELEM_TYPE HC_Type(const rate data_trans_rate,
+                        const rate ack_trans_rate)
+
+        BEHAVIOR
+
+          HC_Beh(void; void) =
+            <accept_msg, _> .
+              choice
+              {
+                <receive_timeout, _> . HC_Beh(),
+                <transmit_msg, exp(data_trans_rate)> . <accept_high_ack, _> .
+                  choice
+                  {
+                    <receive_timeout, _> . HC_Beh(),
+                    <transmit_high_ack, exp(ack_trans_rate)> . HC_Beh()
+                  }
+              }
+
+        INPUT_INTERACTIONS
+
+          UNI accept_msg;
+              receive_timeout;
+              accept_high_ack
+
+        OUTPUT_INTERACTIONS
+
+          UNI transmit_msg;
+              transmit_high_ack
+
+      ELEM_TYPE HW_Type(void)
+
+        BEHAVIOR
+
+          HW_Beh(void; void) =
+            <receive_msg, _> . <send_high_ack, inf> . HW_Beh()
+
+        INPUT_INTERACTIONS
+
+          UNI receive_msg
+
+        OUTPUT_INTERACTIONS
+
+          UNI send_high_ack
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        LW  : LW_Type(conn_gen_rate,
+                      data_trans_rate);
+        MT  : MT_Type(data_trans_rate,
+                      valid_prob);
+        THT : THT_Type(conn_init_rate,
+                       timeout_rate);
+        TLT : TLT_Type(data_trans_rate,
+                       ack_trans_rate,
+                       ack_delay_rate);
+        B   : Buffer_Type(buffer_size);
+        HC  : HC_Type(data_trans_rate,
+                      ack_trans_rate);
+        HW  : HW_Type()
+
+      ARCHI_INTERACTIONS
+
+        void
+
+      ARCHI_ATTACHMENTS
+
+        FROM LW.send_conn_request  TO MT.receive_conn_request;
+        FROM MT.send_conn_valid    TO LW.receive_conn_valid;
+        FROM MT.send_conn_reject   TO LW.receive_conn_reject;
+        FROM MT.wakeup_tht         TO THT.receive_high_wakeup;
+        FROM THT.wakeup_tlt        TO TLT.receive_low_wakeup;
+        FROM TLT.send_conn_grant   TO LW.receive_conn_grant;
+        FROM LW.send_msg           TO TLT.receive_msg;
+        FROM TLT.store_msg         TO B.accept_msg;
+        FROM TLT.send_low_ack      TO LW.receive_low_ack;
+        FROM B.read_msg            TO THT.read_msg;
+        FROM THT.forward_msg       TO HC.accept_msg;
+        FROM HC.transmit_msg       TO HW.receive_msg;
+        FROM THT.comm_timeout      TO HC.receive_timeout;
+        FROM HW.send_high_ack      TO HC.accept_high_ack;
+        FROM HC.transmit_high_ack  TO THT.receive_high_ack;
+        FROM THT.delete_msg        TO B.delete_msg;
+        FROM THT.send_abort_to_tlt TO TLT.receive_abort_from_tht;
+        FROM THT.send_ok_to_tlt    TO TLT.receive_ok_from_tht;
+        FROM TLT.send_conn_exit    TO LW.receive_conn_exit;
+        FROM LW.send_conn_close    TO TLT.receive_conn_close
+
+    END
+	\end{verbatim}
+
+The formal parameters of the \aemilia\ specification represent the connection buffer capacity, the
+connection generation rate (one connection every 100~msec), the connection initialization rate (corresponds
+to the round-trip delay), the data and acknowledgment transmission rates, the acknowledgment delay rate
+(corresponds to the delay for transmitting 3~acknowledgments), the timeout rate (corresponds to twice the
+delay for transmitting a data message and the related acknowledgment), and the probability that a connection
+request is valid, respectively. The values of the rates are a consequence of the assumption that the channel
+capacity is 64~Kbps, the data message length is 512~bits, and the acknowledgment length is 49~bits.
+
+{\tt LW\_Type} represents the wrapper at the sending site, which periodically generates a connection
+request. After sending the request, {\tt LW\_Type} is ready to accept either a connection reject message or
+a connection valid message followed by a connection grant message. If a connection is established,
+{\tt LW\_Type} sends a data message to the trusted low thread and then waits for the related acknowledgment.
+Afterwards, {\tt LW\_Type} can either receive a connection exit message in the case that the connection is
+aborted by the high LAN, or send a connection close message in the case that the connection is correctly
+terminated.
+
+{\tt MT\_Type} listens to the port of the NRL Pump to which the low LAN sends connection request messages.
+We abstract away from the verification of the validity of an incoming request by assuming to know the
+probability of receiving a valid request. If a valid connection must be established, the main thread awakens
+the trusted high thread and sends a connection valid message to the low LAN, otherwise it sends a connection
+reject message to the low LAN.
+
+{\tt THT\_Type}, which is spawned by the main thread during the setup phase, initializes the connection
+towards the high LAN. For the sake of simplicity, we assume that the high wrapper cannot refuse the
+connection request and we abstract away from the handshaking with the high wrapper through a single
+exponentially timed action. Afterwards, {\tt THT\_Type} awakens the trusted low thread. When the connection
+becomes active, {\tt THT\_Type} checks the buffer for new incoming data messages. Upon reading a message
+from the buffer, {\tt THT\_Type} outputs it to the high communication channel. An immediate action is used
+to express the synchronization between {\tt THT\_Type} and the high communication channel, which in turn
+explicitly models the message transmission delay. Then, {\tt THT\_Type} waits for the reception of the
+related acknowledgment from the high LAN. The arrival of an acknowledgment competes with the timeout fixed
+by {\tt THT\_Type}. In particular, if the acknowledgment is received before the end of the timeout,
+{\tt THT\_Type} removes the message from the buffer and informs the trusted low thread about the successful
+transmission. On the other hand, if the timeout expires before the reception of the acknowledgment, the
+trusted high thread notifies the timeout expiration, removes the message from the buffer, and informs the
+trusted low thread about the aborted connection.
+
+{\tt TLT\_Type} waits for the trusted high thread to awaken it, then establishes the connection from the low
+LAN to the pump by sending a connection grant message to the low LAN. At that moment, {\tt TLT\_Type} is
+ready to receive a data message from the low LAN. Upon receiving a data message, {\tt TLT\_Type} stores it
+in the connection buffer, then delays the transmission of the acknowledgment to the low LAN through an
+exponentially timed action. After the expiration of such a delay, {\tt TLT\_Type} sends the acknowledgment
+to the low LAN. At any moment, {\tt TLT\_Type} may receive a message from the trusted high thread concerning
+the status of the connection. In particular, in the case of trusted high thread failure, {\tt TLT\_Type}
+must send a connection exit message to the low LAN. On the contrary, if the trusted high thread is correctly
+working, {\tt TLT\_Type} can accept a connection close message from the low LAN. If {\tt TLT\_Type} detects
+the trusted high thread failure before sending the acknowledgment to the low LAN, then {\tt TLT\_Type}
+immediately transmits the acknowledgment and the connection exit message to the low LAN.
+
+{\tt Buffer\_Type}, which is initially empty, can be accessed by the trusted low thread and the trusted high
+thread only. When {\tt Buffer\_Type} is not full, a new data message can be accepted from the trusted low
+thread. When {\tt Buffer\_Type} is not empty, a data message can be read or deleted by the trusted high
+thread.
+
+{\tt HC\_Type} models the communications between the trusted high thread and the high LAN. We need an
+explicit component to express the transmission delay of messages along that link, because the round-trip
+delay of a communication between the trusted high thread and the high LAN must compete with the timeout set
+by the trusted high thread. Initially, {\tt HC\_Type} is ready to accept a data message from the trusted
+high thread. An incoming message is transmitted to the high LAN according to an exponentially distributed
+delay. After the delivery of the message, {\tt HC\_Type} waits for the related acknowledgment to be
+transmitted back to the trusted high thread. {\tt HC\_Type} is always willing to accept a timeout
+notification from the trusted high thread, in which case the connection will be aborted and all the pending
+messages will be dropped.
+
+Finally, {\tt HW\_Type} represents the wrapper at the receving site, which accepts data messages from the
+high channel and sends back the related acknowledgments.
+
+We conclude by reporting the size of the semantic models of {\tt nrl\_pump.aem}:
+
+	\begin{verbatim}
+    Size of the integrated semantic model underlying NRL_Pump_Type:
+
+    - 46 states: 
+      - 20 tangible, 
+      - 26 vanishing, 
+      - 0 open, 
+      - 0 deadlocked;
+
+    - 58 transitions:
+      - 58 observable,
+      - 0 invisible;
+      - 31 exponentially timed,
+      - 27 immediate,
+      - 0 passive.
+
+    Size of the functional semantic model underlying NRL_Pump_Type:
+
+    - 46 states: 
+      - 46 nondeadlocked, 
+      - 0 deadlocked;
+
+    - 58 transitions:
+      - 58 observable,
+      - 0 invisible.
+
+    Size of the homogeneous continuous-time Markov chain underlying NRL_Pump_Type:
+
+    - 20 states: 
+      - 20 nonabsorbing, 
+      - 0 absorbing;
+
+    - 32 transitions.
+	\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+%                                                               %
+\section{Example C: Dining Philosophers}
+%                                                               %
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we present a simple randomized distributed algorithm for the solution of a classical mutual
+exclusion problem, which illustrates the declaration of a parameterized architectural topology.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{Informal Description}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Suppose there are $n$~philosophers sitting at a round table, each with a plate in front of him/her, and
+$n$~chopsticks on the table, each shared by two neighbor philosophers. Every philosopher alternately thinks
+and eats. In order to get the rice at the center of the table, a philosopher needs both the chopstick on
+his/her right and the chopstick on his/her left. The problem is that of defining a set of rules ensuring
+deadlock freedom, which the philosophers should follow whenever they are hungry in order to get the
+chopsticks they share with their neighbors.
+
+The Lehmann-Rabin algorithm~\cite{LR} provides a symmetric solution to the problem, in the sense that all
+the philosophers behave according to the same protocol. Whenever a philosopher is hungry, he/she flips a
+fair coin to decide which chopstick to pick up first, waits for that chopstick to become free, gets it, then
+tries to get the other chopstick. It is free, then the philosopher picks it up and starts eating, otherwise
+the philosopher puts down the first chopstick and restarts the whole process.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+\subsection{\aemilia\ Description}\label{dp}
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The following \aemilia\ specification called {\tt dining\_philosophers.aem} describes the Lehmann-Rabin
+algorithm, assuming an exponential timing for the two activities carried out by every philosopher:
+
+	\begin{verbatim}
+    ARCHI_TYPE LR_Dining_Philosophers_Type(const integer philosopher_num := 3,
+                                           const rate    think_rate      := 4.50,
+                                           const rate    eat_rate        := 0.75)
+
+    ARCHI_ELEM_TYPES
+
+      ELEM_TYPE Philosopher_Type(const rate think_rate,
+                                 const rate eat_rate)
+
+        BEHAVIOR
+
+          Philosopher_Thinking(void; void) =
+            <think, exp(think_rate)> . Philosopher_Picking();
+
+          Philosopher_Picking(void; void) =
+            choice
+            {
+              <flip_head, inf(1, 0.5)> . <pick_up_right_first, inf> .
+                choice
+                {
+                  <pick_up_left_then, inf(2, 1)> . Philosopher_Eating(),
+                  <put_down_right, inf> . Philosopher_Picking()
+                },
+              <flip_tail, inf(1, 0.5)> . <pick_up_left_first, inf> .
+                choice
+                {
+                  <pick_up_right_then, inf(2, 1)> . Philosopher_Eating(),
+                  <put_down_left, inf> . Philosopher_Picking()
+                }
+            };
+
+          Philosopher_Eating(void; void) =
+            <eat, exp(eat_rate)> . <put_down_right, inf> . <put_down_left, inf> .
+              Philosopher_Thinking()
+
+        INPUT_INTERACTIONS
+
+          void
+
+        OUTPUT_INTERACTIONS
+
+          UNI pick_up_right_first;
+              pick_up_right_then;
+              put_down_right;
+              pick_up_left_first;
+              pick_up_left_then;
+              put_down_left
+
+      ELEM_TYPE Chopstick_Type(void)
+
+        BEHAVIOR
+
+          Chopstick_Picking(void; void) =
+            choice
+            {
+              <pick_up_first, _> . Chopstick_Putting(),
+              <pick_up_then, _> . Chopstick_Putting()
+            };
+
+          Chopstick_Putting(void; void) =
+            <put_down, _> . Chopstick_Picking()
+
+        INPUT_INTERACTIONS
+
+          OR pick_up_first;
+             pick_up_then;
+             put_down
+
+        OUTPUT_INTERACTIONS
+
+          void
+
+    ARCHI_TOPOLOGY
+
+      ARCHI_ELEM_INSTANCES
+
+        FOR_ALL i IN 0..philosopher_num - 1
+          P[i] : Philosopher_Type(think_rate,
+                                  eat_rate);
+        FOR_ALL i IN 0..philosopher_num - 1
+          C[i] : Chopstick_Type()
+
+      ARCHI_INTERACTIONS
+
+        void
+
+      ARCHI_ATTACHMENTS
+
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].pick_up_right_first TO C[i].pick_up_first;
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].pick_up_right_then TO C[i].pick_up_then;
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].put_down_right TO C[i].put_down;
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].pick_up_left_first TO C[mod(i + 1, philosopher_num)].pick_up_first;
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].pick_up_left_then TO C[mod(i + 1, philosopher_num)].pick_up_then;
+        FOR_ALL i IN 0..philosopher_num - 1
+          FROM P[i].put_down_left TO C[mod(i + 1, philosopher_num)].put_down
+
+    END
+	\end{verbatim}
+
+As far as the behavior is concerned, whenever both {\tt pick\_up\_left\_then} (resp.\
+{\tt pick\_up\_right\_then}) and {\tt put\_down\_right} (resp.\ {\tt put\_down\_left}) are enabled, then the
+first one is executed as it has higher priority. We also observe that all the input interactions of the
+chopsticks are or-interactions, because each chopstick is shared by two neighbor philosophers, but only one
+of them at a time can use the chopstick.
+
+On the topology side, we note that the indexing mechanism for the declaration of AEIs and attachments
+provides a concise and parameterized way to describe the application of the algorithm to an arbitrary number
+of philosophers.
+
+Here is the size of the semantic models of {\tt dining\_philosophers.aem} for $n = 3$:
+
+	\begin{verbatim}
+    Size of the integrated semantic model underlying LR_Dining_Philosophers_Type:
+
+    - 109 states: 
+      - 13 tangible, 
+      - 96 vanishing, 
+      - 0 open, 
+      - 0 deadlocked;
+
+    - 147 transitions:
+      - 147 observable,
+      - 0 invisible;
+      - 27 exponentially timed,
+      - 120 immediate,
+      - 0 passive.
+
+    Size of the functional semantic model underlying LR_Dining_Philosophers_Type:
+
+    - 109 states: 
+      - 109 nondeadlocked, 
+      - 0 deadlocked;
+
+    - 147 transitions:
+      - 147 observable,
+      - 0 invisible.
+
+    Size of the homogeneous continuous-time Markov chain underlying LR_Dining_Philosophers_Type:
+
+    - 13 states: 
+      - 13 nonabsorbing, 
+      - 0 absorbing;
+
+    - 30 transitions.
+	\end{verbatim}
+
+\noindent The size of the state space grows by a multiplicative factor between three and four with respect
+to the number $n$ of philosophers. As an example, for $n = 10$ the integrated semantic model of
+{\tt dining\_philosophers.aem} has 175887~states and 282530~transitions.

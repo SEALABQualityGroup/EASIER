@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.presentation.mmaemiliaModelWizardID"
+            name="%_UI_mmaemiliaModelWizard_label"
+            class="metamodel.mmaemilia.presentation.mmaemiliaModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/mmaemiliaModelFile.gif">
+         <description>%_UI_mmaemiliaModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="metamodel.mmaemilia.presentation.mmaemiliaEditorID"
+            name="%_UI_mmaemiliaEditor_label"
+            icon="icons/full/obj16/mmaemiliaModelFile.gif"
+            extensions="mmaemilia"
+            class="metamodel.mmaemilia.presentation.mmaemiliaEditor"
+            contributorClass="metamodel.mmaemilia.presentation.mmaemiliaActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.DataType.presentation.DataTypeModelWizardID"
+            name="%_UI_DataTypeModelWizard_label"
+            class="metamodel.mmaemilia.DataType.presentation.DataTypeModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/DataTypeModelFile.gif">
+         <description>%_UI_DataTypeModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="metamodel.mmaemilia.DataType.presentation.DataTypeEditorID"
+            name="%_UI_DataTypeEditor_label"
+            icon="icons/full/obj16/DataTypeModelFile.gif"
+            extensions="datatype"
+            class="metamodel.mmaemilia.DataType.presentation.DataTypeEditor"
+            contributorClass="metamodel.mmaemilia.DataType.presentation.DataTypeActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.Expressions.presentation.ExpressionsModelWizardID"
+            name="%_UI_ExpressionsModelWizard_label"
+            class="metamodel.mmaemilia.Expressions.presentation.ExpressionsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ExpressionsModelFile.gif">
+         <description>%_UI_ExpressionsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="metamodel.mmaemilia.Expressions.presentation.ExpressionsEditorID"
+            name="%_UI_ExpressionsEditor_label"
+            icon="icons/full/obj16/ExpressionsModelFile.gif"
+            extensions="expressions"
+            class="metamodel.mmaemilia.Expressions.presentation.ExpressionsEditor"
+            contributorClass="metamodel.mmaemilia.Expressions.presentation.ExpressionsActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.Headers.presentation.HeadersModelWizardID"
+            name="%_UI_HeadersModelWizard_label"
+            class="metamodel.mmaemilia.Headers.presentation.HeadersModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/HeadersModelFile.gif">
+         <description>%_UI_HeadersModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="metamodel.mmaemilia.Headers.presentation.HeadersEditorID"
+            name="%_UI_HeadersEditor_label"
+            icon="icons/full/obj16/HeadersModelFile.gif"
+            extensions="headers"
+            class="metamodel.mmaemilia.Headers.presentation.HeadersEditor"
+            contributorClass="metamodel.mmaemilia.Headers.presentation.HeadersActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.Behavior.presentation.BehaviorModelWizardID"
+            name="%_UI_BehaviorModelWizard_label"
+            class="metamodel.mmaemilia.Behavior.presentation.BehaviorModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/BehaviorModelFile.gif">
+         <description>%_UI_BehaviorModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="metamodel.mmaemilia.Behavior.presentation.BehaviorEditorID"
+            name="%_UI_BehaviorEditor_label"
+            icon="icons/full/obj16/BehaviorModelFile.gif"
+            extensions="behavior"
+            class="metamodel.mmaemilia.Behavior.presentation.BehaviorEditor"
+            contributorClass="metamodel.mmaemilia.Behavior.presentation.BehaviorActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated mmAEmilia -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="metamodel.mmaemilia.QueueingNetwork.presentation.QueueingNetworkModelWizardID"
+            name="%_UI_QueueingNetworkModelWizard_label"
+            class="metamodel.mmaemilia.QueueingNetwork.presentation.QueueingNetworkModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/QueueingNetworkModelFile.gif">
+         <description>%_UI_QueueingNetworkModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated mmAEmilia -->
+      <editor
+            id="metamodel.mmaemilia.QueueingNetwork.presentation.QueueingNetworkEditorID"
+            name="%_UI_QueueingNetworkEditor_label"
+            icon="icons/full/obj16/QueueingNetworkModelFile.gif"
+            extensions="queueingnetwork"
+            class="metamodel.mmaemilia.QueueingNetwork.presentation.QueueingNetworkEditor"
+            contributorClass="metamodel.mmaemilia.QueueingNetwork.presentation.QueueingNetworkActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

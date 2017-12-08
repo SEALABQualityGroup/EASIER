@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.disim.univaq.sealab</groupId>
+	<artifactId>logicalSpecification</artifactId>
+	<version>0.0.3</version>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.7.0</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>${basedir}</directory>
+								<includes>
+									<include>*.jar</include>
+								</includes>
+								<followSymlinks>false</followSymlinks>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<repositories>
+		<repository>
+			<id>Eclipse Repository</id>
+			<name>eclipse repo</name>
+			<url>https://repo.eclipse.org/content/groups/releases/</url>
+		</repository>
+		<repository>
+			<id>Maven2 Repository</id>
+			<name>maven2 repo</name>
+			<url>http://central.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common -->
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.common</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.uml -->
+		<dependency>
+			<groupId>org.eclipse.uml2</groupId>
+			<artifactId>org.eclipse.uml2.uml</artifactId>
+			<version>5.0.1.v20140910-1354</version>
+		</dependency>
+
+		<dependency>
+			<groupId>it.disim.univaq.sealab</groupId>
+			<artifactId>aemiliaMetamodel</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.ocl/org.eclipse.ocl -->
+		<dependency>
+			<groupId>org.eclipse.ocl</groupId>
+			<artifactId>org.eclipse.ocl</artifactId>
+			<version>3.4.2.v20140725-2242</version>
+		</dependency>
+
+
+	</dependencies>
+</project>

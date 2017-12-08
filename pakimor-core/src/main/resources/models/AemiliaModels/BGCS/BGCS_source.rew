@@ -1,0 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%								                                                %
+% Performance measures specification                            %
+%								                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Network
+MEASURE NET_utilization IS
+ ENABLED(NET.send_auth_req) -> STATE_REWARD(1.0)
+ ENABLED(NET.send_auth_resp) -> STATE_REWARD(1.0)
+ ENABLED(NET.send_monitor_req) -> STATE_REWARD(1.0)
+ ENABLED(NET.send_monitor_resp) -> STATE_REWARD(1.0)
+ ENABLED(NET.send_change_req) -> STATE_REWARD(1.0);
+ 
+MEASURE NET_throughput IS 
+ ENABLED(NET.send_auth_req) -> TRANS_REWARD(1.0)
+ ENABLED(NET.send_auth_resp) -> TRANS_REWARD(1.0)
+ ENABLED(NET.send_monitor_req) -> TRANS_REWARD(1.0)
+ ENABLED(NET.send_monitor_resp) -> TRANS_REWARD(1.0)
+ ENABLED(NET.send_change_req) -> TRANS_REWARD(1.0);
+	
+% Security
+MEASURE SEC_utilization IS
+  ENABLED(SEC.send_auth_resp) -> STATE_REWARD(1.0);
+  
+MEASURE SEC_throughput IS
+  ENABLED(SEC.send_auth_resp) -> TRANS_REWARD(1.0);
+  
+% Greenhouse
+MEASURE GH_utilization IS
+  ENABLED(GH.send_data_req) -> STATE_REWARD(1.0)
+  ENABLED(GH.handle_change_req) -> STATE_REWARD(1.0)
+  ENABLED(GH.send_monitor_resp) -> STATE_REWARD(1.0);
+  
+MEASURE GH_throughput IS
+  ENABLED(GH.send_data_req) -> TRANS_REWARD(1.0)
+  ENABLED(GH.send_monitor_resp) -> TRANS_REWARD(1.0);
+  
+% Database
+MEASURE DB_utilization IS
+  ENABLED(DB.fetch_account) -> STATE_REWARD(1.0)
+  ENABLED(DB.fetch_data) -> STATE_REWARD(1.0)
+  ENABLED(DB.handle_update) -> STATE_REWARD(1.0);
+  
+MEASURE DB_throughput IS
+  ENABLED(DB.send_data_resp) -> TRANS_REWARD(1.0)
+

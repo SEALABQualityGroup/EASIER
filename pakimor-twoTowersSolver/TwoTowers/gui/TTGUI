@@ -1,0 +1,1780 @@
+#################################################################
+#								#
+#								#
+#			    TTGUI				#
+#								#
+#                                           (by Marco Bernardo) #
+#################################################################
+# This is TTGUI, the Tcl/Tk-based graphical user interface for
+# the software tool TwoTowers. It consists of a main window
+# equipped with a menu bar, an editing area, and several
+# visualization areas. It is responsible for invoking TTKernel
+# -- the kernel of the software tool TwoTowers -- with
+# the appropriate parameters.
+#################################################################
+
+
+#################################################################
+#								#
+# 0 Main Window							#
+#								#
+#################################################################
+# This is the main window of TTGUI, which contains:
+# - an indication of the software tool name and version;
+# - a menu bar;
+# - an editing/visualization area for:
+#   - AEmilia specs;
+#   - auxiliary specs;
+#   - result files;
+# - an area for displaying the status/result of a command execution;
+# - an area for displaying the caption for a menu item;
+# - an area for displaying the path in which TwoTowers is operating.
+# The global variables are the following:
+# - result_msg: message issued during or at the end of the execution
+#		of a command to report its status/result;
+# - caption_msg: caption for the currently selected menu item;
+# - loaded_file: pathname of the file currently loaded in the
+#	         editing/visualization area;
+# - selected_file: pathname of the file currently selected through
+#	           a dialog box;
+# - trans_time_value: value of the transient time, acquired through
+#		      a dialog box, at which the state distribution
+#		      or the reward-based performance measures for
+#		      an AEmilia spec must be computed.
+# The utility procedures are the following:
+# - select_command(): It selects the command associated with the menu
+#                     item clicked on by the user.
+# - select_file(): It handles the dialog box that is shown whenever
+#		   a file name must be selected.
+# - select_trans_time_value(): It handles the dialog box that is shown
+#			       whenever the value of the transient time
+#			       must be selected.
+# - display_result_file(): It displays a given result file by generating
+#			   a dialog box with a given title.
+#################################################################
+
+
+#################################################################
+# 0.1 Declaration and inizialization of the global variables	#
+#################################################################
+
+set result_msg			""
+set caption_msg			""
+set loaded_file			""
+set selected_file(path,1)	""
+set selected_file(path,2)	""
+set trans_time_value		""
+
+
+#################################################################
+# 0.2 Creation of the main window				#
+#################################################################
+
+wm title . "TwoTowers 5.1"
+
+
+frame .main \
+	-bd 5
+pack .main \
+	-fill both \
+	-expand true
+
+
+frame .main.menubar \
+	-bd 5
+pack .main.menubar \
+	-side top \
+	-fill x \
+	-expand true \
+	-pady 10
+
+
+frame .main.body \
+	-bd 5
+pack .main.body \
+	-side top \
+	-fill both \
+	-expand true \
+	-pady 1
+
+scrollbar .main.body.xscrollbar \
+	-command {.main.body.text xview} \
+	-orient horizontal
+pack .main.body.xscrollbar \
+	-side bottom \
+	-fill x
+
+scrollbar .main.body.yscrollbar \
+	-command {.main.body.text yview} \
+	-orient vertical
+pack .main.body.yscrollbar \
+	-side left \
+	-fill y
+
+text .main.body.text \
+	-setgrid true \
+	-width 120 \
+	-height 30 \
+	-state disabled \
+	-borderwidth 2 \
+	-relief groove \
+	-wrap none \
+	-xscrollcommand {.main.body.xscrollbar set} \
+	-yscrollcommand {.main.body.yscrollbar set}
+pack .main.body.text \
+	-side right \
+	-fill both \
+	-expand true
+
+
+frame .main.result \
+	-bd 5
+pack .main.result \
+	-fill x \
+	-expand true \
+	-pady 5
+label .main.result.label \
+	-text "RESULT:   " \
+	-anchor w
+pack .main.result.label \
+	-side left
+label .main.result.text \
+	-relief groove \
+	-textvariable result_msg \
+	-anchor w
+pack .main.result.text \
+	-side left \
+	-fill both \
+	-expand true
+
+
+frame .main.caption \
+	-bd 5
+pack .main.caption \
+	-fill x \
+	-expand true \
+	-pady 1
+label .main.caption.label \
+	-text "CAPTION:  " \
+	-anchor w
+pack .main.caption.label \
+	-side left
+label .main.caption.text \
+	-relief groove \
+	-textvariable caption_msg \
+	-anchor w
+pack .main.caption.text \
+	-side left \
+	-fill both \
+	-expand true
+
+
+#################################################################
+# 0.3 Definition of the utility procedures			#
+#################################################################
+
+proc select_command {menu y} {
+	if {($y >= [$menu yposition 0]) &&
+	    ($y < [$menu yposition 1])} {
+	  set command 0
+	} else {
+	if {($y >= [$menu yposition 1]) &&
+	    ($y < [$menu yposition 2])} {
+	  set command 1
+	} else {
+	if {($y >= [$menu yposition 2]) &&
+	    ($y < [$menu yposition 3])} {
+	  set command 2
+	} else {
+	if {($y >= [$menu yposition 3]) &&
+	    ($y < [$menu yposition 4])} {
+	  set command 3
+	} else {
+	if {($y >= [$menu yposition 4]) &&
+	    ($y < [$menu yposition 5])} {
+	  set command 4
+	} else {
+	if {($y >= [$menu yposition 5]) &&
+	    ($y < [$menu yposition 6])} {
+	  set command 5
+	} else {
+	if {($y >= [$menu yposition 6]) &&
+	    ($y < [$menu yposition 7])} {
+	  set command 6
+	} else {
+	if {($y >= [$menu yposition 7]) &&
+	    ($y < [$menu yposition 8])} {
+	  set command 7
+	} else {
+	if {($y >= [$menu yposition 8]) &&
+	    ($y < [$menu yposition 9])} {
+	  set command 8
+	} else {
+	if {($y >= [$menu yposition 9]) &&
+	    ($y < [$menu yposition 10])} {
+	  set command 9
+	} else {
+	if {($y >= [$menu yposition 10]) &&
+	    ($y < [$menu yposition 11])} {
+	  set command 10
+	} else {
+	  set command 11
+	}}}}}}}}}}}
+	return $command
+}
+
+
+proc select_file {option file_index} {
+	global selected_file
+
+	if {$option == 0} {
+	  set types {
+	    {"AEmilia spec"						{.aem}	TEXT}
+	    {"LTL spec"							{.ltl}	TEXT}
+	    {"Security level spec"					{.sec}	TEXT}
+	    {"Reward spec"						{.rew}	TEXT}
+	    {"Simulation spec"						{.sim}	TEXT}
+	    {"Trace spec"						{.trc}	TEXT}
+	    {"Listing of spec"						{.lis}	TEXT}
+	    {"Size of semantic model of AEmilia spec"			{.siz}	TEXT}
+	    {"Integrated semantic model of AEmilia spec"		{.ism}	TEXT}
+	    {"Functional semantic model of AEmilia spec"		{.fsm}	TEXT}
+	    {"Performance semantic model of AEmilia spec"		{.psm}	TEXT}
+	    {"Equivalence verification result"				{.evr}	TEXT}
+	    {"Model checking result"					{.mcr}	TEXT}
+	    {"Security analysis result"					{.sar}	TEXT}
+	    {"Distribution of state probabilities"			{.dis}	TEXT}
+	    {"Value of analytically-derived performance measures"	{.val}	TEXT}
+	    {"Estimate of simulation-based performance measures"	{.est}	TEXT}
+	  }
+	  set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+	} else {
+	  if {$option == 1} {
+	    set types {{"AEmilia spec" {.aem} TEXT}}
+	    set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+	  } else {
+	    if {$option == 2} {
+	      set types {{"LTL spec" {.ltl} TEXT}}
+	      set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+	    } else {
+	      if {$option == 3} {
+	        set types {{"Security level spec" {.sec} TEXT}}
+	        set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+	      } else {
+	        if {$option == 4} {
+	          set types {{"Reward spec" {.rew} TEXT}}
+	          set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+		} else {
+	          set types {{"Simulation spec" {.sim} TEXT}}
+	          set selected_file(path,$file_index) [tk_getOpenFile -filetypes $types]
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+proc select_trans_time_value {} {
+	global trans_time_value
+
+	toplevel .trans_time \
+	  -bd 4
+	wm title .trans_time "Transient time"
+
+	set trans_time_value ""
+	label .trans_time.label \
+	  -text "Transient time instant (>= 0):"
+	entry .trans_time.entry \
+	  -width 20 \
+	  -relief sunken \
+	  -bd 2 \
+	  -textvariable trans_time_value
+	pack .trans_time.label .trans_time.entry \
+	  -side left
+	bind .trans_time.entry <Return> {
+	  destroy .trans_time
+	}
+	focus .trans_time.entry
+	tkwait window .trans_time
+}
+
+
+proc display_result_file {file_path} {
+	toplevel .result_file_display \
+	  -bd 4
+	wm title .result_file_display $file_path
+
+	frame .result_file_display.body
+	pack .result_file_display.body \
+	  -side top \
+	  -fill both \
+	  -expand true
+
+	scrollbar .result_file_display.body.xscrollbar \
+	  -command {.result_file_display.body.text xview} \
+	  -orient horizontal
+	pack .result_file_display.body.xscrollbar \
+	  -side bottom \
+	  -fill x
+
+	scrollbar .result_file_display.body.yscrollbar \
+	  -command {.result_file_display.body.text yview} \
+	  -orient vertical
+	pack .result_file_display.body.yscrollbar \
+	  -side left \
+	  -fill y
+
+	text .result_file_display.body.text \
+	  -setgrid true \
+	  -width 115 \
+	  -height 30 \
+	  -borderwidth 2 \
+	  -relief raised \
+	  -wrap none \
+	  -xscrollcommand {.result_file_display.body.xscrollbar set} \
+	  -yscrollcommand {.result_file_display.body.yscrollbar set}
+	pack .result_file_display.body.text \
+	  -side right \
+	  -fill both \
+	  -expand true
+
+	button .result_file_display.dismiss \
+	  -text "DISMISS" \
+	  -command {destroy .result_file_display}
+	pack .result_file_display.dismiss \
+	  -side left \
+	  -fill both \
+	  -expand true
+
+	.result_file_display.body.text config \
+	  -state normal \
+	  -font "-family courier -weight normal -slant roman -size 9"
+	focus .result_file_display.body.text
+
+	set file [open $file_path {RDONLY}]
+	.result_file_display.body.text insert end [read $file]
+	close $file
+	.result_file_display.body.text config \
+	  -state disabled
+}
+
+
+
+#################################################################
+#								#
+# 1 Menu File							#
+#								#
+#################################################################
+# This menu handles files having one of the following extensions:
+# - .aem for AEmilia specs;
+# - .ltl for LTL specs;
+# - .sec for security level specs;
+# - .rew for reward specs;
+# - .sim for simulation specs;
+# - .trc for trace specs;
+# - .lis for listings of specs;
+# - .siz for sizes of AEmilia spec semantic models;
+# - .ism for integrated semantic models of AEmilia specs;
+# - .fsm for functional semantic models of AEmilia specs;
+# - .psm for performance semantic models of AEmilia specs;
+# - .evr for equivalence verification results;
+# - .mcr for model checking results;
+# - .sar for security analysis results;
+# - .dis for distributions of state probabilities;
+# - .val for values of analitycally-derived performance measures;
+# - .est for estimates of simulation-based performance measures.
+# The implementation is based on the following procedures:
+# - create_file(): It creates a new file.
+# - load_file(): It loads an existing file into the editing/visualization
+#		 area of the main window.
+# - edit_file(): It allows the user to edit the currently loaded file.
+# - save_file(): It saves the currently loaded file.
+# - copy_file(): It copies an existing file into another file preserving
+#		 the extension.
+# - rename_file(): It renames an existing file preserving the extension.
+# - delete_file(): It deletes an existing file.
+# and on the following auxiliary procedure:
+# - check_extension(): It checks the extension of a file name for
+#		       equality to one of the allowed extensions.
+#################################################################
+
+
+#################################################################
+# 1.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.file \
+	-text "FILE" \
+	-menu .main.menubar.file.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.file \
+	-side left \
+	-ipadx 8 \
+	-padx 40
+
+
+menu .main.menubar.file.menu
+.main.menubar.file.menu add command \
+	-label "Create ..." \
+	-command {create_file}
+.main.menubar.file.menu add command \
+	-label "Load ..." \
+	-command {load_file}
+.main.menubar.file.menu add command \
+	-label "Edit" \
+	-command {edit_file}
+.main.menubar.file.menu add command \
+	-label "Save" \
+	-command {save_file}
+.main.menubar.file.menu add separator
+.main.menubar.file.menu add command \
+	-label "Copy ..." \
+	-command {copy_file}
+.main.menubar.file.menu add command \
+	-label "Rename ..." \
+	-command {rename_file}
+.main.menubar.file.menu add command \
+	-label "Delete ..." \
+	-command {delete_file}
+
+
+set command_descr(f,0)	""
+set command_descr(f,1) 	"Create a new file."
+set command_descr(f,2) 	"Load an existing file."
+set command_descr(f,3) 	"Edit the currently loaded file."
+set command_descr(f,4) 	"Save the currently loaded file."
+set command_descr(f,5) 	""
+set command_descr(f,6) 	"Copy an existing file into another file preserving the extension."
+set command_descr(f,7) 	"Rename an existing file preserving the extension."
+set command_descr(f,11)	"Delete an existing file."
+
+
+bind .main.menubar.file.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.file.menu <Motion> {
+	set command [select_command .main.menubar.file.menu %y]
+	set caption_msg $command_descr(f,$command)
+	.main.menubar.file.menu activate $command
+}
+
+
+bind .main.menubar.file.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 1.2 Definition of the menu commands				#
+#################################################################
+
+proc create_file {} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	toplevel .new_file_name \
+	  -bd 4
+	wm title .new_file_name "File creation"
+
+	set selected_file(path,1) ""
+	label .new_file_name.label \
+	  -text "File name:"
+	entry .new_file_name.entry \
+	  -width 20 \
+	  -relief sunken \
+	  -bd 2 \
+	  -textvariable selected_file(path,1)
+	pack .new_file_name.label .new_file_name.entry \
+	  -side left
+	bind .new_file_name.entry <Return> {
+	  destroy .new_file_name
+	}
+	focus .new_file_name.entry
+	tkwait window .new_file_name
+
+	if {$selected_file(path,1) != ""} {
+	  if {[check_extension [file extension $selected_file(path,1)]] == 0} {
+	    set result_msg "Error: the file has a bad extension!"
+	  } else {
+	    if {[file exists $selected_file(path,1)]} {
+	      set result_msg "Error: the file already exists!"
+	    } else {
+	      close [open $selected_file(path,1) {WRONLY CREAT}]
+	      .main.body.text delete 1.0 end
+	      set result_msg "File created."
+	    }
+	  }
+	}
+}
+
+
+proc load_file {} {
+	global result_msg
+	global loaded_file
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	select_file 0 1
+	if {$selected_file(path,1) != ""} {
+	  if {[check_extension [file extension $selected_file(path,1)]] == 0} {
+	    set result_msg "Error: the file has a bad extension!"
+	  } else {
+	    if {![file exists $selected_file(path,1)]} {
+	      set result_msg "Error: the file does not exist!"
+	    } else {
+	      set loaded_file $selected_file(path,1)
+	      set file [open $loaded_file {RDONLY}]
+	      .main.body.text config \
+		-state normal \
+		-font "-family courier -weight normal -slant roman -size 9"
+	      focus .main.body.text
+	      .main.body.text delete 1.0 end
+	      .main.body.text insert end [read $file]
+	      .main.body.text config \
+		-state disabled
+	      close $file
+	      set result_msg "File loaded."
+	    }
+	  }
+	}
+}
+
+
+proc edit_file {} {
+	global result_msg
+	global loaded_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	if {![file isfile $loaded_file]} {
+	  set result_msg "Error: no file is currently loaded!"
+	} else {
+	  .main.body.text config \
+	    -state normal
+	  set result_msg "The currently loaded file can be edited."
+	}
+}
+
+
+proc save_file {} {
+	global result_msg
+	global loaded_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	if {![file isfile $loaded_file]} {
+	  set result_msg "Error: no file is currently loaded!"
+	} else {
+	  set file [open $loaded_file {WRONLY}]
+	  puts $file [.main.body.text get 1.0 end]
+	  close $file
+	  set result_msg "The currently loaded file has been saved."
+	}
+}
+
+
+proc copy_file {} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	select_file 0 1
+	if {$selected_file(path,1) != ""} {
+	  if {[check_extension [file extension $selected_file(path,1)]] == 0} {
+	    set result_msg "Error: the file has a bad extension!"
+	  } else {
+	    if {![file exists $selected_file(path,1)]} {
+	      set result_msg "Error: the file does not exist!"
+	    } else {
+	      select_file 0 2
+	      if {$selected_file(path,2) != ""} {
+	        if {[check_extension [file extension $selected_file(path,2)]] == 0} {
+	          set result_msg "Error: the file has a bad extension!"
+	        } else {
+	          set ext1 [file extension $selected_file(path,1)]
+	          set ext2 [file extension $selected_file(path,2)]
+	          if {[string compare $ext1 $ext2]} {
+		    set result_msg "Error: the extension is not preserved!"
+	          } else {
+		    exec cp $selected_file(path,1) $selected_file(path,2)
+		    set result_msg "File copied."
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+proc rename_file {} {
+	global result_msg
+	global loaded_file
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	select_file 0 1
+	if {$selected_file(path,1) != ""} {
+	  if {[check_extension [file extension $selected_file(path,1)]] == 0} {
+	    set result_msg "Error: the file has a bad extension!"
+	  } else {
+	    if {![file exists $selected_file(path,1)]} {
+	      set result_msg "Error: the file does not exist!"
+	    } else {
+	      select_file 0 2
+	      if {$selected_file(path,2) != ""} {
+	        if {[check_extension [file extension $selected_file(path,2)]] == 0} {
+	          set result_msg "Error: the file has a bad extension!"
+	        } else {
+	          set ext1 [file extension $selected_file(path,1)]
+	          set ext2 [file extension $selected_file(path,2)]
+	          if {[string compare $ext1 $ext2]} {
+		    set result_msg "Error: the extension is not preserved!"
+	          } else {
+		    exec mv $selected_file(path,1) $selected_file(path,2)
+		    if {![string compare $selected_file(path,1) $loaded_file]} {
+		      set loaded_file $selected_file(path,2)
+		    }
+		    set result_msg "File renamed."
+	          }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+proc delete_file {} {
+	global result_msg
+	global loaded_file
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+	select_file 0 1
+	if {$selected_file(path,1) != ""} {
+	  if {[check_extension [file extension $selected_file(path,1)]] == 0} {
+	    set result_msg "Error: the file has a bad extension!"
+	  } else {
+	    if {![file exists $selected_file(path,1)]} {
+	      set result_msg "Error: the file does not exist!"
+	    } else {
+	      exec rm -f $selected_file(path,1)
+	      if {![string compare $selected_file(path,1) $loaded_file]} {
+		set loaded_file ""
+		.main.body.text config \
+		  -state normal
+		.main.body.text delete 1.0 end
+		.main.body.text config \
+		  -state disabled
+	      }
+	      set result_msg "File deleted."
+	    }
+	  }
+	}
+}
+
+
+#################################################################
+# 1.3 Definition of the auxiliary procedures			#
+#################################################################
+
+proc check_extension {extension} {
+	if {[string compare $extension ".aem"] &&
+	    [string compare $extension ".ltl"] &&
+	    [string compare $extension ".sec"] &&
+	    [string compare $extension ".rew"] &&
+	    [string compare $extension ".sim"] &&
+	    [string compare $extension ".trc"] &&
+	    [string compare $extension ".lis"] &&
+	    [string compare $extension ".siz"] &&
+	    [string compare $extension ".ism"] &&
+	    [string compare $extension ".fsm"] &&
+	    [string compare $extension ".psm"] &&
+	    [string compare $extension ".evr"] &&
+	    [string compare $extension ".mcr"] &&
+	    [string compare $extension ".sar"] &&
+	    [string compare $extension ".dis"] &&
+	    [string compare $extension ".val"] &&
+	    [string compare $extension ".est"]} {
+	  return 0
+	} else {
+	  return 1
+	}
+}
+
+
+
+#################################################################
+#								#
+# 2 Menu Compiler						#
+#								#
+#################################################################
+# This menu handles the compilation of an AEmilia spec through TTKernel;
+# the interaction between TTGUI and TTKernel is realized via a .tmp file.
+# The implementation is based on the following procedures:
+# - parse(): It checks an AEmilia spec to be selected for lexical, syntax
+#	     and semantic errors.
+# - compute_size(): It computes the size of the specified semantic model
+#		    of an AEmilia spec to be selected.
+# - compile(): It compiles an AEmilia spec to be selected into
+#	       the specified semantic model.
+#################################################################
+
+
+#################################################################
+# 2.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.compiler \
+	-text "AEmilia\nCOMPILER" \
+	-menu .main.menubar.compiler.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.compiler \
+	-side left \
+	-ipadx 8 \
+	-padx 40
+
+
+menu .main.menubar.compiler.menu
+.main.menubar.compiler.menu add command \
+	-label "Parser ..." \
+	-command {parse}
+.main.menubar.compiler.menu add separator
+.main.menubar.compiler.menu add command \
+	-label "Integrated semantic model size calculator ..." \
+	-command {compute_size "b"}
+.main.menubar.compiler.menu add command \
+	-label "Functional semantic model size calculator ..." \
+	-command {compute_size "c"}
+.main.menubar.compiler.menu add command \
+	-label "Performance semantic model size calculator ..." \
+	-command {compute_size "d"}
+.main.menubar.compiler.menu add separator
+.main.menubar.compiler.menu add command \
+	-label "Integrated semantic model generator ..." \
+	-command {compile "e"}
+.main.menubar.compiler.menu add command \
+	-label "Functional semantic model generator ..." \
+	-command {compile "f"}
+.main.menubar.compiler.menu add command \
+	-label "Performance semantic model generator ..." \
+	-command {compile "g"}
+
+
+set command_descr(c,0) 	""
+set command_descr(c,1) 	"Check an AEmilia spec for lexical, syntax and semantic errors."
+set command_descr(c,2) 	""
+set command_descr(c,3)	"Calculate the size of the integrated semantic model of an AEmilia spec."
+set command_descr(c,4)	"Calculate the size of the functional semantic model of an AEmilia spec."
+set command_descr(c,5)	"Calculate the size of the performance semantic model of an AEmilia spec."
+set command_descr(c,6) 	""
+set command_descr(c,7)	"Generate the integrated semantic model of an AEmilia spec."
+set command_descr(c,8)	"Generate the functional semantic model of an AEmilia spec."
+set command_descr(c,11)	"Generate the performance semantic model of an AEmilia spec."
+
+
+bind .main.menubar.compiler.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.compiler.menu <Motion> {
+	set command [select_command .main.menubar.compiler.menu %y]
+	set caption_msg $command_descr(c,$command)
+	.main.menubar.compiler.menu activate $command
+}
+
+
+bind .main.menubar.compiler.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 2.2 Definition of the menu commands				#
+#################################################################
+
+proc parse {} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to parse does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to parse is not an AEmilia spec!"
+            } else {
+	      set report_path $selected_file(path,1).tmp
+	      set result_msg "Parsing ..."
+	      focus .
+	      exec TTKernel -a $selected_file(path,1) $report_path
+
+	      set report [open $report_path {RDONLY}]
+	      set result_msg [gets $report]
+	      close $report
+	      exec rm -f $report_path
+
+	      set listing_path $selected_file(path,1).lis
+	      if {[string match *error* $result_msg]} {
+	        display_result_file $listing_path
+	      } else {
+		exec rm -f $listing_path
+	      }
+	    }
+	  }
+        }
+}
+
+
+proc compute_size {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to compile does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to compile is not an AEmilia spec!"
+            } else {
+	      set report_path $selected_file(path,1).tmp
+	      set result_msg "Compiling ..."
+	      focus .
+	      exec TTKernel -$option $selected_file(path,1) $report_path
+
+	      set report [open $report_path {RDONLY}]
+	      set result_msg [gets $report]
+	      close $report
+	      exec rm -f $report_path
+
+	      set listing_path $selected_file(path,1).lis
+	      set result_path $selected_file(path,1).siz
+	      if {[string match *error* $result_msg] ||
+	          [string match *infinite* $result_msg]} {
+		exec rm -f $result_path
+		display_result_file $listing_path
+	      } else {
+		exec rm -f $listing_path
+	        if {[string match *completed* $result_msg]} {
+		  display_result_file $result_path
+		} else {
+		  exec rm -f $result_path
+		}
+	      }
+	    }
+	  }
+        }
+}
+
+
+proc compile {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to compile does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to compile is not an AEmilia spec!"
+            } else {
+	      set report_path $selected_file(path,1).tmp
+	      set result_msg "Compiling ..."
+	      focus .
+	      exec TTKernel -$option $selected_file(path,1) $report_path
+
+	      set report [open $report_path {RDONLY}]
+	      set result_msg [gets $report]
+	      close $report
+	      exec rm -f $report_path
+
+	      set listing_path $selected_file(path,1).lis
+	      switch -exact $option {
+		"e" {
+		  set result_path $selected_file(path,1).ism
+		}
+		"f" {
+		  set result_path $selected_file(path,1).fsm
+		}
+		"g" {
+		  set result_path $selected_file(path,1).psm
+		}
+	      }
+	      if {[string match *error* $result_msg] ||
+	          [string match *infinite* $result_msg]} {
+		exec rm -f $result_path
+		display_result_file $listing_path
+	      } else {
+		exec rm -f $listing_path
+	        if {[string match *state* $result_msg]} {
+		  display_result_file $result_path
+		} else {
+		  exec rm -f $result_path
+		}
+	      }
+	    }
+	  }
+        }
+}
+
+
+#################################################################
+# 2.3 Definition of the auxiliary procedures			#
+#################################################################
+
+
+
+#################################################################
+#								#
+# 7 Menu Performance Evaluator
+#								#
+#################################################################
+# This menu handles the performance evaluation of an AEmilia spec through TTKernel;
+# the interaction between TTGUI and TTKernel is realized via a .tmp file.
+# The implementation is based on the following procedures:
+# - compute_stat_distr(): It computes the stationary state probability
+#			  distribution of an AEmilia spec to be selected.
+# - compute_trans_distr(): It computes the transient state probability
+#			   distribution of an AEmilia spec to be selected.
+# - compute_stat_measures(): It computes the stationary values of
+#			     the reward-based performance measures of
+#			     an AEmilia spec to be selected.
+# - compute_trans_measures(): It computes the transient values of
+#			      the reward-based performance measures of
+#			      an AEmilia spec to be selected.
+# - simulate(): It simulates (possibly in a trace-driven way)
+#		an AEmilia spec to be selected in order to
+#		estimate its performance measures.
+# and on the following auxiliary procedures:
+# - terminate_distr_comp(): It completes the computation of the state
+#			    probability distribution by showing it.
+# - terminate_measure_comp(): It completes the computation of the values
+#			      of the reward-based measures by showing them.
+#################################################################
+
+
+#################################################################
+# 7.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.performance_evaluator \
+	-text "PERFORMANCE\nEVALUATOR" \
+	-menu .main.menubar.performance_evaluator.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.performance_evaluator \
+	-side right \
+	-ipadx 8 \
+	-padx 5
+
+
+menu .main.menubar.performance_evaluator.menu
+.main.menubar.performance_evaluator.menu add command \
+	-label "Stationary probability distribution calculator (Gaussian elimination) ..." \
+	-command {compute_stat_distr "p"}
+.main.menubar.performance_evaluator.menu add command \
+	-label "Stationary probability distribution calculator (adaptive symmetric SOR) ..." \
+	-command {compute_stat_distr "q"}
+.main.menubar.performance_evaluator.menu add command \
+	-label "Transient probability distribution calculator (uniformization) ..." \
+	-command {compute_trans_distr "r"}
+.main.menubar.performance_evaluator.menu add separator
+.main.menubar.performance_evaluator.menu add command \
+	-label "Stationary reward-based measure calculator (Gaussian elimination) ..." \
+	-command {compute_stat_measures "s"}
+.main.menubar.performance_evaluator.menu add command \
+	-label "Stationary reward-based measure calculator (adaptive symmetric SOR) ..." \
+	-command {compute_stat_measures "t"}
+.main.menubar.performance_evaluator.menu add command \
+	-label "Transient reward-based measure calculator (uniformization) ..." \
+	-command {compute_trans_measures "u"}
+.main.menubar.performance_evaluator.menu add separator
+.main.menubar.performance_evaluator.menu add command \
+	-label "Simulator ..." \
+	-command {simulate}
+
+
+set command_descr(p,0) 	""
+set command_descr(p,1)	"Calculate the stationary probability distribution of the states of an AEmilia spec."
+set command_descr(p,2)	"Calculate the stationary probability distribution of the states of an AEmilia spec."
+set command_descr(p,3)	"Calculate the transient probability distribution of the states of an AEmilia spec."
+set command_descr(p,4) 	""
+set command_descr(p,5)	"Calculate the stationary values of the reward-based measures of an AEmilia spec."
+set command_descr(p,6)	"Calculate the stationary values of the reward-based measures of an AEmilia spec."
+set command_descr(p,7)	"Calculate the transient values of the reward-based measures of an AEmilia spec."
+set command_descr(p,8) 	""
+set command_descr(p,11)	"Simulate an AEmilia spec to estimate its performance measures."
+
+
+bind .main.menubar.performance_evaluator.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.performance_evaluator.menu <Motion> {
+	set command [select_command .main.menubar.performance_evaluator.menu %y]
+	set caption_msg $command_descr(p,$command)
+	.main.menubar.performance_evaluator.menu activate $command
+}
+
+
+bind .main.menubar.performance_evaluator.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 7.2 Definition of the menu commands				#
+#################################################################
+
+proc compute_stat_distr {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to evaluate does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to evaluate is not an AEmilia spec!"
+            } else {
+	      set report_path $selected_file(path,1).tmp
+	      set result_msg "Calculating ..."
+	      focus .
+	      exec TTKernel -$option $selected_file(path,1) $report_path
+	      terminate_distr_comp $report_path
+	    }
+	  }
+        }
+}
+
+
+proc compute_trans_distr {option} {
+	global result_msg
+	global selected_file
+	global trans_time_value
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to evaluate does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to evaluate is not an AEmilia spec!"
+            } else {
+	      set trans_time_value ""
+	      while {![regexp {^([0-9]+)|([0-9]+(\.)[0-9]+)$} $trans_time_value] ||
+		     ($trans_time_value < 0)} {
+	        select_trans_time_value
+	        if {![regexp {^([0-9]+)|([0-9]+(\.)[0-9]+)$} $trans_time_value] ||
+		    ($trans_time_value < 0)} {
+		  set result_msg "Error: illegal transient time instant!"
+		}
+	      }
+	      set report_path $selected_file(path,1).tmp
+	      set result_msg "Calculating ..."
+	      focus .
+	      exec TTKernel -$option $selected_file(path,1) $trans_time_value $report_path
+	      terminate_distr_comp $report_path
+	    }
+	  }
+        }
+}
+
+
+proc compute_stat_measures {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to evaluate does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to evaluate is not an AEmilia spec!"
+            } else {
+              select_file 4 2
+              if {$selected_file(path,2) != ""} {
+                if {![file exist $selected_file(path,2)]} {
+                  set result_msg "Error: the reward spec does not exist!"
+                } else {
+	          if {[string compare [file extension $selected_file(path,2)] ".rew"]} {
+                    set result_msg "Error: the auxiliary file is not a reward spec!"
+                  } else {
+		    set report_path $selected_file(path,1).tmp
+	            set result_msg "Calculating ..."
+	            focus .
+	            exec TTKernel -$option $selected_file(path,1) $selected_file(path,2) $report_path
+		    terminate_measure_comp $report_path
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+proc compute_trans_measures {option} {
+	global result_msg
+	global selected_file
+	global trans_time_value
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to evaluate does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to evaluate is not an AEmilia spec!"
+            } else {
+              select_file 4 2
+              if {$selected_file(path,2) != ""} {
+                if {![file exist $selected_file(path,2)]} {
+                  set result_msg "Error: the reward spec does not exist!"
+                } else {
+	          if {[string compare [file extension $selected_file(path,2)] ".rew"]} {
+                    set result_msg "Error: the auxiliary file is not a reward spec!"
+                  } else {
+	            set trans_time_value ""
+	            while {![regexp {^([0-9]+)|([0-9]+(\.)[0-9]+)$} $trans_time_value] ||
+		           ($trans_time_value < 0)} {
+	              select_trans_time_value
+	              if {![regexp {^([0-9]+)|([0-9]+(\.)[0-9]+)$} $trans_time_value] ||
+		          ($trans_time_value < 0)} {
+		        set result_msg "Error: illegal transient time instant!"
+		      }
+	            }
+		    set report_path $selected_file(path,1).tmp
+	            set result_msg "Calculating ..."
+	            focus .
+	            exec TTKernel -$option $selected_file(path,1) $trans_time_value $selected_file(path,2) $report_path
+		    terminate_measure_comp $report_path
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+proc simulate {} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to simulate does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to simulate is not an AEmilia spec!"
+            } else {
+              select_file 5 2
+              if {$selected_file(path,2) != ""} {
+                if {![file exist $selected_file(path,2)]} {
+                  set result_msg "Error: the simulation spec does not exist!"
+                } else {
+	          if {[string compare [file extension $selected_file(path,2)] ".sim"]} {
+                    set result_msg "Error: the auxiliary file is not a simulation spec!"
+                  } else {
+		    set report_path $selected_file(path,1).tmp
+	            set result_msg "Simulating ..."
+	            focus .
+	            exec TTKernel -v $selected_file(path,1) $selected_file(path,2) $report_path
+
+	            set report [open $report_path {RDONLY}]
+	            set result_msg [gets $report]
+	            set index [gets $report]
+	            close $report
+	            exec rm -f $report_path
+
+	            set listing_path1 $selected_file(path,1).lis
+	            set listing_path2 $selected_file(path,2).lis
+		    set result_path $selected_file(path,1).est
+		    if {[string match *error* $result_msg]} {
+		      exec rm -f $result_path
+		      if {$index == 0} {
+		        exec rm -f $listing_path2
+		        display_result_file $listing_path1
+		      } else {
+		        exec rm -f $listing_path1
+			display_result_file $listing_path2
+		      }
+		    } else {
+		      exec rm -f $listing_path1
+		      exec rm -f $listing_path2
+	              if {[string match *completed* $result_msg]} {
+		        display_result_file $result_path
+	              } else {
+			exec rm -f $result_path
+		      }
+	            }
+	          }
+	        }
+              }
+	    }
+	  }
+	}
+}
+
+
+#################################################################
+# 7.3 Definition of the auxiliary procedures			#
+#################################################################
+
+proc terminate_distr_comp {report_path} {
+	global result_msg
+	global selected_file
+
+	set report [open $report_path {RDONLY}]
+	set result_msg [gets $report]
+	close $report
+	exec rm -f $report_path
+
+	set listing_path $selected_file(path,1).lis
+	set result_path $selected_file(path,1).dis
+	if {[string match *error* $result_msg]} {
+	  exec rm -f $result_path
+	  display_result_file $listing_path
+	} else {
+	  exec rm -f $listing_path
+	  if {[string match *completed* $result_msg]} {
+	    display_result_file $result_path
+	  } else {
+	    exec rm -f $result_path
+	  }
+        }
+}
+
+
+proc terminate_measure_comp {report_path} {
+	global result_msg
+	global selected_file
+      
+	set report [open $report_path {RDONLY}]
+	set result_msg [gets $report]
+	set index [gets $report]
+	close $report
+	exec rm -f $report_path
+      
+	set listing_path1 $selected_file(path,1).lis
+	set listing_path2 $selected_file(path,2).lis
+	set result_path $selected_file(path,1).val
+	if {[string match *error* $result_msg]} {
+	  exec rm -f $result_path
+	  if {$index == 0} {
+	    exec rm -f $listing_path2
+	    display_result_file $listing_path1
+	  } else {
+	    exec rm -f $listing_path1
+	    display_result_file $listing_path2
+	  }
+	} else {
+	  exec rm -f $listing_path1
+	  exec rm -f $listing_path2
+	  if {[string match *completed* $result_msg]} {
+	    display_result_file $result_path
+	  } else {
+	    exec rm -f $result_path
+	  }
+	}
+}
+
+
+
+#################################################################
+#								#
+# 6 Menu Security Analyzer
+#								#
+#################################################################
+# This menu handles the security analysis of an AEmilia spec through TTKernel;
+# the interaction between TTGUI and TTKernel is realized via a .tmp file.
+# The implementation is based on the following procedure:
+# - analyze_security(): It analyzes the security of an AEmilia spec
+#			to be selected.
+#################################################################
+
+
+#################################################################
+# 6.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.security_analyzer \
+	-text "SECURITY\nANALYZER" \
+	-menu .main.menubar.security_analyzer.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.security_analyzer \
+	-side right \
+	-ipadx 8 \
+	-padx 5
+
+
+menu .main.menubar.security_analyzer.menu
+.main.menubar.security_analyzer.menu add command \
+	-label "Non-interference analyzer ..." \
+	-command {analyze_security "n"}
+.main.menubar.security_analyzer.menu add command \
+	-label "Non-deducibility on composition analyzer ..." \
+	-command {analyze_security "o"}
+
+
+set command_descr(s,0) 	""
+set command_descr(s,1)	"Analyze the non-interference property of an AEmilia spec."
+set command_descr(s,11)	"Analyze the non-deducibility on composition property of an AEmilia spec."
+
+
+bind .main.menubar.security_analyzer.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.security_analyzer.menu <Motion> {
+	set command [select_command .main.menubar.security_analyzer.menu %y]
+	set caption_msg $command_descr(s,$command)
+	.main.menubar.security_analyzer.menu activate $command
+}
+
+
+bind .main.menubar.security_analyzer.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 6.2 Definition of the menu commands				#
+#################################################################
+
+proc analyze_security {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to analyze does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to analyze is not an AEmilia spec!"
+            } else {
+              select_file 3 2
+              if {$selected_file(path,2) != ""} {
+                if {![file exist $selected_file(path,2)]} {
+                  set result_msg "Error: the security spec does not exist!"
+                } else {
+	          if {[string compare [file extension $selected_file(path,2)] ".sec"]} {
+                    set result_msg "Error: the auxiliary file is not a security spec!"
+                  } else {
+		    set report_path $selected_file(path,1).tmp
+	            set result_msg "Analyzing ..."
+	            focus .
+	            exec TTKernel -$option $selected_file(path,1) $selected_file(path,2) $report_path
+
+		    set report [open $report_path {RDONLY}]
+		    set result_msg [gets $report]
+		    set index [gets $report]
+		    close $report
+		    exec rm -f $report_path
+
+		    set listing_path1 $selected_file(path,1).lis
+		    set listing_path2 $selected_file(path,2).lis
+		    set result_path $selected_file(path,1).sar
+		    if {[string match *error* $result_msg]} {
+	  	      exec rm -f $result_path
+	  	      if {$index == 0} {
+	    	        exec rm -f $listing_path2
+	    	        display_result_file $listing_path1
+	  	      } else {
+	    	        exec rm -f $listing_path1
+	    	        display_result_file $listing_path2
+	  	      }
+		    } else {
+	  	      exec rm -f $listing_path1
+	  	      exec rm -f $listing_path2
+	  	      if {[string match *completed* $result_msg]} {
+	    	        display_result_file $result_path
+	  	      } else {
+	    	        exec rm -f $result_path
+	  	      }
+		    }
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+#################################################################
+# 6.3 Definition of the auxiliary procedures			#
+#################################################################
+
+
+
+#################################################################
+#								#
+# 5 Menu Model Checker						#
+#								#
+#################################################################
+# This menu handles the model checking of an AEmilia spec through TTKernel;
+# the interaction between TTGUI and TTKernel is realized via a .tmp file.
+# The implementation is based on the following procedure:
+# - check_properties(): It checks an AEMilia spec to be selected against
+#		        a set of properties expressed in CTL or LTL.
+# and on the following auxiliary procedure:
+# - terminate_model_checking(): It completes the model checking
+#				by showing the results.
+#################################################################
+
+
+#################################################################
+# 5.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.model_checker \
+	-text "MODEL\nCHECKER" \
+	-menu .main.menubar.model_checker.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.model_checker \
+	-side right \
+	-ipadx 8 \
+	-padx 5
+
+
+menu .main.menubar.model_checker.menu
+.main.menubar.model_checker.menu add command \
+	-label "Symbolic LTL model checker ..." \
+	-command {check_properties "m"}
+
+
+set command_descr(m,0) 	""
+set command_descr(m,11)	"Check via NuSMV an AEmilia spec against a set of properties expressed in LTL."
+
+
+bind .main.menubar.model_checker.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.model_checker.menu <Motion> {
+	set command [select_command .main.menubar.model_checker.menu %y]
+	set caption_msg $command_descr(m,$command)
+	.main.menubar.model_checker.menu activate $command
+}
+
+
+bind .main.menubar.model_checker.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 5.2 Definition of the menu commands				#
+#################################################################
+
+proc check_properties {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the AEmilia spec to check does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the file to check is not an AEmilia spec!"
+            } else {
+	      switch -exact $option {
+		"l" {
+                  select_file 2 2
+                  if {$selected_file(path,2) != ""} {
+                    if {![file exist $selected_file(path,2)]} {
+                      set result_msg "Error: the CTL spec does not exist!"
+                    } else {
+	              if {[string compare [file extension $selected_file(path,2)] ".ctl"]} {
+                        set result_msg "Error: the auxiliary file is not a CTL spec!"
+                      } else {
+			set report_path $selected_file(path,1).tmp
+	                set result_msg "Checking ..."
+		        focus .
+	                exec TTKernel -$option $selected_file(path,1) $selected_file(path,2) $report_path
+			terminate_model_checking $report_path
+		      }
+		    }
+		  }
+		}
+		"m" {
+                  select_file 2 2
+                  if {$selected_file(path,2) != ""} {
+                    if {![file exist $selected_file(path,2)]} {
+                      set result_msg "Error: the LTL spec does not exist!"
+                    } else {
+	              if {[string compare [file extension $selected_file(path,2)] ".ltl"]} {
+                        set result_msg "Error: the auxiliary file is not an LTL spec!"
+                      } else {
+			set report_path $selected_file(path,1).tmp
+	                set result_msg "Checking ..."
+		        focus .
+	                exec TTKernel -$option $selected_file(path,1) $selected_file(path,2) $report_path
+			terminate_model_checking $report_path
+		      }
+		    }
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+}
+
+
+#################################################################
+# 5.3 Definition of the auxiliary procedures			#
+#################################################################
+
+proc terminate_model_checking {report_path} {
+	global result_msg
+	global selected_file
+
+	set report [open $report_path {RDONLY}]
+	set result_msg [gets $report]
+	set index [gets $report]
+	close $report
+	exec rm -f $report_path
+
+	set smv_path $selected_file(path,1).smv
+	exec rm -f $smv_path
+	set smv_script_path $selected_file(path,1).smv_script
+	exec rm -f $smv_script_path
+	set smv_msgs_path $selected_file(path,1).smv_msgs
+	exec rm -f $smv_msgs_path
+	set smv_output_path $selected_file(path,1).smv_output
+	exec rm -f $smv_output_path
+
+	set listing_path1 $selected_file(path,1).lis
+	set listing_path2 $selected_file(path,2).lis
+	set result_path $selected_file(path,1).mcr
+	if {[string match *error* $result_msg]} {
+	  exec rm -f $result_path
+	  if {$index == 0} {
+	    exec rm -f $listing_path2
+	    display_result_file $listing_path1
+	  } else {
+	    exec rm -f $listing_path1
+	    display_result_file $listing_path2
+	  }
+	} else {
+	  exec rm -f $listing_path1
+	  exec rm -f $listing_path2
+	  if {[string match *completed* $result_msg]} {
+	    display_result_file $result_path
+	  } else {
+	    exec rm -f $result_path
+	  }
+	}
+}
+
+
+
+#################################################################
+#								#
+# 4 Menu Equivalence Verifier					#
+#								#
+#################################################################
+# This menu handles the equivalence verification of two AEmilia specs through TTKernel;
+# the interaction between TTGUI and TTKernel is realized via a .tmp file.
+# The implementation is based on the following procedure:
+# - verify_equivalence(): It checks two AEmilia specs to be selected
+#			  for equivalence.
+#################################################################
+
+
+#################################################################
+# 4.1 Creation of the menu button				#
+#################################################################
+
+menubutton .main.menubar.equivalence_verifier \
+	-text "EQUIVALENCE\nVERIFIER" \
+	-menu .main.menubar.equivalence_verifier.menu \
+	-relief raised \
+	-cursor hand2
+pack .main.menubar.equivalence_verifier \
+	-side right \
+	-ipadx 8 \
+	-padx 5
+
+
+menu .main.menubar.equivalence_verifier.menu
+.main.menubar.equivalence_verifier.menu add command \
+	-label "Strong bisimulation equivalence verifier ..." \
+	-command {verify_equivalence "h"}
+.main.menubar.equivalence_verifier.menu add command \
+	-label "Weak bisimulation equivalence verifier ..." \
+	-command {verify_equivalence "i"}
+.main.menubar.equivalence_verifier.menu add separator
+.main.menubar.equivalence_verifier.menu add command \
+	-label "Strong Markovian bisimulation equivalence verifier ..." \
+	-command {verify_equivalence "j"}
+.main.menubar.equivalence_verifier.menu add command \
+	-label "Weak Markovian bisimulation equivalence verifier ..." \
+	-command {verify_equivalence "k"}
+
+set command_descr(e,0) 	""
+set command_descr(e,1)	"Verify whether two AEmilia specs are strongly bisimulation equivalent."
+set command_descr(e,2)	"Verify whether two AEmilia specs are weakly bisimulation equivalent."
+set command_descr(e,3) 	""
+set command_descr(e,4)	"Verify whether two AEmilia specs are strongly Markovian bisimulation equivalent."
+set command_descr(e,11)	"Verify whether two AEmilia specs are weakly Markovian bisimulation equivalent."
+
+
+bind .main.menubar.equivalence_verifier.menu <Enter> {
+	set result_msg ""
+}
+
+
+bind .main.menubar.equivalence_verifier.menu <Motion> {
+	set command [select_command .main.menubar.equivalence_verifier.menu %y]
+	set caption_msg $command_descr(e,$command)
+	.main.menubar.equivalence_verifier.menu activate $command
+}
+
+
+bind .main.menubar.equivalence_verifier.menu <Leave> {
+	set caption_msg ""
+}
+
+
+#################################################################
+# 4.2 Definition of the menu commands				#
+#################################################################
+
+proc verify_equivalence {option} {
+	global result_msg
+	global selected_file
+
+	set result_msg ""
+	.main.body.text config \
+	  -state disabled
+        select_file 1 1
+        if {$selected_file(path,1) != ""} {
+          if {![file exist $selected_file(path,1)]} {
+            set result_msg "Error: the first AEmilia spec to verify does not exist!"
+          } else {
+	    if {[string compare [file extension $selected_file(path,1)] ".aem"]} {
+              set result_msg "Error: the first file to verify is not an AEmilia spec!"
+            } else {
+              select_file 1 2
+              if {$selected_file(path,2) != ""} {
+                if {![file exist $selected_file(path,2)]} {
+                  set result_msg "Error: the second AEmilia spec to verify does not exist!"
+                } else {
+	          if {[string compare [file extension $selected_file(path,2)] ".aem"]} {
+                    set result_msg "Error: the second file to verify is not an AEmilia spec!"
+                  } else {
+		    set report_path $selected_file(path,1).tmp
+	            set result_msg "Verifying ..."
+		    focus .
+	            exec TTKernel -$option $selected_file(path,1) $selected_file(path,2) $report_path
+
+	            set report [open $report_path {RDONLY}]
+	            set result_msg [gets $report]
+	            set index [gets $report]
+	            close $report
+	            exec rm -f $report_path
+
+	            set listing_path1 $selected_file(path,1).lis
+	            set listing_path2 $selected_file(path,2).lis
+	            set result_path $selected_file(path,1).evr
+		    if {[string match *error* $result_msg]} {
+		      exec rm -f $result_path
+		      if {$index == 0} {
+			if {$listing_path2 != $listing_path1} {
+		          exec rm -f $listing_path2
+			}
+		        display_result_file $listing_path1
+		      } else {
+			if {$listing_path1 != $listing_path2} {
+		          exec rm -f $listing_path1
+			}
+			display_result_file $listing_path2
+		      }
+		    } else {
+		      exec rm -f $listing_path1
+		      exec rm -f $listing_path2
+	              if {[string match *completed* $result_msg]} {
+		        display_result_file $result_path
+	              } else {
+			exec rm -f $result_path
+		      }
+	            }
+	          }
+	        }
+              }
+	    }
+	  }
+	}
+}
+
+
+#################################################################
+# 4.3 Definition of the auxiliary procedures			#
+#################################################################

@@ -1,0 +1,416 @@
+Integrated semantic model underlying BS_Type
+(the data variables are assigned concrete values in the local states):
+
+
+>> Global state 1:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_request_check, exp(RFID_read_Type.lambda)> . RFID_read_Type.Sender_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <F[1].receive_request_check, exp(1.250000)>
+
+		- Derivative global state: 2
+
+
+>> Global state 2:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.send_request, inf(1, 1)> . RFID_read_Type.Sender_waiting()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M1.receive.1#F[1].send_request, inf(1, 1)>
+
+		- Derivative global state: 3
+
+
+>> Global state 3:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.send_data, exp(Master_Type_F.sigmaM)> . Master_Type_F.Master()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M1.send_data#N.receive_request, exp(0.700000)>
+
+		- Derivative global state: 4
+
+
+>> Global state 4:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <N.send_request_p, inf(1, 1)>
+
+		- Derivative global state: 5
+
+
+>> Global state 5:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.check_response, inf(1, 1)> . choice{<Networking_Type.propagate!(true), inf(1, Networking_Type.prob)> . <Networking_Type.send_response!(true), exp(Networking_Type.sigmaN)> . Networking_Type.Network(), <Networking_Type.propagate!(false), inf(1, 1 - Networking_Type.prob)> . <Networking_Type.send_response!(false), exp(Networking_Type.sigmaN)> . Networking_Type.Network()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <N.check_response, inf(1, 1)>
+
+		- Derivative global state: 6
+
+
+>> Global state 6:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		choice{<Networking_Type.propagate!(true), inf(1, Networking_Type.prob)> . <Networking_Type.send_response!(true), exp(Networking_Type.sigmaN)> . Networking_Type.Network(), <Networking_Type.propagate!(false), inf(1, 1 - Networking_Type.prob)> . <Networking_Type.send_response!(false), exp(Networking_Type.sigmaN)> . Networking_Type.Network()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <N.propagate!(true), inf(1, 0.950000)>
+
+		- Derivative global state: 7
+
+	- Transition:
+
+		- Action:		   <N.propagate!(false), inf(1, 0.050000)>
+
+		- Derivative global state: 8
+
+
+>> Global state 7:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.send_response!(true), exp(Networking_Type.sigmaN)> . Networking_Type.Network()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M2.receive_par#N.send_response!(true), exp(0.900000)>
+
+		- Derivative global state: 11
+
+
+>> Global state 8:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.send_response!(false), exp(Networking_Type.sigmaN)> . Networking_Type.Network()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M2.receive_par#N.send_response!(false), exp(0.900000)>
+
+		- Derivative global state: 9
+
+
+>> Global state 9:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.send_data_par!(Master_Type_R.Master_P.response), exp(Master_Type_R.sigmaMR)> . Master_Type_R.Master_R()
+
+	  where the following concrete values are assigned to the data variables:
+
+		M2.Master_P.response := false
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M2.send_data_par.1#F[1].receive_outcome!(false), exp(0.450000)>
+
+		- Derivative global state: 10
+
+
+>> Global state 10:
+
+	- Local state of F[1]:
+
+		choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where the following concrete values are assigned to the data variables:
+
+		F[1].Sender_waiting.response := false
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <F[1].view_check_in_no, inf(1, 0.050000)>
+
+		- Derivative global state: 1
+
+
+>> Global state 11:
+
+	- Local state of F[1]:
+
+		<RFID_read_Type.receive_outcome?(RFID_read_Type.Sender_waiting.response), _(1, 1)> . choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.send_data_par!(Master_Type_R.Master_P.response), exp(Master_Type_R.sigmaMR)> . Master_Type_R.Master_R()
+
+	  where the following concrete values are assigned to the data variables:
+
+		M2.Master_P.response := true
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <M2.send_data_par.1#F[1].receive_outcome!(true), exp(0.450000)>
+
+		- Derivative global state: 12
+
+
+>> Global state 12:
+
+	- Local state of F[1]:
+
+		choice{cond(RFID_read_Type.Sender_waiting.response = false) -> <RFID_read_Type.view_check_in_no, inf(1, 1 - RFID_read_Type.prob)> . RFID_read_Type.Sender_i(), cond(RFID_read_Type.Sender_waiting.response = true) -> <RFID_read_Type.view_check_in_ok, inf(1, RFID_read_Type.prob)> . RFID_read_Type.Sender_i()}
+
+	  where the following concrete values are assigned to the data variables:
+
+		F[1].Sender_waiting.response := true
+
+	- Local state of M1:
+
+		<Master_Type_F.receive, _(1, 1)> . Master_Type_F.Master_S()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of M2:
+
+		<Master_Type_R.receive_par?(Master_Type_R.Master_R.response), _(1, 1)> . Master_Type_R.Master_P(Master_Type_R.Master_R.response)
+
+	  where no concrete values are assigned to the data variables.
+
+	- Local state of N:
+
+		<Networking_Type.receive_request, _(1, 1)> . <Networking_Type.send_request_p, inf(1, 1)> . Networking_Type.Network_t()
+
+	  where no concrete values are assigned to the data variables.
+
+	- Transition:
+
+		- Action:		   <F[1].view_check_in_ok, inf(1, 0.950000)>
+
+		- Derivative global state: 1
+
+
+>>>> 12 states (6 tangible, 6 vanishing, 0 open, 0 deadlocked)
+>>>> 13 transitions (13 observable, 0 invisible; 6 exp. timed, 7 immediate, 0 passive)

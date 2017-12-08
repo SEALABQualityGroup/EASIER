@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ASCII"?>
+<mapmeasurestoindices:RewMapping xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:mapmeasurestoindices="http://mapmeasurestoindices/1.0">
+  <mappings measureName="Clock_Type_Single_throughput_CK_elapse_tick">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem/@behaviorDecl/@equations.0/@pt/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="RDA_Type_Multiple_utilization_RD">
+    <actions index="Utilization">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@process/@process/@act"/>
+    </actions>
+    <actions index="Utilization">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@process/@process/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="TLDA_Type_Single_throughput_TL_send_sample">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="TLDA_Type_Single_throughput_TL_send_feedback">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="TLDA_Type_Multiple_throughput_TL">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@act"/>
+    </actions>
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem/@behaviorDecl/@equations.0/@pt/@process/@process/@process/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="TLWPC_Type_Single_throughput_WP_send_feedback">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.4/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="NetDownRT_Type_Single_throughput_TR_forward">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.5/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="NetUpRT_Type_Single_throughput_RT_forward">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.6/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="NetDownTT_Type_Single_throughput_WT_forward">
+    <actions index="Throughput">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.7/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@act"/>
+    </actions>
+  </mappings>
+  <mappings measureName="NetUpTT_Type_Single_utilization_TW_forward">
+    <actions index="Utilization">
+      <action href="/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS/EDS.mmaemilia#//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem/@behaviorDecl/@equations.0/@pt/@processes.1/@act"/>
+    </actions>
+  </mappings>
+</mapmeasurestoindices:RewMapping>

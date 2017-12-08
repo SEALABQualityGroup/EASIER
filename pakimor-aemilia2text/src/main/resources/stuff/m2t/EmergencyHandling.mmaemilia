@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="ASCII"?>
+<mmaemilia:AEmiliaSpecification xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Behavior="http://behavior.ecore" xmlns:DataType="http://datatype.ecore" xmlns:Expressions="http://expressions.ecore" xmlns:mmaemilia="http://mmaemilia.ecore">
+  <archiTypeDecl atName="FTASystem_Type">
+    <aetDeclaration>
+      <etDeclaration etName="FTA_Type">
+        <iiDecl intName="inFTA1"/>
+        <oiDecl intName="outFTA1"/>
+        <elemHeader>
+          <costant name="forward_rate">
+            <constantData xsi:type="DataType:Special" type="rate"/>
+          </costant>
+        </elemHeader>
+        <behaviorDecl>
+          <equations name="Forward">
+            <bHeader>
+              <left/>
+              <right/>
+            </bHeader>
+            <pt xsi:type="Behavior:ActionProcess">
+              <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+              <process xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0/@behaviorDecl/@equations.0">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  </process>
+                  <act name="outFTA1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0">
+                    <type/>
+                    <rate xsi:type="Behavior:RateInf"/>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="outFTA1"/>
+                  </act>
+                </process>
+                <act name="forward" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0">
+                  <type/>
+                  <rate xsi:type="Behavior:RateExp">
+                    <expr xsi:type="Expressions:IdentExpr" name="forward_rate"/>
+                  </rate>
+                  <is intName="forward"/>
+                </act>
+              </process>
+              <act name="inFTA1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0">
+                <type/>
+                <rate xsi:type="Behavior:RatePas"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="inFTA1"/>
+              </act>
+            </pt>
+          </equations>
+        </behaviorDecl>
+      </etDeclaration>
+      <etDeclaration etName="NetHi_Type">
+        <iiDecl intName="inNetH1"/>
+        <iiDecl intName="inNetH2"/>
+        <oiDecl intName="outNetH1"/>
+        <oiDecl intName="outNetH2"/>
+        <elemHeader>
+          <costant name="prop_rate">
+            <constantData xsi:type="DataType:Special" type="rate"/>
+          </costant>
+        </elemHeader>
+        <behaviorDecl>
+          <equations name="Transmit">
+            <bHeader>
+              <left/>
+              <right/>
+            </bHeader>
+            <pt xsi:type="Behavior:ChoiceProcess">
+              <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+              <processes xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:ActionProcess">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
+                      <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    </process>
+                    <act name="outNetH1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                      <type/>
+                      <rate xsi:type="Behavior:RateInf"/>
+                      <is xsi:type="mmaemilia:OutputInteraction" intName="outNetH1"/>
+                    </act>
+                  </process>
+                  <act name="downstream" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                    <type/>
+                    <rate xsi:type="Behavior:RateExp">
+                      <expr xsi:type="Expressions:IdentExpr" name="prop_rate"/>
+                    </rate>
+                    <is intName="downstream"/>
+                  </act>
+                </process>
+                <act name="inNetH1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                  <type/>
+                  <rate xsi:type="Behavior:RatePas"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="inNetH1"/>
+                </act>
+              </processes>
+              <processes xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:ActionProcess">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
+                      <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    </process>
+                    <act name="outNetH2" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                      <type/>
+                      <rate xsi:type="Behavior:RateInf"/>
+                      <is xsi:type="mmaemilia:OutputInteraction" intName="outNetH2"/>
+                    </act>
+                  </process>
+                  <act name="upstream" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                    <type/>
+                    <rate xsi:type="Behavior:RateExp">
+                      <expr xsi:type="Expressions:IdentExpr" name="prop_rate"/>
+                    </rate>
+                    <is intName="upstream"/>
+                  </act>
+                </process>
+                <act name="inNetH2" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+                  <type/>
+                  <rate xsi:type="Behavior:RatePas"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="inNetH2"/>
+                </act>
+              </processes>
+            </pt>
+          </equations>
+        </behaviorDecl>
+      </etDeclaration>
+      <etDeclaration etName="MobApp_Type">
+        <iiDecl intName="inMA1"/>
+        <oiDecl intName="getVideo"/>
+        <elemHeader/>
+        <behaviorDecl>
+          <equations name="GetVideo">
+            <bHeader>
+              <left/>
+              <right/>
+            </bHeader>
+            <pt xsi:type="Behavior:ActionProcess">
+              <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+              <process xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2/@behaviorDecl/@equations.0">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                </process>
+                <act name="getVideo" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
+                  <type/>
+                  <rate xsi:type="Behavior:RateInf"/>
+                  <is xsi:type="mmaemilia:OutputInteraction" intName="getVideo"/>
+                </act>
+              </process>
+              <act name="inMA1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
+                <type/>
+                <rate xsi:type="Behavior:RatePas"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="inMA1"/>
+              </act>
+            </pt>
+          </equations>
+        </behaviorDecl>
+      </etDeclaration>
+      <etDeclaration etName="Robot_Type">
+        <iiDecl intName="sendVideo"/>
+        <oiDecl intName="outR1"/>
+        <elemHeader>
+          <costant name="msg_gen_rate">
+            <constantData xsi:type="DataType:Special" type="rate"/>
+          </costant>
+          <costant name="stop_prob">
+            <constantData xsi:type="DataType:Special" type="weight"/>
+          </costant>
+        </elemHeader>
+        <behaviorDecl>
+          <equations name="SendVideo">
+            <bHeader>
+              <left/>
+              <right/>
+            </bHeader>
+            <pt xsi:type="Behavior:ActionProcess">
+              <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+              <process xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                </process>
+                <act name="outR1" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3">
+                  <type/>
+                  <rate xsi:type="Behavior:RateInf">
+                    <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                    <inf_weight xsi:type="Expressions:IdentExpr" name="stop_prob"/>
+                  </rate>
+                  <is xsi:type="mmaemilia:OutputInteraction" intName="outR1"/>
+                </act>
+              </process>
+              <act name="sendVideo" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3">
+                <type/>
+                <rate xsi:type="Behavior:RateExp">
+                  <expr xsi:type="Expressions:IdentExpr" name="msg_gen_rate"/>
+                </rate>
+                <is xsi:type="mmaemilia:InputInteraction" intName="sendVideo"/>
+              </act>
+            </pt>
+          </equations>
+        </behaviorDecl>
+      </etDeclaration>
+    </aetDeclaration>
+    <atDeclaration>
+      <aeiDecl instanceName="FTA" TypeOf="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0">
+        <actualParam>forward_rate</actualParam>
+        <elem>
+          <behaviorDecl>
+            <equations name="Forward">
+              <bHeader>
+                <left/>
+                <right/>
+              </bHeader>
+              <pt xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:ActionProcess">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0/@behaviorDecl/@equations.0">
+                      <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    </process>
+                    <act name="outFTA1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                      <type/>
+                      <rate xsi:type="Behavior:RateInf">
+                        <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                        <inf_weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                      </rate>
+                      <is xsi:type="mmaemilia:OutputInteraction" intName="outFTA1"/>
+                    </act>
+                  </process>
+                  <act name="forward" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                    <type/>
+                    <rate xsi:type="Behavior:RateExp">
+                      <expr xsi:type="Expressions:IdentExpr" name="5.0" type="NUMERIC_CONST"/>
+                    </rate>
+                    <is intName="forward"/>
+                  </act>
+                </process>
+                <act name="inFTA1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                  <type/>
+                  <rate xsi:type="Behavior:RatePas">
+                    <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                    <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                  </rate>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="inFTA1"/>
+                </act>
+              </pt>
+            </equations>
+          </behaviorDecl>
+        </elem>
+      </aeiDecl>
+      <aeiDecl instanceName="NETH" TypeOf="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1">
+        <actualParam>prop_rate</actualParam>
+        <elem>
+          <behaviorDecl>
+            <equations name="Transmit">
+              <bHeader>
+                <left/>
+                <right/>
+              </bHeader>
+              <pt xsi:type="Behavior:ChoiceProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <processes xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:ActionProcess">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    <process xsi:type="Behavior:ActionProcess">
+                      <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                      <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
+                        <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                      </process>
+                      <act name="outNetH1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                        <type/>
+                        <rate xsi:type="Behavior:RateInf">
+                          <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                          <inf_weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                        </rate>
+                        <is xsi:type="mmaemilia:OutputInteraction" intName="outNetH1"/>
+                      </act>
+                    </process>
+                    <act name="downstream" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                      <type/>
+                      <rate xsi:type="Behavior:RateExp">
+                        <expr xsi:type="Expressions:IdentExpr" name="5.0" type="NUMERIC_CONST"/>
+                      </rate>
+                      <is intName="downstream"/>
+                    </act>
+                  </process>
+                  <act name="inNetH1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <type/>
+                    <rate xsi:type="Behavior:RatePas">
+                      <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                      <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                    </rate>
+                    <is xsi:type="mmaemilia:InputInteraction" intName="inNetH1"/>
+                  </act>
+                </processes>
+                <processes xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:ActionProcess">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                    <process xsi:type="Behavior:ActionProcess">
+                      <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                      <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
+                        <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                      </process>
+                      <act name="outNetH2" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                        <type/>
+                        <rate xsi:type="Behavior:RateInf">
+                          <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                          <inf_weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                        </rate>
+                        <is xsi:type="mmaemilia:OutputInteraction" intName="outNetH2"/>
+                      </act>
+                    </process>
+                    <act name="upstream" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                      <type/>
+                      <rate xsi:type="Behavior:RateExp">
+                        <expr xsi:type="Expressions:IdentExpr" name="5.0" type="NUMERIC_CONST"/>
+                      </rate>
+                      <is intName="upstream"/>
+                    </act>
+                  </process>
+                  <act name="inNetH2" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <type/>
+                    <rate xsi:type="Behavior:RatePas">
+                      <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                      <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                    </rate>
+                    <is xsi:type="mmaemilia:InputInteraction" intName="inNetH2"/>
+                  </act>
+                </processes>
+              </pt>
+            </equations>
+          </behaviorDecl>
+        </elem>
+      </aeiDecl>
+      <aeiDecl instanceName="MA" TypeOf="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
+        <elem>
+          <behaviorDecl>
+            <equations name="GetVideo">
+              <bHeader>
+                <left/>
+                <right/>
+              </bHeader>
+              <pt xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2/@behaviorDecl/@equations.0">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  </process>
+                  <act name="getVideo" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
+                    <type/>
+                    <rate xsi:type="Behavior:RateInf">
+                      <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                      <inf_weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                    </rate>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="getVideo"/>
+                  </act>
+                </process>
+                <act name="inMA1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
+                  <type/>
+                  <rate xsi:type="Behavior:RatePas">
+                    <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                    <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
+                  </rate>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="inMA1"/>
+                </act>
+              </pt>
+            </equations>
+          </behaviorDecl>
+        </elem>
+      </aeiDecl>
+      <aeiDecl instanceName="R" TypeOf="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3">
+        <actualParam>msg_gen_rate</actualParam>
+        <actualParam>stop_prob</actualParam>
+        <elem>
+          <behaviorDecl>
+            <equations name="SendVideo">
+              <bHeader>
+                <left/>
+                <right/>
+              </bHeader>
+              <pt xsi:type="Behavior:ActionProcess">
+                <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                <process xsi:type="Behavior:ActionProcess">
+                  <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
+                    <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
+                  </process>
+                  <act name="outR1" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
+                    <type/>
+                    <rate xsi:type="Behavior:RateInf">
+                      <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
+                      <inf_weight xsi:type="Expressions:IdentExpr" name="0.2" type="NUMERIC_CONST"/>
+                    </rate>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="outR1"/>
+                  </act>
+                </process>
+                <act name="sendVideo" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
+                  <type/>
+                  <rate xsi:type="Behavior:RateExp">
+                    <expr xsi:type="Expressions:IdentExpr" name="5.0" type="NUMERIC_CONST"/>
+                  </rate>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="sendVideo"/>
+                </act>
+              </pt>
+            </equations>
+          </behaviorDecl>
+        </elem>
+      </aeiDecl>
+      <attDecl>
+        <end toInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.1" isInput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@iiDecl.0"/>
+        <start fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.3" isOutput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@oiDecl.0"/>
+      </attDecl>
+      <attDecl>
+        <end toInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.0" isInput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0/@iiDecl.0"/>
+        <start fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.1" isOutput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@oiDecl.0"/>
+      </attDecl>
+      <attDecl>
+        <end toInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.1" isInput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@iiDecl.1"/>
+        <start fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.0" isOutput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0/@oiDecl.0"/>
+      </attDecl>
+      <attDecl>
+        <end toInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.2" isInput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2/@iiDecl.0"/>
+        <start fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.1" isOutput="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@oiDecl.1"/>
+      </attDecl>
+      <aiDecl Is_A="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2/@oiDecl.0" name="getVideo" fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.2"/>
+      <aiDecl Is_A="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@iiDecl.0" name="sendVideo" fromInstance="//@archiTypeDecl/@atDeclaration/@aeiDecl.3"/>
+    </atDeclaration>
+    <header>
+      <initConst name="msg_gen_rate">
+        <initConstData xsi:type="DataType:Special" type="rate"/>
+        <initConstExpr xsi:type="Expressions:IdentExpr" name="5" type="NUMERIC_CONST"/>
+      </initConst>
+      <initConst name="forward_rate">
+        <initConstData xsi:type="DataType:Special" type="rate"/>
+        <initConstExpr xsi:type="Expressions:IdentExpr" name="5" type="NUMERIC_CONST"/>
+      </initConst>
+      <initConst name="prop_rate">
+        <initConstData xsi:type="DataType:Special" type="rate"/>
+        <initConstExpr xsi:type="Expressions:IdentExpr" name="5" type="NUMERIC_CONST"/>
+      </initConst>
+      <initConst name="stop_prob">
+        <initConstData xsi:type="DataType:Special" type="weight"/>
+        <initConstExpr xsi:type="Expressions:IdentExpr" name="0.2" type="NUMERIC_CONST"/>
+      </initConst>
+    </header>
+  </archiTypeDecl>
+</mmaemilia:AEmiliaSpecification>
