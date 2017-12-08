@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AemiliaToQn_bridge
+Bundle-SymbolicName: it.disim.univaq.sealab.aemiliaToQn_bridge
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: metamodel,
+ org.eclipse.emf.ecore.xmi
+Export-Package: it.univaq.from_aemilia_to_qn_plug_in.serialize,
+ restrizioniGenerali,
+ specificheAEmilia
