@@ -108,25 +108,26 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 			} else if (i == SECOND_OBJ) {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(
-						Manager.calculateNumOfChanges(solution.getVariableValue(VARIABLE_INDEX).getRefactoring()));
+						solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());
 			} else if (i == THIRD_OBJ) {
 				// Manager.completeAntipatternDetection(antipatterns, umlModelUri);
 				// PAKIMOR _FIXME
 				// far parire TT
 
-				Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.countingPAsOnAemiliaModel(
-						controller.getPerfQuality(), controller.getRuleFilePath(),
-						solution.getValPath(), metamodelManager);
+//				Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.countingPAsOnAemiliaModel(
+//						controller.getPerfQuality(), controller.getRuleFilePath(),
+//						solution.getValPath(), metamodelManager);
+//
+//				int numOfPAs = 0;
+//				for (String paName : mapOfPAs.keySet()) {
+//					numOfPAs += mapOfPAs.get(paName).size();
+//				}
+				
 
-				int numOfPAs = 0;
-				for (String paName : mapOfPAs.keySet()) {
-					numOfPAs += mapOfPAs.get(paName).size();
-				}
+				Controller.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
 
-				Controller.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + numOfPAs);
-
-				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(numOfPAs);
+				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(solution.getPAs());
 				// solution.setObjective(i, numOfPAs);
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());
 

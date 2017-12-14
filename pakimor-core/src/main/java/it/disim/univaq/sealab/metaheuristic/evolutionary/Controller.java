@@ -25,6 +25,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -57,7 +58,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private Properties prop;
 
-	private String basePath, model_file_name, configFile;
+	private String basePath, sourceFolder, configFile;
 	private PerformanceQuality perfQuality;
 
 	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
@@ -66,22 +67,23 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String ruleFilePath;
 	private RProblem problem;
 	private String destionationFolderPath;
-	private FileWriter resultFileWriter;
+	private FileWriter resultFileWriter, solutionFileWriter;
 	private String outputFolder;
 	private String destinationFolder;
 	private String twoTowersKernelPath;
 	private List<String> csvResultHeader = new ArrayList<>();
-	private String sourceValPath;
-	private String sourceRewPath;
 	private int maxCloning;
-
 	private Instant startingTime, endingTime;
 	private Map<String, List<ArchitecturalInteraction>> sourceModelPAs;
 	private int numberOfPAs;
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd.HH.mm.ss");
-	private String mmaemiliaFilePath;
+	private String sourceModelPath;
 	private String sourceAemPath;
+	private String sourceValPath;
+	private String sourceRewPath;
+	private String sourceRewmappingPath;
+	private String sourceBasePath;
 
 	// private static String BASENAME =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
@@ -117,15 +119,15 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		if (args.length == 2) {
-			model_file_name = args[1];
+			sourceModelPath = args[1];
 		}
 
 		prop = new Properties();
 		setProperties(inputStream);
-		mmaemiliaFilePath = model_file_name + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
-		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(mmaemiliaFilePath);
+		if (sourceModelPath == null || sourceModelPath.isEmpty())
+			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
+		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
 
-		generateSourceFiles();
 		updateSourceModel();
 
 		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
@@ -137,19 +139,48 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private void generateSourceFiles() {
 
-		String mmaemiliaFolderPath = "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS";
-//		sourceAemPath = "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/BGCS/EDS.aem";
+		// String mmaemiliaFolderPath =
+		// "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS";
+		// sourceAemPath =
+		// "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/BGCS/EDS.aem";
 
 		if (!new File(sourceAemPath).exists()) {
 			metamodelManager.packageRegistering();
-
-			Transformation.GenerateAEMTransformation(mmaemiliaFilePath, mmaemiliaFolderPath);
+			Transformation.GenerateAEMTransformation(sourceModelPath, sourceFolder);
 			Controller.logger_.info("generation of source files completed!");
 		}
-
 		if (!new File(sourceRewPath).exists()) {
-			Transformation.GenerateREWTransformation(mmaemiliaFilePath, mmaemiliaFolderPath);
+			Transformation.GenerateREWTransformation(sourceModelPath, sourceFolder);
 			Controller.logger_.info("mmamelia to rew completed");
+		}
+
+		File folder = new File(sourceFolder);
+		File[] listOfFiles = folder.listFiles();
+
+		for (File file : listOfFiles) {
+			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("aem")) {
+				File newFile = new File(sourceAemPath);
+				file.renameTo(newFile);
+			}
+			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("rew")) {
+				File newFile = new File(sourceRewPath);
+				file.renameTo(newFile);
+			}
+			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
+				File newFile = new File(sourceValPath);
+				file.renameTo(newFile);
+			}
+		}
+		folder = null;
+		listOfFiles = null;
+		checkSourceVal();
+		folder = new File(sourceFolder);
+		listOfFiles = folder.listFiles();
+		for (File file : listOfFiles) {
+			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
+				File newFile = new File(sourceValPath);
+				file.renameTo(newFile);
+			}
 		}
 	}
 
@@ -159,7 +190,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.getHandlers()[0].close();
 
 		startingTime = Instant.now();
-		RProblem problem = new RProblem(model_file_name, length, number_of_actions, allowed_failures, populationSize,
+		RProblem problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
 				manager);
 		this.setProblem(problem);
 
@@ -201,6 +232,16 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info(algorithm.getClass().toString());
 
+		solutionFileWriter = new FileWriter(destionationFolderPath + "solutions.csv", true);
+		List<String> line = new ArrayList<String>();
+		line.add("name");
+		line.add("PAs");
+		line.add("perfQ");
+		line.add("numOfChanges");
+		CSVUtils.writeLine(solutionFileWriter, line);
+		solutionFileWriter.flush();
+		solutionFileWriter.close();
+
 		algorithm.run();
 		List<RSolution> population = algorithm.getResult();
 
@@ -225,8 +266,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		try {
 			resultFileWriter = new FileWriter(destionationFolderPath + "results.csv");
-
-			List<String> line = new ArrayList<String>();
+			line = null;
+			line = new ArrayList<String>();
 			line.add("Popul");
 			line.add("Evals");
 			line.add("PCross");
@@ -265,8 +306,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 			writeSolutionSetToCSV(population);
 			resultFileWriter.flush();
-			resultFileWriter.close();
-
+			// TODO: handle exception
 		} catch (IOException e) {
 			// // TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,9 +335,27 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		// model_file_name = getBasePath();
 
-		sourceValPath = getBasePath() + prop.getProperty("sourceValPath");
-		sourceRewPath = getBasePath() + prop.getProperty("sourceRewPath");
-		sourceAemPath = getBasePath() + prop.getProperty("sourceAemPath");
+		setTwoTowersKernelPath(prop.getProperty("ttKernel"));
+		logger_.info("twoTowersKernelPath is set to " + getTwoTowersKernelPath());
+
+		sourceBasePath = getBasePath() + prop.getProperty("sourceBasePath");
+
+		sourceValPath = sourceBasePath + ".val";
+		sourceRewPath = sourceBasePath + ".rew";
+		sourceRewmappingPath = sourceBasePath + ".rewmapping";
+		sourceAemPath = sourceBasePath + ".aem";
+		sourceModelPath = sourceBasePath + ".mmaemilia";
+
+		if (sourceFolder == null || sourceFolder.isEmpty()) {
+			sourceFolder = getBasePath() + prop.getProperty("sourceFolder");
+		}
+		logger_.info("sourceFolder is set to " + sourceFolder);
+
+		if (!new File(sourceAemPath).exists() || !new File(sourceRewPath).exists()
+				|| !new File(sourceValPath).exists()) {
+			generateSourceFiles();
+		}
+
 		// = getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.aem.val";
 
 		if (!new File(sourceValPath).exists()) {
@@ -319,10 +377,10 @@ public class Controller extends AbstractAlgorithmRunner {
 			logger_.info("SourceRewFilePath: " + sourceRewPath);
 		}
 
-		if (model_file_name == null || model_file_name.isEmpty()) {
-			model_file_name = getBasePath() +  prop.getProperty("model_path");
+		if (sourceFolder == null || sourceFolder.isEmpty()) {
+			sourceFolder = getBasePath() + prop.getProperty("sourceFolder");
 		}
-		logger_.info("model_file_name is set to " + model_file_name);
+		logger_.info("sourceFolder is set to " + sourceFolder);
 
 		length = Integer.parseInt(prop.getProperty("length"));
 		logger_.info("length is set to " + length);
@@ -351,9 +409,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		setOutputFolder(prop.getProperty("outputFolder"));
 		logger_.info("outputFolder is set to " + getOutputFolder());
 
-		setTwoTowersKernelPath(prop.getProperty("ttKernel"));
-		logger_.info("twoTowersKernelPath is set to " + getTwoTowersKernelPath());
-
 		setRuleFilePath(prop.getProperty("rule_file_path"));
 		logger_.info("rule_file_path is set to " + getRuleFilePath());
 
@@ -362,7 +417,6 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info("Starting number of elements: " + populationSize);
 		logger_.info("Debug mode: " + isDebug);
-
 	}
 
 	public Properties getProperties() {
@@ -646,7 +700,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	// }
 
 	public void copyModel(String destinationPath) {
-		File source = new File(model_file_name + ((AemiliaManager) metamodelManager).getMetamodelFileExtension());
+		File source = new File(sourceModelPath);
 		File dest = new File(destinationPath);
 		try {
 			FileUtils.copyFile(source, dest);
@@ -680,15 +734,53 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	private void updateSourceModel() {
-		String rewMappingFilePath = model_file_name + AemiliaManager.getRewmappingFileExtension();
-		if (!new File(rewMappingFilePath).exists()) {
-			((AemiliaManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath, rewMappingFilePath,
-					mmaemiliaFilePath);
-			((AemiliaManager) metamodelManager).refreshModel(mmaemiliaFilePath);
+		// String rewMappingFilePath = sourceFolder +
+		// AemiliaManager.getRewmappingFileExtension();
+		if (!new File(sourceRewmappingPath).exists()) {
+			checkSourceVal();
+			((AemiliaManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath, sourceRewmappingPath,
+					sourceModelPath);
+			((AemiliaManager) metamodelManager).refreshModel(sourceModelPath);
 			logger_.info("source model UPDATED!!");
 		} else {
 			logger_.info("source model already UPDATED!!");
 		}
+	}
+
+	public String getSourceModelPath() {
+		return sourceModelPath;
+	}
+
+	public void setSourceModelPath(String sourceModelPath) {
+		this.sourceModelPath = sourceModelPath;
+	}
+
+	private void checkSourceVal() {
+		if (!new File(sourceValPath).exists()) {
+			((AemiliaManager) manager.getMetamodelManager()).gaussianEliminationSRBMC(sourceAemPath, sourceRewPath,
+					sourceFolder + "/ttresult");
+			if (!new File(sourceValPath).exists()) {
+				checkTwoTowersOutput(sourceFolder + "/ttresult");
+			}
+		}
+	}
+
+	public void simpleSolutionWriterToCSV(RSolution rSolution) {
+		try {
+			solutionFileWriter = new FileWriter(destionationFolderPath + "solutions.csv", true);
+			List<String> line = new ArrayList<String>();
+			line.add(String.valueOf(rSolution.getName()));
+			line.add(String.valueOf(rSolution.getPAs()));
+			line.add(String.valueOf(rSolution.getPerfQ()));
+			line.add(String.valueOf(rSolution.getNumOfChanges()));
+			CSVUtils.writeLine(solutionFileWriter, line);
+			solutionFileWriter.flush();
+			solutionFileWriter.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.getStackTrace();
+		}
+
 	}
 
 }

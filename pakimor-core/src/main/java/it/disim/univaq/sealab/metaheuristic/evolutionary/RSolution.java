@@ -29,6 +29,7 @@ import it.disim.univaq.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesR
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
+import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
 import it.disim.univaq.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
@@ -63,6 +64,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	private Instant startingTime, endingTime;
 	private Map<String, List<ArchitecturalInteraction>> mapOfPAs;
 	private String valFilePath;
+	private float perfQ;
+	private double changes;
 
 	protected RSolution(RProblem p) throws ParserException, UnexpectedException {
 		super(p);
@@ -278,6 +281,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		applyTransformation(metamodelManager);
 		invokeSolver(metamodelManager);
 		updateModel(metamodelManager);
+		Manager.getInstance(null).getController().simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
 	}
 
@@ -365,19 +369,19 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		String valFilePath = mmaemiliaFolderPath + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName()
 				+ "_result" + ((AemiliaManager) metamodelManager).getModelFileExtension() + ".val";
 
-		float performanceQuality = 0;
+		perfQ = 0;
 		if (!new File(valFilePath).exists()) {
-			performanceQuality = -Float.MAX_VALUE;
+			perfQ = -Float.MAX_VALUE;
 			Controller.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
 					+ valFilePath + " doesn't exist.");
 		} else {
-			performanceQuality = controller.getPerfQuality().performanceQuality(metamodelManager.getSourceValFilePath(),
+			perfQ = controller.getPerfQuality().performanceQuality(metamodelManager.getSourceValFilePath(),
 					valFilePath);
 
 		}
-		Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQuality --> " + performanceQuality);
+		Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQuality --> " + perfQ);
 
-		return performanceQuality;
+		return perfQ;
 	}
 
 	/**
@@ -569,5 +573,37 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public void refreshModel() {
 		getResourceSet().getResources().get(0).unload();
 		this.createNewModel(mmaemiliaFilePath);
+	}
+	
+	public int getPAs() {
+		Controller controller = Manager.getInstance(null).getController();
+		AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
+		Map<String, List<ArchitecturalInteraction>> mapOfPAs = this.countingPAsOnAemiliaModel(
+				controller.getPerfQuality(), controller.getRuleFilePath(),
+				this.getValPath(), metamodelManager);
+
+		int numOfPAs = 0;
+		for (String paName : mapOfPAs.keySet()) {
+			numOfPAs += mapOfPAs.get(paName).size();
+		}
+		return numOfPAs;
+	}
+
+	public float getPerfQ() {
+		perfQ = evaluatePerformance();
+		return perfQ;
+	}
+
+	public void setPerfQ(float perfQ) {
+		this.perfQ = perfQ;
+	}
+	
+	public double getNumOfChanges() {
+		changes = 0.0;
+		Refactoring r = this.getVariableValue(0).getRefactoring();
+		for (RefactoringAction action : r.getActions()) {
+			changes += action.getNumOfChanges();
+		}
+		return changes;
 	}
 }

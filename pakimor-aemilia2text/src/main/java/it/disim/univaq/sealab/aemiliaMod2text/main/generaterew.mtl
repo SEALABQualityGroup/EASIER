@@ -10,7 +10,6 @@
 [template public generaterew(anAEmiliaSpecification : AEmiliaSpecification) post(trim())]
 [comment @main/]
 [file (anAEmiliaSpecification.archiTypeDecl.atName.concat('_result.rew'), false, 'UTF-8')]
-
 	[let list_elem: OrderedSet(ArchiElemInstance) = self.archiTypeDecl.atDeclaration.aeiDecl]
 		[if (not(self.archiTypeDecl.atDeclaration.aeiDecl->oclIsUndefined()))]
 			[let last_elem: ArchiElemInstance = self.archiTypeDecl.atDeclaration.aeiDecl->last()]
@@ -19,6 +18,7 @@
 				[for (elem: ArchiElemInstance | self.archiTypeDecl.atDeclaration.aeiDecl) separator('\n')]
 				[comment Inserire qui la condizione desiderata (quantomeno l'indice da misurare al fine di verificare se sull'elemento corrente � possibile fare questa misurazione)/]
 				[if (1=1)]
+[comment if elem = last_elem /]
 					[if (elem = last_elem)]
 							[if (elem.selector->isEmpty())]
 								[if (not(elem.TypeOf.oiDecl->isEmpty()))]
@@ -45,7 +45,7 @@
 											MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS 
 											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
 											[elseif (interaction = elem.TypeOf.oiDecl->last())]
-											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0) [elem/] paperino
+											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
 											[else]
 											ENABLED ([elem.instanceName/].[interaction.intName/]) ->TRANS_REWARD(1.0)
 											[/if]
@@ -70,7 +70,7 @@
 												[if (interaction = elem.TypeOf.oiDecl->first())]
 												MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
 												ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
-												[check_similar_objects_utilization(elem, list_elem, interaction)/]
+												[check_similar_objects_utilization(elem, list_elem, interaction, last_elem)/]
 												[/if]
 											[/if]
 										[/for]
@@ -80,7 +80,7 @@
 												[if (interaction = elem.TypeOf.oiDecl->first())]
 												MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS
 												ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->TRANS_REWARD(1.0)
-												[check_similar_objects_throughput(elem, list_elem, interaction)/]
+												[check_similar_objects_throughput(elem, list_elem, interaction, last_elem)/]
 												[/if]
 											[/if]
 										[/for]
@@ -127,7 +127,7 @@
 													[if (interaction = elem.TypeOf.oiDecl->first())]
 													MEASURE [elem.TypeOf.etName/]_Multiple_utilization_[elem.instanceName/] IS
 													ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->STATE_REWARD(1.0)
-													[check_similar_objects_utilization(elem, list_elem, interaction)/]
+													[check_similar_objects_utilization(elem, list_elem, interaction, last_elem)/]
 													[/if]
 												[/if]
 											[/for]
@@ -138,7 +138,7 @@
 													[if (interaction = elem.TypeOf.oiDecl->first())]
 													MEASURE [elem.TypeOf.etName/]_Multiple_throughput_[elem.instanceName/] IS
 													ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[interaction.intName/]) ->TRANS_REWARD(1.0)
-													[check_similar_objects_throughput(elem, list_elem, interaction)/]
+													[check_similar_objects_throughput(elem, list_elem, interaction, last_elem)/]
 													[/if]
 												[/if]
 											[/for]
@@ -156,27 +156,44 @@
 
 
 
-[template public check_similar_objects_utilization(e : ArchiElemInstance, list_elem : OrderedSet(ArchiElemInstance), current_interaction : OutputInteraction) post(trim())]
+[template public check_similar_objects_utilization(e : ArchiElemInstance, list_elem : OrderedSet(ArchiElemInstance), current_interaction : OutputInteraction, last_elem : ArchiElemInstance) post(trim())]
 [for (elem: ArchiElemInstance | list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName))]
 [if (elem.selector->notEmpty() and elem<>e)]
-[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
-ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0);
-[else]
-ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0)
-[/if]
+	[if(elem = last_elem)]
+	[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
+	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0);
+	[else]
+	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0)
+	[/if]
+	[else]
+	[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
+	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0);
+	[else]
+	ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->STATE_REWARD(1.0)
+	[/if]
+	[/if]
 [/if]
 [/for]
 [/template]
 
 
-[template public check_similar_objects_throughput(e : ArchiElemInstance, list_elem : OrderedSet(ArchiElemInstance), current_interaction : OutputInteraction) post(trim())]
+[template public check_similar_objects_throughput(e : ArchiElemInstance, list_elem : OrderedSet(ArchiElemInstance), current_interaction : OutputInteraction, last_elem : ArchiElemInstance) post(trim())]
 [for (elem: ArchiElemInstance | list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName))]
+
 [if (elem.selector->notEmpty() and elem<>e)]
-[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
-ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0);
-[else]
-ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
-[/if]
+	[if(elem = last_elem)]
+		[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
+		ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
+		[else]
+		ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
+		[/if]
+	[else]
+		[if (elem = list_elem->select(elements: ArchiElemInstance | elements.TypeOf.etName = e.TypeOf.etName)->last())]	
+		ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0);
+		[else]
+		ENABLED ([elem.instanceName/][ '[' /][check_condition_type(elem.selector)/][ ']' /].[current_interaction.intName/]) ->TRANS_REWARD(1.0)
+		[/if]
+	[/if]
 [/if]
 [/for]
 [/template]

@@ -117,13 +117,13 @@ public class Manager {
 		return sum;
 	}
 
-	public static double calculateNumOfChanges(Refactoring r) {
-		double sum = 0.0;
-		for (RefactoringAction action : r.getActions()) {
-			sum += action.getNumOfChanges();
-		}
-		return sum;
-	}
+//	public static double calculateNumOfChanges(Refactoring r) {
+//		double sum = 0.0;
+//		for (RefactoringAction action : r.getActions()) {
+//			sum += action.getNumOfChanges();
+//		}
+//		return sum;
+//	}
 	//
 	// public static Model getUMLModel(String umlModelUri) {
 	// ResourceSet set = new ResourceSetImpl();

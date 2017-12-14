@@ -193,14 +193,21 @@ public class AemiliaManager extends MetamodelManager {
 	public AEmiliaSpecification getModel() {
 		if (model == null) {
 			this.packageRegistering();
-			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(
-					getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath), true).getContents(),
-					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+			if(aemiliaModelFilePath == null) {
+				aemiliaModelFilePath = Manager.getInstance(null).getController().getSourceModelPath();
+			}
+			this.model = createModel(aemiliaModelFilePath);
 //			this.model = (AEmiliaSpecification) getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath),
 //					true);
 			Controller.logger_.warning("AemiliaManager's model has been set to sourceModel: " + aemiliaModelFilePath);
 		}
 		return model;
+	}
+	
+	private AEmiliaSpecification createModel(String aemiliaModelFilePath) {
+		return (AEmiliaSpecification) EcoreUtil.getObjectByType(
+				getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath), true).getContents(),
+				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
 
 	public String getRefactoredModelFilePath() {
