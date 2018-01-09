@@ -351,11 +351,23 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		logger_.info("sourceFolder is set to " + sourceFolder);
 
-		if (!new File(sourceAemPath).exists() || !new File(sourceRewPath).exists()
+		if(new File(sourceAemPath).exists() && !new File(sourceModelPath).exists()) {
+			GeneratoreModelloAemilia genModel = new GeneratoreModelloAemilia();
+			FileInputStream aemFileInputStream;
+			try {
+				aemFileInputStream = new FileInputStream(new File(sourceAemPath));
+				genModel.execute_ase(aemFileInputStream, sourceModelPath, sourceModelPath);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+				
+  		if (!new File(sourceAemPath).exists() || !new File(sourceRewPath).exists()
 				|| !new File(sourceValPath).exists()) {
 			generateSourceFiles();
 		}
-
+		
 		// = getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.aem.val";
 
 		if (!new File(sourceValPath).exists()) {

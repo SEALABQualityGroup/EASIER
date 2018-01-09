@@ -1,24 +1,21 @@
 ARCHI_TYPE fta(
-		   const rate wsn_rate := 1000,	
+		   const rate wsn := 1000,	
 		   const rate channel_rate := 50,	
-		   const rate fta_rate := 500000000,	
-		   const rate packet_rate := 0.1,	
-		   const rate ShowMap_rate := 500000,	
+		   const rate fta_r := 50000,	
+		   const rate packet := 10,	
+		   const rate ShowMap_r := 5000,	
 		   const rate lan_rate := 200,	
-		   const rate db_rate := 200,	
-		   const rate dec_rate := 25)	
+		   const rate db := 200,	
+		   const rate dec := 25)	
 			
 
 ARCHI_ELEM_TYPES
 
-    ELEM_TYPE Wsn_Type(const rate wsn_rate)
+    ELEM_TYPE Wsn_Type(const rate wsn)
 	
 		BEHAVIOR
  
-
-			SendData( void; void) = 
-					<generate_data, exp(wsn_rate)> . <send_data, inf> . SendData()
-	
+					SendData(	 void;void) = <generate_data, exp(wsn)> . <send_data, inf> . SendData()	
 		INPUT_INTERACTIONS	
 					
 			UNI generate_data
@@ -31,10 +28,7 @@ ARCHI_ELEM_TYPES
 	
 		BEHAVIOR
  
-
-			Channel( void; void) = 
-					<receive_data, _> . <forward_data, exp(channel_rate)> . Channel()
-	
+					Channel(	 void;void) = <receive_data, _> . <forward_data, exp(channel_rate)> . Channel()	
 		INPUT_INTERACTIONS	
 					
 			UNI receive_data
@@ -43,14 +37,11 @@ ARCHI_ELEM_TYPES
 					
 			UNI forward_data
 
-    ELEM_TYPE Fta_Type(const rate fta_rate,const rate packet_rate)
+    ELEM_TYPE Fta_Type(const rate fta_r,const rate packet)
 	
 		BEHAVIOR
  
-
-			Fta( void; void) = 
-					<receive, _> . <packet_data, exp(packet_rate)> . <sendto_security, _> . <receive_decrypted, _> . <process_data, exp(fta_rate)> . <sendto_db, _> . <sendto_desktop, _> . Fta()
-	
+					Fta(	 void;void) = <receive, _> . <packet_data, exp(packet)> . <sendto_security, _> . <receive_decrypted, _> . <process_data, exp(fta_r)> . <sendto_db, _> . <sendto_desktop, _> . Fta()	
 		INPUT_INTERACTIONS	
 					
 			UNI receive;
@@ -68,16 +59,13 @@ ARCHI_ELEM_TYPES
 	
 		BEHAVIOR
  
-
-			Lan( void; void) = 
-					choice
+					Lan(	 void;void) = choice
 					{
 						<lanto_db, inf> . <frwdto_db, exp(lan_rate)> . Lan(),
 						<lanto_desk, inf> . <frwdto_desk, exp(lan_rate)> . Lan(),
 						<lanto_sec, inf> . <frwdto_sec, exp(lan_rate)> . Lan(),
 						<lanto_fta, inf> . <frwdto_fta, exp(lan_rate)> . Lan()		
-					}
-	
+					}	
 		INPUT_INTERACTIONS	
 					
 			UNI lanto_db;
@@ -92,14 +80,11 @@ ARCHI_ELEM_TYPES
 			frwdto_sec;
 			frwdto_fta
 
-    ELEM_TYPE Desk_Type(const rate ShowMap_rate)
+    ELEM_TYPE Desk_Type(const rate ShowMap_r)
 	
 		BEHAVIOR
  
-
-			ShowMap( void; void) = 
-					<receive_map, _> . <show_map, exp(ShowMap_rate)> . ShowMap()
-	
+					ShowMap(	 void;void) = <receive_map, _> . <show_map, exp(ShowMap_r)> . ShowMap()	
 		INPUT_INTERACTIONS	
 					
 			UNI receive_map
@@ -108,14 +93,11 @@ ARCHI_ELEM_TYPES
 					
 			UNI show_map
 
-    ELEM_TYPE DB_Type(const rate db_rate)
+    ELEM_TYPE DB_Type(const rate db)
 	
 		BEHAVIOR
  
-
-			StoreData( void; void) = 
-					<receive_fta_data, _> . <store_data, exp(db_rate)> . StoreData()
-	
+					StoreData(	 void;void) = <receive_fta_data, _> . <store_data, exp(db)> . StoreData()	
 		INPUT_INTERACTIONS	
 					
 			UNI receive_fta_data
@@ -124,14 +106,11 @@ ARCHI_ELEM_TYPES
 					
 			UNI store_data
 
-    ELEM_TYPE Sec_Type(const rate dec_rate)
+    ELEM_TYPE Sec_Type(const rate dec)
 	
 		BEHAVIOR
  
-
-			Security( void; void) = 
-					<receive_ftas, _> . <decrypt_data, exp(dec_rate)> . <sendto_fta, _> . Security()
-	
+					Security(	 void;void) = <receive_ftas, _> . <decrypt_data, exp(dec)> . <sendto_fta, _> . Security()	
 		INPUT_INTERACTIONS	
 					
 			UNI receive_ftas
@@ -146,13 +125,13 @@ ARCHI_ELEM_TYPES
 ARCHI_TOPOLOGY
 				
            ARCHI_ELEM_INSTANCES
-					WSN : Wsn_Type( wsn_rate);
+					WSN : Wsn_Type( wsn);
                     CHN : Channel_Type( channel_rate);
-                    FTA : Fta_Type( fta_rate, packet_rate);
+                    FTA : Fta_Type( fta_r, packet);
                     LAN : Lan_Type( lan_rate);
-                    DB : DB_Type( db_rate);
-                    DSK : Desk_Type( ShowMap_rate);
-                    SCR : Sec_Type( dec_rate)
+                    DB : DB_Type( db);
+                    DSK : Desk_Type( ShowMap_r);
+                    SCR : Sec_Type( dec)
 
 		   ARCHI_INTERACTIONS	
 					WSN.generate_data;

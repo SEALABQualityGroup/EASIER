@@ -67,7 +67,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 		for (ConstInit c : listOfConsts) {
 			if (c.getInitConstData() instanceof Special
-					&& ((Special) c.getInitConstData()).getType() == SpecialType.RATE)
+					&& ((Special) c.getInitConstData()).getType() == SpecialType.RATE && c.getName().contains("_rate") )
 				listOfRandomRanges.add(c);
 		}
 
