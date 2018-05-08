@@ -31,6 +31,7 @@ import it.disim.univaq.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
 import it.disim.univaq.sealab.metaheuristic.managers.aemilia.AemiliaManager;
+import it.disim.univaq.sealab.metaheuristic.utils.ThresholdUtils;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
@@ -278,11 +279,18 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public void resolve(AemiliaManager metamodelManager) {
 		startingTime = Instant.now();
 		executeRefactoring(metamodelManager);
+		
+		updateThresholds();
+		
 		applyTransformation(metamodelManager);
 		invokeSolver(metamodelManager);
 		updateModel(metamodelManager);
 		Manager.getInstance(null).getController().simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
+	}
+	
+	public void updateThresholds() {
+		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath);
 	}
 
 	public void updateModel(AemiliaManager metamodelManager) {
@@ -320,6 +328,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		refreshModel();
 		
 //		this.createNewModel(mmaemiliaFilePath);
+		
+		ruleFilePath = mmaemiliaFolderPath+"detectionSingleValuePA.ocl";
 
 		mapOfPAs = perfQuality.performanceAntipatternEvaluator(this.getModel(), ruleFilePath);
 		return mapOfPAs;

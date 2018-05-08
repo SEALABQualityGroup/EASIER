@@ -64,7 +64,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
 
 	private double crossoverProbability, mutationProbability, distribution_index;
-	private String ruleFilePath;
+	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
 	private String destionationFolderPath;
 	private FileWriter resultFileWriter, solutionFileWriter;
@@ -351,7 +351,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		logger_.info("sourceFolder is set to " + sourceFolder);
 
-		if(new File(sourceAemPath).exists() && !new File(sourceModelPath).exists()) {
+		if (new File(sourceAemPath).exists() && !new File(sourceModelPath).exists()) {
 			GeneratoreModelloAemilia genModel = new GeneratoreModelloAemilia();
 			FileInputStream aemFileInputStream;
 			try {
@@ -362,12 +362,12 @@ public class Controller extends AbstractAlgorithmRunner {
 				e.printStackTrace();
 			}
 		}
-				
-  		if (!new File(sourceAemPath).exists() || !new File(sourceRewPath).exists()
+
+		if (!new File(sourceAemPath).exists() || !new File(sourceRewPath).exists()
 				|| !new File(sourceValPath).exists()) {
 			generateSourceFiles();
 		}
-		
+
 		// = getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.aem.val";
 
 		if (!new File(sourceValPath).exists()) {
@@ -418,14 +418,17 @@ public class Controller extends AbstractAlgorithmRunner {
 		allowed_failures = Integer.parseInt(prop.getProperty("allowed_failures"));
 		logger_.info("allowed_failures is set to " + allowed_failures);
 
-		if(prop.getProperty("outputFolder").endsWith(File.separator))
+		if (prop.getProperty("outputFolder").endsWith(File.separator))
 			setOutputFolder(prop.getProperty("outputFolder"));
 		else
-			setOutputFolder(prop.getProperty("outputFolder")+File.separator);
+			setOutputFolder(prop.getProperty("outputFolder") + File.separator);
 		logger_.info("outputFolder is set to " + getOutputFolder());
 
 		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
 		logger_.info("rule_file_path is set to " + getRuleFilePath());
+		
+		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
+		logger_.info("rule_template_file_path is set to " + getRuleTemplateFilePath());
 
 		setMaxCloning(Integer.valueOf(prop.getProperty("maxCloning")));
 		logger_.info("max cloning is set to " + getMaxCloning());
@@ -796,6 +799,14 @@ public class Controller extends AbstractAlgorithmRunner {
 			e.getStackTrace();
 		}
 
+	}
+
+	public String getRuleTemplateFilePath() {
+		return ruleTemplateFilePath;
+	}
+
+	public void setRuleTemplateFilePath(String ruleTemplateFilePath) {
+		this.ruleTemplateFilePath = ruleTemplateFilePath;
 	}
 
 }
