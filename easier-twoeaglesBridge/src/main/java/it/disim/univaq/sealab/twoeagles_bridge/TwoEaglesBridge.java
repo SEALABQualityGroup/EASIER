@@ -239,22 +239,7 @@ public class TwoEaglesBridge {
 
 	public void aemiliaModelUpdate(String aemFilePath, String rewmappingFilePath) {
 
-		// effettuare il parsing del .val
-		FileInputStream fileInputStream = null;
-		try {
-			fileInputStream = new FileInputStream(aemFilePath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-		ValParser valParser = new ValParser(fileInputStream);
-		ValSpec valSpec = null;
-		try {
-			valSpec = valParser.ValSpec();
-		} catch (it.disim.univaq.sealab.ttep.val.ParseException e) {
-			e.printStackTrace();
-			return;
-		}
+		ValSpec aValSpec = getValSpec(aemFilePath);
 		// caricare il modello relativo a rewmapping
 
 		// ResourceSet resourceSet = AEMILIA_MANAGER.getResourceSet();
@@ -265,12 +250,14 @@ public class TwoEaglesBridge {
 
 		RewMapping rewMapping = (RewMapping) rewmappingResource.getContents().get(0);
 		// effettuare il mapping con gli elementi aemilia
-		List<MeasureValue> measures = valSpec.getMeasures();
+		List<MeasureValue> measures = aValSpec.getMeasures();
+		
 		for (MeasureValue measure : measures) {
 			String measureName = measure.getMeasure();
 			Expression measureSelector = measure.getSelector();
 			Float measureValue = measure.getValue();
 			List<MeasureMapping> measureMappings = rewMapping.getMappings();
+			
 			for (MeasureMapping measureMapping : measureMappings) {
 				String measureMappingName = measureMapping.getMeasureName();
 				List<AeiMeasure> aeiMeasures = measureMapping.getInstances();
@@ -426,6 +413,27 @@ public class TwoEaglesBridge {
 				}
 			}
 		}
+	}
+
+	public ValSpec getValSpec(String valFilePath) {
+		
+		ValSpec valSpec = null;
+		
+		FileInputStream fileInputStream = null;
+		try {
+			fileInputStream = new FileInputStream(valFilePath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		ValParser valParser = new ValParser(fileInputStream);
+
+		try {
+			valSpec = valParser.ValSpec();
+		} catch (it.disim.univaq.sealab.ttep.val.ParseException e) {
+			e.printStackTrace();
+		}
+
+		return valSpec;
 	}
 
 	public RewSpec getRewSpec(String rewFilePath) {

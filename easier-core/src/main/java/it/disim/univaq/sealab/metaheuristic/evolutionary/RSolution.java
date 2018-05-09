@@ -279,18 +279,20 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public void resolve(AemiliaManager metamodelManager) {
 		startingTime = Instant.now();
 		executeRefactoring(metamodelManager);
-		
-		updateThresholds();
-		
+
 		applyTransformation(metamodelManager);
 		invokeSolver(metamodelManager);
+	
 		updateModel(metamodelManager);
+
+		updateThresholds(metamodelManager);
 		Manager.getInstance(null).getController().simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
 	}
-	
-	public void updateThresholds() {
-		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath);
+
+	public void updateThresholds(AemiliaManager metamodelManager) {
+		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath, mmaemiliaFilePath, valFilePath, 
+				metamodelManager);
 	}
 
 	public void updateModel(AemiliaManager metamodelManager) {
@@ -322,14 +324,14 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	 * @return
 	 */
 	public Map<String, List<ArchitecturalInteraction>> countingPAsOnAemiliaModel(PerformanceQuality perfQuality,
-		String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
+			String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
 		RSequence seq = this.getVariableValue(0);
 
 		refreshModel();
-		
-//		this.createNewModel(mmaemiliaFilePath);
-		
-		ruleFilePath = mmaemiliaFolderPath+"detectionSingleValuePA.ocl";
+
+		// this.createNewModel(mmaemiliaFilePath);
+
+		ruleFilePath = mmaemiliaFolderPath + "detectionSingleValuePA.ocl";
 
 		mapOfPAs = perfQuality.performanceAntipatternEvaluator(this.getModel(), ruleFilePath);
 		return mapOfPAs;
@@ -579,18 +581,17 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public void setValPath(String valPath) {
 		this.valFilePath = valPath;
 	}
-	
+
 	public void refreshModel() {
 		getResourceSet().getResources().get(0).unload();
 		this.createNewModel(mmaemiliaFilePath);
 	}
-	
+
 	public int getPAs() {
 		Controller controller = Manager.getInstance(null).getController();
 		AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
 		Map<String, List<ArchitecturalInteraction>> mapOfPAs = this.countingPAsOnAemiliaModel(
-				controller.getPerfQuality(), controller.getRuleFilePath(),
-				this.getValPath(), metamodelManager);
+				controller.getPerfQuality(), controller.getRuleFilePath(), this.getValPath(), metamodelManager);
 
 		int numOfPAs = 0;
 		for (String paName : mapOfPAs.keySet()) {
@@ -607,7 +608,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public void setPerfQ(float perfQ) {
 		this.perfQ = perfQ;
 	}
-	
+
 	public double getNumOfChanges() {
 		changes = 0.0;
 		Refactoring r = this.getVariableValue(0).getRefactoring();

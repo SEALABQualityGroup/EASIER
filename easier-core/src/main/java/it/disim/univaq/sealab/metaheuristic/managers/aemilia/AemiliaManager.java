@@ -204,6 +204,11 @@ public class AemiliaManager extends MetamodelManager {
 		return model;
 	}
 	
+	public AEmiliaSpecification getModel(String mmaemiliaFilePath) {
+			this.packageRegistering();
+			return createModel(mmaemiliaFilePath);
+	}
+	
 	private AEmiliaSpecification createModel(String aemiliaModelFilePath) {
 		return (AEmiliaSpecification) EcoreUtil.getObjectByType(
 				getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath), true).getContents(),
