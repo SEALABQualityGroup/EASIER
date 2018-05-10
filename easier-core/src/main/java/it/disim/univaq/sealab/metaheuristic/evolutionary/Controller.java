@@ -34,6 +34,7 @@ import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.disim.univaq.sealab.aemiliaMod2text.main.Transformation;
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.Refactoring;
@@ -64,6 +65,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
 
 	private double crossoverProbability, mutationProbability, distribution_index;
+	private double[] workloadRange = new double[2];
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
 	private String destionationFolderPath;
@@ -122,7 +124,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			sourceModelPath = args[1];
 		}
 
-		prop = new Properties();
 		setProperties(inputStream);
 		if (sourceModelPath == null || sourceModelPath.isEmpty())
 			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
@@ -319,7 +320,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	private void setProperties(InputStream inputStream) {
-
+		prop = new Properties();
 		try {
 			prop.load(inputStream);
 		} catch (IOException e) {
@@ -435,6 +436,11 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info("Starting number of elements: " + populationSize);
 		logger_.info("Debug mode: " + isDebug);
+		
+		String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
+		workloadRange[0] = Double.parseDouble(workloadRangeString[0]);
+		workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
+		
 	}
 
 	public Properties getProperties() {
@@ -807,6 +813,10 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void setRuleTemplateFilePath(String ruleTemplateFilePath) {
 		this.ruleTemplateFilePath = ruleTemplateFilePath;
+	}
+	
+	public double getWorkloadRange() {
+		return JMetalRandom.getInstance().nextDouble(workloadRange[0], workloadRange[1]);
 	}
 
 }

@@ -282,7 +282,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		applyTransformation(metamodelManager);
 		invokeSolver(metamodelManager);
-	
+
 		updateModel(metamodelManager);
 
 		updateThresholds(metamodelManager);
@@ -291,7 +291,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	}
 
 	public void updateThresholds(AemiliaManager metamodelManager) {
-		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath, mmaemiliaFilePath, valFilePath, 
+		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath, mmaemiliaFilePath, valFilePath,
 				metamodelManager);
 	}
 
@@ -441,23 +441,20 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			// }
 
 			if (a instanceof AEmiliaConstChangesRefactoringAction) {
-
 				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
 				assert (sourceCost != null);
-				String sourceConstName = sourceCost.getName();
+//				String sourceConstName = sourceCost.getName();
 				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
-				Controller.logger_.info(
-						"CHANGING " + sourceConstName + " (" + ((IdentExpr) sourceCost.getInitConstExpr()).getName()
-								+ ") --> " + ((AEmiliaConstChangesRefactoringAction) a).getFactorOfChange() + " * "
-								+ ((IdentExpr) sourceCost.getInitConstExpr()).getName());
-			} else if (a instanceof AEmiliaCloneAEIRefactoringAction) {
-				try {
-					Controller.logger_
-							.info("CLONING " + ((AEmiliaCloneAEIRefactoringAction) a).getSourceAEI().getInstanceName());
-				} catch (NullPointerException e) {
-					Controller.logger_.warning(e.getStackTrace().toString());
-				}
 			}
+			// } else if (a instanceof AEmiliaCloneAEIRefactoringAction) {
+			// try {
+			// Controller.logger_
+			// .info("CLONING " + ((AEmiliaCloneAEIRefactoringAction)
+			// a).getSourceAEI().getInstanceName());
+			// } catch (NullPointerException e) {
+			// Controller.logger_.warning(e.getStackTrace().toString());
+			// }
+			// }
 			try {
 				assert (this.getModel().equals(a.getModel()));
 				assert (this.getModel().equals(this.getVariableValue(0).getModel()));

@@ -129,11 +129,11 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		// cloningOutputInteractions();
 		// cloningInputInteractions();
 		// cloningArchitecturalInteraction();
+		log();
 	}
 
 	public void log() {
-		Controller.logger_.info("AEMiliaCloneAEIRefactoringAction");
-		// Controller.logger_.info("Model --> " + this.getModel());
+		Controller.logger_.info("CLONING " + sourceAEI.getInstanceName());
 	}
 
 	/**
@@ -169,7 +169,8 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 		for (Attachment att : listOfAtts) {
 			for (InputInteraction ii : listOFII) {
-				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName()) && att.getEnd().getToInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
+				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName())
+						&& att.getEnd().getToInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
 					att.getStart().getIsOutput().setType(metamodel.mmaemilia.InteractionType.OR);
 
 					Attachment newAtt = mmaemiliaFactory.eINSTANCE.createAttachment();
