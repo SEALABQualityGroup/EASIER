@@ -193,7 +193,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 	 */
 	public void log() {
 		if (sourceConstInit.getName().contains("workload"))
-			Controller.logger_.info("CHANGING WORKLOAD " + sourceConstInit.getName() + "(" + getSourceConstInitOldValue()
+			Controller.logger_.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
 					+ ") * (" + getFactorOfChange() + ") --> "
 					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 		else
