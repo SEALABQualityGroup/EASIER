@@ -82,11 +82,12 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 			return null;
 		}
 		int index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1);
+		if(manager.getController().getWorkloadRange() == -1 && listOfConsts.get(index).getName().contains("workload")) {
+			do {
+				index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1);
+			} while(listOfConsts.get(index).getName().contains("workload"));
+		}
 		return listOfConsts.get(index);
-		// int rangeMin = 0;
-		// int rangeMax = listOfRandomRanges.size();
-		// return listOfRandomRanges.get((int) (RandomUtils.nextInt(rangeMin,
-		// rangeMax)));
 	}
 
 	private ConstInit getRandomRate(RSolution sol) {
@@ -193,9 +194,9 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 	 */
 	public void log() {
 		if (sourceConstInit.getName().contains("workload"))
-			Controller.logger_.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
-					+ ") * (" + getFactorOfChange() + ") --> "
-					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
+			Controller.logger_
+					.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
+							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 		else
 			Controller.logger_.info("CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
 					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "

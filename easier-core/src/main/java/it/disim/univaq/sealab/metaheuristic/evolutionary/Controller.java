@@ -65,7 +65,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
 
 	private double crossoverProbability, mutationProbability, distribution_index;
-	private double[] workloadRange = new double[2];
+	private double[] workloadRange;
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
 	private String destionationFolderPath;
@@ -437,9 +437,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.info("Starting number of elements: " + populationSize);
 		logger_.info("Debug mode: " + isDebug);
 		
-		String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
-		workloadRange[0] = Double.parseDouble(workloadRangeString[0]);
-		workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
+		if(prop.getProperty("workloadRange") != null) {
+			String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
+			workloadRange = new double[2];
+			workloadRange[0] = Double.parseDouble(workloadRangeString[0]);
+			workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
+		}
+		
 		
 	}
 
@@ -816,7 +820,9 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 	
 	public double getWorkloadRange() {
-		return JMetalRandom.getInstance().nextDouble(workloadRange[0], workloadRange[1]);
+		if(workloadRange != null)
+			return JMetalRandom.getInstance().nextDouble(workloadRange[0], workloadRange[1]);
+		return -1;
 	}
 
 }

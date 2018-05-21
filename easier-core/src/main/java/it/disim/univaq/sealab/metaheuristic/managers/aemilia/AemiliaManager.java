@@ -318,7 +318,7 @@ public class AemiliaManager extends MetamodelManager {
 		// throw new UnexpectedException("");
 		// }
 
-		System.out.println("Se leggi questo c'è un eerore in GetRandomAction");
+		System.out.println("Se leggi questo c'è un erore in GetRandomAction");
 		return null;
 	}
 
@@ -342,6 +342,8 @@ public class AemiliaManager extends MetamodelManager {
 			return getRandomRateChangeAction(seq);
 		case 3:
 			return getRandomWeightChangeAction(seq);
+		case 4:
+			return getRandomWorkloadChangeAction(seq);
 		default:
 			throw new UnexpectedException("");
 		}
@@ -477,6 +479,8 @@ public class AemiliaManager extends MetamodelManager {
 		action.createPostCondition();
 		return action;
 	}
+	
+	
 
 	private RefactoringAction getRandomRateChangeAction(RSequence seq) {
 		// if (getRandomRate(seq) == null) {
@@ -484,6 +488,37 @@ public class AemiliaManager extends MetamodelManager {
 		// return null;
 		// }
 
+		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
+		// action.setModel(seq.getModel());
+		// action.setSolution(seq.getSolution());
+		// action.setSourceConstInit(getRandomRate(seq));
+		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
+		// MAX_VALUE));
+		//// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
+		// MAX_VALUE));
+		// action.setName("AEmiliaConstChangesAction");
+		//
+		// action.setParameters();
+		// action.createPreCondition();
+		// action.createPostCondition();
+		if (action.getSourceConstInit() == null)
+			return null;
+
+		if (!isApplicable(action, seq))
+			return null;
+
+		return action;
+	}
+	
+	private RefactoringAction getRandomWorkloadChangeAction(RSequence seq) {
+		// if (getRandomRate(seq) == null) {
+		// System.out.println("Action is not applicable!!!!");
+		// return null;
+		// }
+		
+		if(Manager.getInstance(null).getController().getWorkloadRange() == -1) {
+			return null;
+		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
 		// action.setModel(seq.getModel());
 		// action.setSolution(seq.getSolution());
