@@ -70,7 +70,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private RProblem problem;
 	private String destionationFolderPath;
 	private FileWriter resultFileWriter, solutionFileWriter;
-	private String outputFolder;
+	private String outputFolder, tmpFolder, paretoFolder;
 	private String destinationFolder;
 	private String twoTowersKernelPath;
 	private List<String> csvResultHeader = new ArrayList<>();
@@ -86,6 +86,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String sourceRewPath;
 	private String sourceRewmappingPath;
 	private String sourceBasePath;
+	
+	private Timestamp timestamp;
 
 	// private static String BASENAME =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
@@ -195,18 +197,20 @@ public class Controller extends AbstractAlgorithmRunner {
 				manager);
 		this.setProblem(problem);
 
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		timestamp = new Timestamp(System.currentTimeMillis());
 
-		setDestinationFolder(outputFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__");
+		setDestinationFolder(tmpFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__");
 
 		this.setDestinationFolderPath(getDestinationFolder());
 
 		new File(getDestinationFolder()).mkdirs();
+		new File(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__").mkdirs();
 
 		System.setOut(new PrintStream(new File(this.getDestinationFolderPath() + "/output.log")));
 		System.setErr(new PrintStream(new File(this.getDestinationFolderPath() + "/error.log")));
 
-		String csvProFile = destionationFolderPath + "properties.csv";
+		String csvProFile = paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__"
+				+ File.separator + "properties.csv";
 		writePropertiesToCSV(csvProFile);
 
 		try {
@@ -233,7 +237,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info(algorithm.getClass().toString());
 
-		solutionFileWriter = new FileWriter(destionationFolderPath + "solutions.csv", true);
+		solutionFileWriter = new FileWriter(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp)
+				+ "__" + File.separator + "solutions.csv", true);
 		List<String> line = new ArrayList<String>();
 		line.add("name");
 		line.add("PAs");
@@ -266,7 +271,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.info("Total execution time: " + totalTime.toString().replaceAll(",", ".") + " seconds");
 
 		try {
-			resultFileWriter = new FileWriter(destionationFolderPath + "results.csv");
+			resultFileWriter = new FileWriter(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator + "results.csv");
 			line = null;
 			line = new ArrayList<String>();
 			line.add("Popul");
@@ -304,7 +309,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 			// CSVUtils.writeLine(resultFileWriter, line);
 			line = null;
-
+			saveParetoSolution(population);
 			writeSolutionSetToCSV(population);
 			resultFileWriter.flush();
 			// TODO: handle exception
@@ -317,6 +322,27 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.getHandlers()[0].flush();
 		logger_.getHandlers()[0].close();
 
+	}
+
+	private void saveParetoSolution(List<RSolution> paretoPop) {
+
+		for (RSolution solution : paretoPop) {
+
+			File srcDir = new File(solution.getMmaemiliaFolderPath());
+			File destDir = new File(
+					paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator + solution.getName());
+
+			try {
+				FileUtils.copyDirectory(srcDir, destDir);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		
+		
+		
 	}
 
 	private void setProperties(InputStream inputStream) {
@@ -423,11 +449,16 @@ public class Controller extends AbstractAlgorithmRunner {
 			setOutputFolder(prop.getProperty("outputFolder"));
 		else
 			setOutputFolder(prop.getProperty("outputFolder") + File.separator);
+		tmpFolder = outputFolder + "tmp/";
+		paretoFolder = outputFolder + "pareto/";
+		new File(tmpFolder).mkdirs();
+		new File(paretoFolder).mkdirs();
+
 		logger_.info("outputFolder is set to " + getOutputFolder());
 
 		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
 		logger_.info("rule_file_path is set to " + getRuleFilePath());
-		
+
 		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
 		logger_.info("rule_template_file_path is set to " + getRuleTemplateFilePath());
 
@@ -436,15 +467,14 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info("Starting number of elements: " + populationSize);
 		logger_.info("Debug mode: " + isDebug);
-		
-		if(prop.getProperty("workloadRange") != null) {
+
+		if (prop.getProperty("workloadRange") != null) {
 			String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
 			workloadRange = new double[2];
 			workloadRange[0] = Double.parseDouble(workloadRangeString[0]);
 			workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
 		}
-		
-		
+
 	}
 
 	public Properties getProperties() {
@@ -795,7 +825,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try {
-			solutionFileWriter = new FileWriter(destionationFolderPath + "solutions.csv", true);
+			solutionFileWriter = new FileWriter(
+					paretoFolder + rSolution.getProblem().getName() + File.separator + "solutions.csv", true);
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPAs()));
@@ -818,11 +849,15 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setRuleTemplateFilePath(String ruleTemplateFilePath) {
 		this.ruleTemplateFilePath = ruleTemplateFilePath;
 	}
-	
+
 	public double getWorkloadRange() {
-		if(workloadRange != null)
+		if (workloadRange != null)
 			return JMetalRandom.getInstance().nextDouble(workloadRange[0], workloadRange[1]);
 		return -1;
+	}
+
+	public String getTmpFolder() {
+		return tmpFolder;
 	}
 
 }
