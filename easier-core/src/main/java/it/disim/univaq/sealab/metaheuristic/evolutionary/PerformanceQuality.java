@@ -1,4 +1,3 @@
-
 package it.disim.univaq.sealab.metaheuristic.evolutionary;
 
 import java.io.FileInputStream;
@@ -13,15 +12,12 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
-import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
 import it.disim.univaq.sealab.metaheuristic.managers.ocl.OclManager;
-import it.disim.univaq.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaManager;
 import it.disim.univaq.sealab.ttep.val.ValParser;
 import it.disim.univaq.sealab.ttep.val.classes.MeasureValue;
 import it.disim.univaq.sealab.ttep.val.classes.ValSpec;
 import mapmeasurestoindices.IndexType;
 import metamodel.mmaemilia.ArchitecturalInteraction;
-import utilities.MetodiVari;
 
 public class PerformanceQuality {
 
@@ -30,19 +26,17 @@ public class PerformanceQuality {
 	private ValSpec valSpecToBeEvaluated;
 	private ValSpec originalValSpec;
 	private Map<MeasureValue, Float> qualityMap;
+	private OclManager oclManager;
 
-	public PerformanceQuality() {
+	public PerformanceQuality(OclManager oclManager) {
 		qualityMap = new HashMap<>();
+		this.oclManager = oclManager;
 	}
 
 	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model, String ruleFilePath) {
 		int numOfPAs = 0;
 
 		List<Object> contextualArchiInteractions = new ArrayList<Object>();
-
-		// MetamodelManager metamodelManager =
-		// Manager.getInstance(null).getMetamodelManager();
-		OclManager oclManager = Manager.getInstance(null).getOclManager();
 
 		TreeIterator<EObject> eAllContents = model.eAllContents();
 

@@ -1,28 +1,20 @@
 package it.disim.univaq.sealab.metaheuristic.managers.ocl.aemilia;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.ocl.OCL;
-import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
-import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 import org.eclipse.uml2.uml.Component;
@@ -32,14 +24,13 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 
+import it.disim.univaq.sealab.metaheuristic.evolutionary.Controller;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
-import it.disim.univaq.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.disim.univaq.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
-import metamodel.mmaemilia.Behavior.Action;
 
 public class OclAemiliaManager extends OclManager {
 
@@ -51,11 +42,16 @@ public class OclAemiliaManager extends OclManager {
 	// OclAemiliaManager instance = ManagerHolder.INSTANCE;
 	// return instance;
 	// }
+	
+	public OclAemiliaManager(Controller ctrl) {
+		controller = ctrl;
+		manager = controller.getManager();
+	}
 
 	private HashSet<Object> getHashSet(String query) {
 		HashSet<Object> hashSetQuery = null;
 		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, Manager.getInstance(null).getModel());
+			hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,7 +75,7 @@ public class OclAemiliaManager extends OclManager {
 	private HashSet<Object> getHashSetFromAEmilia(String query) {
 		HashSet<Object> hashSetQuery = null;
 		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, Manager.getInstance(null).getModel());
+			hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

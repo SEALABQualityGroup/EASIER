@@ -26,23 +26,25 @@ import metamodel.mmaemilia.Expressions.IdentExpr;
 import metamodel.mmaemilia.Headers.ConstInit;
 
 public class ThresholdUtils {
-	
-	public static void uptodateSingleValueThresholds(String mmaemiliaFolderPath, String mmaemiliaFilePath, String valFilePath, AemiliaManager metamodelManager) {
-		
-		Controller controller = Manager.getInstance(null).getController();
+
+	public static void uptodateSingleValueThresholds(String mmaemiliaFolderPath, String mmaemiliaFilePath,
+			String valFilePath, AemiliaManager metamodelManager, Controller controller) {
+
+//		Controller controller = Manager.getInstance(null).getController();
 		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
 		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
 
 		createNewOclFile(controller.getRuleTemplateFilePath(), mmaemiliaFolderPath, aemiliaModel, valSpec);
 
 	}
-	
+
 	private static String extractingInstaceName(String measure) {
 		String instanceName = measure.substring(0, measure.indexOf("_"));
 		return instanceName;
 	}
 
-	private static void createNewOclFile(String ruleTemplateFilePath, String pathToSave, AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
+	private static void createNewOclFile(String ruleTemplateFilePath, String pathToSave,
+			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
 		String templateString;
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		// Pipe and Filter
@@ -78,17 +80,17 @@ public class ThresholdUtils {
 		Float thRate = (float) 0.0;
 		int countRates = 0;
 		EList<ConstInit> listOfConsts = aemiliaModel.getArchiTypeDecl().getHeader().getInitConst();
-		for(ConstInit aemiliaConst : listOfConsts) {
-			if( aemiliaConst.getInitConstData() instanceof Special) {
-				if(aemiliaConst.getName().contains("rate") &&
-						((Special) aemiliaConst.getInitConstData()).getType().equals(SpecialType.RATE)){
-					thRate += Float.parseFloat(((IdentExpr)aemiliaConst.getInitConstExpr()).getName());
+		for (ConstInit aemiliaConst : listOfConsts) {
+			if (aemiliaConst.getInitConstData() instanceof Special) {
+				if (aemiliaConst.getName().contains("rate")
+						&& ((Special) aemiliaConst.getInitConstData()).getType().equals(SpecialType.RATE)) {
+					thRate += Float.parseFloat(((IdentExpr) aemiliaConst.getInitConstExpr()).getName());
 					countRates++;
 				}
 			}
 		}
-		
-		if(countRates != 0) {
+
+		if (countRates != 0) {
 			thRate = thRate / countRates;
 		}
 
@@ -105,40 +107,39 @@ public class ThresholdUtils {
 
 	private static float calculateServiceThLB(ValSpec valSpec) {
 		List<MeasureValue> measuredValues = valSpec.getMeasures();
-		
-		Map<String, MutablePair<Float, Integer>> typeMap = new HashMap<>(); 
-		
+
+		Map<String, MutablePair<Float, Integer>> typeMap = new HashMap<>();
+
 		int countThroughput = 0;
 		Float totalThroughput = (float) 0.0;
 		Float th_Throughput = (float) 0.0;
-		
+
 		for (MeasureValue measure : measuredValues) {
 			if (measure.getMeasure().contains("throughput") && measure.getMeasure().contains("Single")) {
 				String instanceName = extractingInstaceName(measure.getMeasure());
-				if(typeMap.containsKey(instanceName)) {
+				if (typeMap.containsKey(instanceName)) {
 					typeMap.get(instanceName).right += 1;
 					typeMap.get(instanceName).left += measure.getValue();
-					
-				}else {
+
+				} else {
 					MutablePair<Float, Integer> throughputCountPair = new MutablePair<Float, Integer>();
 					throughputCountPair.right = 0;
 					throughputCountPair.left = (float) 0.0;
 					throughputCountPair.right += 1;
 					throughputCountPair.left += measure.getValue();
-					
+
 					typeMap.put(instanceName, throughputCountPair);
 				}
-				
+
 			}
 		}
-		
-		for(String key : typeMap.keySet()) {
-			totalThroughput += (typeMap.get(key).left/typeMap.get(key).right);
+
+		for (String key : typeMap.keySet()) {
+			totalThroughput += (typeMap.get(key).left / typeMap.get(key).right);
 		}
-		
-		
+
 		th_Throughput = totalThroughput / typeMap.size();
-		
+
 		return th_Throughput;
 	}
 

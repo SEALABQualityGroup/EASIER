@@ -50,7 +50,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 	public AEmiliaCloneAEIRefactoringAction(RSolution sol) {
 		this.solution = sol;
-		this.manager = Manager.getInstance(null);
+		this.manager = sol.getManager();
 
 		EList<ArchiElemInstance> listOfClonableAEI = this.getListOfClonableInstances();
 		int randomInt = RandomUtils.nextInt(0, listOfClonableAEI.size());
@@ -280,11 +280,11 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 	public void createPreCondition() {
 		PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-		FOLSpecification clonePreSpecification = Manager.getInstance(new AemiliaManager())
+		FOLSpecification clonePreSpecification = manager
 				.createFOLSpectification("CloneAeiPreCondition");
-		AndOperator clonePreAnd = Manager.getInstance(new AemiliaManager()).createAndOperator();
+		AndOperator clonePreAnd = manager.createAndOperator();
 
-		ExistsOperator existsAeiToClone = Manager.getInstance(new AemiliaManager())
+		ExistsOperator existsAeiToClone = manager
 				.createExistsOperator(getAeiToCloneSVP(), getAllAeisMVP());
 		clonePreAnd.getArguments().add(existsAeiToClone);
 

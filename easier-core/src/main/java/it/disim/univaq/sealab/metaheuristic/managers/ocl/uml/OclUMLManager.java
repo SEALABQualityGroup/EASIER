@@ -30,6 +30,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 
+import it.disim.univaq.sealab.metaheuristic.evolutionary.Controller;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import it.disim.univaq.sealab.metaheuristic.managers.ocl.OclManager;
 import it.disim.univaq.sealab.metaheuristic.managers.uml.UMLManager;
@@ -37,21 +38,26 @@ import metamodel.mmaemilia.mmaemiliaPackage;
 
 public class OclUMLManager extends OclManager{
 
-	private static class ManagerHolder {
-		private static final OclUMLManager INSTANCE = new OclUMLManager();
-	}
-
-	public static OclUMLManager getInstance() {
-		OclUMLManager instance = ManagerHolder.INSTANCE;
-		
-		return instance;
+//	private static class ManagerHolder {
+//		private static final OclUMLManager INSTANCE = new OclUMLManager();
+//	}
+//
+//	public static OclUMLManager getInstance() {
+//		OclUMLManager instance = ManagerHolder.INSTANCE;
+//		
+//		return instance;
+//	}
+	
+	public OclUMLManager(Controller ctrl) {
+		controller = ctrl;
+		manager = controller.getManager();
 	}
 	
 	@SuppressWarnings({ "unchecked", "static-access" })
 	private HashSet<Object> getHashSet(String query) {
 		HashSet<Object> hashSetQuery = null;
 		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, Manager.getInstance(UMLManager.getInstance()).getModel());
+			hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,7 +70,7 @@ public class OclUMLManager extends OclManager{
 	private HashSet<Object> getHashSetFromAEmilia(String query) {
 		HashSet<Object> hashSetQuery = null;
 		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, Manager.getInstance(UMLManager.getInstance()).getModel());
+			hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,7 +86,7 @@ public class OclUMLManager extends OclManager{
 		HashSet<Object> hashSet = null;
 		try {
 			hashSet = new HashSet<Object>();
-			queryResult = evaluateOCL(query, Manager.getInstance(UMLManager.getInstance()).getModel());
+			queryResult = evaluateOCL(query, manager.getModel());
 			if (queryResult instanceof Integer) {
 				double intQueryResult = Integer.parseInt(queryResult.toString());
 				hashSet.add(intQueryResult);
@@ -303,12 +309,6 @@ public class OclUMLManager extends OclManager{
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static void main(String[] args) throws ParserException {
-
-		new OclUMLManager().evaluateOCLFromFile("src/main/resources/ocl/detectionSingleValuePA.ocl", null);
-
 	}
 
 	@Override

@@ -26,6 +26,8 @@ public abstract class MetamodelManager {
 	protected String modelUri;
 	protected OclManager oclManager;
 	protected OclStringManager oclStringManager;
+	protected Manager manager;
+	protected Controller controller;
 
 	// protected String modelPath;
 
@@ -120,7 +122,7 @@ public abstract class MetamodelManager {
 		// it is mandatory to comment this method
 		// unloadModelResource();
 
-		Resource res = getResourceSet().createResource(Manager.getInstance(null).string2FileUri(destionationPath));
+		Resource res = getResourceSet().createResource(manager.string2FileUri(destionationPath));
 
 		// res.getContents().add(getModel());
 		// assert(resource.getContents().get(0).equals(getModel()));

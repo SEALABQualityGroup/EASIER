@@ -17,6 +17,7 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 	@Override
 	public List<RSolution> evaluate(List<RSolution> solutionList, Problem<RSolution> problem) {
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
+//		ExecutorService executor = Executors.newFixedThreadPool(1);
 		
 		for (RSolution refactoringSolution : solutionList) {
 			Runnable worker = new RSolutionListEvaluatorRunnable(problem, refactoringSolution);

@@ -3,8 +3,6 @@ package it.disim.univaq.sealab.metaheuristic.evolutionary;
 import java.rmi.UnexpectedException;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 
@@ -13,14 +11,10 @@ import it.disim.univaq.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesR
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
+import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
 import it.disim.univaq.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import logicalSpecification.Action;
 import logicalSpecification.FOLSpecification;
-import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
-import logicalSpecification.impl.ActionImpl;
-import metamodel.mmaemilia.AEmiliaSpecification;
-import metamodel.mmaemilia.ArchiElemInstance;
-import metamodel.mmaemilia.Attachment;
 
 public class RSequence {
 
@@ -34,10 +28,17 @@ public class RSequence {
 	private double numOfChanges;
 	private float perfQuality;
 
+	private Manager manager;
+	private MetamodelManager metamodelManager;
+	private Controller controller;
+
 	// private EObject model;
 
 	public RSequence(RSolution solution) {
 		this.solution = solution;
+		manager = this.solution.getManager();
+		controller = solution.getController();
+		metamodelManager = manager.getMetamodelManager();
 		this.refactoring = new Refactoring(getSolution());
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
 	}
@@ -48,12 +49,10 @@ public class RSequence {
 		this.refactoring = new Refactoring(getSolution());
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
 
-		// this.modelRefactoredResource = solution.getResources().get(0);
-
-		// assert (modelRefactoredResource.getContents().get(0) == solution.getModel());
-
-		// this.setModel(modelRefactoredResource.getContents().get(0));
-
+		this.manager = solution.getManager();
+		this.controller = solution.getController();
+		this.metamodelManager = manager.getMetamodelManager();
+		
 		assert (this.refactoring.getActions().size() == 0);
 		int num_failures = 0;
 
@@ -80,9 +79,10 @@ public class RSequence {
 
 	private boolean tryRandomPush(int n) throws UnexpectedException, ParserException {
 
-//		Refactoring temporary_ref = LogicalSpecificationFactory.eINSTANCE.createRefactoring();
+		// Refactoring temporary_ref =
+		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
 
-//		Refactoring temporary_ref = (Refactoring) EcoreUtil.copy(this.refactoring);
+		// Refactoring temporary_ref = (Refactoring) EcoreUtil.copy(this.refactoring);
 		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 
 		// assert (temporary_ref.equals(this.refactoring));
@@ -90,7 +90,7 @@ public class RSequence {
 
 		RefactoringAction candidate;
 		do {
-			candidate = Manager.getInstance(null).getMetamodelManager().getRandomAction(n, this);
+			candidate = manager.getMetamodelManager().getRandomAction(n, this);
 		} while (candidate == null);
 
 		assert (candidate != null);
@@ -98,50 +98,41 @@ public class RSequence {
 
 		temporary_ref.getActions().add(candidate);
 
-		// assert
-		// (Manager.getInstance(null).evaluateFOL(candidate.getPre().getConditionFormula()));
-		// assert
-		// (Manager.getInstance(null).evaluateFOL(candidate.getPost().getConditionFormula()));
-
-		
-		//Object solModel = this.getSolution().getModel();
-		
 		if (this.isFeasible(temporary_ref)) {
-//			this.insert(candidate);
-			
-			
+			// this.insert(candidate);
+
 			int i = 0;
 			boolean found = false;
-			while(i < temporary_ref.getActions().size() && !found) {
+			while (i < temporary_ref.getActions().size() && !found) {
 				RefactoringAction a = temporary_ref.getActions().get(i);
-				if(a instanceof AEmiliaCloneAEIRefactoringAction) {
-					AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
-					if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)))	
+				if (a instanceof AEmiliaCloneAEIRefactoringAction) {
+					// AemiliaManager metamodelManager = (AemiliaManager)
+					// Manager.getInstance(null).getMetamodelManager();
+					if (!((AemiliaManager) metamodelManager).isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
+							temporary_ref.getSolution().getVariableValue(0)))
 						found = true;
 				}
 				/// MODIFIED WRT LAST COMMIT
-//				if(a instanceof AEmiliaConstChangesRefactoringAction) {
-//					AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
-//					if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)))
-//						found = true;
-//				}
+				// if(a instanceof AEmiliaConstChangesRefactoringAction) {
+				// AemiliaManager metamodelManager = (AemiliaManager)
+				// Manager.getInstance(null).getMetamodelManager();
+				// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a),
+				// temporary_ref.getSolution().getVariableValue(0)))
+				// found = true;
+				// }
 				/// END MODIFIED WRT LAST COMMIT
 				i++;
 			}
 			temporary_ref = null;
-			if(!found) {
+			if (!found) {
 				this.insert(candidate);
-				//temporary_ref = null;
+				// temporary_ref = null;
 				return true;
 			}
 			return false;
-			
-			
-			
-			
-			
-			//temporary_ref = null;
-			//return true;
+
+			// temporary_ref = null;
+			// return true;
 		} else {
 			candidate = null;
 			temporary_ref = null;
@@ -151,7 +142,7 @@ public class RSequence {
 	}
 
 	private boolean isFeasible(Refactoring tr) throws ParserException {
-		Controller controller = Manager.getInstance(null).getController();
+		// Controller controller = Manager.getInstance(null).getController();
 		int maxCloning = 0;
 		for (RefactoringAction a : tr.getActions()) {
 			if (a instanceof AEmiliaCloneAEIRefactoringAction) {
@@ -162,82 +153,79 @@ public class RSequence {
 			Controller.logger_.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
-		
-		for(RefactoringAction action : tr.getActions()) {
+
+		for (RefactoringAction action : tr.getActions()) {
 			action.setParameters();
 			action.createPreCondition();
 			action.createPostCondition();
 		}
-		
-		
+
 		/// MODIFIED WRT LAST COMMIT
 		for (RefactoringAction ac : tr.getActions()) {
 			int counter = 0;
-			if(ac instanceof AEmiliaCloneAEIRefactoringAction) {
+			if (ac instanceof AEmiliaCloneAEIRefactoringAction) {
 				int j = 0;
-				while(j < tr.getActions().size()) {
+				while (j < tr.getActions().size()) {
 					Action a2 = tr.getActions().get(j);
-					if(a2 instanceof AEmiliaCloneAEIRefactoringAction) {
-						if(((AEmiliaCloneAEIRefactoringAction) a2).getSourceAEI().getInstanceName()
-								.equals(((AEmiliaCloneAEIRefactoringAction) ac).getSourceAEI().getInstanceName())) 
+					if (a2 instanceof AEmiliaCloneAEIRefactoringAction) {
+						if (((AEmiliaCloneAEIRefactoringAction) a2).getSourceAEI().getInstanceName()
+								.equals(((AEmiliaCloneAEIRefactoringAction) ac).getSourceAEI().getInstanceName()))
 							counter++;
 					}
 					j++;
 				}
 			}
-			if(counter > 1) {
+			if (counter > 1) {
 				Controller.logger_.warning("Too much clones in Solution #" + this.getSolution().getName() + "!");
 				return false;
 			}
 		}
-		
-		
-		
+
 		boolean found = false;
 		for (RefactoringAction a : tr.getActions()) {
-			if(a instanceof AEmiliaConstChangesRefactoringAction) {
+			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 				int j = 0;
-				while(j < tr.getActions().size() && !found) {
+				while (j < tr.getActions().size() && !found) {
 					Action a2 = tr.getActions().get(j);
-					if(a2 instanceof AEmiliaConstChangesRefactoringAction) {
-						if(j != tr.getActions().indexOf(a))
-							if(((AEmiliaConstChangesRefactoringAction) a2).getSourceConstInit().getName()
-									.equals(((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit().getName())) 
+					if (a2 instanceof AEmiliaConstChangesRefactoringAction) {
+						if (j != tr.getActions().indexOf(a))
+							if (((AEmiliaConstChangesRefactoringAction) a2).getSourceConstInit().getName()
+									.equals(((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit().getName()))
 								found = true;
 					}
 					j++;
 				}
 			}
 		}
-		if(found) {
-			Controller.logger_.warning("Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
+		if (found) {
+			Controller.logger_.warning(
+					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
 		/// END MODIFIED WRT LAST COMMIT
-		
-		
-		FOLSpecification app = Manager.getInstance(null).calculatePreCondition(tr).getConditionFormula();
-//		Manager manager = Manager.getInstance(null);
-//		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-//		this.setRefactorings(tr);
-//		this.getSolution().setVariableValue(0, this);
-//		this.getSolution().executeRefactoring(metamodelManager);
-		boolean fol = Manager.getInstance(null).evaluateFOL(app, this.getSolution().getModel());
+
+		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
+		// Manager manager = Manager.getInstance(null);
+		// AemiliaManager metamodelManager = (AemiliaManager)
+		// manager.getMetamodelManager();
+		// this.setRefactorings(tr);
+		// this.getSolution().setVariableValue(0, this);
+		// this.getSolution().executeRefactoring(metamodelManager);
+		boolean fol = manager.evaluateFOL(app, this.getSolution().getModel());
 		// // System.out.println(" = " + fol);
 		// return fol;
 
 		if (!fol) {
 			Controller.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
 		}
-		
+
 		return fol;
-	}	
-	
+	}
 
 	public RSequence(RSequence seq) {
 		// this.refactoring = LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-//		this.refactoring = (Refactoring) EcoreUtil.copy(variable.getRefactoring());
-		
+		// this.refactoring = (Refactoring) EcoreUtil.copy(variable.getRefactoring());
+
 		this.refactoring = seq.getRefactoring().clone(getSolution());
 		this.refactoring.setName(Integer.toString(RandomUtils.nextInt(0, 100)));
 		// this.setModel(EcoreUtil.copy(variable.getModel()));
@@ -248,18 +236,17 @@ public class RSequence {
 
 	public RSequence(RSequence seq, RSolution solution) {
 		// this.refactoring = LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-//		this.refactoring = (Refactoring) EcoreUtil.copy(seq.getRefactoring());
+		// this.refactoring = (Refactoring) EcoreUtil.copy(seq.getRefactoring());
 		this.solution = solution;
 		this.refactoring = seq.getRefactoring().clone(solution);
-		
-		assert(seq.refactoring.getActions().size()==4);
-		
-//		for(RefactoringAction a : seq.refactoring.getActions()){
-//			this.refactoring.getActions().add( ((RefactoringAction)a).clone(solution));
-//		}
 
-		
-		assert(this.refactoring.getActions().size()==4);
+		assert (seq.refactoring.getActions().size() == 4);
+
+		// for(RefactoringAction a : seq.refactoring.getActions()){
+		// this.refactoring.getActions().add( ((RefactoringAction)a).clone(solution));
+		// }
+
+		assert (this.refactoring.getActions().size() == 4);
 		assert (solution.getModel() != null);
 		// this.setModel(solution.getModel());
 
@@ -308,7 +295,8 @@ public class RSequence {
 
 	public boolean alter(int position, int n) throws UnexpectedException, ParserException {
 
-//		Refactoring temporary_ref = LogicalSpecificationFactory.eINSTANCE.createRefactoring();
+		// Refactoring temporary_ref =
+		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
 		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 		assert (temporary_ref.equals(this.refactoring));
 
@@ -316,46 +304,59 @@ public class RSequence {
 
 		RefactoringAction candidate;
 		do {
-			candidate = Manager.getInstance(null).getMetamodelManager().getRandomAction(n, this);
+			candidate = metamodelManager.getRandomAction(n, this);
 		} while (candidate == null);
 
 		// Action candidate =
 		// Manager.getInstance(null).getMetamodelManager().getRandomAction(n);
 		assert (candidate != null);
-		//assert (Manager.getInstance(null).evaluateFOL(candidate.getPre().getConditionFormula()));
-		//assert (Manager.getInstance(null).evaluateFOL(candidate.getPost().getConditionFormula()));
+		// assert
+		// (Manager.getInstance(null).evaluateFOL(candidate.getPre().getConditionFormula()));
+		// assert
+		// (Manager.getInstance(null).evaluateFOL(candidate.getPost().getConditionFormula()));
 
 		temporary_ref.getActions().set(position, candidate);
 		if (this.isFeasible(temporary_ref)) {
 			// if(Manager.evaluateFOL(Manager.calculatePreCondition(temporary_ref).getConditionFormula())){
 			// this.replace(position, (Action) EcoreUtil.copy(candidate));
-			
+
 			int i = 0;
 			boolean found = false;
-			while(i < temporary_ref.getActions().size() && !found) {
+			while (i < temporary_ref.getActions().size() && !found) {
 				RefactoringAction a = temporary_ref.getActions().get(i);
-				if(a instanceof AEmiliaCloneAEIRefactoringAction) {
-					AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
-//					if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)) ||
-//						metamodelManager.isInExcluding(((AEmiliaCloneAEIRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0), temporary_ref.getActions().indexOf(((AEmiliaCloneAEIRefactoringAction) a))))
-					if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)))	
+				if (a instanceof AEmiliaCloneAEIRefactoringAction) {
+					// AemiliaManager metamodelManager = (AemiliaManager)
+					// Manager.getInstance(null).getMetamodelManager();
+					// if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
+					// temporary_ref.getSolution().getVariableValue(0)) ||
+					// metamodelManager.isInExcluding(((AEmiliaCloneAEIRefactoringAction) a),
+					// temporary_ref.getSolution().getVariableValue(0),
+					// temporary_ref.getActions().indexOf(((AEmiliaCloneAEIRefactoringAction) a))))
+					if (!((AemiliaManager) metamodelManager).isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
+							temporary_ref.getSolution().getVariableValue(0)))
 						found = true;
 				}
 				/// MODIFIED WRT LAST COMMIT
-//				if(a instanceof AEmiliaConstChangesRefactoringAction) {
-//					AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
-////					if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)) ||
-////						metamodelManager.isInExcluding(((AEmiliaConstChangesRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0), temporary_ref.getActions().indexOf(((AEmiliaConstChangesRefactoringAction) a))))
-//					if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)))
-//						found = true;
-//				}
+				// if(a instanceof AEmiliaConstChangesRefactoringAction) {
+				// AemiliaManager metamodelManager = (AemiliaManager)
+				// Manager.getInstance(null).getMetamodelManager();
+				//// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction)
+				// a), temporary_ref.getSolution().getVariableValue(0)) ||
+				//// metamodelManager.isInExcluding(((AEmiliaConstChangesRefactoringAction) a),
+				// temporary_ref.getSolution().getVariableValue(0),
+				// temporary_ref.getActions().indexOf(((AEmiliaConstChangesRefactoringAction)
+				// a))))
+				// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a),
+				// temporary_ref.getSolution().getVariableValue(0)))
+				// found = true;
+				// }
 				/// END MODIFIED WRT LAST COMMIT
 				i++;
 			}
 			temporary_ref = null;
-			if(!found) {
+			if (!found) {
 				this.replace(position, candidate);
-				//temporary_ref = null;
+				// temporary_ref = null;
 				return true;
 			}
 			return false;

@@ -57,38 +57,48 @@ public class Manager {
 	private MetamodelManager metamodelManager;
 
 	private OclManager oclManager;
-	
+
 	private OclStringManager oclStringManager;
-	
+
 	private static Manager instance;
 
-	private Manager() {}
-	
+	// private Manager() {}
+
 	private Controller controller;
-	
+
 	public static int REFACTORING_COUNTER = 0;
 
 	public void init(String modelUri) {
 		metamodelManager.init(modelUri);
 	}
 
-	private static class ManagerHolder {
-		private static final Manager INSTANCE = new Manager();
+	public Manager() {
 	}
 
-	public static Manager getInstance(MetamodelManager mmManager) {
-		if(instance == null)
-			instance = ManagerHolder.INSTANCE;
-		if (instance.getMetamodelManager() == null && mmManager != null) {
-			instance.setMetamodelManager(mmManager);
-		}
-		if(instance.getOclManager() == null) {
-			instance.setOclManager(instance.getMetamodelManager().getOclManager());
-		}
-		if(mmManager instanceof AemiliaManager) {
-			instance.setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
-		}
-		return instance;
+	// private static class ManagerHolder {
+	// private static final Manager INSTANCE = new Manager();
+	// }
+	//
+	// public static Manager getInstance(MetamodelManager mmManager) {
+	// if(instance == null)
+	// instance = ManagerHolder.INSTANCE;
+	// if (instance.getMetamodelManager() == null && mmManager != null) {
+	// instance.setMetamodelManager(mmManager);
+	// }
+	// if(instance.getOclManager() == null) {
+	// instance.setOclManager(instance.getMetamodelManager().getOclManager());
+	// }
+	// if(mmManager instanceof AemiliaManager) {
+	// instance.setOclStringManager(OclStringManager.getInstance(new
+	// OclAemiliaStringManager()));
+	// }
+	// return instance;
+	// }
+
+	public Manager(MetamodelManager mmManager) {
+		setMetamodelManager(mmManager);
+		setOclManager(getMetamodelManager().getOclManager());
+		setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
 	}
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {
@@ -104,11 +114,11 @@ public class Manager {
 	public Object getModel() {
 		return metamodelManager.getModel();
 	}
-	
-	public void setModel (EObject model) {
+
+	public void setModel(EObject model) {
 		metamodelManager.setModel(model);
 	}
-	
+
 	public static double calculateCost(Refactoring r) {
 		double sum = 0.0;
 		for (RefactoringAction action : r.getActions()) {
@@ -117,13 +127,13 @@ public class Manager {
 		return sum;
 	}
 
-//	public static double calculateNumOfChanges(Refactoring r) {
-//		double sum = 0.0;
-//		for (RefactoringAction action : r.getActions()) {
-//			sum += action.getNumOfChanges();
-//		}
-//		return sum;
-//	}
+	// public static double calculateNumOfChanges(Refactoring r) {
+	// double sum = 0.0;
+	// for (RefactoringAction action : r.getActions()) {
+	// sum += action.getNumOfChanges();
+	// }
+	// return sum;
+	// }
 	//
 	// public static Model getUMLModel(String umlModelUri) {
 	// ResourceSet set = new ResourceSetImpl();
@@ -136,13 +146,86 @@ public class Manager {
 	// return model;
 	// }
 
-	public static Action getTautologyRandomAction(int n, RSequence seq) {
+	// public static Action getTautologyRandomAction(int n, RSequence seq) {
+	//
+	// // use n to choose among n possible actions
+	// int u_bound = 10;
+	// int l_bound = 1;
+	//
+	// Action a =
+	// ((AemiliaManager)Manager.getInstance(null).metamodelManager).getRandomCapacityChangeAction(seq);
+	//
+	// a.setNumOfChanges(0);
+	// a.setName("tautology_action_" +
+	// JMetalRandom.getInstance().getRandomGenerator().nextInt(0, Short.MAX_VALUE));
+	// a.setCost(JMetalRandom.getInstance().getRandomGenerator().nextInt(l_bound,
+	// u_bound));
+	//
+	// SingleValuedParameter lhs =
+	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
+	// String queryLhs = "4";
+	// lhs.setResolvingExpr(queryLhs);
+	//
+	// SingleValuedParameter rhs =
+	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
+	// String queryRhs = "3";
+	// rhs.setResolvingExpr(queryRhs);
+	//
+	// PreCondition aPre =
+	// LogicalSpecificationFactory.eINSTANCE.createPreCondition();
+	// FOLSpecification aPreSpec =
+	// LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
+	// aPreSpec.setName("APreCondition");
+	//
+	// AndOperator aPreAnd =
+	// LogicalSpecificationFactory.eINSTANCE.createAndOperator();
+	//
+	// GreaterOperator aPreAndGreater =
+	// LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
+	// aPreAndGreater.setLhs(lhs);
+	// aPreAndGreater.setRhs(rhs);
+	//
+	// aPreAnd.getArguments().add(aPreAndGreater);
+	// aPreSpec.setRootOperator(aPreAnd);
+	// aPre.setConditionFormula(aPreSpec);
+	// a.setPre(aPre);
+	//
+	// SingleValuedParameter lhs_ =
+	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
+	// String queryLhs_ = "2";
+	// lhs_.setResolvingExpr(queryLhs_);
+	//
+	// SingleValuedParameter rhs_ =
+	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
+	// String queryRhs_ = "1";
+	// rhs_.setResolvingExpr(queryRhs_);
+	//
+	// PostCondition aPost =
+	// LogicalSpecificationFactory.eINSTANCE.createPostCondition();
+	// FOLSpecification aPostSpec =
+	// LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
+	// aPostSpec.setName("APostCondition");
+	// AndOperator aPostAnd =
+	// LogicalSpecificationFactory.eINSTANCE.createAndOperator();
+	// GreaterOperator aPostAndGreater =
+	// LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
+	// aPostAndGreater.setLhs(lhs_);
+	// aPostAndGreater.setRhs(rhs_);
+	// aPostAnd.getArguments().add(aPreAndGreater);
+	// aPostSpec.setRootOperator(aPostAnd);
+	// aPost.setConditionFormula(aPostSpec);
+	// a.setPost(aPost);
+	//
+	// return a;
+	// }
+
+	public Action getTautologyRandomAction(int n, RSequence seq) {
 
 		// use n to choose among n possible actions
 		int u_bound = 10;
 		int l_bound = 1;
-		
-		Action a = ((AemiliaManager)Manager.getInstance(null).metamodelManager).getRandomCapacityChangeAction(seq);
+
+		Action a = ((AemiliaManager) metamodelManager).getRandomCapacityChangeAction(seq);
 
 		a.setNumOfChanges(0);
 		a.setName("tautology_action_" + JMetalRandom.getInstance().getRandomGenerator().nextInt(0, Short.MAX_VALUE));
@@ -217,7 +300,7 @@ public class Manager {
 			return evaluateOperator((LessEqualOperator) folSpec.getRootOperator());
 		return evaluateOperator((EqualOperator) folSpec.getRootOperator());
 	}
-	
+
 	public boolean evaluateFOL(FOLSpecification folSpec, EObject context) throws ParserException {
 		if (folSpec.getRootOperator() instanceof NotOperator)
 			return evaluateOperator((NotOperator) folSpec.getRootOperator(), context);
@@ -445,7 +528,7 @@ public class Manager {
 	public OclManager getOclManager() {
 		return oclManager;
 	}
-	
+
 	public void setOclManager(OclManager oclMan) {
 		oclManager = oclMan;
 	}
@@ -456,7 +539,7 @@ public class Manager {
 		// Manager.getInstance(null).getModel());
 
 		HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-				.evaluateOCL(operator.getCollection().getResolvingExpr(), Manager.getInstance(null).getModel());
+				.evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
 
 		List<Object> res = new ArrayList<Object>();
 		for (Object object : hashSetRes) {
@@ -513,7 +596,8 @@ public class Manager {
 	}
 
 	public boolean evaluateOperator(ForAllOperator operator, String umlModelUri) throws ParserException {
-		HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), Manager.getInstance(null).getModel());
+		HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
+				.evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
 		List<Object> res = new ArrayList<Object>();
 		for (Object object : hashSetRes) {
 			if (object instanceof Model)
@@ -570,8 +654,10 @@ public class Manager {
 
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
-		if(getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement) instanceof HashSet<?>) {
-			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
+		if (getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
+				contextualElement) instanceof HashSet<?>) {
+			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
+					.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
 			for (Object object : hashSetRes) {
 				if (object instanceof ArchiElemInstance)
 					coll.add((ArchiElemInstance) object);
@@ -583,9 +669,11 @@ public class Manager {
 					coll.add((Attachment) object);
 			}
 		}
-//		} else {
-//			List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
-//		}
+		// } else {
+		// List<Object> coll = (List<Object>)
+		// getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
+		// contextualElement);
+		// }
 		boolean app = true;
 		for (Object object : coll) {
 			// boolean app = true;
@@ -623,7 +711,7 @@ public class Manager {
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement, String umlModelUri)
 			throws ParserException {
 		HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-				.evaluateOCL(operator.getCollection().getResolvingExpr(), Manager.getInstance(null).getModel());
+				.evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
 		List<Object> res = new ArrayList<Object>();
 		for (Object object : hashSetRes) {
 			if (object instanceof Model)
@@ -679,7 +767,8 @@ public class Manager {
 	}
 
 	public boolean evaluateOperator(ExistsOperator operator) throws ParserException {
-		HashSet<Object> contextualElHS = (HashSet<Object>) getOclManager().evaluateQuery(operator.getElement().getResolvingExpr());
+		HashSet<Object> contextualElHS = (HashSet<Object>) getOclManager()
+				.evaluateQuery(operator.getElement().getResolvingExpr());
 		// SingleValuedParameter contextualElement = null;
 		// if(contextualElHS.size() == 1) {
 		// contextualElement = (SingleValuedParameter) contextualElHS.iterator().next();
@@ -689,7 +778,8 @@ public class Manager {
 			// HashSet<Object> hashSetRes = (HashSet<Object>)
 			// getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
 			// contextualElement);
-			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager().evaluateQuery(operator.getElement().getResolvingExpr());
+			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
+					.evaluateQuery(operator.getElement().getResolvingExpr());
 			List<Object> res = new ArrayList<Object>();
 			for (Object object : hashSetRes) {
 				if (object instanceof Model)
@@ -729,11 +819,13 @@ public class Manager {
 		// + operator.getCollection().getResolvingExpr() + "\"");
 		return false;
 	}
-	
-	public boolean evaluateExistsObj(ExistsOperator operator, Object obj, Object contextualElement) throws ParserException {
-		if(obj == null)
+
+	public boolean evaluateExistsObj(ExistsOperator operator, Object obj, Object contextualElement)
+			throws ParserException {
+		if (obj == null)
 			return false;
-		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
+		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
+				contextualElement);
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
 			// boolean found = false;
@@ -753,13 +845,15 @@ public class Manager {
 
 	public boolean evaluateOperator(ExistsOperator operator, Object contextualElement) throws ParserException {
 		@SuppressWarnings("unchecked")
-//		HashSet<Object> hashSetRes = ((HashSet<Object>) getOclManager()
-//				.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement));
-//		List<Object> res = new ArrayList<Object>();
+		// HashSet<Object> hashSetRes = ((HashSet<Object>) getOclManager()
+		// .evaluateOCL(operator.getCollection().getResolvingExpr(),
+		// contextualElement));
+		// List<Object> res = new ArrayList<Object>();
 		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement);
-		if(el == null)
+		if (el == null)
 			return false;
-		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
+		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
+				contextualElement);
 
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
@@ -796,10 +890,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -809,9 +901,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -859,10 +951,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -872,9 +962,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -983,10 +1073,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -996,9 +1084,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1046,10 +1134,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1059,9 +1145,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1091,8 +1177,7 @@ public class Manager {
 		return true;
 	}
 
-	public boolean evaluateOperator(GreaterEqualOperator operator, Object contextualElement)
-			throws ParserException {
+	public boolean evaluateOperator(GreaterEqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
 				|| operator.getRhs().getResolvingExpr() == null
 				|| operator.getRhs().getResolvingExpr().contentEquals("")) {
@@ -1171,10 +1256,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1184,9 +1267,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1234,10 +1317,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1247,9 +1328,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1358,10 +1439,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1371,9 +1450,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1421,10 +1500,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1434,9 +1511,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1466,8 +1543,7 @@ public class Manager {
 		return true;
 	}
 
-	public boolean evaluateOperator(LessEqualOperator operator, Object contextualElement)
-			throws ParserException {
+	public boolean evaluateOperator(LessEqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
 				|| operator.getRhs().getResolvingExpr() == null
 				|| operator.getRhs().getResolvingExpr().contentEquals("")) {
@@ -1546,10 +1622,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1559,9 +1633,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1609,10 +1683,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-				Manager.getInstance(null).getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1622,9 +1694,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					Manager.getInstance(null).getModel());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1725,11 +1797,15 @@ public class Manager {
 					res = r.getActions().get(0).getPre();
 				if (r.getActions().size() > 1) {
 					res = r.getActions().get(0).getPre();
-					AndOperator resAnd = Manager.getInstance(null).createAndOperator();
+					AndOperator resAnd = createAndOperator();
 					for (int i = 1; i < r.getActions().size(); i++) {
-						resAnd.getArguments().addAll(((AndOperator) calculatePreCondition(res, r.getActions().get(i).getPre(), r.getActions().get(i - 1).getPost()).getConditionFormula().getRootOperator()).getArguments());
+						resAnd.getArguments()
+								.addAll(((AndOperator) calculatePreCondition(res, r.getActions().get(i).getPre(),
+										r.getActions().get(i - 1).getPost()).getConditionFormula().getRootOperator())
+												.getArguments());
 						res.getConditionFormula().setRootOperator(resAnd);
-						//res = calculatePreCondition(res, r.getActions().get(i).getPre(), r.getActions().get(i - 1).getPost());
+						// res = calculatePreCondition(res, r.getActions().get(i).getPre(),
+						// r.getActions().get(i - 1).getPost());
 					}
 				}
 			}
@@ -2148,14 +2224,14 @@ public class Manager {
 
 	/////////////////////////
 
-//	protected void registerPathmaps(URI baseUri) {
-//		URIConverter.URI_MAP.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-//				baseUri.appendSegment("libraries").appendSegment(""));
-//		URIConverter.URI_MAP.put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
-//				baseUri.appendSegment("metamodels").appendSegment(""));
-//		URIConverter.URI_MAP.put(URI.createURI(UMLResource.PROFILES_PATHMAP),
-//				baseUri.appendSegment("profiles").appendSegment(""));
-//	}
+	// protected void registerPathmaps(URI baseUri) {
+	// URIConverter.URI_MAP.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
+	// baseUri.appendSegment("libraries").appendSegment(""));
+	// URIConverter.URI_MAP.put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
+	// baseUri.appendSegment("metamodels").appendSegment(""));
+	// URIConverter.URI_MAP.put(URI.createURI(UMLResource.PROFILES_PATHMAP),
+	// baseUri.appendSegment("profiles").appendSegment(""));
+	// }
 
 	public SingleValuedParameter createSingleValueParameter(String expr) {
 		SingleValuedParameter singleValuedParameter = LogicalSpecificationFactory.eINSTANCE
@@ -2177,12 +2253,12 @@ public class Manager {
 		return multipleValuedParameter;
 	}
 
-//	public Refactoring createRefactoring() {
-//		Refactoring refactoring =  
-//				LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-//		refactoring.setName(Integer.toString(REFACTORING_COUNTER++));
-//		return refactoring;
-//	}
+	// public Refactoring createRefactoring() {
+	// Refactoring refactoring =
+	// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
+	// refactoring.setName(Integer.toString(REFACTORING_COUNTER++));
+	// return refactoring;
+	// }
 
 	public ForAllOperator createForAllOperator(MultipleValuedParameter collection) {
 		ForAllOperator forAll = LogicalSpecificationFactory.eINSTANCE.createForAllOperator();
@@ -2190,8 +2266,7 @@ public class Manager {
 		return forAll;
 	}
 
-	public ExistsOperator createExistsOperator(SingleValuedParameter parameter,
-			MultipleValuedParameter collection) {
+	public ExistsOperator createExistsOperator(SingleValuedParameter parameter, MultipleValuedParameter collection) {
 		ExistsOperator existsOperator = LogicalSpecificationFactory.eINSTANCE.createExistsOperator();
 		existsOperator.setElement(parameter);
 		existsOperator.setCollection(collection);
@@ -2244,11 +2319,9 @@ public class Manager {
 		return metamodelManager.getModelFileExtension();
 	}
 
-
 	public Controller getController() {
 		return controller;
 	}
-
 
 	public void setController(Controller controller) {
 		this.controller = controller;

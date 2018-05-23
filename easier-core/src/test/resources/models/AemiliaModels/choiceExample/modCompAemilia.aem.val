@@ -1,0 +1,16 @@
+Stationary value of the performance measures for ModComp_Type:
+
+- Value of measure "First_TYPE_Good":
+	0.228963
+
+- Value of measure "First_TYPE_Fail":
+	0.0508806
+
+- Value of measure "First_TYPE_Workload":
+	0.508806
+
+- Value of measure "Second_TYPE_Good":
+	0.389237
+
+- Value of measure "Second_TYPE_Fail":
+	0.0686888

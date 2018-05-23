@@ -95,10 +95,10 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public Controller(String[] args) {
 
-		manager = Manager.getInstance(new AemiliaManager());
+		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
 
-		setPerfQuality(new PerformanceQuality());
+		setPerfQuality(new PerformanceQuality(manager.getOclManager()));
 		// logger_ = ;
 		InputStream inputStream = null;
 
@@ -194,7 +194,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		startingTime = Instant.now();
 		RProblem problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
-				manager);
+				this);
 		this.setProblem(problem);
 
 		timestamp = new Timestamp(System.currentTimeMillis());
@@ -221,7 +221,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		logger_.addHandler(handler);
 
-		CrossoverOperator<RSolution> crossover = new RCrossover(crossoverProbability);
+		CrossoverOperator<RSolution> crossover = new RCrossover(crossoverProbability, this);
 		MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
 		SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
 				new RankingAndCrowdingDistanceComparator<RSolution>());
@@ -251,8 +251,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		algorithm.run();
 		List<RSolution> population = algorithm.getResult();
 
-		// long estimatedTime = getCpuTime(id_s) - initTime;
-
 		((CustomNSGAII<RSolution>) algorithm).computeCrowdingDistances();
 		population = algorithm.getResult();
 
@@ -260,10 +258,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		Collections.reverse(population);
 
 		logger_.info("Number of non-dominated solutions (sorted by Crowding): " + population.size());
-
-		// logger_.info("Estimated total execution time: "
-		// + new DecimalFormat("#.##").format(estimatedTime * Math.pow(10,
-		// -9)).replaceAll(",", ".") + " seconds");
 
 		endingTime = Instant.now();
 		Duration totalTime = Duration.between(startingTime, endingTime);
@@ -340,9 +334,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			}
 
 		}
-		
-		
-		
 	}
 
 	private void setProperties(InputStream inputStream) {
@@ -491,35 +482,35 @@ public class Controller extends AbstractAlgorithmRunner {
 		return new FileInputStream(filename);
 	}
 
-	private static void createNewModelFile(String refModelURI) {
-		String path;
-		try {
-			path = new java.io.File(".").getCanonicalPath() + refModelURI + "."
-					+ Manager.getInstance(null).getMetamodelManager().getMetamodelFileExtension();
-			File newFile = new File(path);
-			newFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void createNewModelFile(String refModelURI) {
+//		String path;
+//		try {
+//			path = new java.io.File(".").getCanonicalPath() + refModelURI + "."
+//					+ manager.getMetamodelManager().getMetamodelFileExtension();
+//			File newFile = new File(path);
+//			newFile.createNewFile();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
-	private static long getCpuTime(long[] ids) {
-		/** Get CPU time in nanoseconds. */
-
-		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-		if (!bean.isThreadCpuTimeSupported())
-			return 0L;
-		long time = 0L;
-		for (long i : ids) {
-			// System.out.println(i);
-			long t = bean.getThreadCpuTime(ids[(int) i - 1]);
-			if (t != -1)
-				time += t;
-		}
-		return time;
-
-	}
+//	private static long getCpuTime(long[] ids) {
+//		/** Get CPU time in nanoseconds. */
+//
+//		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+//		if (!bean.isThreadCpuTimeSupported())
+//			return 0L;
+//		long time = 0L;
+//		for (long i : ids) {
+//			// System.out.println(i);
+//			long t = bean.getThreadCpuTime(ids[(int) i - 1]);
+//			if (t != -1)
+//				time += t;
+//		}
+//		return time;
+//
+//	}
 
 	public PerformanceQuality getPerfQuality() {
 		return perfQuality;
@@ -749,13 +740,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			}
 		}
 	}
-	// public static String getBASENAME() {
-	// return BASENAME;
-	// }
-	//
-	// public static void setBASENAME(String bASENAME) {
-	// BASENAME = bASENAME;
-	// }
 
 	public void copyModel(String destinationPath) {
 		File source = new File(sourceModelPath);

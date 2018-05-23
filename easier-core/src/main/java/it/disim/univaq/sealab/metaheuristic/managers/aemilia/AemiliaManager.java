@@ -1,11 +1,8 @@
 package it.disim.univaq.sealab.metaheuristic.managers.aemilia;
 
-import java.io.File;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.common.util.BasicEList;
@@ -37,7 +34,11 @@ import mapmeasurestoindices.RewMapping;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.Attachment;
+import metamodel.mmaemilia.ElemType;
 import metamodel.mmaemilia.mmaemiliaPackage;
+import metamodel.mmaemilia.Behavior.BehaviorFactory;
+import metamodel.mmaemilia.Behavior.ChoiceProcess;
+import metamodel.mmaemilia.Behavior.ProcessTerm;
 import metamodel.mmaemilia.DataType.Special;
 import metamodel.mmaemilia.DataType.SpecialType;
 import metamodel.mmaemilia.Headers.ConstInit;
@@ -52,7 +53,7 @@ public class AemiliaManager extends MetamodelManager {
 	private static final String REWMAPPING_FILE_EXTENSION = "rewmapping";
 
 	private ResourceSet resourceSet;
-	private Resource aemiliaResource;
+//	private Resource emiliaResource;
 
 	private String rewFilePath;
 	private String aemiliaModelFilePath; // .mmaemilia
@@ -71,6 +72,11 @@ public class AemiliaManager extends MetamodelManager {
 	// private AtomicLong counter = new AtomicLong(RandomUtils.nextInt(1,
 	// Integer.MAX_VALUE));
 
+	public AemiliaManager(Controller ctrl) {
+		controller = ctrl;
+	}
+	
+	
 	public void init(String modelUri) {
 		setAemFilePath(modelUri + getModelFileExtension());
 		setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
@@ -83,7 +89,7 @@ public class AemiliaManager extends MetamodelManager {
 
 		String ameliaAbsolutePath = getAemiliaModelFilePath();
 		URI uri = URI.createFileURI(ameliaAbsolutePath);
-		aemiliaResource = getResourceSet().getResource(uri, true);
+		resource = getResourceSet().getResource(uri, true);
 
 		model = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResource().getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
@@ -124,15 +130,10 @@ public class AemiliaManager extends MetamodelManager {
 		getTwoEaglesBridge().aemiliaModelUpdate(valFilePath, rewMappingFilePath);
 	}
 
-	@Override
-	public Resource getResource() {
-		return aemiliaResource;
-	}
-
 	public Resource getResource(String aemFilePath) {
 		// String ameliaAbsolutePath = getAemiliaModelFilePath();
 		URI uri = URI.createFileURI(aemFilePath);
-		aemiliaResource = getResourceSet().getResource(uri, true);
+		Resource aemiliaResource = getResourceSet().createResource(uri);
 		return aemiliaResource;
 	}
 
@@ -194,7 +195,7 @@ public class AemiliaManager extends MetamodelManager {
 		if (model == null) {
 			this.packageRegistering();
 			if (aemiliaModelFilePath == null) {
-				aemiliaModelFilePath = Manager.getInstance(null).getController().getSourceModelPath();
+				aemiliaModelFilePath = controller.getSourceModelPath();
 			}
 			this.model = createModel(aemiliaModelFilePath);
 			// this.model = (AEmiliaSpecification)
@@ -516,7 +517,7 @@ public class AemiliaManager extends MetamodelManager {
 		// return null;
 		// }
 		
-		if(Manager.getInstance(null).getController().getWorkloadRange() == -1) {
+		if(controller.getWorkloadRange() == -1) {
 			return null;
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
@@ -753,7 +754,7 @@ public class AemiliaManager extends MetamodelManager {
 	@Override
 	public OclManager getOclManager() {
 		if (oclManager == null) {
-			oclManager = new OclAemiliaManager();
+			oclManager = new OclAemiliaManager(controller);
 		}
 		return oclManager;
 	}
@@ -768,7 +769,7 @@ public class AemiliaManager extends MetamodelManager {
 			// twoEaglesBridge = new
 			// TwoEaglesBridge(Manager.getInstance(null).getController().getTwoTowersKernelPath());
 			twoEaglesBridge = new TwoEaglesBridge();
-			String twoTowersKernelPath = Manager.getInstance(null).getController().getTwoTowersKernelPath();
+			String twoTowersKernelPath = controller.getTwoTowersKernelPath();
 			twoEaglesBridge.setTwoTowersKernelPath(twoTowersKernelPath);
 			twoEaglesBridge.setResourceSet(this.getResourceSet());
 			twoEaglesBridge.setAemiliaSpecification(getModel());
@@ -795,5 +796,20 @@ public class AemiliaManager extends MetamodelManager {
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+	}
+	
+	
+	public void addAvailabilityChoice(AEmiliaSpecification targetModel) {
+		
+		for(ElemType aet : targetModel.getArchiTypeDecl().getAetDeclaration().getEtDeclaration()) {
+			
+			ChoiceProcess availabilityChoice = BehaviorFactory.eINSTANCE.createChoiceProcess();
+			
+			ProcessTerm pt = BehaviorFactory.eINSTANCE.createProcessTerm();
+			
+			availabilityChoice.getProcesses().add(aet.getBehaviorDecl().getEquations().get(0).getPt());
+			
+			
+		}
 	}
 }

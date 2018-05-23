@@ -30,6 +30,7 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.disim.univaq.sealab.metaheuristic.evolutionary.Controller;
 import it.disim.univaq.sealab.metaheuristic.evolutionary.RSequence;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
@@ -62,22 +63,30 @@ public class UMLManager extends MetamodelManager {
 	// private OclUMLStringManager oclUMLStringManager;
 	
 	private static UMLManager instance;
+	
+	private Controller controller;
+	private Manager manager;
 
-	private static class ManagerHolder {
-		private static final UMLManager INSTANCE = new UMLManager();
-	}
-
-	public static UMLManager getInstance() {
-		if(instance == null)
-			instance = ManagerHolder.INSTANCE;
-		REFACTORED_MODEL_BASE_PATH = "/src/main/resources/models/refactored/BGCS/BGCS_";
-		if (instance.getOclManager() == null) {
-			instance.setOclManager(OclUMLManager.getInstance());
-		}
-		if (instance.getOclStringManager() == null) {
-			instance.setOclStringManager(OclUMLStringManager.getInstance());
-		}
-		return instance;
+//	private static class ManagerHolder {
+//		private static final UMLManager INSTANCE = new UMLManager();
+//	}
+//
+//	public static UMLManager getInstance() {
+//		if(instance == null)
+//			instance = ManagerHolder.INSTANCE;
+//		REFACTORED_MODEL_BASE_PATH = "/src/main/resources/models/refactored/BGCS/BGCS_";
+//		if (instance.getOclManager() == null) {
+//			instance.setOclManager(OclUMLManager.getInstance());
+//		}
+//		if (instance.getOclStringManager() == null) {
+//			instance.setOclStringManager(OclUMLStringManager.getInstance());
+//		}
+//		return instance;
+//	}
+	
+	public UMLManager(Controller ctrl) {
+		controller = ctrl;
+		manager = controller.getManager();
 	}
 
 	// public Action getUMLRandomAction(int length) throws UnexpectedException {
@@ -246,7 +255,7 @@ public class UMLManager extends MetamodelManager {
 		// set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 		// UMLResource.Factory.INSTANCE);
 
-		Resource resource = getResourceSet().getResource(Manager.getInstance(this).string2FileUri(getModelUri()), true);
+		Resource resource = getResourceSet().getResource(manager.string2FileUri(getModelUri()), true);
 		return resource;
 	}
 
@@ -270,7 +279,7 @@ public class UMLManager extends MetamodelManager {
 		Resource res = this.getResourceSet()
 				// .createResource(Manager.getInstance(this).string2FileUri(destinationPath+"."+
 				// UMLResource.FILE_EXTENSION));
-				.createResource(Manager.getInstance(this).string2FileUri(destinationPath));
+				.createResource(manager.string2FileUri(destinationPath));
 
 		res.getContents().add(getModel());
 
@@ -287,7 +296,7 @@ public class UMLManager extends MetamodelManager {
 		set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
-		Resource resource = set.getResource(Manager.getInstance(this).string2FileUri(umlModelUri), true);
+		Resource resource = set.getResource(manager.string2FileUri(umlModelUri), true);
 		return resource;
 	}
 
@@ -296,7 +305,7 @@ public class UMLManager extends MetamodelManager {
 		set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
-		Resource resource = set.getResource(Manager.getInstance(this).string2FileUri(umlModelUri), loadOnDemand);
+		Resource resource = set.getResource(manager.string2FileUri(umlModelUri), loadOnDemand);
 		return resource;
 	}
 
@@ -321,7 +330,7 @@ public class UMLManager extends MetamodelManager {
 		packageRegistering();
 		getOclManager().inizialize(getResourceSet());
 		setUmlResource((UMLResource) getResourceSet()
-				.getResource(Manager.getInstance(this).string2FileUri(getModelUri()), true));
+				.getResource(manager.string2FileUri(getModelUri()), true));
 		model = (Model) EcoreUtil.getObjectByType(getUmlResource().getContents(), UMLPackage.Literals.MODEL);
 	}
 
@@ -512,7 +521,7 @@ public class UMLManager extends MetamodelManager {
 	@Override
 	public OclManager getOclManager() {
 		if(oclManager == null) {
-			oclManager = new OclUMLManager();
+			oclManager = new OclUMLManager(controller);
 		}
 		return oclManager;
 	}

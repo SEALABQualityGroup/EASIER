@@ -33,14 +33,16 @@ public class RCrossover implements CrossoverOperator<RSolution> {
 
 	private double crossoverProbability;
 	private JMetalRandom randomGenerator;
+	private Controller controller;
 
 	/** Constructor */
-	public RCrossover(double crossoverProbability) {
+	public RCrossover(double crossoverProbability, Controller ctrl) {
 		if (crossoverProbability < 0) {
 			throw new JMetalException("Crossover probability is negative: " + crossoverProbability);
 		}
 		this.crossoverProbability = crossoverProbability;
 		randomGenerator = JMetalRandom.getInstance();
+		controller = ctrl;
 	}
 
 	/* Getter */
@@ -120,7 +122,7 @@ public class RCrossover implements CrossoverOperator<RSolution> {
 				while(i < offspring1.getLength() && !found) {
 					RefactoringAction a = offspring1.getActionAt(i);
 					if(a instanceof AEmiliaCloneAEIRefactoringAction) {
-						AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
+						AemiliaManager metamodelManager = (AemiliaManager) controller.getManager().getMetamodelManager();
 						if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), offspring1.getVariableValue(0)))
 							found = true;
 					}
@@ -150,7 +152,7 @@ public class RCrossover implements CrossoverOperator<RSolution> {
 				while(i < offspring2.getLength() && !found) {
 					RefactoringAction a = offspring2.getActionAt(i);
 					if(a instanceof AEmiliaCloneAEIRefactoringAction) {
-						AemiliaManager metamodelManager = (AemiliaManager) Manager.getInstance(null).getMetamodelManager();
+						AemiliaManager metamodelManager = (AemiliaManager) controller.getManager().getMetamodelManager();
 //						if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), offspring2.getVariableValue(0)) ||
 //							metamodelManager.isIn(((AEmiliaCloneAEIRefactoringAction) a), offspring1.getVariableValue(0)))
 						if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a), offspring2.getVariableValue(0)))

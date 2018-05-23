@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -22,11 +21,14 @@ import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 
 import it.disim.univaq.sealab.metaheuristic.evolutionary.Controller;
+import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public abstract class OclManager {
 
 	protected OCL ocl;
+	protected Manager manager;
+	protected Controller controller;
 
 	public HashSet<?> evaluateQuery(String query) {
 		return (HashSet<?>) getQueryResult(query);

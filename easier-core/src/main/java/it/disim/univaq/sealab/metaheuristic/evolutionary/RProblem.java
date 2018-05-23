@@ -1,5 +1,6 @@
 package it.disim.univaq.sealab.metaheuristic.evolutionary;
 
+import java.io.IOException;
 import java.rmi.UnexpectedException;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	protected int number_of_actions;
 	protected int allowed_failures;
 	private Manager manager;
+	private Controller controller;
 
 	protected final int NUM_VAR = 1;
 	protected final int NUM_OBJ = 3;
@@ -34,9 +36,9 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 	private static int PROBLEM_COUNTER = 0;
 
-	public RProblem(String modelUri, int desired_length, int n, int a, int population, Manager manager) {
+	public RProblem(String modelUri, int desired_length, int n, int a, int population, Controller ctrl) {
 
-		Controller controller = manager.getController();
+		controller = ctrl;
 
 		String name = "P_" + controller.getProperties().getProperty("populationSize")
 				+ "_E_" +controller.getProperties().getProperty("maxEvaluations") +
@@ -48,7 +50,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 
-		this.manager = manager;
+		this.manager = controller.getManager();
 		this.manager.getMetamodelManager().init(modelUri);
 		this.manager.getMetamodelManager().setModelUri(modelUri);
 		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel());
@@ -86,9 +88,9 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	 */
 	public void evaluate(RSolution solution) {
 
-		Manager manager = Manager.getInstance(null);
+//		Manager manager = Manager.getInstance(null);
 		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-		Controller controller = manager.getController();
+//		Controller controller = manager.getController();
 
 		// EObject solutionModel = metamodelManager.getModel();
 		// solution.setModel(this.model);
@@ -169,4 +171,5 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 		this.manager = manager;
 	}
 
+	public Controller getController() {return controller;}
 }

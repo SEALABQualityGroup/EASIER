@@ -1,5 +1,7 @@
 package it.disim.univaq.sealab.metaheuristic.evolutionary;
 
+import java.io.IOException;
+
 import org.uma.jmetal.problem.Problem;
 
 public class RSolutionListEvaluatorRunnable implements Runnable {
@@ -16,5 +18,7 @@ public class RSolutionListEvaluatorRunnable implements Runnable {
 	public void run() {
 		problem.evaluate(solution);
 	}
+	
+	
 
 }

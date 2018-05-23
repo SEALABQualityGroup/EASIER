@@ -1,0 +1,67 @@
+ARCHI_TYPE ModComp_Type(const weight  prob_to_fail_a := 0.1, const weight prob_to_fail_b := 0.15, const rate workload_rate := 1)
+
+
+ARCHI_ELEM_TYPES
+
+
+ELEM_TYPE First_Elem(const weight prob_to_fail_a, const rate workload_rate)
+
+    BEHAVIOR
+
+      Foo(void; void) =
+        <workload, exp(1)> .
+        choice
+        {
+          <keep_0, inf(1,1-prob_to_fail_a)> . <good, exp(2)>. Foo(),
+          <lose_0, inf(1,prob_to_fail_a)> . <fail, exp(1)> . Foo()
+        }
+
+
+    INPUT_INTERACTIONS
+
+      UNI workload
+
+    OUTPUT_INTERACTIONS
+
+      UNI good;
+          fail
+
+ELEM_TYPE Second_Elem(const weight prob_to_fail_b)
+
+    BEHAVIOR
+
+      Foo(void; void) =
+        <in, _> .
+        choice
+        {
+          <keep_1, inf(1,1 - prob_to_fail_b)> . <good, exp(1)> . Foo(),
+          <lose_1, inf(1,prob_to_fail_b)> . <fail, exp(1)> . Foo()
+        }
+
+    INPUT_INTERACTIONS
+
+      UNI in
+
+    OUTPUT_INTERACTIONS
+
+      AND good;
+          fail
+
+  ARCHI_TOPOLOGY
+
+      	ARCHI_ELEM_INSTANCES
+
+      	  A : First_Elem(prob_to_fail_a, workload_rate);
+          B : Second_Elem(prob_to_fail_b)
+
+      	ARCHI_INTERACTIONS
+
+      	  A.workload;
+          A.fail;
+          B.good;
+          B.fail
+
+      	ARCHI_ATTACHMENTS
+
+          FROM A.good TO B.in
+      END
