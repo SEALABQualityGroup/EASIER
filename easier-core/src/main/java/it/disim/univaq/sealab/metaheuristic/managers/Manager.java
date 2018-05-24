@@ -72,8 +72,7 @@ public class Manager {
 		metamodelManager.init(modelUri);
 	}
 
-	public Manager() {
-	}
+	public Manager() {}
 
 	// private static class ManagerHolder {
 	// private static final Manager INSTANCE = new Manager();

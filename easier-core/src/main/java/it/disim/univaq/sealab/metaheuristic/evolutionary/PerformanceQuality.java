@@ -120,7 +120,7 @@ public class PerformanceQuality {
 //		}			
 			if (Pattern.compile(Pattern.quote(IndexType.THROUGHPUT.getLiteral()), Pattern.CASE_INSENSITIVE).matcher(sourceMes.getMeasure()).find() ||
 				Pattern.compile(Pattern.quote(IndexType.UTILIZATION.getLiteral()), Pattern.CASE_INSENSITIVE).matcher(sourceMes.getMeasure()).find()) {
-				Controller.logger_.info("Measure " + refMes.getMeasure() + " is " + refMes.getValue());
+				//Controller.logger_.info("Measure " + refMes.getMeasure() + " is " + refMes.getValue());
 				qualityMap.put(sourceMes, quality);
 			}	
 		

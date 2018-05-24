@@ -37,7 +37,7 @@ public class RSequence {
 	public RSequence(RSolution solution) {
 		this.solution = solution;
 		manager = this.solution.getManager();
-		controller = solution.getController();
+		controller = this.solution.getController();
 		metamodelManager = manager.getMetamodelManager();
 		this.refactoring = new Refactoring(getSolution());
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
@@ -240,6 +240,10 @@ public class RSequence {
 		this.solution = solution;
 		this.refactoring = seq.getRefactoring().clone(solution);
 
+		manager = this.solution.getManager();
+		controller = this.solution.getController();
+		metamodelManager = manager.getMetamodelManager();
+		
 		assert (seq.refactoring.getActions().size() == 4);
 
 		// for(RefactoringAction a : seq.refactoring.getActions()){

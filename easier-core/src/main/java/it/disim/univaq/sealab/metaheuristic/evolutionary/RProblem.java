@@ -40,10 +40,10 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 		controller = ctrl;
 
-		String name = "P_" + controller.getProperties().getProperty("populationSize")
-				+ "_E_" +controller.getProperties().getProperty("maxEvaluations") +
-				"_X_" + controller.getProperties().getProperty("p_crossover") +
-				"_M_"+ controller.getProperties().getProperty("p_mutation") ;
+		String name = "P_" + controller.getProperties().getProperty("populationSize") + "_E_"
+				+ controller.getProperties().getProperty("maxEvaluations") + "_X_"
+				+ controller.getProperties().getProperty("p_crossover") + "_M_"
+				+ controller.getProperties().getProperty("p_mutation");
 
 		this.setName(name);
 		this.setNumberOfObjectives(NUM_OBJ);
@@ -66,10 +66,6 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 		return model;
 	}
 
-	// public void setModel(Object model) {
-	// this.model = model;
-	// }
-
 	public int getLength_of_refactorings() {
 		return length_of_refactorings;
 	}
@@ -87,53 +83,23 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	 * 
 	 */
 	public void evaluate(RSolution solution) {
-
-//		Manager manager = Manager.getInstance(null);
-		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-//		Controller controller = manager.getController();
-
-		// EObject solutionModel = metamodelManager.getModel();
-		// solution.setModel(this.model);
-		solution.resolve(metamodelManager);
+//		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
+		
+//		solution.resolve(metamodelManager);
 
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
 			if (i == FIRST_OBJ) {
-				// solution.getVariableValue(VARIABLE_INDEX).getRefactoring()
-				// .setCost(Manager.calculateCost(solution.getVariableValue(VARIABLE_INDEX).getRefactoring()));
-				// solution.setObjective(i,
-				// solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getCost());
-				float quality = solution.evaluatePerformance();
+				float quality = solution.getPerfQ();
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);
-				// solution.setObjective(i,
-				// solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());
 				solution.setObjective(i, -1 * solution.getVariableValue(VARIABLE_INDEX).getPerfQuality());
-
 			} else if (i == SECOND_OBJ) {
-				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(
-						solution.getNumOfChanges());
+				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());
 			} else if (i == THIRD_OBJ) {
-				// Manager.completeAntipatternDetection(antipatterns, umlModelUri);
-				// PAKIMOR _FIXME
-				// far parire TT
-
-//				Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.countingPAsOnAemiliaModel(
-//						controller.getPerfQuality(), controller.getRuleFilePath(),
-//						solution.getValPath(), metamodelManager);
-//
-//				int numOfPAs = 0;
-//				for (String paName : mapOfPAs.keySet()) {
-//					numOfPAs += mapOfPAs.get(paName).size();
-//				}
-				
-
-				Controller.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
-
+				Controller.logger_
+						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(solution.getPAs());
-				// solution.setObjective(i, numOfPAs);
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());
-
-				// controller.writeToCSV(solution);
 			} else {
 				System.out.println("\n" + i);
 				throw new RuntimeException("unexpected behav");
@@ -171,5 +137,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 		this.manager = manager;
 	}
 
-	public Controller getController() {return controller;}
+	public Controller getController() {
+		return controller;
+	}
 }

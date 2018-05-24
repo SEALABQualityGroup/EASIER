@@ -33,16 +33,18 @@ public abstract class OclManager {
 	public HashSet<?> evaluateQuery(String query) {
 		return (HashSet<?>) getQueryResult(query);
 	}
-	
+
 	public HashSet<?> evaluateQuery(String query, EObject model) {
 		return (HashSet<?>) getQueryResult(query, model);
 	}
 
 	@SuppressWarnings({ "unchecked", "static-access" })
 	protected abstract HashSet<?> getQueryResult(String query);
+
 	protected abstract HashSet<?> getQueryResult(String query, EObject model);
 
 	public abstract HashSet<Object> evaluateOCL(String query);
+
 	public abstract Object evaluateOCL(String query, Object contextualElement) throws ParserException;
 
 	public void inizialize(ResourceSet resourceSet) {
@@ -74,9 +76,9 @@ public abstract class OclManager {
 	public OCLInput createOclInput(FileInputStream in) {
 		return new OCLInput(in);
 	}
-	
+
 	@SuppressWarnings("finally")
-	public List<Constraint> getOclRulesFromFile(FileInputStream file){
+	public List<Constraint> getOclRulesFromFile(FileInputStream file) {
 		OCLInput document = createOclInput(file);
 		List<Constraint> listOfConstraints = null;
 		try {
@@ -84,21 +86,22 @@ public abstract class OclManager {
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			return listOfConstraints;
 		}
-		
+
 	}
 
-	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(String filePath, List<Object> contextualElements)  {
+	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(String filePath,
+			List<Object> contextualElements) {
 		// EPackage.Registry registry = new EPackageRegistryImpl();
 		// registry.put(mmaemiliaPackage.eNS_URI, mmaemiliaPackage.eINSTANCE);
 		// EcoreEnvironmentFactory environmentFactory = new
 		// EcoreEnvironmentFactory(registry);
 		// OCL ocl;
-		
+
 		int apCounter = 0;
-		
+
 		Map<String, Constraint> constraintMap = new HashMap<String, Constraint>();
 		Map<String, ExpressionInOCL> exprMap = new HashMap<String, ExpressionInOCL>();
 		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
@@ -108,32 +111,24 @@ public abstract class OclManager {
 		FileInputStream in = openFile(filePath);
 		// parse the contents as an OCL document
 		List<Constraint> apRules = getOclRulesFromFile(in);
-		
-		
+
 		Map<String, List<ArchitecturalInteraction>> mapOfPerformanceAntipattern = new HashMap<>();
-		
+
 		for (Constraint nextConstraint : apRules) {
-			List<ArchitecturalInteraction> listOfPerformanceAntipattern = new ArrayList<>(); 
+			List<ArchitecturalInteraction> listOfPerformanceAntipattern = new ArrayList<>();
 			if (nextConstraint.getName() != null) {
 				constraintMap.put(nextConstraint.getName(), nextConstraint);
 				ExpressionInOCL expressionInOCL = (ExpressionInOCL) nextConstraint.getSpecification();
 				exprMap.put(nextConstraint.getName(), expressionInOCL);
-				// Variable<EClassifier, EParameter> context =
-				// next.getSpecification().getContextVariable();
 				OCLExpression<EClassifier> body = nextConstraint.getSpecification().getBodyExpression();
-				// Query<EClassifier, EClass, EObject> expression =
-				// ocl.createQuery(next.getSpecification().getBodyExpression());
-
-				Controller.logger_.info("DETECTING " + nextConstraint.getName() + "\n" + body.toString());
 
 				for (Object el : contextualElements) {
-					Controller.logger_.info("\tCONTEXTUAL ELEMENT: " + ((ArchitecturalInteraction) el).getName());
+//					Controller.logger_.info("\tCONTEXTUAL ELEMENT: " + ((ArchitecturalInteraction) el).getName());
 					if (ocl.check(el, body)) {
 						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
-						apCounter ++;
+						apCounter++;
 						Controller.logger_.warning(nextConstraint.getName() + " DETECTED!");
-					} else
-						Controller.logger_.info(((ArchitecturalInteraction) el).getName() + " isn't " + nextConstraint.getName());
+					}
 				}
 				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);
 			}

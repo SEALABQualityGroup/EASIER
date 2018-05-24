@@ -16,9 +16,7 @@ public class RSolutionListEvaluatorRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		problem.evaluate(solution);
+//		problem.evaluate(solution);
+		solution.invokeSolver();
 	}
-	
-	
-
 }

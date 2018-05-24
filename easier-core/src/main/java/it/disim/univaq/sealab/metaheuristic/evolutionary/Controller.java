@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
@@ -59,6 +62,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private Properties prop;
 
+	private ExecutorService executor;
+
 	private String basePath, sourceFolder, configFile;
 	private PerformanceQuality perfQuality;
 
@@ -68,12 +73,9 @@ public class Controller extends AbstractAlgorithmRunner {
 	private double[] workloadRange;
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
-	private String destionationFolderPath;
 	private FileWriter resultFileWriter, solutionFileWriter;
-	private String outputFolder, tmpFolder, paretoFolder;
-	private String destinationFolder;
+	private String outputFolder, tmpFolder, paretoFolder, logFolder;
 	private String twoTowersKernelPath;
-	private List<String> csvResultHeader = new ArrayList<>();
 	private int maxCloning;
 	private Instant startingTime, endingTime;
 	private Map<String, List<ArchitecturalInteraction>> sourceModelPAs;
@@ -86,7 +88,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String sourceRewPath;
 	private String sourceRewmappingPath;
 	private String sourceBasePath;
-	
+
 	private Timestamp timestamp;
 
 	// private static String BASENAME =
@@ -142,11 +144,6 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private void generateSourceFiles() {
 
-		// String mmaemiliaFolderPath =
-		// "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/EDS";
-		// sourceAemPath =
-		// "/Users/peo12/git/sealab/pakimor/metaheuristic/src/main/resources/models/AemiliaModels/BGCS/EDS.aem";
-
 		if (!new File(sourceAemPath).exists()) {
 			metamodelManager.packageRegistering();
 			Transformation.GenerateAEMTransformation(sourceModelPath, sourceFolder);
@@ -199,22 +196,23 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		timestamp = new Timestamp(System.currentTimeMillis());
 
-		setDestinationFolder(tmpFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__");
+		setTmpFolder(tmpFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
+		setParetoFolder(
+				paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
+		setLogFolder(logFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
 
-		this.setDestinationFolderPath(getDestinationFolder());
+		new File(getTmpFolder()).mkdirs();
+		new File(getParetoFolder()).mkdirs();
+		new File(getLogFolder()).mkdirs();
 
-		new File(getDestinationFolder()).mkdirs();
-		new File(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__").mkdirs();
+		System.setOut(new PrintStream(new File(this.getLogFolder() + "output.log")));
+		System.setErr(new PrintStream(new File(this.getLogFolder() + "error.log")));
 
-		System.setOut(new PrintStream(new File(this.getDestinationFolderPath() + "/output.log")));
-		System.setErr(new PrintStream(new File(this.getDestinationFolderPath() + "/error.log")));
-
-		String csvProFile = paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__"
-				+ File.separator + "properties.csv";
+		String csvProFile = getParetoFolder() + "properties.csv";
 		writePropertiesToCSV(csvProFile);
 
 		try {
-			handler = new FileHandler(this.getDestinationFolderPath() + "/default.log", append);
+			handler = new FileHandler(this.getLogFolder() + "default.log", append);
 		} catch (SecurityException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -237,8 +235,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info(algorithm.getClass().toString());
 
-		solutionFileWriter = new FileWriter(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp)
-				+ "__" + File.separator + "solutions.csv", true);
+		solutionFileWriter = new FileWriter(getParetoFolder() + "solutions.csv", true);
 		List<String> line = new ArrayList<String>();
 		line.add("name");
 		line.add("PAs");
@@ -265,7 +262,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.info("Total execution time: " + totalTime.toString().replaceAll(",", ".") + " seconds");
 
 		try {
-			resultFileWriter = new FileWriter(paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator + "results.csv");
+			resultFileWriter = new FileWriter(getParetoFolder() + "results.csv");
 			line = null;
 			line = new ArrayList<String>();
 			line.add("Popul");
@@ -304,7 +301,9 @@ public class Controller extends AbstractAlgorithmRunner {
 			// CSVUtils.writeLine(resultFileWriter, line);
 			line = null;
 			saveParetoSolution(population);
+			
 			writeSolutionSetToCSV(population);
+			
 			resultFileWriter.flush();
 			// TODO: handle exception
 		} catch (IOException e) {
@@ -318,13 +317,12 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	}
 
-	private void saveParetoSolution(List<RSolution> paretoPop) {
+	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
 
 		for (RSolution solution : paretoPop) {
 
 			File srcDir = new File(solution.getMmaemiliaFolderPath());
-			File destDir = new File(
-					paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator + solution.getName());
+			File destDir = new File(getParetoFolder() + solution.getName());
 
 			try {
 				FileUtils.copyDirectory(srcDir, destDir);
@@ -332,8 +330,14 @@ public class Controller extends AbstractAlgorithmRunner {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
+
+		// try {
+		// FileUtils.cleanDirectory(new File(tmpFolder));
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 	}
 
 	private void setProperties(InputStream inputStream) {
@@ -436,14 +440,24 @@ public class Controller extends AbstractAlgorithmRunner {
 		allowed_failures = Integer.parseInt(prop.getProperty("allowed_failures"));
 		logger_.info("allowed_failures is set to " + allowed_failures);
 
-		if (prop.getProperty("outputFolder").endsWith(File.separator))
-			setOutputFolder(prop.getProperty("outputFolder"));
+		if (prop.getProperty("logFolder").endsWith(File.separator))
+			setLogFolder(prop.getProperty("logFolder"));
 		else
-			setOutputFolder(prop.getProperty("outputFolder") + File.separator);
-		tmpFolder = outputFolder + "tmp/";
-		paretoFolder = outputFolder + "pareto/";
+			setLogFolder(prop.getProperty("logFolder") + File.separator);
+
+		if (prop.getProperty("tmpFolder").endsWith(File.separator))
+			setTmpFolder(prop.getProperty("tmpFolder"));
+		else
+			setTmpFolder(prop.getProperty("tmpFolder") + File.separator);
+
+		if (prop.getProperty("paretoFolder").endsWith(File.separator))
+			setParetoFolder(prop.getProperty("paretoFolder"));
+		else
+			setParetoFolder(prop.getProperty("paretoFolder") + File.separator);
+
 		new File(tmpFolder).mkdirs();
 		new File(paretoFolder).mkdirs();
+		new File(logFolder).mkdirs();
 
 		logger_.info("outputFolder is set to " + getOutputFolder());
 
@@ -482,36 +496,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		return new FileInputStream(filename);
 	}
 
-//	private void createNewModelFile(String refModelURI) {
-//		String path;
-//		try {
-//			path = new java.io.File(".").getCanonicalPath() + refModelURI + "."
-//					+ manager.getMetamodelManager().getMetamodelFileExtension();
-//			File newFile = new File(path);
-//			newFile.createNewFile();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-
-//	private static long getCpuTime(long[] ids) {
-//		/** Get CPU time in nanoseconds. */
-//
-//		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-//		if (!bean.isThreadCpuTimeSupported())
-//			return 0L;
-//		long time = 0L;
-//		for (long i : ids) {
-//			// System.out.println(i);
-//			long t = bean.getThreadCpuTime(ids[(int) i - 1]);
-//			if (t != -1)
-//				time += t;
-//		}
-//		return time;
-//
-//	}
-
 	public PerformanceQuality getPerfQuality() {
 		return perfQuality;
 	}
@@ -544,10 +528,8 @@ public class Controller extends AbstractAlgorithmRunner {
 		this.problem = p;
 	}
 
-	public void writeSolutionSetToCSV(List<RSolution> population) {
-
+	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
 		logger_.info("Writing CSV");
-
 		try {
 			for (RSolution solution : population) {
 				writeSolutionToCSV(solution);
@@ -556,19 +538,11 @@ public class Controller extends AbstractAlgorithmRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public void setDestinationFolderPath(String path) {
-		destionationFolderPath = path + "/";
-	}
-
-	public String getDestinationFolderPath() {
-		return this.destionationFolderPath;
+		logger_.info("CSV written");
 	}
 
 	public void writeToCSV(RSolution solution) {
 
-		// String csvFilePath = destionationFolderPath + ref.getName() + ".csv";
 		try {
 			writeSolutionToCSV(solution);
 		} catch (IOException e) {
@@ -631,7 +605,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
 		line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
 		line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-		line.add(solution.getElapsedTime().toString());
+//		line.add(solution.getElapsedTime().toString());
 		CSVUtils.writeLine(resultFileWriter, line);
 
 		line = null;
@@ -674,15 +648,21 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.getMapOfPAs();
 
-		for (String key : mapOfPAs.keySet()) {
+		try {
 
-			List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
-			for (ArchitecturalInteraction ai : listOfContextElems) {
-				line = null;
-				line = new ArrayList<String>();
-				line = Arrays.asList(key, ai.getName());
-				CSVUtils.writeLine(resultFileWriter, line);
+			for (String key : mapOfPAs.keySet()) {
+
+				List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
+				for (ArchitecturalInteraction ai : listOfContextElems) {
+					line = null;
+					line = new ArrayList<String>();
+					line = Arrays.asList(key, ai.getName());
+					CSVUtils.writeLine(resultFileWriter, line);
+				}
 			}
+		} catch (NullPointerException e) {
+			System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
+			e.printStackTrace();
 		}
 
 	}
@@ -699,12 +679,12 @@ public class Controller extends AbstractAlgorithmRunner {
 		this.outputFolder = outputFolder;
 	}
 
-	public String getDestinationFolder() {
-		return destinationFolder;
+	public String getTmpFolder() {
+		return tmpFolder;
 	}
 
-	public void setDestinationFolder(String destinationFolder) {
-		this.destinationFolder = destinationFolder;
+	public void setTmpFolder(String tmp) {
+		this.tmpFolder = tmp;
 	}
 
 	public String getTwoTowersKernelPath() {
@@ -755,6 +735,10 @@ public class Controller extends AbstractAlgorithmRunner {
 		return sourceRewPath;
 	}
 
+	public String getSourceValPath() {
+		return sourceValPath;
+	}
+
 	public void setSourceRewPath(String sourceRewPath) {
 		this.sourceRewPath = sourceRewPath;
 	}
@@ -781,7 +765,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		if (!new File(sourceRewmappingPath).exists()) {
 			checkSourceVal();
 			((AemiliaManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath, sourceRewmappingPath,
-					sourceModelPath);
+					sourceModelPath, null);
 			((AemiliaManager) metamodelManager).refreshModel(sourceModelPath);
 			logger_.info("source model UPDATED!!");
 		} else {
@@ -809,19 +793,17 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try {
-			solutionFileWriter = new FileWriter(
-					paretoFolder + rSolution.getProblem().getName() + File.separator + "solutions.csv", true);
+			FileWriter solutionWriter = new FileWriter(getParetoFolder() + "solutions.csv", true);
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPAs()));
 			line.add(String.valueOf(rSolution.getPerfQ()));
 			line.add(String.valueOf(rSolution.getNumOfChanges()));
-			CSVUtils.writeLine(solutionFileWriter, line);
-			solutionFileWriter.flush();
-			solutionFileWriter.close();
+			CSVUtils.writeLine(solutionWriter, line);
+			solutionWriter.flush();
+			solutionWriter.close();
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 
 	}
@@ -840,8 +822,35 @@ public class Controller extends AbstractAlgorithmRunner {
 		return -1;
 	}
 
-	public String getTmpFolder() {
-		return tmpFolder;
+	public void awaitExecutor() {
+		if (executor != null) {
+			try {
+				executor.awaitTermination(10, TimeUnit.HOURS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setExecutor(ExecutorService exc) {
+		this.executor = exc;
+	}
+
+	public String getLogFolder() {
+		return logFolder;
+	}
+
+	public void setLogFolder(String logFolder) {
+		this.logFolder = logFolder;
+	}
+
+	public String getParetoFolder() {
+		return paretoFolder;
+	}
+
+	public void setParetoFolder(String paretoFolder) {
+		this.paretoFolder = paretoFolder;
 	}
 
 }
