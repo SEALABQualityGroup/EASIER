@@ -21,14 +21,14 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
 		((RProblem) problem).getController().setExecutor(executor);
 
-		for (RSolution sol : solutionList) {
-			sol.executeRefactoring();
-			sol.applyTransformation();
-		}
+//		for (RSolution sol : solutionList) {
+//			sol.executeRefactoring();
+//			sol.applyTransformation();
+//		}
 
 		for (RSolution refactoringSolution : solutionList) {
 			if (executor != null) {
-				Runnable worker = new RSolutionListEvaluatorRunnable(problem, refactoringSolution);
+				Runnable worker = new InvokeSolverRunnable(refactoringSolution);
 				executor.execute(worker);
 			} else {
 				problem.evaluate(refactoringSolution);
@@ -44,17 +44,12 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 		}
 
 		for (RSolution sol : solutionList) {
-
 			sol.updateModel();
-
 			sol.updateThresholds();
-
 			sol.countingPAsOnAemiliaModel();
-
 			sol.evaluatePerformance();
-
+			sol.getController().simpleSolutionWriterToCSV(sol);
 			problem.evaluate(sol);
-
 		}
 
 		return solutionList;

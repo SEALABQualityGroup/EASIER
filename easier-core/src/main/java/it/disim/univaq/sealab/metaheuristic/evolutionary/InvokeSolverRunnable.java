@@ -4,19 +4,18 @@ import java.io.IOException;
 
 import org.uma.jmetal.problem.Problem;
 
-public class RSolutionListEvaluatorRunnable implements Runnable {
+public class InvokeSolverRunnable implements Runnable {
 
 	private RSolution solution;
-	private Problem<RSolution> problem;
 
-	public RSolutionListEvaluatorRunnable(Problem<RSolution> problem, RSolution solution) {
-		this.problem = problem;
+	public InvokeSolverRunnable(RSolution solution) {
 		this.solution = solution;
 	}
 
 	@Override
 	public void run() {
-//		problem.evaluate(solution);
+		solution.executeRefactoring();
+		solution.applyTransformation();
 		solution.invokeSolver();
 	}
 }
