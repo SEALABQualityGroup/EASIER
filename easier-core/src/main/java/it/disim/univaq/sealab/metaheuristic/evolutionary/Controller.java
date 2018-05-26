@@ -2,6 +2,7 @@ package it.disim.univaq.sealab.metaheuristic.evolutionary;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,8 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -22,13 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.eclipse.emf.common.util.URI;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -42,6 +42,7 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import it.disim.univaq.sealab.aemiliaMod2text.main.Transformation;
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.disim.univaq.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.disim.univaq.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import it.disim.univaq.sealab.metaheuristic.managers.MetamodelManager;
 import it.disim.univaq.sealab.metaheuristic.managers.aemilia.AemiliaManager;
@@ -49,6 +50,7 @@ import it.disim.univaq.sealab.metaheuristic.utils.CSVUtils;
 import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
+import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class Controller extends AbstractAlgorithmRunner {
@@ -59,6 +61,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private static MetamodelManager metamodelManager;
 	private Manager manager;
+	private AemiliaAvailabilityManager availabilityManager;
 
 	private Properties prop;
 
@@ -74,7 +77,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
 	private FileWriter resultFileWriter, solutionFileWriter;
-	private String outputFolder, tmpFolder, paretoFolder, logFolder;
+	private String outputFolder, tmpFolder, paretoFolder, logFolder, availabilityFolder;
 	private String twoTowersKernelPath;
 	private int maxCloning;
 	private Instant startingTime, endingTime;
@@ -89,6 +92,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String sourceRewmappingPath;
 	private String sourceBasePath;
 
+	private boolean cleaningTmp = false;
+
 	private Timestamp timestamp;
 
 	// private static String BASENAME =
@@ -99,6 +104,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
+		availabilityManager = new AemiliaAvailabilityManager(this);
 
 		setPerfQuality(new PerformanceQuality(manager.getOclManager()));
 		// logger_ = ;
@@ -200,6 +206,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		setParetoFolder(
 				paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
 		setLogFolder(logFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
+		setAvailabilityFolder(availabilityFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
 
 		new File(getTmpFolder()).mkdirs();
 		new File(getParetoFolder()).mkdirs();
@@ -300,11 +307,14 @@ public class Controller extends AbstractAlgorithmRunner {
 
 			// CSVUtils.writeLine(resultFileWriter, line);
 			line = null;
-			saveParetoSolution(population);
-			
 			writeSolutionSetToCSV(population);
-			
 			resultFileWriter.flush();
+			resultFileWriter.close();
+
+			saveParetoSolution(population);
+			generateAvailability(population);
+			cleanTmpFiles();
+
 			// TODO: handle exception
 		} catch (IOException e) {
 			// // TODO Auto-generated catch block
@@ -317,27 +327,45 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	}
 
+	private synchronized void generateAvailability(List<RSolution> paretoPop) {
+		File availabilityDir = new File(availabilityFolder);
+		try {
+			
+			String[] types = {"mmaemilia"};
+			FileFilter filter = new FileTypesFilter(types);
+			FileUtils.copyDirectory(new File(getParetoFolder()), availabilityDir, filter);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		availabilityManager.setFolder(availabilityDir);
+		availabilityManager.doAvailability();
+	}
+
 	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-
 		for (RSolution solution : paretoPop) {
-
 			File srcDir = new File(solution.getMmaemiliaFolderPath());
 			File destDir = new File(getParetoFolder() + solution.getName());
-
 			try {
 				FileUtils.copyDirectory(srcDir, destDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void cleanTmpFiles() {
+		if (cleaningTmp) {
+
+			try {
+				FileUtils.cleanDirectory(new File(tmpFolder));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-		// try {
-		// FileUtils.cleanDirectory(new File(tmpFolder));
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 	}
 
 	private void setProperties(InputStream inputStream) {
@@ -345,7 +373,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		try {
 			prop.load(inputStream);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -455,9 +482,15 @@ public class Controller extends AbstractAlgorithmRunner {
 		else
 			setParetoFolder(prop.getProperty("paretoFolder") + File.separator);
 
+		if (prop.getProperty("availabilityFolder").endsWith(File.separator))
+			availabilityFolder = prop.getProperty("availabilityFolder");
+		else
+			availabilityFolder = prop.getProperty("availabilityFolder") + File.separator;
+
 		new File(tmpFolder).mkdirs();
 		new File(paretoFolder).mkdirs();
 		new File(logFolder).mkdirs();
+		new File(availabilityFolder).mkdirs();
 
 		logger_.info("outputFolder is set to " + getOutputFolder());
 
@@ -479,7 +512,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			workloadRange[0] = Double.parseDouble(workloadRangeString[0]);
 			workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
 		}
-
+		cleaningTmp = Boolean.parseBoolean(prop.getProperty("cleaningTmp", Boolean.toString(false)));
 	}
 
 	public Properties getProperties() {
@@ -546,28 +579,21 @@ public class Controller extends AbstractAlgorithmRunner {
 		try {
 			writeSolutionToCSV(solution);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void writePropertiesToCSV(String csvFilePath) {
-		// List<String> header = new ArrayList<>();
-
-		FileWriter writer;
 		try {
-			writer = new FileWriter(csvFilePath);
+			resultFileWriter = new FileWriter(csvFilePath);
 			for (Object key : getProperties().keySet()) {
 				List<String> contents = new ArrayList<>();
-				// header.add(key.toString());
 				contents.addAll(Arrays.asList(key.toString(), getProperties().getProperty(key.toString())));
-				// writeToCSVFile(writer, header);
-				writeToCSVFile(writer, contents);
+				writeToCSVFile(resultFileWriter, contents);
 			}
-			writer.flush();
-			writer.close();
+			resultFileWriter.flush();
+			resultFileWriter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -605,7 +631,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
 		line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
 		line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-//		line.add(solution.getElapsedTime().toString());
+		// line.add(solution.getElapsedTime().toString());
 		CSVUtils.writeLine(resultFileWriter, line);
 
 		line = null;
@@ -844,6 +870,10 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setLogFolder(String logFolder) {
 		this.logFolder = logFolder;
 	}
+	
+	public void setAvailabilityFolder(String availabilityFolder) {
+		this.availabilityFolder = availabilityFolder;
+	}
 
 	public String getParetoFolder() {
 		return paretoFolder;
@@ -852,5 +882,21 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setParetoFolder(String paretoFolder) {
 		this.paretoFolder = paretoFolder;
 	}
+	
+	private class FileTypesFilter implements FileFilter {
+	    String[] types;
+	    FileTypesFilter(String[] types) {
+	        this.types = types;
+	    }
+	    public boolean accept(File f) {
+	        if (f.isDirectory()) return true;
+	        for (String type : types) {
+	            if (f.getName().endsWith(type)) return true;
+	        }
+	        return false;
+	    }
+	}
 
 }
+
+
