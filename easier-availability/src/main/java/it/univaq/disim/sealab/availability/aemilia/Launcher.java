@@ -1,9 +1,10 @@
 package it.univaq.disim.sealab.availability.aemilia;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -35,17 +36,34 @@ public class Launcher {
 	}
 	
 	/**
+	 * Recursively walk through subdirectories listing Aemilia files.
+	 * @param folder starting folder
+	 * @return array of aemilia file paths
+	 */
+	private static Set<File> listFilesRecursively(final File folder) {
+		Set<File> files = new HashSet<File>();
+		if(folder == null || folder.listFiles() == null){
+	        return files;
+	    }
+		for (File entry : folder.listFiles()) {
+	        if (entry.isFile() && entry.getName().endsWith(".aem")) {
+	        	files.add(entry);
+	        } else if (entry.isDirectory()) {
+	        	files.addAll(listFilesRecursively(entry));
+	        }
+	    }
+		return files;
+	}
+	
+	/**
 	 * Perform the availability analysis on all
 	 * the Aemilia files in a folder.
 	 * @param folder the folder containing aemilia files
 	 */
 	public static void performAnalysis(final File folder) {
 		// Start to parse and compute the solutions
-		final File[] files = folder.listFiles(new FilenameFilter() {
-	        public boolean accept(File dir, String name) {
-	            return name.toLowerCase().endsWith(".aem");
-	        }
-	    });
+		final Set<File> aemFiles = listFilesRecursively(folder);
+		final File[] files = aemFiles.toArray(new File[aemFiles.size()]);
 		final AnalysisRunnable[] workers = new AnalysisRunnable[files.length];
 		ExecutorService executor = Executors.newFixedThreadPool(files.length);
 		for (int i = 0; i < files.length; i++) {
