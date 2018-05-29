@@ -36,6 +36,27 @@ public class Launcher {
 	}
 	
 	/**
+	 * Check if the folder exists and we have write permissions.
+	 * @param folder the folder to check
+	 * @return true if the folder exists and we have write permissions
+	 */
+	private static boolean checkFolder(final File folder) {
+		if (!folder.isDirectory()) {
+			System.err.println(folder + " is not a directory.");
+			return false;
+		}		
+		if (!folder.canRead()) {
+			System.err.println("No permissions to read from " + folder);
+			return false;
+		}		
+		if (!folder.canWrite()) {
+			System.err.println("No permissions to write in " + folder);
+			return false;
+		}		
+		return true;
+	}
+	
+	/**
 	 * Recursively walk through subdirectories listing Aemilia files.
 	 * @param folder starting folder
 	 * @return array of aemilia file paths
@@ -61,6 +82,12 @@ public class Launcher {
 	 * @param folder the folder containing aemilia files
 	 */
 	public static void performAnalysis(final File folder) {
+		
+		// Check if the folder exists and we have write permissions
+		if (!checkFolder(folder)) {
+			return;
+		}
+		
 		// Start to parse and compute the solutions
 		final Set<File> aemFiles = listFilesRecursively(folder);
 		final File[] files = aemFiles.toArray(new File[aemFiles.size()]);
@@ -84,14 +111,14 @@ public class Launcher {
 		for (int i = 0; i < files.length; i++) {
 			if (AVAILABILITY_FULL) {
 				System.out.println(
-						files[i].getName()
+						files[i]
 						+ " - Availability (all operational components): "
 						+ workers[i].getAnalysis().getFullyOperationalAvailability());
 			}
 			
 			if (AVAILABILITY_DEGRADED) {
 				System.out.println(
-						files[i].getName()
+						files[i]
 						+ " - Availability (at least one operational components): "
 						+ workers[i].getAnalysis().getDegradedAvailability());
 			}
@@ -117,17 +144,11 @@ public class Launcher {
 		if (args.length < 2) {
 			printUsage();
 			return;
-		}
-		
-		final File folder = new File(args[args.length - 1]);
-		if (!folder.isDirectory()) {
-			System.err.println(folder + " is not a directory.");
-			return;
-		}
+		}		
 		
 		List<String> argsList = Arrays.asList(args);
 		if (!argsList.contains("-f") && !argsList.contains("-d")) {
-			System.err.println("Please select an availability index.");
+			System.err.println("Please select an availability index (use -f, -d or both).");
 			printUsage();
 			return;
 		}
@@ -143,6 +164,8 @@ public class Launcher {
 		if (argsList.contains("-t")) {
 			ttkernel = new File(argsList.get(argsList.indexOf("-t") + 1));
 		}
+
+		final File folder = new File(args[args.length - 1]);
 		
 		performAnalysis(folder);
 	}
