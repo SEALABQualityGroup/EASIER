@@ -21,10 +21,10 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
 		((RProblem) problem).getController().setExecutor(executor);
 
-//		for (RSolution sol : solutionList) {
-//			sol.executeRefactoring();
-//			sol.applyTransformation();
-//		}
+		for (RSolution sol : solutionList) {
+			sol.executeRefactoring();
+			sol.applyTransformation();
+		}
 
 		for (RSolution refactoringSolution : solutionList) {
 			if (executor != null) {

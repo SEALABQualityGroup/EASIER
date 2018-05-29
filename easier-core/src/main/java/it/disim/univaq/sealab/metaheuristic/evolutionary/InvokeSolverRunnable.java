@@ -14,8 +14,8 @@ public class InvokeSolverRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		solution.executeRefactoring();
-		solution.applyTransformation();
+//		solution.executeRefactoring();
+//		solution.applyTransformation();
 		solution.invokeSolver();
 	}
 }

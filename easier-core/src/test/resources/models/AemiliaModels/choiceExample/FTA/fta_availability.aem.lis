@@ -1,0 +1,181 @@
+(1)	ARCHI_TYPE fta(
+(2)			   const rate workload := 190.815,
+(3)			   const rate wsn_rate := 1.457,
+(4)			   const rate channel_rate := 2.562,
+(5)			   const rate fta_rate := 6.634,
+(6)			   const rate packet_rate := 4.482,
+(7)			   const rate ShowMap_rate := 0.977,
+(8)			   const rate lan_db_rate := 3.829,
+(9)			   const rate lan_desk_rate := 9.945,
+(10)			   const rate lan_sec_rate := 0.839,
+(11)			   const rate lan_fta_rate := 6.945,
+(12)			   const rate db_rate := 0.538,
+(13)			   const rate dec_rate := 0.139)
+(14)
+(15)
+(16)	ARCHI_ELEM_TYPES
+(17)
+(18)	    ELEM_TYPE Wsn_Type(const rate workload, const rate wsn_rate)
+(19)
+(20)			BEHAVIOR
+(21)
+(22)						SendData(	 void;void) =
+(23)						<generate_data, exp(workload)> .
+(24)
+(25)						choice{
+(26)						   <keep, inf(1,0.9)> . <send_data, exp(wsn_rate)> . SendData(),
+(27)							 <lose, inf(1, 0.1)> . <fail, exp(1)> . SendData()
+(28)						}
+(29)			INPUT_INTERACTIONS
+(30)
+(31)				UNI generate_data
+(32)
+(33)			OUTPUT_INTERACTIONS
+(34)
+(35)				UNI send_data;
+(36)				fail
+(37)
+(38)	    ELEM_TYPE Channel_Type(const rate channel_rate)
+(39)
+(40)			BEHAVIOR
+(41)
+(42)						Channel(	 void;void) = <receive_data, _> . <forward_data, exp(channel_rate)> . Channel()
+(43)			INPUT_INTERACTIONS
+(44)
+(45)				UNI receive_data
+(46)
+(47)			OUTPUT_INTERACTIONS
+(48)
+(49)				UNI forward_data
+(50)
+(51)	    ELEM_TYPE Fta_Type(const rate fta_rate,const rate packet_rate)
+(52)
+(53)			BEHAVIOR
+(54)
+(55)						Fta(	 void;void) = <receive, _> . <packet_data, exp(packet_rate)> . <sendto_security, _> . <receive_decrypted, _> . <process_data, exp(fta_rate)> . <sendto_db, _> . <sendto_desktop, _> . Fta()
+(56)			INPUT_INTERACTIONS
+(57)
+(58)				UNI receive;
+(59)				receive_decrypted
+(60)
+(61)			OUTPUT_INTERACTIONS
+(62)
+(63)				UNI sendto_db;
+(64)				sendto_desktop;
+(65)				sendto_security;
+(66)				process_data;
+(67)				packet_data
+(68)
+(69)	    ELEM_TYPE Lan_Type(const rate lan_db_rate, const rate lan_desk_rate, const rate lan_sec_rate, const rate lan_fta_rate)
+(70)
+(71)			BEHAVIOR
+(72)
+(73)						availability(void;void)=
+(74)							choice{
+(75)								<keep, inf(1, 0.9)> . Lan(),
+(76)								<lose, inf(1, 0.1)> . <fail, exp(1)> . availability()
+(77)							};
+(78)
+(79)
+(80)						Lan(	 void;void) = choice
+(81)						{
+(82)							<lanto_db, inf> . <frwdto_db, exp(lan_db_rate)> . availability(),
+(83)							<lanto_desk, inf> . <frwdto_desk, exp(lan_desk_rate)> . availability(),
+(84)							<lanto_sec, inf> . <frwdto_sec, exp(lan_sec_rate)> .availability(),
+(85)							<lanto_fta, inf> . <frwdto_fta, exp(lan_fta_rate)> .availability()
+(86)						}
+(87)			INPUT_INTERACTIONS
+(88)
+(89)				UNI lanto_db;
+(90)				lanto_desk;
+(91)				lanto_sec;
+(92)				lanto_fta
+(93)
+(94)			OUTPUT_INTERACTIONS
+(95)
+(96)				UNI frwdto_db;
+(97)				frwdto_desk;
+(98)				frwdto_sec;
+(99)				frwdto_fta;
+(100)				fail
+(101)
+(102)	    ELEM_TYPE Desk_Type(const rate ShowMap_rate)
+(103)
+(104)			BEHAVIOR
+(105)
+(106)						ShowMap(	 void;void) = <receive_map, _> . <show_map, exp(ShowMap_rate)> . ShowMap()
+(107)			INPUT_INTERACTIONS
+(108)
+(109)				UNI receive_map
+(110)
+(111)			OUTPUT_INTERACTIONS
+(112)
+(113)				UNI show_map
+(114)
+(115)	    ELEM_TYPE DB_Type(const rate db)
+(116)
+(117)			BEHAVIOR
+(118)
+(119)						StoreData(	 void;void) = <receive_fta_data, _> . <store_data, exp(db)> . StoreData()
+(120)			INPUT_INTERACTIONS
+(121)
+(122)				UNI receive_fta_data
+(123)
+(124)			OUTPUT_INTERACTIONS
+(125)
+(126)				UNI store_data
+(127)
+(128)	    ELEM_TYPE Sec_Type(const rate dec_rate)
+(129)
+(130)			BEHAVIOR
+(131)
+(132)						Security(	 void;void) = <receive_ftas, _> . <decrypt_data, exp(dec_rate)> . <sendto_fta, _> . Security()
+(133)			INPUT_INTERACTIONS
+(134)
+(135)				UNI receive_ftas
+(136)
+(137)			OUTPUT_INTERACTIONS
+(138)
+(139)				UNI sendto_fta;
+(140)				decrypt_data
+(141)
+(142)
+(143)
+(144)	ARCHI_TOPOLOGY
+(145)
+(146)	           ARCHI_ELEM_INSTANCES
+(147)						WSN : Wsn_Type( workload, wsn_rate);
+(148)	                    CHN : Channel_Type( channel_rate);
+(149)	                    FTA : Fta_Type( fta_rate, packet_rate);
+(150)	                    LAN : Lan_Type( lan_db_rate, lan_desk_rate, lan_sec_rate, lan_fta_rate);
+(151)	                    DB : DB_Type( db_rate);
+(152)	                    DSK : Desk_Type( ShowMap_rate);
+(153)	                    SCR : Sec_Type( dec_rate)
+(154)
+(155)			   ARCHI_INTERACTIONS
+(156)						WSN.generate_data;
+(157)						DB.store_data;
+(158)						DSK.show_map;
+(159)						SCR.decrypt_data;
+(160)						FTA.process_data;
+(161)						FTA.packet_data;
+(162)						WSN.fail;
+(163)						LAN.fail
+(164)
+(165)			   ARCHI_ATTACHMENTS
+(166)						FROM WSN.send_data TO CHN.receive_data;
+(167)						FROM CHN.forward_data TO FTA.receive;
+(168)						FROM FTA.sendto_db TO LAN.lanto_db;
+(169)						FROM FTA.sendto_desktop TO LAN.lanto_desk;
+(170)						FROM FTA.sendto_security TO LAN.lanto_sec;
+(171)						FROM LAN.frwdto_desk TO DSK.receive_map;
+(172)						FROM LAN.frwdto_db TO DB.receive_fta_data;
+(173)						FROM LAN.frwdto_fta TO FTA.receive_decrypted;
+(174)						FROM LAN.frwdto_sec TO SCR.receive_ftas;
+(175)						FROM SCR.sendto_fta TO LAN.lanto_fta
+(176)
+(177)	END
+
+
+>>>> 0 errors
+>>>> 0 warnings

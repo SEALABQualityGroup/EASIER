@@ -1,21 +1,15 @@
-package it.disim.univaq.sealab.metaheuristic.managers.aemilia;
+package it.disim.univaq.sealab.metaheuristic.availability;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.eclipse.emf.common.util.URI;
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.junit.Before;
-import org.junit.Test;
 
-import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
-import mapmeasurestoindices.MapmeasurestoindicesPackage;
+import it.disim.univaq.sealab.aemiliaMod2text.main.Transformation;
+import it.disim.univaq.sealab.metaheuristic.evolutionary.Controller;
+import it.disim.univaq.sealab.metaheuristic.managers.Manager;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.ArchitecturalInteraction;
@@ -24,10 +18,11 @@ import metamodel.mmaemilia.InteractionType;
 import metamodel.mmaemilia.LocalInteraction;
 import metamodel.mmaemilia.OutputInteraction;
 import metamodel.mmaemilia.mmaemiliaFactory;
-import metamodel.mmaemilia.mmaemiliaPackage;
 import metamodel.mmaemilia.Behavior.Action;
+import metamodel.mmaemilia.Behavior.ActionOutput;
 import metamodel.mmaemilia.Behavior.ActionProcess;
 import metamodel.mmaemilia.Behavior.BehavEquation;
+import metamodel.mmaemilia.Behavior.BehavProcess;
 import metamodel.mmaemilia.Behavior.BehaviorFactory;
 import metamodel.mmaemilia.Behavior.ChoiceProcess;
 import metamodel.mmaemilia.Behavior.ProcessTerm;
@@ -37,87 +32,62 @@ import metamodel.mmaemilia.Expressions.ExpressionsFactory;
 import metamodel.mmaemilia.Expressions.IdentExpr;
 import metamodel.mmaemilia.Expressions.IdentifierType;
 
-public class AemiliaManagerTest {
-
-	private AEmiliaSpecification targetModel;
-	private ResourceSet resourceSet;
-	private Resource resource;
-
-	private String AEMILIA_ABSOLUT_PATH;
+public class AemiliaAvailabilityManager {
 
 	private BehaviorFactory behaviourFactory = BehaviorFactory.eINSTANCE;
 	private ExpressionsFactory expressionFactory = ExpressionsFactory.eINSTANCE;
 	private mmaemiliaFactory aemiliaMMFactory = mmaemiliaFactory.eINSTANCE;
 
-	@Before
-	public void init() {
-		packageRegistering();
+	// private AEmiliaSpecification targetModel;
 
-		AEMILIA_ABSOLUT_PATH = getClass().getResource("/models/AemiliaModels/choiceExample/FTA/fta.aem").getPath();
+	private Controller controller;
+	private Manager manager;
+	private File availabilityFolder;
 
-		// assertEquals("/Users/peo12/git/sealab/easier/easier-core/src/test/resources/models/AemiliaModels/choiceExample/modCompAemilia.aem",
-		// AEMILIA_ABSOLUT_PATH);
-
-		createAemiliaEcoreFile(AEMILIA_ABSOLUT_PATH);
-
-		String aemiliaEcore = getClass().getResource("/models/AemiliaModels/choiceExample/FTA/fta.mmaemilia").getPath();
-
-		resource = getResource(aemiliaEcore);
-		targetModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(resource.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+	public AemiliaAvailabilityManager(Controller ctrl) {
+		controller = ctrl;
+		manager = controller.getManager();
 	}
 
-	private void createAemiliaEcoreFile(String sourceAemPath) {
-		GeneratoreModelloAemilia genModel = new GeneratoreModelloAemilia();
-		FileInputStream aemFileInputStream;
-		try {
-			aemFileInputStream = new FileInputStream(new File(sourceAemPath));
-			genModel.execute_ase(aemFileInputStream, null,
-					"/Users/peo12/git/sealab/easier/easier-core/src/test/resources/models/AemiliaModels/choiceExample/FTA/fta_2.mmaemilia");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void doAvailability() {
+
+		for (File solutionFolder : availabilityFolder.listFiles()) {
+			if(solutionFolder.isDirectory()) {
+				for(File modelFile : solutionFolder.listFiles()) {
+					if(modelFile.isFile() && FilenameUtils.getExtension(modelFile.getPath()).equals("mmaemilia")) {
+						Resource targetResource = manager.getMetamodelManager().getResourceSet()
+								.getResource(manager.string2FileUri(modelFile.getAbsolutePath()), true);
+						addAvailability((AEmiliaSpecification)targetResource.getContents().get(0));
+						try {
+							targetResource.save(null);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Transformation.GenerateAEMTransformation(modelFile.getPath(), solutionFolder.getPath());
+					}
+					
+				}
+			}
 		}
 	}
 
-	private void packageRegistering() {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("rewmapping", new XMIResourceFactoryImpl());
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("mmaemilia", new XMIResourceFactoryImpl());
-		resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(MapmeasurestoindicesPackage.eINSTANCE.getNsURI(),
-				MapmeasurestoindicesPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(mmaemiliaPackage.eINSTANCE.getNsURI(), mmaemiliaPackage.eINSTANCE);
-
-	}
-
-	private Resource getResource(String ameliaAbsolutePath) {
-		URI uri = URI.createFileURI(ameliaAbsolutePath);
-		resource = resourceSet.getResource(uri, true);
-		return resource;
-	}
-
-	@Test
-	public void addAvailability() {
+	private void addAvailability(AEmiliaSpecification targetModel) {
 
 		for (ElemType elemType : targetModel.getArchiTypeDecl().getAetDeclaration().getEtDeclaration()) {
-			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName());
+			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName(),
+					targetModel);
 
 			for (BehavEquation behEq : elemType.getBehaviorDecl().getEquations()) {
 				ChoiceProcess availabilityChoice = behaviourFactory.createChoiceProcess();
-				
-				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction);
+				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, behEq);
 				ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq);
-//
 				availabilityChoice.getProcesses().add(failProcess);
 				availabilityChoice.getProcesses().add(goodProcess);
-				
 				behEq.setPt(availabilityChoice);
-
 			}
-
 		}
-
-		saveModel();
+		//manager.getMetamodelManager().saveModel(targetModel.eResource());
 	}
 
 	private ActionProcess createGoodBranchProcess(ElemType elemType, BehavEquation behEq) {
@@ -142,7 +112,7 @@ public class AemiliaManagerTest {
 		return actionProcess;
 	}
 
-	private ActionProcess createFailBranchProcess(ElemType elemType, OutputInteraction failOutputInteraction) {
+	private ActionProcess createFailBranchProcess(ElemType elemType, OutputInteraction failOutputInteraction, BehavEquation behavEquation) {
 
 		ActionProcess failBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
 		Action loseAction = createAction("lose");
@@ -150,7 +120,7 @@ public class AemiliaManagerTest {
 		loseAction.setIs(createLocalInteraction("lose_" + elemType.getEtName(), InteractionType.UNI));
 		failBranchProcess.setAct(loseAction);
 
-		ActionProcess toFailProcess = createFailActionProcess(elemType, "fail", failOutputInteraction);
+		ActionProcess toFailProcess = createFailActionProcess(elemType, failOutputInteraction.getIntName(), failOutputInteraction, behavEquation);
 		failBranchProcess.setProcess(toFailProcess);
 
 		return failBranchProcess;
@@ -164,27 +134,33 @@ public class AemiliaManagerTest {
 	}
 
 	private ActionProcess createFailActionProcess(ElemType elemType, String actionName,
-			OutputInteraction failOutputInteraction) {
+			OutputInteraction failOutputInteraction, BehavEquation behavEquation) {
 
 		ActionProcess actionProcess = behaviourFactory.createActionProcess();
 		// creating identity expression
 		actionProcess.setCondition(createIdentityExpression("true", IdentifierType.TRUTH_VAL));
 		// creating process term
-		actionProcess.setProcess(createProcessTerm("true", IdentifierType.TRUTH_VAL));
+		actionProcess.setProcess(
+				createBehavProcess("true", IdentifierType.TRUTH_VAL, behavEquation));
 
 		// creating action
 		Action failAction = createAction(actionName);
+		failAction.setType(behaviourFactory.createActionType());
 		failAction.setRate(createRateExp("1"));
-		failAction.setIs(failOutputInteraction);
+		OutputInteraction outputInt = aemiliaMMFactory.createOutputInteraction();
+		outputInt.setIntName(failOutputInteraction.getIntName());
+		failAction.setIs(outputInt);
+		elemType.getOiDecl().add(failOutputInteraction);
 		actionProcess.setAct(failAction);
 
 		return actionProcess;
 	}
 
-	private ProcessTerm createProcessTerm(String identExpName, IdentifierType identityType) {
-		ProcessTerm processTerm = behaviourFactory.createProcessTerm();
-		processTerm.setCondition(createIdentityExpression(identExpName, identityType));
-		return processTerm;
+	private BehavProcess createBehavProcess(String identExpName, IdentifierType identityType, BehavEquation behavEquation) {
+		BehavProcess behavProcess = behaviourFactory.createBehavProcess();
+		behavProcess.setEqCall(behavEquation);
+		behavProcess.setCondition(createIdentityExpression(identExpName, identityType));
+		return behavProcess;
 	}
 
 	private RateExp createRateExp(String lambda) {
@@ -193,12 +169,13 @@ public class AemiliaManagerTest {
 		return rateExp;
 	}
 
-	private OutputInteraction createOutputInteraction(ElemType elemType, String intName) {
+	private OutputInteraction createOutputInteraction(ElemType elemType, String intName,
+			AEmiliaSpecification targetModel) {
 		OutputInteraction failOutputInteraction = aemiliaMMFactory.createOutputInteraction();
 		failOutputInteraction.setIntName(intName);
 		elemType.getOiDecl().add(failOutputInteraction);
 		// adding fail port
-		addFailPorts(failOutputInteraction, elemType);
+		addFailPorts(failOutputInteraction, elemType, targetModel);
 		return failOutputInteraction;
 	}
 
@@ -209,7 +186,8 @@ public class AemiliaManagerTest {
 		return localInteraction;
 	}
 
-	private void addFailPorts(OutputInteraction outputInteraction, ElemType elemType) {
+	private void addFailPorts(OutputInteraction outputInteraction, ElemType elemType,
+			AEmiliaSpecification targetModel) {
 		for (ArchiElemInstance aei : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
 			if (aei.getTypeOf().equals(elemType)) {
 				ArchitecturalInteraction failArchInteraction = aemiliaMMFactory.createArchitecturalInteraction();
@@ -239,15 +217,8 @@ public class AemiliaManagerTest {
 		return action;
 	}
 
-	public boolean saveModel() {
-		try {
-			resource.save(null);
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
+	public void setFolder(File folder) {
+		availabilityFolder = folder;
 	}
 
 }
