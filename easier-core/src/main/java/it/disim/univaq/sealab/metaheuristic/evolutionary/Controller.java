@@ -76,7 +76,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private double[] workloadRange;
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
-	private FileWriter resultFileWriter, solutionFileWriter;
+	private FileWriter resultFileWriter, solutionFileWriter, analyzableCSV;
 	private String outputFolder, tmpFolder, paretoFolder, logFolder, availabilityFolder;
 	private String twoTowersKernelPath;
 	private int maxCloning;
@@ -564,9 +564,25 @@ public class Controller extends AbstractAlgorithmRunner {
 	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
 		logger_.info("Writing CSV");
 		try {
+			analyzableCSV = new FileWriter(new File(getParetoFolder() + "analyzableResults.csv"));
+			List<String> line = new ArrayList<String>();
+//			line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
+			line.add("SolID");
+			line.add("PerQ");
+			line.add("#Changes");
+			line.add("#PAs");
+			for(int i = 0; i<number_of_actions; i++) {
+				line.add("ActionTarget");
+				line.add("FoC/Null");
+			}
+			CSVUtils.writeLine(analyzableCSV, line);
+			
 			for (RSolution solution : population) {
 				writeSolutionToCSV(solution);
 			}
+			analyzableCSV.flush();
+			analyzableCSV.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -690,7 +706,33 @@ public class Controller extends AbstractAlgorithmRunner {
 			System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
 			e.printStackTrace();
 		}
+		
+//		FileWriter analyzableCSV = new FileWriter(new File(getParetoFolder() + "analyzableResults.csv"));
+		
+		line = null;
+		line = new ArrayList<String>();
+		String solID = (maxEvaluations/populationSize)+"-"+populationSize+":"+solution.getName();
+		line.add(solID);
+		line.add(String.valueOf(solution.getPerfQ()));
+		line.add(String.valueOf(solution.getNumOfChanges()));
+		line.add(String.valueOf(solution.getPAs()));
+		
+		for (RefactoringAction action : ref.getActions()) {
+			if (action.getName() == null)
+				action.setName(action.getClass().getSimpleName());
 
+			String target = action instanceof AEmiliaConstChangesAction
+					? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
+					: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
+			String factor = action instanceof AEmiliaConstChangesAction
+					? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
+					: "NULL";
+
+			line.addAll(Arrays.asList(target, factor));
+
+		}
+		
+		CSVUtils.writeLine(analyzableCSV, line);
 	}
 
 	private void writeToCSVFile(FileWriter writer, List<String> contents) throws IOException {
