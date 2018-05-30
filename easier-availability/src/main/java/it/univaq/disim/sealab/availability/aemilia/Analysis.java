@@ -17,6 +17,10 @@ public class Analysis {
 	
 	private Matrix stationaryDistribution;
 	
+	private double fullyOperationalAvailability;
+	
+	private double degradedAvailability;
+	
 	/**
 	 * Creates a new instance of the Analysis object
 	 * related to an Aemilia specification.
@@ -37,9 +41,8 @@ public class Analysis {
 	/**
 	 * Parses the .PSM file to get the transition matrix.
 	 */
-	public void parse() {
-		parser.parsePSM();
-		transitionMatrix = parser.getMatrix();
+	public void parse() {		
+		transitionMatrix = parser.parsePSM();
 	}
 	
 	/**
@@ -53,21 +56,14 @@ public class Analysis {
 	/**
 	 * Balance the matrix as flux equations.
 	 */
-	private void balanceMatrix() {
-		final Matrix tmp = transitionMatrix.copy();
-		for (int i = 0; i < tmp.getRowDimension(); i++) {
+	private void balanceMatrix() {		
+		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
 			double sum = 0;
-			for (int j = 0; j < tmp.getColumnDimension(); j++) {
-				sum += tmp.get(i, j);
+			for (int j = 0; j < transitionMatrix.getColumnDimension() - 1; j++) {
+				sum += transitionMatrix.get(i, j);
 			}
-			tmp.set(i, i, -sum);
+			transitionMatrix.set(i, i, -sum);
 			sum = 0;
-		}
-		transitionMatrix = new Matrix(new double[tmp.getRowDimension()][tmp.getColumnDimension() + 1]);
-		for (int i = 0; i < tmp.getRowDimension(); i++) {
-			for (int j = 0; j < tmp.getColumnDimension(); j++) {
-				transitionMatrix.set(i, j, tmp.get(i, j));
-			}
 		}
 		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
 			transitionMatrix.set(i, transitionMatrix.getColumnDimension() - 1, 1.0);
@@ -84,6 +80,9 @@ public class Analysis {
 			final Matrix b = new Matrix(new double[1][transitionMatrix.getColumnDimension()]);
 			b.set(0, b.getColumnDimension() - 1, 1.0);
 			stationaryDistribution = transitionMatrix.solveTranspose(b);
+			// Make the transition matrix eligible for GC
+			transitionMatrix = null;
+			System.gc();
 		}
 		return stationaryDistribution;
 	}
@@ -94,14 +93,15 @@ public class Analysis {
 	 * @return steady state availability
 	 */
 	public double getFullyOperationalAvailability() {
-		double availability = 0;		
-		int i = 0;
-		for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
-			if (!states.next().contains(".fail")) {
-				availability += stationaryDistribution.get(i, 0);
+		if (fullyOperationalAvailability == 0) {
+			int i = 0;
+			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
+				if (!states.next().contains(".fail")) {
+					fullyOperationalAvailability += stationaryDistribution.get(i, 0);
+				}
 			}
 		}
-		return availability;
+		return fullyOperationalAvailability;
 	}
 	
 	/**
@@ -110,13 +110,25 @@ public class Analysis {
 	 * @return steady state availability
 	 */
 	public double getDegradedAvailability() {
-		double availability = 0;		
-		int i = 0;
-		for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
-			if (states.next().matches(".*\\.(?!fail).*")) {
-				availability += stationaryDistribution.get(i, 0);
+		if (degradedAvailability == 0) {	
+			int i = 0;
+			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
+				if (states.next().matches(".*\\.(?!fail).*")) {
+					degradedAvailability += stationaryDistribution.get(i, 0);
+				}
 			}
 		}
-		return availability;
+		return degradedAvailability;
+	}
+	
+	/**
+	 * Make the parser, transition matrix and
+	 * stationary distribution eligible for GC.
+	 */
+	public void clean() {
+		parser = null;
+		transitionMatrix = null;
+		stationaryDistribution = null;
+		System.gc();
 	}
 }
