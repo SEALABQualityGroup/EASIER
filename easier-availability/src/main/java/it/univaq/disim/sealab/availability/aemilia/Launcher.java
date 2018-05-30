@@ -17,11 +17,8 @@ public class Launcher {
 	
 	private static File ttkernel;
 	
-	/** Availability (all operational components) */
-	public static boolean AVAILABILITY_FULL = false;
-	
-	/** Availability (at least one operational components) */
-	public static boolean AVAILABILITY_DEGRADED = false;
+	/** Number of threads */
+	public static int NUMBER_OF_THREADS = 0;
 	
 	/**
 	 * Print help on how to use the launcher from the command line.
@@ -32,7 +29,8 @@ public class Launcher {
 				+ "where options include:\n"
 				+ "  -f		Availability (all operational components)\n"
 				+ "  -d		Availability (at least one operational components)\n"
-				+ "  -t <TTKernel> Set the path to the TTKernel executable");
+				+ "  -t <TTKernel> Set the path to the TTKernel executable\n"
+				+ "  -n		Number of threads");
 	}
 	
 	/**
@@ -63,7 +61,7 @@ public class Launcher {
 	 */
 	private static Set<File> listFilesRecursively(final File folder) {
 		Set<File> files = new HashSet<File>();
-		if(folder == null || folder.listFiles() == null){
+		if (folder == null || folder.listFiles() == null){
 	        return files;
 	    }
 		for (File entry : folder.listFiles()) {
@@ -92,7 +90,8 @@ public class Launcher {
 		final Set<File> aemFiles = listFilesRecursively(folder);
 		final File[] files = aemFiles.toArray(new File[aemFiles.size()]);
 		final AnalysisRunnable[] workers = new AnalysisRunnable[files.length];
-		ExecutorService executor = Executors.newFixedThreadPool(files.length);
+		ExecutorService executor = Executors.newFixedThreadPool(
+				NUMBER_OF_THREADS == 0 ? files.length : NUMBER_OF_THREADS);
 		for (int i = 0; i < files.length; i++) {
 			workers[i] = new AnalysisRunnable(files[i]);
 			if (ttkernel != null) {
@@ -109,14 +108,14 @@ public class Launcher {
 		}
 		
 		for (int i = 0; i < files.length; i++) {
-			if (AVAILABILITY_FULL) {
+			if (AnalysisRunnable.AVAILABILITY_FULL) {
 				System.out.println(
 						files[i]
 						+ " - Availability (all operational components): "
 						+ workers[i].getAnalysis().getFullyOperationalAvailability());
 			}
 			
-			if (AVAILABILITY_DEGRADED) {
+			if (AnalysisRunnable.AVAILABILITY_DEGRADED) {
 				System.out.println(
 						files[i]
 						+ " - Availability (at least one operational components): "
@@ -154,15 +153,19 @@ public class Launcher {
 		}
 		
 		if (argsList.contains("-f")) {
-			AVAILABILITY_FULL = true;
+			AnalysisRunnable.AVAILABILITY_FULL = true;
 		}
 		
 		if (argsList.contains("-d")) {
-			AVAILABILITY_DEGRADED = true;
+			AnalysisRunnable.AVAILABILITY_DEGRADED = true;
 		}
 		
 		if (argsList.contains("-t")) {
 			ttkernel = new File(argsList.get(argsList.indexOf("-t") + 1));
+		}
+		
+		if (argsList.contains("-n")) {
+			NUMBER_OF_THREADS = Integer.parseInt(argsList.get(argsList.indexOf("-n") + 1));
 		}
 
 		final File folder = new File(args[args.length - 1]);
