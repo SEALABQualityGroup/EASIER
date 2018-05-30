@@ -2,20 +2,22 @@ package it.univaq.disim.sealab.availability.aemilia;
 
 import java.io.File;
 
-import Jama.Matrix;
-
 /**
  * Thread to build the CTMC and compute the stationary distribution.
  */
 public class AnalysisRunnable implements Runnable {
 	
 	private Analysis analysis;
+	
+	/** Availability (all operational components) */
+	public static boolean AVAILABILITY_FULL = false;
+	
+	/** Availability (at least one operational components) */
+	public static boolean AVAILABILITY_DEGRADED = false;
 
 	private File aemFile;
 	
 	private File ttkernel;
-	
-	private Matrix stationaryDistribution;
 
 	/**
 	 * Creates a new instance of the thread.
@@ -50,14 +52,6 @@ public class AnalysisRunnable implements Runnable {
 	}
 	
 	/**
-	 * Return the stationary distribution.
-	 * @return stationary distribution
-	 */
-	public Matrix getStationaryDistribution() {
-		return stationaryDistribution;
-	}
-	
-	/**
 	 * Thread body.
 	 */
 	@Override
@@ -72,7 +66,19 @@ public class AnalysisRunnable implements Runnable {
 		}
 		
 		// Compute the stationary distribution
-		stationaryDistribution = analysis.getStationaryDistribution();
+		analysis.getStationaryDistribution();
+		
+		// Compute the fully operational availability
+		if (AVAILABILITY_FULL) {
+			analysis.getFullyOperationalAvailability();
+		}
+		
+		// Compute the degraded availability
+		if (AVAILABILITY_DEGRADED) {
+			analysis.getDegradedAvailability();
+		}
+		
+		analysis.clean();
 	}
 
 }
