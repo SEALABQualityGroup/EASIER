@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Jama.Matrix;
+import net.axiak.runtime.SpawnRuntime;
 
 /**
  * Generates a .PSM from .AEM file (using TTKernel)
@@ -28,8 +29,6 @@ public class Parser {
 	private File ttkernel;
 
 	private Properties prop = new Properties();
-	
-	private Matrix matrix;
 
 	private ArrayList<String> states;
 	
@@ -55,14 +54,6 @@ public class Parser {
 	 */
 	public void setTTKernel(final File ttkernel) {
 		this.ttkernel = ttkernel;
-	}
-
-	/**
-	 * Returns the transition matrix.
-	 * @return transition matrix
-	 */
-	public Matrix getMatrix() {
-		return matrix;
 	}
 
 	/**
@@ -104,7 +95,7 @@ public class Parser {
 		if (aemFile.exists()) {
 			final String filename = aemFile.getAbsolutePath();
 			try {
-				Runtime.getRuntime().exec(
+				SpawnRuntime.getInstance().exec(
 						String.format("%s -g %s %s.tmp", ttkernel, filename, filename))
 				.waitFor();
 			} catch (InterruptedException e) {
@@ -122,7 +113,7 @@ public class Parser {
 	 * @return number of states
 	 * 	(0 if the method is unable to parse the file)
 	 */
-	public int getNumberOfState() {		
+	public int getNumberOfStates() {
 		final File psmFile = getPSMFile();
 		
 		try (RandomAccessFile file = new RandomAccessFile(psmFile, "r")) {
@@ -135,7 +126,7 @@ public class Parser {
 			file.seek(pos);
 			
 			// Start reading backward until we find 3 '\n>'
-			for (char c1,c2; pos >=0 && counter < 3; pos -= 1) {
+			for (char c1,c2; pos >=0 && counter < 2; pos -= 1) {
 				file.seek(pos);
 				c1 = (char) file.read();
 				c2 = (char) file.read();
@@ -146,7 +137,7 @@ public class Parser {
 			
 			// Now read the entire line that should
 			// contain the last global state number
-			Matcher m = Pattern.compile("Global state ([^:]+):").matcher(file.readLine());
+			Matcher m = Pattern.compile("([0-9]+) states").matcher(file.readLine());
 			if (m.find()) {
 				return Integer.parseInt(m.group(1));
 			}
@@ -184,7 +175,9 @@ public class Parser {
 		
 		states = new ArrayList<String>();
 		
-		matrix = new Matrix(new double[1][1]);
+		int numberOfStates = getNumberOfStates();
+		
+		Matrix matrix = new Matrix(new double[numberOfStates][numberOfStates+1]);
 		
 		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {			
 			String line;
@@ -232,11 +225,7 @@ public class Parser {
 				// Target state
 				m = targetStatePattern.matcher(line);
 				if (m.find()) {
-					int targetState = Integer.parseInt(m.group(1));
-					if (matrix.getRowDimension() < targetState) {
-						matrix = enlarge(matrix, targetState - matrix.getRowDimension());
-					}
-					matrix.set(sourceState - 1, targetState - 1, rate);
+					matrix.set(sourceState - 1, Integer.parseInt(m.group(1)) - 1, rate);
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -248,22 +237,5 @@ public class Parser {
 		}
 
 		return matrix;
-	}
-	
-	/**
-	 * Enlarge a square matrix.
-	 * @param m starting square submatrix
-	 * @param factor how many rows and columns are to be added
-	 * @return a new enlarged matrix containing the given submatrix
-	 */
-	private static Matrix enlarge(final Matrix m, int factor) {
-		final Matrix m1 = new Matrix(
-				new double[m.getRowDimension() + factor][m.getColumnDimension() + factor]);
-		for (int i = 0; i < m.getRowDimension(); i++) {
-			for (int j = 0; j < m.getColumnDimension(); j++) {
-				m1.set(i, j, m.get(i, j));
-			}
-		}
-		return m1;
 	}
 }
