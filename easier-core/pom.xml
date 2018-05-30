@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>it.disim.univaq.sealab</groupId>
+	<groupId>it.univaq.disim.sealab</groupId>
 	<artifactId>easier-core</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<build>
@@ -14,7 +14,7 @@
 					<configuration>
 						<archive>
 							<manifest>
-								<mainClass>it.disim.univaq.sealab.metaheuristic.Launcher</mainClass>
+								<mainClass>it.univaq.disim.sealab.metaheuristic.Launcher</mainClass>
 							</manifest>
 						</archive>
 						<descriptorRefs>
@@ -61,7 +61,7 @@
 						<archive>
 							<manifest>
 								<addClasspath>true</addClasspath>
-								<mainClass>it.disim.univaq.sealab.metaheuristic.Launcher</mainClass>
+								<mainClass>it.univaq.disim.sealab.metaheuristic.Launcher</mainClass>
 							</manifest>
 						</archive>
 					</configuration>
@@ -124,22 +124,22 @@
 		</dependency>
 
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemiliaMetamodel</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>logicalSpecification</artifactId>
 			<version>0.0.3</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemiliaToQn_bridge</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>measuresToIndices</artifactId>
 			<version>1.0.0</version>
 		</dependency>
@@ -150,7 +150,7 @@
 			<version>5.0.1.v20140910-1354</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab.profiles</groupId>
+			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>marte</artifactId>
 			<version>1.2.0.201703081153</version>
 		</dependency>
@@ -160,12 +160,6 @@
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>2.10.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2.uml.profile/standard -->
-		<dependency>
-			<groupId>it.disim.univaq.sealab.profiles</groupId>
-			<artifactId>uml.standard</artifactId>
-			<version>1.0.0.v20150202-0947</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -173,18 +167,24 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2.uml.profile/standard -->
 		<dependency>
-			<groupId>it.disim.univaq.sealab.profiles</groupId>
+			<groupId>it.univaq.disim.sealab.profiles</groupId>
+			<artifactId>uml.standard</artifactId>
+			<version>1.0.0.v20150202-0947</version>
+		</dependency>
+		<dependency>
+			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l3</artifactId>
 			<version>1.1.0-v20130902-0826</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab.profiles</groupId>
+			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l2</artifactId>
 			<version>1.1.0-v20130902-0826</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>twoeaglesBridge</artifactId>
 			<version>0.0.1</version>
 		</dependency>
@@ -230,7 +230,7 @@
 			<version>3.13.0</version>
 		</dependency>
 		<dependency>
-			<groupId>it.disim.univaq.sealab</groupId>
+			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemilia2text</artifactId>
 			<version>0.0.2</version>
 		</dependency>

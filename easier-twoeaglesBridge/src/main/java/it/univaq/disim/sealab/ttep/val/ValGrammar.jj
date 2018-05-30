@@ -1,0 +1,524 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  static = false;
+  JAVA_UNICODE_ESCAPE = true;	/* default: false*/
+  // DEBUG_PARSER = true;
+}PARSER_BEGIN(ValParser)package it.univaq.disim.sealab.ttep.val;
+
+public class ValParser{
+  public static void main(String args []) throws ParseException  {    ValParser parser;
+		if (args.length == 1) {
+      System.out.println("Val Parser Version 1.0:  Reading from file " + args[0] + " . . .");
+      try {
+        parser = new ValParser(new java.io.FileInputStream(args[0]));
+      } 
+      catch (java.io.FileNotFoundException e) {
+        System.out.println("Val Parser Version 1.0:  File " + args[0] + " not found.");
+        return;
+      }
+    } 
+    else {
+      System.out.println("Val Parser Version 1.0:  Usage is one of:");
+      System.out.println("         java ValParser < inputfile");
+      System.out.println("OR");
+      System.out.println("         java ValParser inputfile");
+      return;
+    }
+    try {
+      parser.ValSpec();
+      System.out.println("Val Parser Version 1.0:  Ruby program parsed successfully.");
+    } 
+    catch (ParseException e) {
+      System.out.println(e.getMessage());
+      System.out.println("Val Parser Version 1.0:  Encountered errors during parse.");
+    }
+      }}PARSER_END(ValParser)SKIP :{
+  " "
+| "\t"	/*Tab orizzontale*/
+| "\r"	/*Carriage Return*/
+| "\f"  /*Formfeed*/
+| "\n"  /*Newline*/
+| <("\n")* "%" (~["\n","\r"])* ("\n"|"\r"|"\r\n")("\n")* > /*Comments*/
+}
+
+TOKEN :
+{
+  < APEX: "\"" >
+| < LPAREN: "(" >
+| < RPAREN: ")" >  
+| < LBRACKET: "[" >
+| < RBRACKET: "]" >
+| < COLON: ":" >
+| < DASH: "-" >
+| < COMMA: "," >
+}
+
+/****************************************************************/
+/* 6. Definition of tokens.					*/
+/****************************************************************/
+TOKEN :
+{
+  <T_STATIONARY				      : "Stationary">
+| <T_VALUE				          : "value">
+| <T_OF				          	  : "of">
+| <T_THE				          : "the">
+| <T_PERFORMANCE	              : "performance">
+| <T_MEASURES				      : "measures">
+| <T_FOR				          : "for">
+| <T_VALUE_M				      : "Value">
+| <T_MEASURE				      : "measure">
+| <T_GET				          : "get">
+| <T_READ				          : "read">
+| <T_FIRST				          : "first">
+| <AND				              : "&&">
+| <OR				              : "||">
+| <T_TRUE				          : "true">
+| <T_FALSE				          : "false">
+| <LE				              : "<=">
+| <GE				              : ">=">
+| <NE				              : "!=">
+| <T_LENGTH			          	  : "length">
+| <T_LIST_CONS			          : "list_cons">
+| <T_TAIL				          : "tail">
+| <T_CONCAT			              : "concat">
+| <T_INSERT			              : "insert">
+| <T_REMOVE			              : "remove">
+| <T_ARRAY_CONS			          : "array_cons">
+| <T_WRITE				          : "write">
+| <T_RECORD_CONS			      : "record_cons">
+| <T_PUT				          : "put">
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < T_ID: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:
+      [
+       "\u0041"-"\u005a", /* "A"-"Z" */
+       "\u005f", /* "_" */
+       "\u0061"-"\u007a", /* "a"-"z" */
+       "\u00c0"-"\u00d6", /* "e'"-"e'" */
+       "\u00d8"-"\u00f6", /* "e'"-"e'" */
+       "\u00f8"-"\u00ff", /* "e'"-"e'" */
+       "\u0100"-"\u1fff", 
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+TOKEN : /* LITERALS */
+{
+	<T_NUMBER:
+				<INTEGER_LITERAL>
+			| <FLOATING_POINT_LITERAL>
+	>
+|
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+      | <HEX_LITERAL> (["l","L"])?
+      | <OCTAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+|
+  < FLOATING_POINT_LITERAL:
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+      | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+}
+
+
+
+specificheAEmilia.IdentExpr IdentExpr() :
+	{
+	specificheAEmilia.IdentExpr ris;
+	Token t;  	}
+	{
+	t = <T_ID>
+		{
+		ris = new specificheAEmilia.IdentExpr(t.image);
+		return ris;
+		}	}
+
+specificheAEmilia.Expression Erecord() :
+	{
+	specificheAEmilia.Expression ris;
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();
+	specificheAEmilia.Expression expression;
+	specificheAEmilia.IdentExpr identExpr;
+	Token t1;
+	Token t2;	}
+	{
+	<T_RECORD_CONS> <LPAREN> expression = E() {list.add(expression);} (<COMMA> expression = E() {list.add(expression);})* <RPAREN>
+		{
+		specificheAEmilia.Expression[] expressions = new specificheAEmilia.Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			specificheAEmilia.Expression exp1 = list.get(i);
+			expressions[i] = exp1;  			}
+		specificheAEmilia.RecordCons recordCons = new specificheAEmilia.RecordCons(expressions);
+		ris = recordCons;
+		return ris;		}
+	|
+	<T_PUT> <LPAREN> t1 = <T_ID> <COMMA> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Put put = new specificheAEmilia.Put(t1.image,expression,identExpr);
+		ris = put;
+		return ris;		}	}
+
+specificheAEmilia.Expression Earr() :
+	{
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();
+	specificheAEmilia.Expression expression;
+	specificheAEmilia.Expression expression2;
+	specificheAEmilia.IdentExpr identExpr;	}
+	{
+	<T_ARRAY_CONS> <LPAREN> expression = E() {list.add(expression);} (<COMMA> expression = E() {list.add(expression);})* <RPAREN>
+		{
+		specificheAEmilia.Expression[] expressions = new specificheAEmilia.Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			specificheAEmilia.Expression exp1 = list.get(i);
+			expressions[i] = exp1;  			}
+		specificheAEmilia.ArrayCons arrayCons = new specificheAEmilia.ArrayCons(expressions);
+		return arrayCons;		}
+	|
+	<T_WRITE> <LPAREN> expression = E() <COMMA> expression2 = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Write write = new specificheAEmilia.Write(expression,expression2,identExpr);
+		return write;		}	}
+
+specificheAEmilia.Expression El() :
+	{
+	specificheAEmilia.Expression expression;
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();
+	Token t1;
+	specificheAEmilia.IdentExpr identExpr;
+	Token t2;
+	specificheAEmilia.IdentExpr identExpr2;	}
+	{
+	<T_LIST_CONS> <LPAREN> (expression = E() {list.add(expression);} ( <COMMA> expression = E() {list.add(expression);})*)? <RPAREN>
+		{
+		specificheAEmilia.Expression[] expressions = new specificheAEmilia.Expression[list.size()];
+		for (int i = 0; i < list.size(); i++)
+			{
+			specificheAEmilia.Expression exp1 = list.get(i);
+			expressions[i] = exp1;			}
+		specificheAEmilia.ListCons listCons = new specificheAEmilia.ListCons(expressions);
+		return listCons;		}
+	|
+	<T_TAIL> <LPAREN> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Tail tail = new specificheAEmilia.Tail(identExpr);
+		return tail;		}
+	|
+	<T_CONCAT> <LPAREN> identExpr = IdentExpr() <COMMA> identExpr2 = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Concat concat = new specificheAEmilia.Concat(identExpr,identExpr2);
+		return concat;		}
+	|
+	<T_INSERT> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Insert insert = new specificheAEmilia.Insert(expression,identExpr);
+		return insert;		}
+	|
+	<T_REMOVE> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Remove remove = new specificheAEmilia.Remove(expression,identExpr);
+		return remove;		}	}
+
+specificheAEmilia.Expression Eatf() :
+	{
+	specificheAEmilia.Expression ris;
+	Token t1;
+	specificheAEmilia.IdentExpr identExpr;	}
+	{
+	<LPAREN> ris = E() <RPAREN>
+		{
+		return ris;		}
+	|
+	ris = IdentExpr()
+		{
+		return ris;		}
+	|
+	t1 = <T_NUMBER>
+		{
+		java.text.NumberFormat numberFormat = java.text.NumberFormat.getNumberInstance();
+		try			{		  	Number number = null;
+			try {
+				number = numberFormat.parse(t1.image);
+				} 
+			catch (java.text.ParseException e) 
+				{
+				throw new ParseException(e.getMessage());
+				}
+		  	if (number instanceof java.lang.Long)
+		  		{
+		  		java.lang.Long long1 = (java.lang.Long)number;
+		  		specificheAEmilia.Integer integer1 = new specificheAEmilia.Integer(long1.intValue());
+		  		return integer1;		  		}
+		  	if (number instanceof java.lang.Double)
+		  		{
+		  		java.lang.Double double1 = (java.lang.Double)number;
+		  		specificheAEmilia.Real real = new specificheAEmilia.Real(double1);
+		  		return real;		  		}			}
+		catch (ParseException parseException)
+			{
+			return null;  			}		}
+	|
+	<T_LENGTH> <LPAREN> identExpr = IdentExpr() <RPAREN>
+		{
+		specificheAEmilia.Length length = new specificheAEmilia.Length(identExpr);
+		return length;		}
+	}
+
+specificheAEmilia.Expression Eat() :
+	{
+	specificheAEmilia.Expression e1;
+	specificheAEmilia.Expression e2;
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();
+	}
+	{
+	e1 = Eatf()
+		{
+		list.add(e1);		}
+	(
+	  "*" e2 = Eatf()
+		{
+		specificheAEmilia.Expression exp1 = list.get(list.size() - 1);
+		specificheAEmilia.Moltiplicazione moltiplicazione = new specificheAEmilia.Moltiplicazione(exp1,e2);
+		list.add(moltiplicazione);
+		}
+	| "/" e2 = Eatf()
+		{
+		specificheAEmilia.Expression exp2 = list.get(list.size() - 1);
+		specificheAEmilia.Divisione divisione = new specificheAEmilia.Divisione(exp2,e2);
+		list.add(divisione);
+		}
+	) *
+		{
+		specificheAEmilia.Expression exp3 = list.get(list.size() - 1);
+		return exp3;		}
+	}
+
+specificheAEmilia.Expression Ea() :
+	{
+	specificheAEmilia.Expression e1;
+	specificheAEmilia.Expression e2;
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();	}
+	{
+	e1 = Eat()
+		{
+		list.add(e1);		}
+	(
+	  "+" e2 = Eat()
+		{
+		specificheAEmilia.Expression exp1 = list.get(list.size() - 1);
+		specificheAEmilia.Somma somma = new specificheAEmilia.Somma(exp1,e2);
+		list.add(somma);
+		}
+	| "-" e2 = Eat()
+		{
+		specificheAEmilia.Expression exp2 = list.get(list.size() - 1);
+		specificheAEmilia.Sottrazione sottrazione = new specificheAEmilia.Sottrazione(exp2,e2);
+		list.add(sottrazione);
+		}
+	) *
+		{
+		specificheAEmilia.Expression exp3 = list.get(list.size() - 1);
+		return exp3;		}
+	}
+
+specificheAEmilia.Expression Ebt() :
+	{
+	specificheAEmilia.Expression e1;
+	specificheAEmilia.Expression e2;
+	Token t1;	}
+	{
+	t1 = <T_TRUE>
+		{
+		specificheAEmilia.Boolean b1 = new specificheAEmilia.Boolean(true);
+		return b1;		}
+	| 
+	t1 = <T_FALSE>
+		{
+		specificheAEmilia.Boolean b2 = new specificheAEmilia.Boolean(false);
+		return b2;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() "<" e2 = Ea()
+		{
+		specificheAEmilia.Minore minore = new specificheAEmilia.Minore(e1,e2);
+		return minore;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() <LE> e2 = Ea()
+		{
+		specificheAEmilia.MinoreUguale minoreUguale = new specificheAEmilia.MinoreUguale(e1,e2);
+		return minoreUguale;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() ">" e2 = Ea()
+		{
+		specificheAEmilia.Maggiore maggiore = new specificheAEmilia.Maggiore(e1,e2);
+		return maggiore;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() <GE> e2 = Ea()
+		{
+		specificheAEmilia.MaggioreUguale maggioreUguale = new specificheAEmilia.MaggioreUguale(e1,e2);
+		return maggioreUguale;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() "=" e2 = Ea()
+		{
+		specificheAEmilia.Equal equal = new specificheAEmilia.Equal(e1,e2);
+		return equal;		}
+	|
+	LOOKAHEAD(3) e1 = Ea() <NE> e2 = Ea()
+		{
+		specificheAEmilia.Different different = new specificheAEmilia.Different(e1,e2);
+		return different;		}
+	|
+	<LPAREN> e1 = Eb() <RPAREN>
+		{
+		return e1;		}
+	|
+	"!" e1 = Ebt()
+		{
+		return e1;		} 	}
+
+specificheAEmilia.Expression Eb() :
+	{
+	specificheAEmilia.Expression e1;
+	specificheAEmilia.Expression e2;
+	java.util.List<specificheAEmilia.Expression> list = new java.util.ArrayList<specificheAEmilia.Expression>();	}
+	{
+	e1 = Ebt()
+		{
+		list.add(e1);		}
+	(	 <AND> e2 = Ebt()
+		{
+		specificheAEmilia.Expression exp1 = list.get(list.size() - 1);
+		specificheAEmilia.And and = new specificheAEmilia.And(exp1,e2);
+		list.add(and);
+		}
+	|
+	<OR> e2 = Ebt()
+		{
+		specificheAEmilia.Expression exp2 = list.get(list.size() - 1);		  
+		specificheAEmilia.Or or = new specificheAEmilia.Or(exp2,e2);
+		list.add(or);
+		}
+	) *
+		{
+		specificheAEmilia.Expression exp3 = list.get(list.size() - 1);
+		return exp3;		}
+	}
+
+specificheAEmilia.Expression E() :
+	{
+	specificheAEmilia.Expression ris;
+	specificheAEmilia.Expression expression;
+	specificheAEmilia.IdentExpr identExpr;
+	Token t1;
+	Token t2;  	}
+	{
+	LOOKAHEAD(3) ris = Eb()
+		{
+		return ris;
+		}
+	|
+	LOOKAHEAD(3) ris = Ea()
+		{
+		return ris;
+		}
+	|
+	ris = El()
+		{
+		return ris;
+		}
+	|
+	ris = Earr()
+		{
+		return ris;
+		}
+	|
+	ris = Erecord()
+		{
+		return ris;
+		}
+	|
+	<T_FIRST> <LPAREN> identExpr = IdentExpr() <RPAREN>		{
+		ris = new specificheAEmilia.First(identExpr);
+		return ris;
+		}
+	|
+	<T_READ> <LPAREN> expression = E() <COMMA> identExpr = IdentExpr() <RPAREN>
+		{
+		ris = new specificheAEmilia.Read(expression,identExpr);
+		return ris;  		}
+	|
+	<T_GET> <LPAREN> t1 = <T_ID > <COMMA > identExpr = IdentExpr() <RPAREN>
+		{
+		ris = new specificheAEmilia.Get(t1.image,identExpr);
+		return ris;		}         	}
+
+it.univaq.disim.sealab.ttep.val.classes.MeasureValue MeasureValue() :
+	{
+	Token t1;
+	specificheAEmilia.Expression e1 = null;
+	Token t2;
+	}
+	{
+	<DASH> <T_VALUE_M> <T_OF> <T_MEASURE> <APEX> t1 = <T_ID> (<LBRACKET> e1 = E() <RBRACKET>) ? <APEX> <COLON> t2 = <T_NUMBER>
+		{
+		Float f1 = new Float(t2.image);
+		it.univaq.disim.sealab.ttep.val.classes.MeasureValue measureValue = new it.univaq.disim.sealab.ttep.val.classes.MeasureValue(t1.image,e1,f1);
+		return measureValue;		}
+	}
+
+it.univaq.disim.sealab.ttep.val.classes.ValSpec ValSpec() :
+	{
+	java.util.List<it.univaq.disim.sealab.ttep.val.classes.MeasureValue> list = new java.util.ArrayList<it.univaq.disim.sealab.ttep.val.classes.MeasureValue>();
+	it.univaq.disim.sealab.ttep.val.classes.MeasureValue mv;
+	}
+	{
+	<T_STATIONARY> <T_VALUE> <T_OF> <T_THE> <T_PERFORMANCE> <T_MEASURES> <T_FOR> <T_ID> <COLON>
+	(
+	 mv = MeasureValue()
+		{
+		list.add(mv);		}
+	 )*
+		{
+		it.univaq.disim.sealab.ttep.val.classes.ValSpec vs = new it.univaq.disim.sealab.ttep.val.classes.ValSpec(list);
+		return vs;		}
+	}

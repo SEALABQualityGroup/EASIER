@@ -203,5 +203,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<groupId>it.disim.univaq.sealab</groupId>
+	<groupId>it.univaq.disim.sealab</groupId>
 </project>
