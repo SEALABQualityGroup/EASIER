@@ -21,17 +21,17 @@ import net.axiak.runtime.SpawnRuntime;
  * Parses the .PSM to build a CTMC.
  */
 public class Parser {
-	
+
 	final static private String CONFIG_FILE = "config.properties";
-	
+
 	private File aemFile;
-	
+
 	private File ttkernel;
 
 	private Properties prop = new Properties();
 
 	private ArrayList<String> states;
-	
+
 	/**
 	 * Creates an instance of PSMParser.
 	 * @param aemFile Aemilia file
@@ -63,7 +63,7 @@ public class Parser {
 	public ArrayList<String> getStates() {
 		return states;
 	}
-	
+
 	/**
 	 * Get the name of the .PSM file.
 	 * @return File object corresponding to the .PSM file
@@ -71,10 +71,10 @@ public class Parser {
 	public File getPSMFile() {
 		return new File(aemFile.getAbsolutePath() + ".psm");
 	}
-	
+
 	/**
 	 * Loads config parameters from CONFIG_FILE.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private void loadConfig() throws IOException {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
@@ -85,14 +85,17 @@ public class Parser {
 		}
 		this.ttkernel = new File(prop.getProperty("ttkernel"));
 	}
-	
+
 	/**
 	 * Generates a .PSM containing a CTMC from an Aemilia specification.
 	 * (uses TTKernel)
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void generatePSM() throws IOException {
 		if (aemFile.exists()) {
+			if (ttkernel == null) {
+				loadConfig();
+			}
 			final String filename = aemFile.getAbsolutePath();
 			try {
 				SpawnRuntime.getInstance().exec(
@@ -101,12 +104,12 @@ public class Parser {
 			} catch (InterruptedException e) {
 				System.err.println("The execution of TTKernel was interrupted.");
 				e.printStackTrace();
-			}			
+			}
 		} else {
 			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
 		}
 	}
-	
+
 	/**
 	 * Parse the .PSM file from the end to get
 	 * total number of states in the CTMC.
@@ -115,16 +118,16 @@ public class Parser {
 	 */
 	public int getNumberOfStates() {
 		final File psmFile = getPSMFile();
-		
+
 		try (RandomAccessFile file = new RandomAccessFile(psmFile, "r")) {
-			
+
 			// Counts the number of '>'
 			int counter = 0;
-			
+
 			// Move to the end of the file
 			long pos = file.length() - 1;
 			file.seek(pos);
-			
+
 			// Start reading backward until we find 3 '\n>'
 			for (char c1,c2; pos >=0 && counter < 2; pos -= 1) {
 				file.seek(pos);
@@ -134,7 +137,7 @@ public class Parser {
 					counter++;
 				}
 			}
-			
+
 			// Now read the entire line that should
 			// contain the last global state number
 			Matcher m = Pattern.compile("([0-9]+) states").matcher(file.readLine());
@@ -147,39 +150,27 @@ public class Parser {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Parses a .PSM file into a matrix.
 	 * @return CTMC transition matrix
 	 */
 	public Matrix parsePSM() {
-		
-		try {
-			if (ttkernel == null) {
-				loadConfig();
-			}
-			generatePSM();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
-		
 		final File psmFile = getPSMFile();
-		
+
 		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):");
 		final Pattern localStatePattern = Pattern.compile("Local state of ([^:]+):");
 		final Pattern portPattern = Pattern.compile("<[^\\.]+(\\.[^, ]+)");
 		final Pattern transitionPattern = Pattern.compile("Rate:\\s+([0-9]+\\.?[0-9]*)");
 		final Pattern targetStatePattern = Pattern.compile("Derivative global state:\\s+([0-9]+)");
-		
+
 		states = new ArrayList<String>();
-		
+
 		int numberOfStates = getNumberOfStates();
-		
+
 		Matrix matrix = new Matrix(new double[numberOfStates][numberOfStates+1]);
-		
-		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {			
+
+		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {
 			String line;
 			int sourceState = 0;
 			String sourceStateLabel = "";
@@ -187,7 +178,7 @@ public class Parser {
 			boolean firstTransition = true;
 			Matcher m;
 			while ((line = br.readLine()) != null) {
-				
+
 				// Global state
 				m = globalStatePattern.matcher(line);
 				if (m.find()) {
@@ -196,21 +187,21 @@ public class Parser {
 					firstTransition = true;
 					continue;
 				}
-				
+
 				// Local state
 				m = localStatePattern.matcher(line);
 				if (m.find()) {
 					sourceStateLabel += m.group(1);
 					continue;
 				}
-				
+
 				// Element port
 				m = portPattern.matcher(line);
 				if (m.find()) {
 					sourceStateLabel += m.group(1) + ", ";
 					continue;
 				}
-				
+
 				// Transition
 				m = transitionPattern.matcher(line);
 				if (m.find()) {
@@ -221,7 +212,7 @@ public class Parser {
 					rate = Double.parseDouble(m.group(1));
 					continue;
 				}
-				
+
 				// Target state
 				m = targetStatePattern.matcher(line);
 				if (m.find()) {

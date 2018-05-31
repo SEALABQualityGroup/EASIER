@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit;
  * both from the command line and programmatically.
  */
 public class Launcher {
-	
+
 	private static File ttkernel;
-	
+
 	/** Number of threads */
 	public static int NUMBER_OF_THREADS = 0;
-	
+
 	/**
 	 * Print help on how to use the launcher from the command line.
 	 */
@@ -28,11 +28,13 @@ public class Launcher {
 				+ "  (folder containing .aem files)\n"
 				+ "where options include:\n"
 				+ "  -f		Availability (all operational components)\n"
-				+ "  -d		Availability (at least one operational components)\n"
+				+ "  -d		Availability (at least one operational component)\n"
 				+ "  -t <TTKernel> Set the path to the TTKernel executable\n"
-				+ "  -n		Number of threads");
+				+ "  -n		Number of threads\n"
+				+ "  -sp	Skip the creation of .psm files if already present\n"
+				+ "  -sa	Skip the creation of .ava files if already present");
 	}
-	
+
 	/**
 	 * Check if the folder exists and we have write permissions.
 	 * @param folder the folder to check
@@ -42,18 +44,18 @@ public class Launcher {
 		if (!folder.isDirectory()) {
 			System.err.println(folder + " is not a directory.");
 			return false;
-		}		
+		}
 		if (!folder.canRead()) {
 			System.err.println("No permissions to read from " + folder);
 			return false;
-		}		
+		}
 		if (!folder.canWrite()) {
 			System.err.println("No permissions to write in " + folder);
 			return false;
-		}		
+		}
 		return true;
 	}
-	
+
 	/**
 	 * Recursively walk through subdirectories listing Aemilia files.
 	 * @param folder starting folder
@@ -73,19 +75,19 @@ public class Launcher {
 	    }
 		return files;
 	}
-	
+
 	/**
 	 * Perform the availability analysis on all
 	 * the Aemilia files in a folder.
 	 * @param folder the folder containing aemilia files
 	 */
 	public static void performAnalysis(final File folder) {
-		
+
 		// Check if the folder exists and we have write permissions
 		if (!checkFolder(folder)) {
 			return;
 		}
-		
+
 		// Start to parse and compute the solutions
 		final Set<File> aemFiles = listFilesRecursively(folder);
 		final File[] files = aemFiles.toArray(new File[aemFiles.size()]);
@@ -106,7 +108,7 @@ public class Launcher {
 			System.err.println("Analysis execution was interrupted.");
 			e.printStackTrace();
 		}
-		
+
 		for (int i = 0; i < files.length; i++) {
 			if (AnalysisRunnable.AVAILABILITY_FULL) {
 				System.out.println(
@@ -114,16 +116,16 @@ public class Launcher {
 						+ " - Availability (all operational components): "
 						+ workers[i].getAnalysis().getFullyOperationalAvailability());
 			}
-			
+
 			if (AnalysisRunnable.AVAILABILITY_DEGRADED) {
 				System.out.println(
 						files[i]
-						+ " - Availability (at least one operational components): "
+						+ " - Availability (at least one operational component): "
 						+ workers[i].getAnalysis().getDegradedAvailability());
 			}
 		}
 	}
-	
+
 	/**
 	 * Perform the availability analysis on all
 	 * the Aemilia files in a folder.
@@ -134,7 +136,7 @@ public class Launcher {
 		Launcher.ttkernel = ttkernel;
 		performAnalysis(folder);
 	}
-	
+
 	/**
 	 * Invoked when executed from the command line.
 	 * @param args launch without args to get help
@@ -143,33 +145,30 @@ public class Launcher {
 		if (args.length < 2) {
 			printUsage();
 			return;
-		}		
-		
+		}
+
 		List<String> argsList = Arrays.asList(args);
 		if (!argsList.contains("-f") && !argsList.contains("-d")) {
 			System.err.println("Please select an availability index (use -f, -d or both).");
 			printUsage();
 			return;
 		}
-		
-		if (argsList.contains("-f")) {
-			AnalysisRunnable.AVAILABILITY_FULL = true;
-		}
-		
-		if (argsList.contains("-d")) {
-			AnalysisRunnable.AVAILABILITY_DEGRADED = true;
-		}
-		
+
+		AnalysisRunnable.AVAILABILITY_FULL = argsList.contains("-f");
+		AnalysisRunnable.AVAILABILITY_DEGRADED = argsList.contains("-d");
+		AnalysisRunnable.SKIP_PSM_CREATION = argsList.contains("-sp");
+		AnalysisRunnable.SKIP_AVA_CREATION = argsList.contains("-sa");
+
 		if (argsList.contains("-t")) {
 			ttkernel = new File(argsList.get(argsList.indexOf("-t") + 1));
 		}
-		
+
 		if (argsList.contains("-n")) {
 			NUMBER_OF_THREADS = Integer.parseInt(argsList.get(argsList.indexOf("-n") + 1));
 		}
 
 		final File folder = new File(args[args.length - 1]);
-		
+
 		performAnalysis(folder);
 	}
 }
