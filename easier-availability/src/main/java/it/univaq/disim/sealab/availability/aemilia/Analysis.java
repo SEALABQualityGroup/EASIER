@@ -118,6 +118,23 @@ public class Analysis {
 	}
 
 	/**
+	 * Computes the availability of the system considering the systems
+	 * available until all its components fail.
+	 * @return steady state availability
+	 */
+	public double getDegradedAvailability() {
+		if (degradedAvailability == 0) {
+			int i = 0;
+			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
+				if (states.next().matches(".*\\.(?!fail).*")) {
+					degradedAvailability += stationaryDistribution.get(i, 0);
+				}
+			}
+		}
+		return degradedAvailability;
+	}
+
+	/**
 	 * Read the fully operational availability from file.
 	 * @param avaFile File containing availability measures
 	 * @return fully operational availability
@@ -163,23 +180,6 @@ public class Analysis {
 			e.printStackTrace();
 		}
 		return 0;
-	}
-
-	/**
-	 * Computes the availability of the system considering the systems
-	 * available until all its components fail.
-	 * @return steady state availability
-	 */
-	public double getDegradedAvailability() {
-		if (degradedAvailability == 0) {
-			int i = 0;
-			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
-				if (states.next().matches(".*\\.(?!fail).*")) {
-					degradedAvailability += stationaryDistribution.get(i, 0);
-				}
-			}
-		}
-		return degradedAvailability;
 	}
 
 	/**

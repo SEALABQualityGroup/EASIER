@@ -75,10 +75,10 @@ public class AnalysisRunnable implements Runnable {
 	public void writeResults() {
 		final File results = getAvaFile();
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(results))) {
-			writer.write(String.format("%s - Availability (all operational components): %f\n",
+			writer.write(String.format("%s - Availability (all operational components): %.10f\n",
 					aemFile, analysis.getFullyOperationalAvailability()));
-			writer.write(String.format("%s - Availability (at least one operational component): %f\n",
-					aemFile, analysis.getFullyOperationalAvailability()));
+			writer.write(String.format("%s - Availability (at least one operational component): %.10f\n",
+					aemFile, analysis.getDegradedAvailability()));
 		} catch (Exception e) {
 			System.err.println("Unable to write results to " + results);
 			e.printStackTrace();
