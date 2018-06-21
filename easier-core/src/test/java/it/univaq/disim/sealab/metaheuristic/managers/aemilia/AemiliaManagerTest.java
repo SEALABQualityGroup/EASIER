@@ -33,9 +33,15 @@ import metamodel.mmaemilia.Behavior.ChoiceProcess;
 import metamodel.mmaemilia.Behavior.ProcessTerm;
 import metamodel.mmaemilia.Behavior.RateExp;
 import metamodel.mmaemilia.Behavior.RateInf;
+import metamodel.mmaemilia.DataType.DataTypeFactory;
+import metamodel.mmaemilia.DataType.Special;
+import metamodel.mmaemilia.DataType.SpecialType;
 import metamodel.mmaemilia.Expressions.ExpressionsFactory;
 import metamodel.mmaemilia.Expressions.IdentExpr;
 import metamodel.mmaemilia.Expressions.IdentifierType;
+import metamodel.mmaemilia.Headers.Const;
+import metamodel.mmaemilia.Headers.ConstInit;
+import metamodel.mmaemilia.Headers.HeadersFactory;
 
 public class AemiliaManagerTest {
 
@@ -73,7 +79,7 @@ public class AemiliaManagerTest {
 		try {
 			aemFileInputStream = new FileInputStream(new File(sourceAemPath));
 			genModel.execute_ase(aemFileInputStream, null,
-					"/Users/peo12/git/sealab/easier/easier-core/src/test/resources/models/AemiliaModels/choiceExample/FTA/fta_2.mmaemilia");
+					"/Users/peo12/git/sealab/easier/easier-core/src/test/resources/models/AemiliaModels/choiceExample/FTA/fta2.mmaemilia");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,13 +107,26 @@ public class AemiliaManagerTest {
 
 		for (ElemType elemType : targetModel.getArchiTypeDecl().getAetDeclaration().getEtDeclaration()) {
 			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName());
+			ConstInit constWeight = createConstWeight(elemType, "0.1");
+			targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
+//			
+			elemType.getElemHeader().getCostant().add(createConst(constWeight));
+			
+//			for(ArchiElemInstance aei : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
+//				if(aei.getTypeOf().getEtName().equals(elemType.getEtName())) {
+//					aei.get
+//				}
+//			}
 
 			for (BehavEquation behEq : elemType.getBehaviorDecl().getEquations()) {
+			
 				ChoiceProcess availabilityChoice = behaviourFactory.createChoiceProcess();
 				
+//				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, constWeight);
+//				ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq, constWeight);
 				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction);
 				ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq);
-//
+
 				availabilityChoice.getProcesses().add(failProcess);
 				availabilityChoice.getProcesses().add(goodProcess);
 				
@@ -118,6 +137,25 @@ public class AemiliaManagerTest {
 		}
 
 		saveModel();
+	}
+	
+	private Const createConst(ConstInit constWeight) {
+		Const k = HeadersFactory.eINSTANCE.createConst();
+		k.setConstantData(constWeight.getInitConstData());
+		k.setName(constWeight.getName());
+		return k;
+	}
+	
+	private ConstInit createConstWeight(ElemType elemType, String weightValue) {
+		ConstInit constWeight = HeadersFactory.eINSTANCE.createConstInit();
+		constWeight.setName(elemType.getEtName()+"_lose");
+		Special weightDataType = DataTypeFactory.eINSTANCE.createSpecial();
+		weightDataType.setType(SpecialType.WEIGHT);
+		constWeight.setInitConstData(weightDataType);
+		IdentExpr weightExp = expressionFactory.createIdentExpr();
+		weightExp.setName(weightValue);
+		constWeight.setInitConstExpr(weightExp);
+		return constWeight;
 	}
 
 	private ActionProcess createGoodBranchProcess(ElemType elemType, BehavEquation behEq) {
@@ -135,6 +173,22 @@ public class AemiliaManagerTest {
 
 		return goodBranchProcess;
 	}
+	
+	private ActionProcess createGoodBranchProcess(ElemType elemType, BehavEquation behEq, ConstInit constWeight) {
+
+		ProcessTerm oldProcess = EcoreUtil.copy(behEq.getPt());
+
+		ActionProcess goodBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
+		// adding action
+		Action action = createAction("keep");
+		action.setRate(createRateInf("1", "1 - constWeight"));
+		action.setIs(createLocalInteraction("keep_" + elemType.getEtName(), InteractionType.UNI));
+		goodBranchProcess.setAct(action);
+		// adding process
+		goodBranchProcess.setProcess(oldProcess);
+
+		return goodBranchProcess;
+	}
 
 	private ActionProcess createActionProcess(String conditionName, IdentifierType identifierType) {
 		ActionProcess actionProcess = behaviourFactory.createActionProcess();
@@ -142,11 +196,26 @@ public class AemiliaManagerTest {
 		return actionProcess;
 	}
 
+	
 	private ActionProcess createFailBranchProcess(ElemType elemType, OutputInteraction failOutputInteraction) {
 
 		ActionProcess failBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
 		Action loseAction = createAction("lose");
 		loseAction.setRate(createRateInf("1", "0.1"));
+		loseAction.setIs(createLocalInteraction("lose_" + elemType.getEtName(), InteractionType.UNI));
+		failBranchProcess.setAct(loseAction);
+
+		ActionProcess toFailProcess = createFailActionProcess(elemType, "fail", failOutputInteraction);
+		failBranchProcess.setProcess(toFailProcess);
+
+		return failBranchProcess;
+	}
+	
+	private ActionProcess createFailBranchProcess(ElemType elemType, OutputInteraction failOutputInteraction, ConstInit weightConst) {
+
+		ActionProcess failBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
+		Action loseAction = createAction("lose");
+		loseAction.setRate(createRateInf("1", weightConst.getName()));
 		loseAction.setIs(createLocalInteraction("lose_" + elemType.getEtName(), InteractionType.UNI));
 		failBranchProcess.setAct(loseAction);
 

@@ -1,4 +1,3 @@
-package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //
 //import java.util.ArrayList;
@@ -24,6 +23,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //import logicalSpecification.ForAllOperator;
 //import logicalSpecification.LogicalSpecificationFactory;
 //import logicalSpecification.MultipleValuedParameter;
+//import logicalSpecification.NotOperator;
 //import logicalSpecification.Parameter;
 //import logicalSpecification.PostCondition;
 //import logicalSpecification.PreCondition;
@@ -32,22 +32,26 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //
 //public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl {
 //
-//	// private List<Node> umlTargetNodes;
-//	// private Package umlSourcePackage;
-//	// private Component umlCompToAdd;
+//	private List<Node> umlTargetNodes;
+//	private Package umlSourcePackage;
+//	private Component umlCompToAdd;
 //
-//	// private SingleValuedParameter compToAddSVP;
-//	// private MultipleValuedParameter targetNodesMVP;
-//	// private MultipleValuedParameter deployedCompsMVP;
-//	// private MultipleValuedParameter allCompsMVP;
-//	// private MultipleValuedParameter allNodesMVP;
+//	private SingleValuedParameter compToAddSVP;
+//	private MultipleValuedParameter targetNodesMVP;
+//	private MultipleValuedParameter deployedCompsMVP;
+//	private MultipleValuedParameter allCompsMVP;
+//	private MultipleValuedParameter allNodesMVP;
+//	
+//	private Manager manager;
+//	private UMLManager umlManager;
 //
 //	private static Double MAX_VALUE = 100.0;
+//	
 //
 //	// PAKIMOR _FIXME
 //	public UMLAddComponentRefactoringAction(EList<Node> targets) {
 //		getUmlTargetNodes().addAll(targets);
-//		setUmlSourcePackage(UMLManager.getInstance().getComponentPackage());
+//		setUmlSourcePackage(umlManager.getComponentPackage());
 //		setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 //		setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 //		setParameters();
@@ -55,32 +59,31 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //		createPostCondition();
 //	}
 //
-//	// private UMLAddComponentRefactoringAction(UMLAddComponentRefactoringAction
-//	// umlAddComponentRefactoringAction) {
-//	// setUmlTargetNodes(umlAddComponentRefactoringAction.getUmlTargetNodes());
-//	// setUmlSourcePackage(UMLManager.getComponentPackage());
-//	// setCost(umlAddComponentRefactoringAction.getCost());
-//	// setNumOfChanges(umlAddComponentRefactoringAction.getNumOfChanges());
-//	// setParameters(umlAddComponentRefactoringAction.getParameters());
-//	// createPreCondition(umlAddComponentRefactoringAction.getPre());
-//	// createPostCondition(umlAddComponentRefactoringAction.getPost());
-//	// }
+//	private UMLAddComponentRefactoringAction(UMLAddComponentRefactoringAction umlAddComponentRefactoringAction) {
+//		setUmlTargetNodes(umlAddComponentRefactoringAction.getUmlTargetNodes());
+//		setUmlSourcePackage(umlManager.getComponentPackage());
+//		setCost(umlAddComponentRefactoringAction.getCost());
+//		setNumOfChanges(umlAddComponentRefactoringAction.getNumOfChanges());
+//		setParameters(umlAddComponentRefactoringAction.getParameters());
+//		createPreCondition(umlAddComponentRefactoringAction.getPre());
+//		createPostCondition(umlAddComponentRefactoringAction.getPost());
+//	}
 //
-//	// private void createPostCondition(PostCondition post) {
-//	// setPost(post);
-//	// }
-//	//
-//	// private void createPreCondition(PreCondition pre) {
-//	// setPre(pre);
-//	// }
+//	private void createPostCondition(PostCondition post) {
+//		setPost(post);
+//	}
 //
-//	// private void setParameters(EList<Parameter> parameters) {
-//	// getParameters().addAll(parameters);
-//	// }
-//	//
-//	// public UMLAddComponentRefactoringAction cloneAction(){
-//	// return new UMLAddComponentRefactoringAction(this);
-//	// }
+//	private void createPreCondition(PreCondition pre) {
+//		setPre(pre);
+//	}
+//
+//	private void setParameters(EList<Parameter> parameters) {
+//		getParameters().addAll(parameters);
+//	}
+//
+//	public UMLAddComponentRefactoringAction cloneAction() {
+//		return new UMLAddComponentRefactoringAction(this);
+//	}
 //
 //	@Override
 //	public void execute() {
@@ -106,62 +109,61 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	@Override
 //	public void log() {
 //		Controller.logger_.info("UMLAddComponentRefactoringAction");
-//		// if(getUmlCompToAdd() != null)
-//		// Controller.logger_.info(getUmlCompToAdd().toString());
+//		if (getUmlCompToAdd() != null)
+//			Controller.logger_.info(getUmlCompToAdd().toString());
 //	}
 //
-//	// public EList<Node> getUmlTargetNodes() {
-//	// return umlTargetNodes;
-//	// }
-//	//
-//	// public void setUmlTargetNodes(EList<Node> umlTargetNodes) {
-//	// this.umlTargetNodes = umlTargetNodes;
-//	// }
+//	public EList<Node> getUmlTargetNodes() {
+//		return umlTargetNodes;
+//	}
 //
-//	// public Package getUmlSourcePackage() {
-//	// return umlSourcePackage;
-//	// }
-//	//
-//	// public void setUmlSourcePackage(Package sourcePackage) {
-//	// this.umlSourcePackage = sourcePackage;
-//	// }
+//	public void setUmlTargetNodes(EList<Node> umlTargetNodes) {
+//		this.umlTargetNodes = umlTargetNodes;
+//	}
 //
-//	// public void setNumberOfComponents(int number_of_components) {
-//	// }
+//	public Package getUmlSourcePackage() {
+//		return umlSourcePackage;
+//	}
+//
+//	public void setUmlSourcePackage(Package sourcePackage) {
+//		this.umlSourcePackage = sourcePackage;
+//	}
+//
+//	public void setNumberOfComponents(int number_of_components) {
+//	}
 //
 //	@Override
 //	public void setParameters() {
-//		// ACTION add PARAMETERS
+////		 ACTION add PARAMETERS
 //		List<Parameter> addParams = new ArrayList<>();
-//		// PAKIMOR _FIXME le add non dovrebbero avere come attributo l'oggetto da creare
+////		 PAKIMOR _FIXME le add non dovrebbero avere come attributo l'oggetto da creare
 //
-//		// setCompToAddSVP(Manager.createSingleValueParameter("Component.allInstances()->select(c
-//		// | c.name = 'Pippo Node')"));
-//		// addParams.add(getCompToAddSVP());
+//		 setCompToAddSVP(manager.createSingleValueParameter("Component.allInstances()->select(c | c.name = 'Pippo Node')"));
+//		 addParams.add(getCompToAddSVP());
 //
 //		if (umlCompToAdd != null) {
-//			setCompToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//					((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentQuery(umlCompToAdd)));
+//			setCompToAddSVP(manager.createSingleValueParameter(
+//					((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getComponentQuery(umlCompToAdd)));
 //			addParams.add(getCompToAddSVP());
 //		}
 //
-//		setTargetNodesMVP(Manager.getInstance(null)
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(umlTargetNodes)));
+//		setTargetNodesMVP(manager.getInstance(null)
+//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getNodesQuery(umlTargetNodes)));
 //		addParams.add(getTargetNodesMVP());
 //
-//		// List<Component> list_of_random_components = new ArrayList<Component>();
-//		// list_of_random_components = OclManager.getRandomComponents();
-//		// setDeployedCompsMVP(Manager.createMultipleValuedParameter(OclStringManager.getComponentsQuery(list_of_random_components)));
-//		// addParams.add(getDeployedCompsMVP());
+//		 List<Component> list_of_random_components = new ArrayList<Component>();
+//		 list_of_random_components = Oclmanager.getRandomComponents();
+//		 setDeployedCompsMVP(manager.createMultipleValuedParameter(OclStringManger.getComponentsQuery(list_of_random_components)));
+//		 addParams.add(getDeployedCompsMVP());
 //
-//		setDeployedCompsMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
+//		setDeployedCompsMVP(manager
+//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
 //		addParams.add(getDeployedCompsMVP());
 //
-//		setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//		setAllNodesMVP(manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
 //		addParams.add(getAllNodesMVP());
 //
-//		setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
+//		setAllCompsMVP(manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
 //		addParams.add(getAllCompsMVP());
 //
 //		getParameters().addAll(addParams);
@@ -172,19 +174,21 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //		// creo la preCondition
 //		PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
 //
-//		FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddComponentPreCondition");
+//		FOLSpecification addPreSpecification = manager
+//				.createFOLSpectification("AddComponentPreCondition");
 //
-//		AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
+//		AndOperator addPreAnd = manager.createAndOperator();
 //
-//		// NotOperator addPreAndNot = Manager.createNotOperator();
-//		// ExistsOperator addPreAndNotExists =
-//		// Manager.createExistsOperator(getCompToAddSVP(), getAllCompsMVP());
-//		//
-//		// addPreAndNot.setArgument(addPreAndNotExists);
-//		// addPreAnd.getArguments().add(addPreAndNot);
+//		NotOperator addPreAndNot = manager.createNotOperator();
+//		ExistsOperator addPreAndNotExists = manager.createExistsOperator(getCompToAddSVP(), getAllCompsMVP());
 //
-//		ForAllOperator addPreAndForall = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());
-//		ExistsOperator addPreAndForallExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());
+//		addPreAndNot.setArgument(addPreAndNotExists);
+//		addPreAnd.getArguments().add(addPreAndNot);
+//
+//		ForAllOperator addPreAndForall = manager
+//				.createForAllOperator(getTargetNodesMVP());
+//		ExistsOperator addPreAndForallExists = manager
+//				.createExistsOperator(getAllNodesMVP());
 //		addPreAndForall.setArgument(addPreAndForallExists);
 //		addPreAnd.getArguments().add(addPreAndForall);
 //
@@ -197,24 +201,24 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	public void createPostCondition() {
 //		PostCondition addPost = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
 //
-//		FOLSpecification addPostSpec = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddNodePostcondition");
+//		FOLSpecification addPostSpec = manager.createFOLSpectification("AddNodePostcondition");
 //
-//		AndOperator addPostAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
+//		AndOperator addPostAnd = manager.createAndOperator();
 //
-//		ExistsOperator addPostAndExistsInC = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getCompToAddSVP(), getAllCompsMVP());
+//		ExistsOperator addPostAndExistsInC = manager.createExistsOperator(getCompToAddSVP(), getAllCompsMVP());
 //
 //		addPostAnd.getArguments().add(addPostAndExistsInC);
 //
-//		ForAllOperator addPostAndForallTargets = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());
-//		AndOperator addPostAndForallTargetsAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//		ExistsOperator addPostAndForallTargetsExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());
+//		ForAllOperator addPostAndForallTargets = manager.createForAllOperator(getTargetNodesMVP());
+//		AndOperator addPostAndForallTargetsAnd = manager.createAndOperator();
+//		ExistsOperator addPostAndForallTargetsExists = manager.createExistsOperator(getAllNodesMVP());
 //		addPostAndForallTargetsAnd.getArguments().add(addPostAndForallTargetsExists);
 //
-//		// TODO getDeployedComps è l'insieme delle Component deployate sui target Nodes.
-//		// Non va bene: la condition dice che
-//		// su ogni target Node ci deve stare la Component aggiunta. Con l'unione basta
-//		// che stia su uno dei target...
-//		ExistsOperator addPostAndExistsInD = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getCompToAddSVP(), getDeployedCompsMVP());
+//		/* TODO getDeployedComps è l'insieme delle Component deployate sui target Nodes.
+//		 Non va bene: la condition dice che
+//		 su ogni target Node ci deve stare la Component aggiunta. Con l'unione basta
+//		 che stia su uno dei target...*/
+//		ExistsOperator addPostAndExistsInD = manager.createExistsOperator(getCompToAddSVP(), getDeployedCompsMVP());
 //
 //		addPostAndForallTargetsAnd.getArguments().add(addPostAndExistsInD);
 //		addPostAndForallTargets.setArgument(addPostAndForallTargetsAnd);
@@ -226,73 +230,68 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //
 //	}
 //
-//	// public void setPreCondition() {
-//	// // creo la preCondition
-//	// PreCondition preCondition =
-//	// LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-//	//
-//	// FOLSpecification addPreSpecification =
-//	// Manager.createFOLSpectification("AddComponentPreCondition");
-//	//
-//	// AndOperator addPreAnd = Manager.createAndOperator();
-//	//
-//	// // creo la condizione NOT della preCondition
-//	// NotOperator addPreAndNot = Manager.createNotOperator();
-//	// ExistsOperator addPreAndNotExists =
-//	// Manager.createExistsOperator(getCompToAddSVP(),
-//	// Manager.createMultipleValuedParameter(OclStringManager.getAllComponentsQuery()));
-//	//
-//	// addPreAndNot.setArgument(addPreAndNotExists);
-//	// addPreAnd.getArguments().add(addPreAndNot);
-//	//
-//	// // creo la forALL sui nodi
-//	// ForAllOperator addPreAndForall =
-//	// Manager.createForAllOperator(getTargetNodesMVP());
-//	// ExistsOperator addPreAndForallExists = Manager
-//	// .createExistsOperator(Manager.createMultipleValuedParameter(OclStringManager.getAllNodesQuery()));
-//	// addPreAndForall.setArgument(addPreAndForallExists);
-//	// addPreAnd.getArguments().add(addPreAndForall);
-//	//
-//	// addPreSpecification.setRootOperator(addPreAnd);
-//	// preCondition.setConditionFormula(addPreSpecification);
-//	// // setto la preCond della Action
-//	// setPre(preCondition);
-//	// }
-//	//
-//	// public void setPostCondition() {
-//	// PostCondition addPost =
-//	// LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-//	//
-//	// FOLSpecification addPostSpec =
-//	// Manager.createFOLSpectification("AddNodePostcondition");
-//	//
-//	// AndOperator addPostAnd = Manager.createAndOperator();
-//	//
-//	// ExistsOperator addPostAndExistsInC =
-//	// Manager.createExistsOperator(getCompToAddSVP(),
-//	// Manager.createMultipleValuedParameter(OclStringManager.getAllComponentsQuery()));
-//	//
-//	// addPostAnd.getArguments().add(addPostAndExistsInC);
-//	//
-//	// ForAllOperator addPostAndForallTargets =
-//	// Manager.createForAllOperator(getTargetNodesMVP());
-//	// AndOperator addPostAndForallTargetsAnd = Manager.createAndOperator();
-//	// ExistsOperator addPostAndForallTargetsExists = Manager
-//	// .createExistsOperator(Manager.createMultipleValuedParameter(OclStringManager.getAllNodesQuery()));
-//	// addPostAndForallTargetsAnd.getArguments().add(addPostAndForallTargetsExists);
-//	// ExistsOperator addPostAndExistsInD =
-//	// Manager.createExistsOperator(getCompToAddSVP(),
-//	// Manager.createMultipleValuedParameter(OclStringManager.getAllDeployedElementsQuery(getUmlTargetNodes())));
-//	// addPostAndForallTargetsAnd.getArguments().add(addPostAndExistsInD);
-//	//
-//	// addPostAndForallTargets.setArgument(addPostAndForallTargetsAnd);
-//	// addPostAnd.getArguments().add(addPostAndForallTargets);
-//	//
-//	// addPostSpec.setRootOperator(addPostAnd);
-//	// addPost.setConditionFormula(addPostSpec);
-//	// setPost(addPost);
-//	//
-//	// }
+//	public void setPreCondition() {
+//	  creo la preCondition
+//	 PreCondition preCondition =
+//	 LogicalSpecificationFactory.eINSTANCE.createPreCondition();
+//	
+//	 FOLSpecification addPreSpecification =
+//	 manager.createFOLSpectification("AddComponentPreCondition");
+//	
+//	 AndOperator addPreAnd = manager.createAndOperator();
+//	
+//	//  creo la condizione NOT della preCondition
+//	 NotOperator addPreAndNot = manager.createNotOperator();
+//	 ExistsOperator addPreAndNotExists =
+//	 manager.createExistsOperator(getCompToAddSVP(),
+//	 manager.createMultipleValuedParameter(OclStringManger.getAllComponentsQuery()));
+//	
+//	 addPreAndNot.setArgument(addPreAndNotExists);
+//	 addPreAnd.getArguments().add(addPreAndNot);
+//	
+//	  creo la forALL sui nodi
+//	 ForAllOperator addPreAndForall =
+//	 manager.createForAllOperator(getTargetNodesMVP());
+//	 ExistsOperator addPreAndForallExists = Manager
+//	 .createExistsOperator(manager.createMultipleValuedParameter(OclStringManger.getAllNodesQuery()));
+//	 addPreAndForall.setArgument(addPreAndForallExists);
+//	 addPreAnd.getArguments().add(addPreAndForall);
+//	
+//	 addPreSpecification.setRootOperator(addPreAnd);
+//	 preCondition.setConditionFormula(addPreSpecification);
+//	  setto la preCond della Action
+//	 setPre(preCondition);
+//	 }
+//
+//	public void setPostCondition() {
+//		PostCondition addPost = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
+//
+//		FOLSpecification addPostSpec = manager.createFOLSpectification("AddNodePostcondition");
+//
+//		AndOperator addPostAnd = manager.createAndOperator();
+//
+//		ExistsOperator addPostAndExistsInC = manager.createExistsOperator(getCompToAddSVP(),
+//				manager.createMultipleValuedParameter(OclStringManger.getAllComponentsQuery()));
+//
+//		addPostAnd.getArguments().add(addPostAndExistsInC);
+//
+//		ForAllOperator addPostAndForallTargets = manager.createForAllOperator(getTargetNodesMVP());
+//		AndOperator addPostAndForallTargetsAnd = manager.createAndOperator();
+//		ExistsOperator addPostAndForallTargetsExists = Manager
+//				.createExistsOperator(manager.createMultipleValuedParameter(OclStringmanager.getAllNodesQuery()));
+//		addPostAndForallTargetsAnd.getArguments().add(addPostAndForallTargetsExists);
+//		ExistsOperator addPostAndExistsInD = manager.createExistsOperator(getCompToAddSVP(), Manager
+//				.createMultipleValuedParameter(OclStringManger.getAllDeployedElementsQuery(getUmlTargetNodes())));
+//		addPostAndForallTargetsAnd.getArguments().add(addPostAndExistsInD);
+//
+//		addPostAndForallTargets.setArgument(addPostAndForallTargetsAnd);
+//		addPostAnd.getArguments().add(addPostAndForallTargets);
+//
+//		addPostSpec.setRootOperator(addPostAnd);
+//		addPost.setConditionFormula(addPostSpec);
+//		setPost(addPost);
+//
+//	}
 //
 //	public Component getUmlCompToAdd() {
 //		return umlCompToAdd;
