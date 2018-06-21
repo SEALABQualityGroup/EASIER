@@ -1,21 +1,32 @@
 package it.univaq.disim.sealab.availability.aemilia;
 
+import java.io.BufferedWriter;
 import java.io.File;
-
-import Jama.Matrix;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Thread to build the CTMC and compute the stationary distribution.
  */
 public class AnalysisRunnable implements Runnable {
-	
+
 	private Analysis analysis;
 
 	private File aemFile;
-	
+
 	private File ttkernel;
-	
-	private Matrix stationaryDistribution;
+
+	/** Availability (all operational components) */
+	public static boolean AVAILABILITY_FULL = false;
+
+	/** Availability (at least one operational component) */
+	public static boolean AVAILABILITY_DEGRADED = false;
+
+	/** Skip the creation of .psm files if already present */
+	public static boolean SKIP_PSM_CREATION = false;
+
+	/** Skip the creation of .ava files if already present */
+	public static boolean SKIP_AVA_CREATION = false;
 
 	/**
 	 * Creates a new instance of the thread.
@@ -40,7 +51,7 @@ public class AnalysisRunnable implements Runnable {
 	public void setTTKernel(File ttkernel) {
 		this.ttkernel = ttkernel;
 	}
-	
+
 	/**
 	 * Returns the instance of Analysis
 	 * corresponding to this thread.
@@ -48,31 +59,86 @@ public class AnalysisRunnable implements Runnable {
 	public Analysis getAnalysis() {
 		return analysis;
 	}
-	
+
 	/**
-	 * Return the stationary distribution.
-	 * @return stationary distribution
+	 * Return the .AVA file containing
+	 * availability measures.
+	 * @return File object corresponding to the .AVA file
 	 */
-	public Matrix getStationaryDistribution() {
-		return stationaryDistribution;
+	public File getAvaFile() {
+		return new File(aemFile.getAbsolutePath() + ".ava");
 	}
-	
+
+	/**
+	 * Write the availability results to file.
+	 */
+	public void writeResults() {
+		final File results = getAvaFile();
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(results))) {
+			writer.write(String.format("%s - Availability (all operational components): %.10f\n",
+					aemFile, analysis.getFullyOperationalAvailability()));
+			writer.write(String.format("%s - Availability (at least one operational component): %.10f\n",
+					aemFile, analysis.getDegradedAvailability()));
+		} catch (Exception e) {
+			System.err.println("Unable to write results to " + results);
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Thread body.
 	 */
 	@Override
 	public void run() {
 		analysis = new Analysis(aemFile);
-		
-		// Parse the Aemilia specification
-		if (ttkernel == null) {
-			analysis.parse();
-		} else {
-			analysis.parse(ttkernel);
+
+		if (ttkernel != null) {
+			analysis.setTTKernel(ttkernel);
 		}
-		
+
+		// Generate the .psm file
+		if (!SKIP_PSM_CREATION ||
+			!analysis.getParser().getPSMFile().exists()) {
+			try {
+				analysis.generatePSM();
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+				e.printStackTrace();
+				return;
+			}
+		}
+
+		// Check if we need to compute availability
+		if (SKIP_AVA_CREATION && getAvaFile().exists()) {
+			if (AVAILABILITY_FULL) {
+				analysis.readFullyOperationalAvailability(getAvaFile());
+			}
+			if (AVAILABILITY_DEGRADED) {
+				analysis.readDegradedAvailability(getAvaFile());
+			}
+			return;
+		}
+
+		// Parse the Aemilia specification
+		analysis.parse();
+
 		// Compute the stationary distribution
-		stationaryDistribution = analysis.getStationaryDistribution();
+		analysis.getStationaryDistribution();
+
+		// Compute the fully operational availability
+		if (AVAILABILITY_FULL) {
+			analysis.getFullyOperationalAvailability();
+		}
+
+		// Compute the degraded availability
+		if (AVAILABILITY_DEGRADED) {
+			analysis.getDegradedAvailability();
+		}
+
+		// Write the results to file
+		writeResults();
+
+		analysis.clean();
 	}
 
 }

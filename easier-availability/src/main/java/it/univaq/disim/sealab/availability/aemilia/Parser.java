@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Jama.Matrix;
+import net.axiak.runtime.SpawnRuntime;
 
 /**
  * Generates a .PSM from .AEM file (using TTKernel)
@@ -20,19 +21,17 @@ import Jama.Matrix;
  * Parses the .PSM to build a CTMC.
  */
 public class Parser {
-	
+
 	final static private String CONFIG_FILE = "config.properties";
-	
+
 	private File aemFile;
-	
+
 	private File ttkernel;
 
 	private Properties prop = new Properties();
-	
-	private Matrix matrix;
 
 	private ArrayList<String> states;
-	
+
 	/**
 	 * Creates an instance of PSMParser.
 	 * @param aemFile Aemilia file
@@ -58,21 +57,13 @@ public class Parser {
 	}
 
 	/**
-	 * Returns the transition matrix.
-	 * @return transition matrix
-	 */
-	public Matrix getMatrix() {
-		return matrix;
-	}
-
-	/**
 	 * Returns the states labels.
 	 * @return
 	 */
 	public ArrayList<String> getStates() {
 		return states;
 	}
-	
+
 	/**
 	 * Get the name of the .PSM file.
 	 * @return File object corresponding to the .PSM file
@@ -80,10 +71,10 @@ public class Parser {
 	public File getPSMFile() {
 		return new File(aemFile.getAbsolutePath() + ".psm");
 	}
-	
+
 	/**
 	 * Loads config parameters from CONFIG_FILE.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private void loadConfig() throws IOException {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
@@ -94,48 +85,51 @@ public class Parser {
 		}
 		this.ttkernel = new File(prop.getProperty("ttkernel"));
 	}
-	
+
 	/**
 	 * Generates a .PSM containing a CTMC from an Aemilia specification.
 	 * (uses TTKernel)
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void generatePSM() throws IOException {
 		if (aemFile.exists()) {
+			if (ttkernel == null) {
+				loadConfig();
+			}
 			final String filename = aemFile.getAbsolutePath();
 			try {
-				Runtime.getRuntime().exec(
+				SpawnRuntime.getInstance().exec(
 						String.format("%s -g %s %s.tmp", ttkernel, filename, filename))
 				.waitFor();
 			} catch (InterruptedException e) {
 				System.err.println("The execution of TTKernel was interrupted.");
 				e.printStackTrace();
-			}			
+			}
 		} else {
 			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
 		}
 	}
-	
+
 	/**
 	 * Parse the .PSM file from the end to get
 	 * total number of states in the CTMC.
 	 * @return number of states
 	 * 	(0 if the method is unable to parse the file)
 	 */
-	public int getNumberOfState() {		
+	public int getNumberOfStates() {
 		final File psmFile = getPSMFile();
-		
+
 		try (RandomAccessFile file = new RandomAccessFile(psmFile, "r")) {
-			
+
 			// Counts the number of '>'
 			int counter = 0;
-			
+
 			// Move to the end of the file
 			long pos = file.length() - 1;
 			file.seek(pos);
-			
+
 			// Start reading backward until we find 3 '\n>'
-			for (char c1,c2; pos >=0 && counter < 3; pos -= 1) {
+			for (char c1,c2; pos >=0 && counter < 2; pos -= 1) {
 				file.seek(pos);
 				c1 = (char) file.read();
 				c2 = (char) file.read();
@@ -143,10 +137,10 @@ public class Parser {
 					counter++;
 				}
 			}
-			
+
 			// Now read the entire line that should
 			// contain the last global state number
-			Matcher m = Pattern.compile("Global state ([^:]+):").matcher(file.readLine());
+			Matcher m = Pattern.compile("([0-9]+) states").matcher(file.readLine());
 			if (m.find()) {
 				return Integer.parseInt(m.group(1));
 			}
@@ -156,37 +150,27 @@ public class Parser {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Parses a .PSM file into a matrix.
 	 * @return CTMC transition matrix
 	 */
 	public Matrix parsePSM() {
-		
-		try {
-			if (ttkernel == null) {
-				loadConfig();
-			}
-			generatePSM();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
-		
 		final File psmFile = getPSMFile();
-		
+
 		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):");
 		final Pattern localStatePattern = Pattern.compile("Local state of ([^:]+):");
 		final Pattern portPattern = Pattern.compile("<[^\\.]+(\\.[^, ]+)");
 		final Pattern transitionPattern = Pattern.compile("Rate:\\s+([0-9]+\\.?[0-9]*)");
 		final Pattern targetStatePattern = Pattern.compile("Derivative global state:\\s+([0-9]+)");
-		
+
 		states = new ArrayList<String>();
-		
-		matrix = new Matrix(new double[1][1]);
-		
-		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {			
+
+		int numberOfStates = getNumberOfStates();
+
+		Matrix matrix = new Matrix(new double[numberOfStates][numberOfStates+1]);
+
+		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {
 			String line;
 			int sourceState = 0;
 			String sourceStateLabel = "";
@@ -194,7 +178,7 @@ public class Parser {
 			boolean firstTransition = true;
 			Matcher m;
 			while ((line = br.readLine()) != null) {
-				
+
 				// Global state
 				m = globalStatePattern.matcher(line);
 				if (m.find()) {
@@ -203,21 +187,21 @@ public class Parser {
 					firstTransition = true;
 					continue;
 				}
-				
+
 				// Local state
 				m = localStatePattern.matcher(line);
 				if (m.find()) {
 					sourceStateLabel += m.group(1);
 					continue;
 				}
-				
+
 				// Element port
 				m = portPattern.matcher(line);
 				if (m.find()) {
 					sourceStateLabel += m.group(1) + ", ";
 					continue;
 				}
-				
+
 				// Transition
 				m = transitionPattern.matcher(line);
 				if (m.find()) {
@@ -228,15 +212,11 @@ public class Parser {
 					rate = Double.parseDouble(m.group(1));
 					continue;
 				}
-				
+
 				// Target state
 				m = targetStatePattern.matcher(line);
 				if (m.find()) {
-					int targetState = Integer.parseInt(m.group(1));
-					if (matrix.getRowDimension() < targetState) {
-						matrix = enlarge(matrix, targetState - matrix.getRowDimension());
-					}
-					matrix.set(sourceState - 1, targetState - 1, rate);
+					matrix.set(sourceState - 1, Integer.parseInt(m.group(1)) - 1, rate);
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -248,22 +228,5 @@ public class Parser {
 		}
 
 		return matrix;
-	}
-	
-	/**
-	 * Enlarge a square matrix.
-	 * @param m starting square submatrix
-	 * @param factor how many rows and columns are to be added
-	 * @return a new enlarged matrix containing the given submatrix
-	 */
-	private static Matrix enlarge(final Matrix m, int factor) {
-		final Matrix m1 = new Matrix(
-				new double[m.getRowDimension() + factor][m.getColumnDimension() + factor]);
-		for (int i = 0; i < m.getRowDimension(); i++) {
-			for (int j = 0; j < m.getColumnDimension(); j++) {
-				m1.set(i, j, m.get(i, j));
-			}
-		}
-		return m1;
 	}
 }
