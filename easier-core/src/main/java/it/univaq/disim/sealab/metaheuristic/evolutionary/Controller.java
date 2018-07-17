@@ -95,6 +95,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	private boolean cleaningTmp = false;
 
 	private Timestamp timestamp;
+	private double cloningWeight;
+	private double constChangesWeight;
 
 	// private static String BASENAME =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
@@ -513,6 +515,10 @@ public class Controller extends AbstractAlgorithmRunner {
 			workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
 		}
 		cleaningTmp = Boolean.parseBoolean(prop.getProperty("cleaningTmp", Boolean.toString(false)));
+		
+		cloningWeight = Double.parseDouble(prop.getProperty("cloningWeight", Double.toString(1.3)));
+		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
+		
 	}
 
 	public Properties getProperties() {
@@ -938,6 +944,9 @@ public class Controller extends AbstractAlgorithmRunner {
 	        return false;
 	    }
 	}
+	
+	public double getCloningWeight() {return cloningWeight;}
+	public double getConstChangesWeight() {return constChangesWeight;}
 
 }
 

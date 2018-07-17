@@ -62,7 +62,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		this.createPreCondition();
 		this.createPostCondition();
 
-		this.setNumOfChanges(1);
+		this.setNumOfChanges(sol.getController().getConstChangesWeight());
 	}
 
 	private ConstInit getRandomConst(RSolution sol) {
