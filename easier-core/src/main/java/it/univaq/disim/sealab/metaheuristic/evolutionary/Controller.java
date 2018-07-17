@@ -23,11 +23,13 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.eclipse.core.internal.registry.Handle;
 import org.eclipse.emf.common.util.URI;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -208,7 +210,8 @@ public class Controller extends AbstractAlgorithmRunner {
 		setParetoFolder(
 				paretoFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
 		setLogFolder(logFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
-		setAvailabilityFolder(availabilityFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__" + File.separator);
+		setAvailabilityFolder(availabilityFolder + this.getProblem().getName() + "__" + sdf.format(timestamp) + "__"
+				+ File.separator);
 
 		new File(getTmpFolder()).mkdirs();
 		new File(getParetoFolder()).mkdirs();
@@ -262,6 +265,11 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		Collections.sort(population, new RankingAndCrowdingDistanceComparator<RSolution>());
 		Collections.reverse(population);
+
+//		printFinalSolutionSet(population);
+//		if (!referenceParetoFront.equals("")) {
+//			printQualityIndicators(population, referenceParetoFront);
+//		}
 
 		logger_.info("Number of non-dominated solutions (sorted by Crowding): " + population.size());
 
@@ -324,19 +332,25 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		getProperties().setProperty("Total Elapsed Time", totalTime.toString());
-		logger_.getHandlers()[0].flush();
-		logger_.getHandlers()[0].close();
+		
+		for(Handler handle : logger_.getHandlers()) {
+			handle.flush();
+			handle.close();
+		}
+//		logger_.getHandlers()[0].flush();
+//		logger_.getHandlers()[0].close();
+		
 
 	}
 
 	private synchronized void generateAvailability(List<RSolution> paretoPop) {
 		File availabilityDir = new File(availabilityFolder);
 		try {
-			
-			String[] types = {"mmaemilia"};
+
+			String[] types = { "mmaemilia" };
 			FileFilter filter = new FileTypesFilter(types);
 			FileUtils.copyDirectory(new File(getParetoFolder()), availabilityDir, filter);
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -515,10 +529,10 @@ public class Controller extends AbstractAlgorithmRunner {
 			workloadRange[1] = Double.parseDouble(workloadRangeString[1]);
 		}
 		cleaningTmp = Boolean.parseBoolean(prop.getProperty("cleaningTmp", Boolean.toString(false)));
-		
+
 		cloningWeight = Double.parseDouble(prop.getProperty("cloningWeight", Double.toString(1.3)));
 		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
-		
+
 	}
 
 	public Properties getProperties() {
@@ -572,23 +586,23 @@ public class Controller extends AbstractAlgorithmRunner {
 		try {
 			analyzableCSV = new FileWriter(new File(getParetoFolder() + "analyzableResults.csv"));
 			List<String> line = new ArrayList<String>();
-//			line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
+			// line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
 			line.add("SolID");
 			line.add("PerQ");
 			line.add("#Changes");
 			line.add("#PAs");
-			for(int i = 0; i<number_of_actions; i++) {
+			for (int i = 0; i < number_of_actions; i++) {
 				line.add("ActionTarget");
 				line.add("FoC/Null");
 			}
 			CSVUtils.writeLine(analyzableCSV, line);
-			
+
 			for (RSolution solution : population) {
 				writeSolutionToCSV(solution);
 			}
 			analyzableCSV.flush();
 			analyzableCSV.close();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -712,17 +726,18 @@ public class Controller extends AbstractAlgorithmRunner {
 			System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
 			e.printStackTrace();
 		}
-		
-//		FileWriter analyzableCSV = new FileWriter(new File(getParetoFolder() + "analyzableResults.csv"));
-		
+
+		// FileWriter analyzableCSV = new FileWriter(new File(getParetoFolder() +
+		// "analyzableResults.csv"));
+
 		line = null;
 		line = new ArrayList<String>();
-		String solID = (maxEvaluations/populationSize)+"-"+populationSize+":"+solution.getName();
+		String solID = (maxEvaluations / populationSize) + "-" + populationSize + ":" + solution.getName();
 		line.add(solID);
 		line.add(String.valueOf(solution.getPerfQ()));
 		line.add(String.valueOf(solution.getNumOfChanges()));
 		line.add(String.valueOf(solution.getPAs()));
-		
+
 		for (RefactoringAction action : ref.getActions()) {
 			if (action.getName() == null)
 				action.setName(action.getClass().getSimpleName());
@@ -737,7 +752,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			line.addAll(Arrays.asList(target, factor));
 
 		}
-		
+
 		CSVUtils.writeLine(analyzableCSV, line);
 	}
 
@@ -918,7 +933,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setLogFolder(String logFolder) {
 		this.logFolder = logFolder;
 	}
-	
+
 	public void setAvailabilityFolder(String availabilityFolder) {
 		this.availabilityFolder = availabilityFolder;
 	}
@@ -930,24 +945,31 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setParetoFolder(String paretoFolder) {
 		this.paretoFolder = paretoFolder;
 	}
-	
+
 	private class FileTypesFilter implements FileFilter {
-	    String[] types;
-	    FileTypesFilter(String[] types) {
-	        this.types = types;
-	    }
-	    public boolean accept(File f) {
-	        if (f.isDirectory()) return true;
-	        for (String type : types) {
-	            if (f.getName().endsWith(type)) return true;
-	        }
-	        return false;
-	    }
+		String[] types;
+
+		FileTypesFilter(String[] types) {
+			this.types = types;
+		}
+
+		public boolean accept(File f) {
+			if (f.isDirectory())
+				return true;
+			for (String type : types) {
+				if (f.getName().endsWith(type))
+					return true;
+			}
+			return false;
+		}
 	}
-	
-	public double getCloningWeight() {return cloningWeight;}
-	public double getConstChangesWeight() {return constChangesWeight;}
+
+	public double getCloningWeight() {
+		return cloningWeight;
+	}
+
+	public double getConstChangesWeight() {
+		return constChangesWeight;
+	}
 
 }
-
-

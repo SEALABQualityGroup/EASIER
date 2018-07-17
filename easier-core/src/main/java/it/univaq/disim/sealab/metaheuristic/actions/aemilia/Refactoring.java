@@ -21,12 +21,14 @@ public class Refactoring {
 		setRefactoring(LogicalSpecificationFactory.eINSTANCE.createRefactoring());
 		this.setSolution(solution);
 		actions = new ArrayList<>();
+//		actions = solution.getVariableValue(0).getRefactoring().getActions();
 	}
 	
 	public Refactoring clone(RSolution solution) {
 		Refactoring newRefactoring = new Refactoring(solution);
 		
 		newRefactoring.setCost(this.getCost());
+//		newRefactoring.setNumOfChanges(this.getNumOfChanges());
 		newRefactoring.setName(this.getName());
 		newRefactoring.setPost(this.getPost());
 		newRefactoring.setPre(this.getPre());
@@ -99,7 +101,12 @@ public class Refactoring {
 	}
 	
 	public Double getNumOfChanges() {
-		return this.getRefactoring().getNumOfChanges();
+		double numOfChanges = 0.0;
+		for(RefactoringAction a : solution.getVariableValue(0).getRefactoring().getActions()) {
+			numOfChanges += a.getNumOfChanges();
+		}
+		setNumOfChanges(numOfChanges);
+		return numOfChanges;
 	}
 	
 }

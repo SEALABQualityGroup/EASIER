@@ -30,7 +30,7 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 	 */
 	public CustomNSGAII(Problem<S> problem, int maxIterations, int populationSize,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
-			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator<S> evaluator) {
+			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
 
