@@ -3,7 +3,6 @@ package it.univaq.disim.sealab.metaheuristic.actions.aemilia;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.common.util.BasicEList;
@@ -16,10 +15,8 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
-import logicalSpecification.Action;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
@@ -129,7 +126,22 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		// cloningOutputInteractions();
 		// cloningInputInteractions();
 		// cloningArchitecturalInteraction();
+		
+		try {
+			if(!isThereAnyClone()) {
+				throw new Exception("error in clone action");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		log();
+	}
+	
+	private boolean isThereAnyClone(){
+//		((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().contains(clonedAEI);
+		return ((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().contains(clonedAEI);
+		
 	}
 
 	public void log() {
