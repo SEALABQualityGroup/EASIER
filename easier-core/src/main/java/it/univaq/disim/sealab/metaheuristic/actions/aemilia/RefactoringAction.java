@@ -6,4 +6,5 @@ import logicalSpecification.Action;
 public interface RefactoringAction extends Action{
 	
 	public RefactoringAction clone(RSolution solution);
+	public void setSolution(RSolution sol);
 }

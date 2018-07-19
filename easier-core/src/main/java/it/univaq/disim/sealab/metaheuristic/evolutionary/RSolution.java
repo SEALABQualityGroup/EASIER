@@ -100,7 +100,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		resetParents();
 		init(s.problem.getController());
 
-		this.copyRefactoringVariable(s.getVariableValue(VARIABLE_INDEX));
+		this.copyRefactoringVariable(s.getVariableValue(VARIABLE_INDEX), this);
 
 		for (int i = 0; i < s.problem.getNumberOfObjectives(); i++) {
 			this.setObjective(i, s.getObjective(i));
@@ -211,8 +211,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		return this.problem;
 	}
 
-	private void copyRefactoringVariable(RSequence variableValue) {
-		RSequence newSeq = new RSequence(variableValue, this);
+	private void copyRefactoringVariable(RSequence variableValue, RSolution sol) {
+		RSequence newSeq = new RSequence(variableValue, sol);
 
 		this.setVariableValue(VARIABLE_INDEX, newSeq);
 	}
@@ -232,11 +232,13 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
+//				_new.setSolution(this);
 				assert (_new.equals(s1.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			for (int j = point; j < s2.getLength(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
+//				_new.setSolution(this);
 				assert (_new.equals(s2.getActionAt(j)));
 				seq.insert(j, _new);
 			}
@@ -664,6 +666,10 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 	public String getMmaemiliaFolderPath() {
 		return mmaemiliaFolderPath;
+	}
+	
+	public String getMmaemiliaFilePath() {
+		return mmaemiliaFilePath;
 	}
 
 	public void setMmaemiliaFolderPath(String mmaemiliaFolderPath) {

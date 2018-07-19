@@ -83,7 +83,7 @@ public class AemiliaManager extends MetamodelManager {
 		setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
 		setRewFilePath(modelUri + getRewFileExtension());
 		setRewmappingFilePath(modelUri + getRewmappingFileExtension());
-		
+
 		// unloadModelResource();
 		packageRegistering();
 		getOclManager().inizialize(getResourceSet());
@@ -132,8 +132,8 @@ public class AemiliaManager extends MetamodelManager {
 
 			getTwoEaglesBridge().aemiliaModelUpdate(valFilePath, rewMappingFilePath);
 		} catch (Exception e) {
-			System.err.println( ExceptionUtils.getStackTrace(e));
-			System.err.println("Solution number: "+solution.getName());
+			System.err.println(ExceptionUtils.getStackTrace(e));
+			System.err.println("Solution number: " + solution.getName());
 		}
 	}
 
@@ -814,5 +814,41 @@ public class AemiliaManager extends MetamodelManager {
 			availabilityChoice.getProcesses().add(aet.getBehaviorDecl().getEquations().get(0).getPt());
 
 		}
+	}
+
+	private boolean containsInstance(List<RefactoringAction> refactoring) {
+		for (RefactoringAction action : refactoring) {
+			if (action instanceof AEmiliaCloneAEIRefactoringAction) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void save(RSolution solution) {
+		super.save(solution);
+		packageRegistering();
+		AEmiliaSpecification savedModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(
+				getResourceSet().getResource(Manager.string2Uri(solution.getMmaemiliaFilePath()), true).getContents(),
+				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+
+		try {
+			if (containsInstance(solution.getVariableValue(0).getRefactoring().getActions()))
+				if (!isThereAnyClone(savedModel)) {
+					throw new Exception("error in clone action");
+				}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isThereAnyClone(AEmiliaSpecification savedModel) {
+		for (ArchiElemInstance aei : savedModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
+			if (aei.getInstanceName().contains("_cloned_")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

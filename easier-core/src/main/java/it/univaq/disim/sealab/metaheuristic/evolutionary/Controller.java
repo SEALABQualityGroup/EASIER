@@ -200,9 +200,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.getHandlers()[0].close();
 
 		startingTime = Instant.now();
-		RProblem problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
+		//TODO most likely it's a bug
+//		RProblem problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
+//				this);
+//		this.setProblem(problem);
+		
+		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
 				this);
-		this.setProblem(problem);
 
 		timestamp = new Timestamp(System.currentTimeMillis());
 

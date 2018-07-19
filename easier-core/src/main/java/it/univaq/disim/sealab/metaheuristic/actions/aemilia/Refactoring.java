@@ -24,8 +24,8 @@ public class Refactoring {
 //		actions = solution.getVariableValue(0).getRefactoring().getActions();
 	}
 	
-	public Refactoring clone(RSolution solution) {
-		Refactoring newRefactoring = new Refactoring(solution);
+	public Refactoring clone(RSolution sol) {
+		Refactoring newRefactoring = new Refactoring(sol);
 		
 		newRefactoring.setCost(this.getCost());
 //		newRefactoring.setNumOfChanges(this.getNumOfChanges());
@@ -34,7 +34,7 @@ public class Refactoring {
 		newRefactoring.setPre(this.getPre());
 		
 		for(RefactoringAction a : this.getActions()) {
-			newRefactoring.getActions().add(a.clone(this.getSolution()));
+			newRefactoring.getActions().add(a.clone(sol));
 		}
 		
 		return newRefactoring;

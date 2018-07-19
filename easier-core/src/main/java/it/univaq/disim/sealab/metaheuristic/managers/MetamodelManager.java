@@ -20,6 +20,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import logicalSpecification.Action;
+import metamodel.mmaemilia.AEmiliaSpecification;
 
 public abstract class MetamodelManager {
 
@@ -160,6 +161,7 @@ public abstract class MetamodelManager {
 			assert(solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
 			
 			solution.getResources().get(0).save(null);
+			
 		} catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}

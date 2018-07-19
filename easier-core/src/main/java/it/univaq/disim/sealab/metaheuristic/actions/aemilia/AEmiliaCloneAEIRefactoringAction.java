@@ -127,23 +127,10 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		// cloningInputInteractions();
 		// cloningArchitecturalInteraction();
 		
-		try {
-			if(!isThereAnyClone()) {
-				throw new Exception("error in clone action");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		log();
 	}
 	
-	private boolean isThereAnyClone(){
-//		((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().contains(clonedAEI);
-		return ((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().contains(clonedAEI);
-		
-	}
-
 	public void log() {
 		Controller.logger_.info("CLONING " + sourceAEI.getInstanceName());
 	}
@@ -439,12 +426,12 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		return listOfAEIs;
 	}
 
-	public AEmiliaCloneAEIRefactoringAction clone(RSolution solution) {
+	public AEmiliaCloneAEIRefactoringAction clone(RSolution sol) {
 		// long rand = ((AemiliaManager)
 		// Manager.getInstance(null).getMetamodelManager()).getNextUniqueIndex();
-		AEmiliaCloneAEIRefactoringAction newAction = new AEmiliaCloneAEIRefactoringAction(this.solution);
+		AEmiliaCloneAEIRefactoringAction newAction = new AEmiliaCloneAEIRefactoringAction(sol);
 
-		for (ArchiElemInstance aei : ((AEmiliaSpecification) solution.getModel()).getArchiTypeDecl().getAtDeclaration()
+		for (ArchiElemInstance aei : ((AEmiliaSpecification) sol.getModel()).getArchiTypeDecl().getAtDeclaration()
 				.getAeiDecl()) {
 			if (aei.getInstanceName().equals(this.sourceAEI.getInstanceName())) {
 				newAction.setSourceAEI(aei);
@@ -453,7 +440,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		}
 
 		newAction.setClonedAEI(null);
-		newAction.setSolution(solution);
+//		newAction.setSolution(solution);
 		newAction.setNumOfChanges(this.getNumOfChanges());
 		newAction.setCost(this.getCost());
 		newAction.setName(this.getName());
