@@ -2,6 +2,8 @@ package it.univaq.disim.sealab.metaheuristic.availability;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,7 +21,6 @@ import metamodel.mmaemilia.LocalInteraction;
 import metamodel.mmaemilia.OutputInteraction;
 import metamodel.mmaemilia.mmaemiliaFactory;
 import metamodel.mmaemilia.Behavior.Action;
-import metamodel.mmaemilia.Behavior.ActionOutput;
 import metamodel.mmaemilia.Behavior.ActionProcess;
 import metamodel.mmaemilia.Behavior.BehavEquation;
 import metamodel.mmaemilia.Behavior.BehavProcess;
@@ -28,7 +29,6 @@ import metamodel.mmaemilia.Behavior.ChoiceProcess;
 import metamodel.mmaemilia.Behavior.ProcessTerm;
 import metamodel.mmaemilia.Behavior.RateExp;
 import metamodel.mmaemilia.Behavior.RateInf;
-import metamodel.mmaemilia.DataType.DataType;
 import metamodel.mmaemilia.DataType.DataTypeFactory;
 import metamodel.mmaemilia.DataType.Special;
 import metamodel.mmaemilia.DataType.SpecialType;
@@ -55,6 +55,12 @@ public class AemiliaAvailabilityManager {
 		controller = ctrl;
 		manager = controller.getManager();
 	}
+	
+	public void packageRegistering() {manager.getMetamodelManager().packageRegistering();}
+
+	public AemiliaAvailabilityManager() {
+
+	};
 
 	public void doAvailability() {
 
@@ -78,22 +84,80 @@ public class AemiliaAvailabilityManager {
 		}
 	}
 
+	public void doAvailability(File folder) {
+		Set<File> files = listFilesRecursively(folder);
+
+		for (File modelFile : files) {
+			// if (solutionFolder.isDirectory()) {
+			// for (File modelFile : solutionFolder.listFiles()) {
+			// if (modelFile.isFile() &&
+			// FilenameUtils.getExtension(modelFile.getPath()).equals("mmaemilia")) {
+			Resource targetResource = manager.getMetamodelManager().getResourceSet()
+					.getResource(manager.string2FileUri(modelFile.getAbsolutePath()), true);
+			addAvailability((AEmiliaSpecification) targetResource.getContents().get(0));
+			try {
+				targetResource.save(null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
+		}
+		// }
+		// }
+		// }
+	}
+
+	/**
+	 * Recursively walk through subdirectories listing Aemilia files.
+	 * 
+	 * @param folder
+	 *            starting folder
+	 * @return array of aemilia file paths
+	 */
+	public static Set<File> listFilesRecursively(final File folder) {
+		Set<File> files = new HashSet<File>();
+		if (folder == null || folder.listFiles() == null) {
+			return files;
+		}
+		for (File entry : folder.listFiles()) {
+			if (entry.isFile() && entry.getName().endsWith(".mmaemilia")) {
+				files.add(entry);
+			} else if (entry.isDirectory()) {
+				files.addAll(listFilesRecursively(entry));
+			}
+		}
+		return files;
+	}
+	
+	/*
+	 * Wsn_Type_lose := 0.02
+Channel_Type_lose := 0.04
+Fta_Type_lose := 0.1
+Lan_Type_lose := 0.01
+Desk_Type_lose := 0.15
+DB_Type_lose := 0.02
+Sec_Type_lose := 0.06
+	 */
+
 	private void addAvailability(AEmiliaSpecification targetModel) {
 
 		for (ElemType elemType : targetModel.getArchiTypeDecl().getAetDeclaration().getEtDeclaration()) {
 			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName(),
 					targetModel);
 
+			//TODO to be changed
 			ConstInit constWeight = createConstWeight(elemType, "13");
-			
+
 			targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
 			elemType.getElemHeader().getCostant().add(createConst(constWeight));
-			
+
 			updateArchiElemInstanceParameters(elemType, targetModel, constWeight);
 
 			for (BehavEquation behEq : elemType.getBehaviorDecl().getEquations()) {
 				ChoiceProcess availabilityChoice = behaviourFactory.createChoiceProcess();
-				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, behEq, constWeight);
+				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, behEq,
+						constWeight);
 				ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq, constWeight);
 				availabilityChoice.getProcesses().add(failProcess);
 				availabilityChoice.getProcesses().add(goodProcess);
@@ -102,10 +166,10 @@ public class AemiliaAvailabilityManager {
 		}
 		// manager.getMetamodelManager().saveModel(targetModel.eResource());
 	}
-	
+
 	private void updateArchiElemInstanceParameters(ElemType e, AEmiliaSpecification targetModel, ConstInit cWeight) {
-		for(ArchiElemInstance aei : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
-			if(aei.getTypeOf().getEtName().equals(e.getEtName())) {
+		for (ArchiElemInstance aei : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
+			if (aei.getTypeOf().getEtName().equals(e.getEtName())) {
 				aei.getActualParam().add(cWeight.getName());
 			}
 		}
@@ -118,22 +182,6 @@ public class AemiliaAvailabilityManager {
 		return k;
 	}
 
-//	private ActionProcess createGoodBranchProcess(ElemType elemType, BehavEquation behEq) {
-//
-//		ProcessTerm oldProcess = EcoreUtil.copy(behEq.getPt());
-//
-//		ActionProcess goodBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
-//		// adding action
-//		Action action = createAction("keep");
-//		action.setRate(createRateInf("1", "0.9"));
-//		action.setIs(createLocalInteraction("keep_" + elemType.getEtName(), InteractionType.UNI));
-//		goodBranchProcess.setAct(action);
-//		// adding process
-//		goodBranchProcess.setProcess(oldProcess);
-//
-//		return goodBranchProcess;
-//	}
-
 	private ActionProcess createGoodBranchProcess(ElemType elemType, BehavEquation behEq, ConstInit cWeight) {
 
 		ProcessTerm oldProcess = EcoreUtil.copy(behEq.getPt());
@@ -141,7 +189,7 @@ public class AemiliaAvailabilityManager {
 		ActionProcess goodBranchProcess = createActionProcess("true", IdentifierType.TRUTH_VAL);
 		// adding action
 		Action action = createAction("keep");
-		action.setRate(createRateInf("1", "1 - "+cWeight.getName()));
+		action.setRate(createRateInf("1", "1 - " + cWeight.getName()));
 		action.setIs(createLocalInteraction("keep_" + elemType.getEtName(), InteractionType.UNI));
 		goodBranchProcess.setAct(action);
 		// adding process
@@ -262,7 +310,7 @@ public class AemiliaAvailabilityManager {
 		constWeight.setName(elem.getEtName() + "_lose");
 		Special weightDataType = DataTypeFactory.eINSTANCE.createSpecial();
 		weightDataType.setType(SpecialType.WEIGHT);
-		constWeight.setInitConstData(weightDataType);		
+		constWeight.setInitConstData(weightDataType);
 		IdentExpr weightExp = expressionFactory.createIdentExpr();
 		weightExp.setName(weightValue);
 		constWeight.setInitConstExpr(weightExp);
@@ -277,6 +325,14 @@ public class AemiliaAvailabilityManager {
 
 	public void setFolder(File folder) {
 		availabilityFolder = folder;
+	}
+
+	public static void main(String args[]) {
+		AemiliaAvailabilityManager avaManager = new AemiliaAvailabilityManager(new Controller());
+		avaManager.packageRegistering();
+		
+		avaManager.doAvailability(new File(args[0]));
+
 	}
 
 }

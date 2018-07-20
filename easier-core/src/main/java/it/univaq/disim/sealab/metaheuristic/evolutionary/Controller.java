@@ -103,6 +103,12 @@ public class Controller extends AbstractAlgorithmRunner {
 	// private static String BASENAME =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
 	// private static String EXTENSION = ".uml";
+	
+	public Controller() {
+		manager = new Manager(new AemiliaManager(this));
+		manager.setController(this);
+		availabilityManager = new AemiliaAvailabilityManager(this);
+	}
 
 	public Controller(String[] args) {
 
