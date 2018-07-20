@@ -2,6 +2,7 @@ package it.univaq.disim.sealab.metaheuristic.availability;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,6 +103,15 @@ public class AemiliaAvailabilityManager {
 				e.printStackTrace();
 			}
 			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
+			
+			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
+			
+			String name = modelFile.getName();
+			
+			File newAemFile = Paths.get(modelFile.getParent(),  name.substring(0, name.lastIndexOf(".")) + ".aem").toFile();
+			
+			oldAemFile.renameTo(newAemFile);
+			
 		}
 		// }
 		// }
