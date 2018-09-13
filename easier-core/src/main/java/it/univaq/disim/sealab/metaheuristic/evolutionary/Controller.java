@@ -99,6 +99,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	private Timestamp timestamp;
 	private double cloningWeight;
 	private double constChangesWeight;
+	private String failureRatesPropertiesFile;
+	
 
 	// private static String BASENAME =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
@@ -542,6 +544,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		cloningWeight = Double.parseDouble(prop.getProperty("cloningWeight", Double.toString(1.3)));
 		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
+		
+		failureRatesPropertiesFile = prop.getProperty("failureRatesPropertiesFile");
 
 	}
 
@@ -980,6 +984,14 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public double getConstChangesWeight() {
 		return constChangesWeight;
+	}
+
+	public String getFailureRatesPropertiesFile() {
+		return failureRatesPropertiesFile;
+	}
+
+	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
+		this.failureRatesPropertiesFile = failureRatesPropertiesFile;
 	}
 
 }

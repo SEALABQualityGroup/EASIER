@@ -1,9 +1,11 @@
 package it.univaq.disim.sealab.metaheuristic.availability;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
@@ -157,7 +159,9 @@ Sec_Type_lose := 0.06
 					targetModel);
 
 			//TODO to be changed
-			ConstInit constWeight = createConstWeight(elemType, "13");
+//			ConstInit constWeight = createConstWeight(elemType, "13");
+			ConstInit constWeight = setConstWeight(elemType);
+			
 
 			targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
 			elemType.getElemHeader().getCostant().add(createConst(constWeight));
@@ -174,7 +178,6 @@ Sec_Type_lose := 0.06
 				behEq.setPt(availabilityChoice);
 			}
 		}
-		// manager.getMetamodelManager().saveModel(targetModel.eResource());
 	}
 
 	private void updateArchiElemInstanceParameters(ElemType e, AEmiliaSpecification targetModel, ConstInit cWeight) {
@@ -325,6 +328,19 @@ Sec_Type_lose := 0.06
 		weightExp.setName(weightValue);
 		constWeight.setInitConstExpr(weightExp);
 		return constWeight;
+	}
+	
+	private ConstInit setConstWeight(ElemType elem) {
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(controller.getFailureRatesPropertiesFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String weightValue = prop.getProperty(elem.getEtName());
+		
+		return createConstWeight(elem, weightValue);
 	}
 
 	private Action createAction(String name) {
