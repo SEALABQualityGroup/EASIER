@@ -54,7 +54,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		// this.setSourceConstInit(getRandomRate(sol));
 		this.setSourceConstInit(getRandomConst(sol));
 		this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
-		this.setName("AEmiliaConstChangesAction_" + this.getSourceConstInit().getName());
+		
 		this.setSourceConstInitOldValue(
 				Double.valueOf((String) ((IdentExpr) sourceConstInit.getInitConstExpr()).getName()));
 
@@ -69,15 +69,6 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		EList<ConstInit> listOfConsts = ((AEmiliaSpecification) sol.getModel()).getArchiTypeDecl().getHeader()
 				.getInitConst();
 
-		// List<ConstInit> listOfRandomRanges = new ArrayList<>();
-		//
-		// for (ConstInit c : listOfConsts) {
-		// if (c.getInitConstData() instanceof Special
-		// && ((Special) c.getInitConstData()).getType() == SpecialType.RATE &&
-		// c.getName().contains("_rate"))
-		// listOfRandomRanges.add(c);
-		// }
-		//
 		if (listOfConsts.isEmpty()) {
 			return null;
 		}
@@ -121,10 +112,9 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		if (sourceConstInit.getInitConstData() instanceof Integer && sourceConstInit.getName().contains("_size")) {
 			int val = java.lang.Integer.parseInt(((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 			((IdentExpr) sourceConstInit.getInitConstExpr())
-					.setName(String.valueOf(((Double) (val * factorOfChange)).intValue()));
-		} else if (sourceConstInit.getInitConstData() instanceof Special) {
-			// && ((Special) sourceConstInit.getInitConstData()).getType() ==
-			// SpecialType.RATE) {
+					.setName(String.valueOf(((Double) (val * generateFactorOfChange())).intValue()));
+		} else if (sourceConstInit.getInitConstData() instanceof Special
+				&& ((Special) sourceConstInit.getInitConstData()).getType() == SpecialType.RATE) {
 
 			if (sourceConstInit.getName().contains("workload")) {
 				newWorkload = manager.getController().getWorkloadRange();
@@ -133,7 +123,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 				try {
 					number = format.parse(rep);
 					double val = number.doubleValue();
-					rep_val = String.format("%.4f", ((val * factorOfChange)));
+					rep_val = String.format("%.4f", ((val * generateFactorOfChange())));
 					// ((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -141,25 +131,27 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 			}
 			((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
 			log();
-		}
-		// else if (sourceConstInit.getInitConstData() instanceof Special
-		// && ((Special) sourceConstInit).getType() == SpecialType.WEIGHT) {
-		//
-		//// String rep = ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
-		//
-		// try {
-		// number = format.parse(rep);
-		// double val = number.doubleValue();
-		//// String rep_val = String.format("%.4f", ((val * factorOfChange)));
-		// rep_val = String.format("%.4f", ((val * factorOfChange)));
-		// ((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
-		// } catch (ParseException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		} else if (sourceConstInit.getInitConstData() instanceof Special
+				&& ((Special) sourceConstInit.getInitConstData()).getType() == SpecialType.WEIGHT) {
+			//
+			rep = ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
+			//
+			try {
+				number = format.parse(rep);
+				double val = number.doubleValue();
+				double newVal = 2;
 
-		// }
-		else {
+				while (newVal > 1) {
+					newVal = val * generateFactorOfChange();
+					rep_val = String.format("%.2f", ((newVal)));
+				}
+				((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		} else {
 			System.out.println("Not supported type: " + sourceConstInit.getInitConstData().toString());
 		}
 	}
@@ -173,7 +165,8 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		double rangeMin = 0.5;
 		double rangeMax = 2;
 
-		factorOfChange = RandomUtils.nextDouble(rangeMin, rangeMax);
+		double factorOfChange = RandomUtils.nextDouble(rangeMin, rangeMax);
+		this.factorOfChange = factorOfChange;
 
 		NumberFormat format = NumberFormat.getInstance(Locale.US);
 		Number number;
@@ -231,8 +224,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 	public void createPreCondition() {
 		PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-		FOLSpecification constChangePreSpecification = manager
-				.createFOLSpectification("ConstChangePreCondition");
+		FOLSpecification constChangePreSpecification = manager.createFOLSpectification("ConstChangePreCondition");
 		AndOperator constChangePreAnd = manager.createAndOperator();
 
 		ExistsOperator existsConstInitToChange = manager.createExistsOperator(getSourceConstInitSVP(),
@@ -246,12 +238,11 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 	public void createPostCondition() {
 		PostCondition postCondition = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-		FOLSpecification constChangePostSpecification = manager
-				.createFOLSpectification("ConstChangePostCondition");
+		FOLSpecification constChangePostSpecification = manager.createFOLSpectification("ConstChangePostCondition");
 		AndOperator constChangePostAnd = manager.createAndOperator();
 
-		ExistsOperator existsConstInitToChange = manager
-				.createExistsOperator(getSourceConstInitSVP(), getAllConstInitsMVP());
+		ExistsOperator existsConstInitToChange = manager.createExistsOperator(getSourceConstInitSVP(),
+				getAllConstInitsMVP());
 		constChangePostAnd.getArguments().add(existsConstInitToChange);
 
 		constChangePostSpecification.setRootOperator(constChangePostAnd);

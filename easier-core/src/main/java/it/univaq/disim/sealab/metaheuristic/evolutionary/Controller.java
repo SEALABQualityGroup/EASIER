@@ -110,22 +110,56 @@ public class Controller extends AbstractAlgorithmRunner {
 		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
 		availabilityManager = new AemiliaAvailabilityManager(this);
+		perfQuality = new PerformanceQuality(manager.getOclManager());
+		metamodelManager = manager.getMetamodelManager();
 	}
 
-	public Controller(String[] args) {
-
-		manager = new Manager(new AemiliaManager(this));
-		manager.setController(this);
-		availabilityManager = new AemiliaAvailabilityManager(this);
-
-		setPerfQuality(new PerformanceQuality(manager.getOclManager()));
-		// logger_ = ;
-		InputStream inputStream = null;
+	
+	public Controller(String propertiesFile) {
+		this();
+		InputStream cfgInputStream = null;
 
 		try {
 			handler = new FileHandler("default.log", append);
 			setBasePath(new java.io.File(".").getCanonicalPath());
-			inputStream = getConfigFile(args[0]);
+			cfgInputStream = getConfigFile(propertiesFile);
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		logger_.addHandler(handler);
+		logger_.info("Logger Name: " + logger_.getName());
+		logger_.warning("Can cause IOException");
+		
+		setProperties(cfgInputStream);
+		
+		if (sourceModelPath == null || sourceModelPath.isEmpty())
+			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
+		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
+
+		updateSourceModel();
+
+		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
+		numberOfPAs = 0;
+		for (String key : sourceModelPAs.keySet()) {
+			numberOfPAs += sourceModelPAs.get(key).size();
+		}
+	}
+	
+	public Controller(String[] args) {
+		this();
+//		manager = new Manager(new AemiliaManager(this));
+//		manager.setController(this);
+//		availabilityManager = new AemiliaAvailabilityManager(this);
+
+//		setPerfQuality(new PerformanceQuality(manager.getOclManager()));
+		// logger_ = ;
+		InputStream cfgInputStream = null;
+
+		try {
+			handler = new FileHandler("default.log", append);
+			setBasePath(new java.io.File(".").getCanonicalPath());
+			cfgInputStream = getConfigFile(args[0]);
 		} catch (SecurityException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,7 +167,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.addHandler(handler);
 
-		metamodelManager = manager.getMetamodelManager();
+//		metamodelManager = manager.getMetamodelManager();
 
 		logger_.info("Logger Name: " + logger_.getName());
 		logger_.warning("Can cause IOException");
@@ -146,7 +180,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			sourceModelPath = args[1];
 		}
 
-		setProperties(inputStream);
+		setProperties(cfgInputStream);
 		if (sourceModelPath == null || sourceModelPath.isEmpty())
 			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
 		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
@@ -598,7 +632,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
 		logger_.info("Writing CSV");
 		try {
-			analyzableCSV = new FileWriter(new File(getParetoFolder() + "analyzableResults.csv"));
+			analyzableCSV = new FileWriter(new File(getParetoFolder() + getProblem().getName() +"_analyzableResults.csv"));
 			List<String> line = new ArrayList<String>();
 			// line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
 			line.add("SolID");
@@ -896,7 +930,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try {
-			FileWriter solutionWriter = new FileWriter(getParetoFolder() + "solutions.csv", true);
+			FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv", true);
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPAs()));

@@ -619,7 +619,7 @@
                       <is xsi:type="mmaemilia:InputInteraction" intName="receive_auth_resp"/>
                     </act>
                   </process>
-                  <act name="send_auth_req" actThroughtput="129.097" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                  <act name="send_auth_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -707,7 +707,7 @@
                     <is xsi:type="mmaemilia:InputInteraction" intName="receive_monitor_resp"/>
                   </act>
                 </process>
-                <act name="send_monitor_req" actThroughtput="129.097" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                <act name="send_monitor_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
                   <type/>
                   <rate xsi:type="Behavior:RateInf">
                     <inf_priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
@@ -727,7 +727,7 @@
                 <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0/@behaviorDecl/@equations.0">
                   <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                 </process>
-                <act name="send_change_req" actThroughtput="129.097" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
+                <act name="send_change_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
                   <type/>
                   <rate xsi:type="Behavior:RateInf">
                     <inf_priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
@@ -758,7 +758,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_auth_req" actThroughtput="224.724" actUtilization="0.149816" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <act name="send_auth_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1500.0" type="NUMERIC_CONST"/>
@@ -782,7 +782,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_auth_resp" actThroughtput="224.724" actUtilization="0.149816" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <act name="send_auth_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1500.0" type="NUMERIC_CONST"/>
@@ -806,7 +806,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_monitor_req" actThroughtput="224.724" actUtilization="0.149816" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <act name="send_monitor_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1500.0" type="NUMERIC_CONST"/>
@@ -830,7 +830,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_monitor_resp" actThroughtput="224.724" actUtilization="0.149816" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <act name="send_monitor_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1500.0" type="NUMERIC_CONST"/>
@@ -854,7 +854,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_change_req" actThroughtput="224.724" actUtilization="0.149816" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
+                    <act name="send_change_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.1/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1500.0" type="NUMERIC_CONST"/>
@@ -933,7 +933,7 @@
                           <rightExprArith xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                         </exprs>
                       </process>
-                      <act name="send_auth_resp" actThroughtput="95.6274" actUtilization="0.159379" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
+                      <act name="send_auth_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
                         <type/>
                         <rate xsi:type="Behavior:RateExp">
                           <expr xsi:type="Expressions:IdentExpr" name="300.0" type="NUMERIC_CONST"/>
@@ -950,7 +950,7 @@
                       <is xsi:type="mmaemilia:InputInteraction" intName="receive_account_resp"/>
                     </act>
                   </process>
-                  <act name="send_account_req" actThroughtput="95.6274" actUtilization="0.159379" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
+                  <act name="send_account_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -982,7 +982,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.1">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="send_data_req" actThroughtput="95.6274" actUtilization="0.0956274" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
+                    <act name="send_data_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="1000.0" type="NUMERIC_CONST"/>
@@ -1037,7 +1037,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_monitor_resp" actThroughtput="95.6274" actUtilization="0.0956274" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
+                  <act name="send_monitor_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.3/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateExp">
                       <expr xsi:type="Expressions:IdentExpr" name="1000.0" type="NUMERIC_CONST"/>
@@ -1078,7 +1078,7 @@
                       <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.4/@behaviorDecl/@equations.0">
                         <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                       </process>
-                      <act name="send_account_resp" actThroughtput="95.6274" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.4/@elem">
+                      <act name="send_account_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.4/@elem">
                         <type/>
                         <rate xsi:type="Behavior:RateInf">
                           <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1113,7 +1113,7 @@
                       <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.4/@behaviorDecl/@equations.0">
                         <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                       </process>
-                      <act name="send_data_resp" actThroughtput="95.6274" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.4/@elem">
+                      <act name="send_data_resp" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.4/@elem">
                         <type/>
                         <rate xsi:type="Behavior:RateInf">
                           <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1184,7 +1184,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_update_req" actThroughtput="1684.13" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.5/@elem">
+                  <act name="send_update_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.5/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1222,7 +1222,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_update_req" actThroughtput="1684.13" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.6/@elem">
+                  <act name="send_update_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.6/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1260,7 +1260,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_update_req" actThroughtput="1684.13" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.7/@elem">
+                  <act name="send_update_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.7/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1298,7 +1298,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_update_req" actThroughtput="1684.13" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
+                  <act name="send_update_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1336,7 +1336,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="send_update_req" actThroughtput="1684.13" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.9/@elem">
+                  <act name="send_update_req" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.9/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateInf">
                       <inf_priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
@@ -1459,10 +1459,6 @@
       <initConst name="sensing_rate">
         <initConstData xsi:type="DataType:Special" type="rate"/>
         <initConstExpr xsi:type="Expressions:IdentExpr" name="500" type="NUMERIC_CONST"/>
-      </initConst>
-      <initConst name="nb_sensors">
-        <initConstData xsi:type="DataType:Integer"/>
-        <initConstExpr xsi:type="Expressions:IdentExpr" name="5" type="NUMERIC_CONST"/>
       </initConst>
       <initConst name="buffer_size">
         <initConstData xsi:type="DataType:Integer"/>

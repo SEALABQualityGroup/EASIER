@@ -4,8 +4,7 @@ ARCHI_TYPE BGCS(
 		   const rate sec_rate := 300,	
 		   const rate gh_rate := 1000,	
 		   const rate db_rate := 2000,	
-		   const rate sensing_rate := 500,	
-		   const integer nb_sensors := 5,	
+		   const rate sensing_rate := 500,		
 		   const integer buffer_size := 10)	
 			
 

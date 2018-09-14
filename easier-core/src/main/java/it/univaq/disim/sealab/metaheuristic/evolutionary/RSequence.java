@@ -78,11 +78,6 @@ public class RSequence {
 	}
 
 	private boolean tryRandomPush(int n) throws UnexpectedException, ParserException {
-
-		// Refactoring temporary_ref =
-		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-
-		// Refactoring temporary_ref = (Refactoring) EcoreUtil.copy(this.refactoring);
 		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 
 		// assert (temporary_ref.equals(this.refactoring));
@@ -112,15 +107,6 @@ public class RSequence {
 							temporary_ref.getSolution().getVariableValue(0)))
 						found = true;
 				}
-				/// MODIFIED WRT LAST COMMIT
-				// if(a instanceof AEmiliaConstChangesRefactoringAction) {
-				// AemiliaManager metamodelManager = (AemiliaManager)
-				// Manager.getInstance(null).getMetamodelManager();
-				// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a),
-				// temporary_ref.getSolution().getVariableValue(0)))
-				// found = true;
-				// }
-				/// END MODIFIED WRT LAST COMMIT
 				i++;
 			}
 			temporary_ref = null;
@@ -160,7 +146,6 @@ public class RSequence {
 			action.createPostCondition();
 		}
 
-		/// MODIFIED WRT LAST COMMIT
 		for (RefactoringAction ac : tr.getActions()) {
 			int counter = 0;
 			if (ac instanceof AEmiliaCloneAEIRefactoringAction) {
@@ -202,18 +187,9 @@ public class RSequence {
 					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
-		/// END MODIFIED WRT LAST COMMIT
 
 		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
-		// Manager manager = Manager.getInstance(null);
-		// AemiliaManager metamodelManager = (AemiliaManager)
-		// manager.getMetamodelManager();
-		// this.setRefactorings(tr);
-		// this.getSolution().setVariableValue(0, this);
-		// this.getSolution().executeRefactoring(metamodelManager);
 		boolean fol = manager.evaluateFOL(app, this.getSolution().getModel());
-		// // System.out.println(" = " + fol);
-		// return fol;
 
 		if (!fol) {
 			Controller.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");

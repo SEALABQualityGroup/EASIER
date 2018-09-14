@@ -336,9 +336,9 @@ public class AemiliaManager extends MetamodelManager {
 		int index = 0;
 
 		// TODO run with this nextInt in the loop
-		do {
-			index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, length - 1);
-		} while (index != 0 && index != 2);
+		// do {
+		index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, length - 1);
+		// } while (index != 0 && index != 2);
 
 		switch (index) {
 
@@ -470,17 +470,18 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public RefactoringAction getRandomCapacityChangeAction(RSequence seq) {
-		if (getRandomCapacity(seq) == null) {
+		ConstInit sourceConst = getRandomCapacity(seq);
+		if (sourceConst == null) {
 			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
-		action.setName("AEmiliaConstChangesAction");
-		action.setSourceConstInit(getRandomCapacity(seq));
+		action.setName("AEmiliaConstChangesCapacityAction");
+		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+		action.setNumOfChanges(controller.getConstChangesWeight());
 
 		action.setParameters();
 		action.createPreCondition();
@@ -489,24 +490,24 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	private RefactoringAction getRandomRateChangeAction(RSequence seq) {
-		// if (getRandomRate(seq) == null) {
-		// System.out.println("Action is not applicable!!!!");
-		// return null;
-		// }
+		ConstInit sourceConst = getRandomRate(seq);
+		if (sourceConst == null) {
+			System.out.println("Action is not applicable!!!!");
+			return null;
+		}
 
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
-		// action.setModel(seq.getModel());
-		// action.setSolution(seq.getSolution());
-		// action.setSourceConstInit(getRandomRate(seq));
-		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		//// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setName("AEmiliaConstChangesAction");
-		//
-		// action.setParameters();
-		// action.createPreCondition();
-		// action.createPostCondition();
+		action.setModel(seq.getModel());
+		action.setSolution(seq.getSolution());
+		action.setName("AEmiliaConstChangesRateAction");
+		action.setSourceConstInit(sourceConst);
+		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+		action.setNumOfChanges(controller.getConstChangesWeight());
+
+		action.setParameters();
+		action.createPreCondition();
+		action.createPostCondition();
+
 		if (action.getSourceConstInit() == null)
 			return null;
 
@@ -517,34 +518,34 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	private RefactoringAction getRandomWorkloadChangeAction(RSequence seq) {
-		// if (getRandomRate(seq) == null) {
-		// System.out.println("Action is not applicable!!!!");
-		// return null;
-		// }
-
 		if (controller.getWorkloadRange() == -1) {
 			return null;
 		}
+		ConstInit sourceConst = getRandomWorkload(seq);
+		if (sourceConst == null) {
+			System.out.println("Action is not applicable!!!!");
+			return null;
+		}
+
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
-		// action.setModel(seq.getModel());
-		// action.setSolution(seq.getSolution());
-		// action.setSourceConstInit(getRandomRate(seq));
-		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		//// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setName("AEmiliaConstChangesAction");
-		//
-		// action.setParameters();
-		// action.createPreCondition();
-		// action.createPostCondition();
+		action.setModel(seq.getModel());
+		action.setSolution(seq.getSolution());
+		action.setSourceConstInit(sourceConst);
+		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setName("AEmiliaConstChangesWorkloadAction");
+
+		action.setParameters();
+		action.createPreCondition();
+		action.createPostCondition();
 		if (action.getSourceConstInit() == null)
 			return null;
 
 		if (!isApplicable(action, seq))
 			return null;
 
-		return action;
+		// return action;
+		return null;
 	}
 
 	public boolean isApplicable(AEmiliaConstChangesRefactoringAction action, RSequence seq) {
@@ -647,45 +648,27 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	private RefactoringAction getRandomWeightChangeAction(RSequence seq) {
-		if (getRandomWeight(seq) == null) {
+		ConstInit sourceConst = getRandomWeight(seq);
+		if (sourceConst == null) {
 			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
 		action.setModel(seq.getModel());
-		action.setSourceConstInit(getRandomWeight(seq));
+		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setName("AEmiliaConstChangesAction");
+		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setName("AEmiliaConstChangesWeightAction");
 
 		action.setParameters();
 		action.createPreCondition();
 		action.createPostCondition();
-		return action;
-	}
+		if (action.getSourceConstInit() == null)
+			return null;
 
-	private Action getRandomMoveInputInteractionToNewAEIAction() {
-		// System.out.println("--------------
-		// getRandomMoveInputInteractionToNewAEIAction ------------------");
-		// AEmiliaMoveInputInteractionAction action =
-		// AEmiliaFactory.eINSTANCE.createAEmiliaMoveInputInteractionAction();
-		// // Action action = new UMLAddComponentRefactoringAction(list_of_nodes);
-		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setParameters();
-		// action.createPreCondition();
-		// action.createPostCondition();
-		// ArchiElemInstance sourceAEI = (ArchiElemInstance) ((OclAemiliaManager)
-		// Manager.getInstance(null)
-		// .getOclManager()).evaluateQuery(OclAemiliaStringManager.getInstance().getRandomAEIQuery(0,
-		// 3));
-		// // action.setSourceAEI(sourceAEI);
-		// System.out.println("--------------
-		// getRandomMoveInputInteractionToNewAEIAction ------------------");
-		// return action;
-		return null;
+		if (!isApplicable(action, seq))
+			return null;
+		return action;
 	}
 
 	private ConstInit getRandomCapacity(RSequence seq) {
@@ -714,35 +697,11 @@ public class AemiliaManager extends MetamodelManager {
 		}
 	}
 
-	// private ConstInit getRandomRate(RSequence seq) {
-	// EList<ConstInit> listOfConsts = ((AEmiliaSpecification)
-	// seq.getModel()).getArchiTypeDecl().getHeader()
-	// .getInitConst();
-	//
-	// List<ConstInit> listOfRandomRanges = new ArrayList<>();
-	//
-	// for (ConstInit c : listOfConsts) {
-	// if (c.getInitConstData() instanceof Special
-	// && ((Special) c.getInitConstData()).getType() == SpecialType.RATE)
-	// listOfRandomRanges.add(c);
-	// }
-	//
-	// if (listOfRandomRanges.isEmpty()) {
-	// System.out.println("Action is not applicable!!!!");
-	// return null;
-	// }
-	//
-	// int rangeMin = 0;
-	// int rangeMax = listOfRandomRanges.size();
-	// return listOfRandomRanges.get((int) (RandomUtils.nextInt(rangeMin,
-	// rangeMax)));
-	// }
-
 	private ConstInit getRandomWeight(RSequence seq) {
 		EList<ConstInit> listOfConsts = ((AEmiliaSpecification) seq.getModel()).getArchiTypeDecl().getHeader()
 				.getInitConst();
 		List<ConstInit> listOfRandomWeights = new ArrayList<>();
-		if (listOfRandomWeights.isEmpty()) {
+		if (!listOfRandomWeights.isEmpty()) {
 			return null;
 		} else {
 			for (ConstInit c : listOfConsts) {
@@ -751,8 +710,48 @@ public class AemiliaManager extends MetamodelManager {
 					listOfRandomWeights.add(c);
 			}
 			int rangeMin = 0;
-			int rangeMax = listOfRandomWeights.size();
-			return listOfRandomWeights.get((int) (RandomUtils.nextInt(rangeMin, rangeMax)));
+			int rangeMax = listOfRandomWeights.size() - 1;
+
+			return listOfRandomWeights.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
+		}
+	}
+
+	private ConstInit getRandomRate(RSequence seq) {
+		EList<ConstInit> listOfConsts = ((AEmiliaSpecification) seq.getModel()).getArchiTypeDecl().getHeader()
+				.getInitConst();
+		List<ConstInit> listOfRandomWeights = new ArrayList<>();
+		if (!listOfRandomWeights.isEmpty()) {
+			return null;
+		} else {
+			for (ConstInit c : listOfConsts) {
+				if (c.getInitConstData() instanceof Special
+						&& ((Special) c.getInitConstData()).getType() == SpecialType.RATE)
+					listOfRandomWeights.add(c);
+			}
+			int rangeMin = 0;
+			int rangeMax = listOfRandomWeights.size() - 1;
+
+			return listOfRandomWeights.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
+		}
+	}
+
+	private ConstInit getRandomWorkload(RSequence seq) {
+		EList<ConstInit> listOfConsts = ((AEmiliaSpecification) seq.getModel()).getArchiTypeDecl().getHeader()
+				.getInitConst();
+		List<ConstInit> listOfRandomWeights = new ArrayList<>();
+		if (!listOfRandomWeights.isEmpty()) {
+			return null;
+		} else {
+			for (ConstInit c : listOfConsts) {
+				if (c.getInitConstData() instanceof Special
+						&& ((Special) c.getInitConstData()).getType() == SpecialType.RATE
+						&& c.getName().contains("workload"))
+					listOfRandomWeights.add(c);
+			}
+			int rangeMin = 0;
+			int rangeMax = listOfRandomWeights.size() - 1;
+
+			return listOfRandomWeights.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
 		}
 	}
 
