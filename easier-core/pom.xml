@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.univaq.disim.sealab</groupId>
 	<artifactId>easier-core</artifactId>
-	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<build>
@@ -246,4 +245,5 @@
 			<version>1.3</version>
 		</dependency>
 	</dependencies>
+	<version>0.5</version>
 </project>
