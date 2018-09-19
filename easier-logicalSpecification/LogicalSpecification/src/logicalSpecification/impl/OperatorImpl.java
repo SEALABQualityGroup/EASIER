@@ -497,5 +497,8 @@ public abstract class OperatorImpl extends MinimalEObjectImpl.Container implemen
 		}
 		return super.eIsSet(featureID);
 	}
-
+	
+//	public boolean equals(Operator o2) {
+//		return false;
+//	}
 } //OperatorImpl

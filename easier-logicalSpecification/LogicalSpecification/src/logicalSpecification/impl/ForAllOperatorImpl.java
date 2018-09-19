@@ -276,5 +276,13 @@ public class ForAllOperatorImpl extends LogicalOperatorImpl implements ForAllOpe
 		}
 		return super.eIsSet(featureID);
 	}
+	
+	public boolean equals(ForAllOperator op2) {
+		if (op2 != null) {
+			if (this.getCollection().equals(op2.getCollection()))
+				return this.getArgument().equals(op2.getArgument());
+		}
+		return false;
+	}
 
 } //ForAllOperatorImpl
