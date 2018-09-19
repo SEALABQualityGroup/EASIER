@@ -193,5 +193,7 @@ public interface Operator extends EObject {
 	 * @generated
 	 */
 	void setExistsOperator(ExistsOperator value);
+	
+	boolean guarantees(Operator op2);
 
 } // Operator

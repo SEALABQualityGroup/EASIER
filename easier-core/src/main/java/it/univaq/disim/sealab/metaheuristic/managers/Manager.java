@@ -75,26 +75,6 @@ public class Manager {
 	public Manager() {
 	}
 
-	// private static class ManagerHolder {
-	// private static final Manager INSTANCE = new Manager();
-	// }
-	//
-	// public static Manager getInstance(MetamodelManager mmManager) {
-	// if(instance == null)
-	// instance = ManagerHolder.INSTANCE;
-	// if (instance.getMetamodelManager() == null && mmManager != null) {
-	// instance.setMetamodelManager(mmManager);
-	// }
-	// if(instance.getOclManager() == null) {
-	// instance.setOclManager(instance.getMetamodelManager().getOclManager());
-	// }
-	// if(mmManager instanceof AemiliaManager) {
-	// instance.setOclStringManager(OclStringManager.getInstance(new
-	// OclAemiliaStringManager()));
-	// }
-	// return instance;
-	// }
-
 	public Manager(MetamodelManager mmManager) {
 		setMetamodelManager(mmManager);
 		setOclManager(getMetamodelManager().getOclManager());
@@ -126,98 +106,6 @@ public class Manager {
 		}
 		return sum;
 	}
-
-	// public static double calculateNumOfChanges(Refactoring r) {
-	// double sum = 0.0;
-	// for (RefactoringAction action : r.getActions()) {
-	// sum += action.getNumOfChanges();
-	// }
-	// return sum;
-	// }
-	//
-	// public static Model getUMLModel(String umlModelUri) {
-	// ResourceSet set = new ResourceSetImpl();
-	// set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-	// set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-	// UMLResource.Factory.INSTANCE);
-	// Resource resource = set.getResource(string2FileUri(umlModelUri), true);
-	// Model model = (Model) EcoreUtil.getObjectByType(resource.getContents(),
-	// UMLPackage.Literals.MODEL);
-	// return model;
-	// }
-
-	// public static Action getTautologyRandomAction(int n, RSequence seq) {
-	//
-	// // use n to choose among n possible actions
-	// int u_bound = 10;
-	// int l_bound = 1;
-	//
-	// Action a =
-	// ((AemiliaManager)Manager.getInstance(null).metamodelManager).getRandomCapacityChangeAction(seq);
-	//
-	// a.setNumOfChanges(0);
-	// a.setName("tautology_action_" +
-	// JMetalRandom.getInstance().getRandomGenerator().nextInt(0, Short.MAX_VALUE));
-	// a.setCost(JMetalRandom.getInstance().getRandomGenerator().nextInt(l_bound,
-	// u_bound));
-	//
-	// SingleValuedParameter lhs =
-	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-	// String queryLhs = "4";
-	// lhs.setResolvingExpr(queryLhs);
-	//
-	// SingleValuedParameter rhs =
-	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-	// String queryRhs = "3";
-	// rhs.setResolvingExpr(queryRhs);
-	//
-	// PreCondition aPre =
-	// LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-	// FOLSpecification aPreSpec =
-	// LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-	// aPreSpec.setName("APreCondition");
-	//
-	// AndOperator aPreAnd =
-	// LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-	//
-	// GreaterOperator aPreAndGreater =
-	// LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
-	// aPreAndGreater.setLhs(lhs);
-	// aPreAndGreater.setRhs(rhs);
-	//
-	// aPreAnd.getArguments().add(aPreAndGreater);
-	// aPreSpec.setRootOperator(aPreAnd);
-	// aPre.setConditionFormula(aPreSpec);
-	// a.setPre(aPre);
-	//
-	// SingleValuedParameter lhs_ =
-	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-	// String queryLhs_ = "2";
-	// lhs_.setResolvingExpr(queryLhs_);
-	//
-	// SingleValuedParameter rhs_ =
-	// LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-	// String queryRhs_ = "1";
-	// rhs_.setResolvingExpr(queryRhs_);
-	//
-	// PostCondition aPost =
-	// LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-	// FOLSpecification aPostSpec =
-	// LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-	// aPostSpec.setName("APostCondition");
-	// AndOperator aPostAnd =
-	// LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-	// GreaterOperator aPostAndGreater =
-	// LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
-	// aPostAndGreater.setLhs(lhs_);
-	// aPostAndGreater.setRhs(rhs_);
-	// aPostAnd.getArguments().add(aPreAndGreater);
-	// aPostSpec.setRootOperator(aPostAnd);
-	// aPost.setConditionFormula(aPostSpec);
-	// a.setPost(aPost);
-	//
-	// return a;
-	// }
 
 	public Action getTautologyRandomAction(int n, RSequence seq) {
 
@@ -279,27 +167,27 @@ public class Manager {
 
 	/////// OPERATORS EVALUATION METHODS
 
-	public boolean evaluateFOL(FOLSpecification folSpec) throws ParserException {
-		if (folSpec.getRootOperator() instanceof NotOperator)
-			return evaluateOperator((NotOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof AndOperator)
-			return evaluateOperator((AndOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof OrOperator)
-			return evaluateOperator((OrOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof ForAllOperator)
-			return evaluateOperator((ForAllOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof ExistsOperator)
-			return evaluateOperator((ExistsOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof GreaterOperator)
-			return evaluateOperator((GreaterOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof GreaterOperator)
-			return evaluateOperator((GreaterEqualOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof GreaterEqualOperator)
-			return evaluateOperator((LessOperator) folSpec.getRootOperator());
-		else if (folSpec.getRootOperator() instanceof LessOperator)
-			return evaluateOperator((LessEqualOperator) folSpec.getRootOperator());
-		return evaluateOperator((EqualOperator) folSpec.getRootOperator());
-	}
+//	public boolean evaluateFOL(FOLSpecification folSpec) throws ParserException {
+//		if (folSpec.getRootOperator() instanceof NotOperator)
+//			return evaluateOperator((NotOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof AndOperator)
+//			return evaluateOperator((AndOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof OrOperator)
+//			return evaluateOperator((OrOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof ForAllOperator)
+//			return evaluateOperator((ForAllOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof ExistsOperator)
+//			return evaluateOperator((ExistsOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof GreaterOperator)
+//			return evaluateOperator((GreaterOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof GreaterOperator)
+//			return evaluateOperator((GreaterEqualOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof GreaterEqualOperator)
+//			return evaluateOperator((LessOperator) folSpec.getRootOperator());
+//		else if (folSpec.getRootOperator() instanceof LessOperator)
+//			return evaluateOperator((LessEqualOperator) folSpec.getRootOperator());
+//		return evaluateOperator((EqualOperator) folSpec.getRootOperator());
+//	}
 
 	public boolean evaluateFOL(FOLSpecification folSpec, EObject context) throws ParserException {
 		if (folSpec.getRootOperator() instanceof NotOperator)
@@ -1957,91 +1845,90 @@ public class Manager {
 	public boolean guarantees(Operator op1, Operator op2) {
 		if (op1 != null && op2 != null) {
 			if (op1 != op2) {
-				if (op1 instanceof NotOperator)
-					return guarantees((NotOperator) op1, op2);
-				if (op1 instanceof AndOperator)
-					return guarantees((AndOperator) op1, op2);
-				if (op1 instanceof OrOperator)
-					return guarantees((OrOperator) op1, op2);
-				if (op1 instanceof ForAllOperator)
-					return guarantees((ForAllOperator) op1, op2);
-				if (op1 instanceof ExistsOperator)
-					return guarantees((ExistsOperator) op1, op2);
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public boolean guarantees(NotOperator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 != op2)
-				return guarantees(op1.getArgument(), op2);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean guarantees(AndOperator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 != op2) {
-				if (op1.getArguments() != null) {
-					for (int i = 0; i < op1.getArguments().size(); i++) {
-						if (guarantees(op1.getArguments().get(i), op2))
-							return true;
-					}
-					return false;
-				}
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public boolean guarantees(OrOperator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 != op2) {
-				if (op1.getArguments() != null) {
-					for (int i = 0; i < op1.getArguments().size(); i++) {
-						if (guarantees(op1.getArguments().get(i), op2))
-							return true;
-					}
-					return false;
-				}
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public boolean guarantees(ForAllOperator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 != op2) {
-				if (op1.getArgument() != null)
-					return guarantees(op1.getArgument(), op2);
-				else if (op2 instanceof ExistsOperator)
-					return FolManager.equal(op1, op2);
-				return false;
+				// if (op1 instanceof NotOperator)
+				// return guarantees((NotOperator) op1, op2);
+				// if (op1 instanceof AndOperator)
+				// return guarantees((AndOperator) op1, op2);
+				// if (op1 instanceof OrOperator)
+				// return guarantees((OrOperator) op1, op2);
+				// if (op1 instanceof ForAllOperator)
+				// return guarantees((ForAllOperator) op1, op2);
+				// if (op1 instanceof ExistsOperator)
+				// return guarantees((ExistsOperator) op1, op2);
+				// }
+				// return true;
+				return op1.guarantees(op2);
 			}
 		}
 		return false;
 	}
 
-	public boolean guarantees(ExistsOperator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 != op2) {
-				if (op1.getArgument() != null)
-					return guarantees(op1.getArgument(), op2);
-				else if (op2 instanceof ExistsOperator)
-					return FolManager.equal(op1, op2);
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
+	// public boolean guarantees(NotOperator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 != op2)
+	// return op1.getArgument().guarantees(op2);
+	// return true;
+	// }
+	// return false;
+	// }
+
+	// public boolean guarantees(AndOperator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 != op2) {
+	// if (op1.getArguments() != null) {
+	// for (int i = 0; i < op1.getArguments().size(); i++) {
+	// if (op1.getArguments().get(i).guarantees(op2))
+	// return true;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+
+	// public boolean guarantees(OrOperator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 != op2) {
+	// if (op1.getArguments() != null) {
+	// for (int i = 0; i < op1.getArguments().size(); i++) {
+	// if (op1.getArguments().get(i).guarantees(op2))
+	// return true;
+	// }
+	// }
+	// }
+	// }
+	// return false;
+	// }
+
+	// public boolean guarantees(ForAllOperator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 != op2) {
+	// if (op1.getArgument() != null)
+	// return op1.getArgument().guarantees(op2);
+	// else if (op2 instanceof ExistsOperator)
+	// return op1.equals(op2);
+	// return false;
+	// }
+	// }
+	// return false;
+	// }
+
+	// public boolean guarantees(ExistsOperator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 != op2) {
+	// if (op1.getArgument() != null)
+	// return op1.getArgument().guarantees(op2);
+	// else if (op2 instanceof ExistsOperator)
+	// return op1.equals(op2);
+	// return false;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
 
 	// public boolean equal(Operator op1, Operator op2) {
 	// if (op1 != null && op2 != null) {

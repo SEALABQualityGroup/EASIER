@@ -201,4 +201,13 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 			return this.getArgument().equals(op2.getArgument());
 		return false;
 	}
+	
+	public boolean guarantees(Operator op2) {
+		if (op2 != null) {
+			if (this != op2)
+				return this.getArgument().guarantees(op2);
+			return true;
+		}
+		return false;
+	}
 } // NotOperatorImpl

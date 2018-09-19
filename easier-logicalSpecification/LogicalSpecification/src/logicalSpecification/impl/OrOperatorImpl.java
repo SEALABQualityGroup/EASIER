@@ -176,5 +176,19 @@ public class OrOperatorImpl extends LogicalOperatorImpl implements OrOperator {
 		}
 		return false;
 	}
+	
+	public boolean guarantees(Operator op2) {
+		if (op2 != null) {
+			if (this != op2) {
+				if (this.getArguments() != null) {
+					for (int i = 0; i < this.getArguments().size(); i++) {
+						if (this.getArguments().get(i).guarantees(op2))
+							return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 } //OrOperatorImpl
