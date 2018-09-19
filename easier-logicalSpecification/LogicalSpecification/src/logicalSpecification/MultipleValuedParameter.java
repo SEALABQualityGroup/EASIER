@@ -57,5 +57,7 @@ public interface MultipleValuedParameter extends Parameter {
 	 * @generated
 	 */
 	EList<ExistsOperator> getExistsOperator();
+	
+	boolean equals(MultipleValuedParameter op2);
 
 } // MultipleValuedParameter

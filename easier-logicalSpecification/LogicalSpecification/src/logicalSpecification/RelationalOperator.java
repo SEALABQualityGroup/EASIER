@@ -104,5 +104,7 @@ public interface RelationalOperator extends Operator {
 	 * @generated
 	 */
 	void setRhs(Parameter value);
+	
+	boolean equals(RelationalOperator op2);
 
 } // RelationalOperator

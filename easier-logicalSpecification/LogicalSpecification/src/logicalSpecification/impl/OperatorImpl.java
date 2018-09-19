@@ -498,4 +498,12 @@ public abstract class OperatorImpl extends MinimalEObjectImpl.Container implemen
 		return super.eIsSet(featureID);
 	}
 
+	public boolean guarantees(Operator op2) {
+		System.err.println("There was an error during guarantees method!!!");
+		return false;
+	}
+
+//	public boolean equals(Operator o2) {
+//		return false;
+//	}
 } //OperatorImpl
