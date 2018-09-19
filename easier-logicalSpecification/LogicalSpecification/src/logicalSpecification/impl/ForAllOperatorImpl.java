@@ -277,7 +277,7 @@ public class ForAllOperatorImpl extends LogicalOperatorImpl implements ForAllOpe
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	public boolean equals(ForAllOperator op2) {
 		if (op2 != null) {
 			if (this.getCollection().equals(op2.getCollection()))
@@ -285,7 +285,7 @@ public class ForAllOperatorImpl extends LogicalOperatorImpl implements ForAllOpe
 		}
 		return false;
 	}
-	
+
 	public boolean guarantees(Operator op2) {
 		if (op2 != null) {
 			if (this != op2) {

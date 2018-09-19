@@ -161,7 +161,7 @@ public class AndOperatorImpl extends LogicalOperatorImpl implements AndOperator 
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	public boolean equals(AndOperator op2) {
 		if (op2 != null) {
 			if (this.getArguments() != null && op2.getArguments() != null) {
@@ -176,7 +176,7 @@ public class AndOperatorImpl extends LogicalOperatorImpl implements AndOperator 
 		}
 		return false;
 	}
-	
+
 	public boolean guarantees(Operator op2) {
 		if (op2 != null) {
 			if (this != op2) {

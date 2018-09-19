@@ -31,7 +31,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	/**
 	 * The cached value of the '{@link #getArgument() <em>Argument</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see #getArgument()
 	 * @generated
 	 * @ordered
@@ -40,7 +40,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	protected NotOperatorImpl() {
@@ -49,7 +49,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	public Operator getArgument() {
@@ -68,7 +68,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	public NotificationChain basicSetArgument(Operator newArgument, NotificationChain msgs) {
@@ -87,7 +87,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	public void setArgument(Operator newArgument) {
@@ -109,7 +109,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -126,7 +126,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -140,7 +140,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -154,7 +154,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -169,7 +169,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -184,7 +184,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -201,7 +201,7 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 			return this.getArgument().equals(op2.getArgument());
 		return false;
 	}
-	
+
 	public boolean guarantees(Operator op2) {
 		if (op2 != null) {
 			if (this != op2)

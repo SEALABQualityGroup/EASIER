@@ -365,8 +365,8 @@ public class ExistsOperatorImpl extends LogicalOperatorImpl implements ExistsOpe
 		}
 		return super.eIsSet(featureID);
 	}
-	
-	
+
+
 	public boolean equals(ExistsOperator op2) {
 		if (op2 != null) {
 			if (this.getCollection().equals(op2.getCollection()))
@@ -378,7 +378,7 @@ public class ExistsOperatorImpl extends LogicalOperatorImpl implements ExistsOpe
 		}
 		return false;
 	}
-	
+
 	public boolean guarantees(Operator op2) {
 		if (op2 != null) {
 			if (this != op2) {
