@@ -72,7 +72,8 @@ public class Manager {
 		metamodelManager.init(modelUri);
 	}
 
-	public Manager() {}
+	public Manager() {
+	}
 
 	// private static class ManagerHolder {
 	// private static final Manager INSTANCE = new Manager();
@@ -1725,6 +1726,7 @@ public class Manager {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean evaluateOperator(EqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
 				|| operator.getRhs().getResolvingExpr() == null
@@ -1785,8 +1787,6 @@ public class Manager {
 		}
 		return true;
 	}
-
-	////// PRE CONDITIONS METHODS
 
 	public PreCondition calculatePreCondition(Refactoring r) {
 		PreCondition res = null;
@@ -1859,8 +1859,6 @@ public class Manager {
 		return res;
 	}
 
-	/////// POST CONDITIONS METHODS
-
 	public PostCondition calculatePostCondition(Refactoring r) {
 		PostCondition res = null;
 
@@ -1897,7 +1895,9 @@ public class Manager {
 							int j = i + 1;
 							while (j < resRootOp.getArguments().size() && !found) {
 								///// CHIAMARE isInverse, non equal
-								if (equal(resRootOp.getArguments().get(i), resRootOp.getArguments().get(j)))
+								// if (FolManager.equal(resRootOp.getArguments().get(i),
+								// resRootOp.getArguments().get(j)))
+								if (resRootOp.getArguments().get(i).equals(resRootOp.getArguments().get(j)))
 									found = true;
 								j++;
 							}
@@ -1934,28 +1934,6 @@ public class Manager {
 		}
 		return res;
 	}
-
-	// public static PostCondition calculatePostCondition(Action a1, Action a2)
-	// {
-	// PostCondition res = null;
-	// if(a1.getPost() == null || a2.getPost() == null) {
-	// if(a1.getPost() == null)
-	// res = a2.getPost();
-	// if(a2.getPost() == null)
-	// res = a1.getPost();
-	// } else {
-	// res = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-	// FOLSpecification resFol =
-	// LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-	// resFol.setRootOperator(Manager.append((AndOperator)
-	// a1.getPost().getConditionFormula().getRootOperator(), (AndOperator)
-	// a2.getPost().getConditionFormula().getRootOperator()));
-	// res.setConditionFormula(resFol);
-	// }
-	// return res;
-	// }
-
-	////// UTILITY OPERATORS METHODS
 
 	public static AndOperator append(AndOperator and1, AndOperator and2) {
 		AndOperator res = null;
@@ -2044,7 +2022,7 @@ public class Manager {
 				if (op1.getArgument() != null)
 					return guarantees(op1.getArgument(), op2);
 				else if (op2 instanceof ExistsOperator)
-					return equal(op1, op2);
+					return FolManager.equal(op1, op2);
 				return false;
 			}
 		}
@@ -2057,7 +2035,7 @@ public class Manager {
 				if (op1.getArgument() != null)
 					return guarantees(op1.getArgument(), op2);
 				else if (op2 instanceof ExistsOperator)
-					return equal(op1, op2);
+					return FolManager.equal(op1, op2);
 				return false;
 			}
 			return false;
@@ -2065,109 +2043,110 @@ public class Manager {
 		return false;
 	}
 
-	public boolean equal(Operator op1, Operator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1 instanceof NotOperator && op2 instanceof NotOperator)
-				return equal((NotOperator) op1, (NotOperator) op2);
-			if (op1 instanceof AndOperator && op2 instanceof NotOperator)
-				return equal((AndOperator) op1, (AndOperator) op2);
-			if (op1 instanceof OrOperator && op2 instanceof OrOperator)
-				return equal((OrOperator) op1, (OrOperator) op2);
-			if (op1 instanceof ForAllOperator && op2 instanceof ForAllOperator)
-				return equal((ForAllOperator) op1, (ForAllOperator) op2);
-			if (op1 instanceof ExistsOperator && op2 instanceof ExistsOperator)
-				return equal((ExistsOperator) op1, (ExistsOperator) op2);
-			if (op1 instanceof GreaterOperator && op2 instanceof GreaterOperator)
-				return equal((GreaterOperator) op1, (GreaterOperator) op2);
-			if (op1 instanceof GreaterEqualOperator && op2 instanceof GreaterEqualOperator)
-				return equal((GreaterEqualOperator) op1, (GreaterEqualOperator) op2);
-			if (op1 instanceof LessOperator && op2 instanceof LessOperator)
-				return equal((LessOperator) op1, (LessOperator) op2);
-			if (op1 instanceof LessEqualOperator && op2 instanceof LessEqualOperator)
-				return equal((LessEqualOperator) op1, (LessEqualOperator) op2);
-			if (op1 instanceof EqualOperator && op2 instanceof EqualOperator)
-				return equal((EqualOperator) op1, (EqualOperator) op2);
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(NotOperator op1, NotOperator op2) {
-		if (op1 != null && op2 != null)
-			return equal(op1.getArgument(), op2.getArgument());
-		return false;
-	}
-
-	public boolean equal(AndOperator op1, AndOperator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1.getArguments() != null && op2.getArguments() != null) {
-				if (op1.getArguments().size() == op2.getArguments().size()) {
-					for (int i = 0; i < op1.getArguments().size(); i++) {
-						if (!equal(op1.getArguments().get(i), op2.getArguments().get(i)))
-							return false;
-					}
-					return true;
-				}
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(OrOperator op1, OrOperator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1.getArguments() != null && op2.getArguments() != null) {
-				if (op1.getArguments().size() == op2.getArguments().size()) {
-					for (int i = 0; i < op1.getArguments().size(); i++) {
-						if (!equal(op1.getArguments().get(i), op2.getArguments().get(i)))
-							return false;
-					}
-					return true;
-				}
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(ExistsOperator op1, ExistsOperator op2) {
-		if (op1 != null && op2 != null) {
-			if (equal(op1.getCollection(), op2.getCollection()))
-				if (op1.getElement() != null && op2.getElement() != null)
-					if (equal(op1.getElement(), op2.getElement())) {
-						if (op1.getArgument() != null && op2.getArgument() != null)
-							return equal(op1.getArgument(), op2.getArgument());
-					}
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(ForAllOperator op1, ForAllOperator op2) {
-		if (op1 != null && op2 != null) {
-			if (equal(op1.getCollection(), op2.getCollection()))
-				return equal(op1.getArgument(), op2.getArgument());
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(RelationalOperator op1, RelationalOperator op2) {
-		if (op1 != null && op2 != null) {
-			if (op1.getClass().equals(op2.getClass()))
-				return equal(op1.getLhs(), op2.getRhs());
-			return false;
-		}
-		return false;
-	}
-
-	public boolean equal(Parameter p1, Parameter p2) {
-		if (p1 != null && p2 != null)
-			return p1.getResolvingExpr().equals(p2.getResolvingExpr());
-		return false;
-	}
+	// public boolean equal(Operator op1, Operator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1 instanceof NotOperator && op2 instanceof NotOperator)
+	// return equal((NotOperator) op1, (NotOperator) op2);
+	// if (op1 instanceof AndOperator && op2 instanceof NotOperator)
+	// return equal((AndOperator) op1, (AndOperator) op2);
+	// if (op1 instanceof OrOperator && op2 instanceof OrOperator)
+	// return equal((OrOperator) op1, (OrOperator) op2);
+	// if (op1 instanceof ForAllOperator && op2 instanceof ForAllOperator)
+	// return equal((ForAllOperator) op1, (ForAllOperator) op2);
+	// if (op1 instanceof ExistsOperator && op2 instanceof ExistsOperator)
+	// return equal((ExistsOperator) op1, (ExistsOperator) op2);
+	// if (op1 instanceof GreaterOperator && op2 instanceof GreaterOperator)
+	// return equal((GreaterOperator) op1, (GreaterOperator) op2);
+	// if (op1 instanceof GreaterEqualOperator && op2 instanceof
+	// GreaterEqualOperator)
+	// return equal((GreaterEqualOperator) op1, (GreaterEqualOperator) op2);
+	// if (op1 instanceof LessOperator && op2 instanceof LessOperator)
+	// return equal((LessOperator) op1, (LessOperator) op2);
+	// if (op1 instanceof LessEqualOperator && op2 instanceof LessEqualOperator)
+	// return equal((LessEqualOperator) op1, (LessEqualOperator) op2);
+	// if (op1 instanceof EqualOperator && op2 instanceof EqualOperator)
+	// return equal((EqualOperator) op1, (EqualOperator) op2);
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(NotOperator op1, NotOperator op2) {
+	// if (op1 != null && op2 != null)
+	// return equal(op1.getArgument(), op2.getArgument());
+	// return false;
+	// }
+	//
+	// public boolean equal(AndOperator op1, AndOperator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1.getArguments() != null && op2.getArguments() != null) {
+	// if (op1.getArguments().size() == op2.getArguments().size()) {
+	// for (int i = 0; i < op1.getArguments().size(); i++) {
+	// if (!equal(op1.getArguments().get(i), op2.getArguments().get(i)))
+	// return false;
+	// }
+	// return true;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(OrOperator op1, OrOperator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1.getArguments() != null && op2.getArguments() != null) {
+	// if (op1.getArguments().size() == op2.getArguments().size()) {
+	// for (int i = 0; i < op1.getArguments().size(); i++) {
+	// if (!equal(op1.getArguments().get(i), op2.getArguments().get(i)))
+	// return false;
+	// }
+	// return true;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(ExistsOperator op1, ExistsOperator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (equal(op1.getCollection(), op2.getCollection()))
+	// if (op1.getElement() != null && op2.getElement() != null)
+	// if (equal(op1.getElement(), op2.getElement())) {
+	// if (op1.getArgument() != null && op2.getArgument() != null)
+	// return equal(op1.getArgument(), op2.getArgument());
+	// }
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(ForAllOperator op1, ForAllOperator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (equal(op1.getCollection(), op2.getCollection()))
+	// return equal(op1.getArgument(), op2.getArgument());
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(RelationalOperator op1, RelationalOperator op2) {
+	// if (op1 != null && op2 != null) {
+	// if (op1.getClass().equals(op2.getClass()))
+	// return equal(op1.getLhs(), op2.getRhs());
+	// return false;
+	// }
+	// return false;
+	// }
+	//
+	// public boolean equal(Parameter p1, Parameter p2) {
+	// if (p1 != null && p2 != null)
+	// return p1.getResolvingExpr().equals(p2.getResolvingExpr());
+	// return false;
+	// }
 
 	// public boolean equal(SingleValuedParameter p1,
 	// SingleValuedParameter p2) {

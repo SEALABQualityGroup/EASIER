@@ -53,8 +53,10 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		// this.setSolution(sol);
 		// this.setSourceConstInit(getRandomRate(sol));
 		this.setSourceConstInit(getRandomConst(sol));
+		if(sourceConstInit.getName().contains("workload"))
+			System.out.println("There was an error in filtering workload");
 		this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
-		
+
 		this.setSourceConstInitOldValue(
 				Double.valueOf((String) ((IdentExpr) sourceConstInit.getInitConstExpr()).getName()));
 
@@ -72,14 +74,19 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		if (listOfConsts.isEmpty()) {
 			return null;
 		}
-		int index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1);
-		if (manager.getController().getWorkloadRange() == -1
-				&& listOfConsts.get(index).getName().contains("workload")) {
-			do {
-				index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1);
-			} while (listOfConsts.get(index).getName().contains("workload"));
+
+		// if (sol.getController().getWorkloadRange() == -1
+		// && listOfConsts.get(index).getName().contains("workload")) {
+		// do {
+		// index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0,
+		// listOfConsts.size() - 1);
+		// } while (listOfConsts.get(index).getName().contains("workload"));
+		// }
+		if (sol.getController().getWorkloadRange() == -1)
+			return getRandomRate(sol);
+		else {
+			return listOfConsts.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1));
 		}
-		return listOfConsts.get(index);
 	}
 
 	private ConstInit getRandomRate(RSolution sol) {
@@ -99,8 +106,12 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		}
 
 		int rangeMin = 0;
-		int rangeMax = listOfRandomRanges.size();
-		return listOfRandomRanges.get((int) (RandomUtils.nextInt(rangeMin, rangeMax)));
+		int rangeMax = listOfRandomRanges.size()-1;
+//		return listOfRandomRanges.get((int) (RandomUtils.nextInt(rangeMin, rangeMax)));
+		ConstInit returnValue = listOfRandomRanges.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
+		if(returnValue.getName().contains("workload"))
+			System.out.println("There was an error in filtering random rate!!!");
+		return returnValue;
 	}
 
 	public void execute() {
@@ -130,7 +141,6 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 				}
 			}
 			((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
-			log();
 		} else if (sourceConstInit.getInitConstData() instanceof Special
 				&& ((Special) sourceConstInit.getInitConstData()).getType() == SpecialType.WEIGHT) {
 			//
@@ -154,6 +164,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		} else {
 			System.out.println("Not supported type: " + sourceConstInit.getInitConstData().toString());
 		}
+		log();
 	}
 
 	/**
