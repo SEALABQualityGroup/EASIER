@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Launcher for the availability analysis that can be called
@@ -19,6 +21,9 @@ public class Launcher {
 
 	/** Number of threads */
 	public static int NUMBER_OF_THREADS = 0;
+
+	/** Timeout for the computation of solutions */
+	public static int TIMEOUT = 0;
 
 	/**
 	 * Print help on how to use the launcher from the command line.
@@ -32,7 +37,9 @@ public class Launcher {
 				+ "  -t <TTKernel> Set the path to the TTKernel executable\n"
 				+ "  -n		Number of threads\n"
 				+ "  -sp	Skip the creation of .psm files if already present\n"
-				+ "  -sa	Skip the creation of .ava files if already present");
+				+ "  -sa	Skip the creation of .ava files if already present\n"
+				+ "  -to    Timeout (in hours) for the computation of solutions\n"
+				+ "  -sor   use stochastic over-relaxation");
 	}
 
 	/**
@@ -103,10 +110,23 @@ public class Launcher {
 		}
 		executor.shutdown();
 		try {
-			executor.awaitTermination(1, TimeUnit.HOURS);
+			if (TIMEOUT > 0 && !executor.awaitTermination(TIMEOUT, TimeUnit.HOURS)) {
+				executor.shutdownNow();
+			} else {
+				executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+			}
 		} catch (InterruptedException e) {
 			System.err.println("Analysis execution was interrupted.");
+			executor.shutdownNow();
+			Thread.currentThread().interrupt();
 			e.printStackTrace();
+		} catch (OutOfMemoryError e) {
+			Matcher m = Pattern.compile("pool-[0-9]-thread-([0-9]+)").matcher(e.getMessage());
+			if (m.find()) {
+				System.err.println("Out of memory: " + workers[Integer.parseInt(m.group(1))].getAemFile());
+			} else {
+				System.err.println(e.getMessage());
+			}
 		}
 
 		for (int i = 0; i < files.length; i++) {
@@ -158,6 +178,7 @@ public class Launcher {
 		AnalysisRunnable.AVAILABILITY_DEGRADED = argsList.contains("-d");
 		AnalysisRunnable.SKIP_PSM_CREATION = argsList.contains("-sp");
 		AnalysisRunnable.SKIP_AVA_CREATION = argsList.contains("-sa");
+		AnalysisRunnable.SOR = argsList.contains("-sor");
 
 		if (argsList.contains("-t")) {
 			ttkernel = new File(argsList.get(argsList.indexOf("-t") + 1));
@@ -165,6 +186,10 @@ public class Launcher {
 
 		if (argsList.contains("-n")) {
 			NUMBER_OF_THREADS = Integer.parseInt(argsList.get(argsList.indexOf("-n") + 1));
+		}
+
+		if (argsList.contains("-to")) {
+			TIMEOUT = Integer.parseInt(argsList.get(argsList.indexOf("-to") + 1));
 		}
 
 		final File folder = new File(args[args.length - 1]);

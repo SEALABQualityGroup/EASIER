@@ -73,6 +73,14 @@ public class Parser {
 	}
 
 	/**
+	 * Get the name of the .DIS file.
+	 * @return File object corresponding to the .DIS file
+	 */
+	public File getDISFile() {
+		return new File(aemFile.getAbsolutePath() + ".dis");
+	}
+
+	/**
 	 * Loads config parameters from CONFIG_FILE.
 	 * @throws IOException
 	 */
@@ -100,6 +108,31 @@ public class Parser {
 			try {
 				SpawnRuntime.getInstance().exec(
 						String.format("%s -g %s %s.tmp", ttkernel, filename, filename))
+				.waitFor();
+			} catch (InterruptedException e) {
+				System.err.println("The execution of TTKernel was interrupted.");
+				e.printStackTrace();
+			}
+		} else {
+			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
+		}
+	}
+
+	/**
+	 * Generates a .DIS containing the stationary distribution
+	 * computed with the stochastic over-relaxation.
+	 * (uses TTKernel)
+	 * @throws IOException
+	 */
+	public void generateDIS() throws IOException {
+		if (aemFile.exists()) {
+			if (ttkernel == null) {
+				loadConfig();
+			}
+			final String filename = aemFile.getAbsolutePath();
+			try {
+				SpawnRuntime.getInstance().exec(
+						String.format("%s -q %s %s.tmp", ttkernel, filename, filename))
 				.waitFor();
 			} catch (InterruptedException e) {
 				System.err.println("The execution of TTKernel was interrupted.");
@@ -228,5 +261,94 @@ public class Parser {
 		}
 
 		return matrix;
+	}
+
+	/**
+	 * Parses a .PSM file only to get global and local states.
+	 * @return List of global states with corresponding local states
+	 */
+	public ArrayList<String> parsePSMStates() {
+		final File psmFile = getPSMFile();
+
+		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):");
+		final Pattern localStatePattern = Pattern.compile("Local state of ([^:]+):");
+		final Pattern portPattern = Pattern.compile("<[^\\.]+(\\.[^, ]+)");
+
+		states = new ArrayList<String>();
+
+		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {
+			String line;
+			int sourceState = 0;
+			String sourceStateLabel = "";
+			Matcher m;
+			while ((line = br.readLine()) != null) {
+
+				// Global state
+				m = globalStatePattern.matcher(line);
+				if (m.find()) {
+					if (sourceStateLabel != "") {
+						states.add(sourceStateLabel.substring(0, sourceStateLabel.length() - 2));
+						sourceStateLabel = "";
+					}
+					sourceState = Integer.parseInt(m.group(1));
+					sourceStateLabel = sourceState + ": ";
+					continue;
+				}
+
+				// Local state
+				m = localStatePattern.matcher(line);
+				if (m.find()) {
+					sourceStateLabel += m.group(1);
+					continue;
+				}
+
+				// Element port
+				m = portPattern.matcher(line);
+				if (m.find()) {
+					sourceStateLabel += m.group(1) + ", ";
+					continue;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			System.err.println("File not found: " + psmFile);
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Unable to read: " + psmFile);
+			e.printStackTrace();
+		}
+
+		return states;
+	}
+
+	/**
+	 * Parses a DIS file to get the stationary distribution.
+	 * @return the stationary distribution
+	 */
+	public Matrix parseDIS() {
+		final File disFile = getDISFile();
+
+		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):\\s+([0-9\\.e+-]+)");
+
+		Matrix stationaryDistribution = new Matrix(new double[getNumberOfStates()][1]);
+
+		try (final BufferedReader br = new BufferedReader(new FileReader(disFile))) {
+			String line;
+			Matcher m;
+			while ((line = br.readLine()) != null) {
+				// Global state
+				m = globalStatePattern.matcher(line);
+				if (m.find()) {
+					stationaryDistribution.set(Integer.parseInt(m.group(1))-1, 0, Double.parseDouble(m.group(2)));
+					continue;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			System.err.println("File not found: " + disFile);
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Unable to read: " + disFile);
+			e.printStackTrace();
+		}
+		return stationaryDistribution;
 	}
 }
