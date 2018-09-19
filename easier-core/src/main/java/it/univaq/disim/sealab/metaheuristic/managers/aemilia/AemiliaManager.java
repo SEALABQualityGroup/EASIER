@@ -479,7 +479,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesCapacityAction");
-		action.setSourceConstInit(sourceConst);
+//		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 
@@ -500,7 +500,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesRateAction");
-		action.setSourceConstInit(sourceConst);
+//		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 
@@ -530,7 +530,7 @@ public class AemiliaManager extends MetamodelManager {
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
-		action.setSourceConstInit(sourceConst);
+//		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 		action.setName("AEmiliaConstChangesWorkloadAction");
@@ -701,7 +701,7 @@ public class AemiliaManager extends MetamodelManager {
 		EList<ConstInit> listOfConsts = ((AEmiliaSpecification) seq.getModel()).getArchiTypeDecl().getHeader()
 				.getInitConst();
 		List<ConstInit> listOfRandomWeights = new ArrayList<>();
-		if (!listOfRandomWeights.isEmpty()) {
+		if (listOfRandomWeights.isEmpty()) {
 			return null;
 		} else {
 			for (ConstInit c : listOfConsts) {
@@ -815,7 +815,7 @@ public class AemiliaManager extends MetamodelManager {
 		}
 	}
 
-	private boolean containsInstance(List<RefactoringAction> refactoring) {
+	private boolean containsCloningInstance(List<RefactoringAction> refactoring) {
 		for (RefactoringAction action : refactoring) {
 			if (action instanceof AEmiliaCloneAEIRefactoringAction) {
 				return true;
@@ -832,7 +832,7 @@ public class AemiliaManager extends MetamodelManager {
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 
 		try {
-			if (containsInstance(solution.getVariableValue(0).getRefactoring().getActions()))
+			if (containsCloningInstance(solution.getVariableValue(0).getRefactoring().getActions()))
 				if (!isThereAnyClone(savedModel)) {
 					throw new Exception("error in clone action");
 				}

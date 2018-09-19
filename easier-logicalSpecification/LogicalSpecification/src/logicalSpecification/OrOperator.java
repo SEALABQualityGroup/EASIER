@@ -38,5 +38,7 @@ public interface OrOperator extends LogicalOperator {
 	 * @generated
 	 */
 	EList<Operator> getArguments();
+	
+	boolean equals(OrOperator op2);
 
 } // OrOperator

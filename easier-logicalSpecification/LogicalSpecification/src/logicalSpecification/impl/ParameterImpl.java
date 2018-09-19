@@ -460,5 +460,12 @@ public abstract class ParameterImpl extends NamedElementImpl implements Paramete
 		result.append(')');
 		return result.toString();
 	}
+	
+//	@Override
+//	public boolean equals(Parameter p2) {
+//		if(this.getResolvingExpr().equals(p2.getResolvingExpr()))
+//			return true;
+//		return false;
+//	}
 
 } //ParameterImpl
