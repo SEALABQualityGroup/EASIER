@@ -101,6 +101,22 @@ public class Analysis {
 	}
 
 	/**
+	 * Computes the stationary distribution of the CTMC
+	 * using TTKernel and the stochastic over-relaxation method.
+	 * @return the stationary distribution
+	 * @throws IOException
+	 */
+	public Matrix getStationaryDistributionSOR() throws IOException {
+		// Execute TTKernel -q
+		parser.generateDIS();
+
+		// Parse the .DIS file to get the stationary distribution
+		stationaryDistribution = parser.parseDIS();
+
+		return stationaryDistribution;
+	}
+
+	/**
 	 * Computes the availability of the system considering the system
 	 * available when no failures occur in any component.
 	 * @return steady state availability

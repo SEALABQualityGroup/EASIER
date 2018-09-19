@@ -28,6 +28,9 @@ public class AnalysisRunnable implements Runnable {
 	/** Skip the creation of .ava files if already present */
 	public static boolean SKIP_AVA_CREATION = false;
 
+	/** Use stochastic over-relaxation instead of Gaussian elimination */
+	public static boolean SOR = false;
+
 	/**
 	 * Creates a new instance of the thread.
 	 * @param aemFile Aemilia file
@@ -61,7 +64,15 @@ public class AnalysisRunnable implements Runnable {
 	}
 
 	/**
-	 * Return the .AVA file containing
+	 * Returns the .AEM file
+	 * @return File object corresponding to the .AEM file
+	 */
+	public File getAemFile() {
+		return aemFile;
+	}
+
+	/**
+	 * Returns the .AVA file containing
 	 * availability measures.
 	 * @return File object corresponding to the .AVA file
 	 */
@@ -90,6 +101,8 @@ public class AnalysisRunnable implements Runnable {
 	 */
 	@Override
 	public void run() {
+		System.out.println("Started computing: " + aemFile);
+		final long startTime = System.nanoTime();
 		analysis = new Analysis(aemFile);
 
 		if (ttkernel != null) {
@@ -119,11 +132,25 @@ public class AnalysisRunnable implements Runnable {
 			return;
 		}
 
-		// Parse the Aemilia specification
-		analysis.parse();
+		if (SOR) { // Stochastic over-relaxation
+			// Parse global and local states
+			analysis.getParser().parsePSMStates();
 
-		// Compute the stationary distribution
-		analysis.getStationaryDistribution();
+			// Compute the stationary distribution
+			try {
+				analysis.getStationaryDistributionSOR();
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+				e.printStackTrace();
+				return;
+			}
+		} else { // Gaussian elimination
+			// Parse the Aemilia specification
+			analysis.parse();
+
+			// Compute the stationary distribution
+			analysis.getStationaryDistribution();
+		}
 
 		// Compute the fully operational availability
 		if (AVAILABILITY_FULL) {
@@ -139,6 +166,7 @@ public class AnalysisRunnable implements Runnable {
 		writeResults();
 
 		analysis.clean();
+		System.out.println(aemFile + " completed in " + (System.nanoTime() - startTime));
 	}
 
 }
