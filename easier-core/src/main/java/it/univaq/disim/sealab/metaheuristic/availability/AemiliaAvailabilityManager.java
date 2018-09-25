@@ -1,8 +1,11 @@
 package it.univaq.disim.sealab.metaheuristic.availability;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
@@ -58,8 +61,10 @@ public class AemiliaAvailabilityManager {
 		controller = ctrl;
 		manager = controller.getManager();
 	}
-	
-	public void packageRegistering() {manager.getMetamodelManager().packageRegistering();}
+
+	public void packageRegistering() {
+		manager.getMetamodelManager().packageRegistering();
+	}
 
 	public AemiliaAvailabilityManager() {
 
@@ -98,6 +103,8 @@ public class AemiliaAvailabilityManager {
 			Resource targetResource = manager.getMetamodelManager().getResourceSet()
 					.getResource(manager.string2FileUri(modelFile.getAbsolutePath()), true);
 			addAvailability((AEmiliaSpecification) targetResource.getContents().get(0));
+			writeAvaRewFile((AEmiliaSpecification) targetResource.getContents().get(0),
+					modelFile.getParentFile().toPath());
 			try {
 				targetResource.save(null);
 			} catch (IOException e) {
@@ -105,19 +112,17 @@ public class AemiliaAvailabilityManager {
 				e.printStackTrace();
 			}
 			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
-			
+
 			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
-			
+
 			String name = modelFile.getName();
-			
-			File newAemFile = Paths.get(modelFile.getParent(),  name.substring(0, name.lastIndexOf(".")) + ".aem").toFile();
-			
+
+			File newAemFile = Paths.get(modelFile.getParent(), name.substring(0, name.lastIndexOf(".")) + ".aem")
+					.toFile();
+
 			oldAemFile.renameTo(newAemFile);
-			
+
 		}
-		// }
-		// }
-		// }
 	}
 
 	/**
@@ -141,16 +146,6 @@ public class AemiliaAvailabilityManager {
 		}
 		return files;
 	}
-	
-	/*
-	 * Wsn_Type_lose := 0.02
-Channel_Type_lose := 0.04
-Fta_Type_lose := 0.1
-Lan_Type_lose := 0.01
-Desk_Type_lose := 0.15
-DB_Type_lose := 0.02
-Sec_Type_lose := 0.06
-	 */
 
 	private void addAvailability(AEmiliaSpecification targetModel) {
 
@@ -158,10 +153,7 @@ Sec_Type_lose := 0.06
 			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName(),
 					targetModel);
 
-			//TODO to be changed
-//			ConstInit constWeight = createConstWeight(elemType, "13");
 			ConstInit constWeight = setConstWeight(elemType);
-			
 
 			targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
 			elemType.getElemHeader().getCostant().add(createConst(constWeight));
@@ -178,6 +170,21 @@ Sec_Type_lose := 0.06
 				behEq.setPt(availabilityChoice);
 			}
 		}
+	}
+
+	private void writeAvaRewFile(final AEmiliaSpecification targetModel, final Path folderPath) {
+
+		try (BufferedWriter bw = new BufferedWriter(
+				new FileWriter(Paths.get(folderPath.toString(), "ava.rew").toFile()))) {
+			bw.write("MEASURE Lose IS \n");
+			for (ArchiElemInstance elemInstance : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
+				bw.write(String.format("\t ENABLED (%s.fail_%s) -> STATE_REWARD(1.0)\n", elemInstance.getInstanceName(),
+						elemInstance.getTypeOf().getEtName()));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void updateArchiElemInstanceParameters(ElemType e, AEmiliaSpecification targetModel, ConstInit cWeight) {
@@ -329,7 +336,7 @@ Sec_Type_lose := 0.06
 		constWeight.setInitConstExpr(weightExp);
 		return constWeight;
 	}
-	
+
 	private ConstInit setConstWeight(ElemType elem) {
 		Properties prop = new Properties();
 		try {
@@ -337,9 +344,9 @@ Sec_Type_lose := 0.06
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		String weightValue = prop.getProperty(elem.getEtName());
-		
+
 		return createConstWeight(elem, weightValue);
 	}
 
@@ -356,7 +363,7 @@ Sec_Type_lose := 0.06
 	public static void main(String args[]) {
 		AemiliaAvailabilityManager avaManager = new AemiliaAvailabilityManager(new Controller());
 		avaManager.packageRegistering();
-		
+
 		avaManager.doAvailability(new File(args[0]));
 
 	}

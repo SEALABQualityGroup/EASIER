@@ -49,6 +49,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.utils.CSVUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
@@ -100,6 +101,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private double cloningWeight;
 	private double constChangesWeight;
 	private String failureRatesPropertiesFile;
+	private String sourceOclFolder;
 	
 
 	// private static String BASENAME =
@@ -555,12 +557,19 @@ public class Controller extends AbstractAlgorithmRunner {
 		new File(availabilityFolder).mkdirs();
 
 		logger_.info("outputFolder is set to " + getOutputFolder());
-
-		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
-		logger_.info("rule_file_path is set to " + getRuleFilePath());
+		
+		sourceOclFolder = getBasePath() + prop.getProperty("sourceOclFolder");
 
 		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
 		logger_.info("rule_template_file_path is set to " + getRuleTemplateFilePath());
+		
+		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
+		if(!new File(ruleFilePath).exists()) {
+			ThresholdUtils.uptodateSingleValueThresholds(sourceOclFolder, sourceModelPath, sourceValPath,
+					(AemiliaManager) metamodelManager, this);
+		}
+		
+		logger_.info("rule_file_path is set to " + getRuleFilePath());
 
 		setMaxCloning(Integer.valueOf(prop.getProperty("maxCloning")));
 		logger_.info("max cloning is set to " + getMaxCloning());
@@ -1021,7 +1030,9 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public String getFailureRatesPropertiesFile() {
-		return failureRatesPropertiesFile;
+		if(failureRatesPropertiesFile != null)
+			return failureRatesPropertiesFile;
+		return "/Users/peo12/git/sealab/easier/easier-availability/src/main/resources/failureRates.properties";
 	}
 
 	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {

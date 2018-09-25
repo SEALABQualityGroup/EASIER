@@ -191,11 +191,24 @@ endif
 
 --invariant which determines the presence of instances of the Pipe & Filter antipattern in the analyzed model
 inv pipeFilterAntipattern:
-let serviceThLB : Real = 0.161592 in--<threshold numerical value> in
-let opResDemUB : Real = 3.486090909 in--<threshold numerical value> in
+let serviceThLB : Real = 46.28367 in--<threshold numerical value> in
+let opResDemUB : Real = 1060.0 in--<threshold numerical value> in
 let elemTypeName : ElemType = self.fromInstance.TypeOf in
 if (isServiceExpOrInf(self) and self.throughput < serviceThLB) then
        checkOpResDemand(self, opResDemUB)
+else
+ false
+endif
+
+
+--invariant which determines the presence of instances of the Extensive Processing antipattern in the analyzed model
+inv extensiveProcessingAntipattern:
+let respTimeUB : Real = 100.0 in--<threshold numerical value> in
+let opResDemLB : Real = 100000.0 in--<threshold numerical value> in
+let opResDemUB : Real = 1060.0 in--<threshold numerical value> in
+let elemTypeName : ElemType = self.fromInstance.TypeOf in
+if (isServiceExpOrInf(self) and self.responseTime > respTimeUB) then
+ 	unbalancedOpResDemand(self, opResDemLB, opResDemUB)
 else
  false
 endif

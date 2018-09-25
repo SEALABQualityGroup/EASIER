@@ -1,0 +1,2 @@
+MEASURE APP_Type_Single_utilization_APP_send_auth_req IS ENABLED (APP.send_auth_req) ->STATE_REWARD(1.0)
+ENABLED (APP.send_monitor_req) ->STATE_REWARD(1.0)

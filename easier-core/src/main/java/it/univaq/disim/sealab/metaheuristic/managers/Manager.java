@@ -49,7 +49,6 @@ import metamodel.mmaemilia.InputInteraction;
 import metamodel.mmaemilia.Interaction;
 import metamodel.mmaemilia.OutputInteraction;
 
-// TODO Singleton
 public class Manager {
 
 	private String modelUri = null;

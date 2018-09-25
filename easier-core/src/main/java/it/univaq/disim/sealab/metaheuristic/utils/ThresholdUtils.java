@@ -27,14 +27,14 @@ import metamodel.mmaemilia.Headers.ConstInit;
 
 public class ThresholdUtils {
 
-	public static void uptodateSingleValueThresholds(String mmaemiliaFolderPath, String mmaemiliaFilePath,
+	public static void uptodateSingleValueThresholds(String detestinationFolder, String mmaemiliaFilePath,
 			String valFilePath, AemiliaManager metamodelManager, Controller controller) {
 
 //		Controller controller = Manager.getInstance(null).getController();
 		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
 		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
 
-		createNewOclFile(controller.getRuleTemplateFilePath(), mmaemiliaFolderPath, aemiliaModel, valSpec);
+		createNewOclFile(controller.getRuleTemplateFilePath(), detestinationFolder, aemiliaModel, valSpec);
 
 	}
 
