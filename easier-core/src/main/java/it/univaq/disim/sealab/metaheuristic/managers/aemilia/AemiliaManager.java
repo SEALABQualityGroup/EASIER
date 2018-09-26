@@ -53,7 +53,7 @@ public class AemiliaManager extends MetamodelManager {
 	private static final String METAMODEL_FILE_EXTENISON = "mmaemilia";
 	private static final String REW_FILE_EXTENSION = "rew";
 	private static final String REWMAPPING_FILE_EXTENSION = "rewmapping";
-
+	
 	private ResourceSet resourceSet;
 	// private Resource emiliaResource;
 
@@ -101,14 +101,16 @@ public class AemiliaManager extends MetamodelManager {
 		getTwoEaglesBridge().aemiliaModelGeneration(getAemiliaModelFilePath(), getRefactoredModelFilePath());
 	}
 
-	@SuppressWarnings("unused")
 	public void gaussianEliminationSRBMC() {
 		getTwoEaglesBridge().gaussianEliminationSRBMC(getAemFilePath(), getRewFilePath(), getOutputFilePath());
 	}
 
-	@SuppressWarnings("unused")
 	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
 		getTwoEaglesBridge().gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
+	}
+
+	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+		getTwoEaglesBridge().sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
 	}
 
 	public void measuresToIndices() {

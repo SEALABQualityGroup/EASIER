@@ -96,17 +96,13 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String sourceBasePath;
 
 	private boolean cleaningTmp = false;
+	private static boolean SOR=false;
 
 	private Timestamp timestamp;
 	private double cloningWeight;
 	private double constChangesWeight;
 	private String failureRatesPropertiesFile;
 	private String sourceOclFolder;
-	
-
-	// private static String BASENAME =
-	// "/src/main/resources/models/refactored/BGCS/BGCS_";
-	// private static String EXTENSION = ".uml";
 	
 	public Controller() {
 		manager = new Manager(new AemiliaManager(this));
@@ -1029,6 +1025,14 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
 		this.failureRatesPropertiesFile = failureRatesPropertiesFile;
+	}
+	
+	public static void setSOR(boolean sorValue) {
+		SOR = sorValue;
+	}
+	
+	public static boolean isSor() {
+		return SOR;
 	}
 
 }

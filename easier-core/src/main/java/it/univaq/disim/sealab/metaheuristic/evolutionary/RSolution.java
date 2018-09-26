@@ -402,7 +402,11 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		String outputFilePath = mmaemiliaFolderPath + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName()
 				+ "_result";
 
-		metamodelManager.gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
+		if(Controller.isSor()) {
+			metamodelManager.sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
+		}else {
+			metamodelManager.gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
+		}
 
 		if (!new File(aemFilePath + ".val").exists()) {
 			controller.checkTwoTowersOutput(outputFilePath);
@@ -411,26 +415,6 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		}
 	}
 
-//	private float evaluatePerformance() {
-//		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-//
-//		String valFilePath = mmaemiliaFolderPath + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName()
-//				+ "_result" + ((AemiliaManager) metamodelManager).getModelFileExtension() + ".val";
-//
-//		perfQ = 0;
-//		if (!new File(valFilePath).exists()) {
-//			perfQ = -Float.MAX_VALUE;
-//			Controller.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
-//					+ valFilePath + " doesn't exist.");
-//		} else {
-//			perfQ = controller.getPerfQuality().performanceQuality(controller.getSourceValPath(), valFilePath);
-//
-//		}
-////		Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQuality --> " + perfQ);
-//		
-//		return perfQ;
-//	}
-	
 	public float evaluatePerformance() {
 		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
 

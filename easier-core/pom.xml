@@ -185,7 +185,7 @@
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>twoeaglesBridge</artifactId>
-			<version>0.0.1</version>
+			<version>0.2</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.ocl/org.eclipse.ocl.ecore -->
 		<dependency>
