@@ -148,53 +148,45 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 	
-	public Controller(String[] args) {
-		this();
-//		manager = new Manager(new AemiliaManager(this));
-//		manager.setController(this);
-//		availabilityManager = new AemiliaAvailabilityManager(this);
-
-//		setPerfQuality(new PerformanceQuality(manager.getOclManager()));
-		// logger_ = ;
-		InputStream cfgInputStream = null;
-
-		try {
-			handler = new FileHandler("default.log", append);
-			setBasePath(new java.io.File(".").getCanonicalPath());
-			cfgInputStream = getConfigFile(args[0]);
-		} catch (SecurityException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		logger_.addHandler(handler);
-
-//		metamodelManager = manager.getMetamodelManager();
-
-		logger_.info("Logger Name: " + logger_.getName());
-		logger_.warning("Can cause IOException");
-
-		if (args[0] != null) {
-			configFile = getBasePath() + args[0];
-		}
-
-		if (args.length == 2) {
-			sourceModelPath = args[1];
-		}
-
-		setProperties(cfgInputStream);
-		if (sourceModelPath == null || sourceModelPath.isEmpty())
-			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
-		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
-
-		updateSourceModel();
-
-		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
-		numberOfPAs = 0;
-		for (String key : sourceModelPAs.keySet()) {
-			numberOfPAs += sourceModelPAs.get(key).size();
-		}
-	}
+//	public Controller(String[] args) {
+//		this();
+//		InputStream cfgInputStream = null;
+//
+//		try {
+//			handler = new FileHandler("default.log", append);
+//			setBasePath(new java.io.File(".").getCanonicalPath());
+//			cfgInputStream = getConfigFile(args[0]);
+//		} catch (SecurityException | IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		logger_.addHandler(handler);
+//
+//		logger_.info("Logger Name: " + logger_.getName());
+//		logger_.warning("Can cause IOException");
+//
+//		if (args[0] != null) {
+//			configFile = getBasePath() + args[0];
+//		}
+//
+//		if (args.length == 2) {
+//			sourceModelPath = args[1];
+//		}
+//
+//		setProperties(cfgInputStream);
+//		if (sourceModelPath == null || sourceModelPath.isEmpty())
+//			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
+//		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
+//
+//		updateSourceModel();
+//
+//		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
+//		numberOfPAs = 0;
+//		for (String key : sourceModelPAs.keySet()) {
+//			numberOfPAs += sourceModelPAs.get(key).size();
+//		}
+//	}
 
 	private void generateSourceFiles() {
 
