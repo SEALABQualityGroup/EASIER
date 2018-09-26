@@ -65,15 +65,12 @@ import valutazione.scope.ScopeArchiType;
 
 public class TwoEaglesBridge {
 
-	private String twoTowersKernelPath;// = "/Users/peo12/git/sealab/panda-aemilia/TwoTowers/bin/TTKernel";
+	private String twoTowersKernelPath;
 	private final String STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION = "-s";
+	private final String STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR = "-t";
 
 	private AEmiliaSpecification aemiliaSpecification;
 	private ResourceSet resourceSet;
-
-	// public TwoEaglesBridge(String twoTowersKernelPath) {
-	// this.twoTowersKernelPath = twoTowersKernelPath;
-	// }
 
 	private List<ExtractedIndex> extractedIndices = new ArrayList<ExtractedIndex>();
 	private Map<MeasureDef, List<metamodel.mmaemilia.Behavior.Action>> actionMap = new HashMap<MeasureDef, List<metamodel.mmaemilia.Behavior.Action>>();
@@ -83,9 +80,6 @@ public class TwoEaglesBridge {
 	public void aemiliaModelGeneration(String aemiliaModelFilePath, String refactoreModelFilePath) {
 
 		FileInputStream aemiliaFileInputStream = null;
-
-		// = getModelPath();
-		// = getRefactoredModelPath();
 
 		try {
 			aemiliaFileInputStream = new FileInputStream(aemiliaModelFilePath);
@@ -143,11 +137,21 @@ public class TwoEaglesBridge {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
 		try {
 			Process process = new ProcessBuilder(getTwoTowersKernelPath(),
 					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION, aemFilePath, rewFilePath,
+					outputFilePath).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+		try {
+			Process process = new ProcessBuilder(getTwoTowersKernelPath(),
+					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR, aemFilePath, rewFilePath,
 					outputFilePath).start();
 			process.waitFor();
 		} catch (IOException | InterruptedException e) {
