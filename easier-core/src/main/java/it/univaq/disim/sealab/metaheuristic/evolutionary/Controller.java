@@ -237,17 +237,17 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info(algorithm.getClass().toString());
 
-		FileWriter solutionFileWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
-				true);
-		List<String> line = new ArrayList<String>();
-		line.add("name");
-		line.add("PAs");
-		line.add("perfQ");
-		line.add("numOfChanges");
+//		FileWriter solutionFileWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
+//				true);
+//		List<String> line = new ArrayList<String>();
+//		line.add("name");
+//		line.add("PAs");
+//		line.add("perfQ");
+//		line.add("numOfChanges");
 		// CSVUtils.writeLine(solutionFileWriter, line);
-		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_solutions.csv", line);
-		solutionFileWriter.flush();
-		solutionFileWriter.close();
+		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_solutions.csv", Arrays.asList("name", "PAs", "perfQ", "#changes"));
+//		solutionFileWriter.flush();
+//		solutionFileWriter.close();
 
 		algorithm.run();
 		List<RSolution> population = algorithm.getResult();
@@ -273,7 +273,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		// ".") + " seconds");
 
 		// try {
-		line = null;
+//		line = null;
 		writeSolutionSetToCSV(population);
 		// resultFileWriter.flush();
 		// resultFileWriter.close();
@@ -550,7 +550,7 @@ public class Controller extends AbstractAlgorithmRunner {
 				line.add("FoC/Null");
 			}
 			// CSVUtils.writeLine(analyzableCSV, line);
-			CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv", line);
+			CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_pareto.csv", line);
 
 			for (RSolution solution : population) {
 				writeSolutionToCSV(solution);
@@ -564,15 +564,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		logger_.info("CSV written");
 	}
-
-	// public void writeToCSV(RSolution solution) {
-	//
-	// try {
-	// writeSolutionToCSV(solution);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
 
 	private void writePropertiesToCSV(String csvFilePath) {
 		try {
@@ -591,109 +582,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private void writeSolutionToCSV(RSolution solution) throws IOException {
 		Refactoring ref = solution.getVariableValue(0).getRefactoring();
-
-		// List<String> line = new ArrayList<String>();
-		// line.add("#SOL:" + Integer.toString(solution.getName()));
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("#SOL:" +
-		// Integer.toString(solution.getName())));
-		//
-		//// line = null;
-		//// line = new ArrayList<String>();
-		//// line.add("Parents");
-		//// line.add("Refactored");
-		//// line.add("Crossovered");
-		//// line.add("Mutated");
-		//// line.add("PerfQ");
-		//// line.add("#Changes");
-		//// line.add("#Pas");
-		//// line.add("ExeTime");
-		//// CSVUtils.writeLine(resultFileWriter, line);
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("Parents", "Refactored",
-		// "Mutated", "PerfQ", "#Changes", "Pas", "ExecTime"));
-		//
-		//// line = null;
-		// ArrayList<String> line = new ArrayList<String>();
-		// String parents = "-,-";
-		// if (solution.getParents()[0] != null && solution.getParents()[1] != null) {
-		// parents = Integer.toString(solution.getParents()[0].getName()) + ", "
-		// + Integer.toString(solution.getParents()[1].getName());
-		// }
-		// line.add(parents);
-		// line.add(Boolean.toString(solution.isRefactored()));
-		// line.add(Boolean.toString(solution.isCrossovered()));
-		// line.add(Boolean.toString(solution.isMutated()));
-		// line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
-		// line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
-		// line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-		// // line.add(solution.getElapsedTime().toString());
-		// CSVUtils.writeLine(resultFileWriter, line);
-		//
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("ACTIONS"));
-
-		// line = null;
-		// line = new ArrayList<String>();
-		// line = Arrays.asList("Type", "#Chang", "Target", "Factor");
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("Type", "#Change",
-		// "Target", "Factor"));
-		//
-		// for (RefactoringAction action : ref.getActions()) {
-		// line = null;
-		// line = new ArrayList<String>();
-		// if (action.getName() == null)
-		// action.setName(action.getClass().getSimpleName());
-		//
-		// String target = action instanceof AEmiliaConstChangesAction
-		// ? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
-		// : ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
-		// String factor = action instanceof AEmiliaConstChangesAction
-		// ? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
-		// : "NULL";
-		//
-		//// line = Arrays.asList(action.getName(),
-		// Double.toString(action.getNumOfChanges()), target, factor);
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList(action.getName(),
-		// Double.toString(action.getNumOfChanges()), target, factor));
-		//
-		// }
-
-		// line = null;
-		// line = new ArrayList<String>();
-		// line.add("ANTIPATTERNS");
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("ANTIPATTERNS"));
-		// line = null;
-		// line = new ArrayList<String>();
-		// line = Arrays.asList("Key", "ContextElem");
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList("Key", "ContextElem"));
-		//
-		// Map<String, List<ArchitecturalInteraction>> mapOfPAs =
-		// solution.getMapOfPAs();
-		//
-		// try {
-		//
-		// for (String key : mapOfPAs.keySet()) {
-		//
-		// List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
-		// for (ArchitecturalInteraction ai : listOfContextElems) {
-		// line = null;
-		// line = new ArrayList<String>();
-		//// line = Arrays.asList(key, ai.getName());
-		// CSVUtils.writeLine(resultFileWriter, Arrays.asList(key, ai.getName());
-		// }
-		// }
-		// } catch (NullPointerException e) {
-		// System.err.println("Solution #: " + solution.getName() + " has null
-		// mapOfPAs");
-		// e.printStackTrace();
-		// }
-
-		// FileWriter analyzableCSV = new FileWriter(new File(getParetoFolder() +
-		// "analyzableResults.csv"));
-
-		// line = null;
 		ArrayList<String> line = new ArrayList<String>();
-		// String solID = (maxEvaluations / populationSize) + "-" + populationSize + ":"
-		// + solution.getName();
-		// line.add(solID);
+
 		line.add((maxEvaluations / populationSize) + "-" + populationSize + ":" + solution.getName());
 		line.add(String.valueOf(solution.getPerfQ()));
 		line.add(String.valueOf(solution.getNumOfChanges()));
@@ -713,7 +603,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			line.addAll(Arrays.asList(target, factor));
 
 		}
-		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv", line);
+		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_pareto.csv", line);
 	}
 
 	public String getOutputFolder() {
