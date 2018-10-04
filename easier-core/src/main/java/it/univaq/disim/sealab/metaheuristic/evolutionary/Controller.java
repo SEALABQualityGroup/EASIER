@@ -28,17 +28,24 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.eclipse.core.internal.registry.Handle;
-import org.eclipse.emf.common.util.URI;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.qualityindicator.impl.Epsilon;
+import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
+import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
+import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
+import org.uma.jmetal.qualityindicator.impl.Spread;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.experiment.Experiment;
+import org.uma.jmetal.util.experiment.ExperimentBuilder;
+import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
+import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
@@ -53,7 +60,6 @@ import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
-import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class Controller extends AbstractAlgorithmRunner {
@@ -96,14 +102,14 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String sourceBasePath;
 
 	private boolean cleaningTmp = false;
-	private static boolean SOR=false;
+	private static boolean SOR = false;
 
 	private Timestamp timestamp;
 	private double cloningWeight;
 	private double constChangesWeight;
 	private String failureRatesPropertiesFile;
 	private String sourceOclFolder;
-	
+
 	public Controller() {
 		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
@@ -112,7 +118,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		metamodelManager = manager.getMetamodelManager();
 	}
 
-	
 	public Controller(String propertiesFile) {
 		this();
 		InputStream cfgInputStream = null;
@@ -124,13 +129,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		} catch (SecurityException | IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		logger_.addHandler(handler);
 		logger_.info("Logger Name: " + logger_.getName());
 		logger_.warning("Can cause IOException");
-		
+
 		setProperties(cfgInputStream);
-		
+
 		if (sourceModelPath == null || sourceModelPath.isEmpty())
 			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
 		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
@@ -143,46 +148,49 @@ public class Controller extends AbstractAlgorithmRunner {
 			numberOfPAs += sourceModelPAs.get(key).size();
 		}
 	}
-	
-//	public Controller(String[] args) {
-//		this();
-//		InputStream cfgInputStream = null;
-//
-//		try {
-//			handler = new FileHandler("default.log", append);
-//			setBasePath(new java.io.File(".").getCanonicalPath());
-//			cfgInputStream = getConfigFile(args[0]);
-//		} catch (SecurityException | IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		logger_.addHandler(handler);
-//
-//		logger_.info("Logger Name: " + logger_.getName());
-//		logger_.warning("Can cause IOException");
-//
-//		if (args[0] != null) {
-//			configFile = getBasePath() + args[0];
-//		}
-//
-//		if (args.length == 2) {
-//			sourceModelPath = args[1];
-//		}
-//
-//		setProperties(cfgInputStream);
-//		if (sourceModelPath == null || sourceModelPath.isEmpty())
-//			sourceModelPath = sourceFolder + ((AemiliaManager) metamodelManager).getMetamodelFileExtension();
-//		((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
-//
-//		updateSourceModel();
-//
-//		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
-//		numberOfPAs = 0;
-//		for (String key : sourceModelPAs.keySet()) {
-//			numberOfPAs += sourceModelPAs.get(key).size();
-//		}
-//	}
+
+	// public Controller(String[] args) {
+	// this();
+	// InputStream cfgInputStream = null;
+	//
+	// try {
+	// handler = new FileHandler("default.log", append);
+	// setBasePath(new java.io.File(".").getCanonicalPath());
+	// cfgInputStream = getConfigFile(args[0]);
+	// } catch (SecurityException | IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// logger_.addHandler(handler);
+	//
+	// logger_.info("Logger Name: " + logger_.getName());
+	// logger_.warning("Can cause IOException");
+	//
+	// if (args[0] != null) {
+	// configFile = getBasePath() + args[0];
+	// }
+	//
+	// if (args.length == 2) {
+	// sourceModelPath = args[1];
+	// }
+	//
+	// setProperties(cfgInputStream);
+	// if (sourceModelPath == null || sourceModelPath.isEmpty())
+	// sourceModelPath = sourceFolder + ((AemiliaManager)
+	// metamodelManager).getMetamodelFileExtension();
+	// ((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
+	//
+	// updateSourceModel();
+	//
+	// sourceModelPAs =
+	// perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(),
+	// ruleFilePath);
+	// numberOfPAs = 0;
+	// for (String key : sourceModelPAs.keySet()) {
+	// numberOfPAs += sourceModelPAs.get(key).size();
+	// }
+	// }
 
 	private void generateSourceFiles() {
 
@@ -232,13 +240,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.getHandlers()[0].close();
 
 		startingTime = Instant.now();
-		//TODO most likely it's a bug
-//		RProblem problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
-//				this);
-//		this.setProblem(problem);
-		
-		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize,
-				this);
+		// TODO most likely it's a bug
+		// RProblem problem = new RProblem(sourceBasePath, length, number_of_actions,
+		// allowed_failures, populationSize,
+		// this);
+		// this.setProblem(problem);
+
+		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize, this);
 
 		timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -277,6 +285,30 @@ public class Controller extends AbstractAlgorithmRunner {
 		Algorithm<List<RSolution>> algorithm = new CustomNSGAII<RSolution>(problem, maxEvaluations, populationSize,
 				crossover, mutation, selection, ev);
 
+		final int INDEPENDENT_RUNS = 25;
+
+		List<String> referenceFrontFileNames = Arrays.asList("FTA.pf");
+		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
+		problemList.add(new ExperimentProblem<>(this.problem));
+
+		// List<ExperimentAlgorithm<RSolution, List<DoubleSolution>>> algorithmList =
+		// configureAlgorithmList(problemList);
+
+		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>(
+				"NSGAIIStudy")
+						// .setAlgorithmList(algorithmList)
+						.setProblemList(problemList).setExperimentBaseDirectory(getOutputFolder())
+						.setOutputParetoFrontFileName("paretoFile").setOutputParetoSetFileName("finalSetFile")
+						.setReferenceFrontDirectory("/pareto_fronts")
+						.setReferenceFrontFileNames(referenceFrontFileNames)
+						.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
+								new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
+								new InvertedGenerationalDistance<RSolution>(),
+								new InvertedGenerationalDistancePlus<RSolution>()))
+						.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(8).build();
+
+		new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+
 		long[] id_s = new long[1];
 		id_s[0] = java.lang.Thread.currentThread().getId();
 		// long initTime = getCpuTime(id_s);
@@ -302,10 +334,10 @@ public class Controller extends AbstractAlgorithmRunner {
 		Collections.sort(population, new RankingAndCrowdingDistanceComparator<RSolution>());
 		Collections.reverse(population);
 
-//		printFinalSolutionSet(population);
-//		if (!referenceParetoFront.equals("")) {
-//			printQualityIndicators(population, referenceParetoFront);
-//		}
+		// printFinalSolutionSet(population);
+		// if (!referenceParetoFront.equals("")) {
+		// printQualityIndicators(population, referenceParetoFront);
+		// }
 
 		logger_.info("Number of non-dominated solutions (sorted by Crowding): " + population.size());
 
@@ -368,14 +400,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		getProperties().setProperty("Total Elapsed Time", totalTime.toString());
-		
-		for(Handler handle : logger_.getHandlers()) {
+
+		for (Handler handle : logger_.getHandlers()) {
 			handle.flush();
 			handle.close();
 		}
-//		logger_.getHandlers()[0].flush();
-//		logger_.getHandlers()[0].close();
-		
+		// logger_.getHandlers()[0].flush();
+		// logger_.getHandlers()[0].close();
 
 	}
 
@@ -545,18 +576,18 @@ public class Controller extends AbstractAlgorithmRunner {
 		new File(availabilityFolder).mkdirs();
 
 		logger_.info("outputFolder is set to " + getOutputFolder());
-		
+
 		sourceOclFolder = getBasePath() + prop.getProperty("sourceOclFolder");
 
 		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
 		logger_.info("rule_template_file_path is set to " + getRuleTemplateFilePath());
-		
+
 		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
-		if(!new File(ruleFilePath).exists()) {
+		if (!new File(ruleFilePath).exists()) {
 			ThresholdUtils.uptodateSingleValueThresholds(sourceOclFolder, sourceModelPath, sourceValPath,
 					(AemiliaManager) metamodelManager, this);
 		}
-		
+
 		logger_.info("rule_file_path is set to " + getRuleFilePath());
 
 		setMaxCloning(Integer.valueOf(prop.getProperty("maxCloning")));
@@ -575,7 +606,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		cloningWeight = Double.parseDouble(prop.getProperty("cloningWeight", Double.toString(1.3)));
 		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
-		
+
 		failureRatesPropertiesFile = prop.getProperty("failureRatesPropertiesFile");
 
 	}
@@ -629,7 +660,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
 		logger_.info("Writing CSV");
 		try {
-			analyzableCSV = new FileWriter(new File(getParetoFolder() + getProblem().getName() +"_analyzableResults.csv"));
+			analyzableCSV = new FileWriter(
+					new File(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv"));
 			List<String> line = new ArrayList<String>();
 			// line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
 			line.add("SolID");
@@ -927,7 +959,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try {
-			FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv", true);
+			FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
+					true);
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPAs()));
@@ -1018,7 +1051,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public String getFailureRatesPropertiesFile() {
-		if(failureRatesPropertiesFile != null)
+		if (failureRatesPropertiesFile != null)
 			return failureRatesPropertiesFile;
 		return "/Users/peo12/git/sealab/easier/easier-availability/src/main/resources/failureRates.properties";
 	}
@@ -1026,11 +1059,11 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
 		this.failureRatesPropertiesFile = failureRatesPropertiesFile;
 	}
-	
+
 	public static void setSOR(boolean sorValue) {
 		SOR = sorValue;
 	}
-	
+
 	public static boolean isSor() {
 		return SOR;
 	}
