@@ -1,4 +1,4 @@
-#myFunction.py
+#myfunction.py
 
 import numpy as np
 from math import pow, sqrt
@@ -33,23 +33,23 @@ def calculate_distance_from_pareto(data, pareto):
     return {sol[0]: min([distance(sol[1:4], getpoint(data, par)) for par in pareto]) for sol in data}
 
 
-def scatter_near_solution(ax, data, pareto, m, c, delta):
-    distanceFromPareto = calculateDistanceFromPareto(data, pareto)
-    neighbours = {k: v for k, v in distanceFromPareto.items() if v != 0 and v<= delta}
+def scatter_near_solution(ax, data, pareto, m, c, label='', delta=5):
+    distance_from_pareto = calculate_distance_from_pareto(data, pareto)
+    neighbours = {k: v for k, v in distance_from_pareto.items() if v != 0 and v <= delta}
 
     matrix = np.matrix([getpoint(data, sol) for sol in neighbours])
-    if(matrix.size == 0):
-        print('No solutions in delta='+str(delta))
+    if matrix.size == 0:
+        print('No close solutions in delta = '+str(delta))
     else:
-        ax.scatter(matrix[:, 0], matrix[:, 1], matrix[:, 2], c=c, marker=m)
+        ax.scatter(matrix[:, 0], matrix[:, 1], matrix[:, 2], c=c, marker=m, label=label)
 
 
-def plotPareto(ax, data, pareto, m, c, l):
+def plot_pareto(ax, data, pareto, m, c, l):
     # ax.plot(pareto[:, 0], pareto[:, 1], pareto[:, 2], c=color, marker=marker)
-    matrix = getSortedMatrix(data, pareto)
+    matrix = get_sorted_matrix(data, pareto)
     ax.scatter(matrix[:, 0], matrix[:, 1], matrix[:, 2], c=c, marker=m)
     ax.plot(matrix[:, 0].A1, matrix[:, 1].A1, matrix[:, 2].A1, c=c, label=l)
 
 
-def getSortedMatrix(data, sol):
+def get_sorted_matrix(data, sol):
     return np.matrix(sorted([getpoint(data, s) for s in sol], key=itemgetter(0)))

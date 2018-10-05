@@ -4,7 +4,9 @@
 #   3 - Dist
 
 import numpy as np
-import myFunction
+import myfunction
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 base_dir = '../data/'
 
@@ -57,16 +59,16 @@ min_dist_l10 = min(data_l10[:, 3])
 max_dist_l10 = max(data_l10[:, 3])
 
 # normalize PA with respect to PerfQ
-data_l4[:, 1] = myFunction.norm2perfq(min_perfq_l4, max_perfq_l4, data_l4[:, 1], min_pa_l4, max_pa_l4)
-data_l6[:, 1] = myFunction.norm2perfq(min_perfq_l6, max_perfq_l6, data_l6[:, 1], min_pa_l6, max_pa_l6)
-data_l8[:, 1] = myFunction.norm2perfq(min_perfq_l8, max_perfq_l8, data_l8[:, 1], min_pa_l8, max_pa_l8)
-data_l10[:, 1] = myFunction.norm2perfq(min_perfq_l10, max_perfq_l10, data_l10[:, 1], min_pa_l10, max_pa_l10)
+data_l4[:, 1] = myfunction.norm2perfq(min_perfq_l4, max_perfq_l4, data_l4[:, 1], min_pa_l4, max_pa_l4)
+data_l6[:, 1] = myfunction.norm2perfq(min_perfq_l6, max_perfq_l6, data_l6[:, 1], min_pa_l6, max_pa_l6)
+data_l8[:, 1] = myfunction.norm2perfq(min_perfq_l8, max_perfq_l8, data_l8[:, 1], min_pa_l8, max_pa_l8)
+data_l10[:, 1] = myfunction.norm2perfq(min_perfq_l10, max_perfq_l10, data_l10[:, 1], min_pa_l10, max_pa_l10)
 
 # normalize Dist with respect to PerfQ
-data_l4[:,3] = myFunction.norm2perfq(min_perfq_l4, max_perfq_l4, data_l4[:,3], min_dist_l4, max_dist_l4)
-data_l6[:,3] = myFunction.norm2perfq(min_perfq_l6, max_perfq_l6, data_l6[:,3], min_dist_l6, max_dist_l6)
-data_l8[:,3] = myFunction.norm2perfq(min_perfq_l8, max_perfq_l8, data_l8[:,3], min_dist_l8, max_dist_l8)
-data_l10[:,3] = myFunction.norm2perfq(min_perfq_l10, max_perfq_l10, data_l10[:,3], min_dist_l10, max_dist_l10)
+data_l4[:,3] = myfunction.norm2perfq(min_perfq_l4, max_perfq_l4, data_l4[:,3], min_dist_l4, max_dist_l4)
+data_l6[:,3] = myfunction.norm2perfq(min_perfq_l6, max_perfq_l6, data_l6[:,3], min_dist_l6, max_dist_l6)
+data_l8[:,3] = myfunction.norm2perfq(min_perfq_l8, max_perfq_l8, data_l8[:,3], min_dist_l8, max_dist_l8)
+data_l10[:,3] = myfunction.norm2perfq(min_perfq_l10, max_perfq_l10, data_l10[:,3], min_dist_l10, max_dist_l10)
 
 # scale values
 for i in range(1, 3):
@@ -82,21 +84,8 @@ for i in range(1, 3):
     data_l8[:, i] /= data_l8[:, i].std()
     data_l10[:, i] /= data_l10[:, i].std()
 
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-
 
 # compute distances from pareto solutions
-# distances_l4 = myFunction.calculateDistanceFromPareto(data_l4, pareto_l4)
-# distances_l6 = myFunction.calculateDistanceFromPareto(data_l6, pareto_l6)
-# distances_l8 = myFunction.calculateDistanceFromPareto(data_l8, pareto_l8)
-# distances_l10 = myFunction.calculateDistanceFromPareto(data_l10, pareto_l10)
-
-# remove solutions in pareto
-# distances_l4 = {k: v for k, v in distances_l4.items() if v != 0}
-# distances_l6 = {k: v for k, v in distances_l6.items() if v != 0}
-# distances_l8 = {k: v for k, v in distances_l8.items() if v != 0}
-# distances_l10 = {k: v for k, v in distances_l10.items() if v != 0}
 
 # plot the number of solution as delta increases
 # sol_by_delta = [len({k:v for k,v in distances.items() if v <= delta}) for delta in np.arange(0.0, max(distances), 0.01)]
@@ -108,29 +97,11 @@ import matplotlib.pyplot as plt
 
 # remove solutions more distant than delta
 # delta = max(distances)
-delta = 0.02
-# distances_l4 = {k: v for k, v in distances_l4.items() if v <= delta}
-# distances_l6 = {k: v for k, v in distances_l6.items() if v <= delta}
-# distances_l8 = {k: v for k, v in distances_l8.items() if v <= delta}
-# distances_l10 = {k: v for k, v in distances_l10.items() if v <= delta}
+delta = 0.038
 
-# remove pareto solutions and the first column containing solution number
-# data_plot_l4 = myFunction.removeParetoSolutions(data_l4, pareto_l4)
-# data_plot_l4 = np.delete(data_plot_l4, 0, 1)
-# data_plot_l6 = myFunction.removeParetoSolutions(data_l6, pareto_l6)
-# data_plot_l6 = np.delete(data_plot_l6, 0, 1)
-# data_plot_l8 = myFunction.removeParetoSolutions(data_l8, pareto_l8)
-# data_plot_l8 = np.delete(data_plot_l8, 0, 1)
-# data_plot_l10 = myFunction.removeParetoSolutions(data_l10, pareto_l10)
-# data_plot_l10 = np.delete(data_plot_l10, 0, 1)
-
-# solutions sorted by distance
-# sorted_sol_l4 = sorted(distances_l4, key=distances_l4.get)
-# sorted_sol_l6 = sorted(distances_l6, key=distances_l6.get)
-# sorted_sol_l8 = sorted(distances_l8, key=distances_l8.get)
-# sorted_sol_l10 = sorted(distances_l10, key=distances_l10.get)
 
 fig = plt.figure(figsize=(15, 10))
+fig.suptitle('easier_lengths', fontsize=16)
 ax = fig.add_subplot(111, projection='3d')
 ax.view_init(25, 15)
 ax.set_xlabel('PA')
@@ -138,41 +109,16 @@ ax.set_ylabel('PerfQ')
 ax.set_zlabel('Dist')
 
 # pareto solutions and close solutions (delta)
-
-# pareto_plot_l4 = np.matrix(sorted([myFunction.getpoint(data_l4, par) for par in pareto_l4], key=itemgetter(0)))
-# ax.scatter(pareto_plot_l4[:, 0], pareto_plot_l4[:, 1], pareto_plot_l4[:, 2], c='#000000', marker='s')
-# delta_plot_l4 = np.matrix([myFunction.getpoint(data_l4, sol) for sol in sorted_sol_l4])
-# ax.scatter(delta_plot_l4[:,0], delta_plot_l4[:,1], delta_plot_l4[:,2], c='#000000', marker='s')
-# ax.plot(pareto_plot_l4[:, 0].A1, pareto_plot_l4[:, 1].A1, pareto_plot_l4[:, 2].A1, c='#000000', label='pareto_plot_l4')
-
-#pareto_plot_l6 = np.matrix(sorted([myFunction.getpoint(data_l6, par) for par in pareto_l6], key=itemgetter(0)))
-#ax.scatter(pareto_plot_l6[:, 0], pareto_plot_l6[:, 1], pareto_plot_l6[:, 2], c='#000099', marker='^')
-# delta_plot_l6 = np.matrix([myFunction.getpoint(data_l6, sol) for sol in sorted_sol_l6])
-#ax.scatter(delta_plot_l6[:,0], delta_plot_l6[:,1], delta_plot_l6[:,2], c='#000099', marker='^')
-#ax.plot(pareto_plot_l6[:, 0].A1, pareto_plot_l6[:, 1].A1, pareto_plot_l6[:, 2].A1, c='#000099', label='pareto_plot_l6')
-
-#pareto_plot_l8 = np.matrix(sorted([myFunction.getpoint(data_l8, par) for par in pareto_l8], key=itemgetter(0)))
-#ax.scatter(pareto_plot_l8[:, 0], pareto_plot_l8[:, 1], pareto_plot_l8[:, 2], c='g', marker='x')
-#delta_plot_l8 = np.matrix([myFunction.getpoint(data_l8, sol) for sol in sorted_sol_l8])
-#ax.scatter(delta_plot_l8[:,0], delta_plot_l8[:,1], delta_plot_l8[:,2], c='#66FF11', marker='x')
-#ax.plot(pareto_plot_l8[:, 0].A1, pareto_plot_l8[:, 1].A1, pareto_plot_l8[:, 2].A1, c='#66FF11', label='pareto_plot_l8')
-
-# pareto_plot_l10 = np.matrix(sorted([myFunction.getpoint(data_l10, par) for par in pareto_l10], key=itemgetter(0)))
-#ax.scatter(pareto_plot_l10[:, 0], pareto_plot_l10[:, 1], pareto_plot_l10[:, 2], c='r', marker='o')
-# delta_plot_l10 = np.matrix([myFunction.getpoint(data_l10, sol) for sol in sorted_sol_l10])
-#ax.scatter(delta_plot_l10[:,0], delta_plot_l10[:,1], delta_plot_l10[:,2], c='r', marker='o')
-#ax.plot(pareto_plot_l10[:, 0].A1, pareto_plot_l10[:, 1].A1, pareto_plot_l10[:, 2].A1, c='r', label='pareto_plot_l10')
+myfunction.plot_pareto(ax, data_l4, pareto_l4, 's', '#000000', 'pareto_plot_l4')
+myfunction.plot_pareto(ax, data_l6, pareto_l6, '^', '#000099', 'pareto_plot_l6')
+myfunction.plot_pareto(ax, data_l8, pareto_l8, 'o', '#66FF11', 'pareto_plot_l8')
+myfunction.plot_pareto(ax, data_l10, pareto_l10, 'x', 'r', 'pareto_plot_l10')
 
 
-myFunction.plotPareto(ax, data_l4, pareto_l4, 's', '#000000', 'pareto_plot_l4')
-myFunction.plotPareto(ax, data_l6, pareto_l6, '^', '#000099', 'pareto_plot_l6')
-myFunction.plotPareto(ax, data_l8, pareto_l8, 'o', '#66FF11', 'pareto_plot_l8')
-myFunction.plotPareto(ax, data_l10, pareto_l10, 'x', 'r', 'pareto_plot_l10')
-
-myFunction.scatterNearSolution(ax, data_l4, pareto_l4, 's', '#000000',delta)
-myFunction.scatterNearSolution(ax, data_l6, pareto_l6, '^', '#000099', delta)
-myFunction.scatterNearSolution(ax, data_l8, pareto_l8, 'o', '#66FF11', delta)
-myFunction.scatterNearSolution(ax, data_l10, pareto_l10, 'x', 'r', delta)
+# myfunction.scatter_near_solution(ax, data_l4, pareto_l4, 's', '#000000', delta)
+# myfunction.scatter_near_solution(ax, data_l6, pareto_l6, '^', '#000099', delta)
+# myfunction.scatter_near_solution(ax, data_l8, pareto_l8, 'o', '#66FF11', delta)
+# myfunction.scatter_near_solution(ax, data_l10, pareto_l10, 'x', 'r', delta)
 
 
 ax.legend()
