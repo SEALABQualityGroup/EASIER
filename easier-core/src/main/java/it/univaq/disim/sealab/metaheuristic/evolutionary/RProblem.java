@@ -102,7 +102,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());
 			} else {
 				System.out.println("\n" + i);
-				throw new RuntimeException("unexpected behav");
+				throw new RuntimeException("unexpected behaviour!!!");
 			}
 		}
 	}

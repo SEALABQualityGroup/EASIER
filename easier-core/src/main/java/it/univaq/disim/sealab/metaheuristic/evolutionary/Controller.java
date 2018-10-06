@@ -40,11 +40,13 @@ import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
 import org.uma.jmetal.qualityindicator.impl.Spread;
 import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
 import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
+import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
@@ -149,49 +151,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	// public Controller(String[] args) {
-	// this();
-	// InputStream cfgInputStream = null;
-	//
-	// try {
-	// handler = new FileHandler("default.log", append);
-	// setBasePath(new java.io.File(".").getCanonicalPath());
-	// cfgInputStream = getConfigFile(args[0]);
-	// } catch (SecurityException | IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// logger_.addHandler(handler);
-	//
-	// logger_.info("Logger Name: " + logger_.getName());
-	// logger_.warning("Can cause IOException");
-	//
-	// if (args[0] != null) {
-	// configFile = getBasePath() + args[0];
-	// }
-	//
-	// if (args.length == 2) {
-	// sourceModelPath = args[1];
-	// }
-	//
-	// setProperties(cfgInputStream);
-	// if (sourceModelPath == null || sourceModelPath.isEmpty())
-	// sourceModelPath = sourceFolder + ((AemiliaManager)
-	// metamodelManager).getMetamodelFileExtension();
-	// ((AemiliaManager) metamodelManager).setAemiliaModelFilePath(sourceModelPath);
-	//
-	// updateSourceModel();
-	//
-	// sourceModelPAs =
-	// perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(),
-	// ruleFilePath);
-	// numberOfPAs = 0;
-	// for (String key : sourceModelPAs.keySet()) {
-	// numberOfPAs += sourceModelPAs.get(key).size();
-	// }
-	// }
-
 	private void generateSourceFiles() {
 
 		if (!new File(sourceAemPath).exists()) {
@@ -240,11 +199,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.getHandlers()[0].close();
 
 		startingTime = Instant.now();
-		// TODO most likely it's a bug
-		// RProblem problem = new RProblem(sourceBasePath, length, number_of_actions,
-		// allowed_failures, populationSize,
-		// this);
-		// this.setProblem(problem);
 
 		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize, this);
 
@@ -279,35 +233,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
 		SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
 				new RankingAndCrowdingDistanceComparator<RSolution>());
-
 		SolutionListEvaluator<RSolution> ev = new RSolutionListEvaluator();
-
 		Algorithm<List<RSolution>> algorithm = new CustomNSGAII<RSolution>(problem, maxEvaluations, populationSize,
 				crossover, mutation, selection, ev);
 
-		final int INDEPENDENT_RUNS = 25;
-
-		List<String> referenceFrontFileNames = Arrays.asList("FTA.pf");
-		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		problemList.add(new ExperimentProblem<>(this.problem));
-
-		// List<ExperimentAlgorithm<RSolution, List<DoubleSolution>>> algorithmList =
-		// configureAlgorithmList(problemList);
-
-		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>(
-				"NSGAIIStudy")
-						// .setAlgorithmList(algorithmList)
-						.setProblemList(problemList).setExperimentBaseDirectory(getOutputFolder())
-						.setOutputParetoFrontFileName("paretoFile").setOutputParetoSetFileName("finalSetFile")
-						.setReferenceFrontDirectory("/pareto_fronts")
-						.setReferenceFrontFileNames(referenceFrontFileNames)
-						.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
-								new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
-								new InvertedGenerationalDistance<RSolution>(),
-								new InvertedGenerationalDistancePlus<RSolution>()))
-						.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(8).build();
-
-		new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+		testExperiment();
 
 		long[] id_s = new long[1];
 		id_s[0] = java.lang.Thread.currentThread().getId();
@@ -392,10 +322,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			saveParetoSolution(population);
 			generateAvailability(population);
 			cleanTmpFiles();
-
-			// TODO: handle exception
 		} catch (IOException e) {
-			// // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -405,9 +332,112 @@ public class Controller extends AbstractAlgorithmRunner {
 			handle.flush();
 			handle.close();
 		}
-		// logger_.getHandlers()[0].flush();
-		// logger_.getHandlers()[0].close();
+	}
 
+	private void testExperiment() {
+		final int INDEPENDENT_RUNS = 25;
+
+		List<String> referenceFrontFileNames = Arrays.asList("FTA.pf");
+		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
+		problemList.add(new ExperimentProblem<>(this.problem));
+
+		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
+
+		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>(
+				"NSGAIIStudy")
+						.setAlgorithmList(algorithmList)
+						.setProblemList(problemList).setExperimentBaseDirectory(getOutputFolder())
+						.setOutputParetoFrontFileName("paretoFile").setOutputParetoSetFileName("finalSetFile")
+						.setReferenceFrontDirectory("/pareto_fronts")
+						.setReferenceFrontFileNames(referenceFrontFileNames)
+						.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
+								new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
+								new InvertedGenerationalDistance<RSolution>(),
+								new InvertedGenerationalDistancePlus<RSolution>()))
+						.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(8).build();
+
+		try {
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * The algorithm list is composed of pairs {@link Algorithm} + {@link Problem}
+	 * which form part of a {@link TaggedAlgorithm}, which is a decorator for class
+	 * {@link Algorithm}.
+	 *
+	 * @param problemList
+	 * @return
+	 */
+	/**
+	 * The algorithm list is composed of pairs {@link Algorithm} + {@link Problem}
+	 * which form part of a {@link ExperimentAlgorithm}, which is a decorator for
+	 * class {@link Algorithm}.
+	 */
+	public List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
+			List<ExperimentProblem<RSolution>> problemList) {
+
+		List< ExperimentAlgorithm< RSolution, List<RSolution>>> algorithms = new ArrayList<>();
+
+		final int INDEPENDENT_RUNS = 25;
+
+		for (int run = 0; run < INDEPENDENT_RUNS; run++) {
+
+			// for (int i = 0; i < problemList.size(); i++) {
+			// double mutationProbability = 1.0 /
+			// problemList.get(i).getProblem().getNumberOfVariables();
+			// double mutationDistributionIndex = 20.0;
+			//
+			// Algorithm<List<RSolution>> algorithm = new SMPSOBuilder(
+			// (DoubleProblem) problemList.get(i).getProblem(),
+			// new CrowdingDistanceArchive<DoubleSolution>(100))
+			// .setMutation(new PolynomialMutation(mutationProbability,
+			// mutationDistributionIndex))
+			// .setMaxIterations(250).setSwarmSize(100)
+			// .setSolutionListEvaluator(new
+			// SequentialSolutionListEvaluator<DoubleSolution>())
+			// .build();
+			// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i),
+			// run));
+			// }
+
+			for (int i = 0; i < problemList.size(); i++) {
+
+				CrossoverOperator<RSolution> crossover = new RCrossover(crossoverProbability, this);
+				MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
+
+				SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
+						new RankingAndCrowdingDistanceComparator<RSolution>());
+
+				SolutionListEvaluator<RSolution> ev = new RSolutionListEvaluator();
+
+				Algorithm<List<RSolution>> algorithm = new CustomNSGAIIBuilder<RSolution>(
+						problemList.get(i).getProblem(), crossover, mutation).build();
+				
+				ExperimentAlgorithm<RSolution, List<RSolution>> exp = 
+						new CustomExperimentAlgorithm<RSolution, List<RSolution>>(algorithm, problemList.get(i), run);
+//						new CustomExperimentAlgorithm<RSolution, List<RSolution>>(algorithm, problemList.get(i), run)
+				
+				algorithms.add(exp);
+			}
+
+//			for (int i = 0; i < problemList.size(); i++) {
+//				Algorithm<List<DoubleSolution>> algorithm = new MOEADBuilder(problemList.get(i).getProblem(),
+//						MOEADBuilder.Variant.MOEAD)
+//								.setCrossover(new DifferentialEvolutionCrossover(1.0, 0.5, "rand/1/bin"))
+//								.setMutation(new PolynomialMutation(
+//										1.0 / problemList.get(i).getProblem().getNumberOfVariables(), 20.0))
+//								.setMaxEvaluations(25000).setPopulationSize(100).setResultPopulationSize(100)
+//								.setNeighborhoodSelectionProbability(0.9).setMaximumNumberOfReplacedSolutions(2)
+//								.setNeighborSize(20).setFunctionType(AbstractMOEAD.FunctionType.TCHE).build();
+//				algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i), run));
+//			}
+		}
+		return algorithms;
 	}
 
 	private synchronized void generateAvailability(List<RSolution> paretoPop) {
