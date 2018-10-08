@@ -38,12 +38,14 @@ public class Launcher {
 
 	public static void singleModel(String configFile) {
 		Controller controller = new Controller(configFile);
-		try {
-			controller.run();
-		} catch (IOException e) {
+//		try {
+//			controller.run();
+			
+			controller.testExperiment();
+//		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void main(String[] args) {

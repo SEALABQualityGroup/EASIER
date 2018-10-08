@@ -33,7 +33,6 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
-
 	}
 
 	@Override
