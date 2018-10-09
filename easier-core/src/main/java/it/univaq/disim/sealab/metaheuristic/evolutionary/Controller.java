@@ -360,6 +360,7 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setOutputParetoSetFileName(paretoFolder)
 				.setReferenceFrontDirectory(referenceFrontDirectory)
 				.setReferenceFrontFileNames(referenceFrontFileNames)
+				
 				.setIndicatorList(Arrays.asList(
 						new Epsilon<RSolution>(), 
 						new Spread<RSolution>(),
@@ -367,6 +368,7 @@ public class Controller extends AbstractAlgorithmRunner {
 						new PISAHypervolume<RSolution>(),
 						new InvertedGenerationalDistance<RSolution>(),
 						new InvertedGenerationalDistancePlus<RSolution>()))
+				
 				.setIndependentRuns(INDEPENDENT_RUNS)
 				.setNumberOfCores(CORES)
 				.build();
