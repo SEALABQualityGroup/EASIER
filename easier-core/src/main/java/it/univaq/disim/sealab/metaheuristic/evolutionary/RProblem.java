@@ -106,6 +106,10 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 			}
 		}
 	}
+	
+	public void setName(String n) {
+		super.setName(n);
+	}
 
 	@Override
 	public RSolution createSolution() {
