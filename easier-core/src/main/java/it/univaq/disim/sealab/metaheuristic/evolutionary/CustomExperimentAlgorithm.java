@@ -10,12 +10,11 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 public class CustomExperimentAlgorithm<S extends Solution<?>, Result> extends ExperimentAlgorithm<S, Result> {
 
 	public CustomExperimentAlgorithm(Algorithm<Result> algorithm, String problemTag, int run) {
-		super(algorithm, problemTag, "prova");
-		// TODO Auto-generated constructor stub
+		super(algorithm, algorithm.getName(), problemTag);
 	}
 
-	public CustomExperimentAlgorithm(Algorithm<List<RSolution>> algorithm,
-			ExperimentProblem<RSolution> experimentProblem, int run) {
-		this((Algorithm<Result>) algorithm, "test", run);
-	}
+//	public CustomExperimentAlgorithm(Algorithm<List<RSolution>> algorithm,
+//			ExperimentProblem<RSolution> experimentProblem, int run) {
+//		this((Algorithm<Result>) algorithm, experimentProblem.getTag(), run);
+//	}
 }

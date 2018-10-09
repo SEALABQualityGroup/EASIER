@@ -130,7 +130,7 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 
 	@Override
 	public String getName() {
-		return "NSGAIIM";
+		return "Custom_NSGA_II";
 	}
 
 	@Override

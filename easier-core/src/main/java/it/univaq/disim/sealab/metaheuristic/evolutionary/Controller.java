@@ -338,26 +338,26 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public void testExperiment() {
-		final int INDEPENDENT_RUNS = 1; //ex 25
+		final int INDEPENDENT_RUNS = 25; //ex 25
 		final int CORES = 4;
 
 		List<String> referenceFrontFileNames = Arrays.asList("FTA.pf");
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		problemList.add(new ExperimentProblem<>(this.problem));
+		problemList.add(new ExperimentProblem<>(this.problem)); //experiment.tag=problem.getName()
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
-		String outputParetoFrontFileName = getParetoFolder() + getProblem().getName() + "_FTA.pf";
+		String outputParetoFrontFileName = "FUN";
+		String outputParetoSetFileName = "VAR";
 		String referenceFrontDirectory = "/Users/peo12/git/sealab/easier/easier-core/target/output/FTA/pareto";
 		
-		
 		Experiment<RSolution, List<RSolution>> experiment = 
-				new ExperimentBuilder<RSolution, List<RSolution>>("CustomNSGAII")
+				new ExperimentBuilder<RSolution, List<RSolution>>("Exp_FTA")
 				.setAlgorithmList(algorithmList)
 				.setProblemList(problemList)
-				.setExperimentBaseDirectory(paretoFolder)
+				.setExperimentBaseDirectory(referenceFrontDirectory)
 				.setOutputParetoFrontFileName(outputParetoFrontFileName)
-				.setOutputParetoSetFileName(paretoFolder)
+				.setOutputParetoSetFileName(outputParetoSetFileName)
 				.setReferenceFrontDirectory(referenceFrontDirectory)
 				.setReferenceFrontFileNames(referenceFrontFileNames)
 				
@@ -442,7 +442,7 @@ public class Controller extends AbstractAlgorithmRunner {
 				NSGAII<RSolution> algorithm = customNSGABuilder.build();
 
 				ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-						algorithm, problemList.get(i), run);
+						algorithm, problemList.get(i).getTag(), run);
 				algorithms.add(exp);
 			}
 
