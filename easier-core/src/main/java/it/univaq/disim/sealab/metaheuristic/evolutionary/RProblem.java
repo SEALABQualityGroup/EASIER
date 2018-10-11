@@ -91,7 +91,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 			if (i == FIRST_OBJ) {
 				float quality = solution.getPerfQ();
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);
-				solution.setObjective(i, -1 * solution.getVariableValue(VARIABLE_INDEX).getPerfQuality());
+				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getPerfQuality());
 			} else if (i == SECOND_OBJ) {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());

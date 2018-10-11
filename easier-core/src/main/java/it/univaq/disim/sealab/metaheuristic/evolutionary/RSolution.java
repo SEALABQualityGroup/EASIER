@@ -423,7 +423,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		perfQ = 0;
 		if (!new File(valFilePath).exists()) {
-			perfQ = -Float.MAX_VALUE;
+			perfQ = Float.MAX_VALUE;
 			Controller.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
 					+ valFilePath + " doesn't exist.");
 		} else {

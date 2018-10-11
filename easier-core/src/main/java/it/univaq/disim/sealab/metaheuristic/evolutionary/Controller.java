@@ -29,10 +29,13 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
+import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
@@ -48,6 +51,7 @@ import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
 import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
 import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
+import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
 import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
@@ -339,30 +343,32 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public void testExperiment() {
-		final int INDEPENDENT_RUNS = 2; // ex 25
+		final int INDEPENDENT_RUNS = 31; // should be 31 or 51
 		final int CORES = 1;
 
-		List<String> referenceFrontFileNames = Arrays.asList("FTA.pf", "FTA.pf", "FTA.pf");
+		// List<String> referenceFrontFileNames =
+		// Arrays.asList(this.problem.getName()+".Custom_NSGA_II_a.rf");
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		this.problem.setName("xOver0.8");
-		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
-		this.problem.setName("xOver0.7");
-		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
-		this.problem.setName("xOver0.6");
+		// this.problem.setName("xOver0.8");
+		// problemList.add(new ExperimentProblem<>(this.problem)); //
+		// experiment.tag=problem.getName()
+		// this.problem.setName("xOver0.7");
+		// problemList.add(new ExperimentProblem<>(this.problem)); //
+		// experiment.tag=problem.getName()
+		// this.problem.setName("xOver0.6");
 		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
-//		String outputParetoFrontFileName = "FUN";
-//		String outputParetoSetFileName = "VAR";
-		String referenceFrontDirectory = "/Users/peo12/git/sealab/easier/easier-core/target/output/FTA/pareto";
+		// String outputParetoFrontFileName = "FUN";
+		// String outputParetoSetFileName = "VAR";
+		String referenceFrontDirectory = getParetoFolder() + "referenceFront";
 
 		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp_FTA")
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
-				.setExperimentBaseDirectory(referenceFrontDirectory)
-				.setOutputParetoFrontFileName("FUN")
+				.setExperimentBaseDirectory(referenceFrontDirectory).setOutputParetoFrontFileName("FUN")
 				.setOutputParetoSetFileName("VAR").setReferenceFrontDirectory(referenceFrontDirectory)
-				.setReferenceFrontFileNames(referenceFrontFileNames)
+				// .setReferenceFrontFileNames(referenceFrontFileNames)
 
 				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
 						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
@@ -373,6 +379,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		try {
 			new ExecuteAlgorithms<>(experiment).run();
+			new GenerateReferenceParetoFront(experiment).run();
 			new ComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 		} catch (Exception e) {
@@ -422,49 +429,46 @@ public class Controller extends AbstractAlgorithmRunner {
 		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i),
 		// run));
 		// }
-		
+
+		// for (int i = 0; i < problemList.size(); i++) {
+		//
+		// // final CrossoverOperator<RSolution> crossover = new
+		// // RCrossover(crossoverProbability, this);
+		//
+		// crossoverProbability = crossoverProbability - (i/10);
+		//
+		// CustomNSGAIIBuilder<RSolution> customNSGABuilder = new
+		// CustomNSGAIIBuilder<RSolution>(
+		// problemList.get(i).getProblem(),
+		// new RCrossover(crossoverProbability, this),
+		// mutation);
+		//
+		// customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
+		// customNSGABuilder.setPopulationSize(this.populationSize);
+		// customNSGABuilder.setSolutionListEvaluator(new RSolutionListEvaluator());
+		//
+		// NSGAII<RSolution> algorithm = customNSGABuilder.build();
+		// ((CustomNSGAII<RSolution>)algorithm).setName("Custom_NSGA_II_b");
+		//
+		// ExperimentAlgorithm<RSolution, List<RSolution>> exp = new
+		// CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+		// algorithm, problemList.get(i).getTag(), i);
+		// algorithms.add(exp);
+		// }
+
 		for (int i = 0; i < problemList.size(); i++) {
 
 			// final CrossoverOperator<RSolution> crossover = new
 			// RCrossover(crossoverProbability, this);
-			
-			crossoverProbability = crossoverProbability - (i/10);
-
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
-					problemList.get(i).getProblem(), 
-					new RCrossover(crossoverProbability, this), 
-					mutation);
+					problemList.get(i).getProblem(), new RCrossover(crossoverProbability, this), mutation);
 
 			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
 			customNSGABuilder.setPopulationSize(this.populationSize);
 			customNSGABuilder.setSolutionListEvaluator(new RSolutionListEvaluator());
 
 			NSGAII<RSolution> algorithm = customNSGABuilder.build();
-			((CustomNSGAII<RSolution>)algorithm).setName("Custom_NSGA_II_b");
-
-			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
-			algorithms.add(exp);
-		}
-
-		for (int i = 0; i < problemList.size(); i++) {
-
-			// final CrossoverOperator<RSolution> crossover = new
-			// RCrossover(crossoverProbability, this);
-			
-			crossoverProbability = crossoverProbability - (i/10);
-
-			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
-					problemList.get(i).getProblem(), 
-					new RCrossover(crossoverProbability, this), 
-					mutation);
-
-			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
-			customNSGABuilder.setPopulationSize(this.populationSize);
-			customNSGABuilder.setSolutionListEvaluator(new RSolutionListEvaluator());
-
-			NSGAII<RSolution> algorithm = customNSGABuilder.build();
-			((CustomNSGAII<RSolution>)algorithm).setName("Custom_NSGA_II_a");
+			((CustomNSGAII<RSolution>) algorithm).setName("Custom_NSGA_II");
 
 			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
 					algorithm, problemList.get(i).getTag(), i);
@@ -472,7 +476,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		// for (int i = 0; i < problemList.size(); i++) {
-		// Algorithm<List<DoubleSolution>> algorithm = new
+		// Algorithm<List<RSolution>> algorithm = new
 		// MOEADBuilder(problemList.get(i).getProblem(),
 		// MOEADBuilder.Variant.MOEAD)
 		// .setCrossover(new DifferentialEvolutionCrossover(1.0, 0.5, "rand/1/bin"))
@@ -481,8 +485,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		// .setMaxEvaluations(25000).setPopulationSize(100).setResultPopulationSize(100)
 		// .setNeighborhoodSelectionProbability(0.9).setMaximumNumberOfReplacedSolutions(2)
 		// .setNeighborSize(20).setFunctionType(AbstractMOEAD.FunctionType.TCHE).build();
-		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i),
-		// run));
+		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i), i));
 		// }
 		return algorithms;
 	}
