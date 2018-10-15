@@ -191,11 +191,21 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		}
 		return factorOfChange;
 	}
+	
+	@Override
+	public String toString() {
+		if (sourceConstInit.getName().contains("workload"))
+			return "CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
+							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
+		else
+			return "CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
+					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "
+					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
+	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
 	 */
 	public void log() {
 		if (sourceConstInit.getName().contains("workload"))

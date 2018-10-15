@@ -468,5 +468,10 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	public void setRandomCloneIndex(String randomCloneIndex) {
 		this.randomCloneIndex = randomCloneIndex;
 	}
+	
+	@Override
+	public String toString() {
+		return "CLONING " + sourceAEI.getInstanceName();
+	}
 
 }

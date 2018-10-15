@@ -52,7 +52,7 @@ public class RSequence {
 		this.manager = solution.getManager();
 		this.controller = solution.getController();
 		this.metamodelManager = manager.getMetamodelManager();
-		
+
 		assert (this.refactoring.getActions().size() == 0);
 		int num_failures = 0;
 
@@ -219,7 +219,7 @@ public class RSequence {
 		manager = this.solution.getManager();
 		controller = this.solution.getController();
 		metamodelManager = manager.getMetamodelManager();
-		
+
 		assert (seq.refactoring.getActions().size() == 4);
 
 		// for(RefactoringAction a : seq.refactoring.getActions()){
@@ -348,10 +348,18 @@ public class RSequence {
 
 	}
 
+	@Override
+	public String toString() {
+		String strValue = "";
+		for (Action el : this.getRefactoring().getActions()) {
+			strValue += el.toString() + "\n\t";
+		}
+		return strValue;
+	}
+
 	public void print() {
 		for (Action el : this.getRefactoring().getActions()) {
 			System.out.println(el);
-
 		}
 	}
 
