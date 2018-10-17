@@ -343,25 +343,16 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public void testExperiment() {
-		final int INDEPENDENT_RUNS = 31; // should be 31 or 51
+		final int INDEPENDENT_RUNS = 2; // should be 31 or 51
 		final int CORES = 1;
 
 		// List<String> referenceFrontFileNames =
 		// Arrays.asList(this.problem.getName()+".Custom_NSGA_II_a.rf");
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		// this.problem.setName("xOver0.8");
-		// problemList.add(new ExperimentProblem<>(this.problem)); //
-		// experiment.tag=problem.getName()
-		// this.problem.setName("xOver0.7");
-		// problemList.add(new ExperimentProblem<>(this.problem)); //
-		// experiment.tag=problem.getName()
-		// this.problem.setName("xOver0.6");
 		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
-		// String outputParetoFrontFileName = "FUN";
-		// String outputParetoSetFileName = "VAR";
 		String referenceFrontDirectory = getParetoFolder() + "referenceFront";
 
 		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp_FTA")
