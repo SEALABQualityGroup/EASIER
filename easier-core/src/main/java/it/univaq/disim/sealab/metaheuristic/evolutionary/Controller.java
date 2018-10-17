@@ -29,13 +29,10 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
-import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
@@ -251,17 +248,19 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		logger_.info(algorithm.getClass().toString());
 
-//		FileWriter solutionFileWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
-//				true);
-//		List<String> line = new ArrayList<String>();
-//		line.add("name");
-//		line.add("PAs");
-//		line.add("perfQ");
-//		line.add("numOfChanges");
+		// FileWriter solutionFileWriter = new FileWriter(getParetoFolder() +
+		// getProblem().getName() + "_solutions.csv",
+		// true);
+		// List<String> line = new ArrayList<String>();
+		// line.add("name");
+		// line.add("PAs");
+		// line.add("perfQ");
+		// line.add("numOfChanges");
 		// CSVUtils.writeLine(solutionFileWriter, line);
-		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_solutions.csv", Arrays.asList("name", "PAs", "perfQ", "#changes"));
-//		solutionFileWriter.flush();
-//		solutionFileWriter.close();
+		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_solutions.csv",
+				Arrays.asList("name", "PAs", "perfQ", "#changes"));
+		// solutionFileWriter.flush();
+		// solutionFileWriter.close();
 
 		algorithm.run();
 		List<RSolution> population = algorithm.getResult();
@@ -287,7 +286,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		// ".") + " seconds");
 
 		// try {
-//		line = null;
+		// line = null;
 		writeSolutionSetToCSV(population);
 		// resultFileWriter.flush();
 		// resultFileWriter.close();
@@ -488,7 +487,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	private void setProperties(InputStream inputStream) {
-		logger_.info("Set running properties");
+		logger_.info("Set properties is running");
 		prop = new Properties();
 		try {
 			prop.load(inputStream);
@@ -635,7 +634,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
 		failureRatesPropertiesFile = prop.getProperty("failureRatesPropertiesFile");
 
-		logger_.info("Running properties set with no error");
+		logger_.info("Set properties ended with no error");
 	}
 
 	public Properties getProperties() {
@@ -875,17 +874,17 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
-		try {
-			FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
-					true);
-			List<String> line = new ArrayList<String>();
-			line.add(String.valueOf(rSolution.getName()));
-			line.add(String.valueOf(rSolution.getPAs()));
-			line.add(String.valueOf(rSolution.getPerfQ()));
-			line.add(String.valueOf(rSolution.getNumOfChanges()));
-			CSVUtils.writeLine(solutionWriter, line);
-			solutionWriter.flush();
-			solutionWriter.close();
+		try (FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
+				true)) {
+//			List<String> line = new ArrayList<String>();
+//			line.add(String.valueOf(rSolution.getName()));
+//			line.add(String.valueOf(rSolution.getPAs()));
+//			line.add(String.valueOf(rSolution.getPerfQ()));
+//			line.add(String.valueOf(rSolution.getNumOfChanges()));
+			// CSVUtils.writeLine(solutionWriter, line);
+			CSVUtils.writeLine(solutionWriter,
+					Arrays.asList(String.valueOf(rSolution.getName()), String.valueOf(rSolution.getPAs()),
+							String.valueOf(rSolution.getPerfQ()), String.valueOf(rSolution.getNumOfChanges())));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
