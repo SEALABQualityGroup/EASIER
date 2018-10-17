@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.utils;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -7,6 +8,16 @@ import java.util.List;
 public class CSVUtils {
 
 	private static final char DEFAULT_SEPARATOR = ';';
+	
+	public static void writeLine(String path, List<String> values) {
+		try (FileWriter writer = new FileWriter(path, true)){
+//			FileWriter writer = new FileWriter(path);
+			writeLine(writer, values, DEFAULT_SEPARATOR, ' ');
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void writeLine(Writer w, List<String> values) throws IOException {
 		writeLine(w, values, DEFAULT_SEPARATOR, ' ');
