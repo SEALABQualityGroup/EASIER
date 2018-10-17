@@ -85,8 +85,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private ExecutorService executor;
 
-	private String basePath, sourceFolder, configFile;
-	private PerformanceQuality perfQuality;
+	private String basePath, sourceFolder;
+	private PerformanceQualityEvaluator perfQuality;
 
 	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
 
@@ -94,7 +94,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	private double[] workloadRange;
 	private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
-	// private FileWriter resultFileWriter, solutionFileWriter, analyzableCSV;
 	private String outputFolder, tmpFolder, paretoFolder, logFolder, availabilityFolder;
 	private String twoTowersKernelPath;
 	private int maxCloning;
@@ -123,7 +122,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
 		availabilityManager = new AemiliaAvailabilityManager(this);
-		perfQuality = new PerformanceQuality(manager.getOclManager());
+		perfQuality = new PerformanceQualityEvaluator(manager.getOclManager());
 		metamodelManager = manager.getMetamodelManager();
 	}
 
@@ -653,11 +652,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		return new FileInputStream(filename);
 	}
 
-	public PerformanceQuality getPerfQuality() {
+	public PerformanceQualityEvaluator getPerfQuality() {
 		return perfQuality;
 	}
 
-	public void setPerfQuality(PerformanceQuality perfQuality) {
+	public void setPerfQuality(PerformanceQualityEvaluator perfQuality) {
 		this.perfQuality = perfQuality;
 	}
 

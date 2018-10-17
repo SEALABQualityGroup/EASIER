@@ -19,7 +19,7 @@ import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
 import mapmeasurestoindices.IndexType;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
-public class PerformanceQuality {
+public class PerformanceQualityEvaluator {
 
 	private String sourceValFile;
 	private String refactoredValFile;
@@ -28,7 +28,7 @@ public class PerformanceQuality {
 	private Map<MeasureValue, Float> qualityMap;
 	private OclManager oclManager;
 
-	public PerformanceQuality(OclManager oclManager) {
+	public PerformanceQualityEvaluator(OclManager oclManager) {
 		qualityMap = new HashMap<>();
 		this.oclManager = oclManager;
 	}

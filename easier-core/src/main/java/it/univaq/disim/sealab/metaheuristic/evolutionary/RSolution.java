@@ -343,7 +343,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	 * @return
 	 */
 	// private Map<String, List<ArchitecturalInteraction>>
-	// countingPAsOnAemiliaModel(PerformanceQuality perfQuality,
+	// countingPAsOnAemiliaModel(PerformanceQualityEvaluator perfQuality,
 	// String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
 	//
 	// refreshModel();
@@ -437,7 +437,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			perfQ = controller.getPerfQuality().performanceQuality(controller.getSourceValPath(), valFilePath);
 
 		}
-		// Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQuality
+		// Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQualityEvaluator
 		// --> " + perfQ);
 
 		return perfQ;
