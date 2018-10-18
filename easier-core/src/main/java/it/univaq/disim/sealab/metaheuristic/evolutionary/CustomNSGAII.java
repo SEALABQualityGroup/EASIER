@@ -24,6 +24,8 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 	private ProgressBar pbar;
 	private MutableInt done;
 	private MutableInt total;
+	
+	private String name;
 
 	/**
 	 * Constructor
@@ -33,7 +35,7 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
-
+		this.name = "Custom_NSGA_II";
 	}
 
 	@Override
@@ -131,7 +133,11 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 
 	@Override
 	public String getName() {
-		return "NSGAIIM";
+		return name;
+	}
+	
+	public void setName(String n) {
+		this.name = n;
 	}
 
 	@Override

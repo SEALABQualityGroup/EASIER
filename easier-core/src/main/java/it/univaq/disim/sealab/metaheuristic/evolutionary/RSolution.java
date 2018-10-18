@@ -204,7 +204,10 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 	@Override
 	public String getVariableValueString(int index) {
-		return getVariableValue(index).toString();
+		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0) + ", " + getObjective(1) + ", "
+				+ getObjective(2) + " )" + "\n\t";
+		strValue += getVariableValue(index).toString();
+		return strValue;
 	}
 
 	public RProblem getProblem() {
@@ -232,13 +235,13 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
-//				_new.setSolution(this);
+				// _new.setSolution(this);
 				assert (_new.equals(s1.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			for (int j = point; j < s2.getLength(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
-//				_new.setSolution(this);
+				// _new.setSolution(this);
 				assert (_new.equals(s2.getActionAt(j)));
 				seq.insert(j, _new);
 			}
@@ -263,35 +266,37 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	}
 
 	public void resolve(AemiliaManager metamodelManager) {
-		Controller.logger_.info("Solving Solution #"+getName());
+		Controller.logger_.info("Solving Solution #" + getName());
 		startingTime = Instant.now();
 		executeRefactoring();
 
-//		applyTransformation();
+		// applyTransformation();
 		invokeSolver();
 
-//		controller.awaitExecutor();
+		// controller.awaitExecutor();
 
 		updateModel();
 
 		updateThresholds();
 
-//		countingPAsOnAemiliaModel(controller.getPerfQuality(), controller.getRuleFilePath(), this.getValPath(),
-//				metamodelManager);
+		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
+		// controller.getRuleFilePath(), this.getValPath(),
+		// metamodelManager);
 		countingPAsOnAemiliaModel();
-		
+
 		perfQ = evaluatePerformance();
 
 		controller.simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
-		Controller.logger_.info("Solution #"+getName()+" solved");
+		Controller.logger_.info("Solution #" + getName() + " solved");
 	}
 
-//	public void updateThresholds(AemiliaManager metamodelManager) {
-//		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath, mmaemiliaFilePath, valFilePath,
-//				metamodelManager, controller);
-//	}
-	
+	// public void updateThresholds(AemiliaManager metamodelManager) {
+	// ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath,
+	// mmaemiliaFilePath, valFilePath,
+	// metamodelManager, controller);
+	// }
+
 	public void updateThresholds() {
 		ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath, mmaemiliaFilePath, valFilePath,
 				metamodelManager, controller);
@@ -306,7 +311,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		metamodelManager.aemiliaModelUpdate(valFilePath, rewFilePath, rewMappingFilePath, mmaemiliaFilePath, this);
 	}
-	
+
 	public void updateModel() {
 		String rewFilePath = controller.getSourceRewPath();
 
@@ -337,23 +342,25 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	 * @param metamodelManager
 	 * @return
 	 */
-//	private Map<String, List<ArchitecturalInteraction>> countingPAsOnAemiliaModel(PerformanceQuality perfQuality,
-//			String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
-//
-//		refreshModel();
-//		ruleFilePath = mmaemiliaFolderPath + "detectionSingleValuePA.ocl";
-//
-//		mapOfPAs = perfQuality.performanceAntipatternEvaluator(this.getModel(), ruleFilePath);
-//		if (mapOfPAs != null && !mapOfPAs.keySet().isEmpty()) {
-//			numPAs++;
-//			for (String paName : mapOfPAs.keySet()) {
-//				numPAs += mapOfPAs.get(paName).size();
-//			}
-//		}
-//
-//		return mapOfPAs;
-//	}
-	
+	// private Map<String, List<ArchitecturalInteraction>>
+	// countingPAsOnAemiliaModel(PerformanceQualityEvaluator perfQuality,
+	// String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
+	//
+	// refreshModel();
+	// ruleFilePath = mmaemiliaFolderPath + "detectionSingleValuePA.ocl";
+	//
+	// mapOfPAs = perfQuality.performanceAntipatternEvaluator(this.getModel(),
+	// ruleFilePath);
+	// if (mapOfPAs != null && !mapOfPAs.keySet().isEmpty()) {
+	// numPAs++;
+	// for (String paName : mapOfPAs.keySet()) {
+	// numPAs += mapOfPAs.get(paName).size();
+	// }
+	// }
+	//
+	// return mapOfPAs;
+	// }
+
 	public Map<String, List<ArchitecturalInteraction>> countingPAsOnAemiliaModel() {
 
 		refreshModel();
@@ -392,7 +399,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			setValPath(aemFilePath + ".val");
 		}
 	}
-	
+
 	public void invokeSolver() {
 		String aemFilePath = mmaemiliaFolderPath + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName()
 				+ "_result" + ((AemiliaManager) metamodelManager).getModelFileExtension();
@@ -402,9 +409,9 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		String outputFilePath = mmaemiliaFolderPath + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName()
 				+ "_result";
 
-		if(Controller.isSor()) {
+		if (Controller.isSor()) {
 			metamodelManager.sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
-		}else {
+		} else {
 			metamodelManager.gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
 		}
 
@@ -423,15 +430,16 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		perfQ = 0;
 		if (!new File(valFilePath).exists()) {
-			perfQ = -Float.MAX_VALUE;
+			perfQ = Float.MAX_VALUE;
 			Controller.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
 					+ valFilePath + " doesn't exist.");
 		} else {
 			perfQ = controller.getPerfQuality().performanceQuality(controller.getSourceValPath(), valFilePath);
 
 		}
-//		Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQuality --> " + perfQ);
-		
+		// Controller.logger_.info("Solution #" + this.getName() + ": PerformanceQualityEvaluator
+		// --> " + perfQ);
+
 		return perfQ;
 	}
 
@@ -440,11 +448,13 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	 * 
 	 * @param metamodelManager
 	 */
-//	private void applyTransformation(AemiliaManager metamodelManager) {
-//		String mmaemiliaFilePath = mmaemiliaFolderPath + getName() + metamodelManager.getMetamodelFileExtension();
-//		Transformation.GenerateAEMTransformation(mmaemiliaFilePath, mmaemiliaFolderPath);
-//	}
-	
+	// private void applyTransformation(AemiliaManager metamodelManager) {
+	// String mmaemiliaFilePath = mmaemiliaFolderPath + getName() +
+	// metamodelManager.getMetamodelFileExtension();
+	// Transformation.GenerateAEMTransformation(mmaemiliaFilePath,
+	// mmaemiliaFolderPath);
+	// }
+
 	public void applyTransformation() {
 		String mmaemiliaFilePath = mmaemiliaFolderPath + getName() + metamodelManager.getMetamodelFileExtension();
 		Transformation.GenerateAEMTransformation(mmaemiliaFilePath, mmaemiliaFolderPath);
@@ -480,9 +490,10 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			}
 		}
 		metamodelManager.save(this);
-//		Controller.logger_.info("Model of Solution #" + this.getName() + " has been SAVED!");
+		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
+		// SAVED!");
 	}
-	
+
 	public void executeRefactoring() {
 		Refactoring ref = this.getVariableValue(0).getRefactoring();
 
@@ -506,7 +517,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			}
 		}
 		metamodelManager.save(this);
-//		Controller.logger_.info("Model of Solution #" + this.getName() + " has been SAVED!");
+		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
+		// SAVED!");
 	}
 
 	@Override
@@ -631,7 +643,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	}
 
 	public float getPerfQ() {
-//		perfQ = evaluatePerformance();
+		// perfQ = evaluatePerformance();
 		return perfQ;
 	}
 
@@ -651,7 +663,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	public String getMmaemiliaFolderPath() {
 		return mmaemiliaFolderPath;
 	}
-	
+
 	public String getMmaemiliaFilePath() {
 		return mmaemiliaFilePath;
 	}

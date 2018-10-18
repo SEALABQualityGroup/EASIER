@@ -30,7 +30,7 @@ public class ThresholdUtils {
 	public static void uptodateSingleValueThresholds(String detestinationFolder, String mmaemiliaFilePath,
 			String valFilePath, AemiliaManager metamodelManager, Controller controller) {
 
-//		Controller controller = Manager.getInstance(null).getController();
+		// Controller controller = Manager.getInstance(null).getController();
 		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
 		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
 
@@ -48,7 +48,8 @@ public class ThresholdUtils {
 		String templateString;
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		// Pipe and Filter
-		valuesMap.put("serviceThLB", Float.toString(calculateServiceThLB(valSpec)));
+		float serviceThLB = calculateServiceThLB(valSpec);
+		valuesMap.put("serviceThLB", Float.toString(serviceThLB));
 		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
 
 		// Extensive Processing
@@ -82,7 +83,7 @@ public class ThresholdUtils {
 		EList<ConstInit> listOfConsts = aemiliaModel.getArchiTypeDecl().getHeader().getInitConst();
 		for (ConstInit aemiliaConst : listOfConsts) {
 			if (aemiliaConst.getInitConstData() instanceof Special) {
-				if (aemiliaConst.getName().contains("rate")
+				if (aemiliaConst.getName().contains("rate") && !aemiliaConst.getName().contains("workload")
 						&& ((Special) aemiliaConst.getInitConstData()).getType().equals(SpecialType.RATE)) {
 					thRate += Float.parseFloat(((IdentExpr) aemiliaConst.getInitConstExpr()).getName());
 					countRates++;
