@@ -85,7 +85,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	private String basePath, sourceFolder;
 	private PerformanceQualityEvaluator perfQuality;
 
-	private int length, number_of_actions, maxEvaluations, populationSize, allowed_failures;
+	private int length, numberOfActions, maxEvaluations, populationSize, allowedFailures, independentRuns, numberOfPAs;
 
 	private double crossoverProbability, mutationProbability, distribution_index;
 	private double[] workloadRange;
@@ -96,7 +96,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	private int maxCloning;
 	private Instant startingTime, endingTime;
 	private Map<String, List<ArchitecturalInteraction>> sourceModelPAs;
-	private int numberOfPAs;
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd.HH.mm.ss");
 	private String sourceModelPath;
@@ -114,6 +113,10 @@ public class Controller extends AbstractAlgorithmRunner {
 	private double constChangesWeight;
 	private String failureRatesPropertiesFile;
 	private String sourceOclFolder;
+	private CrossoverOperator<RSolution> crossoverOperator;
+	private MutationOperator<RSolution> mutationOperator;
+	private SelectionOperator<List<RSolution>, RSolution> selectionOpertor;
+	private SolutionListEvaluator<RSolution> solutionListEvaluator;
 
 	public Controller() {
 		manager = new Manager(new AemiliaManager(this));
@@ -148,12 +151,18 @@ public class Controller extends AbstractAlgorithmRunner {
 		updateSourceModel();
 
 		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
-		numberOfPAs = 0;
+		this.numberOfPAs = 0;
 		for (String key : sourceModelPAs.keySet()) {
-			numberOfPAs += sourceModelPAs.get(key).size();
+			this.numberOfPAs += sourceModelPAs.get(key).size();
 		}
 
-		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize, this);
+		this.problem = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
+		
+		crossoverOperator = new RCrossover(crossoverProbability, this);
+		mutationOperator = new RMutation(mutationProbability, distribution_index);
+		selectionOpertor = new BinaryTournamentSelection<RSolution>(
+				new RankingAndCrowdingDistanceComparator<RSolution>());
+		solutionListEvaluator = new RSolutionListEvaluator();
 	}
 
 	private void generateSourceFiles() {
@@ -205,7 +214,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		startingTime = Instant.now();
 
-		this.problem = new RProblem(sourceBasePath, length, number_of_actions, allowed_failures, populationSize, this);
+		this.problem = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
 
 		timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -235,32 +244,21 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		logger_.addHandler(handler);
 
-		CrossoverOperator<RSolution> crossover = new RCrossover(crossoverProbability, this);
-		MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
-		SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
-				new RankingAndCrowdingDistanceComparator<RSolution>());
-		SolutionListEvaluator<RSolution> ev = new RSolutionListEvaluator();
+//		CrossoverOperator<RSolution> crossover = new RCrossover(crossoverProbability, this);
+//		MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
+//		SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
+//				new RankingAndCrowdingDistanceComparator<RSolution>());
+//		SolutionListEvaluator<RSolution> ev = new RSolutionListEvaluator();
 		Algorithm<List<RSolution>> algorithm = new CustomNSGAII<RSolution>(problem, maxEvaluations, populationSize,
-				crossover, mutation, selection, ev);
+				crossoverOperator, mutationOperator, selectionOpertor, solutionListEvaluator);
 
 		long[] id_s = new long[1];
 		id_s[0] = java.lang.Thread.currentThread().getId();
 
 		logger_.info(algorithm.getClass().toString());
 
-		// FileWriter solutionFileWriter = new FileWriter(getParetoFolder() +
-		// getProblem().getName() + "_solutions.csv",
-		// true);
-		// List<String> line = new ArrayList<String>();
-		// line.add("name");
-		// line.add("PAs");
-		// line.add("perfQ");
-		// line.add("numOfChanges");
-		// CSVUtils.writeLine(solutionFileWriter, line);
 		CSVUtils.writeLine(getParetoFolder() + getProblem().getName() + "_solutions.csv",
 				Arrays.asList("name", "PAs", "perfQ", "#changes"));
-		// solutionFileWriter.flush();
-		// solutionFileWriter.close();
 
 		algorithm.run();
 		List<RSolution> population = algorithm.getResult();
@@ -271,31 +269,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		Collections.sort(population, new RankingAndCrowdingDistanceComparator<RSolution>());
 		Collections.reverse(population);
 
-		// printFinalSolutionSet(population);
-		// if (!referenceParetoFront.equals("")) {
-		// printQualityIndicators(population, referenceParetoFront);
-		// }
-
-		// logger_.info("Number of non-dominated solutions (sorted by Crowding): " +
-		// population.size());
-
 		endingTime = Instant.now();
 		Duration totalTime = Duration.between(startingTime, endingTime);
 
-		// logger_.info("Total execution time: " + totalTime.toString().replaceAll(",",
-		// ".") + " seconds");
-
-		// try {
-		// line = null;
 		writeSolutionSetToCSV(population);
-		// resultFileWriter.flush();
-		// resultFileWriter.close();
 		saveParetoSolution(population);
 		generateAvailability(population);
 		cleanTmpFiles();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
 
 		getProperties().setProperty("Total Elapsed Time", totalTime.toString());
 		logger_.info("Execution ended with no problem in: " + totalTime.toString());
@@ -306,8 +286,8 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	public void testExperiment() {
-		final int INDEPENDENT_RUNS = 2; // should be 31 or 51
+	public void runExperiment() {
+		final int INDEPENDENT_RUNS = this.independentRuns; // should be 31 or 51
 		final int CORES = 1;
 
 		// List<String> referenceFrontFileNames =
@@ -355,17 +335,13 @@ public class Controller extends AbstractAlgorithmRunner {
 	 * which form part of a {@link ExperimentAlgorithm}, which is a decorator for
 	 * class {@link Algorithm}.
 	 */
-	public List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
+	private List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
 			List<ExperimentProblem<RSolution>> problemList) {
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithms = new ArrayList<>();
 
 		// final CrossoverOperator<RSolution> crossover = new
 		// RCrossover(crossoverProbability, this);
-		final MutationOperator<RSolution> mutation = new RMutation(mutationProbability, distribution_index);
-		final SelectionOperator<List<RSolution>, RSolution> selection = new BinaryTournamentSelection<RSolution>(
-				new RankingAndCrowdingDistanceComparator<RSolution>());
-		final SolutionListEvaluator<RSolution> ev = new RSolutionListEvaluator();
 
 		// for (int i = 0; i < problemList.size(); i++) {
 		// double mutationProbability = 1.0 /
@@ -416,11 +392,11 @@ public class Controller extends AbstractAlgorithmRunner {
 			// final CrossoverOperator<RSolution> crossover = new
 			// RCrossover(crossoverProbability, this);
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
-					problemList.get(i).getProblem(), new RCrossover(crossoverProbability, this), mutation);
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
 
 			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
 			customNSGABuilder.setPopulationSize(this.populationSize);
-			customNSGABuilder.setSolutionListEvaluator(new RSolutionListEvaluator());
+			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
 
 			NSGAII<RSolution> algorithm = customNSGABuilder.build();
 			((CustomNSGAII<RSolution>) algorithm).setName("Custom_NSGA_II");
@@ -454,7 +430,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			FileUtils.copyDirectory(new File(getParetoFolder()), availabilityDir, filter);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -480,7 +455,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			try {
 				FileUtils.cleanDirectory(new File(tmpFolder));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -499,7 +473,6 @@ public class Controller extends AbstractAlgorithmRunner {
 				.indexOf("jdwp") >= 0;
 
 		setTwoTowersKernelPath(prop.getProperty("ttKernel"));
-		// logger_.info("twoTowersKernelPath is set to " + getTwoTowersKernelPath());
 
 		sourceBasePath = getBasePath() + prop.getProperty("sourceBasePath");
 
@@ -512,7 +485,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		if (sourceFolder == null || sourceFolder.isEmpty()) {
 			sourceFolder = getBasePath() + prop.getProperty("sourceFolder");
 		}
-		// logger_.info("sourceFolder is set to " + sourceFolder);
 
 		if (new File(sourceAemPath).exists() && !new File(sourceModelPath).exists()) {
 			GeneratoreModelloAemilia genModel = new GeneratoreModelloAemilia();
@@ -521,7 +493,6 @@ public class Controller extends AbstractAlgorithmRunner {
 				aemFileInputStream = new FileInputStream(new File(sourceAemPath));
 				genModel.execute_ase(aemFileInputStream, sourceModelPath, sourceModelPath);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -532,52 +503,36 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		if (!new File(sourceValPath).exists()) {
-			// logger_.warning("SourceValFilePath: " + sourceValPath + " DOES NOT EXIST");
-			// logger_.info("sourceValPath is set to default value");
 			((AemiliaManager) metamodelManager)
 					.setSourceValFilePath(getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.aem.val");
 		} else {
 			((AemiliaManager) metamodelManager).setSourceValFilePath(sourceValPath);
-			// logger_.info("SourceValFilePath: " + sourceValPath);
 		}
 
 		if (!new File(sourceRewPath).exists()) {
-			// logger_.warning("NOT EXISTS SourceRewFilePath: " + sourceValPath);
-			// logger_.info("sourceRewPath is set to default value");
 			((AemiliaManager) metamodelManager)
 					.setSourceValFilePath(getBasePath() + "/src/main/resources/models/AemiliaModels/BoA/BoA.rew");
-		} // else {
-			// logger_.info("SourceRewFilePath: " + sourceRewPath);
-			// }
+		}
 
 		if (sourceFolder == null || sourceFolder.isEmpty()) {
 			sourceFolder = getBasePath() + prop.getProperty("sourceFolder");
 		}
-		// logger_.info("sourceFolder is set to " + sourceFolder);
 
 		length = Integer.parseInt(prop.getProperty("length"));
-		// logger_.info("length is set to " + length);
 
-		number_of_actions = Integer.parseInt(prop.getProperty("number_of_actions"));
-		// logger_.info("number_of_actions is set to " + number_of_actions);
+		numberOfActions = Integer.parseInt(prop.getProperty("number_of_actions"));
 
 		crossoverProbability = Double.parseDouble(prop.getProperty("p_crossover"));
-		// logger_.info("crossoverProbability is set to " + crossoverProbability);
 
 		mutationProbability = Double.parseDouble(prop.getProperty("p_mutation"));
-		// logger_.info("mutationProbability is set to " + mutationProbability);
 
 		distribution_index = Double.parseDouble(prop.getProperty("d_index_mutation"));
-		// logger_.info("distribution_index is set to " + distribution_index);
 
 		maxEvaluations = Integer.parseInt(prop.getProperty("maxEvaluations"));
-		// logger_.info("maxEvaluations is set to " + maxEvaluations);
 
 		populationSize = Integer.parseInt(prop.getProperty("populationSize"));
-		// logger_.info("populationSize is set to " + populationSize);
 
-		allowed_failures = Integer.parseInt(prop.getProperty("allowed_failures"));
-		// logger_.info("allowed_failures is set to " + allowed_failures);
+		allowedFailures = Integer.parseInt(prop.getProperty("allowed_failures"));
 
 		if (prop.getProperty("logFolder").endsWith(File.separator))
 			setLogFolder(prop.getProperty("logFolder"));
@@ -604,24 +559,16 @@ public class Controller extends AbstractAlgorithmRunner {
 		new File(logFolder).mkdirs();
 		new File(availabilityFolder).mkdirs();
 
-		// logger_.info("outputFolder is set to " + getOutputFolder());
-
 		sourceOclFolder = getBasePath() + prop.getProperty("sourceOclFolder");
 
 		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
-		// logger_.info("rule_template_file_path is set to " +
-		// getRuleTemplateFilePath());
 
 		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
 		if (!new File(ruleFilePath).exists()) {
 			ThresholdUtils.uptodateSingleValueThresholds(sourceOclFolder, sourceModelPath, sourceValPath,
 					(AemiliaManager) metamodelManager, this);
 		}
-		// logger_.info("rule_file_path is set to " + getRuleFilePath());
 		setMaxCloning(Integer.valueOf(prop.getProperty("maxCloning")));
-		// logger_.info("max cloning is set to " + getMaxCloning());
-		// logger_.info("Starting number of elements: " + populationSize);
-		// logger_.info("Debug mode: " + isDebug);
 
 		if (prop.getProperty("workloadRange") != null) {
 			String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
@@ -633,6 +580,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		cloningWeight = Double.parseDouble(prop.getProperty("cloningWeight", Double.toString(1.3)));
 		constChangesWeight = Double.parseDouble(prop.getProperty("constChangesWeight", Double.toString(1)));
 		failureRatesPropertiesFile = prop.getProperty("failureRatesPropertiesFile");
+		independentRuns = Integer.parseInt(prop.getProperty("independent_runs", Integer.toString(31)));
 
 		logger_.info("Set properties ended with no error");
 	}
@@ -647,7 +595,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// logger_.info("Config_file is set to " + filename);
 		return new FileInputStream(filename);
 	}
 
@@ -687,12 +634,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		logger_.info("Writing CSV");
 		try {
 			List<String> line = new ArrayList<String>();
-			// line = Arrays.asList("SolID", "PerQ", "#Changes", "#PAs");
 			line.add("SolID");
 			line.add("PerQ");
 			line.add("#Changes");
 			line.add("#PAs");
-			for (int i = 0; i < number_of_actions; i++) {
+			for (int i = 0; i < numberOfActions; i++) {
 				line.add("ActionTarget");
 				line.add("FoC/Null");
 			}
@@ -702,11 +648,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			for (RSolution solution : population) {
 				writeSolutionToCSV(solution);
 			}
-			// analyzableCSV.flush();
-			// analyzableCSV.close();
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logger_.info("CSV written");
@@ -803,7 +745,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	public void copyModel(String destinationPath) {
+	public void copyModel(final String destinationPath) {
 		File source = new File(sourceModelPath);
 		File dest = new File(destinationPath);
 		try {
@@ -837,7 +779,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		return maxCloning;
 	}
 
-	public void setMaxCloning(int maxCloning) {
+	public void setMaxCloning(final int maxCloning) {
 		this.maxCloning = maxCloning;
 	}
 
@@ -859,7 +801,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		return sourceModelPath;
 	}
 
-	public void setSourceModelPath(String sourceModelPath) {
+	public void setSourceModelPath(final String sourceModelPath) {
 		this.sourceModelPath = sourceModelPath;
 	}
 
@@ -873,15 +815,9 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	public void simpleSolutionWriterToCSV(RSolution rSolution) {
+	public void simpleSolutionWriterToCSV(final RSolution rSolution) {
 		try (FileWriter solutionWriter = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
 				true)) {
-//			List<String> line = new ArrayList<String>();
-//			line.add(String.valueOf(rSolution.getName()));
-//			line.add(String.valueOf(rSolution.getPAs()));
-//			line.add(String.valueOf(rSolution.getPerfQ()));
-//			line.add(String.valueOf(rSolution.getNumOfChanges()));
-			// CSVUtils.writeLine(solutionWriter, line);
 			CSVUtils.writeLine(solutionWriter,
 					Arrays.asList(String.valueOf(rSolution.getName()), String.valueOf(rSolution.getPAs()),
 							String.valueOf(rSolution.getPerfQ()), String.valueOf(rSolution.getNumOfChanges())));
@@ -895,7 +831,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		return ruleTemplateFilePath;
 	}
 
-	public void setRuleTemplateFilePath(String ruleTemplateFilePath) {
+	public void setRuleTemplateFilePath(final String ruleTemplateFilePath) {
 		this.ruleTemplateFilePath = ruleTemplateFilePath;
 	}
 
@@ -916,7 +852,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	public void setExecutor(ExecutorService exc) {
+	public void setExecutor(final ExecutorService exc) {
 		this.executor = exc;
 	}
 
@@ -924,11 +860,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		return logFolder;
 	}
 
-	public void setLogFolder(String logFolder) {
+	public void setLogFolder(final String logFolder) {
 		this.logFolder = logFolder;
 	}
 
-	public void setAvailabilityFolder(String availabilityFolder) {
+	public void setAvailabilityFolder(final String availabilityFolder) {
 		this.availabilityFolder = availabilityFolder;
 	}
 
@@ -936,7 +872,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		return paretoFolder;
 	}
 
-	public void setParetoFolder(String paretoFolder) {
+	public void setParetoFolder(final String paretoFolder) {
 		this.paretoFolder = paretoFolder;
 	}
 
@@ -976,7 +912,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		this.failureRatesPropertiesFile = failureRatesPropertiesFile;
 	}
 
-	public static void setSOR(boolean sorValue) {
+	public static void setSOR(final boolean sorValue) {
 		SOR = sorValue;
 	}
 

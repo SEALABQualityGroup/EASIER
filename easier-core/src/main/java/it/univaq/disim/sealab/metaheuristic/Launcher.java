@@ -37,21 +37,19 @@ public class Launcher {
 	}
 
 	public static void singleModel(String configFile) {
-		Controller controller = new Controller(configFile);
-//		try {
-//			controller.run();
-			
-			controller.testExperiment();
-//		} catch (IOException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			new Controller(configFile).run();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void runExperiment(String configFile) {
+		new Controller(configFile).runExperiment();
 	}
 
 	public static void main(String[] args) {
-
 		List<String> argsList = Arrays.asList(args);
-		
 		Controller.setSOR(argsList.contains("-sor"));
 
 		if (argsList.contains("-m")) {
@@ -60,6 +58,10 @@ public class Launcher {
 
 		if (argsList.contains("-s")) {
 			singleModel((argsList.get(argsList.indexOf("-s") + 1)));
+		}
+
+		if (argsList.contains("-sE")) {
+			runExperiment((argsList.get(argsList.indexOf("-sE") + 1)));
 		}
 	}
 
