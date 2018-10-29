@@ -36,6 +36,7 @@ import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
+import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
@@ -294,7 +295,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
-		String referenceFrontDirectory = getParetoFolder() + "referenceFront";
+		String referenceFrontDirectory = getParetoFolder() + getProblem().getName() + File.separator + "referenceFront";
 
 		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp_FTA")
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
@@ -304,7 +305,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
 						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
-						new InvertedGenerationalDistance<RSolution>(),
+						new InvertedGenerationalDistance<RSolution>(), new GeneralizedSpread<RSolution>(),
 						new InvertedGenerationalDistancePlus<RSolution>()))
 
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
@@ -312,6 +313,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		try {
 			new ExecuteAlgorithms<>(experiment).run();
 			new GenerateReferenceParetoFront(experiment).run();
+			//experiment.setReferenceFrontFileNames(Arrays.asList(problemList.get(0).getTag() + ".rf"));
 			new ComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 		} catch (Exception e) {
