@@ -60,6 +60,7 @@ public class AemiliaAvailabilityManager {
 	public AemiliaAvailabilityManager(Controller ctrl) {
 		controller = ctrl;
 		manager = controller.getManager();
+		packageRegistering();
 	}
 
 	public void packageRegistering() {
@@ -79,6 +80,8 @@ public class AemiliaAvailabilityManager {
 						Resource targetResource = manager.getMetamodelManager().getResourceSet()
 								.getResource(manager.string2FileUri(modelFile.getAbsolutePath()), true);
 						addAvailability((AEmiliaSpecification) targetResource.getContents().get(0));
+						writeAvaRewFile((AEmiliaSpecification) targetResource.getContents().get(0),
+								modelFile.getParentFile().toPath());
 						try {
 							targetResource.save(null);
 						} catch (IOException e) {

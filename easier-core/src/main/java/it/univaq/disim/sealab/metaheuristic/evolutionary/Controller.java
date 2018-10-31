@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -20,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
@@ -64,6 +66,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.utils.CSVUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
+import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
 import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
@@ -145,7 +148,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		// logger_.info("Logger Name: " + logger_.getName());
 		// logger_.warning("Can cause IOException");
 
-
 		setProperties(cfgInputStream);
 
 		if (sourceModelPath == null || sourceModelPath.isEmpty())
@@ -161,7 +163,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 
 		this.problem = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
-		
+
 		crossoverOperator = new RCrossover(crossoverProbability, this);
 		mutationOperator = new RMutation(mutationProbability, distribution_index);
 		selectionOpertor = new BinaryTournamentSelection<RSolution>(
@@ -238,7 +240,6 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		writePropertiesToCSV(getParetoFolder() + getProblem().getName() + "_properties.csv");
 
-
 		try {
 			handler = new FileHandler(this.getLogFolder() + "default.log", append);
 		} catch (SecurityException | IOException e) {
@@ -271,7 +272,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		writeSolutionSetToCSV(population);
 		saveParetoSolution(population);
-		generateAvailability(population);
+		generateAvailability();
 		cleanTmpFiles();
 
 		getProperties().setProperty("Total Elapsed Time", totalTime.toString());
@@ -282,7 +283,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			handle.close();
 		}
 	}
-
 
 	public void runExperiment() {
 		final int INDEPENDENT_RUNS = this.independentRuns; // should be 31 or 51
@@ -313,7 +313,8 @@ public class Controller extends AbstractAlgorithmRunner {
 		try {
 			new ExecuteAlgorithms<>(experiment).run();
 			new GenerateReferenceParetoFront(experiment).run();
-			//experiment.setReferenceFrontFileNames(Arrays.asList(problemList.get(0).getTag() + ".rf"));
+			// experiment.setReferenceFrontFileNames(Arrays.asList(problemList.get(0).getTag()
+			// + ".rf"));
 			new ComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 		} catch (Exception e) {
@@ -418,8 +419,8 @@ public class Controller extends AbstractAlgorithmRunner {
 		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i), i));
 		// }
 		return algorithms;
-  }
-  
+	}
+
 	private void writeResultsToFile(Duration totalTime, List<RSolution> population) {
 		try (FileWriter fw = new FileWriter(getParetoFolder() + "results.csv")) {
 			CSVUtils.writeLine(fw, Arrays.asList("Popul", "Evals", "PCross", "PMutat", "#Pareto", "#Crossover",
@@ -446,7 +447,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	private synchronized void generateAvailability(List<RSolution> paretoPop) {
+	public synchronized void generateAvailability() {
 		File availabilityDir = new File(availabilityFolder);
 		try {
 			String[] types = { "mmaemilia" };
@@ -458,6 +459,31 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		availabilityManager.setFolder(availabilityDir);
 		availabilityManager.doAvailability();
+	}
+
+	public synchronized void generateAvailability(final String twoTowersKernelPath, final File targetFolder,
+			final File avaFolder) {
+		// File availabilityDir = avaFolder;
+		try {
+			String[] types = { "mmaemilia" };
+			FileFilter filter = new FileTypesFilter(types);
+			FileUtils.copyDirectory(targetFolder, avaFolder, filter);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		availabilityManager.setFolder(avaFolder);
+		availabilityManager.doAvailability(avaFolder);
+
+		Set<File> aemFile = it.univaq.disim.sealab.metaheuristic.utils.FileUtils.listFilesRecursively(avaFolder,
+				".aem");
+
+		TwoEaglesBridge tt = new TwoEaglesBridge();
+
+		tt.setTwoTowersKernelPath(twoTowersKernelPath);
+
+		tt.sorSRBMC(aemFile.iterator().next().getAbsolutePath(), Paths.get(avaFolder.getAbsolutePath(), "ava.rew").toString(),
+				Paths.get(avaFolder.getAbsolutePath(), "result").toString());
 	}
 
 	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
@@ -595,14 +621,12 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		setRuleTemplateFilePath(getBasePath() + prop.getProperty("rule_template_file_path"));
 
-
 		setRuleFilePath(getBasePath() + prop.getProperty("rule_file_path"));
 		if (!new File(ruleFilePath).exists()) {
 			ThresholdUtils.uptodateSingleValueThresholds(sourceOclFolder, sourceModelPath, sourceValPath,
 					(AemiliaManager) metamodelManager, this);
 		}
 		setMaxCloning(Integer.valueOf(prop.getProperty("maxCloning")));
-
 
 		if (prop.getProperty("workloadRange") != null) {
 			String[] workloadRangeString = prop.getProperty("workloadRange").split(";");
@@ -920,8 +944,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public void simpleSolutionWriterToCSV(RSolution rSolution) {
-		try (FileWriter fw = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv",
-				true)) {
+		try (FileWriter fw = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv", true)) {
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPAs()));
@@ -1017,7 +1040,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
 		this.failureRatesPropertiesFile = failureRatesPropertiesFile;
 	}
-
 
 	public static void setSOR(final boolean sorValue) {
 		SOR = sorValue;

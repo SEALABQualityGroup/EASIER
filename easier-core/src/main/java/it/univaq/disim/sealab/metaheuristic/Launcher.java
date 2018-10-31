@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -56,7 +57,15 @@ public class Launcher {
 	}
 
 	public static void runExperiment(String configFile) {
-		new Controller(configFile).runExperiment();
+		Controller ctr = new Controller(configFile);
+		ctr.runExperiment();
+		ctr.generateAvailability();
+	}
+
+	public static void availability(final String twoTowersKernelPath, final String targetFolder) {
+		File avaFolder = Paths.get(targetFolder, "availability").toFile();
+		//avaFolder.mkdirs();
+		new Controller().generateAvailability(twoTowersKernelPath, new File(targetFolder), avaFolder);
 	}
 
 	public static void main(String[] args) {
@@ -84,6 +93,16 @@ public class Launcher {
 
 		if (argsList.contains("-sE")) {
 			runExperiment((argsList.get(argsList.indexOf("-sE") + 1)));
+		}
+		
+		String twoTowersKernelPath = "";
+		
+		if (argsList.contains("-t")) {
+			twoTowersKernelPath = argsList.get(argsList.indexOf("-t") + 1);
+		}
+
+		if (argsList.contains("-ava")) {
+			availability(twoTowersKernelPath, (argsList.get(argsList.indexOf("-ava") + 1)));
 		}
 	}
 

@@ -30,4 +30,24 @@ public class FileUtils {
 		return files;
 	}
 	
+	/**
+	 * Recursively walk through subdirectories listing Aemilia files.
+	 * @param folder starting folder
+	 * @return array of aemilia file paths
+	 */
+	public static Set<File> listFilesRecursively(final File folder, String extension) {
+		Set<File> files = new HashSet<File>();
+		if (folder == null || folder.listFiles() == null){
+	        return files;
+	    }
+		for (File entry : folder.listFiles()) {
+	        if (entry.isFile() && entry.getName().endsWith(extension)) {
+	        	files.add(entry);
+	        } else if (entry.isDirectory()) {
+	        	files.addAll(listFilesRecursively(entry));
+	        }
+	    }
+		return files;
+	}
+	
 }
