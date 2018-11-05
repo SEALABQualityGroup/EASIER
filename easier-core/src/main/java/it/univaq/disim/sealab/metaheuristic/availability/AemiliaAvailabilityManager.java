@@ -152,43 +152,58 @@ public class AemiliaAvailabilityManager {
 
 	private void addAvailability(AEmiliaSpecification targetModel) {
 
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(controller.getFailureRatesPropertiesFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		for (ElemType elemType : targetModel.getArchiTypeDecl().getAetDeclaration().getEtDeclaration()) {
-			OutputInteraction failOutputInteraction = createOutputInteraction(elemType, "fail_" + elemType.getEtName(),
-					targetModel);
+			if (prop.getProperty(elemType.getEtName()) != null) {
+				OutputInteraction failOutputInteraction = createOutputInteraction(elemType,
+						"fail_" + elemType.getEtName(), targetModel);
 
-			ConstInit constWeight = setConstWeight(elemType);
+				ConstInit constWeight = setConstWeight(elemType);
 
-			targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
-			elemType.getElemHeader().getCostant().add(createConst(constWeight));
+				targetModel.getArchiTypeDecl().getHeader().getInitConst().add(constWeight);
+				elemType.getElemHeader().getCostant().add(createConst(constWeight));
 
-			updateArchiElemInstanceParameters(elemType, targetModel, constWeight);
+				updateArchiElemInstanceParameters(elemType, targetModel, constWeight);
 
-			for (BehavEquation behEq : elemType.getBehaviorDecl().getEquations()) {
-				ChoiceProcess availabilityChoice = behaviourFactory.createChoiceProcess();
-				ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, behEq,
-						constWeight);
-				ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq, constWeight);
-				availabilityChoice.getProcesses().add(failProcess);
-				availabilityChoice.getProcesses().add(goodProcess);
-				behEq.setPt(availabilityChoice);
+				for (BehavEquation behEq : elemType.getBehaviorDecl().getEquations()) {
+					ChoiceProcess availabilityChoice = behaviourFactory.createChoiceProcess();
+					ActionProcess failProcess = createFailBranchProcess(elemType, failOutputInteraction, behEq,
+							constWeight);
+					ActionProcess goodProcess = createGoodBranchProcess(elemType, behEq, constWeight);
+					availabilityChoice.getProcesses().add(failProcess);
+					availabilityChoice.getProcesses().add(goodProcess);
+					behEq.setPt(availabilityChoice);
+				}
 			}
 		}
 	}
 
 	private void writeAvaRewFile(final AEmiliaSpecification targetModel, final Path folderPath) {
-
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(controller.getFailureRatesPropertiesFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		try (BufferedWriter bw = new BufferedWriter(
 				new FileWriter(Paths.get(folderPath.toString(), "ava.rew").toFile()))) {
 			bw.write("MEASURE Lose IS \n");
 			for (ArchiElemInstance elemInstance : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
-				bw.write(String.format("\t ENABLED (%s.fail_%s) -> STATE_REWARD(1.0)\n", elemInstance.getInstanceName(),
+				if (prop.getProperty(elemInstance.getTypeOf().getEtName()) != null)
+					bw.write(String.format("\t ENABLED (%s.fail_%s) -> STATE_REWARD(1.0)\n", elemInstance.getInstanceName(),
 						elemInstance.getTypeOf().getEtName()));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
+
 
 	private void updateArchiElemInstanceParameters(ElemType e, AEmiliaSpecification targetModel, ConstInit cWeight) {
 		for (ArchiElemInstance aei : targetModel.getArchiTypeDecl().getAtDeclaration().getAeiDecl()) {
