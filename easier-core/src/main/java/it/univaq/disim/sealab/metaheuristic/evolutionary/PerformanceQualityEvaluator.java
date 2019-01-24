@@ -47,7 +47,6 @@ public class PerformanceQualityEvaluator {
 				contextualArchiInteractions.add(next);
 			}
 		}
-
 		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
 	}
 

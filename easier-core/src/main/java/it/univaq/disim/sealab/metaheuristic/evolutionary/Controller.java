@@ -31,10 +31,16 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
+import org.uma.jmetal.algorithm.multiobjective.moead.MOEADBuilder;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
+import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
@@ -61,6 +67,10 @@ import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
@@ -288,8 +298,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		final int INDEPENDENT_RUNS = this.independentRuns; // should be 31 or 51
 		final int CORES = 1;
 
-		// List<String> referenceFrontFileNames =
-		// Arrays.asList(this.problem.getName()+".Custom_NSGA_II_a.rf");
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
 		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
 
@@ -301,20 +309,14 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
 				.setExperimentBaseDirectory(referenceFrontDirectory).setOutputParetoFrontFileName("FUN")
 				.setOutputParetoSetFileName("VAR").setReferenceFrontDirectory(referenceFrontDirectory)
-				// .setReferenceFrontFileNames(referenceFrontFileNames)
-
 				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
 						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
 						new InvertedGenerationalDistance<RSolution>(), new GeneralizedSpread<RSolution>(),
 						new InvertedGenerationalDistancePlus<RSolution>()))
-
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
-
 		try {
 			new ExecuteAlgorithms<>(experiment).run();
 			new GenerateReferenceParetoFront(experiment).run();
-			// experiment.setReferenceFrontFileNames(Arrays.asList(problemList.get(0).getTag()
-			// + ".rf"));
 			new ComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 		} catch (Exception e) {
@@ -340,53 +342,6 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithms = new ArrayList<>();
 
-		// final CrossoverOperator<RSolution> crossover = new
-		// RCrossover(crossoverProbability, this);
-
-		// for (int i = 0; i < problemList.size(); i++) {
-		// double mutationProbability = 1.0 /
-		// problemList.get(i).getProblem().getNumberOfVariables();
-		// double mutationDistributionIndex = 20.0;
-		//
-		// Algorithm<List<RSolution>> algorithm = new SMPSOBuilder(
-		// (DoubleProblem) problemList.get(i).getProblem(),
-		// new CrowdingDistanceArchive<DoubleSolution>(100))
-		// .setMutation(new PolynomialMutation(mutationProbability,
-		// mutationDistributionIndex))
-		// .setMaxIterations(250).setSwarmSize(100)
-		// .setSolutionListEvaluator(new
-		// SequentialSolutionListEvaluator<DoubleSolution>())
-		// .build();
-		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i),
-		// run));
-		// }
-
-		// for (int i = 0; i < problemList.size(); i++) {
-		//
-		// // final CrossoverOperator<RSolution> crossover = new
-		// // RCrossover(crossoverProbability, this);
-		//
-		// crossoverProbability = crossoverProbability - (i/10);
-		//
-		// CustomNSGAIIBuilder<RSolution> customNSGABuilder = new
-		// CustomNSGAIIBuilder<RSolution>(
-		// problemList.get(i).getProblem(),
-		// new RCrossover(crossoverProbability, this),
-		// mutation);
-		//
-		// customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
-		// customNSGABuilder.setPopulationSize(this.populationSize);
-		// customNSGABuilder.setSolutionListEvaluator(new RSolutionListEvaluator());
-		//
-		// NSGAII<RSolution> algorithm = customNSGABuilder.build();
-		// ((CustomNSGAII<RSolution>)algorithm).setName("Custom_NSGA_II_b");
-		//
-		// ExperimentAlgorithm<RSolution, List<RSolution>> exp = new
-		// CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-		// algorithm, problemList.get(i).getTag(), i);
-		// algorithms.add(exp);
-		// }
-
 		for (int i = 0; i < problemList.size(); i++) {
 
 			// final CrossoverOperator<RSolution> crossover = new
@@ -394,30 +349,34 @@ public class Controller extends AbstractAlgorithmRunner {
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
 
-			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
+//			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
+			customNSGABuilder.setMaxEvaluations(40);
 			customNSGABuilder.setPopulationSize(this.populationSize);
 			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
 
 			NSGAII<RSolution> algorithm = customNSGABuilder.build();
-			((CustomNSGAII<RSolution>) algorithm).setName("Custom_NSGA_II");
+			((CustomNSGAII<RSolution>) algorithm).setName("NSGA_II");
 
 			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
 					algorithm, problemList.get(i).getTag(), i);
 			algorithms.add(exp);
 		}
 
-		// for (int i = 0; i < problemList.size(); i++) {
-		// Algorithm<List<RSolution>> algorithm = new
-		// MOEADBuilder(problemList.get(i).getProblem(),
-		// MOEADBuilder.Variant.MOEAD)
-		// .setCrossover(new DifferentialEvolutionCrossover(1.0, 0.5, "rand/1/bin"))
-		// .setMutation(new PolynomialMutation(
-		// 1.0 / problemList.get(i).getProblem().getNumberOfVariables(), 20.0))
-		// .setMaxEvaluations(25000).setPopulationSize(100).setResultPopulationSize(100)
-		// .setNeighborhoodSelectionProbability(0.9).setMaximumNumberOfReplacedSolutions(2)
-		// .setNeighborSize(20).setFunctionType(AbstractMOEAD.FunctionType.TCHE).build();
-		// algorithms.add(new ExperimentAlgorithm<>(algorithm, problemList.get(i), i));
-		// }
+		for (int i = 0; i < problemList.size(); i++) {
+			@SuppressWarnings("unchecked")
+			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+							// .setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
+							.setMaxIterations(10)
+							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+							.setPopulationSize(this.populationSize);
+
+			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
+			algorithm.setName("SPEA_2");
+			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+					algorithm, problemList.get(i).getTag(), i);
+			algorithms.add(exp);
+		}
 		return algorithms;
 	}
 
@@ -482,7 +441,8 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		tt.setTwoTowersKernelPath(twoTowersKernelPath);
 
-		tt.sorSRBMC(aemFile.iterator().next().getAbsolutePath(), Paths.get(avaFolder.getAbsolutePath(), "ava.rew").toString(),
+		tt.sorSRBMC(aemFile.iterator().next().getAbsolutePath(),
+				Paths.get(avaFolder.getAbsolutePath(), "ava.rew").toString(),
 				Paths.get(avaFolder.getAbsolutePath(), "result").toString());
 	}
 
@@ -501,7 +461,6 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private void cleanTmpFiles() {
 		if (cleaningTmp) {
-
 			try {
 				FileUtils.cleanDirectory(new File(tmpFolder));
 			} catch (IOException e) {
@@ -710,7 +669,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			writeSolutionToCSV(solution);
 			writeAnalyzableFile(solution);
 		}
-		logger_.info("CSV written");
+		logger_.info("Writing CSV done");
 	}
 
 	private void writePropertiesToCSV(String csvFilePath) {

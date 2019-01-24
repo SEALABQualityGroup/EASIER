@@ -53,7 +53,7 @@ public class AemiliaManager extends MetamodelManager {
 	private static final String METAMODEL_FILE_EXTENISON = "mmaemilia";
 	private static final String REW_FILE_EXTENSION = "rew";
 	private static final String REWMAPPING_FILE_EXTENSION = "rewmapping";
-	
+
 	private ResourceSet resourceSet;
 	// private Resource emiliaResource;
 
@@ -481,7 +481,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesCapacityAction");
-//		action.setSourceConstInit(sourceConst);
+		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 
@@ -502,7 +502,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesRateAction");
-//		action.setSourceConstInit(sourceConst);
+		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 
@@ -532,7 +532,7 @@ public class AemiliaManager extends MetamodelManager {
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction(seq.getSolution());
 		action.setModel(seq.getModel());
 		action.setSolution(seq.getSolution());
-//		action.setSourceConstInit(sourceConst);
+		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConstChangesWeight());
 		action.setName("AEmiliaConstChangesWorkloadAction");
@@ -759,10 +759,11 @@ public class AemiliaManager extends MetamodelManager {
 
 	@Override
 	public OclManager getOclManager() {
-		if (oclManager == null) {
-			oclManager = new OclAemiliaManager(controller);
-		}
-		return oclManager;
+//		if (oclManager == null) {
+//			oclManager = new OclAemiliaManager(controller);
+//		}
+//		return oclManager;
+		return new OclAemiliaManager(controller);
 	}
 
 	@Override

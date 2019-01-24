@@ -91,12 +91,14 @@ public class Launcher {
 			singleModel((argsList.get(argsList.indexOf("-s") + 1)));
 		}
 
+		//Runs experiment
 		if (argsList.contains("-sE")) {
 			runExperiment((argsList.get(argsList.indexOf("-sE") + 1)));
 		}
 		
 		String twoTowersKernelPath = "";
 		
+		//uses a new TTKernel path
 		if (argsList.contains("-t")) {
 			twoTowersKernelPath = argsList.get(argsList.indexOf("-t") + 1);
 		}
