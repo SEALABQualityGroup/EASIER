@@ -349,8 +349,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
 
-//			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
-			customNSGABuilder.setMaxEvaluations(40);
+			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
 			customNSGABuilder.setPopulationSize(this.populationSize);
 			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
 
@@ -366,8 +365,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			@SuppressWarnings("unchecked")
 			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							// .setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
-							.setMaxIterations(10)
+							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
 							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
 							.setPopulationSize(this.populationSize);
 
