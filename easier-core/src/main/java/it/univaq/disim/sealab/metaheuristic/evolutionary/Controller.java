@@ -57,6 +57,8 @@ import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
 import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
 import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
+import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
+import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
 import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
@@ -137,7 +139,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		manager = new Manager(new AemiliaManager(this));
 		manager.setController(this);
 		availabilityManager = new AemiliaAvailabilityManager(this);
-		perfQuality = new PerformanceQualityEvaluator(manager.getOclManager());
+//		perfQuality = new PerformanceQualityEvaluator(manager.getOclManager());
 		metamodelManager = manager.getMetamodelManager();
 	}
 
@@ -166,7 +168,7 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		updateSourceModel();
 
-		sourceModelPAs = perfQuality.performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
+		sourceModelPAs = getPerfQuality().performanceAntipatternEvaluator(metamodelManager.getModel(), ruleFilePath);
 		this.numberOfPAs = 0;
 		for (String key : sourceModelPAs.keySet()) {
 			this.numberOfPAs += sourceModelPAs.get(key).size();
@@ -319,6 +321,8 @@ public class Controller extends AbstractAlgorithmRunner {
 			new GenerateReferenceParetoFront(experiment).run();
 			new ComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -344,12 +348,11 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		for (int i = 0; i < problemList.size(); i++) {
 
-			// final CrossoverOperator<RSolution> crossover = new
-			// RCrossover(crossoverProbability, this);
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
 
-			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
+//			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
+			customNSGABuilder.setMaxEvaluations(400);
 			customNSGABuilder.setPopulationSize(this.populationSize);
 			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
 
@@ -365,8 +368,9 @@ public class Controller extends AbstractAlgorithmRunner {
 			@SuppressWarnings("unchecked")
 			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
 							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+//							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
+							.setMaxIterations(100)
 							.setPopulationSize(this.populationSize);
 
 			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
@@ -615,7 +619,8 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public PerformanceQualityEvaluator getPerfQuality() {
-		return perfQuality;
+//		return perfQuality;
+		return new PerformanceQualityEvaluator(manager.getOclManager());
 	}
 
 	public void setPerfQuality(PerformanceQualityEvaluator perfQuality) {

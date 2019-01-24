@@ -414,7 +414,8 @@ public class Manager {
 	}
 
 	public OclManager getOclManager() {
-		return oclManager;
+//		return oclManager;
+		return getMetamodelManager().getOclManager();
 	}
 
 	public void setOclManager(OclManager oclMan) {
