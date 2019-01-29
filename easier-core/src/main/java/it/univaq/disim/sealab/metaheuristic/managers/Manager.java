@@ -71,8 +71,7 @@ public class Manager {
 		metamodelManager.init(modelUri);
 	}
 
-	public Manager() {
-	}
+	public Manager() {}
 
 	public Manager(MetamodelManager mmManager) {
 		setMetamodelManager(mmManager);
@@ -415,7 +414,8 @@ public class Manager {
 	}
 
 	public OclManager getOclManager() {
-		return oclManager;
+//		return oclManager;
+		return getMetamodelManager().getOclManager();
 	}
 
 	public void setOclManager(OclManager oclMan) {
@@ -725,27 +725,19 @@ public class Manager {
 				contextualElement);
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
-			// boolean found = false;
 			Iterator<Object> resIterator = coll.iterator();
 			while (resIterator.hasNext() && !found) {
 				Object app = resIterator.next();
 				if (app.equals(obj))
 					found = true;
-				// return true;
 			}
-			// System.out.print(")");
 			return found;
 		}
-		// System.out.print(")");
 		return found;
 	}
 
 	public boolean evaluateOperator(ExistsOperator operator, Object contextualElement) throws ParserException {
 		@SuppressWarnings("unchecked")
-		// HashSet<Object> hashSetRes = ((HashSet<Object>) getOclManager()
-		// .evaluateOCL(operator.getCollection().getResolvingExpr(),
-		// contextualElement));
-		// List<Object> res = new ArrayList<Object>();
 		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement);
 		if (el == null)
 			return false;
@@ -754,162 +746,16 @@ public class Manager {
 
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
-			// boolean found = false;
 			Iterator<Object> resIterator = coll.iterator();
 			while (resIterator.hasNext() && !found) {
 				Object app = resIterator.next();
 				if (app.equals(el))
 					found = true;
-				// return true;
 			}
-			// System.out.print(")");
 			return found;
 		}
-		// System.out.print(")");
 		return found;
 	}
-
-	// public boolean evaluateOperator(GreaterOperator operator) throws
-	// ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?>? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = lhsIterator.next();
-	// if (((Double) appLhs).doubleValue() <= operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
-
-	// public boolean evaluateOperator(GreaterOperator operator, String umlModelUri)
-	// throws ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?>? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = lhsIterator.next();
-	// if (((Double) appLhs).doubleValue() <= operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
 
 	public boolean evaluateOperator(GreaterOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
@@ -966,153 +812,10 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() <= operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
 	}
-
-	// public boolean evaluateOperator(GreaterEqualOperator operator) throws
-	// ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?>=? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() < operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
-
-	// public boolean evaluateOperator(GreaterEqualOperator operator, String
-	// umlModelUri) throws ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?>=? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() < operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
 
 	public boolean evaluateOperator(GreaterEqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
@@ -1169,160 +872,15 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() < operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
 	}
 
-	// public boolean evaluateOperator(LessOperator operator) throws ParserException
-	// {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?<? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() >= operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
-
-	// public boolean evaluateOperator(LessOperator operator, String umlModelUri)
-	// throws ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?<? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() >= operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
-
 	public boolean evaluateOperator(LessOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
 				|| operator.getRhs().getResolvingExpr() == null
 				|| operator.getRhs().getResolvingExpr().contentEquals("")) {
-			// getNotOperator(), getAndOperator() and getOrOperator(), are opposites -> TO
-			// CHECK IF SET (POSSIBLE null VALUES)
 			if (operator.getNotOperator() != null) {
 				if (operator.getNotOperator().getAndOperator() != null)
 					return true;
@@ -1372,153 +930,10 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() >= operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
 	}
-
-	// public boolean evaluateOperator(LessEqualOperator operator) throws
-	// ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?<=? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() > operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
-
-	// public boolean evaluateOperator(LessEqualOperator operator, String
-	// umlModelUri) throws ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?<=? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() > operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
 
 	public boolean evaluateOperator(LessEqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
@@ -1575,7 +990,6 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() > operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
@@ -1636,90 +1050,16 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() != operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
 	}
-
-	// public boolean evaluateOperator(EqualOperator operator, String umlModelUri)
-	// throws ParserException {
-	// if (operator.getLhs().getResolvingExpr() == null ||
-	// operator.getLhs().getResolvingExpr().contentEquals("")
-	// || operator.getRhs().getResolvingExpr() == null
-	// || operator.getRhs().getResolvingExpr().contentEquals("")) {
-	// // getNotOperator(), getAndOperator() and getOrOperator(), are opposites ->
-	// TO
-	// // CHECK IF SET (POSSIBLE null VALUES)
-	// if (operator.getNotOperator() != null) {
-	// if (operator.getNotOperator().getAndOperator() != null)
-	// return true;
-	// if (operator.getNotOperator().getOrOperator() != null)
-	// return false;
-	// } else {
-	// if (operator.getAndOperator() != null)
-	// return true;
-	// if (operator.getOrOperator() != null)
-	// return false;
-	// }
-	// }
-	// Object lhsRes =
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// Object rhsRes =
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
-	// || (lhsRes instanceof Double && rhsRes instanceof Double)) {
-	// double lhs = Double.parseDouble(lhsRes.toString());
-	// double rhs = Double.parseDouble(rhsRes.toString());
-	// // System.out.print(lhs + " ?=? " + rhs);
-	// if (lhs < operator.getFactor() * rhs)
-	// return false;
-	// } else {
-	// HashSet<Object> lhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-	// getModel());
-	// HashSet<Object> rhsHS = (HashSet<Object>)
-	// getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-	// getModel());
-	// if (lhsHS.size() == rhsHS.size()) {
-	// List<Object> lhsObjs = new ArrayList<Object>();
-	// for (Object object : lhsHS) {
-	// if (object instanceof Double)
-	// lhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// List<Object> rhsObjs = new ArrayList<Object>();
-	// for (Object object : rhsHS) {
-	// if (object instanceof Double)
-	// rhsObjs.add((double) object);
-	// else
-	// return false;
-	// }
-	// Iterator<Object> lhsIterator = lhsObjs.iterator();
-	// Iterator<Object> rhsIterator = rhsObjs.iterator();
-	// while (lhsIterator.hasNext()) {
-	// Object appLhs = lhsIterator.next();
-	// Object appRhs = rhsIterator.next();
-	// if (((Double) appLhs).doubleValue() != operator.getFactor() * ((Double)
-	// appRhs).doubleValue())
-	// return false;
-	// }
-	// return true;
-	// }
-	// }
-	// return true;
-	// }
 
 	@SuppressWarnings("unchecked")
 	public boolean evaluateOperator(EqualOperator operator, Object contextualElement) throws ParserException {
 		if (operator.getLhs().getResolvingExpr() == null || operator.getLhs().getResolvingExpr().contentEquals("")
 				|| operator.getRhs().getResolvingExpr() == null
 				|| operator.getRhs().getResolvingExpr().contentEquals("")) {
-			// getNotOperator(), getAndOperator() and getOrOperator(), are opposites -> TO
-			// CHECK IF SET (POSSIBLE null VALUES)
 			if (operator.getNotOperator() != null) {
 				if (operator.getNotOperator().getAndOperator() != null)
 					return true;
@@ -1769,7 +1109,6 @@ public class Manager {
 					if (((Double) appLhs).doubleValue() != operator.getFactor() * ((Double) appRhs).doubleValue())
 						return false;
 				}
-				return true;
 			}
 		}
 		return true;
@@ -1859,7 +1198,6 @@ public class Manager {
 				}
 			}
 		}
-
 		return res;
 	}
 
@@ -1937,55 +1275,6 @@ public class Manager {
 		return res;
 	}
 
-//	public boolean guarantees(Operator op1, Operator op2) {
-//		if (op1 != null && op2 != null) {
-//			if (op1 != op2) {
-//				return op1.guarantees(op2);
-//			}
-//		}
-//		return false;
-//	}
-
-	/////// ANTIPATTERN DETECTION METHODS
-
-	// public static void completeAntipatternDetection(List<Antipattern>
-	// antipatterns, String umlModelUri)
-	// throws ParserException {
-	// if (antipatterns != null) {
-	// if (antipatterns.size() >= 0) {
-	// List<Element> components =
-	// Manager.getInstance(null).getModel().getNestedPackages().get(0)
-	// .getNestedPackages().get(0).allOwnedElements();
-	// System.out.println(
-	// "\n------------------------------------------ ANTIPATTERN DETECTION
-	// ------------------------------------------");
-	// for (Antipattern ap : antipatterns) {
-	// System.out.println("\n\t-------------------------------------- " +
-	// ap.getName()
-	// + " --------------------------------------");
-	//
-	// for (Element c : components) {
-	// if (c instanceof Component) {
-	// System.out.print("\n- Is " + ((Component) c).getName() + " a " + ap.getName()
-	// + " ? ---> ");
-	// System.out.println(" = " + Manager.evaluateOperator(
-	// (AndOperator) ap.getCompleteFormula().getRootOperator(), (Component) c));
-	// }
-	// }
-	// System.out.println(
-	// "\n\t--------------------------------------------------------------------------------------------------------");
-	// }
-	// System.out.println(
-	// "\n----------------------------------------------------------------------------------------------------------------");
-	//
-	// } else
-	// System.out.println("No antipatterns to detect");
-	// } else
-	// System.out.println("No antipatterns to detect");
-	// }
-
-	/////////////////////////
-
 	public SingleValuedParameter createSingleValueParameter(String expr) {
 		SingleValuedParameter singleValuedParameter = LogicalSpecificationFactory.eINSTANCE
 				.createSingleValuedParameter();
@@ -2005,13 +1294,6 @@ public class Manager {
 		multipleValuedParameter.setResolvingExpr(expr);
 		return multipleValuedParameter;
 	}
-
-	// public Refactoring createRefactoring() {
-	// Refactoring refactoring =
-	// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-	// refactoring.setName(Integer.toString(REFACTORING_COUNTER++));
-	// return refactoring;
-	// }
 
 	public ForAllOperator createForAllOperator(MultipleValuedParameter collection) {
 		ForAllOperator forAll = LogicalSpecificationFactory.eINSTANCE.createForAllOperator();

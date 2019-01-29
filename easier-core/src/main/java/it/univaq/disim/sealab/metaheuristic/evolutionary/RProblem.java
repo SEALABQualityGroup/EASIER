@@ -25,7 +25,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	protected int allowed_failures;
 	private Manager manager;
 	private Controller controller;
-
+	
 	protected final int NUM_VAR = 1;
 	protected final int NUM_OBJ = 3;
 	protected final int VARIABLE_INDEX = 0;
