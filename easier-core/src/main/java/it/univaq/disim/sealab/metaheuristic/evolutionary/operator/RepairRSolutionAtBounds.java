@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.metaheuristic.evolutionary;
+package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
 import org.uma.jmetal.util.JMetalException;
 

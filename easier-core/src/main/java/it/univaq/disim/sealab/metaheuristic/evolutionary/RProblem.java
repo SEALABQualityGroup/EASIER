@@ -18,7 +18,6 @@ import metamodel.mmaemilia.ArchitecturalInteraction;
 @SuppressWarnings("serial")
 public class RProblem extends AbstractGenericProblem<RSolution> {
 
-	// con final non funziona
 	protected final EObject model;
 	protected int length_of_refactorings;
 	protected int number_of_actions;
@@ -40,12 +39,12 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 		controller = ctrl;
 
-		String name = "P_" + controller.getProperties().getProperty("populationSize") + "_E_"
-				+ controller.getProperties().getProperty("maxEvaluations") + "_X_"
-				+ controller.getProperties().getProperty("p_crossover") + "_M_"
-				+ controller.getProperties().getProperty("p_mutation");
+//		String name = "P_" + controller.getProperties().getProperty("populationSize") + "_E_"
+//				+ controller.getProperties().getProperty("maxEvaluations") + "_X_"
+//				+ controller.getProperties().getProperty("p_crossover") + "_M_"
+//				+ controller.getProperties().getProperty("p_mutation");
 
-		this.setName(name);
+//		this.setName(name);
 		this.setNumberOfObjectives(NUM_OBJ);
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);

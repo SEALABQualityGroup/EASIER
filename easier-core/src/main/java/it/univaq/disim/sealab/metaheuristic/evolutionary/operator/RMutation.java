@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.metaheuristic.evolutionary;
+package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
 import java.rmi.UnexpectedException;
 
@@ -6,6 +6,10 @@ import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+
+import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 @SuppressWarnings("serial")
 public class RMutation implements MutationOperator<RSolution> {
