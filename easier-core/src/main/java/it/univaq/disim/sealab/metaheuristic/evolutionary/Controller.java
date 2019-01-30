@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
@@ -31,48 +30,30 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
-import org.uma.jmetal.algorithm.multiobjective.moead.MOEADBuilder;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
-import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
-import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
-import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.qualityindicator.impl.Epsilon;
-import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
-import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
-import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
-import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
-import org.uma.jmetal.qualityindicator.impl.Spread;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
-import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
 import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
-import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
-import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
-import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
@@ -80,8 +61,6 @@ import it.univaq.disim.sealab.metaheuristic.utils.CSVUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
 import it.univaq.from_aemilia_to_qn_plug_in.handlers.GeneratoreModelloAemilia;
-import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
-import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class Controller extends AbstractAlgorithmRunner {
@@ -96,10 +75,10 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	private Properties prop;
 
-	private ExecutorService executor;
+//	private ExecutorService executor;
 
 	private String basePath, sourceFolder;
-	private PerformanceQualityEvaluator perfQuality;
+//	private PerformanceQualityEvaluator perfQuality;
 
 	private int length, numberOfActions, maxEvaluations, populationSize, allowedFailures, independentRuns, numberOfPAs;
 
@@ -174,7 +153,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			this.numberOfPAs += sourceModelPAs.get(key).size();
 		}
 
-		this.problem = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
+//		this.problem = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
 
 		crossoverOperator = new RCrossover(crossoverProbability, this);
 		mutationOperator = new RMutation(mutationProbability, distribution_index);
@@ -250,7 +229,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		System.setOut(new PrintStream(new File(this.getLogFolder() + "output.log")));
 		System.setErr(new PrintStream(new File(this.getLogFolder() + "error.log")));
 
-		writePropertiesToCSV(getParetoFolder() + getProblem().getName() + "_properties.csv");
+//		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writePropertiesToCSV(getParetoFolder() + getProblem().getName() + "_properties.csv");
 
 		try {
 			handler = new FileHandler(this.getLogFolder() + "default.log", append);
@@ -282,7 +261,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		endingTime = Instant.now();
 		final Duration totalTime = Duration.between(startingTime, endingTime);
 
-		writeSolutionSetToCSV(population);
+		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(population);
 		saveParetoSolution(population);
 		generateAvailability();
 		cleanTmpFiles();
@@ -301,28 +280,31 @@ public class Controller extends AbstractAlgorithmRunner {
 		final int CORES = 1;
 
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		problemList.add(new ExperimentProblem<>(this.problem)); // experiment.tag=problem.getName()
+		RProblem p_BGCS = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
+		p_BGCS.setName("BGCS");
+		
+		problemList.add(new ExperimentProblem<>(p_BGCS));
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
-		String referenceFrontDirectory = getParetoFolder() + getProblem().getName() + File.separator + "referenceFront";
+		String referenceFrontDirectory = getParetoFolder() +  File.separator + "referenceFront";
 
-		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp_FTA")
+		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp")
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
 				.setExperimentBaseDirectory(referenceFrontDirectory).setOutputParetoFrontFileName("FUN")
 				.setOutputParetoSetFileName("VAR").setReferenceFrontDirectory(referenceFrontDirectory)
-				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
-						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
-						new InvertedGenerationalDistance<RSolution>(), new GeneralizedSpread<RSolution>(),
-						new InvertedGenerationalDistancePlus<RSolution>()))
+//				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
+//						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
+//						new InvertedGenerationalDistance<RSolution>(), new GeneralizedSpread<RSolution>(),
+//						new InvertedGenerationalDistancePlus<RSolution>()))
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
 			new ExecuteAlgorithms<>(experiment).run();
 			new GenerateReferenceParetoFront(experiment).run();
-			new ComputeQualityIndicators<>(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
+//			new ComputeQualityIndicators<>(experiment).run();
+//			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+//			new GenerateBoxplotsWithR<>(experiment).run();
+//			new GenerateLatexTablesWithStatistics(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -351,8 +333,7 @@ public class Controller extends AbstractAlgorithmRunner {
 			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
 
-//			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
-			customNSGABuilder.setMaxEvaluations(400);
+			customNSGABuilder.setMaxEvaluations(this.maxEvaluations);
 			customNSGABuilder.setPopulationSize(this.populationSize);
 			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
 
@@ -364,49 +345,49 @@ public class Controller extends AbstractAlgorithmRunner {
 			algorithms.add(exp);
 		}
 
-		for (int i = 0; i < problemList.size(); i++) {
-			@SuppressWarnings("unchecked")
-			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-//							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
-							.setMaxIterations(100)
-							.setPopulationSize(this.populationSize);
-
-			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
-			algorithm.setName("SPEA_2");
-			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
-			algorithms.add(exp);
-		}
+//		for (int i = 0; i < problemList.size(); i++) {
+//			@SuppressWarnings("unchecked")
+//			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
+//					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+//							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+////							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
+//							.setMaxIterations(100)
+//							.setPopulationSize(this.populationSize);
+//
+//			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
+//			algorithm.setName("SPEA_2");
+//			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+//					algorithm, problemList.get(i).getTag(), i);
+//			algorithms.add(exp);
+//		}
 		return algorithms;
 	}
 
-	private void writeResultsToFile(Duration totalTime, List<RSolution> population) {
-		try (FileWriter fw = new FileWriter(getParetoFolder() + "results.csv")) {
-			CSVUtils.writeLine(fw, Arrays.asList("Popul", "Evals", "PCross", "PMutat", "#Pareto", "#Crossover",
-					"#Mutation", "ExeTime", "OriginalPAs"));
-			List<String> line = new ArrayList<String>();
-			line.add(String.valueOf(populationSize));
-			line.add(String.valueOf(maxEvaluations));
-			line.add(String.valueOf(crossoverProbability));
-			line.add(String.valueOf(mutationProbability));
-			line.add(String.valueOf(population.size()));
-			line.add(String.valueOf(RSolution.XOverCounter));
-			line.add(String.valueOf(RSolution.MutationCounter));
-			line.add(totalTime.toString().replaceAll(",", "."));
-			line.add(String.valueOf(numberOfPAs));
-			CSVUtils.writeLine(fw, line);
-			for (String key : sourceModelPAs.keySet()) {
-				List<ArchitecturalInteraction> listOfContextElems = sourceModelPAs.get(key);
-				for (ArchitecturalInteraction ai : listOfContextElems) {
-					CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	private void writeResultsToFile(Duration totalTime, List<RSolution> population) {
+//		try (FileWriter fw = new FileWriter(getParetoFolder() + "results.csv")) {
+//			CSVUtils.writeLine(fw, Arrays.asList("Popul", "Evals", "PCross", "PMutat", "#Pareto", "#Crossover",
+//					"#Mutation", "ExeTime", "OriginalPAs"));
+//			List<String> line = new ArrayList<String>();
+//			line.add(String.valueOf(populationSize));
+//			line.add(String.valueOf(maxEvaluations));
+//			line.add(String.valueOf(crossoverProbability));
+//			line.add(String.valueOf(mutationProbability));
+//			line.add(String.valueOf(population.size()));
+//			line.add(String.valueOf(RSolution.XOverCounter));
+//			line.add(String.valueOf(RSolution.MutationCounter));
+//			line.add(totalTime.toString().replaceAll(",", "."));
+//			line.add(String.valueOf(numberOfPAs));
+//			CSVUtils.writeLine(fw, line);
+//			for (String key : sourceModelPAs.keySet()) {
+//				List<ArchitecturalInteraction> listOfContextElems = sourceModelPAs.get(key);
+//				for (ArchitecturalInteraction ai : listOfContextElems) {
+//					CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
+//				}
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public synchronized void generateAvailability() {
 		File availabilityDir = new File(availabilityFolder);
@@ -449,7 +430,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-		writeSolutionSetToCSV(paretoPop);
+		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
 		for (RSolution solution : paretoPop) {
 			File srcDir = new File(solution.getMmaemiliaFolderPath());
 			File destDir = new File(getParetoFolder() + solution.getName());
@@ -480,8 +461,8 @@ public class Controller extends AbstractAlgorithmRunner {
 			e.printStackTrace();
 		}
 
-		boolean isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString()
-				.indexOf("jdwp") >= 0;
+//		boolean isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString()
+//				.indexOf("jdwp") >= 0;
 
 		setTwoTowersKernelPath(prop.getProperty("ttKernel"));
 
@@ -623,9 +604,9 @@ public class Controller extends AbstractAlgorithmRunner {
 		return new PerformanceQualityEvaluator(manager.getOclManager());
 	}
 
-	public void setPerfQuality(PerformanceQualityEvaluator perfQuality) {
-		this.perfQuality = perfQuality;
-	}
+//	public void setPerfQuality(PerformanceQualityEvaluator perfQuality) {
+//		this.perfQuality = perfQuality;
+//	}
 
 	public String getRuleFilePath() {
 		return ruleFilePath;
@@ -651,142 +632,142 @@ public class Controller extends AbstractAlgorithmRunner {
 		this.problem = p;
 	}
 
-	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
-		logger_.info("Writing CSV");
-		try (FileWriter fw = new FileWriter(
-				new File(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv"), true)) {
-			List<String> line = new ArrayList<String>();
-			line.add("SolID");
-			line.add("PerQ");
-			line.add("#Changes");
-			line.add("#PAs");
-			for (int i = 0; i < numberOfActions; i++) {
-				line.add("ActionTarget");
-				line.add("FoC/Null");
-			}
-			CSVUtils.writeLine(fw, line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for (RSolution solution : population) {
-			writeSolutionToCSV(solution);
-			writeAnalyzableFile(solution);
-		}
-		logger_.info("Writing CSV done");
-	}
+//	public synchronized void writeSolutionSetToCSV(List<RSolution> population) {
+//		logger_.info("Writing CSV");
+//		try (FileWriter fw = new FileWriter(
+//				new File(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv"), true)) {
+//			List<String> line = new ArrayList<String>();
+//			line.add("SolID");
+//			line.add("PerQ");
+//			line.add("#Changes");
+//			line.add("#PAs");
+//			for (int i = 0; i < numberOfActions; i++) {
+//				line.add("ActionTarget");
+//				line.add("FoC/Null");
+//			}
+//			CSVUtils.writeLine(fw, line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		for (RSolution solution : population) {
+//			writeSolutionToCSV(solution);
+//			writeAnalyzableFile(solution);
+//		}
+//		logger_.info("Writing CSV done");
+//	}
 
-	private void writePropertiesToCSV(String csvFilePath) {
-		try (FileWriter fw = new FileWriter(new File(csvFilePath))) {
-			// resultFileWriter = new FileWriter(csvFilePath);
-			for (Object key : getProperties().keySet()) {
-				List<String> contents = new ArrayList<>();
-				contents.addAll(Arrays.asList(key.toString(), getProperties().getProperty(key.toString())));
-				writeToCSVFile(fw, contents);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	private void writePropertiesToCSV(String csvFilePath) {
+//		try (FileWriter fw = new FileWriter(new File(csvFilePath))) {
+//			// resultFileWriter = new FileWriter(csvFilePath);
+//			for (Object key : getProperties().keySet()) {
+//				List<String> contents = new ArrayList<>();
+//				contents.addAll(Arrays.asList(key.toString(), getProperties().getProperty(key.toString())));
+//				writeToCSVFile(fw, contents);
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	private void writeSolutionToCSV(RSolution solution) {
-		Refactoring ref = solution.getVariableValue(0).getRefactoring();
-		try (FileWriter fw = new FileWriter(new File(getParetoFolder() + getProblem().getName() + "_results.csv"),
-				true)) {
-			CSVUtils.writeLine(fw, Arrays.asList("#SOL:" + Integer.toString(solution.getName())));
-			CSVUtils.writeLine(fw, Arrays.asList("Parents", "Refactored", "Crossovered", "Mutated", "PerfQ", "#Changes",
-					"#Pas", "ExeTime"));
+//	private void writeSolutionToCSV(RSolution solution) {
+//		Refactoring ref = solution.getVariableValue(0).getRefactoring();
+//		try (FileWriter fw = new FileWriter(new File(getParetoFolder() + getProblem().getName() + "_results.csv"),
+//				true)) {
+//			CSVUtils.writeLine(fw, Arrays.asList("#SOL:" + Integer.toString(solution.getName())));
+//			CSVUtils.writeLine(fw, Arrays.asList("Parents", "Refactored", "Crossovered", "Mutated", "PerfQ", "#Changes",
+//					"#Pas", "ExeTime"));
+//
+//			List<String> line = new ArrayList<String>();
+//			String parents = "-,-";
+//			if (solution.getParents()[0] != null && solution.getParents()[1] != null) {
+//				parents = Integer.toString(solution.getParents()[0].getName()) + ", "
+//						+ Integer.toString(solution.getParents()[1].getName());
+//			}
+//			line.add(parents);
+//			line.add(Boolean.toString(solution.isRefactored()));
+//			line.add(Boolean.toString(solution.isCrossovered()));
+//			line.add(Boolean.toString(solution.isMutated()));
+//			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
+//			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
+//			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
+//			// line.add(solution.getElapsedTime().toString());
+//			CSVUtils.writeLine(fw, line);
+//			CSVUtils.writeLine(fw, Arrays.asList("ACTIONS"));
+//			CSVUtils.writeLine(fw, Arrays.asList("Type", "#Chang", "Target", "Factor"));
+//
+//			for (RefactoringAction action : ref.getActions()) {
+//				line = null;
+//				line = new ArrayList<String>();
+//				if (action.getName() == null)
+//					action.setName(action.getClass().getSimpleName());
+//
+//				String target = action instanceof AEmiliaConstChangesAction
+//						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
+//						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
+//				String factor = action instanceof AEmiliaConstChangesAction
+//						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
+//						: "NULL";
+//
+//				line = Arrays.asList(action.getName(), Double.toString(action.getNumOfChanges()), target, factor);
+//
+//				CSVUtils.writeLine(fw, line);
+//
+//			}
+//			CSVUtils.writeLine(fw, Arrays.asList("ANTIPATTERNS"));
+//			CSVUtils.writeLine(fw, Arrays.asList("Key", "ContextElem"));
+//
+//			Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.getMapOfPAs();
+//			try {
+//				for (String key : mapOfPAs.keySet()) {
+//					List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
+//					for (ArchitecturalInteraction ai : listOfContextElems) {
+//						CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
+//					}
+//				}
+//			} catch (NullPointerException e) {
+//				System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
+//				e.printStackTrace();
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-			List<String> line = new ArrayList<String>();
-			String parents = "-,-";
-			if (solution.getParents()[0] != null && solution.getParents()[1] != null) {
-				parents = Integer.toString(solution.getParents()[0].getName()) + ", "
-						+ Integer.toString(solution.getParents()[1].getName());
-			}
-			line.add(parents);
-			line.add(Boolean.toString(solution.isRefactored()));
-			line.add(Boolean.toString(solution.isCrossovered()));
-			line.add(Boolean.toString(solution.isMutated()));
-			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
-			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
-			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-			// line.add(solution.getElapsedTime().toString());
-			CSVUtils.writeLine(fw, line);
-			CSVUtils.writeLine(fw, Arrays.asList("ACTIONS"));
-			CSVUtils.writeLine(fw, Arrays.asList("Type", "#Chang", "Target", "Factor"));
+//	private void writeAnalyzableFile(final RSolution solution) {
+//		try (FileWriter analyzableCSV = new FileWriter(
+//				new File(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv"), true)) {
+//
+//			List<String> line = new ArrayList<String>();
+//			String solID = (maxEvaluations / populationSize) + "-" + populationSize + ":" + solution.getName();
+//			line.add(solID);
+//			line.add(String.valueOf(solution.getPerfQ()));
+//			line.add(String.valueOf(solution.getNumOfChanges()));
+//			line.add(String.valueOf(solution.getPAs()));
+//
+//			final Refactoring ref = solution.getVariableValue(0).getRefactoring();
+//
+//			for (RefactoringAction action : ref.getActions()) {
+//				if (action.getName() == null)
+//					action.setName(action.getClass().getSimpleName());
+//
+//				String target = action instanceof AEmiliaConstChangesAction
+//						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
+//						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
+//				String factor = action instanceof AEmiliaConstChangesAction
+//						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
+//						: "NULL";
+//				line.addAll(Arrays.asList(target, factor));
+//
+//			}
+//			CSVUtils.writeLine(analyzableCSV, line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-			for (RefactoringAction action : ref.getActions()) {
-				line = null;
-				line = new ArrayList<String>();
-				if (action.getName() == null)
-					action.setName(action.getClass().getSimpleName());
-
-				String target = action instanceof AEmiliaConstChangesAction
-						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
-						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
-				String factor = action instanceof AEmiliaConstChangesAction
-						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
-						: "NULL";
-
-				line = Arrays.asList(action.getName(), Double.toString(action.getNumOfChanges()), target, factor);
-
-				CSVUtils.writeLine(fw, line);
-
-			}
-			CSVUtils.writeLine(fw, Arrays.asList("ANTIPATTERNS"));
-			CSVUtils.writeLine(fw, Arrays.asList("Key", "ContextElem"));
-
-			Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.getMapOfPAs();
-			try {
-				for (String key : mapOfPAs.keySet()) {
-					List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
-					for (ArchitecturalInteraction ai : listOfContextElems) {
-						CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
-					}
-				}
-			} catch (NullPointerException e) {
-				System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void writeAnalyzableFile(final RSolution solution) {
-		try (FileWriter analyzableCSV = new FileWriter(
-				new File(getParetoFolder() + getProblem().getName() + "_analyzableResults.csv"), true)) {
-
-			List<String> line = new ArrayList<String>();
-			String solID = (maxEvaluations / populationSize) + "-" + populationSize + ":" + solution.getName();
-			line.add(solID);
-			line.add(String.valueOf(solution.getPerfQ()));
-			line.add(String.valueOf(solution.getNumOfChanges()));
-			line.add(String.valueOf(solution.getPAs()));
-
-			final Refactoring ref = solution.getVariableValue(0).getRefactoring();
-
-			for (RefactoringAction action : ref.getActions()) {
-				if (action.getName() == null)
-					action.setName(action.getClass().getSimpleName());
-
-				String target = action instanceof AEmiliaConstChangesAction
-						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
-						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
-				String factor = action instanceof AEmiliaConstChangesAction
-						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
-						: "NULL";
-				line.addAll(Arrays.asList(target, factor));
-
-			}
-			CSVUtils.writeLine(analyzableCSV, line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void writeToCSVFile(FileWriter writer, List<String> contents) throws IOException {
-		CSVUtils.writeLine(writer, contents);
-	}
+//	private void writeToCSVFile(FileWriter writer, List<String> contents) throws IOException {
+//		CSVUtils.writeLine(writer, contents);
+//	}
 
 	public String getOutputFolder() {
 		return outputFolder;
@@ -905,19 +886,19 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	public void simpleSolutionWriterToCSV(RSolution rSolution) {
-		try (FileWriter fw = new FileWriter(getParetoFolder() + getProblem().getName() + "_solutions.csv", true)) {
-			List<String> line = new ArrayList<String>();
-			line.add(String.valueOf(rSolution.getName()));
-			line.add(String.valueOf(rSolution.getPAs()));
-			line.add(String.valueOf(rSolution.getPerfQ()));
-			line.add(String.valueOf(rSolution.getNumOfChanges()));
-			CSVUtils.writeLine(fw, line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+//	public void simpleSolutionWriterToCSV(RSolution rSolution) {
+//		try (FileWriter fw = new FileWriter(getParetoFolder() + rSolution.getProblem().getName() + "_solutions.csv", true)) {
+//			List<String> line = new ArrayList<String>();
+//			line.add(String.valueOf(rSolution.getName()));
+//			line.add(String.valueOf(rSolution.getPAs()));
+//			line.add(String.valueOf(rSolution.getPerfQ()));
+//			line.add(String.valueOf(rSolution.getNumOfChanges()));
+//			CSVUtils.writeLine(fw, line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	public String getRuleTemplateFilePath() {
 		return ruleTemplateFilePath;
@@ -933,19 +914,19 @@ public class Controller extends AbstractAlgorithmRunner {
 		return -1;
 	}
 
-	public void awaitExecutor() {
-		if (executor != null) {
-			try {
-				executor.awaitTermination(10, TimeUnit.HOURS);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	public void awaitExecutor() {
+//		if (executor != null) {
+//			try {
+//				executor.awaitTermination(10, TimeUnit.HOURS);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
-	public void setExecutor(final ExecutorService exc) {
-		this.executor = exc;
-	}
+//	public void setExecutor(final ExecutorService exc) {
+//		this.executor = exc;
+//	}
 
 	public String getLogFolder() {
 		return logFolder;

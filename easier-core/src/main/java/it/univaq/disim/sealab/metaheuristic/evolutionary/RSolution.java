@@ -1,8 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.rmi.UnexpectedException;
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -24,20 +22,18 @@ import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
-import metamodel.mmaemilia.Expressions.IdentExpr;
 import metamodel.mmaemilia.Headers.ConstInit;
 
 @SuppressWarnings("serial")
@@ -286,7 +282,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		perfQ = evaluatePerformance();
 
-		controller.simpleSolutionWriterToCSV(this);
+		FileUtils.simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
 		Controller.logger_.info("Solution #" + getName() + " solved");
 	}

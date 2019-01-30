@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.metaheuristic.evolutionary;
+package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -8,10 +8,15 @@ import java.util.concurrent.TimeUnit;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.InvokeSolverRunnable;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
+
 @SuppressWarnings("serial")
 public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> {
 
-	private ExecutorService executor;
+//	private ExecutorService executor;
 
 	public RSolutionListEvaluator() {
 	}
@@ -19,7 +24,7 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 	@Override
 	public List<RSolution> evaluate(List<RSolution> solutionList, Problem<RSolution> problem) {
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
-		((RProblem) problem).getController().setExecutor(executor);
+//		((RProblem) problem).getController().setExecutor(executor);
 
 		for (RSolution sol : solutionList) {
 			sol.executeRefactoring();
@@ -48,7 +53,7 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 			sol.updateThresholds();
 			sol.countingPAsOnAemiliaModel();
 			sol.evaluatePerformance();
-			sol.getController().simpleSolutionWriterToCSV(sol);
+			FileUtils.simpleSolutionWriterToCSV(sol);
 			problem.evaluate(sol);
 		}
 
@@ -59,9 +64,9 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 	public void shutdown() {
 	}
 
-	public void setExecutor(ExecutorService exc) {
-		executor = exc;
-	}
+//	public void setExecutor(ExecutorService exc) {
+//		executor = exc;
+//	}
 
 	// for (RSolution refactoringSolution : solutionList) {
 	// if (executor != null) {
