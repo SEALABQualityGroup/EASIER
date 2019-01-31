@@ -11,7 +11,7 @@ import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
-public class RExecuteAlgorithms<S extends Solution, Result> {
+public class RExecuteAlgorithms<S extends Solution<?>, Result> {
 
 	  private Experiment<S, Result> experiment;
 	  private final Controller controller;
