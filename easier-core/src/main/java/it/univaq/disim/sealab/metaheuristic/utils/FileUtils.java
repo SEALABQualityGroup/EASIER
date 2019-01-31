@@ -1,14 +1,22 @@
 package it.univaq.disim.sealab.metaheuristic.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.uma.jmetal.algorithm.Algorithm;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
@@ -208,17 +216,28 @@ public class FileUtils {
 		}
 	}
 	
-//	public static void writePropertiesToCSV(String csvFilePath) {
-//		try (FileWriter fw = new FileWriter(new File(csvFilePath))) {
-//			// resultFileWriter = new FileWriter(csvFilePath);
-//			for (Object key : getProperties().keySet()) {
-//				List<String> contents = new ArrayList<>();
-//				contents.addAll(Arrays.asList(key.toString(), getProperties().getProperty(key.toString())));
-//				writeToCSVFile(fw, contents);
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void moveTmpFile(final String sourceFolder, final String destFolder) {
+		
+//		final Path source = Paths.get(sourceFolder);
+//		Path target = Paths.get(destFolder);
+		
+		new File(destFolder).mkdirs();
+		
+		try {
+//			java.nio.file.Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
+			org.apache.commons.io.FileUtils.copyDirectory(new File(sourceFolder), new File(destFolder));
+		} catch (IOException e) {
+			System.out.println("ERRORE");
+			e.printStackTrace();
+			return;
+		} 
+		
+		try {
+			org.apache.commons.io.FileUtils.cleanDirectory(new File(sourceFolder));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }
