@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -35,13 +34,23 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.qualityindicator.impl.Epsilon;
+import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
+import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
+import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
+import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
+import org.uma.jmetal.qualityindicator.impl.Spread;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
-import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
+import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
+import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
+import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
+import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
@@ -54,6 +63,8 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuil
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
@@ -282,10 +293,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		final int CORES = 1;
 
 		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
-		RProblem p_BGCS = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
-		p_BGCS.setName("BGCS");
+		RProblem p_FTA = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
+		p_FTA.setName("FTA");
+		
+//		RProblem p_BGCS = new RProblem(sourceBasePath, length, numberOfActions, allowedFailures, populationSize, this);
+//		p_BGCS.setName("BGCS");
 
-		problemList.add(new ExperimentProblem<>(p_BGCS));
+		problemList.add(new ExperimentProblem<>(p_FTA));
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
 
@@ -295,20 +309,18 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
 				.setExperimentBaseDirectory(referenceFrontDirectory).setOutputParetoFrontFileName("FUN")
 				.setOutputParetoSetFileName("VAR").setReferenceFrontDirectory(referenceFrontDirectory)
-				// .setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new
-				// Spread<RSolution>(),
-				// new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
-				// new InvertedGenerationalDistance<RSolution>(), new
-				// GeneralizedSpread<RSolution>(),
-				// new InvertedGenerationalDistancePlus<RSolution>()))
+				.setIndicatorList(Arrays.asList(new Epsilon<RSolution>(), new Spread<RSolution>(),
+						new GenerationalDistance<RSolution>(), new PISAHypervolume<RSolution>(),
+						new InvertedGenerationalDistance<RSolution>(), new GeneralizedSpread<RSolution>(),
+						new InvertedGenerationalDistancePlus<RSolution>()))
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
 			new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run();
 			new GenerateReferenceParetoFront(experiment).run();
-			// new ComputeQualityIndicators<>(experiment).run();
-			// new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			// new GenerateBoxplotsWithR<>(experiment).run();
-			// new GenerateLatexTablesWithStatistics(experiment).run();
+			new ComputeQualityIndicators<>(experiment).run();
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -349,28 +361,23 @@ public class Controller extends AbstractAlgorithmRunner {
 			algorithms.add(exp);
 		}
 
-		// for (int i = 0; i < problemList.size(); i++) {
-		// @SuppressWarnings("unchecked")
-		// CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>)
-		// new CustomSPEA2Builder(
-		// problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-		// .setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-		//// .setMaxIterations(Math.toIntExact(this.maxEvaluations /
-		// this.populationSize))
-		// .setMaxIterations(100)
-		// .setPopulationSize(this.populationSize);
-		//
-		// CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>)
-		// spea2Builder.build();
-		// algorithm.setName("SPEA_2");
-		// ExperimentAlgorithm<RSolution, List<RSolution>> exp = new
-		// CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-		// algorithm, problemList.get(i).getTag(), i);
-		// algorithms.add(exp);
-		// }
+		for (int i = 0; i < problemList.size(); i++) {
+			@SuppressWarnings("unchecked")
+			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+							.setMaxIterations(Math.toIntExact(this.maxEvaluations / this.populationSize))
+							.setMaxIterations(100).setPopulationSize(this.populationSize);
+
+			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
+			algorithm.setName("SPEA_2");
+			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+					algorithm, problemList.get(i).getTag(), i);
+			algorithms.add(exp);
+		}
 		return algorithms;
 	}
-	
+
 	public synchronized void generateAvailability() {
 		File availabilityDir = new File(availabilityFolder);
 		try {
@@ -800,9 +807,9 @@ public class Controller extends AbstractAlgorithmRunner {
 	public static boolean isSor() {
 		return SOR;
 	}
-	
+
 	public String getPermanentTmpFolder() {
-		
+
 		return getProperties().getProperty("permanentTmpFolder");
 	}
 

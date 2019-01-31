@@ -43,8 +43,6 @@ public class RExecuteAlgorithms<S extends Solution<?>, Result> {
 	    }
 	  }
 
-
-
 	  private void prepareOutputDirectory() {
 	    if (experimentDirectoryDoesNotExist()) {
 	      createExperimentDirectory() ;
