@@ -11,19 +11,19 @@ import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
-public class RExecuteAlgorithms<S extends Solution, Result> extends ExecuteAlgorithms<S, Result> {
+public class RExecuteAlgorithms<S extends Solution, Result> {
 
 	  private Experiment<S, Result> experiment;
 	  private final Controller controller;
 
 	  /** Constructor */
 	  public RExecuteAlgorithms(Experiment<S, Result> configuration, final Controller ctr) {
-		  super(configuration);
+//		  super(configuration);
 		  this.experiment = configuration;
 		  this.controller = ctr;
 	  }
 
-	  @Override
+//	  @Override
 	  public void run() {
 	    JMetalLogger.logger.info("ExecuteAlgorithms: Preparing output directory");
 	    prepareOutputDirectory() ;
