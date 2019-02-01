@@ -20,12 +20,10 @@ import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class FileUtils {
 
-	public FileUtils() {
-		// TODO Auto-generated constructor stub
-	}
+	public FileUtils() {}
 
 	/**
-	 * Recursively walk through subdirectories listing Aemilia files.
+	 * Recursively walk through sub-directories listing Aemilia files.
 	 * 
 	 * @param folder
 	 *            starting folder
@@ -130,7 +128,6 @@ public class FileUtils {
 			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
 			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
 			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-			// line.add(solution.getElapsedTime().toString());
 			CSVUtils.writeLine(fw, line);
 			CSVUtils.writeLine(fw, Arrays.asList("ACTIONS"));
 			CSVUtils.writeLine(fw, Arrays.asList("Type", "#Chang", "Target", "Factor"));
@@ -207,18 +204,5 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 	}
-	
-//	public static void writePropertiesToCSV(String csvFilePath) {
-//		try (FileWriter fw = new FileWriter(new File(csvFilePath))) {
-//			// resultFileWriter = new FileWriter(csvFilePath);
-//			for (Object key : getProperties().keySet()) {
-//				List<String> contents = new ArrayList<>();
-//				contents.addAll(Arrays.asList(key.toString(), getProperties().getProperty(key.toString())));
-//				writeToCSVFile(fw, contents);
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 }
