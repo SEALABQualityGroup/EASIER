@@ -217,21 +217,14 @@ public class FileUtils {
 	}
 	
 	public static void moveTmpFile(final String sourceFolder, final String destFolder) {
-		
-//		final Path source = Paths.get(sourceFolder);
-//		Path target = Paths.get(destFolder);
-		
 		new File(destFolder).mkdirs();
-		
 		try {
-//			java.nio.file.Files.copy(source, target, StandardCopyOption.COPY_ATTRIBUTES);
 			org.apache.commons.io.FileUtils.copyDirectory(new File(sourceFolder), new File(destFolder));
 		} catch (IOException e) {
-			System.out.println("ERRORE");
+			Controller.logger_.warning("[WARNING] Copy tmp folder failed!!!");
 			e.printStackTrace();
 			return;
 		} 
-		
 		try {
 			org.apache.commons.io.FileUtils.cleanDirectory(new File(sourceFolder));
 		} catch (IOException e) {
