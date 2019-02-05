@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.managers;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -8,11 +9,6 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
-import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.Node;
-import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.Package;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
@@ -38,15 +34,12 @@ import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.NotOperator;
 import logicalSpecification.Operator;
 import logicalSpecification.OrOperator;
-import logicalSpecification.Parameter;
 import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
-import logicalSpecification.RelationalOperator;
 import logicalSpecification.SingleValuedParameter;
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.Attachment;
 import metamodel.mmaemilia.InputInteraction;
-import metamodel.mmaemilia.Interaction;
 import metamodel.mmaemilia.OutputInteraction;
 
 public class Manager {
@@ -67,7 +60,7 @@ public class Manager {
 
 	public static int REFACTORING_COUNTER = 0;
 
-	public void init(String modelUri) {
+	public void init(Path modelUri) {
 		metamodelManager.init(modelUri);
 	}
 

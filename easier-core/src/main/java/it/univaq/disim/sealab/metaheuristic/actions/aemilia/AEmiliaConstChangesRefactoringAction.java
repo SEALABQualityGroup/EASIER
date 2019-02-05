@@ -64,7 +64,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		this.createPreCondition();
 		this.createPostCondition();
 
-		this.setNumOfChanges(sol.getController().getConstChangesWeight());
+		this.setNumOfChanges(sol.getController().getConfigurator().getConstChangesWeight());
 	}
 
 	private ConstInit getRandomConst(RSolution sol) {
@@ -82,7 +82,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		// listOfConsts.size() - 1);
 		// } while (listOfConsts.get(index).getName().contains("workload"));
 		// }
-		if (sol.getController().getWorkloadRange() == -1)
+		if (sol.getController().getConfigurator().getWorkloadRange() == -1)
 			return getRandomRate(sol);
 		else {
 			return listOfConsts.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1));
@@ -128,7 +128,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 				&& ((Special) sourceConstInit.getInitConstData()).getType() == SpecialType.RATE) {
 
 			if (sourceConstInit.getName().contains("workload")) {
-				newWorkload = manager.getController().getWorkloadRange();
+				newWorkload = manager.getController().getConfigurator().getWorkloadRange();
 				rep_val = String.format("%.4f", newWorkload);
 			} else { // (sourceConstInit.getName().contains("rate")) {
 				try {
@@ -143,9 +143,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 			((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
 		} else if (sourceConstInit.getInitConstData() instanceof Special
 				&& ((Special) sourceConstInit.getInitConstData()).getType() == SpecialType.WEIGHT) {
-			//
 			rep = ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
-			//
 			try {
 				number = format.parse(rep);
 				double val = number.doubleValue();

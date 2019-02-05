@@ -15,17 +15,13 @@ public class CustomNSGAIIBuilder<S extends Solution<?>> extends NSGAIIBuilder<S>
 	public CustomNSGAIIBuilder(Problem<S> problem, CrossoverOperator<S> crossoverOperator,
 			MutationOperator<S> mutationOperator) {
 		super(problem, crossoverOperator, mutationOperator);
-		
 	}
 	
+
 	public NSGAII<S> build() {
-//		NSGAII<S> algorithm = null ;
-		
 		NSGAII<S> algorithm = new CustomNSGAII<S>(this.getProblem(), this.getMaxIterations(), this.getPopulationSize(),
 				this.getCrossoverOperator(), this.getMutationOperator(), this.getSelectionOperator(), this.getSolutionListEvaluator());
 		
 	    return algorithm ;
 	  }
-
-
 }

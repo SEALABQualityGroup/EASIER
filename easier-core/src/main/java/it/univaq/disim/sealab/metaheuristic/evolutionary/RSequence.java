@@ -124,7 +124,6 @@ public class RSequence {
 			temporary_ref = null;
 			return false;
 		}
-
 	}
 
 	private boolean isFeasible(Refactoring tr) throws ParserException {
@@ -135,7 +134,7 @@ public class RSequence {
 				maxCloning++;
 			}
 		}
-		if (maxCloning > controller.getMaxCloning()) {
+		if (maxCloning > controller.getConfigurator().getMaxCloning()) {
 			Controller.logger_.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}

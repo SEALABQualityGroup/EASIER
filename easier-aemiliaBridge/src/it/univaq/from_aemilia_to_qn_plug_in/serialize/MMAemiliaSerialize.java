@@ -5,6 +5,7 @@ package it.univaq.from_aemilia_to_qn_plug_in.serialize;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1567,8 +1568,7 @@ public class MMAemiliaSerialize {
 			return null;
 	}
 
-	// ASE Serializza il modello e lo salve nel file
-	public void serialize_ase(ArchiType archiType, List<ElemTypeNorm> elemTypeNorms, String mmAemiliaPath)
+	public void serialize(ArchiType archiType, List<ElemTypeNorm> elemTypeNorms, Path mmAemiliaPath)
 			throws IOException {
 		AEmiliaSpecification aEmiliaSpecification = mmaemiliaFactory.eINSTANCE.createAEmiliaSpecification();
 		metamodel.mmaemilia.ArchiType archiType2 = mmaemiliaFactory.eINSTANCE.createArchiType();
@@ -1841,7 +1841,7 @@ public class MMAemiliaSerialize {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(mmaemiliaPackage.eINSTANCE.getNsURI(), mmaemiliaPackage.eINSTANCE);
 
-		URI fileURI = URI.createFileURI(new File(mmAemiliaPath).getAbsolutePath());
+		URI fileURI = URI.createFileURI(mmAemiliaPath.toString());
 		Resource asResource = resourceSet.createResource(fileURI);
 		asResource.getContents().add(aEmiliaSpecification);
 		asResource.save(null);

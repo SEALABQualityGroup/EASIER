@@ -22,7 +22,6 @@ public class CustomSPEA2Builder<S extends Solution<?>> extends SPEA2Builder<S>{
 		
 		SPEA2<S> algorithm = new CustomSPEA2<S>(this.getProblem(), this.getMaxIterations(), this.getPopulationSize(),
 				this.getCrossoverOperator(), this.getMutationOperator(), this.getSelectionOperator(), this.getSolutionListEvaluator());
-		
 	    return algorithm ;
 	  }
 

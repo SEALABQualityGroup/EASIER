@@ -2,6 +2,7 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.regex.Pattern;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.ttep.val.ValParser;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
@@ -33,8 +33,25 @@ public class PerformanceQualityEvaluator {
 		this.oclManager = oclManager;
 	}
 
+//	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
+//			Path ruleFilePath) {
+//		int numOfPAs = 0;
+//
+//		List<Object> contextualArchiInteractions = new ArrayList<Object>();
+//
+//		TreeIterator<EObject> eAllContents = model.eAllContents();
+//
+//		while (eAllContents.hasNext()) {
+//			EObject next = eAllContents.next();
+//			if (next instanceof ArchitecturalInteraction) { // && next.eContainer() instanceof ElemType) {
+//				contextualArchiInteractions.add(next);
+//			}
+//		}
+//		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
+//	}
+	
 	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
-			String ruleFilePath) {
+			Path ruleFilePath) {
 		int numOfPAs = 0;
 
 		List<Object> contextualArchiInteractions = new ArrayList<Object>();
@@ -49,6 +66,7 @@ public class PerformanceQualityEvaluator {
 		}
 		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
 	}
+	
 
 	/**
 	 * Returns the PerfQ value calculated as refactoredValFile over sourceValFile.
@@ -58,7 +76,7 @@ public class PerformanceQualityEvaluator {
 	 * @param refactoredValFile
 	 * @return the calculated quality
 	 */
-	public float performanceQuality(String sourceValFile, String refactoredValFile) {
+	public float performanceQuality(final Path sourceValFile, final Path refactoredValFile) {
 		setOriginalValSpec(sourceValFile);
 		setValSpecToBeEvaluated(refactoredValFile);
 		qualityMap.clear();
@@ -134,10 +152,10 @@ public class PerformanceQualityEvaluator {
 
 	}
 
-	private ValSpec getValSpec(String valFilePath) {
+	private ValSpec getValSpec(Path valFilePath) {
 		FileInputStream valFileInputStream = null;
 		try {
-			valFileInputStream = new FileInputStream(valFilePath);
+			valFileInputStream = new FileInputStream(valFilePath.toFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -175,7 +193,7 @@ public class PerformanceQualityEvaluator {
 		return valSpecToBeEvaluated;
 	}
 
-	public void setValSpecToBeEvaluated(String valSpecToBeEvaluatedPath) {
+	public void setValSpecToBeEvaluated(Path valSpecToBeEvaluatedPath) {
 		this.valSpecToBeEvaluated = getValSpec(valSpecToBeEvaluatedPath);
 	}
 
@@ -183,7 +201,7 @@ public class PerformanceQualityEvaluator {
 		return originalValSpec;
 	}
 
-	public void setOriginalValSpec(String originalValSpecPath) {
+	public void setOriginalValSpec(Path originalValSpecPath) {
 		this.originalValSpec = getValSpec(originalValSpecPath);
 	}
 

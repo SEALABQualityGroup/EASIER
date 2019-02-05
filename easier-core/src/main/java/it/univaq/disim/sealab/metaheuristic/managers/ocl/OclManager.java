@@ -3,6 +3,7 @@ package it.univaq.disim.sealab.metaheuristic.managers.ocl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,10 +53,10 @@ public abstract class OclManager {
 	}
 
 	@SuppressWarnings({ "resource", "finally", "unused" })
-	private FileInputStream openFile(String filePath) {
+	private FileInputStream openFile(Path filePath) {
 		FileInputStream in = null;
 		try {
-			in = new FileInputStream(filePath);
+			in = new FileInputStream(filePath.toFile());
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -92,7 +93,7 @@ public abstract class OclManager {
 
 	}
 
-	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(String filePath,
+	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(Path filePath,
 			List<Object> contextualElements) {
 		// EPackage.Registry registry = new EPackageRegistryImpl();
 		// registry.put(mmaemiliaPackage.eNS_URI, mmaemiliaPackage.eINSTANCE);
@@ -112,6 +113,7 @@ public abstract class OclManager {
 		// parse the contents as an OCL document
 		List<Constraint> apRules = getOclRulesFromFile(in);
 
+		/* It stores PA name and a list of contextual model elements that generate the PA*/
 		Map<String, List<ArchitecturalInteraction>> mapOfPerformanceAntipattern = new HashMap<>();
 
 		for (Constraint nextConstraint : apRules) {

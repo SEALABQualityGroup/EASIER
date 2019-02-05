@@ -38,7 +38,7 @@ public class RExecuteAlgorithms<S extends Solution<?>, Result> {
 	              .parallelStream()
 	              .forEach(algorithm -> algorithm.runAlgorithm(id, experiment)) ;
 	      
-	      FileUtils.moveTmpFile(controller.getTmpFolder(), controller.getPermanentTmpFolder());
+	      FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());
 	      
 	    }
 	  }

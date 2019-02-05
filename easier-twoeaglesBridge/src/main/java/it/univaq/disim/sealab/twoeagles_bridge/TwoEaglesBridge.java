@@ -4,13 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.ldap.ManageReferralControl;
-import javax.sound.midi.ControllerEventListener;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -41,20 +39,16 @@ import mapmeasurestoindices.IndexType;
 import mapmeasurestoindices.MapmeasurestoindicesFactory;
 import mapmeasurestoindices.MeasureMapping;
 import mapmeasurestoindices.RewMapping;
-
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.ArchitecturalInteraction;
-import metamodel.mmaemilia.Attachment;
 import metamodel.mmaemilia.Elem;
 import metamodel.mmaemilia.Behavior.Action;
-
 import restrizioniGenerali.RestrizioniGenException;
 import restrizioniGenerali.secondRelease.GeneraliRules2;
 import restrizioniIstanze.RestrizioniIstanzeException;
 import restrizioniIstanze.qnElemTypes.ElemTypeNorm;
 import restrizioniIstanze.restrizioniIstanze.RestrizioniIstanze;
-
 import scanSpecAEmilia.ScanException;
 import scanSpecAEmilia.scanExp.ScanExp;
 import specificheAEmilia.ArchiType;
@@ -65,11 +59,11 @@ import valutazione.scope.ScopeArchiType;
 
 public class TwoEaglesBridge {
 
-	private String twoTowersKernelPath;
+	private Path twoTowersKernelPath;
 	private final String STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION = "-s";
 	private final String STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR = "-t";
 
-	private AEmiliaSpecification aemiliaSpecification;
+	// private AEmiliaSpecification aemiliaSpecification;
 	private ResourceSet resourceSet;
 
 	private List<ExtractedIndex> extractedIndices = new ArrayList<ExtractedIndex>();
@@ -77,12 +71,12 @@ public class TwoEaglesBridge {
 	private Map<MeasureDef, List<ArchiElemInstance>> aeiMap = new HashMap<MeasureDef, List<ArchiElemInstance>>();
 	private Map<MeasureDef, List<metamodel.mmaemilia.Behavior.Action>> actionMapUnique = new HashMap<MeasureDef, List<metamodel.mmaemilia.Behavior.Action>>();
 
-	public void aemiliaModelGeneration(String aemiliaModelFilePath, String refactoreModelFilePath) {
+	public void aemiliaModelGeneration(Path aemiliaModelFilePath, Path refactoreModelFilePath) {
 
 		FileInputStream aemiliaFileInputStream = null;
 
 		try {
-			aemiliaFileInputStream = new FileInputStream(aemiliaModelFilePath);
+			aemiliaFileInputStream = new FileInputStream(aemiliaModelFilePath.toFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			// MetodiVari.stampaSuConsole(e2.getMessage());
@@ -113,7 +107,7 @@ public class TwoEaglesBridge {
 					List<ElemTypeNorm> elemTypeNormList = restrizioniIstanze.getElemTypeNormList();
 
 					MMAemiliaSerialize mmAemiliaSerialize = new MMAemiliaSerialize();
-					mmAemiliaSerialize.serialize_ase(archiType2, elemTypeNormList, refactoreModelFilePath);
+					mmAemiliaSerialize.serialize(archiType2, elemTypeNormList, refactoreModelFilePath);
 
 				} else {
 					ErrorMessage errorMessage = restrizioniIstanze.getErrorMessage();
@@ -137,29 +131,30 @@ public class TwoEaglesBridge {
 		}
 	}
 
-	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+	public void gaussianEliminationSRBMC(Path aemFilePath, Path rewFilePath, Path outputFilePath) {
 		try {
-			Process process = new ProcessBuilder(getTwoTowersKernelPath(),
-					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION, aemFilePath, rewFilePath,
-					outputFilePath).start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
-		try {
-			Process process = new ProcessBuilder(getTwoTowersKernelPath(),
-					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR, aemFilePath, rewFilePath,
-					outputFilePath).start();
+			Process process = new ProcessBuilder(getTwoTowersKernelPath().toString(),
+					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION, aemFilePath.toString(),
+					rewFilePath.toString(), outputFilePath.toString()).start();
 			process.waitFor();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void measuresToIndices(Resource rewmappingAsResource, RewMapping rewMapping, String rewFilePath) {
+	public void sorSRBMC(Path aemFilePath, Path rewFilePath, Path outputFilePath) {
+		try {
+			Process process = new ProcessBuilder(getTwoTowersKernelPath().toString(),
+					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR, aemFilePath.toString(), rewFilePath.toString(),
+					outputFilePath.toString()).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void measuresToIndices(Resource rewmappingAsResource, RewMapping rewMapping, Path rewFilePath,
+			final AEmiliaSpecification aemiliaSpecification) {
 		// String rewFilePath = AEMILIA_MANAGER.getRewFile();
 
 		// ASE support data structures
@@ -174,7 +169,7 @@ public class TwoEaglesBridge {
 		// si effettua la normalizzazione di rewSpec come fatto con le istanze di
 		// elementi architetturali, senza concatenazione del selettore pero'
 		// si serializza in ArchiType il metamodello AEmilia
-		metamodel.mmaemilia.ArchiType archiType = getAemiliaSpecification().getArchiTypeDecl();
+		metamodel.mmaemilia.ArchiType archiType = aemiliaSpecification.getArchiTypeDecl();
 		MMAemiliaToArchiType mmAemiliaToArchiType = new MMAemiliaToArchiType();
 		ArchiType archiTypeTransformed = null;
 		try {
@@ -239,7 +234,9 @@ public class TwoEaglesBridge {
 		createRewmappingFile(actionMap, aeiMap, measureDefs, rewmappingAsResource, rewMapping);
 	}
 
-	public void aemiliaModelUpdate(String aemFilePath, String rewmappingFilePath) {
+	@Deprecated
+	public void aemiliaModelUpdate(String aemFilePath, String rewmappingFilePath,
+			AEmiliaSpecification aemiliaSpecification) {
 
 		ValSpec aValSpec = getValSpec(aemFilePath);
 		// caricare il modello relativo a rewmapping
@@ -253,13 +250,13 @@ public class TwoEaglesBridge {
 		RewMapping rewMapping = (RewMapping) rewmappingResource.getContents().get(0);
 		// effettuare il mapping con gli elementi aemilia
 		List<MeasureValue> measures = aValSpec.getMeasures();
-		
+
 		for (MeasureValue measure : measures) {
 			String measureName = measure.getMeasure();
 			Expression measureSelector = measure.getSelector();
 			Float measureValue = measure.getValue();
 			List<MeasureMapping> measureMappings = rewMapping.getMappings();
-			
+
 			for (MeasureMapping measureMapping : measureMappings) {
 				String measureMappingName = measureMapping.getMeasureName();
 				List<AeiMeasure> aeiMeasures = measureMapping.getInstances();
@@ -357,7 +354,186 @@ public class TwoEaglesBridge {
 							}
 							for (ActionMeasure actionMeasure : actionMeasures) {
 								Action action = actionMeasure.getAction();
-								EList<ArchitecturalInteraction> archiInteractions = getAemiliaSpecification()
+								EList<ArchitecturalInteraction> archiInteractions = aemiliaSpecification
+										.getArchiTypeDecl().getAtDeclaration().getAiDecl();
+								for (ArchitecturalInteraction interaction : archiInteractions) {
+									if (interaction.getIs_A().getIntName().contains(action.getName())) {
+										IndexType indexType = actionMeasure.getIndex();
+										if (IndexType.RESPONSE_TIME.equals(indexType)) {
+											interaction.setResponseTime(measureValue);
+										}
+										if (IndexType.THROUGHPUT.equals(indexType)
+												&& measureName.contains("throughput")) {
+											interaction.setThroughput(measureValue);
+										}
+										if (IndexType.UTILIZATION.equals(indexType)
+												&& measureName.contains("utilization")) {
+											interaction.setUtilization(measureValue);
+										}
+									}
+								}
+								IndexType indexType = actionMeasure.getIndex();
+								if (IndexType.RESPONSE_TIME.equals(indexType)) {
+									action.setActResponseTime(measureValue);
+								}
+								if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+									action.setActThroughtput(measureValue);
+								}
+								if (IndexType.UTILIZATION.equals(indexType) && measureName.contains("utilization")) {
+									action.setActUtilization(measureValue);
+								}
+								try {
+									action.eResource().save(null);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							for (ArchiIntMeasure archiIntMeasure : archiIntMeasures) {
+								ArchitecturalInteraction architecturalInteraction = archiIntMeasure
+										.getArchiInteraction();
+								IndexType indexType = archiIntMeasure.getIndex();
+								if (IndexType.RESPONSE_TIME.equals(indexType)) {
+									architecturalInteraction.setResponseTime(measureValue);
+								}
+								if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+									architecturalInteraction.setThroughput(measureValue);
+								}
+								if (IndexType.UTILIZATION.equals(indexType) && measureName.contains("utilization")) {
+									architecturalInteraction.setUtilization(measureValue);
+								}
+								try {
+									architecturalInteraction.eResource().save(null);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void aemiliaModelUpdate(Path aemFilePath, Path rewmappingFilePath,
+			final AEmiliaSpecification aemiliaSpecification) {
+
+		ValSpec aValSpec = getValSpec(aemFilePath);
+		// caricare il modello relativo a rewmapping
+
+		// ResourceSet resourceSet = AEMILIA_MANAGER.getResourceSet();
+		// setResourceSet();
+
+		URI uri = URI.createFileURI(rewmappingFilePath.toString());
+		Resource rewmappingResource = getResourceSet().getResource(uri, true);
+
+		RewMapping rewMapping = (RewMapping) rewmappingResource.getContents().get(0);
+		// effettuare il mapping con gli elementi aemilia
+		List<MeasureValue> measures = aValSpec.getMeasures();
+
+		for (MeasureValue measure : measures) {
+			String measureName = measure.getMeasure();
+			Expression measureSelector = measure.getSelector();
+			Float measureValue = measure.getValue();
+			List<MeasureMapping> measureMappings = rewMapping.getMappings();
+
+			for (MeasureMapping measureMapping : measureMappings) {
+				String measureMappingName = measureMapping.getMeasureName();
+				List<AeiMeasure> aeiMeasures = measureMapping.getInstances();
+				List<ActionMeasure> actionMeasures = measureMapping.getActions();
+				List<ArchiIntMeasure> archiIntMeasures = measureMapping.getArchiInteractions();
+				metamodel.mmaemilia.Expressions.Expression measureMappingSelector = measureMapping.getSelector();
+				MMAemiliaToArchiType mmAemiliaToArchiType = new MMAemiliaToArchiType();
+				Expression expression4 = mmAemiliaToArchiType.getExpression(measureMappingSelector);
+				if (measureName.equals(measureMappingName)) {
+					if (measureSelector != null) {
+						if (expression4 != null) {
+							if (measureSelector.equals(expression4)) {
+								// aggiorno gli elementi aemilia
+								for (AeiMeasure aeiMeasure : aeiMeasures) {
+									ArchiElemInstance archiElemInstance = aeiMeasure.getAei();
+									IndexType indexType = aeiMeasure.getIndex();
+									// ASE HOT Aemilia non supporta il Response time?????
+									if (IndexType.RESPONSE_TIME.equals(indexType)) {
+										archiElemInstance.setResponseTime(measureValue);
+									}
+									if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+										archiElemInstance.setThroughput(measureValue);
+									}
+									if (IndexType.UTILIZATION.equals(indexType)
+											&& measureName.contains("utilization")) {
+										archiElemInstance.setUtilization(measureValue);
+									}
+									try {
+										archiElemInstance.eResource().save(null);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+								for (ActionMeasure actionMeasure : actionMeasures) {
+									Action action = actionMeasure.getAction();
+									IndexType indexType = actionMeasure.getIndex();
+									if (IndexType.RESPONSE_TIME.equals(indexType)) {
+										action.setActResponseTime(measureValue);
+									}
+									if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+										action.setActThroughtput(measureValue);
+									}
+									if (IndexType.UTILIZATION.equals(indexType)
+											&& measureName.contains("utilization")) {
+										action.setActUtilization(measureValue);
+									}
+									try {
+										action.eResource().save(null);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+								for (ArchiIntMeasure archiIntMeasure : archiIntMeasures) {
+									ArchitecturalInteraction architecturalInteraction = archiIntMeasure
+											.getArchiInteraction();
+									IndexType indexType = archiIntMeasure.getIndex();
+									if (IndexType.RESPONSE_TIME.equals(indexType)) {
+										architecturalInteraction.setResponseTime(measureValue);
+									}
+									if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+										architecturalInteraction.setThroughput(measureValue);
+									}
+									if (IndexType.UTILIZATION.equals(indexType)
+											&& measureName.contains("utilization")) {
+										architecturalInteraction.setUtilization(measureValue);
+									}
+									try {
+										architecturalInteraction.eResource().save(null);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+					} else {
+						if (expression4 == null) {
+							// aggiorno gli elementi aemilia
+							for (AeiMeasure aeiMeasure : aeiMeasures) {
+								ArchiElemInstance archiElemInstance = aeiMeasure.getAei();
+								IndexType indexType = aeiMeasure.getIndex();
+								if (IndexType.RESPONSE_TIME.equals(indexType)) {
+									archiElemInstance.setResponseTime(measureValue);
+								}
+								if (IndexType.THROUGHPUT.equals(indexType) && measureName.contains("throughput")) {
+									archiElemInstance.setThroughput(measureValue);
+								}
+								if (IndexType.UTILIZATION.equals(indexType) && measureName.contains("utilization")) {
+									archiElemInstance.setUtilization(measureValue);
+								}
+								try {
+									archiElemInstance.eResource().save(null);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							for (ActionMeasure actionMeasure : actionMeasures) {
+								Action action = actionMeasure.getAction();
+								EList<ArchitecturalInteraction> archiInteractions = aemiliaSpecification
 										.getArchiTypeDecl().getAtDeclaration().getAiDecl();
 								for (ArchitecturalInteraction interaction : archiInteractions) {
 									if (interaction.getIs_A().getIntName().contains(action.getName())) {
@@ -418,12 +594,33 @@ public class TwoEaglesBridge {
 	}
 
 	public ValSpec getValSpec(String valFilePath) {
-		
+
 		ValSpec valSpec = null;
-		
+
 		FileInputStream fileInputStream = null;
 		try {
 			fileInputStream = new FileInputStream(valFilePath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		ValParser valParser = new ValParser(fileInputStream);
+
+		try {
+			valSpec = valParser.ValSpec();
+		} catch (it.univaq.disim.sealab.ttep.val.ParseException e) {
+			e.printStackTrace();
+		}
+
+		return valSpec;
+	}
+
+	public ValSpec getValSpec(final Path valFilePath) {
+
+		ValSpec valSpec = null;
+
+		FileInputStream fileInputStream = null;
+		try {
+			fileInputStream = new FileInputStream(valFilePath.toFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -442,6 +639,26 @@ public class TwoEaglesBridge {
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(rewFilePath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		/*
+		 * inputStream -> InputStream of rew file
+		 */
+		RewParser rewParser = new RewParser(inputStream);
+		RewSpec rewSpec = null;
+		try {
+			rewSpec = rewParser.RewSpec();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return rewSpec;
+	}
+
+	public RewSpec getRewSpec(Path rewFilePath) {
+		InputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(rewFilePath.toFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -671,11 +888,11 @@ public class TwoEaglesBridge {
 		this.extractedIndices = extractedIndices;
 	}
 
-	public String getTwoTowersKernelPath() {
+	public Path getTwoTowersKernelPath() {
 		return twoTowersKernelPath;
 	}
 
-	public void setTwoTowersKernelPath(String twoTowersKernelPath) {
+	public void setTwoTowersKernelPath(Path twoTowersKernelPath) {
 		this.twoTowersKernelPath = twoTowersKernelPath;
 	}
 
@@ -687,11 +904,124 @@ public class TwoEaglesBridge {
 		this.resourceSet = resourceSet;
 	}
 
-	public AEmiliaSpecification getAemiliaSpecification() {
-		return aemiliaSpecification;
+	/*************************
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+
+	@Deprecated
+	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+		try {
+			Process process = new ProcessBuilder(getTwoTowersKernelPath().toString(),
+					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_GAUSSIAN_ELIMINATION, aemFilePath, rewFilePath,
+					outputFilePath).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void setAemiliaSpecification(AEmiliaSpecification aemiliaSpecification) {
-		this.aemiliaSpecification = aemiliaSpecification;
+	@Deprecated
+	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+		try {
+			Process process = new ProcessBuilder(getTwoTowersKernelPath().toString(),
+					STATIONARY_REWARD_BASED_MEASURE_CALCULATOR_SOR, aemFilePath, rewFilePath, outputFilePath).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
+
+	@Deprecated
+	public void measuresToIndices(Resource rewmappingAsResource, RewMapping rewMapping, String rewFilePath,
+			AEmiliaSpecification aemiliaSpecification) {
+		// String rewFilePath = AEMILIA_MANAGER.getRewFile();
+
+		// ASE support data structures
+
+		// aemiliaSpecification = (AEmiliaSpecification)
+		// aemiliaResource.getContents().get(0);
+		// aemiliaSpecification = (AEmiliaSpecification) ((AemiliaManager) Manager
+		// .getInstance(AemiliaManager.getInstance()).getMetamodelManager()).getResource().getContents().get(0);
+		// aemiliaSpecification = (AEmiliaSpecification)
+		// AEMILIA_MANAGER.getResource().getContents().get(0);
+
+		// si effettua la normalizzazione di rewSpec come fatto con le istanze di
+		// elementi architetturali, senza concatenazione del selettore pero'
+		// si serializza in ArchiType il metamodello AEmilia
+		metamodel.mmaemilia.ArchiType archiType = aemiliaSpecification.getArchiTypeDecl();
+		MMAemiliaToArchiType mmAemiliaToArchiType = new MMAemiliaToArchiType();
+		ArchiType archiTypeTransformed = null;
+		try {
+			archiTypeTransformed = mmAemiliaToArchiType.transform(archiType);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		// si normalizzano le misure secondo lo scope archiType
+		ScopeArchiType scopeArchiType = null;
+		try {
+			// per precondizione tale metodo non dovrebbe generare alcun errore
+			scopeArchiType = new ScopeArchiType(archiTypeTransformed, 0);
+		} catch (NormalizeException e) {
+			e.printStackTrace();
+			return;
+		}
+		NormalizeRew normalizeRew = new NormalizeRew(scopeArchiType, 0);
+		RewSpec rewSpecNormalized = null;
+		try {
+			rewSpecNormalized = normalizeRew.normalizeRew(getRewSpec(rewFilePath));
+		} catch (NormalizeException e) {
+			e.printStackTrace();
+			return;
+		}
+		List<MeasureDef> measureDefs = rewSpecNormalized.getMeasureDefs();
+		// per ogni definizione di misura
+		for (MeasureDef measureDef : measureDefs) {
+			ArrayList<ArchiElemInstance> archiElemInstances = new ArrayList<ArchiElemInstance>();
+			ArrayList<metamodel.mmaemilia.Behavior.Action> actions = new ArrayList<metamodel.mmaemilia.Behavior.Action>();
+			ArrayList<metamodel.mmaemilia.Behavior.Action> actionsUnique = new ArrayList<metamodel.mmaemilia.Behavior.Action>();
+			RewardStructure rewardStructure = measureDef.getRewardStructure();
+			List<RewardAssign> rewardAssigns = rewardStructure.getRewardAssigns();
+			// per ogni assign reward:
+			for (RewardAssign rewardAssign : rewardAssigns) {
+				String aei = rewardAssign.getAei();
+				String actionType = rewardAssign.getActionType();
+				Expression expression = rewardAssign.getSelector();
+				// si trova l'istanza di elemento architetturale aei + expression da archiType
+				Find find = new Find();
+				ArchiElemInstance archiElemInstance = find.getArchiElemInstance(archiType, aei,
+						(specificheAEmilia.Expression) expression);
+				// aggiungo all'istanza se none'gia' presente
+				if (!archiElemInstances.contains(archiElemInstance))
+					archiElemInstances.add(archiElemInstance);
+				List<metamodel.mmaemilia.Behavior.Action> actions2 = find.getActions(archiElemInstance, actionType);
+				metamodel.mmaemilia.Behavior.Action action = find.getActionUnique(archiElemInstance, actionType);
+				// si considerano gli indici delle action
+				// le action si aggiungono soltanto se non sono gia' stati aggiunti
+				for (metamodel.mmaemilia.Behavior.Action action2 : actions2) {
+					if (!actions.contains(action2))
+						actions.add(action2);
+				}
+				if (!actionsUnique.contains(action))
+					actionsUnique.add(action);
+			}
+			aeiMap.put(measureDef, archiElemInstances);
+			actionMap.put(measureDef, actions);
+			actionMapUnique.put(measureDef, actionsUnique);
+		}
+
+		createRewmappingFile(actionMap, aeiMap, measureDefs, rewmappingAsResource, rewMapping);
+	}
+
+	// public AEmiliaSpecification getAemiliaSpecification() {
+	// return aemiliaSpecification;
+	// }
+	//
+	// public void setAemiliaSpecification(AEmiliaSpecification
+	// aemiliaSpecification) {
+	// this.aemiliaSpecification = aemiliaSpecification;
+	// }
 }

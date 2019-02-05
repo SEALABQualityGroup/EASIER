@@ -1,19 +1,14 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.rmi.UnexpectedException;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.problem.impl.AbstractGenericProblem;
 
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
-import metamodel.mmaemilia.ArchitecturalInteraction;
 
 @SuppressWarnings("serial")
 public class RProblem extends AbstractGenericProblem<RSolution> {
@@ -25,6 +20,10 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	private Manager manager;
 	private Controller controller;
 	
+	private Path sourceFolderPath; 
+	private Path sourceValPath;
+	private Path sourceModelPath;
+	
 	protected final int NUM_VAR = 1;
 	protected final int NUM_OBJ = 3;
 	protected final int VARIABLE_INDEX = 0;
@@ -33,32 +32,30 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	protected final int SECOND_OBJ = 1;
 	protected final int THIRD_OBJ = 2;
 
-	private static int PROBLEM_COUNTER = 0;
-
-	public RProblem(String modelUri, int desired_length, int n, int a, int population, Controller ctrl) {
+	public RProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize, Controller ctrl) {
 
 		controller = ctrl;
 
-//		String name = "P_" + controller.getProperties().getProperty("populationSize") + "_E_"
-//				+ controller.getProperties().getProperty("maxEvaluations") + "_X_"
-//				+ controller.getProperties().getProperty("p_crossover") + "_M_"
-//				+ controller.getProperties().getProperty("p_mutation");
-
-//		this.setName(name);
 		this.setNumberOfObjectives(NUM_OBJ);
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 
 		this.manager = controller.getManager();
-		this.manager.getMetamodelManager().init(modelUri);
-		this.manager.getMetamodelManager().setModelUri(modelUri);
-		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel());
+//		this.manager.getMetamodelManager().init(modelUri);
+//		this.manager.getMetamodelManager().setModelUri(modelUri);
+		
+		this.sourceFolderPath = srcFolderPath;
+		this.sourceValPath = srcFolderPath.resolve("model.val");
+		this.sourceModelPath = srcFolderPath.resolve("model.mmaemilia");
+		
+		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
+		
 		assert (!this.model.equals(manager.getMetamodelManager().getModel()));
+		
 		this.length_of_refactorings = desired_length;
-		this.allowed_failures = a;
-
-		this.number_of_actions = n;
-
+		this.allowed_failures = allowedFailures;
+		this.number_of_actions = length;
+	
 	}
 
 	public EObject getModel() {
@@ -72,6 +69,8 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	public void setLength_of_refactorings(int length_of_refactorings) {
 		this.length_of_refactorings = length_of_refactorings;
 	}
+	
+	public Path getSourceValPath() { return sourceValPath; }
 
 	@Override
 	/**
@@ -82,9 +81,6 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	 * 
 	 */
 	public void evaluate(RSolution solution) {
-//		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-		
-//		solution.resolve(metamodelManager);
 
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
 			if (i == FIRST_OBJ) {
@@ -126,11 +122,11 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 	}
 
-	public void resetModel() {
-		manager.getMetamodelManager().unloadModelResource();
-
-		manager.getMetamodelManager().init(manager.getMetamodelManager().getModelUri());
-	}
+//	public void resetModel() {
+//		manager.getMetamodelManager().unloadModelResource();
+//
+//		manager.getMetamodelManager().init(manager.getMetamodelManager().getModelUri());
+//	}
 
 	public Manager getManager() {
 		return manager;
@@ -142,5 +138,42 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 
 	public Controller getController() {
 		return controller;
+	}
+	
+//	@Deprecated
+//	public RProblem(String modelUri, int desired_length, int n, int a, int population, Controller ctrl) {
+//
+//		controller = ctrl;
+//
+////		String name = "P_" + controller.getProperties().getProperty("populationSize") + "_E_"
+////				+ controller.getProperties().getProperty("maxEvaluations") + "_X_"
+////				+ controller.getProperties().getProperty("p_crossover") + "_M_"
+////				+ controller.getProperties().getProperty("p_mutation");
+//
+////		this.setName(name);
+//		this.setNumberOfObjectives(NUM_OBJ);
+//		this.setNumberOfConstraints(NUM_CON);
+//		this.setNumberOfVariables(NUM_VAR);
+//
+//		this.manager = controller.getManager();
+//		this.manager.getMetamodelManager().init(modelUri);
+//		this.manager.getMetamodelManager().setModelUri(modelUri);
+//		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel());
+//		assert (!this.model.equals(manager.getMetamodelManager().getModel()));
+//		this.length_of_refactorings = desired_length;
+//		this.allowed_failures = a;
+//
+//		this.number_of_actions = n;
+//	
+//	}
+
+	public Path getSourceModelPath() {
+		return sourceFolderPath.resolve("model.mmaemilia");
+	}
+	
+	public Path getSourceRewFilePath() { return sourceFolderPath.resolve("model.rew"); }
+
+	public void setSourceModelFolderPath(Path sourceModelPath) {
+		this.sourceFolderPath = sourceModelPath;
 	}
 }
