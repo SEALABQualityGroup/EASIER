@@ -102,8 +102,9 @@ public class Launcher {
 		
 		FactoryBuilder<RSolution> factory = new FactoryBuilder<>();
 		for (String qI : config.getQualityIndicators()) {
-			if(factory.createQualityIndicators(qI) != null)
-				qIndicators.add(factory.createQualityIndicators(qI));
+			GenericIndicator<RSolution> ind = factory.createQualityIndicators(qI);
+			if( ind != null)
+				qIndicators.add(ind);
 		}
 		
 		ctr.runExperiment(rProblems, qIndicators);

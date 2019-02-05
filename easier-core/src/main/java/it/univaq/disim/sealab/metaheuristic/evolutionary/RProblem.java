@@ -17,13 +17,6 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	protected int length_of_refactorings;
 	protected int number_of_actions;
 	protected int allowed_failures;
-	private Manager manager;
-	private Controller controller;
-	
-	private Path sourceFolderPath; 
-	private Path sourceValPath;
-	private Path sourceModelPath;
-	
 	protected final int NUM_VAR = 1;
 	protected final int NUM_OBJ = 3;
 	protected final int VARIABLE_INDEX = 0;
@@ -31,6 +24,16 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	protected final int FIRST_OBJ = 0;
 	protected final int SECOND_OBJ = 1;
 	protected final int THIRD_OBJ = 2;
+	
+	private Manager manager;
+	private Controller controller;
+	
+	private Path sourceFolderPath; 
+	private Path sourceValPath;
+	private Path sourceModelPath;
+	
+	private int maxCloning = 3;
+	private double cloningWeight = 1.5;
 
 	public RProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize, Controller ctrl) {
 
@@ -176,4 +179,13 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 	public void setSourceModelFolderPath(Path sourceModelPath) {
 		this.sourceFolderPath = sourceModelPath;
 	}
+	
+	public int getMaxCloning() { return maxCloning; }
+	public RProblem setMaxCloning(final int mc) { maxCloning=mc; return this;}
+	public RProblem setCloningWeight(final double cw) { cloningWeight=cw; return this;}
+	
+	public int getCloningWeight() { return maxCloning; }
+	
+	@Override
+	public String toString() { return this.getName(); }
 }

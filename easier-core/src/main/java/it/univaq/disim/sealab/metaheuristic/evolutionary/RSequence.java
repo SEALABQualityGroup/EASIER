@@ -134,7 +134,7 @@ public class RSequence {
 				maxCloning++;
 			}
 		}
-		if (maxCloning > controller.getConfigurator().getMaxCloning()) {
+		if (maxCloning > solution.getProblem().getMaxCloning()) {
 			Controller.logger_.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}

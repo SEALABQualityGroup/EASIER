@@ -65,7 +65,7 @@ public class FactoryBuilder<S extends Solution<?>> {
 		
 		
 		try {
-			qualityIndicatorsMap.get(qI).newInstance();
+			return (GenericIndicator<RSolution>) qualityIndicatorsMap.get(qI).newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			System.out.println("[ERROR]");

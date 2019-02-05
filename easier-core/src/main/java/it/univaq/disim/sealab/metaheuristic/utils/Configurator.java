@@ -3,6 +3,7 @@ package it.univaq.disim.sealab.metaheuristic.utils;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.beust.jcommander.Parameter;
@@ -31,10 +32,10 @@ public class Configurator {
 	private String paretoFront;
 	
 	@Parameter(names = {"--maxCloning"}, description = "Set the max number of clones within a sequence")
-	private int maxCloning = 3;
+	private List<Integer> maxCloning = Arrays.asList(3);
 	
 	@Parameter(names = {"--cloningWeight"}, description = "Set the architectural distance weight for a clone action")
-	private double cloningWeight = 1.5;
+	private List<Double> cloningWeight = Arrays.asList(1.5);
 	
 	@Parameter(names = {"--constChangesWeight"}, description = "Set the architectural distance weight for a const change action")
 	private double constChangesWeight=1;
@@ -64,7 +65,7 @@ public class Configurator {
 	private double distributionIndex=20;
 	
 	@Parameter(names = {"-l", "--sequenceLength"}, description = "Set the length of a sequence")
-	private int length = 4;
+	private List<Integer> length = Arrays.asList(4);
 	
 	@Parameter(names = {"-af", "--allowedFaiulures"}, description = "Set the maximunm number of failures")
 	private int aw = 1000;
@@ -106,7 +107,7 @@ public class Configurator {
 	
 	public int getAllowedFailures() { return aw; }
 	
-	public int getLength() { return length; }
+	public List<Integer> getLength() { return length; }
 	
 	public double getXoverProbabiliy() { return xover; }
 
@@ -122,9 +123,9 @@ public class Configurator {
 	
 	public double getConstChangesWeight() { return constChangesWeight; }
 	
-	public double getCloningWeight() { return cloningWeight; }
+	public List<Double> getCloningWeight() { return cloningWeight; }
 	
-	public int getMaxCloning() { return maxCloning; }
+	public List<Integer> getMaxCloning() { return maxCloning; }
 	
 	public boolean getExperiment() { return experiment; }
 	

@@ -251,16 +251,29 @@ public class Controller extends AbstractAlgorithmRunner {
 		List<RProblem> rProblems = new ArrayList<>();
 
 		for (SourceModel src : sourceModels) {
-			RProblem p = new RProblem(src.getSourceFolder(), configurator.getLength(), configurator.getActions(),
-					configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
-			p.setName(src.getName());
-			rProblems.add(p);
+			// String pName = src.getName();
+			for (Integer l : configurator.getLength()) {
+				// pName += "_Length_" + String.valueOf(l);
+				for (Double w : configurator.getCloningWeight()) {
+					// pName += "_CloningWeight_" + String.valueOf(w);
+					for (Integer mc : configurator.getMaxCloning()) {
+						if (mc == -1)
+							mc = l; // whether mc is -1 then it is set to chromosome length
+						String pName = src.getName() + "_Length_" + String.valueOf(l) 
+								+ "_CloningWeight_" + String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+						RProblem p = new RProblem(src.getSourceFolder(), l, configurator.getActions(),
+								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
+						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
+						rProblems.add(p);
+					}
+				}
+			}
 		}
-
 		return rProblems;
 	}
 
-	public void runExperiment(final List<RProblem> rProblems, List<GenericIndicator<RSolution>> qualityIndicators) {
+	public void runExperiment(final List<RProblem> rProblems,
+			final List<GenericIndicator<RSolution>> qualityIndicators) {
 		final int INDEPENDENT_RUNS = configurator.getIndependetRuns(); // should be 31 or 51
 		final int CORES = 1;
 
@@ -276,8 +289,7 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
 				.setExperimentBaseDirectory(referenceFrontDirectory.toString())
 				.setReferenceFrontDirectory(referenceFrontDirectory.toString()).setOutputParetoFrontFileName("FUN")
-				.setOutputParetoSetFileName("VAR")
-				.setIndicatorList(qualityIndicators)
+				.setOutputParetoSetFileName("VAR").setIndicatorList(qualityIndicators)
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
 			new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run();
@@ -326,21 +338,25 @@ public class Controller extends AbstractAlgorithmRunner {
 			algorithms.add(exp);
 		}
 
-		for (int i = 0; i < problemList.size(); i++) {
-			@SuppressWarnings("unchecked")
-			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-							.setMaxIterations(
-									Math.toIntExact(configurator.getMaxEvaluation() / configurator.getPopulationSize()))
-							.setPopulationSize(configurator.getPopulationSize());
-
-			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
-			algorithm.setName("SPEA_2");
-			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
-			algorithms.add(exp);
-		}
+		// for (int i = 0; i < problemList.size(); i++) {
+		// @SuppressWarnings("unchecked")
+		// CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>)
+		// new CustomSPEA2Builder(
+		// problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+		// .setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+		// .setMaxIterations(
+		// Math.toIntExact(configurator.getMaxEvaluation() /
+		// configurator.getPopulationSize()))
+		// .setPopulationSize(configurator.getPopulationSize());
+		//
+		// CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>)
+		// spea2Builder.build();
+		// algorithm.setName("SPEA_2");
+		// ExperimentAlgorithm<RSolution, List<RSolution>> exp = new
+		// CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+		// algorithm, problemList.get(i).getTag(), i);
+		// algorithms.add(exp);
+		// }
 		return algorithms;
 	}
 
