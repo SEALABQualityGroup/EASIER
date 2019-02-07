@@ -1,12 +1,17 @@
 package it.univaq.disim.sealab.metaheuristic.managers;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.math3.linear.Array2DRowFieldMatrix;
+import org.eclipse.emf.common.command.AbortExecutionException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -17,6 +22,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.SourceModel;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import logicalSpecification.Action;
@@ -24,11 +30,15 @@ import metamodel.mmaemilia.AEmiliaSpecification;
 
 public abstract class MetamodelManager {
 
-	protected String modelUri;
+	protected Path modelUri;
 	protected OclManager oclManager;
 	protected OclStringManager oclStringManager;
 	protected Manager manager;
 	protected Controller controller;
+
+	/* Source models */
+	protected List<Path> sourceModelsPath = new ArrayList<>();
+	protected List<SourceModel> sourceModels = new ArrayList();
 
 	// protected String modelPath;
 
@@ -41,9 +51,11 @@ public abstract class MetamodelManager {
 
 	private Map<UUID, ResourceSet> resourceSetMap = new HashMap<>();
 
-	public abstract void init(String modelUri);
+	public abstract void init(Path modelUri);
 
 	public abstract EObject getModel();
+
+	public abstract EObject getModel(final Path sourcePath);
 
 	public abstract void setModel(EObject model);
 
@@ -55,11 +67,11 @@ public abstract class MetamodelManager {
 		return resource;
 	}
 
-	public String getModelUri() {
+	public Path getModelUri() {
 		return modelUri;
 	}
 
-	public void setModelUri(String modelUri) {
+	public void setModelUri(Path modelUri) {
 		this.modelUri = modelUri;
 	}
 
@@ -76,6 +88,7 @@ public abstract class MetamodelManager {
 	public void setOclStringManager(OclStringManager oclStringManager) {
 		this.oclStringManager = oclStringManager;
 	}
+
 	public void unloadModelResource() {
 		if (getResource() != null) { // unload previous resources if existing
 			// unload every resource in the resourceSet including profiles
@@ -89,7 +102,7 @@ public abstract class MetamodelManager {
 	}
 
 	public void unloadModelResource(RSolution solution) {
-		assert(solution.getResources().size()==1);
+		assert (solution.getResources().size() == 1);
 		for (Iterator<Resource> i = solution.getResources().iterator(); i.hasNext();) {
 			Resource current = (Resource) i.next();
 			current.unload();
@@ -108,7 +121,7 @@ public abstract class MetamodelManager {
 			return false;
 		}
 	}
-	
+
 	public boolean saveModel(Resource modelToSave) {
 		try {
 			modelToSave.save(null);
@@ -152,16 +165,16 @@ public abstract class MetamodelManager {
 		// unloadModelResource();
 		// init(getModelUri());
 	}
-	
+
 	public void save(RSolution solution) {
 		try {
-			if(solution.getResources() == null) {
+			if (solution.getResources() == null) {
 				Controller.logger_.warning("RSolution doesn't have resources");
 			}
-			assert(solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
-			
+			assert (solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
+
 			solution.getResources().get(0).save(null);
-			
+
 		} catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
@@ -185,28 +198,37 @@ public abstract class MetamodelManager {
 		this.resourceSet = set;
 	}
 
-	public void setRefactoredModelBasePath(String basePath) {
-		setREFACTORED_MODEL_BASE_PATH(basePath);
-	}
+//	public void setRefactoredModelBasePath(String basePath) {
+//		setREFACTORED_MODEL_BASE_PATH(basePath);
+//	}
+//
+//	public String getRefactoredModelBasePath() {
+//		return getREFACTORED_MODEL_BASE_PATH();
+//	}
+//
+//	public String getREFACTORED_MODEL_BASE_PATH() {
+//		return REFACTORED_MODEL_BASE_PATH;
+//	}
+//
+//	public void setREFACTORED_MODEL_BASE_PATH(String rEFACTORED_MODEL_BASE_PATH) {
+//		REFACTORED_MODEL_BASE_PATH = rEFACTORED_MODEL_BASE_PATH;
+//	}
 
-	public String getRefactoredModelBasePath() {
-		return getREFACTORED_MODEL_BASE_PATH();
+	public void setSourceModelsPath(final List<Path> modelsPath) {
+		modelsPath.forEach(model -> sourceModelsPath.add(model.resolve("model" + getMetamodelFileExtension())));
 	}
-
-	public String getREFACTORED_MODEL_BASE_PATH() {
-		return REFACTORED_MODEL_BASE_PATH;
-	}
-
-	public void setREFACTORED_MODEL_BASE_PATH(String rEFACTORED_MODEL_BASE_PATH) {
-		REFACTORED_MODEL_BASE_PATH = rEFACTORED_MODEL_BASE_PATH;
+	
+	public void setSourceModels(final List<SourceModel> models) {
+		sourceModels.addAll(models);
 	}
 
 	public abstract Action getRandomAction(int n) throws UnexpectedException;
+
 	public abstract RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException;
 
 	public abstract void packageRegistering();
 
-	public void createNewResourceSet() {
+	public abstract void createNewResourceSet();
 
-	}
+	public abstract void refreshModel(Path sourceModelPath);
 }

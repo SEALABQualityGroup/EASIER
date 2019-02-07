@@ -1,6 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.managers.uml;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -255,7 +256,7 @@ public class UMLManager extends MetamodelManager {
 		// set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 		// UMLResource.Factory.INSTANCE);
 
-		Resource resource = getResourceSet().getResource(manager.string2FileUri(getModelUri()), true);
+		Resource resource = getResourceSet().getResource(manager.string2FileUri(getModelUri().toString()), true);
 		return resource;
 	}
 
@@ -325,12 +326,12 @@ public class UMLManager extends MetamodelManager {
 				UMLResource.Factory.INSTANCE);
 	}
 
-	public void init(String modelUri) {
+	public void init(Path modelUri) {
 		setModelUri(modelUri);
 		packageRegistering();
 		getOclManager().inizialize(getResourceSet());
 		setUmlResource((UMLResource) getResourceSet()
-				.getResource(manager.string2FileUri(getModelUri()), true));
+				.getResource(manager.string2FileUri(getModelUri().toString()), true));
 		model = (Model) EcoreUtil.getObjectByType(getUmlResource().getContents(), UMLPackage.Literals.MODEL);
 	}
 
@@ -535,5 +536,23 @@ public class UMLManager extends MetamodelManager {
 	public RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public EObject getModel(Path sourcePath) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void createNewResourceSet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshModel(Path sourceModelPath) {
+		// TODO Auto-generated method stub
+		
 	}
 }

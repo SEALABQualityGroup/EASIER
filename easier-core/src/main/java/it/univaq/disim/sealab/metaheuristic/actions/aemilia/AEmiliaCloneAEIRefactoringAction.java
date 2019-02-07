@@ -64,7 +64,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 			}
 			this.setName("AEmiliaCloneAEIAction_" + sourceAEI.getInstanceName());
 			this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
-			this.setNumOfChanges(sol.getController().getCloningWeight());
+			this.setNumOfChanges(sol.getProblem().getCloningWeight());
 			this.setParameters();
 			this.createPreCondition();
 			this.createPostCondition();

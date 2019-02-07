@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import org.apache.commons.text.StringSubstitutor;
 import org.eclipse.emf.common.util.EList;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
 import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
@@ -27,23 +27,36 @@ import metamodel.mmaemilia.Headers.ConstInit;
 
 public class ThresholdUtils {
 
-	public static void uptodateSingleValueThresholds(String detestinationFolder, String mmaemiliaFilePath,
-			String valFilePath, AemiliaManager metamodelManager, Controller controller) {
+	
+	public static void uptodateSingleValueThresholds(Path detestinationFolder, Path mmaemiliaFilePath,
+			Path valFilePath, AemiliaManager metamodelManager, Controller controller) {
 
 		// Controller controller = Manager.getInstance(null).getController();
 		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
 		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
 
-		createNewOclFile(controller.getRuleTemplateFilePath(), detestinationFolder, aemiliaModel, valSpec);
+		createNewOclFile(controller.getConfigurator().getOclTemplate(), detestinationFolder, aemiliaModel, valSpec);
 
 	}
+	
+//	@Deprecated
+//	public static void uptodateSingleValueThresholds(String detestinationFolder, String mmaemiliaFilePath,
+//			String valFilePath, AemiliaManager metamodelManager, Controller controller) {
+//
+//		// Controller controller = Manager.getInstance(null).getController();
+//		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
+//		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
+//
+//		createNewOclFile(controller.getRuleTemplateFilePath(), detestinationFolder, aemiliaModel, valSpec);
+//
+//	}
 
 	private static String extractingInstaceName(String measure) {
 		String instanceName = measure.substring(0, measure.indexOf("_"));
 		return instanceName;
 	}
 
-	private static void createNewOclFile(String ruleTemplateFilePath, String pathToSave,
+	private static void createNewOclFile(Path ruleTemplateFilePath, Path pathToSave,
 			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
 		String templateString;
 		Map<String, String> valuesMap = new HashMap<String, String>();
@@ -61,13 +74,13 @@ public class ThresholdUtils {
 			StringSubstitutor sub = new StringSubstitutor(valuesMap);
 			String resolvedString = sub.replace(templateString);
 
-			String newRuleFilePath = pathToSave + "detectionSingleValuePA.ocl";
+			Path newRuleFilePath = Paths.get(pathToSave.toString(), "detectionSingleValuePA.ocl");
 
-			File f = new File(newRuleFilePath);
+			File f = newRuleFilePath.toFile();
 			f.getParentFile().mkdirs();
 			f.createNewFile();
 
-			PrintWriter out = new PrintWriter(newRuleFilePath);
+			PrintWriter out = new PrintWriter(newRuleFilePath.toFile());
 			out.print(resolvedString);
 			out.close();
 
@@ -76,6 +89,41 @@ public class ThresholdUtils {
 			e.printStackTrace();
 		}
 	}
+	
+//	@Deprecated
+//	private static void createNewOclFile(String ruleTemplateFilePath, String pathToSave,
+//			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
+//		String templateString;
+//		Map<String, String> valuesMap = new HashMap<String, String>();
+//		// Pipe and Filter
+//		float serviceThLB = calculateServiceThLB(valSpec);
+//		valuesMap.put("serviceThLB", Float.toString(serviceThLB));
+//		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
+//
+//		// Extensive Processing
+//		valuesMap.put("respTimeUB", Float.toString(calculateRespTimeUP()));
+//		valuesMap.put("opResDemLB", Float.toString(calculateOpResDemLB()));
+//		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
+//		try {
+//			templateString = readFile(ruleTemplateFilePath, Charset.defaultCharset());
+//			StringSubstitutor sub = new StringSubstitutor(valuesMap);
+//			String resolvedString = sub.replace(templateString);
+//
+//			String newRuleFilePath = pathToSave + "detectionSingleValuePA.ocl";
+//
+//			File f = new File(newRuleFilePath);
+//			f.getParentFile().mkdirs();
+//			f.createNewFile();
+//
+//			PrintWriter out = new PrintWriter(newRuleFilePath);
+//			out.print(resolvedString);
+//			out.close();
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static float calculateOpResDemUB(AEmiliaSpecification aemiliaModel) {
 		Float thRate = (float) 0.0;
@@ -144,6 +192,12 @@ public class ThresholdUtils {
 		return th_Throughput;
 	}
 
+	static String readFile(Path path, Charset encoding) throws IOException {
+		byte[] encoded = Files.readAllBytes(path);
+		return new String(encoded, encoding);
+	}
+	
+	@Deprecated
 	static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);

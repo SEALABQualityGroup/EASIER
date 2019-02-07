@@ -1,6 +1,6 @@
 package it.univaq.disim.sealab.aemiliaMod2text.main;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +10,7 @@ public class Transformation {
 	// relative path of transformation results
 	private static String outFolder = "./output";
 
+	@Deprecated
 	public static void GenerateAEMTransformation(String inputAEM_Model, String outputFolder) {
 
 		// relative path
@@ -27,6 +28,15 @@ public class Transformation {
 		arguments.add("80");
 		Generate.run(inputAEM_Model, outputFolder);
 	}
+	
+	public static void GenerateAEMTransformation(Path inputAEM_Model, Path outputFolder) {
+		Generate.run(inputAEM_Model.toString(), outputFolder.toString());
+	}
+	
+	public static void GenerateREWTransformation(Path inputAEmilia_Model, Path outputFolder) {
+		Generaterew.run(inputAEmilia_Model.toString(), outputFolder.toString());
+	}
+	
 
 	public static void GenerateREWTransformation(String inputAEmilia_Model, String outputFolder) {
 

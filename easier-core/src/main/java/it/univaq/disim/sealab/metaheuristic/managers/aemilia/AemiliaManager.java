@@ -1,5 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.managers.aemilia;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +16,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
@@ -57,19 +61,21 @@ public class AemiliaManager extends MetamodelManager {
 	private ResourceSet resourceSet;
 	// private Resource emiliaResource;
 
-	private String rewFilePath;
-	private String aemiliaModelFilePath; // .mmaemilia
-	private String sourceValFilePath;
-	private String refactoredModelFilePath;
-	private String aemFilePath; // .aem
-	private String outputFilePath;
-	private String rewmappingFilePath;
-	private String baseFilePath = "";
-	private String refactoreBaseFilePath = "";
+	private Path rewFilePath;
+	private Path aemiliaModelFilePath; // .mmaemilia
+	private Path sourceValFilePath;
+	private Path refactoredModelFilePath;
+	private Path aemFilePath; // .aem
+	private Path outputFilePath;
+	private Path rewmappingFilePath;
+	// private Path baseFilePath = "";
+	// private Path refactoreBaseFilePath = "";
 
 	private AEmiliaSpecification model;
 
 	private Resource rewMappingResource;
+
+	private RProblem problem;
 
 	// private AtomicLong counter = new AtomicLong(RandomUtils.nextInt(1,
 	// Integer.MAX_VALUE));
@@ -78,61 +84,54 @@ public class AemiliaManager extends MetamodelManager {
 		controller = ctrl;
 	}
 
-	public void init(String modelUri) {
-		setAemFilePath(modelUri + getModelFileExtension());
-		setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
-		setRewFilePath(modelUri + getRewFileExtension());
-		setRewmappingFilePath(modelUri + getRewmappingFileExtension());
-
-		// unloadModelResource();
-		packageRegistering();
-		getOclManager().inizialize(getResourceSet());
-
-		String ameliaAbsolutePath = getAemiliaModelFilePath();
-		URI uri = URI.createFileURI(ameliaAbsolutePath);
-		resource = getResourceSet().getResource(uri, true);
-
-		model = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResource().getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-		setREFACTORED_MODEL_BASE_PATH("/src/main/resources/models/refactored/");
+	public void init(Path modelUri) {
+		System.out.println("INIT method of AEmiliaManager");
+		//
+		// setAemFilePath(modelUri + getModelFileExtension());
+		// setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
+		// setRewFilePath(modelUri + getRewFileExtension());
+		// setRewmappingFilePath(modelUri + getRewmappingFileExtension());
+		//
+		// // unloadModelResource();
+		// packageRegistering();
+		// getOclManager().inizialize(getResourceSet());
+		//
+		// Path ameliaAbsolutePath = getAemiliaModelFilePath();
+		// URI uri = URI.createFileURI(ameliaAbsolutePath.toString());
+		// resource = getResourceSet().getResource(uri, true);
+		//
+		// model = (AEmiliaSpecification)
+		// EcoreUtil.getObjectByType(getResource().getContents(),
+		// mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+		//// setREFACTORED_MODEL_BASE_PATH("/src/main/resources/models/refactored/");
 	}
 
-	public void aemiliaModelGeneration() {
-		getTwoEaglesBridge().aemiliaModelGeneration(getAemiliaModelFilePath(), getRefactoredModelFilePath());
-	}
+	// public void aemiliaModelGeneration() {
+	// getTwoEaglesBridge().aemiliaModelGeneration(aemiliaModelFilePath,
+	// refactoredAemiliaFilePath);
+	// }
 
-	public void gaussianEliminationSRBMC() {
-		getTwoEaglesBridge().gaussianEliminationSRBMC(getAemFilePath(), getRewFilePath(), getOutputFilePath());
-	}
-
-	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+	public void gaussianEliminationSRBMC(Path aemFilePath, Path rewFilePath, Path outputFilePath) {
 		getTwoEaglesBridge().gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
 	}
 
-	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
+	public void sorSRBMC(Path aemFilePath, Path rewFilePath, Path outputFilePath) {
 		getTwoEaglesBridge().sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
 	}
 
-	public void measuresToIndices() {
-		getTwoEaglesBridge().measuresToIndices((Resource) createRewmappingResource(),
-				MapmeasurestoindicesFactory.eINSTANCE.createRewMapping(), getRewFilePath());
-	}
-
-	public void aemiliaModelUpdate() {
-		getTwoEaglesBridge().aemiliaModelUpdate(getAemFilePath(), getRewmappingFilePath());
-	}
-
-	public void aemiliaModelUpdate(String valFilePath, String rewFilePath, String rewMappingFilePath,
-			String refactoredMmAemiliaFilePath, RSolution solution) {
+	public void aemiliaModelUpdate(final Path valFilePath, final Path rewFilePath, final Path rewMappingFilePath,
+			final Path refactoredMmAemiliaFilePath, final RSolution solution) {
 		try {
 			Resource rewMappingResource = createRewmappingResource(rewMappingFilePath);
-
 			RewMapping rewMapping = MapmeasurestoindicesFactory.eINSTANCE.createRewMapping();
-			getTwoEaglesBridge().setAemiliaSpecification(
+			// getTwoEaglesBridge().setAemiliaSpecification((AEmiliaSpecification)
+			// getResource(refactoredMmAemiliaFilePath).getContents().get(0)
+			// );
+			getTwoEaglesBridge().measuresToIndices(rewMappingResource, rewMapping, rewFilePath,
 					(AEmiliaSpecification) getResource(refactoredMmAemiliaFilePath).getContents().get(0));
-			getTwoEaglesBridge().measuresToIndices(rewMappingResource, rewMapping, rewFilePath);
 
-			getTwoEaglesBridge().aemiliaModelUpdate(valFilePath, rewMappingFilePath);
+			getTwoEaglesBridge().aemiliaModelUpdate(valFilePath, rewMappingFilePath,
+					(AEmiliaSpecification) getResource(refactoredMmAemiliaFilePath).getContents().get(0));
 		} catch (Exception e) {
 			System.err.println(ExceptionUtils.getStackTrace(e));
 			System.err.println("Solution number: " + solution.getName());
@@ -146,10 +145,17 @@ public class AemiliaManager extends MetamodelManager {
 		return aemiliaResource;
 	}
 
+	public Resource getResource(Path aemFilePath) {
+		// String ameliaAbsolutePath = getAemiliaModelFilePath();
+		final URI uri = URI.createFileURI(aemFilePath.toString());
+		Resource aemiliaResource = getResourceSet().getResource(uri, true);
+		return aemiliaResource;
+	}
+
 	public Resource createRewmappingResource() {
 		packageRegistering();
 		if (rewMappingResource == null) {
-			URI fileURI = URI.createFileURI(getBasePath() + getRewmappingFilePath());
+			URI fileURI = URI.createFileURI(rewmappingFilePath.toString());
 			rewMappingResource = resourceSet.createResource(fileURI);
 		}
 		return rewMappingResource;
@@ -158,6 +164,13 @@ public class AemiliaManager extends MetamodelManager {
 	public Resource createRewmappingResource(String rewmappingFilePath) {
 		packageRegistering();
 		URI fileURI = URI.createFileURI(rewmappingFilePath);
+		Resource asResource = resourceSet.createResource(fileURI);
+		return asResource;
+	}
+
+	public Resource createRewmappingResource(Path rewmappingFilePath) {
+		packageRegistering();
+		final URI fileURI = URI.createFileURI(rewmappingFilePath.toString());
 		Resource asResource = resourceSet.createResource(fileURI);
 		return asResource;
 	}
@@ -183,20 +196,25 @@ public class AemiliaManager extends MetamodelManager {
 		resourceSet.getPackageRegistry().put(mmaemiliaPackage.eINSTANCE.getNsURI(), mmaemiliaPackage.eINSTANCE);
 	}
 
-	public String getAemFilePath() {
-		return getBasePath() + aemFilePath + getModelFileExtension();
+	public Path getAemFilePath() {
+		// return getBasePath() + aemFilePath + getModelFileExtension();
+		return aemFilePath;
 	}
 
-	public void setAemFilePath(String aemFile) {
+	public void setAemFilePath(Path aemFile) {
 		this.aemFilePath = aemFile;
 	}
 
-	public String getBasePath() {
-		return baseFilePath;
-	}
+	// public Path getBasePath() {
+	// return baseFilePath;
+	// }
+	//
+	// public void setBasePath(Path basePath) {
+	// this.baseFilePath = basePath;
+	// }
 
-	public void setBasePath(String basePath) {
-		this.baseFilePath = basePath;
+	public void setProblem(final Problem p) {
+		this.problem = (RProblem) p;
 	}
 
 	@Override
@@ -204,7 +222,7 @@ public class AemiliaManager extends MetamodelManager {
 		if (model == null) {
 			this.packageRegistering();
 			if (aemiliaModelFilePath == null) {
-				aemiliaModelFilePath = controller.getSourceModelPath();
+				aemiliaModelFilePath = problem.getSourceModelPath();
 			}
 			this.model = createModel(aemiliaModelFilePath);
 			// this.model = (AEmiliaSpecification)
@@ -215,27 +233,40 @@ public class AemiliaManager extends MetamodelManager {
 		return model;
 	}
 
-	public AEmiliaSpecification getModel(String mmaemiliaFilePath) {
+	/**
+	 * It returns a new aemilia model
+	 * 
+	 * @param sourceFolderPath
+	 *            is the source folder path
+	 * 
+	 * @see it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager#getModel(java.nio.file.Path)
+	 */
+	@Override
+	public AEmiliaSpecification getModel(final Path sourceFolderPath) {
 		this.packageRegistering();
-		return createModel(mmaemiliaFilePath);
+		return createModel(sourceFolderPath);
+		// return createModel(sourcePath.resolve("model." +
+		// METAMODEL_FILE_EXTENISON).toString());
 	}
 
-	private AEmiliaSpecification createModel(String aemiliaModelFilePath) {
+	private AEmiliaSpecification createModel(Path aemiliaModelFilePath) {
 		return (AEmiliaSpecification) EcoreUtil.getObjectByType(
-				getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath), true).getContents(),
+				getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath.toString()), true).getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
 
-	public String getRefactoredModelFilePath() {
-		return getRefactoredModelBasePath() + getRefactoredModelFilePath() + getModelFileExtension();
-	}
+	// public Path getRefactoredModelFilePath() {
+	//// return getRefactoredModelBasePath() + getRefactoredModelFilePath() +
+	// getModelFileExtension();
+	// return getRefactoredModelBasePath() + getRefactoredModelFilePath() +
+	// getModelFileExtension();
+	// }
 
 	@Override
 	public String getModelFileExtension() {
 		return "." + MODEL_FILE_EXTENSION;
 	}
 
-	// TO BE MOVED UP TO SUPER CLASS
 	public String getMetamodelFileExtension() {
 		return "." + METAMODEL_FILE_EXTENISON;
 	}
@@ -248,65 +279,65 @@ public class AemiliaManager extends MetamodelManager {
 		return "." + REWMAPPING_FILE_EXTENSION;
 	}
 
-	public void setModelPath(String modelPath) {
-		this.setAemiliaModelFilePath(modelPath);
+	public void setModelPath(Path modelPath) {
+		this.aemFilePath = modelPath;
 	}
 
-	public String getRefactoredModelPath() {
-		return refactoredModelFilePath;
-	}
+	// public String getRefactoredModelPath() {
+	// return refactoredModelFilePath;
+	// }
+	//
+	// public void setRefactoredModelPath(String refactoredModelPath) {
+	// this.refactoredModelFilePath = refactoredModelPath;
+	// }
+	//
+	// public String getRewFilePath() {
+	// return this.rewFilePath;
+	// }
+	//
+	// public void setRewFilePath(String rewFilePath) {
+	// this.rewFilePath = rewFilePath;
+	// }
+	//
+	// public String getOutputFilePath() {
+	// return outputFilePath;
+	// }
+	//
+	// public void setOutputFilePath(String outputFilePath) {
+	// this.outputFilePath = outputFilePath;
+	// }
 
-	public void setRefactoredModelPath(String refactoredModelPath) {
-		this.refactoredModelFilePath = refactoredModelPath;
-	}
+	// public String getRewmappingFilePath() {
+	// return getBaseFilePath() + rewmappingFilePath + getRewmappingFileExtension();
+	// }
 
-	public String getRewFilePath() {
-		return this.rewFilePath;
-	}
+	// public void setRewmappingFilePath(String rewmappingFilePath) {
+	// this.rewmappingFilePath = rewmappingFilePath;
+	// }
+	//
+	// public String getBaseFilePath() {
+	// return baseFilePath;
+	// }
+	//
+	// public void setBaseFilePath(String baseFilePath) {
+	// this.baseFilePath = baseFilePath;
+	// }
 
-	public void setRewFilePath(String rewFilePath) {
-		this.rewFilePath = rewFilePath;
-	}
-
-	public String getOutputFilePath() {
-		return outputFilePath;
-	}
-
-	public void setOutputFilePath(String outputFilePath) {
-		this.outputFilePath = outputFilePath;
-	}
-
-	public String getRewmappingFilePath() {
-		return getBaseFilePath() + rewmappingFilePath + getRewmappingFileExtension();
-	}
-
-	public void setRewmappingFilePath(String rewmappingFilePath) {
-		this.rewmappingFilePath = rewmappingFilePath;
-	}
-
-	public String getBaseFilePath() {
-		return baseFilePath;
-	}
-
-	public void setBaseFilePath(String baseFilePath) {
-		this.baseFilePath = baseFilePath;
-	}
-
-	public String getAemiliaModelFilePath() {
+	public Path getAemiliaModelFilePath() {
 		return aemiliaModelFilePath;
 	}
 
-	public void setAemiliaModelFilePath(String aemiliaModelFilePath) {
+	public void setAemiliaModelFilePath(Path aemiliaModelFilePath) {
 		this.aemiliaModelFilePath = aemiliaModelFilePath;
 	}
 
-	public String getRefactoreBaseFilePath() {
-		return refactoreBaseFilePath;
-	}
-
-	public void setRefactoreBaseFilePath(String refactoreBaseFilePath) {
-		this.refactoreBaseFilePath = refactoreBaseFilePath;
-	}
+	// public String getRefactoreBaseFilePath() {
+	// return refactoreBaseFilePath;
+	// }
+	//
+	// public void setRefactoreBaseFilePath(String refactoreBaseFilePath) {
+	// this.refactoreBaseFilePath = refactoreBaseFilePath;
+	// }
 
 	@Override
 	public RefactoringAction getRandomAction(int length) throws UnexpectedException {
@@ -364,65 +395,37 @@ public class AemiliaManager extends MetamodelManager {
 	// }
 
 	private RefactoringAction getRandomCloneAEIAction(RSequence seq) {
-		AEmiliaCloneAEIRefactoringAction action = new AEmiliaCloneAEIRefactoringAction(seq.getSolution());
+		AEmiliaCloneAEIRefactoringAction action = null;
+		try {
+			action = new AEmiliaCloneAEIRefactoringAction(seq.getSolution());
 
-		// EList<ArchiElemInstance> listOfClonableAEI =
-		// action.getListOfClonableInstances();
-		// int randomInt = RandomUtils.nextInt(0, listOfClonableAEI.size());
-		// if (listOfClonableAEI.isEmpty()) {
-		// Controller.logger_.warning("ERROR doen not exist any clonableAEI");
-		// return null;
-		// }
-		// action.setSourceAEI(listOfClonableAEI.get(randomInt));
-		// action.setModel(seq.getModel());
-		// action.setSolution(seq.getSolution());
-		// action.setName("AEmiliaCloneAEIAction");
+			if (action.getSourceAEI() == null)
+				return null;
 
-		if (action.getSourceAEI() == null)
-			return null;
+			if (!action.isApplicable())
+				return null;
 
-		if (!action.isApplicable())
-			return null;
-
-		if (!isApplicable(action, seq))
-			return null;
-
-		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setParameters();
-		// action.createPreCondition();
-		// action.createPostCondition();
+			if (!isApplicable(action, seq))
+				return null;
+		} catch (IllegalArgumentException e) {
+			RSolution s = seq.getSolution();
+			System.out.println(seq.toString());
+			System.out.println(s.toString());
+			e.printStackTrace();
+		} 
 		return action;
 	}
 
 	public boolean isApplicable(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		return isClonable(action, seq);
 	}
 
 	private boolean isClonable(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
-		// EList<Attachment> listOfAttachment =
-		// getAttachmentsOfAEI(action.getSourceAEI());
 		if (action == null)
 			return false;
 		if (seq == null)
 			return true;
 		EList<ArchiElemInstance> listOfNeighs = getNeighsOfAEI(action.getSourceAEI());
-		// if (listOfAttachment.isEmpty()) {
-		// return false;
-		// }
-		// for (Attachment att : listOfAttachment) {
-		// if
-		// (!att.getEnd().getIsInput().getType().equals(metamodel.mmaemilia.InteractionType.UNI)
-		// ||
-		// !att.getStart().getIsOutput().getType().equals(metamodel.mmaemilia.InteractionType.UNI))
-		// {
-		// return false;
-		// }
-		// }
 
 		for (Action a : seq.getRefactoring().getActions()) {
 			boolean found = false;
@@ -483,7 +486,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setName("AEmiliaConstChangesCapacityAction");
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setNumOfChanges(controller.getConfigurator().getConstChangesWeight());
 
 		action.setParameters();
 		action.createPreCondition();
@@ -504,7 +507,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setName("AEmiliaConstChangesRateAction");
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setNumOfChanges(controller.getConfigurator().getConstChangesWeight());
 
 		action.setParameters();
 		action.createPreCondition();
@@ -520,7 +523,7 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	private RefactoringAction getRandomWorkloadChangeAction(RSequence seq) {
-		if (controller.getWorkloadRange() == -1) {
+		if (controller.getConfigurator().getWorkloadRange() == -1) {
 			return null;
 		}
 		ConstInit sourceConst = getRandomWorkload(seq);
@@ -534,7 +537,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setSolution(seq.getSolution());
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setNumOfChanges(controller.getConfigurator().getConstChangesWeight());
 		action.setName("AEmiliaConstChangesWorkloadAction");
 
 		action.setParameters();
@@ -546,12 +549,10 @@ public class AemiliaManager extends MetamodelManager {
 		if (!isApplicable(action, seq))
 			return null;
 
-		// return action;
-		return null;
+		return action;
 	}
 
 	public boolean isApplicable(AEmiliaConstChangesRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		if (action == null)
 			return false;
 		if (seq == null)
@@ -575,7 +576,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isIn(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -593,7 +593,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isIn(AEmiliaConstChangesRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -610,7 +609,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isInExcluding(AEmiliaCloneAEIRefactoringAction action, RSequence seq, int index) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -631,7 +629,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isInExcluding(AEmiliaConstChangesRefactoringAction action, RSequence seq, int index) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -659,7 +656,7 @@ public class AemiliaManager extends MetamodelManager {
 		action.setModel(seq.getModel());
 		action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(controller.getConstChangesWeight());
+		action.setNumOfChanges(controller.getConfigurator().getConstChangesWeight());
 		action.setName("AEmiliaConstChangesWeightAction");
 
 		action.setParameters();
@@ -759,10 +756,10 @@ public class AemiliaManager extends MetamodelManager {
 
 	@Override
 	public OclManager getOclManager() {
-//		if (oclManager == null) {
-//			oclManager = new OclAemiliaManager(controller);
-//		}
-//		return oclManager;
+		// if (oclManager == null) {
+		// oclManager = new OclAemiliaManager(controller);
+		// }
+		// return oclManager;
 		return new OclAemiliaManager(controller);
 	}
 
@@ -773,13 +770,11 @@ public class AemiliaManager extends MetamodelManager {
 
 	public TwoEaglesBridge getTwoEaglesBridge() {
 		if (twoEaglesBridge == null) {
-			// twoEaglesBridge = new
-			// TwoEaglesBridge(Manager.getInstance(null).getController().getTwoTowersKernelPath());
 			twoEaglesBridge = new TwoEaglesBridge();
-			String twoTowersKernelPath = controller.getTwoTowersKernelPath();
+			Path twoTowersKernelPath = controller.getConfigurator().getTTKernel();
 			twoEaglesBridge.setTwoTowersKernelPath(twoTowersKernelPath);
 			twoEaglesBridge.setResourceSet(this.getResourceSet());
-			twoEaglesBridge.setAemiliaSpecification(getModel());
+			// twoEaglesBridge.setAemiliaSpecification(getModel());
 		}
 		return twoEaglesBridge;
 	}
@@ -788,11 +783,11 @@ public class AemiliaManager extends MetamodelManager {
 		this.twoEaglesBridge = twoEaglesBridge;
 	}
 
-	public String getSourceValFilePath() {
+	public Path getSourceValFilePath() {
 		return sourceValFilePath;
 	}
 
-	public void setSourceValFilePath(String valFilePath) {
+	public void setSourceValFilePath(Path valFilePath) {
 		sourceValFilePath = valFilePath;
 	}
 
@@ -830,8 +825,8 @@ public class AemiliaManager extends MetamodelManager {
 	public void save(RSolution solution) {
 		super.save(solution);
 		packageRegistering();
-		AEmiliaSpecification savedModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(
-				getResourceSet().getResource(Manager.string2Uri(solution.getMmaemiliaFilePath()), true).getContents(),
+		AEmiliaSpecification savedModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResourceSet()
+				.getResource(Manager.string2Uri(solution.getMmaemiliaFilePath().toString()), true).getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 
 		try {
@@ -852,5 +847,26 @@ public class AemiliaManager extends MetamodelManager {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void createNewResourceSet() {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * Gets as input the mmaemilia file path
+	 * 
+	 * @param sourceModelPath
+	 */
+	public void refreshModel(final Path sourceModelPath) {
+		getResourceSet().getResources().get(0).unload();
+		Resource res = getResourceSet().getResource(Manager.string2Uri(sourceModelPath.toString()), true);
+
+		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
+				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
+
+		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
+				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
 }

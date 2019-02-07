@@ -28,7 +28,8 @@ import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class FileUtils {
 
-	public FileUtils() {}
+	public FileUtils() {
+	}
 
 	/**
 	 * Recursively walk through sub-directories listing Aemilia files.
@@ -76,7 +77,8 @@ public class FileUtils {
 
 	public static void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try (FileWriter fw = new FileWriter(
-				rSolution.getController().getParetoFolder() + rSolution.getProblem().getName() + "_solutions.csv",
+				Paths.get(rSolution.getController().getConfigurator().getOutputFolder().toString(),  
+						rSolution.getProblem().getName() + "_solutions.csv").toFile(),
 				true)) {
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
@@ -92,8 +94,10 @@ public class FileUtils {
 	public static synchronized void writeSolutionSetToCSV(List<RSolution> population) {
 		Controller.logger_.info("Writing CSV");
 		for (RSolution solution : population) {
-			try (FileWriter fw = new FileWriter(new File(solution.getController().getParetoFolder()
-					+ solution.getProblem().getName() + "_analyzableResults.csv"), true)) {
+			try (FileWriter fw = new FileWriter(
+					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
+							solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
+					true)) {
 				List<String> line = new ArrayList<String>();
 				line.add("SolID");
 				line.add("PerQ");
@@ -117,7 +121,8 @@ public class FileUtils {
 	public static void writeSolutionToCSV(RSolution solution) {
 		Refactoring ref = solution.getVariableValue(0).getRefactoring();
 		try (FileWriter fw = new FileWriter(
-				new File(solution.getController().getParetoFolder() + solution.getProblem().getName() + "_results.csv"),
+				Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
+						solution.getProblem().getName() + "_results.csv").toFile(),
 				true)) {
 			CSVUtils.writeLine(fw, Arrays.asList("#SOL:" + Integer.toString(solution.getName())));
 			CSVUtils.writeLine(fw, Arrays.asList("Parents", "Refactored", "Crossovered", "Mutated", "PerfQ", "#Changes",
@@ -180,13 +185,16 @@ public class FileUtils {
 
 	public static void writeAnalyzableFile(final RSolution solution) {
 		Controller controller = solution.getController();
-		try (FileWriter analyzableCSV = new FileWriter(new File(solution.getController().getParetoFolder()
-				+ solution.getProblem().getName() + "_analyzableResults.csv"), true)) {
+
+		try (FileWriter analyzableCSV = new FileWriter(
+				Paths.get(controller.getConfigurator().getOutputFolder().toString(), "pareto",
+						solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
+				true)) {
 
 			List<String> line = new ArrayList<String>();
-			String solID = (Integer.parseInt(controller.getProperties().getProperty("maxEvaluations"))
-					/ Integer.parseInt(controller.getProperties().getProperty("populationSize")) + "-"
-					+ controller.getProperties().getProperty("populationSize") + ":" + solution.getName());
+			String solID = "( "
+					+ controller.getConfigurator().getMaxEvaluation() / controller.getConfigurator().getPopulationSize()
+					+ "-" + controller.getConfigurator().getPopulationSize() + " ) " + ":" + solution.getName();
 			line.add(solID);
 			line.add(String.valueOf(solution.getPerfQ()));
 			line.add(String.valueOf(solution.getNumOfChanges()));
@@ -213,20 +221,20 @@ public class FileUtils {
 		}
 	}
 
-	public static void moveTmpFile(final String sourceFolder, final String destFolder) {
-		new File(destFolder).mkdirs();
+	public static void moveTmpFile(final Path sourceFolder, final Path destFolder) {
+		destFolder.toFile().mkdirs();
 		try {
-			org.apache.commons.io.FileUtils.copyDirectory(new File(sourceFolder), new File(destFolder));
+			org.apache.commons.io.FileUtils.copyDirectory(sourceFolder.toFile(), destFolder.toFile());
 		} catch (IOException e) {
 			Controller.logger_.warning("[WARNING] Copy tmp folder failed!!!");
 			e.printStackTrace();
 			return;
-		} 
+		}
 		try {
-			org.apache.commons.io.FileUtils.cleanDirectory(new File(sourceFolder));
+			org.apache.commons.io.FileUtils.cleanDirectory(sourceFolder.toFile());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }

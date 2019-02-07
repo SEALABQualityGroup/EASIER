@@ -3,15 +3,15 @@
  */
 package it.univaq.from_aemilia_to_qn_plug_in.handlers;
 
-import it.univaq.from_aemilia_to_qn_plug_in.serialize.MMAemiliaSerialize;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
-import javax.swing.JTextArea;
-
+import aemiliaParser.AEMparser;
+import aemiliaParser.ParseException;
+import equivalenzaComportamentale.secondRelease.Equivalenza2;
+import it.univaq.from_aemilia_to_qn_plug_in.serialize.MMAemiliaSerialize;
 import restrizioniGenerali.RestrizioniGenException;
 import restrizioniGenerali.secondRelease.GeneraliRules2;
 import restrizioniIstanze.RestrizioniIstanzeException;
@@ -20,9 +20,6 @@ import restrizioniIstanze.restrizioniIstanze.RestrizioniIstanze;
 import specificheAEmilia.ArchiType;
 import utilities.ErrorMessage;
 import utilities.MetodiVari;
-import aemiliaParser.AEMparser;
-import aemiliaParser.ParseException;
-import equivalenzaComportamentale.secondRelease.Equivalenza2;
 
 /**
  * @author Mirko
@@ -30,8 +27,8 @@ import equivalenzaComportamentale.secondRelease.Equivalenza2;
  */
 public class GeneratoreModelloAemilia{
 
-	public Object execute_ase(FileInputStream aemiliaFileInputStream, String aemiliaModelFilePath,
-			String destinationPath) {
+	public Object execute(FileInputStream aemiliaFileInputStream, Path aemiliaModelFilePath,
+			Path destinationPath) {
 		// ASE qui fa Text-to-Model
 		AEMparser aeMparser = new AEMparser(aemiliaFileInputStream);
 		try {
@@ -67,7 +64,7 @@ public class GeneratoreModelloAemilia{
 					// ASE in UpdateMMDialog esegue il salvataggio
 
 					MMAemiliaSerialize mmAemiliaSerialize = new MMAemiliaSerialize();
-					mmAemiliaSerialize.serialize_ase(archiType2, elemTypeNormList, destinationPath);
+					mmAemiliaSerialize.serialize(archiType2, elemTypeNormList, destinationPath);
 
 					return null;
 				} else {
