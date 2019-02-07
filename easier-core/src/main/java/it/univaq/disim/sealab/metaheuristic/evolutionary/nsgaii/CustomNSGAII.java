@@ -17,11 +17,8 @@ import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 
-/**
- * @author Mattia D'Emidio
- */
 @SuppressWarnings("serial")
-public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
+public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S>{
 
 	private ProgressBar pbar;
 	private MutableInt done;
@@ -38,28 +35,6 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
 		this.name = "Custom_NSGA_II";
-	}
-
-	@Override
-	protected void updateProgress() {
-		evaluations += getMaxPopulationSize();
-		pbar.update(done, total, getMaxPopulationSize());
-
-	}
-
-	@Override
-	protected boolean isStoppingConditionReached() {
-		return evaluations >= maxEvaluations;
-	}
-
-	@Override
-	protected void initProgress() {
-		evaluations = getMaxPopulationSize();
-		this.pbar = new ProgressBar(
-				"Evolutionary Algorithm Optimization in Progress: mating-selecting-mutating individuals");
-		this.done = new MutableInt(0);
-		this.total = new MutableInt(this.maxEvaluations);
-		pbar.update(done, total, getMaxPopulationSize());
 	}
 
 	public void computeCrowdingDistances() {
@@ -115,23 +90,22 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S> {
 		return CrowdingDistance.class;
 	}
 
-	@Override
-	protected List<S> createInitialPopulation() {
-		pbar = new ProgressBar("Evolutionary Algorithm Optimization in Progress: creating individuals");
-		this.done = new MutableInt(0);
-		this.total = new MutableInt(getMaxPopulationSize());
-		List<S> population = new ArrayList<>(getMaxPopulationSize());
-		for (int i = 0; i < getMaxPopulationSize(); i++) {
-			S newIndividual = getProblem().createSolution();
-			population.add(newIndividual);
-			pbar.update(done, total, 1);
-
-		}
-		this.pbar = null;
-		this.done = null;
-		this.total = null;
-		return population;
-	}
+//	@Override
+//	protected List<S> createInitialPopulation() {
+//		pbar = new ProgressBar("Evolutionary Algorithm Optimization in Progress: creating individuals");
+//		this.done = new MutableInt(0);
+//		this.total = new MutableInt(getMaxPopulationSize());
+//		List<S> population = new ArrayList<>(getMaxPopulationSize());
+//		for (int i = 0; i < getMaxPopulationSize(); i++) {
+//			S newIndividual = getProblem().createSolution();
+//			population.add(newIndividual);
+//			pbar.update(done, total, 1);
+//		}
+//		this.pbar = null;
+//		this.done = null;
+//		this.total = null;
+//		return population;
+//	}
 
 	@Override
 	public String getName() {

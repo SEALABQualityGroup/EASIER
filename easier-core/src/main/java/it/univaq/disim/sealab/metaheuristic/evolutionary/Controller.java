@@ -3,20 +3,15 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.FileHandler;
@@ -31,32 +26,20 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.qualityindicator.impl.Epsilon;
-import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
-import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
-import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
-import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
-import org.uma.jmetal.qualityindicator.impl.Spread;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.ExperimentBuilder;
-import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
-import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
-import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
-import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
-import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
@@ -69,7 +52,6 @@ import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
-import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class Controller extends AbstractAlgorithmRunner {
 
@@ -285,19 +267,21 @@ public class Controller extends AbstractAlgorithmRunner {
 
 		Path referenceFrontDirectory = Paths.get(configurator.getOutputFolder().toString(), "referenceFront");
 
-		Experiment<RSolution, List<RSolution>> experiment = new ExperimentBuilder<RSolution, List<RSolution>>("Exp")
+		RExperiment<RSolution, List<RSolution>> experiment = new RExperimentBuilder<RSolution, List<RSolution>>("Exp")
 				.setAlgorithmList(algorithmList).setProblemList(problemList)
 				.setExperimentBaseDirectory(referenceFrontDirectory.toString())
 				.setReferenceFrontDirectory(referenceFrontDirectory.toString()).setOutputParetoFrontFileName("FUN")
 				.setOutputParetoSetFileName("VAR").setIndicatorList(qualityIndicators)
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
-			new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run();
+			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run().getComputingTimes();
+			experiment.setComputingTime(computingTimes);
 			new GenerateReferenceParetoFront(experiment).run();
-			new ComputeQualityIndicators<>(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
+//			new ComputeQualityIndicators<>(experiment).run();
+//			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+//			new GenerateBoxplotsWithR<>(experiment).run();
+//			new GenerateLatexTablesWithStatistics(experiment).run();
+			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -338,25 +322,21 @@ public class Controller extends AbstractAlgorithmRunner {
 			algorithms.add(exp);
 		}
 
-		// for (int i = 0; i < problemList.size(); i++) {
-		// @SuppressWarnings("unchecked")
-		// CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>)
-		// new CustomSPEA2Builder(
-		// problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-		// .setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-		// .setMaxIterations(
-		// Math.toIntExact(configurator.getMaxEvaluation() /
-		// configurator.getPopulationSize()))
-		// .setPopulationSize(configurator.getPopulationSize());
-		//
-		// CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>)
-		// spea2Builder.build();
-		// algorithm.setName("SPEA_2");
-		// ExperimentAlgorithm<RSolution, List<RSolution>> exp = new
-		// CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-		// algorithm, problemList.get(i).getTag(), i);
-		// algorithms.add(exp);
-		// }
+		for (int i = 0; i < problemList.size(); i++) {
+			@SuppressWarnings("unchecked")
+			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
+							.setMaxIterations(
+									Math.toIntExact(configurator.getMaxEvaluation() / configurator.getPopulationSize()))
+							.setPopulationSize(configurator.getPopulationSize());
+
+			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
+			algorithm.setName("SPEA2");
+			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
+					algorithm, problemList.get(i).getTag(), i);
+			algorithms.add(exp);
+		}
 		return algorithms;
 	}
 

@@ -68,8 +68,8 @@ public class AemiliaManager extends MetamodelManager {
 	private Path aemFilePath; // .aem
 	private Path outputFilePath;
 	private Path rewmappingFilePath;
-//	private Path baseFilePath = "";
-//	private Path refactoreBaseFilePath = "";
+	// private Path baseFilePath = "";
+	// private Path refactoreBaseFilePath = "";
 
 	private AEmiliaSpecification model;
 
@@ -86,28 +86,30 @@ public class AemiliaManager extends MetamodelManager {
 
 	public void init(Path modelUri) {
 		System.out.println("INIT method of AEmiliaManager");
-//		
-//		setAemFilePath(modelUri + getModelFileExtension());
-//		setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
-//		setRewFilePath(modelUri + getRewFileExtension());
-//		setRewmappingFilePath(modelUri + getRewmappingFileExtension());
-//
-//		// unloadModelResource();
-//		packageRegistering();
-//		getOclManager().inizialize(getResourceSet());
-//
-//		Path ameliaAbsolutePath = getAemiliaModelFilePath();
-//		URI uri = URI.createFileURI(ameliaAbsolutePath.toString());
-//		resource = getResourceSet().getResource(uri, true);
-//
-//		model = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResource().getContents(),
-//				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-////		setREFACTORED_MODEL_BASE_PATH("/src/main/resources/models/refactored/");
+		//
+		// setAemFilePath(modelUri + getModelFileExtension());
+		// setAemiliaModelFilePath(modelUri + getMetamodelFileExtension());
+		// setRewFilePath(modelUri + getRewFileExtension());
+		// setRewmappingFilePath(modelUri + getRewmappingFileExtension());
+		//
+		// // unloadModelResource();
+		// packageRegistering();
+		// getOclManager().inizialize(getResourceSet());
+		//
+		// Path ameliaAbsolutePath = getAemiliaModelFilePath();
+		// URI uri = URI.createFileURI(ameliaAbsolutePath.toString());
+		// resource = getResourceSet().getResource(uri, true);
+		//
+		// model = (AEmiliaSpecification)
+		// EcoreUtil.getObjectByType(getResource().getContents(),
+		// mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+		//// setREFACTORED_MODEL_BASE_PATH("/src/main/resources/models/refactored/");
 	}
 
-//	public void aemiliaModelGeneration() {
-//		getTwoEaglesBridge().aemiliaModelGeneration(aemiliaModelFilePath, refactoredAemiliaFilePath);
-//	}
+	// public void aemiliaModelGeneration() {
+	// getTwoEaglesBridge().aemiliaModelGeneration(aemiliaModelFilePath,
+	// refactoredAemiliaFilePath);
+	// }
 
 	public void gaussianEliminationSRBMC(Path aemFilePath, Path rewFilePath, Path outputFilePath) {
 		getTwoEaglesBridge().gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
@@ -195,7 +197,7 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public Path getAemFilePath() {
-//		return getBasePath() + aemFilePath + getModelFileExtension();
+		// return getBasePath() + aemFilePath + getModelFileExtension();
 		return aemFilePath;
 	}
 
@@ -203,13 +205,13 @@ public class AemiliaManager extends MetamodelManager {
 		this.aemFilePath = aemFile;
 	}
 
-//	public Path getBasePath() {
-//		return baseFilePath;
-//	}
-//
-//	public void setBasePath(Path basePath) {
-//		this.baseFilePath = basePath;
-//	}
+	// public Path getBasePath() {
+	// return baseFilePath;
+	// }
+	//
+	// public void setBasePath(Path basePath) {
+	// this.baseFilePath = basePath;
+	// }
 
 	public void setProblem(final Problem p) {
 		this.problem = (RProblem) p;
@@ -253,10 +255,12 @@ public class AemiliaManager extends MetamodelManager {
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
 
-//	public Path getRefactoredModelFilePath() {
-////		return getRefactoredModelBasePath() + getRefactoredModelFilePath() + getModelFileExtension();
-//		return getRefactoredModelBasePath() + getRefactoredModelFilePath() + getModelFileExtension();
-//	}
+	// public Path getRefactoredModelFilePath() {
+	//// return getRefactoredModelBasePath() + getRefactoredModelFilePath() +
+	// getModelFileExtension();
+	// return getRefactoredModelBasePath() + getRefactoredModelFilePath() +
+	// getModelFileExtension();
+	// }
 
 	@Override
 	public String getModelFileExtension() {
@@ -279,45 +283,45 @@ public class AemiliaManager extends MetamodelManager {
 		this.aemFilePath = modelPath;
 	}
 
-//	public String getRefactoredModelPath() {
-//		return refactoredModelFilePath;
-//	}
-//
-//	public void setRefactoredModelPath(String refactoredModelPath) {
-//		this.refactoredModelFilePath = refactoredModelPath;
-//	}
-//
-//	public String getRewFilePath() {
-//		return this.rewFilePath;
-//	}
-//
-//	public void setRewFilePath(String rewFilePath) {
-//		this.rewFilePath = rewFilePath;
-//	}
-//
-//	public String getOutputFilePath() {
-//		return outputFilePath;
-//	}
-//
-//	public void setOutputFilePath(String outputFilePath) {
-//		this.outputFilePath = outputFilePath;
-//	}
+	// public String getRefactoredModelPath() {
+	// return refactoredModelFilePath;
+	// }
+	//
+	// public void setRefactoredModelPath(String refactoredModelPath) {
+	// this.refactoredModelFilePath = refactoredModelPath;
+	// }
+	//
+	// public String getRewFilePath() {
+	// return this.rewFilePath;
+	// }
+	//
+	// public void setRewFilePath(String rewFilePath) {
+	// this.rewFilePath = rewFilePath;
+	// }
+	//
+	// public String getOutputFilePath() {
+	// return outputFilePath;
+	// }
+	//
+	// public void setOutputFilePath(String outputFilePath) {
+	// this.outputFilePath = outputFilePath;
+	// }
 
-//	public String getRewmappingFilePath() {
-//		return getBaseFilePath() + rewmappingFilePath + getRewmappingFileExtension();
-//	}
+	// public String getRewmappingFilePath() {
+	// return getBaseFilePath() + rewmappingFilePath + getRewmappingFileExtension();
+	// }
 
-//	public void setRewmappingFilePath(String rewmappingFilePath) {
-//		this.rewmappingFilePath = rewmappingFilePath;
-//	}
-//
-//	public String getBaseFilePath() {
-//		return baseFilePath;
-//	}
-//
-//	public void setBaseFilePath(String baseFilePath) {
-//		this.baseFilePath = baseFilePath;
-//	}
+	// public void setRewmappingFilePath(String rewmappingFilePath) {
+	// this.rewmappingFilePath = rewmappingFilePath;
+	// }
+	//
+	// public String getBaseFilePath() {
+	// return baseFilePath;
+	// }
+	//
+	// public void setBaseFilePath(String baseFilePath) {
+	// this.baseFilePath = baseFilePath;
+	// }
 
 	public Path getAemiliaModelFilePath() {
 		return aemiliaModelFilePath;
@@ -327,13 +331,13 @@ public class AemiliaManager extends MetamodelManager {
 		this.aemiliaModelFilePath = aemiliaModelFilePath;
 	}
 
-//	public String getRefactoreBaseFilePath() {
-//		return refactoreBaseFilePath;
-//	}
-//
-//	public void setRefactoreBaseFilePath(String refactoreBaseFilePath) {
-//		this.refactoreBaseFilePath = refactoreBaseFilePath;
-//	}
+	// public String getRefactoreBaseFilePath() {
+	// return refactoreBaseFilePath;
+	// }
+	//
+	// public void setRefactoreBaseFilePath(String refactoreBaseFilePath) {
+	// this.refactoreBaseFilePath = refactoreBaseFilePath;
+	// }
 
 	@Override
 	public RefactoringAction getRandomAction(int length) throws UnexpectedException {
@@ -391,65 +395,37 @@ public class AemiliaManager extends MetamodelManager {
 	// }
 
 	private RefactoringAction getRandomCloneAEIAction(RSequence seq) {
-		AEmiliaCloneAEIRefactoringAction action = new AEmiliaCloneAEIRefactoringAction(seq.getSolution());
+		AEmiliaCloneAEIRefactoringAction action = null;
+		try {
+			action = new AEmiliaCloneAEIRefactoringAction(seq.getSolution());
 
-		// EList<ArchiElemInstance> listOfClonableAEI =
-		// action.getListOfClonableInstances();
-		// int randomInt = RandomUtils.nextInt(0, listOfClonableAEI.size());
-		// if (listOfClonableAEI.isEmpty()) {
-		// Controller.logger_.warning("ERROR doen not exist any clonableAEI");
-		// return null;
-		// }
-		// action.setSourceAEI(listOfClonableAEI.get(randomInt));
-		// action.setModel(seq.getModel());
-		// action.setSolution(seq.getSolution());
-		// action.setName("AEmiliaCloneAEIAction");
+			if (action.getSourceAEI() == null)
+				return null;
 
-		if (action.getSourceAEI() == null)
-			return null;
+			if (!action.isApplicable())
+				return null;
 
-		if (!action.isApplicable())
-			return null;
-
-		if (!isApplicable(action, seq))
-			return null;
-
-		// action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1,
-		// MAX_VALUE));
-		// action.setParameters();
-		// action.createPreCondition();
-		// action.createPostCondition();
+			if (!isApplicable(action, seq))
+				return null;
+		} catch (IllegalArgumentException e) {
+			RSolution s = seq.getSolution();
+			System.out.println(seq.toString());
+			System.out.println(s.toString());
+			e.printStackTrace();
+		} 
 		return action;
 	}
 
 	public boolean isApplicable(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		return isClonable(action, seq);
 	}
 
 	private boolean isClonable(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
-		// EList<Attachment> listOfAttachment =
-		// getAttachmentsOfAEI(action.getSourceAEI());
 		if (action == null)
 			return false;
 		if (seq == null)
 			return true;
 		EList<ArchiElemInstance> listOfNeighs = getNeighsOfAEI(action.getSourceAEI());
-		// if (listOfAttachment.isEmpty()) {
-		// return false;
-		// }
-		// for (Attachment att : listOfAttachment) {
-		// if
-		// (!att.getEnd().getIsInput().getType().equals(metamodel.mmaemilia.InteractionType.UNI)
-		// ||
-		// !att.getStart().getIsOutput().getType().equals(metamodel.mmaemilia.InteractionType.UNI))
-		// {
-		// return false;
-		// }
-		// }
 
 		for (Action a : seq.getRefactoring().getActions()) {
 			boolean found = false;
@@ -573,12 +549,10 @@ public class AemiliaManager extends MetamodelManager {
 		if (!isApplicable(action, seq))
 			return null;
 
-		// return action;
-		return null;
+		return action;
 	}
 
 	public boolean isApplicable(AEmiliaConstChangesRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		if (action == null)
 			return false;
 		if (seq == null)
@@ -602,7 +576,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isIn(AEmiliaCloneAEIRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -620,7 +593,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isIn(AEmiliaConstChangesRefactoringAction action, RSequence seq) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -637,7 +609,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isInExcluding(AEmiliaCloneAEIRefactoringAction action, RSequence seq, int index) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -658,7 +629,6 @@ public class AemiliaManager extends MetamodelManager {
 	}
 
 	public boolean isInExcluding(AEmiliaConstChangesRefactoringAction action, RSequence seq, int index) {
-		// TODO Auto-generated method stub
 		boolean found = false;
 		int i = 0;
 		while (i < seq.getRefactoring().getActions().size() && !found) {
@@ -899,74 +869,4 @@ public class AemiliaManager extends MetamodelManager {
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
-
-	/*********
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-//	@Deprecated
-//	public void gaussianEliminationSRBMC() {
-//		getTwoEaglesBridge().gaussianEliminationSRBMC(getAemFilePath(), getRewFilePath(), getOutputFilePath());
-//	}
-//
-//	@Deprecated
-//	public void gaussianEliminationSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
-//		getTwoEaglesBridge().gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
-//	}
-//
-//	@Deprecated
-//	public void sorSRBMC(String aemFilePath, String rewFilePath, String outputFilePath) {
-//		getTwoEaglesBridge().sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
-//	}
-//
-//	@Deprecated
-//	public void measuresToIndices() {
-//		getTwoEaglesBridge().measuresToIndices((Resource) createRewmappingResource(),
-//				MapmeasurestoindicesFactory.eINSTANCE.createRewMapping(), getRewFilePath(), null);
-//	}
-//
-//	@Deprecated
-//	public void aemiliaModelUpdate() {
-//		getTwoEaglesBridge().aemiliaModelUpdate(getAemFilePath(), getRewmappingFilePath(), null);
-//	}
-
-	// @Deprecated
-	// public void aemiliaModelUpdate(String valFilePath, String rewFilePath, String
-	// rewMappingFilePath,
-	// String refactoredMmAemiliaFilePath, RSolution solution) {
-	// try {
-	// Resource rewMappingResource = createRewmappingResource(rewMappingFilePath);
-	//
-	// RewMapping rewMapping =
-	// MapmeasurestoindicesFactory.eINSTANCE.createRewMapping();
-	// // getTwoEaglesBridge().setAemiliaSpecification(
-	// // (AEmiliaSpecification)
-	// // getResource(refactoredMmAemiliaFilePath).getContents().get(0));
-	// getTwoEaglesBridge().measuresToIndices(rewMappingResource, rewMapping,
-	// rewFilePath, null);
-	//
-	// getTwoEaglesBridge().aemiliaModelUpdate(valFilePath, rewMappingFilePath,
-	// null);
-	// } catch (Exception e) {
-	// System.err.println(ExceptionUtils.getStackTrace(e));
-	// System.err.println("Solution number: " + solution.getName());
-	// }
-	// }
-	//
-	// @Deprecated
-	// private AEmiliaSpecification createModel(String aemiliaModelFilePath) {
-	// return (AEmiliaSpecification) EcoreUtil.getObjectByType(
-	// getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath),
-	// true).getContents(),
-	// mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-	// }
-	//
-	// @Deprecated
-	// public AEmiliaSpecification getModel(String mmaemiliaFilePath) {
-	// this.packageRegistering();
-	// return createModel(mmaemiliaFilePath);
-	// }
 }
