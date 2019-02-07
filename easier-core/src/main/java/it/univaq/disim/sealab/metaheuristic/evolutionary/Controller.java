@@ -30,7 +30,11 @@ import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
+import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
+import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
+import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
@@ -277,10 +281,10 @@ public class Controller extends AbstractAlgorithmRunner {
 			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run().getComputingTimes();
 			experiment.setComputingTime(computingTimes);
 			new GenerateReferenceParetoFront(experiment).run();
-//			new ComputeQualityIndicators<>(experiment).run();
-//			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-//			new GenerateBoxplotsWithR<>(experiment).run();
-//			new GenerateLatexTablesWithStatistics(experiment).run();
+			new ComputeQualityIndicators<>(experiment).run();
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
 			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
