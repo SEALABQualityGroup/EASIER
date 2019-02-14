@@ -142,9 +142,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		selectionOpertor = new BinaryTournamentSelection<RSolution>(
 				new RankingAndCrowdingDistanceComparator<RSolution>());
 		solutionListEvaluator = new RSolutionListEvaluator();
+	}
 
+	public Controller setUp() {
 		// setting up the source models
-		for (Path path : config.getModelsPath()) {
+		for (Path path : configurator.getModelsPath()) {
 			SourceModel model = new SourceModel(path);
 			model.setSourceModelPAs(getPerfQuality().performanceAntipatternEvaluator(
 					metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
@@ -157,6 +159,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		metamodelManager.setSourceModels(sourceModels);
 		System.out.println("Setting up finished");
+		return this;
 	}
 
 	public CrossoverOperator<?> getXoverOperator() {
@@ -369,23 +372,25 @@ public class Controller extends AbstractAlgorithmRunner {
 
 	public synchronized void generateAvailability(final List<String> solIDs) {
 		final Path avaPath = Paths.get(configurator.getOutputFolder().toString(), "availability");
-//		File availabilityDir = avaPath.toFile();
+		// File availabilityDir = avaPath.toFile();
 		avaPath.toFile().mkdirs();
 		for (String id : solIDs) {
 			try {
 				String[] types = { "mmaemilia" };
 				FileFilter filter = new FileTypesFilter(types);
-				
-				Path solIDFolder = Paths.get(getPermanentTmpFolder().toString(), String.valueOf(Integer.valueOf(id)/100), id);
+
+				Path solIDFolder = Paths.get(getPermanentTmpFolder().toString(),
+						String.valueOf(Integer.valueOf(id) / 100), id);
 				Path destDir = Paths.get(avaPath.toString(), id);
-//				File paretoFolder = Paths.get(configurator.getOutputFolder().toString(), "pareto").toFile();
-//				paretoFolder.mkdirs();
+				// File paretoFolder = Paths.get(configurator.getOutputFolder().toString(),
+				// "pareto").toFile();
+				// paretoFolder.mkdirs();
 				FileUtils.copyDirectory(solIDFolder.toFile(), destDir.toFile(), filter);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-//		availabilityManager.setFolder(availabilityDir);
+		// availabilityManager.setFolder(availabilityDir);
 		availabilityManager.doAvailability(avaPath);
 	}
 
