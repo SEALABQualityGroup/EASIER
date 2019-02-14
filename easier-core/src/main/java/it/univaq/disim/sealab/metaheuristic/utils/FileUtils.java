@@ -1,8 +1,10 @@
 package it.univaq.disim.sealab.metaheuristic.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +24,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RPointSolution;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
 import metamodel.mmaemilia.ArchitecturalInteraction;
@@ -60,6 +63,29 @@ public class FileUtils {
 	 *            starting folder
 	 * @return array of aemilia file paths
 	 */
+	public static Set<File> listFilesRecursively(final Path folder, String extension) {
+		Set<File> files = new HashSet<File>();
+		if (folder == null || folder.toFile().listFiles() == null) {
+			return files;
+		}
+		for (File entry : folder.toFile().listFiles()) {
+			if (entry.isFile() && entry.getName().endsWith(extension)) {
+				files.add(entry);
+			} else if (entry.isDirectory()) {
+				files.addAll(listFilesRecursively(entry));
+			}
+		}
+		return files;
+	}
+	
+	/**
+	 * Recursively walk through subdirectories listing Aemilia files.
+	 * 
+	 * @param folder
+	 *            starting folder
+	 * @return array of aemilia file paths
+	 */
+	@Deprecated
 	public static Set<File> listFilesRecursively(final File folder, String extension) {
 		Set<File> files = new HashSet<File>();
 		if (folder == null || folder.listFiles() == null) {
@@ -236,5 +262,21 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static List<String> getParetoSolIDs(final List<Path> paretoReferenceFront){
+		List<String> solIDs = new ArrayList<>();
+		for(Path path : paretoReferenceFront) {
+			try (BufferedReader br = new BufferedReader(new FileReader(path.toFile()))) {
+				String sCurrentLine;
+				while ((sCurrentLine = br.readLine()) != null) {
+					solIDs.add(sCurrentLine.split(" ")[0]);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return solIDs;
 	}
 }

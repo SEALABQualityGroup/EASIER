@@ -110,8 +110,14 @@ public class Launcher {
 		ctr.runExperiment(rProblems, qIndicators);
 		
 
-		if (config.hasAvailability())
-			ctr.generateAvailability();
+		if (config.hasAvailability()) {			
+			List<String> solIDs = FileUtils.getParetoSolIDs(ctr.getReferenceFront());
+			ctr.generateAvailability(solIDs);
+		}
+			
+			
+			
+			
 
 		// jc.usage();
 		//

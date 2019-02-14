@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -44,6 +45,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgo
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
@@ -118,6 +120,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	/* Source models */
 	// private List<Path> sourceModels = new ArrayList<>();
 	private List<SourceModel> sourceModels = new ArrayList<>();
+	private List<ExperimentProblem<RSolution>> problemList;
 
 	public Controller() {
 		manager = new Manager(new AemiliaManager(this));
@@ -245,8 +248,8 @@ public class Controller extends AbstractAlgorithmRunner {
 					for (Integer mc : configurator.getMaxCloning()) {
 						if (mc == -1)
 							mc = l; // whether mc is -1 then it is set to chromosome length
-						String pName = src.getName() + "_Length_" + String.valueOf(l) 
-								+ "_CloningWeight_" + String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
+								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
 						RProblem p = new RProblem(src.getSourceFolder(), l, configurator.getActions(),
 								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
 						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
@@ -263,7 +266,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		final int INDEPENDENT_RUNS = configurator.getIndependetRuns(); // should be 31 or 51
 		final int CORES = 1;
 
-		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
+		problemList = new ArrayList<>();
 
 		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<>(problem)));
 
@@ -278,14 +281,24 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setOutputParetoSetFileName("VAR").setIndicatorList(qualityIndicators)
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
-			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run().getComputingTimes();
+			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(
+					experiment, this).run().getComputingTimes();
 			experiment.setComputingTime(computingTimes);
-			new GenerateReferenceParetoFront(experiment).run();
-			new ComputeQualityIndicators<>(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
-			new GenerateLatexTablesWithComputingTime(experiment).run();
+
+			// List<RSolution> pareto = new ArrayList<>();
+
+			new RGenerateReferenceParetoFront(experiment).run();
+
+			// for(Entry<Algorithm<List<RSolution>>, Long> entry : computingTimes) {
+			// saveParetoSolution(entry.getKey().getResult());
+			// }
+			//
+
+			// new ComputeQualityIndicators<>(experiment).run();
+			// new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			// new GenerateBoxplotsWithR<>(experiment).run();
+			// new GenerateLatexTablesWithStatistics(experiment).run();
+			// new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -344,23 +357,68 @@ public class Controller extends AbstractAlgorithmRunner {
 		return algorithms;
 	}
 
-	public synchronized void generateAvailability() {
-		File availabilityDir = Paths.get(configurator.getOutputFolder().toString(), "availability").toFile();
-		availabilityDir.mkdirs();
+	public List<Path> getReferenceFront() {
+
+		List<Path> refFront = new ArrayList<>();
+		for (ExperimentProblem<RSolution> problem : problemList) {
+			refFront.add(
+					Paths.get(configurator.getOutputFolder().toString(), "referenceFront", problem.getTag() + ".rf"));
+		}
+		return refFront;
+	}
+
+	public synchronized void generateAvailability(final List<String> solIDs) {
+		final Path avaPath = Paths.get(configurator.getOutputFolder().toString(), "availability");
+//		File availabilityDir = avaPath.toFile();
+		avaPath.toFile().mkdirs();
+		for (String id : solIDs) {
+			try {
+				String[] types = { "mmaemilia" };
+				FileFilter filter = new FileTypesFilter(types);
+				
+				Path solIDFolder = Paths.get(getPermanentTmpFolder().toString(), String.valueOf(Integer.valueOf(id)/100), id);
+				Path destDir = Paths.get(avaPath.toString(), id);
+//				File paretoFolder = Paths.get(configurator.getOutputFolder().toString(), "pareto").toFile();
+//				paretoFolder.mkdirs();
+				FileUtils.copyDirectory(solIDFolder.toFile(), destDir.toFile(), filter);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+//		availabilityManager.setFolder(availabilityDir);
+		availabilityManager.doAvailability(avaPath);
+	}
+
+	/**
+	 * 
+	 * @param targetFolder
+	 */
+	public synchronized void generateAvailability(final Path targetFolder) {
+		// File availabilityDir = avaFolder;
+		final Path avaFolder = configurator.getOutputFolder().resolve("availability");
 		try {
 			String[] types = { "mmaemilia" };
 			FileFilter filter = new FileTypesFilter(types);
-			File paretoFolder = Paths.get(configurator.getOutputFolder().toString(), "pareto").toFile();
-			paretoFolder.mkdirs();
-			FileUtils.copyDirectory(paretoFolder, availabilityDir, filter);
+			FileUtils.copyDirectory(targetFolder.toFile(), avaFolder.toFile(), filter);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		availabilityManager.setFolder(availabilityDir);
-		availabilityManager.doAvailability();
+		// availabilityManager.setFolder(avaFolder);
+		availabilityManager.doAvailability(avaFolder);
+
+		Set<File> aemFile = it.univaq.disim.sealab.metaheuristic.utils.FileUtils.listFilesRecursively(avaFolder,
+				".aem");
+
+		final TwoEaglesBridge tt = new TwoEaglesBridge();
+
+		tt.setTwoTowersKernelPath(configurator.getTTKernel());
+
+		tt.sorSRBMC(aemFile.iterator().next().toPath(), Paths.get(avaFolder.toString(), "ava.rew"),
+				Paths.get(avaFolder.toString(), "result"));
 	}
 
+	@Deprecated
 	public synchronized void generateAvailability(final Path twoTowersKernelPath, final File targetFolder,
 			final File avaFolder) {
 		// File availabilityDir = avaFolder;
@@ -386,18 +444,22 @@ public class Controller extends AbstractAlgorithmRunner {
 				Paths.get(avaFolder.toString(), "result"));
 	}
 
-	// private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-	// it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
-	// for (RSolution solution : paretoPop) {
-	// File srcDir = new File(solution.getMmaemiliaFolderPath());
-	// File destDir = new File(getParetoFolder() + solution.getName());
-	// try {
-	// FileUtils.copyDirectory(srcDir, destDir);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
+	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
+		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
+		for (RSolution solution : paretoPop) {
+			final File srcDir = new File(solution.getMmaemiliaFolderPath());
+
+			final File destDir = Paths
+					.get(configurator.getOutputFolder().toString(), "pareto", String.valueOf(solution.getName()))
+					.toFile();
+			// File destDir = new File(getParetoFolder() + solution.getName());
+			try {
+				FileUtils.copyDirectory(srcDir, destDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	private void cleanTmpFiles() {
 		if (cleaningTmp) {

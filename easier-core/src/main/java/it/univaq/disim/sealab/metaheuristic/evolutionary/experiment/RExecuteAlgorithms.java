@@ -57,7 +57,6 @@ public class RExecuteAlgorithms<S extends Solution<?>, Result> {
 	private Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
 		long initTime = System.currentTimeMillis();
 		algorithm.runAlgorithm(id, this.experiment);
-		System.out.println(this.experiment.getProblemList().get(id).toString());
 		long computingTime = System.currentTimeMillis() - initTime;
 		return new AbstractMap.SimpleEntry<Algorithm<Result>, Long>(algorithm.getAlgorithm(), computingTime);// new
 	}
