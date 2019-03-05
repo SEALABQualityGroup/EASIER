@@ -31,8 +31,7 @@ import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public class FileUtils {
 
-	public FileUtils() {
-	}
+	public FileUtils() {}
 
 	/**
 	 * Recursively walk through sub-directories listing Aemilia files.
@@ -57,7 +56,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * Recursively walk through subdirectories listing Aemilia files.
+	 * Recursively walk through sub-directories listing Aemilia files.
 	 * 
 	 * @param folder
 	 *            starting folder
@@ -108,9 +107,9 @@ public class FileUtils {
 				true)) {
 			List<String> line = new ArrayList<String>();
 			line.add(String.valueOf(rSolution.getName()));
-			line.add(String.valueOf(rSolution.getPAs()));
 			line.add(String.valueOf(rSolution.getPerfQ()));
 			line.add(String.valueOf(rSolution.getNumOfChanges()));
+			line.add(String.valueOf(rSolution.getPAs()));
 			CSVUtils.writeLine(fw, line);
 		} catch (IOException e) {
 			e.printStackTrace();
