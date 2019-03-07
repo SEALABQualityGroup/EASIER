@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,22 +97,29 @@ public class Launcher {
 		jc.parse(args);
 
 		Controller ctr = new Controller(config);
-		List<RProblem> rProblems = ctr.createProblems();
+		List<Path> referenceFront;
+		if (config.getReferenceFront() != null)
+			referenceFront = config.getReferenceFront();
+		else {
+			ctr.setUp();
+			List<RProblem> rProblems = ctr.createProblems();
+			List<GenericIndicator<RSolution>> qIndicators = new ArrayList<>();
 
-		List<GenericIndicator<RSolution>> qIndicators = new ArrayList<>();
-		
-		FactoryBuilder<RSolution> factory = new FactoryBuilder<>();
-		for (String qI : config.getQualityIndicators()) {
-			GenericIndicator<RSolution> ind = factory.createQualityIndicators(qI);
-			if( ind != null)
-				qIndicators.add(ind);
+			FactoryBuilder<RSolution> factory = new FactoryBuilder<>();
+			for (String qI : config.getQualityIndicators()) {
+				GenericIndicator<RSolution> ind = factory.createQualityIndicators(qI);
+				if (ind != null)
+					qIndicators.add(ind);
+			}
+
+			ctr.runExperiment(rProblems, qIndicators);
+			referenceFront = ctr.getReferenceFront();
 		}
-		
-		ctr.runExperiment(rProblems, qIndicators);
-		
 
-		if (config.hasAvailability())
-			ctr.generateAvailability();
+		if (config.hasAvailability()) {
+			List<String> solIDs = FileUtils.getParetoSolIDs(referenceFront);
+			ctr.generateAvailability(solIDs);
+		}
 
 		// jc.usage();
 		//

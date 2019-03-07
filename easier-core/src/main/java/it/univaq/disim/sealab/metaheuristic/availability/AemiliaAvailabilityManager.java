@@ -67,10 +67,8 @@ public class AemiliaAvailabilityManager {
 		manager.getMetamodelManager().packageRegistering();
 	}
 
-	public AemiliaAvailabilityManager() {
-
-	};
-
+	public AemiliaAvailabilityManager() {};
+	
 	public void doAvailability() {
 
 		for (File solutionFolder : availabilityFolder.listFiles()) {
@@ -94,7 +92,8 @@ public class AemiliaAvailabilityManager {
 			}
 		}
 	}
-
+	
+	@Deprecated
 	public void doAvailability(File folder) {
 		Set<File> files = listFilesRecursively(folder);
 
@@ -111,10 +110,45 @@ public class AemiliaAvailabilityManager {
 			try {
 				targetResource.save(null);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println("[ERROR] Error in saving availability files!!!");
 				e.printStackTrace();
 			}
-			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
+//			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
+			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
+
+			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
+
+			String name = modelFile.getName();
+
+			File newAemFile = Paths.get(modelFile.getParent(), name.substring(0, name.lastIndexOf(".")) + ".aem")
+					.toFile();
+
+			oldAemFile.renameTo(newAemFile);
+
+		}
+	}
+	
+	public void doAvailability(Path folder) {
+		Set<File> files = listFilesRecursively(folder.toFile());
+
+		for (File modelFile : files) {
+			// if (solutionFolder.isDirectory()) {
+			// for (File modelFile : solutionFolder.listFiles()) {
+			// if (modelFile.isFile() &&
+			// FilenameUtils.getExtension(modelFile.getPath()).equals("mmaemilia")) {
+			Resource targetResource = manager.getMetamodelManager().getResourceSet()
+					.getResource(manager.string2FileUri(modelFile.getAbsolutePath()), true);
+			addAvailability((AEmiliaSpecification) targetResource.getContents().get(0));
+			writeAvaRewFile((AEmiliaSpecification) targetResource.getContents().get(0),
+					modelFile.getParentFile().toPath());
+			try {
+				targetResource.save(null);
+			} catch (IOException e) {
+				System.out.println("[ERROR] Error in saving availability files!!!");
+				e.printStackTrace();
+			}
+//			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
+			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
 
 			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
 

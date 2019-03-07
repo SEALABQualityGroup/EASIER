@@ -30,11 +30,6 @@ import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
-import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
-import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
-import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
-import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoFront;
-import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
@@ -43,7 +38,7 @@ import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityMana
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
@@ -63,48 +58,15 @@ public class Controller extends AbstractAlgorithmRunner {
 	public static Logger logger_ = Logger.getLogger(Controller.class.getName());
 	public static FileHandler handler;
 
-	// private static MetamodelManager metamodelManager;
 	private MetamodelManager metamodelManager;
 	private Manager manager;
 	private AemiliaAvailabilityManager availabilityManager;
-
 	private Properties prop;
-
-	// private ExecutorService executor;
-
-	// private String basePath, sourceFolder;
-	// private PerformanceQualityEvaluator perfQuality;
-
-	// private int length, numberOfActions, maxEvaluations, populationSize,
-	// allowedFailures, independentRuns, numberOfPAs;
-
-	// private double crossoverProbability, mutationProbability, distribution_index;
-	// private double[] workloadRange;
-	// private String ruleFilePath, ruleTemplateFilePath;
 	private RProblem problem;
-	// private String outputFolder, tmpFolder, paretoFolder, logFolder,
-	// availabilityFolder;
-	// private String twoTowersKernelPath;
-	// private int maxCloning;
-	// private Instant startingTime, endingTime;
-	// private Map<String, List<ArchitecturalInteraction>> sourceModelPAs;
-
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd.HH.mm.ss");
-	// private String sourceModelPath;
-	// private String sourceAemPath;
-	// private String sourceValPath;
-	// private String sourceRewPath;
-	// private String sourceRewmappingPath;
-	// private String sourceBasePath;
-
 	private boolean cleaningTmp = false;
 	private static boolean SOR = false;
-
-	// private Timestamp timestamp;
-	// private double cloningWeight;
-	// private double constChangesWeight;
 	private String failureRatesPropertiesFile;
-	// private String sourceOclFolder;
 
 	/* Configurator class */
 	private Configurator configurator;
@@ -118,6 +80,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	/* Source models */
 	// private List<Path> sourceModels = new ArrayList<>();
 	private List<SourceModel> sourceModels = new ArrayList<>();
+	private List<ExperimentProblem<RSolution>> problemList;
 
 	public Controller() {
 		manager = new Manager(new AemiliaManager(this));
@@ -139,9 +102,11 @@ public class Controller extends AbstractAlgorithmRunner {
 		selectionOpertor = new BinaryTournamentSelection<RSolution>(
 				new RankingAndCrowdingDistanceComparator<RSolution>());
 		solutionListEvaluator = new RSolutionListEvaluator();
+	}
 
+	public Controller setUp() {
 		// setting up the source models
-		for (Path path : config.getModelsPath()) {
+		for (Path path : configurator.getModelsPath()) {
 			SourceModel model = new SourceModel(path);
 			model.setSourceModelPAs(getPerfQuality().performanceAntipatternEvaluator(
 					metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
@@ -154,6 +119,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 		metamodelManager.setSourceModels(sourceModels);
 		System.out.println("Setting up finished");
+		return this;
 	}
 
 	public CrossoverOperator<?> getXoverOperator() {
@@ -237,16 +203,13 @@ public class Controller extends AbstractAlgorithmRunner {
 		List<RProblem> rProblems = new ArrayList<>();
 
 		for (SourceModel src : sourceModels) {
-			// String pName = src.getName();
 			for (Integer l : configurator.getLength()) {
-				// pName += "_Length_" + String.valueOf(l);
 				for (Double w : configurator.getCloningWeight()) {
-					// pName += "_CloningWeight_" + String.valueOf(w);
 					for (Integer mc : configurator.getMaxCloning()) {
 						if (mc == -1)
-							mc = l; // whether mc is -1 then it is set to chromosome length
-						String pName = src.getName() + "_Length_" + String.valueOf(l) 
-								+ "_CloningWeight_" + String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+							mc = l; // whether mc is -1, mc will be the chromosome's length
+						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
+								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
 						RProblem p = new RProblem(src.getSourceFolder(), l, configurator.getActions(),
 								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
 						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
@@ -263,7 +226,7 @@ public class Controller extends AbstractAlgorithmRunner {
 		final int INDEPENDENT_RUNS = configurator.getIndependetRuns(); // should be 31 or 51
 		final int CORES = 1;
 
-		List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
+		problemList = new ArrayList<>();
 
 		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<>(problem)));
 
@@ -278,14 +241,24 @@ public class Controller extends AbstractAlgorithmRunner {
 				.setOutputParetoSetFileName("VAR").setIndicatorList(qualityIndicators)
 				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
 		try {
-			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(experiment, this).run().getComputingTimes();
+			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(
+					experiment, this).run().getComputingTimes();
 			experiment.setComputingTime(computingTimes);
-			new GenerateReferenceParetoFront(experiment).run();
-			new ComputeQualityIndicators<>(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
-			new GenerateLatexTablesWithComputingTime(experiment).run();
+
+			// List<RSolution> pareto = new ArrayList<>();
+
+			new RGenerateReferenceParetoFront(experiment).run();
+
+			// for(Entry<Algorithm<List<RSolution>>, Long> entry : computingTimes) {
+			// saveParetoSolution(entry.getKey().getResult());
+			// }
+			//
+
+			// new ComputeQualityIndicators<>(experiment).run();
+			// new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			// new GenerateBoxplotsWithR<>(experiment).run();
+			// new GenerateLatexTablesWithStatistics(experiment).run();
+			// new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -344,23 +317,69 @@ public class Controller extends AbstractAlgorithmRunner {
 		return algorithms;
 	}
 
-	public synchronized void generateAvailability() {
-		File availabilityDir = Paths.get(configurator.getOutputFolder().toString(), "availability").toFile();
-		availabilityDir.mkdirs();
+	public List<Path> getReferenceFront() {
+
+		List<Path> refFront = new ArrayList<>();
+		for (ExperimentProblem<RSolution> problem : problemList) {
+			refFront.add(
+					Paths.get(configurator.getOutputFolder().toString(), "referenceFront", problem.getTag() + ".rf"));
+		}
+		return refFront;
+	}
+
+	public synchronized void generateAvailability(final List<String> solIDs) {
+		final Path avaPath = Paths.get(configurator.getOutputFolder().toString(), "availability");
+		// File availabilityDir = avaPath.toFile();
+		avaPath.toFile().mkdirs();
+		for (String id : solIDs) {
+			try {
+				String[] types = { "mmaemilia" };
+				FileFilter filter = new FileTypesFilter(types);
+
+				Path solIDFolder = Paths.get(getPermanentTmpFolder().toString(),
+						String.valueOf(Integer.valueOf(id) / 100), id);
+				Path destDir = Paths.get(avaPath.toString(), id);
+				// File paretoFolder = Paths.get(configurator.getOutputFolder().toString(),
+				// "pareto").toFile();
+				// paretoFolder.mkdirs();
+				FileUtils.copyDirectory(solIDFolder.toFile(), destDir.toFile(), filter);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		// availabilityManager.setFolder(availabilityDir);
+		availabilityManager.doAvailability(avaPath);
+	}
+
+	/**
+	 * 
+	 * @param targetFolder
+	 */
+	public synchronized void generateAvailability(final Path targetFolder) {
+		// File availabilityDir = avaFolder;
+		final Path avaFolder = configurator.getOutputFolder().resolve("availability");
 		try {
 			String[] types = { "mmaemilia" };
 			FileFilter filter = new FileTypesFilter(types);
-			File paretoFolder = Paths.get(configurator.getOutputFolder().toString(), "pareto").toFile();
-			paretoFolder.mkdirs();
-			FileUtils.copyDirectory(paretoFolder, availabilityDir, filter);
+			FileUtils.copyDirectory(targetFolder.toFile(), avaFolder.toFile(), filter);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		availabilityManager.setFolder(availabilityDir);
-		availabilityManager.doAvailability();
+		availabilityManager.doAvailability(avaFolder);
+
+		Set<File> aemFile = it.univaq.disim.sealab.metaheuristic.utils.FileUtils.listFilesRecursively(avaFolder,
+				".aem");
+
+		final TwoEaglesBridge tt = new TwoEaglesBridge();
+
+		tt.setTwoTowersKernelPath(configurator.getTTKernel());
+
+		tt.sorSRBMC(aemFile.iterator().next().toPath(), Paths.get(avaFolder.toString(), "ava.rew"),
+				Paths.get(avaFolder.toString(), "result"));
 	}
 
+	@Deprecated
 	public synchronized void generateAvailability(final Path twoTowersKernelPath, final File targetFolder,
 			final File avaFolder) {
 		// File availabilityDir = avaFolder;
@@ -386,18 +405,22 @@ public class Controller extends AbstractAlgorithmRunner {
 				Paths.get(avaFolder.toString(), "result"));
 	}
 
-	// private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-	// it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
-	// for (RSolution solution : paretoPop) {
-	// File srcDir = new File(solution.getMmaemiliaFolderPath());
-	// File destDir = new File(getParetoFolder() + solution.getName());
-	// try {
-	// FileUtils.copyDirectory(srcDir, destDir);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
+	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
+		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
+		for (RSolution solution : paretoPop) {
+			final File srcDir = new File(solution.getMmaemiliaFolderPath());
+
+			final File destDir = Paths
+					.get(configurator.getOutputFolder().toString(), "pareto", String.valueOf(solution.getName()))
+					.toFile();
+			// File destDir = new File(getParetoFolder() + solution.getName());
+			try {
+				FileUtils.copyDirectory(srcDir, destDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	private void cleanTmpFiles() {
 		if (cleaningTmp) {
@@ -409,35 +432,9 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	// private FileInputStream getConfigFile(String filename) throws
-	// FileNotFoundException {
-	// try {
-	// filename = new java.io.File(".").getCanonicalPath() + filename;
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// return new FileInputStream(filename);
-	// }
-
 	public PerformanceQualityEvaluator getPerfQuality() {
 		return new PerformanceQualityEvaluator(manager.getOclManager());
 	}
-
-	// public String getRuleFilePath() {
-	// return ruleFilePath;
-	// }
-
-	// public void setRuleFilePath(String ruleFilePath) {
-	// this.ruleFilePath = ruleFilePath;
-	// }
-	//
-	// public String getBasePath() {
-	// return basePath;
-	// }
-	//
-	// public void setBasePath(String basePath) {
-	// this.basePath = basePath;
-	// }
 
 	public RProblem getProblem() {
 		return this.problem;
@@ -446,30 +443,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setProblem(RProblem p) {
 		this.problem = p;
 	}
-
-	// public String getOutputFolder() {
-	// return outputFolder;
-	// }
-	//
-	// public void setOutputFolder(String outputFolder) {
-	// this.outputFolder = outputFolder;
-	// }
-	//
-	// public String getTmpFolder() {
-	// return tmpFolder;
-	// }
-
-	// public void setTmpFolder(String tmp) {
-	// this.tmpFolder = tmp;
-	// }
-	//
-	// public String getTwoTowersKernelPath() {
-	// return twoTowersKernelPath;
-	// }
-	//
-	// public void setTwoTowersKernelPath(String twoTowersKernelPath) {
-	// this.twoTowersKernelPath = twoTowersKernelPath;
-	// }
 
 	public void checkTwoTowersOutput(Path valFilePath) {
 		BufferedReader br = null;
@@ -496,18 +469,6 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	// public String getSourceRewPath() {
-	// return sourceRewPath;
-	// }
-	//
-	// public String getSourceValPath() {
-	// return sourceValPath;
-	// }
-	//
-	// public void setSourceRewPath(String sourceRewPath) {
-	// this.sourceRewPath = sourceRewPath;
-	// }
-
 	public Manager getManager() {
 		return manager;
 	}
@@ -519,14 +480,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	public void setManager(Manager manager) {
 		this.manager = manager;
 	}
-
-	// public int getMaxCloning() {
-	// return maxCloning;
-	// }
-	//
-	// public void setMaxCloning(final int maxCloning) {
-	// this.maxCloning = maxCloning;
-	// }
 
 	private void updateSourceModel(Path source) {
 		final Path sourceAemPath = source.resolve("model.aem");
@@ -555,65 +508,9 @@ public class Controller extends AbstractAlgorithmRunner {
 		}
 	}
 
-	// public String getSourceModelPath() {
-	// return sourceModelPath;
-	// }
-	//
-	// public void setSourceModelPath(final String sourceModelPath) {
-	// this.sourceModelPath = sourceModelPath;
-	// }
-
-	// @Deprecated
-	// private void checkSourceVal() {
-	// if (!new File(sourceValPath).exists()) {
-	// ((AemiliaManager)
-	// manager.getMetamodelManager()).gaussianEliminationSRBMC(sourceAemPath,
-	// sourceRewPath,
-	// sourceFolder + "/ttresult");
-	// if (!new File(sourceValPath).exists()) {
-	// checkTwoTowersOutput(sourceFolder + "/ttresult");
-	// }
-	// }
-	// }
-
 	private boolean checkSourceVal(final Path sourcePath) {
 		return Files.exists(sourcePath);
 	}
-
-	// public String getRuleTemplateFilePath() {
-	// return ruleTemplateFilePath;
-	// }
-	//
-	// public void setRuleTemplateFilePath(final String ruleTemplateFilePath) {
-	// this.ruleTemplateFilePath = ruleTemplateFilePath;
-	// }
-
-	// public double getWorkloadRange() {
-	// if (workloadRange != null)
-	// return JMetalRandom.getInstance().nextDouble(workloadRange[0],
-	// workloadRange[1]);
-	// return -1;
-	// }
-	//
-	// public String getLogFolder() {
-	// return logFolder;
-	// }
-	//
-	// public void setLogFolder(final String logFolder) {
-	// this.logFolder = logFolder;
-	// }
-	//
-	// public void setAvailabilityFolder(final String availabilityFolder) {
-	// this.availabilityFolder = availabilityFolder;
-	// }
-
-	// public String getParetoFolder() {
-	// return paretoFolder;
-	// }
-	//
-	// public void setParetoFolder(final String paretoFolder) {
-	// this.paretoFolder = paretoFolder;
-	// }
 
 	private class FileTypesFilter implements FileFilter {
 		String[] types;
@@ -632,14 +529,6 @@ public class Controller extends AbstractAlgorithmRunner {
 			return false;
 		}
 	}
-
-	// public double getCloningWeight() {
-	// return cloningWeight;
-	// }
-	//
-	// public double getConstChangesWeight() {
-	// return constChangesWeight;
-	// }
 
 	public String getFailureRatesPropertiesFile() {
 		if (failureRatesPropertiesFile != null)
@@ -660,7 +549,6 @@ public class Controller extends AbstractAlgorithmRunner {
 	}
 
 	public Path getPermanentTmpFolder() {
-
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
 	}
 }
