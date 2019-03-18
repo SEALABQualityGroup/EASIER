@@ -1,7 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>it.univaq.disim.sealab</groupId>
+	<parent>
+		<groupId>it.univaq.disim.sealab</groupId>
+		<artifactId>easier</artifactId>
+		<version>0.6.2</version>
+	</parent>
 	<artifactId>aemiliaToQn_bridge</artifactId>
 	<version>0.0.2</version>
 	<packaging>jar</packaging>
@@ -10,26 +14,8 @@
 		<src.dir>src</src.dir>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>SonaType Repository</id>
-			<name>sonatype repo</name>
-			<url>https://oss.sonatype.org/content/repositories/releases/</url>
-		</repository>
-		<repository>
-			<id>Maven2 Repository</id>
-			<name>maven2 repo</name>
-			<url>http://central.maven.org/maven2/</url>
-		</repository>
-	</repositories>
-
 	<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common -->
 	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.12.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -46,22 +32,13 @@
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemiliaMetamodel</artifactId>
-			<version>1.0.0</version>
+			<version>${easier.aemiliaMetamodel.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<sourceDirectory>${src.dir}</sourceDirectory>
-		<pluginManagement>
 			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
 					<version>2.10</version>
@@ -69,24 +46,6 @@
 						<pde>true</pde>
 					</configuration>
 				</plugin>
-
-
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-						<filesets>
-							<fileset>
-								<directory>${basedir}</directory>
-								<includes>
-									<include>*.jar</include>
-								</includes>
-								<followSymlinks>false</followSymlinks>
-							</fileset>
-						</filesets>
-					</configuration>
-				</plugin>
 			</plugins>
-		</pluginManagement>
 	</build>
 </project>
