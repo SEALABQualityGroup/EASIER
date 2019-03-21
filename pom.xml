@@ -17,6 +17,7 @@
 		<module>easier-logicalSpecification/LogicalSpecification</module>
 		<module>easier-measuresToIndices/MapMeasuresToIndices</module>
 		<module>easier-twoeaglesBridge</module>
+		<module>easier-helper</module>
 	</modules>
 	<properties>
 		<emf.version>2.12.0</emf.version>

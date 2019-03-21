@@ -1,20 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>it.univaq.disim.sealab</groupId>
+	<parent>
+		<groupId>it.univaq.disim.sealab</groupId>
+		<artifactId>easier</artifactId>
+		<version>0.6.2</version>
+	</parent>
 	<artifactId>easier-helper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -36,6 +32,11 @@
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>twoeaglesBridge</artifactId>
 			<version>0.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>it.univaq.disim.sealab</groupId>
+			<artifactId>easier-core</artifactId>
+			<version>0.6.2</version>
 		</dependency>
 	</dependencies>
 </project>
