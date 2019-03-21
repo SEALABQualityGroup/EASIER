@@ -277,7 +277,7 @@ public class Controller extends AbstractAlgorithmRunner {
 	 * which form part of a {@link ExperimentAlgorithm}, which is a decorator for
 	 * class {@link Algorithm}.
 	 */
-	private List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
+	public List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
 			List<ExperimentProblem<RSolution>> problemList) {
 
 		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithms = new ArrayList<>();
