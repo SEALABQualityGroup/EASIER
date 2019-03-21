@@ -88,23 +88,27 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 
 					String varFileName = problemDirectory + "/" + experiment.getOutputParetoSetFileName() + i + ".tsv";
 
-					List<RPointSolution> ptSolutionList = generateRPointSolutionList(varFileName);
-//					List<PointSolution> solutionList = generateSolutionList(frontFileName, varFileName);
+					if (new File(varFileName).exists()) {
 
-					// GenericSolutionAttribute<PointSolution, String> solutionAttribute = new
-					// GenericSolutionAttribute<PointSolution, String>();
-					GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
+						List<RPointSolution> ptSolutionList = generateRPointSolutionList(varFileName);
+						// List<PointSolution> solutionList = generateSolutionList(frontFileName,
+						// varFileName);
 
-					for (RPointSolution solution : ptSolutionList) {
-						solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
-						nonDominatedSolutionArchive.add(solution);
+						// GenericSolutionAttribute<PointSolution, String> solutionAttribute = new
+						// GenericSolutionAttribute<PointSolution, String>();
+						GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
+
+						for (RPointSolution solution : ptSolutionList) {
+							solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
+							nonDominatedSolutionArchive.add(solution);
+						}
 					}
 				}
 			}
-			
+
 			String referenceSetFileName = outputDirectoryName + "/" + problem.getTag() + ".rf";
 			referenceFrontFileNames.add(problem.getTag() + ".rf");
-			
+
 			new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
 					.printObjectivesToFile(referenceSetFileName);
 
