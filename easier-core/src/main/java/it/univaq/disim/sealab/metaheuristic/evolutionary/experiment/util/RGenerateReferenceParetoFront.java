@@ -162,7 +162,6 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 

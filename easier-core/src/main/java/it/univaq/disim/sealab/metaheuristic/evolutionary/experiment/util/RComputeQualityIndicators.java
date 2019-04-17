@@ -1,6 +1,23 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util;
 //This program is free software: you can redistribute it and/or modify
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 //it under the terms of the GNU Lesser General Public License as published by
 //the Free Software Foundation, either version 3 of the License, or
 //(at your option) any later version.
@@ -20,8 +37,9 @@ import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.experiment.ExperimentComponent;
 import org.uma.jmetal.util.experiment.Experiment;
+import org.uma.jmetal.util.experiment.ExperimentComponent;
+import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.front.Front;
@@ -29,15 +47,6 @@ import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.util.PointSolution;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import java.util.*;
 
 /**
  * This class computes the {@link QualityIndicator}s of an experiment. Once the
@@ -78,7 +87,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 
 					JMetalLogger.logger.info("RF: " + referenceFrontName);
 
-					Front referenceFront = new ArrayFront(referenceFrontName);
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName));
 
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 
@@ -93,9 +102,10 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 							String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName()
 									+ i + ".tsv";
 
-							if (new File(frontFileName).exists()) {
+							if (new File(frontFileName).exists()) { // in case of a not completed execution
 
 								Front front = new ArrayFront(frontFileName);
+
 								Front normalizedFront = frontNormalizer.normalize(front);
 								List<PointSolution> normalizedPopulation = FrontUtils
 										.convertFrontToSolutionList(normalizedFront);
@@ -106,13 +116,42 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 							}
 						}
 					} catch (JMetalException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 		}
-		findBestIndicatorFronts(experiment);
+		try {
+			findBestIndicatorFronts(experiment);
+		} catch (JMetalException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String removeSolID(String frontFileName) {
+
+		File tmpFile;
+		String tmpFileName = null;
+		try {
+			tmpFile = File.createTempFile("front", "");
+			tmpFile.deleteOnExit();
+			tmpFileName = tmpFile.getAbsolutePath();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		String readLine = "";
+		try (BufferedReader reader = new BufferedReader(new FileReader(frontFileName));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile))) {
+			while ((readLine = reader.readLine()) != null) {
+				String line = readLine.split(" ", 2)[1];
+				writer.write(line);
+				writer.newLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return tmpFileName;
 	}
 
 	private void writeQualityIndicatorValueToFile(Double indicatorValue, String qualityIndicatorFile) {
@@ -165,70 +204,69 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 				for (ExperimentProblem<?> problem : experiment.getProblemList()) {
 					String indicatorFileName = algorithmDirectory + "/" + problem.getTag() + "/" + indicator.getName();
 					Path indicatorFile = Paths.get(indicatorFileName);
-					if (indicatorFile == null) {
-						throw new JMetalException("Indicator file " + indicator.getName() + " doesn't exist");
-					}
+					if (indicatorFile != null && Files.exists(indicatorFile)) {
 
-					List<String> fileArray;
-					fileArray = Files.readAllLines(indicatorFile, StandardCharsets.UTF_8);
+						List<String> fileArray;
+						fileArray = Files.readAllLines(indicatorFile, StandardCharsets.UTF_8);
 
-					List<Pair<Double, Integer>> list = new ArrayList<>();
+						List<Pair<Double, Integer>> list = new ArrayList<>();
 
-					for (int i = 0; i < fileArray.size(); i++) {
-						Pair<Double, Integer> pair = new ImmutablePair<>(Double.parseDouble(fileArray.get(i)), i);
-						list.add(pair);
-					}
-
-					Collections.sort(list, new Comparator<Pair<Double, Integer>>() {
-						@Override
-						public int compare(Pair<Double, Integer> pair1, Pair<Double, Integer> pair2) {
-							if (Math.abs(pair1.getLeft()) > Math.abs(pair2.getLeft())) {
-								return 1;
-							} else if (Math.abs(pair1.getLeft()) < Math.abs(pair2.getLeft())) {
-								return -1;
-							} else {
-								return 0;
-							}
+						for (int i = 0; i < fileArray.size(); i++) {
+							Pair<Double, Integer> pair = new ImmutablePair<>(Double.parseDouble(fileArray.get(i)), i);
+							list.add(pair);
 						}
-					});
-					String bestFunFileName;
-					String bestVarFileName;
-					String medianFunFileName;
-					String medianVarFileName;
 
-					String outputDirectory = algorithmDirectory + "/" + problem.getTag();
+						Collections.sort(list, new Comparator<Pair<Double, Integer>>() {
+							@Override
+							public int compare(Pair<Double, Integer> pair1, Pair<Double, Integer> pair2) {
+								if (Math.abs(pair1.getLeft()) > Math.abs(pair2.getLeft())) {
+									return 1;
+								} else if (Math.abs(pair1.getLeft()) < Math.abs(pair2.getLeft())) {
+									return -1;
+								} else {
+									return 0;
+								}
+							}
+						});
+						String bestFunFileName;
+						String bestVarFileName;
+						String medianFunFileName;
+						String medianVarFileName;
 
-					bestFunFileName = outputDirectory + "/BEST_" + indicator.getName() + "_FUN.tsv";
-					bestVarFileName = outputDirectory + "/BEST_" + indicator.getName() + "_VAR.tsv";
-					medianFunFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_FUN.tsv";
-					medianVarFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_VAR.tsv";
-					if (indicator.isTheLowerTheIndicatorValueTheBetter()) {
-						String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-								+ list.get(0).getRight() + ".tsv";
-						String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-								+ list.get(0).getRight() + ".tsv";
+						String outputDirectory = algorithmDirectory + "/" + problem.getTag();
 
-						Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
-						Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
-					} else {
-						String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-								+ list.get(list.size() - 1).getRight() + ".tsv";
-						String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-								+ list.get(list.size() - 1).getRight() + ".tsv";
+						bestFunFileName = outputDirectory + "/BEST_" + indicator.getName() + "_FUN.tsv";
+						bestVarFileName = outputDirectory + "/BEST_" + indicator.getName() + "_VAR.tsv";
+						medianFunFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_FUN.tsv";
+						medianVarFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_VAR.tsv";
+						if (indicator.isTheLowerTheIndicatorValueTheBetter()) {
+							String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+									+ list.get(0).getRight() + ".tsv";
+							String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+									+ list.get(0).getRight() + ".tsv";
 
-						Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
-						Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
+							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
+							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
+						} else {
+							String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+									+ list.get(list.size() - 1).getRight() + ".tsv";
+							String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+									+ list.get(list.size() - 1).getRight() + ".tsv";
+
+							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
+							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
+						}
+
+						int medianIndex = list.size() / 2;
+						String medianFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+								+ list.get(medianIndex).getRight() + ".tsv";
+						String medianVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+								+ list.get(medianIndex).getRight() + ".tsv";
+
+						Files.copy(Paths.get(medianFunFile), Paths.get(medianFunFileName), REPLACE_EXISTING);
+						Files.copy(Paths.get(medianVarFile), Paths.get(medianVarFileName), REPLACE_EXISTING);
 					}
-
-					int medianIndex = list.size() / 2;
-					String medianFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-							+ list.get(medianIndex).getRight() + ".tsv";
-					String medianVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-							+ list.get(medianIndex).getRight() + ".tsv";
-
-					Files.copy(Paths.get(medianFunFile), Paths.get(medianFunFileName), REPLACE_EXISTING);
-					Files.copy(Paths.get(medianVarFile), Paths.get(medianVarFileName), REPLACE_EXISTING);
-				}
+				} 
 			}
 		}
 	}

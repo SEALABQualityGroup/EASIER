@@ -12,7 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
-import org.uma.jmetal.util.experiment.component.ComputeQualityIndicators;
+import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
+import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
@@ -23,7 +24,9 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateLatexTablesWithStatistic;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
@@ -103,6 +106,10 @@ public class Helper implements Runnable {
 			try {
 				new RGenerateReferenceParetoFront(experiment).run();
 				new RComputeQualityIndicators<>(experiment).run();
+				new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+				new GenerateBoxplotsWithR<>(experiment).run();
+				new RGenerateLatexTablesWithStatistic<>(experiment).run();
+//				new GenerateLatexTablesWithComputingTime(experiment).run();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
