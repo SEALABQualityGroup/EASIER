@@ -20,10 +20,10 @@
 		<module>easier-helper</module>
 	</modules>
 	<properties>
-		<emf.version>2.12.0</emf.version>
+		<emf.version>2.15.0</emf.version>
 		<jdk.version>1.8</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 		<easier.aemiliaMetamodel.version>1.0.0</easier.aemiliaMetamodel.version>
 		<easier.core.version>0.6.2</easier.core.version>
 		<easier.logicalSpecification.version>0.6</easier.logicalSpecification.version>
@@ -32,31 +32,31 @@
 	</properties>
 
 	<build>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>${jdk.version}</source>
-						<target>${jdk.version}</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-						<filesets>
-							<fileset>
-								<directory>${basedir}</directory>
-								<includes>
-									<include>*.jar</include>
-								</includes>
-								<followSymlinks>false</followSymlinks>
-							</fileset>
-						</filesets>
-					</configuration>
-				</plugin>
-			</plugins>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}</directory>
+							<includes>
+								<include>*.jar</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<repositories>
@@ -102,6 +102,11 @@
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>${emf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.5.0-M1</version>
 		</dependency>
 	</dependencies>
 </project>

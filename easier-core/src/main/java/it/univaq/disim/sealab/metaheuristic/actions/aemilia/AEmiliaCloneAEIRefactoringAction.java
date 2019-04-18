@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
@@ -52,7 +52,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		EList<ArchiElemInstance> listOfClonableAEI = this.getListOfClonableInstances();
 		int randomInt = RandomUtils.nextInt(0, listOfClonableAEI.size());
 		if (listOfClonableAEI.isEmpty()) {
-			Controller.logger_.warning("No clonable AEIs for Solution #" + solution.getName() + "!");
+			AEmiliaController.logger_.warning("No clonable AEIs for Solution #" + solution.getName() + "!");
 			this.sourceAEI = null;
 		} else {
 			this.sourceAEI = listOfClonableAEI.get(randomInt);
@@ -132,7 +132,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	}
 	
 	public void log() {
-		Controller.logger_.info("CLONING " + sourceAEI.getInstanceName());
+		AEmiliaController.logger_.info("CLONING " + sourceAEI.getInstanceName());
 	}
 
 	/**

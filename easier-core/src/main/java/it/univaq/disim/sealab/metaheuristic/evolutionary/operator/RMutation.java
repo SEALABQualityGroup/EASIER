@@ -7,7 +7,7 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
@@ -102,11 +102,11 @@ public class RMutation implements MutationOperator<RSolution> {
 						}
 					}
 					if(!altered)
-						Controller.logger_.info("Mutation left solution unchanged");
+						AEmiliaController.logger_.info("Mutation left solution unchanged");
 					else {
 						solution.setMutated(true);
 						RSolution.MutationCounter++;
-						Controller.logger_.info("Mutation is done");
+						AEmiliaController.logger_.info("Mutation is done");
 					}
 				} catch (UnexpectedException e) {
 					// TODO Auto-generated catch block

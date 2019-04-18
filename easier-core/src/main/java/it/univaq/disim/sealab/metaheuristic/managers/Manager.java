@@ -13,6 +13,7 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
@@ -156,29 +157,6 @@ public class Manager {
 		return a;
 	}
 
-	/////// OPERATORS EVALUATION METHODS
-
-	// public boolean evaluateFOL(FOLSpecification folSpec) throws ParserException {
-	// if (folSpec.getRootOperator() instanceof NotOperator)
-	// return evaluateOperator((NotOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof AndOperator)
-	// return evaluateOperator((AndOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof OrOperator)
-	// return evaluateOperator((OrOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof ForAllOperator)
-	// return evaluateOperator((ForAllOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof ExistsOperator)
-	// return evaluateOperator((ExistsOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof GreaterOperator)
-	// return evaluateOperator((GreaterOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof GreaterOperator)
-	// return evaluateOperator((GreaterEqualOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof GreaterEqualOperator)
-	// return evaluateOperator((LessOperator) folSpec.getRootOperator());
-	// else if (folSpec.getRootOperator() instanceof LessOperator)
-	// return evaluateOperator((LessEqualOperator) folSpec.getRootOperator());
-	// return evaluateOperator((EqualOperator) folSpec.getRootOperator());
-	// }
 
 	public boolean evaluateFOL(FOLSpecification folSpec, EObject context) throws ParserException {
 		if (folSpec.getRootOperator() instanceof NotOperator)
@@ -202,37 +180,6 @@ public class Manager {
 		return evaluateOperator((EqualOperator) folSpec.getRootOperator());
 	}
 
-	// public boolean evaluateOperator(Operator operator) {
-	// return evaluateOperator(operator);
-	// }
-
-	// public boolean evaluateOperator(NotOperator operator) throws ParserException
-	// {
-	// // System.out.print("NOT(");
-	// boolean app = true;
-	// if (operator.getArgument() instanceof NotOperator)
-	// app = !evaluateOperator((NotOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof AndOperator)
-	// app = !evaluateOperator((AndOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof OrOperator)
-	// app = !evaluateOperator((OrOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof ForAllOperator)
-	// app = !evaluateOperator((ForAllOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof ExistsOperator)
-	// app = !evaluateOperator((ExistsOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof GreaterOperator)
-	// app = !evaluateOperator((GreaterOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof GreaterEqualOperator)
-	// app = !evaluateOperator((GreaterEqualOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof LessOperator)
-	// app = !evaluateOperator((LessOperator) operator.getArgument());
-	// else if (operator.getArgument() instanceof LessEqualOperator)
-	// app = !evaluateOperator((LessEqualOperator) operator.getArgument());
-	// else
-	// app = !evaluateOperator((EqualOperator) operator.getArgument());
-	// // System.out.print(")");
-	// return app;
-	// }
 
 	public boolean evaluateOperator(NotOperator operator, Object contextualElement) throws ParserException {
 		// System.out.print("NOT(");
@@ -260,43 +207,6 @@ public class Manager {
 		// System.out.print(")");
 		return app;
 	}
-
-	// public boolean evaluateOperator(AndOperator operator) throws ParserException
-	// {
-	// // System.out.print("AND(");
-	// boolean app = true;
-	// Iterator<Operator> opsIterator = operator.getArguments().iterator();
-	// while (opsIterator.hasNext()) {
-	// // boolean app = true;
-	// Operator appOp = opsIterator.next();
-	// if (appOp instanceof NotOperator)
-	// app = app && evaluateOperator((NotOperator) appOp);
-	// else if (appOp instanceof AndOperator)
-	// app = app && evaluateOperator((AndOperator) appOp);
-	// else if (appOp instanceof OrOperator)
-	// app = app && evaluateOperator((OrOperator) appOp);
-	// else if (appOp instanceof ForAllOperator)
-	// app = app && evaluateOperator((ForAllOperator) appOp);
-	// else if (appOp instanceof ExistsOperator)
-	// app = app && evaluateOperator((ExistsOperator) appOp);
-	// else if (appOp instanceof GreaterOperator)
-	// app = app && evaluateOperator((GreaterOperator) appOp);
-	// else if (appOp instanceof GreaterEqualOperator)
-	// app = app && evaluateOperator((GreaterEqualOperator) appOp);
-	// else if (appOp instanceof LessOperator)
-	// app = app && evaluateOperator((LessOperator) appOp);
-	// else if (appOp instanceof LessEqualOperator)
-	// app = app && evaluateOperator((LessEqualOperator) appOp);
-	// else
-	// app = evaluateOperator((EqualOperator) appOp);
-	// // if (opsIterator.hasNext())
-	// // System.out.print(", ");
-	// // if(!app)
-	// // return false;
-	// }
-	// // System.out.print(")");
-	// return app;
-	// }
 
 	public boolean evaluateOperator(AndOperator operator, Object contextualElement) throws ParserException {
 		// System.out.print("AND(");
@@ -334,41 +244,6 @@ public class Manager {
 		return app;
 	}
 
-	// public boolean evaluateOperator(OrOperator operator) throws ParserException {
-	// // System.out.print("OR(");
-	// boolean app = false;
-	// Iterator<Operator> opsIterator = operator.getArguments().iterator();
-	// while (opsIterator.hasNext()) {
-	// Object appOp = opsIterator.next();
-	// // boolean app = false;
-	// if (appOp instanceof NotOperator)
-	// app = app || evaluateOperator((NotOperator) appOp);
-	// else if (appOp instanceof AndOperator)
-	// app = app || evaluateOperator((AndOperator) appOp);
-	// else if (appOp instanceof OrOperator)
-	// app = app || evaluateOperator((OrOperator) appOp);
-	// else if (appOp instanceof ForAllOperator)
-	// app = app || evaluateOperator((ForAllOperator) appOp);
-	// else if (appOp instanceof ExistsOperator)
-	// app = app || evaluateOperator((ExistsOperator) appOp);
-	// else if (appOp instanceof GreaterOperator)
-	// app = app || evaluateOperator((GreaterOperator) appOp);
-	// else if (appOp instanceof GreaterEqualOperator)
-	// app = app || evaluateOperator((GreaterEqualOperator) appOp);
-	// else if (appOp instanceof LessOperator)
-	// app = app || evaluateOperator((LessOperator) appOp);
-	// else if (appOp instanceof LessEqualOperator)
-	// app = app || evaluateOperator((LessEqualOperator) appOp);
-	// else
-	// app = app || evaluateOperator((EqualOperator) appOp);
-	// // if (opsIterator.hasNext())
-	// // System.out.print(", ");
-	// // if(app)
-	// // return true;
-	// }
-	// // System.out.print(")");
-	// return app;
-	// }
 
 	public boolean evaluateOperator(OrOperator operator, Object contextualElement) throws ParserException {
 		// System.out.print("OR(");
@@ -415,135 +290,12 @@ public class Manager {
 		oclManager = oclMan;
 	}
 
-	// public boolean evaluateOperator(ForAllOperator operator) throws
-	// ParserException {
-	// // HashSet<Object> hashSetRes = (HashSet<Object>) OclUMLManager
-	// // .evaluateOCL(operator.getCollection().getResolvingExpr(),
-	// // Manager.getInstance(null).getModel());
-	//
-	// HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-	// .evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
-	//
-	// List<Object> res = new ArrayList<Object>();
-	// for (Object object : hashSetRes) {
-	// if (object instanceof Model)
-	// res.add((Model) object);
-	// else if (object instanceof Package)
-	// res.add((Package) object);
-	// else if (object instanceof Component)
-	// res.add((Component) object);
-	// else if (object instanceof Operation)
-	// res.add((Operation) object);
-	// else if (object instanceof Node)
-	// res.add((Node) object);
-	// }
-	//
-	// // System.out.print("FORALL(element in \"" +
-	// // operator.getCollection().getResolvingExpr() + "\": ");
-	//
-	// // if (res.size() > 1)
-	// // System.out.print("AND(");
-	//
-	// boolean app = true;
-	// for (Object object : res) {
-	// // boolean app = true;
-	// if (operator.getArgument() instanceof NotOperator)
-	// app = evaluateOperator((NotOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof AndOperator)
-	// app = evaluateOperator((AndOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof OrOperator)
-	// app = evaluateOperator((OrOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ForAllOperator)
-	// app = evaluateOperator((ForAllOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ExistsOperator)
-	// app = evaluateOperator((ExistsOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterOperator)
-	// app = evaluateOperator((GreaterOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterEqualOperator)
-	// app = evaluateOperator((GreaterEqualOperator) operator.getArgument(),
-	// object);
-	// else if (operator.getArgument() instanceof LessOperator)
-	// app = evaluateOperator((LessOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof LessEqualOperator)
-	// app = evaluateOperator((LessEqualOperator) operator.getArgument(), object);
-	// else
-	// app = evaluateOperator((EqualOperator) operator.getArgument(), object);
-	// // if (res.get(res.size() - 1) != object)
-	// // System.out.print(", ");
-	// // else
-	// // System.out.print(")");
-	// // if(!app)
-	// // return false;
-	// }
-	// // System.out.print(")");
-	// return app;
-	// }
-
-	// public boolean evaluateOperator(ForAllOperator operator, String umlModelUri)
-	// throws ParserException {
-	// HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-	// .evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
-	// List<Object> res = new ArrayList<Object>();
-	// for (Object object : hashSetRes) {
-	// if (object instanceof Model)
-	// res.add((Model) object);
-	// else if (object instanceof Package)
-	// res.add((Package) object);
-	// else if (object instanceof Component)
-	// res.add((Component) object);
-	// else if (object instanceof Operation)
-	// res.add((Operation) object);
-	// else if (object instanceof Node)
-	// res.add((Node) object);
-	// }
-	//
-	// // System.out.print("FORALL(element in \"" +
-	// // operator.getCollection().getResolvingExpr() + "\": ");
-	//
-	// // if (res.size() > 1)
-	// // System.out.print("AND(");
-	//
-	// boolean app = true;
-	// for (Object object : res) {
-	// // boolean app = true;
-	// if (operator.getArgument() instanceof NotOperator)
-	// app = evaluateOperator((NotOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof AndOperator)
-	// app = evaluateOperator((AndOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof OrOperator)
-	// app = evaluateOperator((OrOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ForAllOperator)
-	// app = evaluateOperator((ForAllOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ExistsOperator)
-	// app = evaluateOperator((ExistsOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterOperator)
-	// app = evaluateOperator((GreaterOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterEqualOperator)
-	// app = evaluateOperator((GreaterEqualOperator) operator.getArgument(),
-	// object);
-	// else if (operator.getArgument() instanceof LessOperator)
-	// app = evaluateOperator((LessOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof LessEqualOperator)
-	// app = evaluateOperator((LessEqualOperator) operator.getArgument(), object);
-	// else
-	// app = evaluateOperator((EqualOperator) operator.getArgument(), object);
-	// // if (res.get(res.size() - 1) != object)
-	// // System.out.print(", ");
-	// // else
-	// // System.out.print(")");
-	// // if(!app)
-	// // return false;
-	// }
-	// // System.out.print(")");
-	// return app;
-	// }
-
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
 		if (getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement) instanceof HashSet<?>) {
+				contextualElement, this.metamodelManager.getResource()) instanceof HashSet<?>) {
 			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-					.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
+					.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 			for (Object object : hashSetRes) {
 				if (object instanceof ArchiElemInstance)
 					coll.add((ArchiElemInstance) object);
@@ -594,128 +346,12 @@ public class Manager {
 		return app;
 	}
 
-	// public boolean evaluateOperator(ForAllOperator operator, Object
-	// contextualElement, String umlModelUri)
-	// throws ParserException {
-	// HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-	// .evaluateOCL(operator.getCollection().getResolvingExpr(), getModel());
-	// List<Object> res = new ArrayList<Object>();
-	// for (Object object : hashSetRes) {
-	// if (object instanceof Model)
-	// res.add((Model) object);
-	// else if (object instanceof Package)
-	// res.add((Package) object);
-	// else if (object instanceof Component)
-	// res.add((Component) object);
-	// else if (object instanceof Operation)
-	// res.add((Operation) object);
-	// else if (object instanceof Node)
-	// res.add((Node) object);
-	// }
-	//
-	// // System.out.print("FORALL(element in \"" +
-	// // operator.getCollection().getResolvingExpr() + "\": ");
-	//
-	// // if (res.size() > 1)
-	// // System.out.print("AND(");
-	//
-	// boolean app = true;
-	// for (Object object : res) {
-	// // boolean app = true;
-	// if (operator.getArgument() instanceof NotOperator)
-	// app = evaluateOperator((NotOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof AndOperator)
-	// app = evaluateOperator((AndOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof OrOperator)
-	// app = evaluateOperator((OrOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ForAllOperator)
-	// app = evaluateOperator((ForAllOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof ExistsOperator)
-	// app = evaluateOperator((ExistsOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterOperator)
-	// app = evaluateOperator((GreaterOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof GreaterEqualOperator)
-	// app = evaluateOperator((GreaterEqualOperator) operator.getArgument(),
-	// object);
-	// else if (operator.getArgument() instanceof LessOperator)
-	// app = evaluateOperator((LessOperator) operator.getArgument(), object);
-	// else if (operator.getArgument() instanceof LessEqualOperator)
-	// app = evaluateOperator((LessEqualOperator) operator.getArgument(), object);
-	// else
-	// app = evaluateOperator((EqualOperator) operator.getArgument(), object);
-	// // if (res.get(res.size() - 1) != object)
-	// // System.out.print(", ");
-	// // else
-	// // System.out.print(")");
-	// // if(!app)
-	// // return false;
-	// }
-	// // System.out.print(")");
-	// return app;
-	// }
-
-	// public boolean evaluateOperator(ExistsOperator operator) throws
-	// ParserException {
-	// HashSet<Object> contextualElHS = (HashSet<Object>) getOclManager()
-	// .evaluateQuery(operator.getElement().getResolvingExpr());
-	// // SingleValuedParameter contextualElement = null;
-	// // if(contextualElHS.size() == 1) {
-	// // contextualElement = (SingleValuedParameter)
-	// contextualElHS.iterator().next();
-	// // }
-	// Object contextualElement = contextualElHS.iterator().next();
-	// if (contextualElement != null) {
-	// // HashSet<Object> hashSetRes = (HashSet<Object>)
-	// // getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-	// // contextualElement);
-	// HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-	// .evaluateQuery(operator.getElement().getResolvingExpr());
-	// List<Object> res = new ArrayList<Object>();
-	// for (Object object : hashSetRes) {
-	// if (object instanceof Model)
-	// res.add((Model) object);
-	// else if (object instanceof Package)
-	// res.add((Package) object);
-	// else if (object instanceof Component)
-	// res.add((Component) object);
-	// else if (object instanceof Operation)
-	// res.add((Operation) object);
-	// else if (object instanceof Node)
-	// res.add((Node) object);
-	// }
-	//
-	// // System.out.print("EXISTS(" + ((org.eclipse.uml2.uml.NamedElement)
-	// // contextualElement).getName() + ", \""
-	// // + operator.getCollection().getResolvingExpr() + "\"");
-	//
-	// if (res != null && contextualElement != null) {
-	// boolean found = false;
-	// Iterator<Object> resIterator = res.iterator();
-	// while (resIterator.hasNext() && !found) {
-	// Object app = resIterator.next();
-	// if (app.equals(contextualElement))
-	// return true;
-	// }
-	// return false;
-	// }
-	// return false;
-	// }
-	// // if (operator.getElement() == null) {
-	// // System.out.print("EXISTS(element, \"" +
-	// // operator.getCollection().getResolvingExpr() + "\"");
-	// // } else
-	// // System.out.print("EXISTS(" + operator.getElement().getResolvingExpr() + ",
-	// // \""
-	// // + operator.getCollection().getResolvingExpr() + "\"");
-	// return false;
-	// }
-
 	public boolean evaluateExistsObj(ExistsOperator operator, Object obj, Object contextualElement)
 			throws ParserException {
 		if (obj == null)
 			return false;
 		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement);
+				contextualElement, this.metamodelManager.getResource());
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
 			Iterator<Object> resIterator = coll.iterator();
@@ -731,11 +367,11 @@ public class Manager {
 
 	public boolean evaluateOperator(ExistsOperator operator, Object contextualElement) throws ParserException {
 		@SuppressWarnings("unchecked")
-		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement);
+		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if (el == null)
 			return false;
 		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement);
+				contextualElement, this.metamodelManager.getResource());
 
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
@@ -768,8 +404,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -779,9 +415,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -828,8 +464,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -839,9 +475,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -886,8 +522,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -897,9 +533,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -946,8 +582,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -957,9 +593,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1006,8 +642,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel(), this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel(), this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1017,9 +653,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					getModel());
+					getModel(), this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					getModel());
+					getModel(), this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -1065,8 +701,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -1076,9 +712,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement);
+					contextualElement, this.metamodelManager.getResource());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {

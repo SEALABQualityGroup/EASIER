@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
@@ -53,11 +53,11 @@ public class AemiliaAvailabilityManager {
 
 	// private AEmiliaSpecification targetModel;
 
-	private Controller controller;
+	private AEmiliaController controller;
 	private Manager manager;
 	private File availabilityFolder;
 
-	public AemiliaAvailabilityManager(Controller ctrl) {
+	public AemiliaAvailabilityManager(AEmiliaController ctrl) {
 		controller = ctrl;
 		manager = controller.getManager();
 		packageRegistering();
@@ -413,7 +413,7 @@ public class AemiliaAvailabilityManager {
 	}
 
 	public static void main(String args[]) {
-		AemiliaAvailabilityManager avaManager = new AemiliaAvailabilityManager(new Controller());
+		AemiliaAvailabilityManager avaManager = new AemiliaAvailabilityManager(new AEmiliaController());
 		avaManager.packageRegistering();
 
 		avaManager.doAvailability(new File(args[0]));

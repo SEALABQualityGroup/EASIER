@@ -81,7 +81,7 @@ public class OclUMLStringManager extends OclStringManager{
 	public String countNodesQuery() {
 		String query="";
 		query = "Node.allInstances()->select(node : Node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->size()";
-		
+		query = "Node.allInstances()->size()";
 		return query;
 	}
 

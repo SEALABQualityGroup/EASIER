@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
@@ -24,7 +25,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.AEmiliaSpecification;
@@ -43,9 +44,9 @@ public class OclAemiliaManager extends OclManager {
 	// return instance;
 	// }
 	
-	public OclAemiliaManager(Controller ctrl) {
+	public OclAemiliaManager(AEmiliaController ctrl) {
 		controller = ctrl;
-		manager = controller.getManager();
+		//manager = controller.getManager();
 	}
 
 	// private HashSet<Object> getHashSet(String query) {
@@ -85,7 +86,7 @@ public class OclAemiliaManager extends OclManager {
 //	/////////////
 
 	@Override
-	public HashSet<EObject> evaluateQuery(String query, EObject model) {
+	public HashSet<EObject> evaluateQuery(String query, EObject model, Resource resource) {
 		return (HashSet<EObject>) getQueryResult(query, model);
 	}
 	
@@ -295,7 +296,7 @@ public class OclAemiliaManager extends OclManager {
 		Object queryResult = null;
 		HashSet<Object> hashSet = null;
 		hashSet = new HashSet<Object>();
-		queryResult = evaluateOCL(query);
+		queryResult = evaluateOCL(query, this.MM_manager.getResource());
 		if (queryResult instanceof Integer) {
 			double intQueryResult = Integer.parseInt(queryResult.toString());
 			hashSet.add(intQueryResult);
@@ -320,9 +321,23 @@ public class OclAemiliaManager extends OclManager {
 	}
 
 	@Override
-	public HashSet<Object> evaluateOCL(String query) {
+	public HashSet<Object> evaluateOCL(String query, Resource resource) {
 		// TODO Auto-generated method stub
 		
 		return (HashSet<Object>) this.evaluateQuery(query);
+	}
+
+	@Override
+	protected HashSet<?> getQueryResult(String query, EObject model, Resource resource) {
+		// TODO Auto-generated method stub
+		System.out.println("ERRORE!!!");
+		return null;
+	}
+
+	@Override
+	public Object evaluateOCL(String query, Object contextualElement, Resource resource) throws ParserException {
+		// TODO Auto-generated method stub
+		System.out.println("ERRORE!!!!");
+		return null;
 	}
 }

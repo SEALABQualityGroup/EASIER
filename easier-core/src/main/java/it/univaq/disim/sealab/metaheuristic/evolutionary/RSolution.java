@@ -277,7 +277,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			}
 			return seq;
 		} catch (IndexOutOfBoundsException e) {
-			Controller.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
+			AEmiliaController.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
 			e.printStackTrace();
 			return null;
 		}
@@ -296,7 +296,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	}
 
 	public void resolve(AemiliaManager metamodelManager) {
-		Controller.logger_.info("Solving Solution #" + getName());
+		AEmiliaController.logger_.info("Solving Solution #" + getName());
 		startingTime = Instant.now();
 		executeRefactoring();
 
@@ -317,7 +317,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		FileUtils.simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
-		Controller.logger_.info("Solution #" + getName() + " solved");
+		AEmiliaController.logger_.info("Solution #" + getName() + " solved");
 	}
 
 	// public void updateThresholds(AemiliaManager metamodelManager) {
@@ -447,14 +447,14 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		Path outputFilePath = Paths.get(folderPath.toString(),
 				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result");
 
-		if (Controller.isSor()) {
+		if (AEmiliaController.isSor()) {
 			metamodelManager.sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
 		} else {
 			metamodelManager.gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
 		}
 
 		if (!Files.exists(Paths.get(aemFilePath.toString() + ".val"))) {
-			controller.checkTwoTowersOutput(outputFilePath);
+			((AEmiliaController) controller).checkTwoTowersOutput(outputFilePath);
 		} else {
 			this.valFilePath = Paths.get(aemFilePath.toString() + ".val");
 		}
@@ -470,7 +470,7 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 
 		perfQ = 0;
 		if (!Files.exists(valFilePath)) {
-			Controller.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
+			AEmiliaController.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
 					+ valFilePath + " doesn't exist.");
 			perfQ = Float.MAX_VALUE;
 		} else {

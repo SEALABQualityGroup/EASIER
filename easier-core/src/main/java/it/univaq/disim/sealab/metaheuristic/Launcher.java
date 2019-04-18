@@ -34,7 +34,7 @@ import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 
 import com.beust.jcommander.JCommander;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
@@ -51,7 +51,7 @@ public class Launcher {
 		jc.addObject(config);
 		jc.parse(args);
 
-		Controller ctr = new Controller(config);
+		AEmiliaController ctr = new AEmiliaController(config);
 		List<Path> referenceFront;
 		if (config.getReferenceFront() != null)
 			referenceFront = config.getReferenceFront();

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -28,11 +30,14 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.profile.standard.StandardPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.util.UMLUtil;
+import org.eclipse.uml2.uml.util.UMLUtil.Ecore2UMLConverter;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
@@ -51,7 +56,6 @@ import logicalSpecification.actions.UML.UMLMoveOperationAction;
 
 public class UMLManager extends MetamodelManager {
 
-	
 	// private static final String REFACTORED_MODEL_PATH =
 	// "/src/main/resources/models/refactored/BGCS/BGCS_";
 	private Model model;
@@ -62,31 +66,14 @@ public class UMLManager extends MetamodelManager {
 
 	// private OclUMLManager oclUMLManager;
 	// private OclUMLStringManager oclUMLStringManager;
-	
+
 	private static UMLManager instance;
-	
-	private Controller controller;
+
+	private UMLController controller;
 	private Manager manager;
 
-//	private static class ManagerHolder {
-//		private static final UMLManager INSTANCE = new UMLManager();
-//	}
-//
-//	public static UMLManager getInstance() {
-//		if(instance == null)
-//			instance = ManagerHolder.INSTANCE;
-//		REFACTORED_MODEL_BASE_PATH = "/src/main/resources/models/refactored/BGCS/BGCS_";
-//		if (instance.getOclManager() == null) {
-//			instance.setOclManager(OclUMLManager.getInstance());
-//		}
-//		if (instance.getOclStringManager() == null) {
-//			instance.setOclStringManager(OclUMLStringManager.getInstance());
-//		}
-//		return instance;
-//	}
-	
 	public UMLManager(Controller ctrl) {
-		controller = ctrl;
+		controller = (UMLController) ctrl;
 		manager = controller.getManager();
 	}
 
@@ -260,19 +247,6 @@ public class UMLManager extends MetamodelManager {
 		return resource;
 	}
 
-	// public void unloadModelResource() {
-	// if (getUmlResource() != null) { // unload previous resources if existing
-	// // unload every resource in the resourceSet including profiles
-	// for (Iterator<Resource> i = getResourceSet().getResources().iterator();
-	// i.hasNext();) {
-	// Resource current = (Resource) i.next();
-	// current.unload();
-	// i.remove();
-	// }
-	// }
-	//
-	// }
-
 	public void saveRefactoredModel(String destinationPath) {
 		unloadModelResource();
 
@@ -311,18 +285,19 @@ public class UMLManager extends MetamodelManager {
 	}
 
 	public void packageRegistering() {
-		setResourceSet(new ResourceSetImpl());
-		getResourceSet().getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		getResourceSet().getPackageRegistry().put(StandardPackage.eNS_URI, StandardPackage.eINSTANCE);
-		getResourceSet().getPackageRegistry().put(org.eclipse.papyrus.MARTE.MARTEPackage.eNS_URI,
-				MARTEPackage.eINSTANCE);
-		getResourceSet().getPackageRegistry()
-				.put(org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
-		getResourceSet().getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-				MARTEFactory.eINSTANCE);
-		getResourceSet().getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-				GQAMFactory.eINSTANCE);
-		getResourceSet().getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+		// setResourceSet(new ResourceSetImpl());
+		final ResourceSet set = UMLUtil.init(getResourceSet());
+		
+		set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		set.getPackageRegistry().put(StandardPackage.eNS_URI, StandardPackage.eINSTANCE);
+		set.getPackageRegistry().put(MARTEPackage.eNS_URI, MARTEPackage.eINSTANCE);
+		set.getPackageRegistry().put(GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
+		// TODO check if it also works with MARTE
+//		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+//				MARTEFactory.eINSTANCE);
+//		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+//				GQAMFactory.eINSTANCE);
+		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 	}
 
@@ -330,8 +305,8 @@ public class UMLManager extends MetamodelManager {
 		setModelUri(modelUri);
 		packageRegistering();
 		getOclManager().inizialize(getResourceSet());
-		setUmlResource((UMLResource) getResourceSet()
-				.getResource(manager.string2FileUri(getModelUri().toString()), true));
+		setUmlResource(
+				(UMLResource) getResourceSet().getResource(manager.string2FileUri(getModelUri().toString()), true));
 		model = (Model) EcoreUtil.getObjectByType(getUmlResource().getContents(), UMLPackage.Literals.MODEL);
 	}
 
@@ -407,14 +382,20 @@ public class UMLManager extends MetamodelManager {
 		return list_of_components;
 	}
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "unchecked" })
 	public EList<Node> getRandomNodes() {
-		int upperBound = (int) Double.parseDouble(((HashSet<Object>) getOclManager()
+		int upperBound = Integer.parseInt(((HashSet<Object>) getOclManager()
 				.evaluateQuery(((OclUMLStringManager) getOclStringManager()).countNodesQuery())).iterator().next()
 						.toString());
+
+		if (upperBound <= 0) {
+			System.out.println("Please check your MODEL!");
+			return null;
+		}
+
 		int[] bounds = generateRandomInterval(upperBound);
-		// List<Node> list_of_nodes = new ArrayList<Node>();
 		EList<Node> list_of_nodes = new BasicEList<Node>();
+
 		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateQuery(
 				((OclUMLStringManager) getOclStringManager()).generateRandomNodesQuery(bounds[0], bounds[1]));
 		for (Object object : hashSet) {
@@ -521,8 +502,8 @@ public class UMLManager extends MetamodelManager {
 
 	@Override
 	public OclManager getOclManager() {
-		if(oclManager == null) {
-			oclManager = new OclUMLManager(controller);
+		if (oclManager == null) {
+			oclManager = new OclUMLManager(this);
 		}
 		return oclManager;
 	}
@@ -539,20 +520,43 @@ public class UMLManager extends MetamodelManager {
 	}
 
 	@Override
-	public EObject getModel(Path sourcePath) {
-		// TODO Auto-generated method stub
-		return null;
+	public Model getModel(Path sourcePath) {
+		// this.packageRegistering();
+
+		URI uri = Manager.string2Uri(sourcePath.toString());
+
+		// Load the requested resource
+		Resource resource = getResourceSet().getResource(uri, true);
+		// Get the first (should be only) package from it
+
+		org.eclipse.uml2.uml.Package package_ = (org.eclipse.uml2.uml.Package) EcoreUtil
+				.getObjectByType(resource.getContents(), UMLPackage.Literals.PACKAGE);
+
+		UMLResource res = (UMLResource) getResourceSet().getResource(Manager.string2Uri(sourcePath.toString()), true);
+
+		res.getContents().get(0);
+
+		this.model = createModel(sourcePath);
+
+		return this.model;
+	}
+
+	private Model createModel(Path sourcePath) {
+
+		UMLResource umlResource = (UMLResource) getResourceSet()
+				.getResource(manager.string2FileUri(sourcePath.toString()), true);
+		return (Model) EcoreUtil.getObjectByType(umlResource.getContents(), UMLPackage.Literals.MODEL);
 	}
 
 	@Override
 	public void createNewResourceSet() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void refreshModel(Path sourceModelPath) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

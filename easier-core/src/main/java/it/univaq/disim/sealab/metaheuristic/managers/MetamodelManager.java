@@ -19,12 +19,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.SourceModel;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
 import logicalSpecification.Action;
 import metamodel.mmaemilia.AEmiliaSpecification;
 
@@ -34,7 +35,7 @@ public abstract class MetamodelManager {
 	protected OclManager oclManager;
 	protected OclStringManager oclStringManager;
 	protected Manager manager;
-	protected Controller controller;
+	protected AEmiliaController controller;
 
 	/* Source models */
 	protected List<Path> sourceModelsPath = new ArrayList<>();
@@ -64,6 +65,10 @@ public abstract class MetamodelManager {
 	public abstract String getMetamodelFileExtension();
 
 	public Resource getResource() {
+		if(resource == null) {
+			resource = getResourceSet().getResources().get(0);
+		}
+		
 		return resource;
 	}
 
@@ -82,6 +87,8 @@ public abstract class MetamodelManager {
 	}
 
 	public OclStringManager getOclStringManager() {
+		if(oclStringManager == null)
+			oclStringManager = new OclUMLStringManager();
 		return oclStringManager;
 	}
 
@@ -97,7 +104,7 @@ public abstract class MetamodelManager {
 				current.unload();
 				i.remove();
 			}
-			Controller.logger_.info("unload Resources");
+			AEmiliaController.logger_.info("unload Resources");
 		}
 	}
 
@@ -108,7 +115,7 @@ public abstract class MetamodelManager {
 			current.unload();
 			i.remove();
 		}
-		Controller.logger_.info("unload Resources");
+		AEmiliaController.logger_.info("unload Resources");
 	}
 
 	public boolean saveModel() {
@@ -169,7 +176,7 @@ public abstract class MetamodelManager {
 	public void save(RSolution solution) {
 		try {
 			if (solution.getResources() == null) {
-				Controller.logger_.warning("RSolution doesn't have resources");
+				AEmiliaController.logger_.warning("RSolution doesn't have resources");
 			}
 			assert (solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
 
@@ -197,22 +204,6 @@ public abstract class MetamodelManager {
 	public void setResourceSet(ResourceSet set) {
 		this.resourceSet = set;
 	}
-
-//	public void setRefactoredModelBasePath(String basePath) {
-//		setREFACTORED_MODEL_BASE_PATH(basePath);
-//	}
-//
-//	public String getRefactoredModelBasePath() {
-//		return getREFACTORED_MODEL_BASE_PATH();
-//	}
-//
-//	public String getREFACTORED_MODEL_BASE_PATH() {
-//		return REFACTORED_MODEL_BASE_PATH;
-//	}
-//
-//	public void setREFACTORED_MODEL_BASE_PATH(String rEFACTORED_MODEL_BASE_PATH) {
-//		REFACTORED_MODEL_BASE_PATH = rEFACTORED_MODEL_BASE_PATH;
-//	}
 
 	public void setSourceModelsPath(final List<Path> modelsPath) {
 		modelsPath.forEach(model -> sourceModelsPath.add(model.resolve("model" + getMetamodelFileExtension())));

@@ -135,7 +135,7 @@ public class RSequence {
 			}
 		}
 		if (maxCloning > solution.getProblem().getMaxCloning()) {
-			Controller.logger_.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
+			AEmiliaController.logger_.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class RSequence {
 				}
 			}
 			if (counter > 1) {
-				Controller.logger_.warning("Too much clones in Solution #" + this.getSolution().getName() + "!");
+				AEmiliaController.logger_.warning("Too much clones in Solution #" + this.getSolution().getName() + "!");
 				return false;
 			}
 		}
@@ -182,7 +182,7 @@ public class RSequence {
 			}
 		}
 		if (found) {
-			Controller.logger_.warning(
+			AEmiliaController.logger_.warning(
 					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
@@ -191,7 +191,7 @@ public class RSequence {
 		boolean fol = manager.evaluateFOL(app, this.getSolution().getModel());
 
 		if (!fol) {
-			Controller.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
+			AEmiliaController.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
 		}
 
 		return fol;

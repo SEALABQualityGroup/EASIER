@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
@@ -207,11 +207,11 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 	 */
 	public void log() {
 		if (sourceConstInit.getName().contains("workload"))
-			Controller.logger_
+			AEmiliaController.logger_
 					.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
 							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 		else
-			Controller.logger_.info("CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
+			AEmiliaController.logger_.info("CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
 					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "
 					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 	}
