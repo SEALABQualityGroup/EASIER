@@ -12,8 +12,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Jama.Matrix;
-import net.axiak.runtime.SpawnRuntime;
+//import Jama.Matrix;
+//import net.axiak.runtime.SpawnRuntime;
 
 /**
  * Generates a .PSM from .AEM file (using TTKernel)
@@ -100,22 +100,22 @@ public class Parser {
 	 * @throws IOException
 	 */
 	public void generatePSM() throws IOException {
-		if (aemFile.exists()) {
-			if (ttkernel == null) {
-				loadConfig();
-			}
-			final String filename = aemFile.getAbsolutePath();
-			try {
-				SpawnRuntime.getInstance().exec(
-						String.format("%s -g %s %s.tmp", ttkernel, filename, filename))
-				.waitFor();
-			} catch (InterruptedException e) {
-				System.err.println("The execution of TTKernel was interrupted.");
-				e.printStackTrace();
-			}
-		} else {
-			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
-		}
+//		if (aemFile.exists()) {
+//			if (ttkernel == null) {
+//				loadConfig();
+//			}
+//			final String filename = aemFile.getAbsolutePath();
+//			try {
+//				SpawnRuntime.getInstance().exec(
+//						String.format("%s -g %s %s.tmp", ttkernel, filename, filename))
+//				.waitFor();
+//			} catch (InterruptedException e) {
+//				System.err.println("The execution of TTKernel was interrupted.");
+//				e.printStackTrace();
+//			}
+//		} else {
+//			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
+//		}
 	}
 
 	/**
@@ -125,22 +125,22 @@ public class Parser {
 	 * @throws IOException
 	 */
 	public void generateDIS() throws IOException {
-		if (aemFile.exists()) {
-			if (ttkernel == null) {
-				loadConfig();
-			}
-			final String filename = aemFile.getAbsolutePath();
-			try {
-				SpawnRuntime.getInstance().exec(
-						String.format("%s -q %s %s.tmp", ttkernel, filename, filename))
-				.waitFor();
-			} catch (InterruptedException e) {
-				System.err.println("The execution of TTKernel was interrupted.");
-				e.printStackTrace();
-			}
-		} else {
-			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
-		}
+//		if (aemFile.exists()) {
+//			if (ttkernel == null) {
+//				loadConfig();
+//			}
+//			final String filename = aemFile.getAbsolutePath();
+//			try {
+//				SpawnRuntime.getInstance().exec(
+//						String.format("%s -q %s %s.tmp", ttkernel, filename, filename))
+//				.waitFor();
+//			} catch (InterruptedException e) {
+//				System.err.println("The execution of TTKernel was interrupted.");
+//				e.printStackTrace();
+//			}
+//		} else {
+//			throw new FileNotFoundException("Aemilia file not found: " + aemFile);
+//		}
 	}
 
 	/**
@@ -188,80 +188,80 @@ public class Parser {
 	 * Parses a .PSM file into a matrix.
 	 * @return CTMC transition matrix
 	 */
-	public Matrix parsePSM() {
-		final File psmFile = getPSMFile();
-
-		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):");
-		final Pattern localStatePattern = Pattern.compile("Local state of ([^:]+):");
-		final Pattern portPattern = Pattern.compile("<[^\\.]+(\\.[^, ]+)");
-		final Pattern transitionPattern = Pattern.compile("Rate:\\s+([0-9]+\\.?[0-9]*)");
-		final Pattern targetStatePattern = Pattern.compile("Derivative global state:\\s+([0-9]+)");
-
-		states = new ArrayList<String>();
-
-		int numberOfStates = getNumberOfStates();
-
-		Matrix matrix = new Matrix(new double[numberOfStates][numberOfStates+1]);
-
-		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {
-			String line;
-			int sourceState = 0;
-			String sourceStateLabel = "";
-			double rate = 0;
-			boolean firstTransition = true;
-			Matcher m;
-			while ((line = br.readLine()) != null) {
-
-				// Global state
-				m = globalStatePattern.matcher(line);
-				if (m.find()) {
-					sourceState = Integer.parseInt(m.group(1));
-					sourceStateLabel = sourceState + ": ";
-					firstTransition = true;
-					continue;
-				}
-
-				// Local state
-				m = localStatePattern.matcher(line);
-				if (m.find()) {
-					sourceStateLabel += m.group(1);
-					continue;
-				}
-
-				// Element port
-				m = portPattern.matcher(line);
-				if (m.find()) {
-					sourceStateLabel += m.group(1) + ", ";
-					continue;
-				}
-
-				// Transition
-				m = transitionPattern.matcher(line);
-				if (m.find()) {
-					if (firstTransition) {
-						firstTransition = false;
-						states.add(sourceStateLabel.substring(0, sourceStateLabel.length() - 2));
-					}
-					rate = Double.parseDouble(m.group(1));
-					continue;
-				}
-
-				// Target state
-				m = targetStatePattern.matcher(line);
-				if (m.find()) {
-					matrix.set(sourceState - 1, Integer.parseInt(m.group(1)) - 1, rate);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("File not found: " + psmFile);
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Unable to read: " + psmFile);
-			e.printStackTrace();
-		}
-
-		return matrix;
-	}
+//	public Matrix parsePSM() {
+//		final File psmFile = getPSMFile();
+//
+//		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):");
+//		final Pattern localStatePattern = Pattern.compile("Local state of ([^:]+):");
+//		final Pattern portPattern = Pattern.compile("<[^\\.]+(\\.[^, ]+)");
+//		final Pattern transitionPattern = Pattern.compile("Rate:\\s+([0-9]+\\.?[0-9]*)");
+//		final Pattern targetStatePattern = Pattern.compile("Derivative global state:\\s+([0-9]+)");
+//
+//		states = new ArrayList<String>();
+//
+//		int numberOfStates = getNumberOfStates();
+//
+//		Matrix matrix = new Matrix(new double[numberOfStates][numberOfStates+1]);
+//
+//		try (final BufferedReader br = new BufferedReader(new FileReader(psmFile))) {
+//			String line;
+//			int sourceState = 0;
+//			String sourceStateLabel = "";
+//			double rate = 0;
+//			boolean firstTransition = true;
+//			Matcher m;
+//			while ((line = br.readLine()) != null) {
+//
+//				// Global state
+//				m = globalStatePattern.matcher(line);
+//				if (m.find()) {
+//					sourceState = Integer.parseInt(m.group(1));
+//					sourceStateLabel = sourceState + ": ";
+//					firstTransition = true;
+//					continue;
+//				}
+//
+//				// Local state
+//				m = localStatePattern.matcher(line);
+//				if (m.find()) {
+//					sourceStateLabel += m.group(1);
+//					continue;
+//				}
+//
+//				// Element port
+//				m = portPattern.matcher(line);
+//				if (m.find()) {
+//					sourceStateLabel += m.group(1) + ", ";
+//					continue;
+//				}
+//
+//				// Transition
+//				m = transitionPattern.matcher(line);
+//				if (m.find()) {
+//					if (firstTransition) {
+//						firstTransition = false;
+//						states.add(sourceStateLabel.substring(0, sourceStateLabel.length() - 2));
+//					}
+//					rate = Double.parseDouble(m.group(1));
+//					continue;
+//				}
+//
+//				// Target state
+//				m = targetStatePattern.matcher(line);
+//				if (m.find()) {
+//					matrix.set(sourceState - 1, Integer.parseInt(m.group(1)) - 1, rate);
+//				}
+//			}
+//		} catch (FileNotFoundException e) {
+//			System.err.println("File not found: " + psmFile);
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.err.println("Unable to read: " + psmFile);
+//			e.printStackTrace();
+//		}
+//
+//		return matrix;
+//	}
 
 	/**
 	 * Parses a .PSM file only to get global and local states.
@@ -324,31 +324,31 @@ public class Parser {
 	 * Parses a DIS file to get the stationary distribution.
 	 * @return the stationary distribution
 	 */
-	public Matrix parseDIS() {
-		final File disFile = getDISFile();
-
-		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):\\s+([0-9\\.e+-]+)");
-
-		Matrix stationaryDistribution = new Matrix(new double[getNumberOfStates()][1]);
-
-		try (final BufferedReader br = new BufferedReader(new FileReader(disFile))) {
-			String line;
-			Matcher m;
-			while ((line = br.readLine()) != null) {
-				// Global state
-				m = globalStatePattern.matcher(line);
-				if (m.find()) {
-					stationaryDistribution.set(Integer.parseInt(m.group(1))-1, 0, Double.parseDouble(m.group(2)));
-					continue;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("File not found: " + disFile);
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Unable to read: " + disFile);
-			e.printStackTrace();
-		}
-		return stationaryDistribution;
-	}
+//	public Matrix parseDIS() {
+//		final File disFile = getDISFile();
+//
+//		final Pattern globalStatePattern = Pattern.compile("Global state ([^:]+):\\s+([0-9\\.e+-]+)");
+//
+//		Matrix stationaryDistribution = new Matrix(new double[getNumberOfStates()][1]);
+//
+//		try (final BufferedReader br = new BufferedReader(new FileReader(disFile))) {
+//			String line;
+//			Matcher m;
+//			while ((line = br.readLine()) != null) {
+//				// Global state
+//				m = globalStatePattern.matcher(line);
+//				if (m.find()) {
+//					stationaryDistribution.set(Integer.parseInt(m.group(1))-1, 0, Double.parseDouble(m.group(2)));
+//					continue;
+//				}
+//			}
+//		} catch (FileNotFoundException e) {
+//			System.err.println("File not found: " + disFile);
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.err.println("Unable to read: " + disFile);
+//			e.printStackTrace();
+//		}
+//		return stationaryDistribution;
+//	}
 }

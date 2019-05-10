@@ -63,7 +63,7 @@ public class Analysis {
 	 * Parses the .PSM file to get the transition matrix.
 	 */
 	public void parse() {
-		transitionMatrix = parser.parsePSM();
+//		transitionMatrix = parser.parsePSM();
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class Analysis {
 		parser.generateDIS();
 
 		// Parse the .DIS file to get the stationary distribution
-		stationaryDistribution = parser.parseDIS();
+//		stationaryDistribution = parser.parseDIS();
 
 		return stationaryDistribution;
 	}

@@ -1,1 +1,4 @@
 easier-helper/src/main/resources
+*.class
+target/
+.idea
