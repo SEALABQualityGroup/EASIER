@@ -18,6 +18,7 @@
 		<module>easier-measuresToIndices/MapMeasuresToIndices</module>
 		<module>easier-twoeaglesBridge</module>
 		<module>easier-helper</module>
+		<module>easier-uml</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>
@@ -107,6 +108,11 @@
 			<groupId>org.junit.vintage</groupId>
 			<artifactId>junit-vintage-engine</artifactId>
 			<version>5.5.0-M1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.72</version>
 		</dependency>
 	</dependencies>
 </project>
