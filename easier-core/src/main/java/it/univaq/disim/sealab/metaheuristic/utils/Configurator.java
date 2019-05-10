@@ -97,6 +97,9 @@ public class Configurator {
 
 	@Parameter(names = {"-rf", "--refereceFront"}, description = "The absolut path to the reference front file (.rf)")
 	private List<String> referenceFront;
+	
+	@Parameter(names = {"--genRF"}, description = "It allows the generation of reference front by tsv files")
+	private boolean generateRF = false;
 
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
@@ -104,6 +107,10 @@ public class Configurator {
 		for (String s : referenceFront)
 			paths.add(Paths.get(s));
 		return paths;
+	}
+	
+	public boolean generateRF() {
+		return generateRF;
 	}
 
 	public List<String> getQualityIndicators() {
