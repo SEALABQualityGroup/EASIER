@@ -262,7 +262,6 @@ public class Parser {
 //
 //		return matrix;
 //	}
-
 	/**
 	 * Parses a .PSM file only to get global and local states.
 	 * @return List of global states with corresponding local states

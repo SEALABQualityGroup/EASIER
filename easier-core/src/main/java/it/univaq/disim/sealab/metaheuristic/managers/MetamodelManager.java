@@ -63,6 +63,10 @@ public abstract class MetamodelManager {
 	public abstract String getModelFileExtension();
 
 	public abstract String getMetamodelFileExtension();
+	
+	public MetamodelManager() {
+		resourceSet = new ResourceSetImpl();
+	}
 
 	public Resource getResource() {
 		if(resource == null) {

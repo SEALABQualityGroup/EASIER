@@ -6,20 +6,25 @@ import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.mapping.ecore2xml.Ecore2XMLPackage;
 import org.eclipse.papyrus.MARTE.MARTEFactory;
 import org.eclipse.papyrus.MARTE.MARTEPackage;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMFactory;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
+import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.PAM.PAMPackage;
+import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.SAM.SAMPackage;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Manifestation;
@@ -28,6 +33,7 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.profile.standard.StandardPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
@@ -71,10 +77,14 @@ public class UMLManager extends MetamodelManager {
 
 	private UMLController controller;
 	private Manager manager;
+	
+	private Map<URI, URI> uriMap;
 
 	public UMLManager(Controller ctrl) {
+		super();
 		controller = (UMLController) ctrl;
 		manager = controller.getManager();
+		uriMap = resourceSet.getURIConverter().getURIMap();
 	}
 
 	// public Action getUMLRandomAction(int length) throws UnexpectedException {
@@ -285,21 +295,55 @@ public class UMLManager extends MetamodelManager {
 	}
 
 	public void packageRegistering() {
-		// setResourceSet(new ResourceSetImpl());
-		final ResourceSet set = UMLUtil.init(getResourceSet());
-		
-		set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		set.getPackageRegistry().put(StandardPackage.eNS_URI, StandardPackage.eINSTANCE);
-		set.getPackageRegistry().put(MARTEPackage.eNS_URI, MARTEPackage.eINSTANCE);
-		set.getPackageRegistry().put(GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
-		// TODO check if it also works with MARTE
-//		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-//				MARTEFactory.eINSTANCE);
-//		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-//				GQAMFactory.eINSTANCE);
-		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+		initLocalRegistry();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
+		
+		/*
+		 * Needed to link the MARTE jar plugin to the system. 
+		 * It is requested in case of a standalone application
+		 */
+		String marteJarString = "jar:" + getClass()
+				.getResource("/libs/org.eclipse.papyrus.marte.static.profile_1.2.0.201803031506.jar").toString() + "!/";
+
+		URI marteJar = URI.createURI(marteJarString);
+		uriMap.put(URI.createURI("pathmap://Papyrus_PROFILES/"), marteJar.appendSegment("resources").appendSegment(""));
+
+		/*
+		 * Must add the pathmap of the Parent package to the UMLPlugin' getEPackageNsURIToProfileLocationMap()
+		 * The AnalysisModel package has been added as follows
+		 */
+		String PROFILES_PATHMAP = "pathmap://Papyrus_PROFILES/"; //$NON-NLS-1$
+		// FROM model.uml #_4bV20APMEdyuUt-4qHuVvQ 
+		// MARTE FROM MARTE.profile.uml #_zaC5cAPHEdyeNfbOYuD9pg 
+		// GQAM FROM MARTE.profile.uml #_4bV20APMEdyuUt-4qHuVvQ 
+		// MARTE_AnlysisModel FROM MARTE.profile.uml #_u8y4wAPMEdyuUt-4qHuVvQ
+		String MARTE_PROFILE_URI = PROFILES_PATHMAP + "MARTE.profile.uml#_u8y4wAPMEdyuUt-4qHuVvQ";
+		URI marteProfileURI = URI.createURI(MARTE_PROFILE_URI);
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI, marteProfileURI);
+		
 	}
+	
+	public void initLocalRegistry() {
+		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(Ecore2XMLPackage.eNS_URI, Ecore2XMLPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(MARTEPackage.eNS_URI, MARTEPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(SAMPackage.eNS_URI, SAMPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(PAMPackage.eNS_URI, PAMPackage.eINSTANCE);
+	}
+
+//	public void initGlobalRegistry() {
+//		EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(Ecore2XMLPackage.eNS_URI, Ecore2XMLPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(MARTEPackage.eNS_URI, MARTEPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(SAMPackage.eNS_URI, SAMPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(PAMPackage.eNS_URI, PAMPackage.eINSTANCE);
+//
+//	}
 
 	public void init(Path modelUri) {
 		setModelUri(modelUri);
