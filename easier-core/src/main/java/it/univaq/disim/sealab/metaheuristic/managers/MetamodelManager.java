@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.math3.linear.Array2DRowFieldMatrix;
-import org.eclipse.emf.common.command.AbortExecutionException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -25,9 +23,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.SourceModel;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
 import logicalSpecification.Action;
-import metamodel.mmaemilia.AEmiliaSpecification;
 
 public abstract class MetamodelManager {
 
@@ -63,6 +59,8 @@ public abstract class MetamodelManager {
 	public abstract String getModelFileExtension();
 
 	public abstract String getMetamodelFileExtension();
+
+	public abstract OclStringManager getOclStringManager();
 	
 	public MetamodelManager() {
 		resourceSet = new ResourceSetImpl();
@@ -90,11 +88,13 @@ public abstract class MetamodelManager {
 		this.oclManager = oclManager;
 	}
 
-	public OclStringManager getOclStringManager() {
-		if(oclStringManager == null)
-			oclStringManager = new OclUMLStringManager();
-		return oclStringManager;
-	}
+//	public OclStringManager getOclStringManager() {
+//		if(oclStringManager == null)
+//			oclStringManager = new OclUMLStringManager();
+//		return oclStringManager;
+//	}
+	
+	
 
 	public void setOclStringManager(OclStringManager oclStringManager) {
 		this.oclStringManager = oclStringManager;

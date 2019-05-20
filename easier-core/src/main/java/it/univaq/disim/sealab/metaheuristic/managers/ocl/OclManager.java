@@ -37,18 +37,19 @@ public abstract class OclManager {
 		return (HashSet<?>) getQueryResult(query);
 	}
 
-	public HashSet<?> evaluateQuery(final String query, EObject model, final Resource resource) {
-		return (HashSet<?>) getQueryResult(query, model, resource);
+	public HashSet<?> evaluateQuery(final String query, EObject model) {
+		return (HashSet<?>) getQueryResult(query, model);
 	}
 
-	@SuppressWarnings({ "unchecked", "static-access" })
 	protected abstract HashSet<?> getQueryResult(String query);
 
-	protected abstract HashSet<?> getQueryResult(String query, EObject model, Resource resource);
+	protected abstract HashSet<?> getQueryResult(String query, Object model);
 
-	public abstract HashSet<Object> evaluateOCL(String query, Resource resource);
-
-	public abstract Object evaluateOCL(String query, Object contextualElement, Resource resource) throws ParserException;
+	public HashSet<Object> evaluateOCL(String query) {
+		return (HashSet<Object>) this.evaluateQuery(query);
+	}
+	
+	public abstract Object evaluateOCL(String query, Object contextualElement) throws ParserException;
 
 	public void inizialize(ResourceSet resourceSet) {
 		OCL.initialize(resourceSet);

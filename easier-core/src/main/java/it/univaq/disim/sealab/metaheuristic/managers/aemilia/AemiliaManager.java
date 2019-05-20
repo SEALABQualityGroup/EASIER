@@ -29,7 +29,9 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.ttep.rew.classes.MeasureDef;
 import it.univaq.disim.sealab.ttep.rew.wizard.providers.ExtractedIndex;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
@@ -868,5 +870,12 @@ public class AemiliaManager extends MetamodelManager {
 
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+	}
+
+	@Override
+	public OclStringManager getOclStringManager() {
+		if(oclStringManager == null)
+			oclStringManager = new OclAemiliaStringManager();
+		return oclStringManager;
 	}
 }

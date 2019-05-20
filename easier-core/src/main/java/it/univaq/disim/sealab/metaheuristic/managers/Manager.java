@@ -293,9 +293,9 @@ public class Manager {
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
 		if (getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement, this.metamodelManager.getResource()) instanceof HashSet<?>) {
+				contextualElement) instanceof HashSet<?>) {
 			HashSet<Object> hashSetRes = (HashSet<Object>) getOclManager()
-					.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+					.evaluateOCL(operator.getCollection().getResolvingExpr(), contextualElement);
 			for (Object object : hashSetRes) {
 				if (object instanceof ArchiElemInstance)
 					coll.add((ArchiElemInstance) object);
@@ -351,7 +351,7 @@ public class Manager {
 		if (obj == null)
 			return false;
 		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement, this.metamodelManager.getResource());
+				contextualElement);
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
 			Iterator<Object> resIterator = coll.iterator();
@@ -367,11 +367,11 @@ public class Manager {
 
 	public boolean evaluateOperator(ExistsOperator operator, Object contextualElement) throws ParserException {
 		@SuppressWarnings("unchecked")
-		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object el = getOclManager().evaluateOCL(operator.getElement().getResolvingExpr(), contextualElement);
 		if (el == null)
 			return false;
 		List<Object> coll = (List<Object>) getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
-				contextualElement, this.metamodelManager.getResource());
+				contextualElement);
 
 		boolean found = false;
 		if (coll != null && contextualElement != null) {
@@ -404,8 +404,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -415,9 +415,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -464,8 +464,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -475,9 +475,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -522,8 +522,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -533,9 +533,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -582,8 +582,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -593,9 +593,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -642,8 +642,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel(), this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel(), this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), getModel());
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), getModel());
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -653,9 +653,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					getModel(), this.metamodelManager.getResource());
+					getModel());
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					getModel(), this.metamodelManager.getResource());
+					getModel());
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
@@ -701,8 +701,8 @@ public class Manager {
 					return false;
 			}
 		}
-		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
-		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement, this.metamodelManager.getResource());
+		Object lhsRes = getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(), contextualElement);
+		Object rhsRes = getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(), contextualElement);
 		if ((lhsRes instanceof Integer && rhsRes instanceof Integer)
 				|| (lhsRes instanceof Double && rhsRes instanceof Double)) {
 			double lhs = Double.parseDouble(lhsRes.toString());
@@ -712,9 +712,9 @@ public class Manager {
 				return false;
 		} else {
 			HashSet<Object> lhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getLhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			HashSet<Object> rhsHS = (HashSet<Object>) getOclManager().evaluateOCL(operator.getRhs().getResolvingExpr(),
-					contextualElement, this.metamodelManager.getResource());
+					contextualElement);
 			if (lhsHS.size() == rhsHS.size()) {
 				List<Object> lhsObjs = new ArrayList<Object>();
 				for (Object object : lhsHS) {
