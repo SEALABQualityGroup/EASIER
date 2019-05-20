@@ -41,11 +41,10 @@ public class OclUMLManager extends OclManager{
 		this.MM_manager  = ma;
 	}
 
-	@SuppressWarnings({ "unchecked", "static-access" })
 	private HashSet<Object> getHashSet(String query, Resource resource) {
 		HashSet<Object> hashSetQuery = null;
 		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, MM_manager.getModel(), resource);
+			hashSetQuery = (HashSet<Object>) evaluateOCL(query, MM_manager.getModel());
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,7 +58,7 @@ public class OclUMLManager extends OclManager{
 		HashSet<Object> hashSet = null;
 		try {
 			hashSet = new HashSet<Object>();
-			queryResult = evaluateOCL(query, MM_manager.getModel(), MM_manager.getResource());
+			queryResult = evaluateOCL(query, MM_manager.getModel());
 			if (queryResult instanceof Integer) {
 				int intQueryResult = Integer.parseInt(queryResult.toString());
 				hashSet.add(intQueryResult);
@@ -120,10 +119,10 @@ public class OclUMLManager extends OclManager{
 	 * 
 	 *      SONO PARTITO DALL'ULTIMO
 	 */
-	public Object evaluateOCL(String query, Object contextualElement, Resource resource) throws ParserException {
+	public Object evaluateOCL(String query, Object contextualElement) throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, resource);
+		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
 
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
@@ -148,10 +147,10 @@ public class OclUMLManager extends OclManager{
 	
 
 
-	public static List<?> evaluateOCL(String query, List<Object> contextualElements, Resource resource) throws ParserException {
+	public List<?> evaluateOCL(String query, List<Object> contextualElements) throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, resource);
+		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 		// set the OCL context classifier
@@ -168,10 +167,10 @@ public class OclUMLManager extends OclManager{
 		return oclQuery.evaluate(contextualElements);
 	}
 
-	public static boolean checkOCL(String query, Object contextualElement, Resource resource) throws ParserException {
+	public boolean checkOCL(String query, Object contextualElement) throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, resource);
+		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 		// set the OCL context classifier
@@ -190,10 +189,10 @@ public class OclUMLManager extends OclManager{
 		return oclQuery.check(contextualElement);
 	}
 
-	public static boolean checkOCL(String query, List<Object> contextualElements, Resource resource) throws ParserException {
+	public boolean checkOCL(String query, List<Object> contextualElements) throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, resource);
+		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 		// set the OCL context classifier
@@ -211,88 +210,9 @@ public class OclUMLManager extends OclManager{
 	}
 
 	@Override
-	protected HashSet<?> getQueryResult(String query, EObject model, Resource resource) {
+	protected HashSet<?> getQueryResult(String query, Object model) {
 		// TODO Auto-generated method stub
-		System.out.println("ERRORE!!!! evaluateOCL method in OclUMLManager");
 		return null;
 	}
-
-	@Override
-	public HashSet<Object> evaluateOCL(String query, Resource resource) {
-		// TODO Auto-generated method stub
-		System.out.println("ERRORE!!!! evaluateOCL method in OclUMLManager");
-		return null;
-	}
-
-//	public void evaluateOCLFromFile(String filePath, List<Object> contextualElements) throws ParserException {
-//		EPackage.Registry registry = new EPackageRegistryImpl();
-//		registry.put(mmaemiliaPackage.eNS_URI, mmaemiliaPackage.eINSTANCE);
-//		EcoreEnvironmentFactory environmentFactory = new EcoreEnvironmentFactory(registry);
-//		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-//		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-//
-//		// get an OCL text file via some hypothetical API
-//		FileInputStream in = null;
-//		try {
-//			in = new FileInputStream(filePath);
-//		} catch (FileNotFoundException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//
-//		Map<String, Constraint> constraintMap = new HashMap<String, Constraint>();
-//
-//		// parse the contents as an OCL document
-//		try {
-//			OCLInput document = new OCLInput(in);
-//
-//			// List<Constraint> constraints = ocl.parse(document);
-//			// for (Constraint next : constraints) {
-//			// constraintMap.put(next.getName(), next);
-//			//
-//			// OCLExpression<EClassifier> body =
-//			// next.getSpecification().getBodyExpression();
-//			// System.out.printf("%s: %s%n", next.getName(), body);
-//			// }
-//
-//			List<Constraint> apRules = ocl.parse(document);
-//			for (Constraint next : apRules) {
-//
-//				if (next.getName() != null) {
-//					constraintMap.put(next.getName(), next);
-//					// Variable<EClassifier, EParameter> context =
-//					// next.getSpecification().getContextVariable();
-//					OCLExpression<EClassifier> body = next.getSpecification().getBodyExpression();
-//					System.out.println("EXECUTING" + body.toString());
-//					this.evaluateQuery(body.toString());
-//					// System.out.printf("%s: %s%n", next.getName(), body);
-//				}
-//			}
-//
-//			// // create an OCL helper object
-//			// OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-//			//
-//			// // set the OCL context classifier
-//			// if (contextualElements.get(0) instanceof Package)
-//			// helper.setContext(UMLPackage.Literals.PACKAGE);
-//			// else if (contextualElements.get(0) instanceof Component)
-//			// helper.setContext(UMLPackage.Literals.COMPONENT);
-//			// else if (contextualElements.get(0) instanceof Operation)
-//			// helper.setContext(UMLPackage.Literals.OPERATION);
-//			// else if (contextualElements.get(0) instanceof Node)
-//			// helper.setContext(UMLPackage.Literals.NODE);
-//			//
-//			// //Constraint invariant = helper.createInvariant("books->forAll(b1, b2 | b1 <>
-//			// b2 implies b1.title <> b2.title)");
-//			// OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-//		} finally {
-//			try {
-//				in.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 }

@@ -38,7 +38,7 @@ public class TestUMLManager {
 		umlController = new UMLController();
 		umlManager = new UMLManager(umlController);
 		umlManager.packageRegistering();
-		pathToModel = Paths.get(getClass().getResource("/models/smartFloor/smart-floor.uml").toURI());
+		pathToModel = Paths.get(getClass().getResource("/models/smartFloor/smartFloor2.uml").toURI());
 		umlManager.loadModel(pathToModel);
 		umlModel = umlManager.getModel();
 	}

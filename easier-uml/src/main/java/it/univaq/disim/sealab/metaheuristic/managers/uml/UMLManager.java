@@ -47,6 +47,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
 import logicalSpecification.Action;
@@ -647,7 +648,7 @@ public class UMLManager extends MetamodelManager {
 	@Override
 	public void createNewResourceSet() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -666,6 +667,12 @@ public class UMLManager extends MetamodelManager {
 			e.printStackTrace();
 			return false;
 		}		
+	}
+
+	@Override
+	public OclStringManager getOclStringManager() {
+		return this.oclStringManager;
+				
 	}
 
 }
