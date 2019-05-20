@@ -19,7 +19,7 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import com.beust.jcommander.JCommander;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
@@ -74,7 +74,7 @@ public class Helper implements Runnable {
 
 		if (config.generateRF()) {
 
-			Controller ctr = new Controller(config);
+			AEmiliaController ctr = new AEmiliaController(config);
 			List<Path> referenceFront;
 			
 			ctr.setUp();

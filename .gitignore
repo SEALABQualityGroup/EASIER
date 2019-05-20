@@ -1,0 +1,7 @@
+easier-helper/src/main/resources
+*.class
+target/
+<<<<<<< Updated upstream
+.idea
+=======
+>>>>>>> Stashed changes

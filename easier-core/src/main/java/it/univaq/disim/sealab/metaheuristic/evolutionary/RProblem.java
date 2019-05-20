@@ -94,7 +94,7 @@ public class RProblem extends AbstractGenericProblem<RSolution> {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());
 			} else if (i == THIRD_OBJ) {
-				Controller.logger_
+				AEmiliaController.logger_
 						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(solution.getPAs());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
@@ -24,7 +25,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.AEmiliaSpecification;
@@ -34,31 +35,11 @@ import metamodel.mmaemilia.mmaemiliaPackage;
 
 public class OclAemiliaManager extends OclManager {
 
-	// private static class ManagerHolder {
-	// private static final OclAemiliaManager INSTANCE = new OclAemiliaManager();
-	// }
-	//
-	// public static OclAemiliaManager getInstance() {
-	// OclAemiliaManager instance = ManagerHolder.INSTANCE;
-	// return instance;
-	// }
-	
-	public OclAemiliaManager(Controller ctrl) {
+	public OclAemiliaManager(AEmiliaController ctrl) {
 		controller = ctrl;
-		manager = controller.getManager();
+		//manager = controller.getManager();
 	}
 
-	// private HashSet<Object> getHashSet(String query) {
-	// HashSet<Object> hashSetQuery = null;
-	// try {
-	// hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
-	// } catch (ParserException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// return hashSetQuery;
-	// }
-	
 	private HashSet<Object> getHashSet(String query, EObject model) {
 		HashSet<Object> hashSetQuery = null;
 		try {
@@ -70,56 +51,6 @@ public class OclAemiliaManager extends OclManager {
 		return hashSetQuery;
 	}
 
-////	/* AEMILIA */
-//	@SuppressWarnings({ "unchecked", "static-access" })
-//	private HashSet<Object> getHashSetFromAEmilia(String query) {
-//		HashSet<Object> hashSetQuery = null;
-//		try {
-//			hashSetQuery = (HashSet<Object>) evaluateOCL(query, manager.getModel());
-//		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return hashSetQuery;
-//	}
-//	/////////////
-
-	@Override
-	public HashSet<EObject> evaluateQuery(String query, EObject model) {
-		return (HashSet<EObject>) getQueryResult(query, model);
-	}
-	
-//	@SuppressWarnings({ "unchecked", "static-access" })
-//	protected HashSet<EObject> getQueryResult(String query) {
-//		Object queryResult = null;
-//		HashSet<EObject> hashSet = null;
-//		try {
-//			hashSet = new HashSet<EObject>();
-//			queryResult = evaluateOCL(query, model);
-//			if (queryResult instanceof HashSet && !((HashSet<EObject>) queryResult).isEmpty()) {
-//				Iterator<EObject> iterator = ((HashSet<EObject>) queryResult).iterator();
-//				// check values
-//				while (iterator.hasNext()) {
-//					EObject res = iterator.next();
-//					if (res instanceof ArchiElemInstance) {
-//						hashSet.add((ArchiElemInstance) res);
-//					}
-//				}
-//			} else if(queryResult instanceof ArrayList) {
-//				hashSet.addAll((Collection<? extends EObject>) queryResult);
-//			}
-//			else if (queryResult instanceof ArchiElemInstance) {
-//				hashSet.add((ArchiElemInstance) queryResult);
-//			}
-//		} catch (
-//
-//		ParserException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return hashSet;
-//	}
-	
 	protected HashSet<EObject> getQueryResult(String query, EObject model) {
 		Object queryResult = null;
 		HashSet<EObject> hashSet = null;
@@ -251,10 +182,6 @@ public class OclAemiliaManager extends OclManager {
 		return oclQuery.check(contextualElements);
 	}
 
-//	private HashSet<Object> evaluateQuery(String query, List<Object> contextualElements) {
-//		return (HashSet<Object>) getQueryResult(query, contextualElements);
-//	}
-
 	protected HashSet<Object> getQueryResult(String query, List<Object> contextualElements) {
 		Object queryResult = null;
 		HashSet<Object> hashSet = null;
@@ -320,9 +247,9 @@ public class OclAemiliaManager extends OclManager {
 	}
 
 	@Override
-	public HashSet<Object> evaluateOCL(String query) {
+	protected HashSet<?> getQueryResult(String query, Object model) {
 		// TODO Auto-generated method stub
-		
-		return (HashSet<Object>) this.evaluateQuery(query);
+		return null;
 	}
+
 }

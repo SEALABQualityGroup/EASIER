@@ -1,7 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.managers.aemilia;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
@@ -29,7 +29,9 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.ttep.rew.classes.MeasureDef;
 import it.univaq.disim.sealab.ttep.rew.wizard.providers.ExtractedIndex;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
@@ -81,7 +83,7 @@ public class AemiliaManager extends MetamodelManager {
 	// Integer.MAX_VALUE));
 
 	public AemiliaManager(Controller ctrl) {
-		controller = ctrl;
+		controller = (AEmiliaController) ctrl;
 	}
 
 	public void init(Path modelUri) {
@@ -228,7 +230,7 @@ public class AemiliaManager extends MetamodelManager {
 			// this.model = (AEmiliaSpecification)
 			// getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath),
 			// true);
-			Controller.logger_.warning("AemiliaManager's model has been set to sourceModel: " + aemiliaModelFilePath);
+			AEmiliaController.logger_.warning("AemiliaManager's model has been set to sourceModel: " + aemiliaModelFilePath);
 		}
 		return model;
 	}
@@ -672,7 +674,7 @@ public class AemiliaManager extends MetamodelManager {
 
 	private ConstInit getRandomCapacity(RSequence seq) {
 		if (seq.getModel() == null) {
-			Controller.logger_.warning("Model is null");
+			AEmiliaController.logger_.warning("Model is null");
 			return null;
 		} else {
 			EList<ConstInit> listOfConsts = ((AEmiliaSpecification) seq.getModel()).getArchiTypeDecl().getHeader()
@@ -868,5 +870,12 @@ public class AemiliaManager extends MetamodelManager {
 
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+	}
+
+	@Override
+	public OclStringManager getOclStringManager() {
+		if(oclStringManager == null)
+			oclStringManager = new OclAemiliaStringManager();
+		return oclStringManager;
 	}
 }

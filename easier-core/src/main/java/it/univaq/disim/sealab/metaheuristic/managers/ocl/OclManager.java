@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
@@ -21,31 +22,33 @@ import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
+import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public abstract class OclManager {
 
 	protected OCL ocl;
-	protected Manager manager;
+	protected MetamodelManager MM_manager;
 	protected Controller controller;
 
-	public HashSet<?> evaluateQuery(String query) {
+	public HashSet<?> evaluateQuery(final String query) {
 		return (HashSet<?>) getQueryResult(query);
 	}
 
-	public HashSet<?> evaluateQuery(String query, EObject model) {
+	public HashSet<?> evaluateQuery(final String query, EObject model) {
 		return (HashSet<?>) getQueryResult(query, model);
 	}
 
-	@SuppressWarnings({ "unchecked", "static-access" })
 	protected abstract HashSet<?> getQueryResult(String query);
 
-	protected abstract HashSet<?> getQueryResult(String query, EObject model);
+	protected abstract HashSet<?> getQueryResult(String query, Object model);
 
-	public abstract HashSet<Object> evaluateOCL(String query);
-
+	public HashSet<Object> evaluateOCL(String query) {
+		return (HashSet<Object>) this.evaluateQuery(query);
+	}
+	
 	public abstract Object evaluateOCL(String query, Object contextualElement) throws ParserException;
 
 	public void inizialize(ResourceSet resourceSet) {
@@ -129,7 +132,7 @@ public abstract class OclManager {
 					if (ocl.check(el, body)) {
 						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
 						apCounter++;
-						Controller.logger_.warning(nextConstraint.getName() + " DETECTED!");
+						AEmiliaController.logger_.warning(nextConstraint.getName() + " DETECTED!");
 					}
 				}
 				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);

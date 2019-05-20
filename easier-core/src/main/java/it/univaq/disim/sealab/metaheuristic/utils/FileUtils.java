@@ -2,15 +2,11 @@ package it.univaq.disim.sealab.metaheuristic.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,13 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.uma.jmetal.algorithm.Algorithm;
-
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RPointSolution;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
 import metamodel.mmaemilia.ArchitecturalInteraction;
@@ -117,7 +111,7 @@ public class FileUtils {
 	}
 
 	public static synchronized void writeSolutionSetToCSV(List<RSolution> population) {
-		Controller.logger_.info("Writing CSV");
+		AEmiliaController.logger_.info("Writing CSV");
 		for (RSolution solution : population) {
 			try (FileWriter fw = new FileWriter(
 					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
@@ -140,7 +134,7 @@ public class FileUtils {
 			writeSolutionToCSV(solution);
 			writeAnalyzableFile(solution);
 		}
-		Controller.logger_.info("Writing CSV done");
+		AEmiliaController.logger_.info("Writing CSV done");
 	}
 
 	public static void writeSolutionToCSV(RSolution solution) {
@@ -251,7 +245,7 @@ public class FileUtils {
 		try {
 			org.apache.commons.io.FileUtils.copyDirectory(sourceFolder.toFile(), destFolder.toFile());
 		} catch (IOException e) {
-			Controller.logger_.warning("[WARNING] Copy tmp folder failed!!!");
+			AEmiliaController.logger_.warning("[WARNING] Copy tmp folder failed!!!");
 			e.printStackTrace();
 			return;
 		}

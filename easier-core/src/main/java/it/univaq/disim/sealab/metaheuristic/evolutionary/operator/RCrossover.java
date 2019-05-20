@@ -23,11 +23,10 @@ import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 
 @SuppressWarnings("serial")
@@ -212,10 +211,10 @@ public class RCrossover implements CrossoverOperator<RSolution> {
 		}	
 		
 		if(!offspring.get(0).isCrossovered() && !offspring.get(1).isCrossovered())
-			Controller.logger_.info("Crossover left solution unchanged");
+			AEmiliaController.logger_.info("Crossover left solution unchanged");
 		else {
 			//RSolution.XOverCounter++;
-			Controller.logger_.info("Crossover is done");
+			AEmiliaController.logger_.info("Crossover is done");
 		}
 		
 		return offspring;

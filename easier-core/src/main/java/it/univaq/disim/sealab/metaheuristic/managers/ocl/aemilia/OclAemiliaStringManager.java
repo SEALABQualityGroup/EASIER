@@ -9,7 +9,6 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
 
 public class OclAemiliaStringManager extends OclStringManager {
 

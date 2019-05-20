@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Jama.Matrix;
+//import Jama.Matrix;
 
 /**
  * Computes stationary distribution and availability
@@ -18,9 +18,9 @@ public class Analysis {
 
 	private Parser parser;
 
-	private Matrix transitionMatrix;
+//	private Matrix transitionMatrix;
 
-	private Matrix stationaryDistribution;
+//	private Matrix stationaryDistribution;
 
 	private double fullyOperationalAvailability;
 
@@ -63,42 +63,42 @@ public class Analysis {
 	 * Parses the .PSM file to get the transition matrix.
 	 */
 	public void parse() {
-		transitionMatrix = parser.parsePSM();
+//		transitionMatrix = parser.parsePSM();
 	}
 
 	/**
 	 * Balance the matrix as flux equations.
 	 */
 	private void balanceMatrix() {
-		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
-			double sum = 0;
-			for (int j = 0; j < transitionMatrix.getColumnDimension() - 1; j++) {
-				sum += transitionMatrix.get(i, j);
-			}
-			transitionMatrix.set(i, i, -sum);
-			sum = 0;
-		}
-		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
-			transitionMatrix.set(i, transitionMatrix.getColumnDimension() - 1, 1.0);
-		}
+//		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
+//			double sum = 0;
+//			for (int j = 0; j < transitionMatrix.getColumnDimension() - 1; j++) {
+//				sum += transitionMatrix.get(i, j);
+//			}
+//			transitionMatrix.set(i, i, -sum);
+//			sum = 0;
+//		}
+//		for (int i = 0; i < transitionMatrix.getRowDimension(); i++) {
+//			transitionMatrix.set(i, transitionMatrix.getColumnDimension() - 1, 1.0);
+//		}
 	}
 
 	/**
 	 * Computes the stationary distribution of the CTMC.
 	 * @return the stationary distribution
 	 */
-	public Matrix getStationaryDistribution() {
-		if (stationaryDistribution == null) {
-			balanceMatrix();
-			final Matrix b = new Matrix(new double[1][transitionMatrix.getColumnDimension()]);
-			b.set(0, b.getColumnDimension() - 1, 1.0);
-			stationaryDistribution = transitionMatrix.solveTranspose(b);
-			// Make the transition matrix eligible for GC
-			transitionMatrix = null;
-			System.gc();
-		}
-		return stationaryDistribution;
-	}
+//	public Matrix getStationaryDistribution() {
+//		if (stationaryDistribution == null) {
+//			balanceMatrix();
+//			final Matrix b = new Matrix(new double[1][transitionMatrix.getColumnDimension()]);
+//			b.set(0, b.getColumnDimension() - 1, 1.0);
+//			stationaryDistribution = transitionMatrix.solveTranspose(b);
+//			// Make the transition matrix eligible for GC
+//			transitionMatrix = null;
+//			System.gc();
+//		}
+//		return stationaryDistribution;
+//	}
 
 	/**
 	 * Computes the stationary distribution of the CTMC
@@ -106,15 +106,15 @@ public class Analysis {
 	 * @return the stationary distribution
 	 * @throws IOException
 	 */
-	public Matrix getStationaryDistributionSOR() throws IOException {
-		// Execute TTKernel -q
-		parser.generateDIS();
-
-		// Parse the .DIS file to get the stationary distribution
-		stationaryDistribution = parser.parseDIS();
-
-		return stationaryDistribution;
-	}
+//	public Matrix getStationaryDistributionSOR() throws IOException {
+//		// Execute TTKernel -q
+//		parser.generateDIS();
+//
+//		// Parse the .DIS file to get the stationary distribution
+////		stationaryDistribution = parser.parseDIS();
+//
+//		return stationaryDistribution;
+//	}
 
 	/**
 	 * Computes the availability of the system considering the system
@@ -126,7 +126,7 @@ public class Analysis {
 			int i = 0;
 			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
 				if (!states.next().contains(".fail")) {
-					fullyOperationalAvailability += stationaryDistribution.get(i, 0);
+//					fullyOperationalAvailability += stationaryDistribution.get(i, 0);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class Analysis {
 			int i = 0;
 			for (Iterator<String> states = parser.getStates().iterator(); states.hasNext(); i++) {
 				if (states.next().matches(".*\\.(?!fail).*")) {
-					degradedAvailability += stationaryDistribution.get(i, 0);
+//					degradedAvailability += stationaryDistribution.get(i, 0);
 				}
 			}
 		}
@@ -204,8 +204,8 @@ public class Analysis {
 	 */
 	public void clean() {
 		parser = null;
-		transitionMatrix = null;
-		stationaryDistribution = null;
+//		transitionMatrix = null;
+//		stationaryDistribution = null;
 		System.gc();
 	}
 }
