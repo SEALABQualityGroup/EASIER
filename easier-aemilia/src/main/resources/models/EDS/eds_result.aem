@@ -1,0 +1,201 @@
+ARCHI_TYPE eds(
+		   const integer sample_cached_in_rda := 150,	
+		   const integer responder_number := 2,	
+		   const rate sensors_sample_rate := 15,	
+		   const rate transfer_rate_lvl_0_net := 12.04,	
+		   const rate transfer_rate_lvl_1_net := 31.25,	
+		   const rate disk_store_rate := 8000000,	
+		   const integer simultaneous_notifications := 2)	
+			
+
+ARCHI_ELEM_TYPES
+
+    ELEM_TYPE Clock_Type(void)
+	
+		BEHAVIOR
+ 
+
+			Clock( void; void) = 
+					<elapse_tick, inf> . Clock()
+	
+		INPUT_INTERACTIONS	
+					
+			void
+
+		OUTPUT_INTERACTIONS
+					
+			AND elapse_tick
+
+    ELEM_TYPE RDA_Type(const integer cached_samples,const rate disk_store_rate,const rate sensors_sample_rate)
+	
+		BEHAVIOR
+ 
+
+			StoreData(integer(0..cached_samples) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < cached_samples) ->		<acquire_sample, _> . StoreData(item_num + 1),
+						cond(item_num >= cached_samples) ->		<acquire_sample, _> . <store, exp(disk_store_rate)> . <send_sample, inf> . <acquire_feedback, _> . StoreData(1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			UNI acquire_feedback;
+			acquire_sample
+
+		OUTPUT_INTERACTIONS
+					
+			UNI send_sample
+
+    ELEM_TYPE NetUpRT_Type(const integer simultaneous_notifications,const rate upload_rate)
+	
+		BEHAVIOR
+ 
+
+			TransferData(integer(0..simultaneous_notifications) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < simultaneous_notifications) ->		<receive, _> . TransferData(item_num + 1),
+						cond(item_num > 0) ->		<forward, exp(upload_rate)> . TransferData(item_num - 1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			OR receive
+
+		OUTPUT_INTERACTIONS
+					
+			OR forward
+
+    ELEM_TYPE NetDownRT_Type(const integer simultaneous_notifications,const rate download_rate)
+	
+		BEHAVIOR
+ 
+
+			TransferData(integer(0..simultaneous_notifications) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < simultaneous_notifications) ->		<receive, _> . TransferData(item_num + 1),
+						cond(item_num > 0) ->		<forward, exp(download_rate)> . TransferData(item_num - 1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			OR receive
+
+		OUTPUT_INTERACTIONS
+					
+			OR forward
+
+    ELEM_TYPE TLDA_Type(void)
+	
+		BEHAVIOR
+ 
+
+			TldaState( void; void) = 
+					<acquire_sample, _> . <send_sample, inf> . <acquire_feedback, _> . <send_feedback, inf> . TldaState()
+	
+		INPUT_INTERACTIONS	
+					
+			UNI acquire_sample;
+			acquire_feedback
+
+		OUTPUT_INTERACTIONS
+					
+			UNI send_sample;
+			send_feedback
+
+    ELEM_TYPE NetUpTT_Type(const integer simultaneous_notifications,const rate upload_rate)
+	
+		BEHAVIOR
+ 
+
+			TransferData(integer(0..simultaneous_notifications) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < simultaneous_notifications) ->		<receive, _> . TransferData(item_num + 1),
+						cond(item_num > 0) ->		<forward, exp(upload_rate)> . TransferData(item_num - 1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			OR receive
+
+		OUTPUT_INTERACTIONS
+					
+			OR forward
+
+    ELEM_TYPE NetDownTT_Type(const integer simultaneous_notifications,const rate download_rate)
+	
+		BEHAVIOR
+ 
+
+			TransferData(integer(0..simultaneous_notifications) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < simultaneous_notifications) ->		<receive, _> . TransferData(item_num + 1),
+						cond(item_num > 0) ->		<forward, exp(download_rate)> . TransferData(item_num - 1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			OR receive
+
+		OUTPUT_INTERACTIONS
+					
+			UNI forward
+
+    ELEM_TYPE TLWPC_Type(const integer simultaneous_notifications,const rate data_fatch_rate)
+	
+		BEHAVIOR
+ 
+
+			StoreData(integer(0..simultaneous_notifications) item_num := 0; void) = 
+					choice
+					{
+						cond(item_num < simultaneous_notifications) ->		<acquire_sample, _> . StoreData(item_num + 1),
+						cond(item_num > 0) ->		<send_feedback, exp(data_fatch_rate)> . StoreData(item_num - 1)		
+					}
+	
+		INPUT_INTERACTIONS	
+					
+			UNI acquire_sample
+
+		OUTPUT_INTERACTIONS
+					
+			UNI send_feedback
+
+				
+
+ARCHI_TOPOLOGY
+				
+           ARCHI_ELEM_INSTANCES
+					CK : Clock_Type();
+                    RD[1] : RDA_Type( sample_cached_in_rda, disk_store_rate, sensors_sample_rate);
+                    RD[2] : RDA_Type( sample_cached_in_rda, disk_store_rate, sensors_sample_rate);
+                    TL : TLDA_Type();
+                    WP : TLWPC_Type( 1, disk_store_rate);
+                    TR : NetDownRT_Type( simultaneous_notifications, transfer_rate_lvl_1_net);
+                    RT : NetUpRT_Type( simultaneous_notifications, transfer_rate_lvl_1_net);
+                    WT : NetDownTT_Type( simultaneous_notifications, transfer_rate_lvl_0_net);
+                    TW : NetUpTT_Type( simultaneous_notifications, transfer_rate_lvl_0_net)
+
+		   ARCHI_INTERACTIONS	
+					void
+
+		   ARCHI_ATTACHMENTS
+					FROM CK.elapse_tick TO RD[1].acquire_sample;
+					FROM CK.elapse_tick TO RD[2].acquire_sample;
+					FROM RD[1].send_sample TO RT.receive;
+					FROM RD[2].send_sample TO RT.receive;
+					FROM RT.forward TO TL.acquire_sample;
+					FROM TR.forward TO RD[1].acquire_feedback;
+					FROM TR.forward TO RD[2].acquire_feedback;
+					FROM TL.send_sample TO TW.receive;
+					FROM TL.send_feedback TO TR.receive;
+					FROM TW.forward TO WP.acquire_sample;
+					FROM WT.forward TO TL.acquire_feedback;
+					FROM WP.send_feedback TO WT.receive
+				
+END
+

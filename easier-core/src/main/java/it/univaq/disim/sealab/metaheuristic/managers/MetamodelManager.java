@@ -15,14 +15,17 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.uma.jmetal.problem.Problem;
 
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.SourceModel;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.Action;
 
 public abstract class MetamodelManager {
@@ -31,7 +34,7 @@ public abstract class MetamodelManager {
 	protected OclManager oclManager;
 	protected OclStringManager oclStringManager;
 	protected Manager manager;
-	protected AEmiliaController controller;
+	protected Controller controller;
 
 	/* Source models */
 	protected List<Path> sourceModelsPath = new ArrayList<>();
@@ -46,21 +49,25 @@ public abstract class MetamodelManager {
 
 	public static final double MAX_VALUE = 100;
 
+	protected RProblem problem;
+	
 	private Map<UUID, ResourceSet> resourceSetMap = new HashMap<>();
 
+
 	public abstract void init(Path modelUri);
-
 	public abstract EObject getModel();
-
 	public abstract EObject getModel(final Path sourcePath);
-
 	public abstract void setModel(EObject model);
-
+	public abstract boolean isApplicable(RefactoringAction act, RSequence sequence); 
 	public abstract String getModelFileExtension();
-
 	public abstract String getMetamodelFileExtension();
-
 	public abstract OclStringManager getOclStringManager();
+	public abstract Action getRandomAction(int n) throws UnexpectedException;
+	public abstract RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException;
+	public abstract void packageRegistering();
+	public abstract void createNewResourceSet();
+	public abstract void refreshModel(Path sourceModelPath);
+	public abstract OclManager getOclManager();
 	
 	public MetamodelManager() {
 		resourceSet = new ResourceSetImpl();
@@ -73,6 +80,10 @@ public abstract class MetamodelManager {
 		
 		return resource;
 	}
+	
+	public void setProblem(final Problem p) {
+		this.problem = (RProblem) p;
+	}
 
 	public Path getModelUri() {
 		return modelUri;
@@ -82,19 +93,9 @@ public abstract class MetamodelManager {
 		this.modelUri = modelUri;
 	}
 
-	public abstract OclManager getOclManager();
-
 	public void setOclManager(OclManager oclManager) {
 		this.oclManager = oclManager;
 	}
-
-//	public OclStringManager getOclStringManager() {
-//		if(oclStringManager == null)
-//			oclStringManager = new OclUMLStringManager();
-//		return oclStringManager;
-//	}
-	
-	
 
 	public void setOclStringManager(OclStringManager oclStringManager) {
 		this.oclStringManager = oclStringManager;
@@ -108,7 +109,7 @@ public abstract class MetamodelManager {
 				current.unload();
 				i.remove();
 			}
-			AEmiliaController.logger_.info("unload Resources");
+			EasierLogger.logger_.info("unload Resources");
 		}
 	}
 
@@ -119,7 +120,7 @@ public abstract class MetamodelManager {
 			current.unload();
 			i.remove();
 		}
-		AEmiliaController.logger_.info("unload Resources");
+		EasierLogger.logger_.info("unload Resources");
 	}
 
 	public boolean saveModel() {
@@ -149,38 +150,20 @@ public abstract class MetamodelManager {
 	 * @param destionationPath
 	 * @see http://download.eclipse.org/modeling/emf/emf/javadoc/2.6.0/org/eclipse/emf/ecore/util/EcoreUtil.Copier.html#EcoreUtil.Copier(boolean)
 	 */
-	// PAKIMOR _FIXME before these modifications we created a copy with links
-	// between the source and the generated resources
 	public void save(String destionationPath) {
-		// original resources
-		// Resource resource = this.resourceSet.getResources().get(0);
-
-		// it is mandatory to comment this method
-		// unloadModelResource();
-
 		Resource res = getResourceSet().createResource(manager.string2FileUri(destionationPath));
-
-		// res.getContents().add(getModel());
-		// assert(resource.getContents().get(0).equals(getModel()));
-
-		// res.getContents().add(EcoreUtil.copy(resource.getContents().get(0)));
 		res.getContents().add(EcoreUtil.copy(this.getModel()));
-
 		try {
 			res.save(null);
 		} catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
-		// unloadModelResource();
-		// init(getModelUri());
-		// unloadModelResource();
-		// init(getModelUri());
 	}
 
 	public void save(RSolution solution) {
 		try {
 			if (solution.getResources() == null) {
-				AEmiliaController.logger_.warning("RSolution doesn't have resources");
+				EasierLogger.logger_.warning("RSolution doesn't have resources");
 			}
 			assert (solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
 
@@ -217,13 +200,5 @@ public abstract class MetamodelManager {
 		sourceModels.addAll(models);
 	}
 
-	public abstract Action getRandomAction(int n) throws UnexpectedException;
 
-	public abstract RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException;
-
-	public abstract void packageRegistering();
-
-	public abstract void createNewResourceSet();
-
-	public abstract void refreshModel(Path sourceModelPath);
 }

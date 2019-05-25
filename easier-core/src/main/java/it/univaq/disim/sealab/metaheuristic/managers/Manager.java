@@ -11,15 +11,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
+import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
-import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import logicalSpecification.Action;
 import logicalSpecification.AndOperator;
 import logicalSpecification.EqualOperator;
@@ -43,21 +40,17 @@ import metamodel.mmaemilia.Attachment;
 import metamodel.mmaemilia.InputInteraction;
 import metamodel.mmaemilia.OutputInteraction;
 
-public class Manager {
+public abstract class Manager {
 
-	private String modelUri = null;
+	protected String modelUri = null;
 
-	private MetamodelManager metamodelManager;
+	protected MetamodelManager metamodelManager;
 
-	private OclManager oclManager;
+	protected OclManager oclManager;
 
-	private OclStringManager oclStringManager;
+	protected OclStringManager oclStringManager;
 
-	private static Manager instance;
-
-	// private Manager() {}
-
-	private Controller controller;
+	protected Controller controller;
 
 	public static int REFACTORING_COUNTER = 0;
 
@@ -70,7 +63,6 @@ public class Manager {
 	public Manager(MetamodelManager mmManager) {
 		setMetamodelManager(mmManager);
 		setOclManager(getMetamodelManager().getOclManager());
-		setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
 	}
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {
@@ -99,64 +91,7 @@ public class Manager {
 		return sum;
 	}
 
-	public Action getTautologyRandomAction(int n, RSequence seq) {
-
-		// use n to choose among n possible actions
-		int u_bound = 10;
-		int l_bound = 1;
-
-		Action a = ((AemiliaManager) metamodelManager).getRandomCapacityChangeAction(seq);
-
-		a.setNumOfChanges(0);
-		a.setName("tautology_action_" + JMetalRandom.getInstance().getRandomGenerator().nextInt(0, Short.MAX_VALUE));
-		a.setCost(JMetalRandom.getInstance().getRandomGenerator().nextInt(l_bound, u_bound));
-
-		SingleValuedParameter lhs = LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-		String queryLhs = "4";
-		lhs.setResolvingExpr(queryLhs);
-
-		SingleValuedParameter rhs = LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-		String queryRhs = "3";
-		rhs.setResolvingExpr(queryRhs);
-
-		PreCondition aPre = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-		FOLSpecification aPreSpec = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-		aPreSpec.setName("APreCondition");
-
-		AndOperator aPreAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-
-		GreaterOperator aPreAndGreater = LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
-		aPreAndGreater.setLhs(lhs);
-		aPreAndGreater.setRhs(rhs);
-
-		aPreAnd.getArguments().add(aPreAndGreater);
-		aPreSpec.setRootOperator(aPreAnd);
-		aPre.setConditionFormula(aPreSpec);
-		a.setPre(aPre);
-
-		SingleValuedParameter lhs_ = LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-		String queryLhs_ = "2";
-		lhs_.setResolvingExpr(queryLhs_);
-
-		SingleValuedParameter rhs_ = LogicalSpecificationFactory.eINSTANCE.createSingleValuedParameter();
-		String queryRhs_ = "1";
-		rhs_.setResolvingExpr(queryRhs_);
-
-		PostCondition aPost = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-		FOLSpecification aPostSpec = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-		aPostSpec.setName("APostCondition");
-		AndOperator aPostAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-		GreaterOperator aPostAndGreater = LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
-		aPostAndGreater.setLhs(lhs_);
-		aPostAndGreater.setRhs(rhs_);
-		aPostAnd.getArguments().add(aPreAndGreater);
-		aPostSpec.setRootOperator(aPostAnd);
-		aPost.setConditionFormula(aPostSpec);
-		a.setPost(aPost);
-
-		return a;
-	}
-
+	public abstract Action getTautologyRandomAction(int n, RSequence seq); 
 
 	public boolean evaluateFOL(FOLSpecification folSpec, EObject context) throws ParserException {
 		if (folSpec.getRootOperator() instanceof NotOperator)

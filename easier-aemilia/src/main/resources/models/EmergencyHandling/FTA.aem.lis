@@ -1,0 +1,244 @@
+(1)	ARCHI_TYPE fta(
+(2)				const rate wsn_rate := 1000,
+(3)				const rate channel_rate:=50,
+(4)				const rate fta_rate:=500000000,
+(5)				const rate packet_rate:=0.1,
+(6)				const rate ShowMap_rate:=500000,
+(7)				const rate lan_rate:=200,
+(8)				const rate db_rate:=200,
+(9)				const rate dec_rate:=25
+(10)
+(11)
+(12)
+(13)	)
+(14)
+(15)
+(16)	ARCHI_ELEM_TYPES
+(17)
+(18)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(19)		% WSN
+(20)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(21)
+(22)		ELEM_TYPE Wsn_Type(const rate wsn_rate)
+(23)
+(24)		    BEHAVIOR
+(25)
+(26)		      SendData(void;
+(27)			       void) =
+(28)			<generate_data, exp(wsn_rate)>. <send_data, inf>. SendData()
+(29)
+(30)
+(31)
+(32)		    INPUT_INTERACTIONS
+(33)
+(34)		      UNI generate_data
+(35)
+(36)
+(37)		    OUTPUT_INTERACTIONS
+(38)
+(39)		      UNI send_data
+(40)
+(41)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(42)		% CHANNEL 
+(43)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(44)
+(45)		ELEM_TYPE Channel_Type(const rate channel_rate)
+(46)
+(47)		    BEHAVIOR
+(48)
+(49)				Channel(void; void) =
+(50)					<receive_data, _> . <forward_data, exp(channel_rate)> . Channel()
+(51)
+(52)		    INPUT_INTERACTIONS
+(53)
+(54)				UNI receive_data
+(55)
+(56)		    OUTPUT_INTERACTIONS
+(57)
+(58)				UNI forward_data
+(59)
+(60)
+(61)	        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(62)		% FTA 
+(63)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(64)
+(65)		ELEM_TYPE Fta_Type(const rate fta_rate, const rate packet_rate)
+(66)
+(67)		    BEHAVIOR
+(68)
+(69)				Fta(void; void) =
+(70)					<receive, _>.<packet_data, exp(packet_rate)>.<sendto_security, _>.<receive_decrypted, _>.
+(71)	                                            <process_data, exp(fta_rate)>.<sendto_db, _>.<sendto_desktop, _>. Fta()
+(72)
+(73)
+(74)
+(75)		    INPUT_INTERACTIONS
+(76)
+(77)				UNI receive;
+(78)	                            receive_decrypted
+(79)
+(80)
+(81)		    OUTPUT_INTERACTIONS
+(82)
+(83)				UNI sendto_db;
+(84)	                            sendto_desktop;
+(85)	                            sendto_security;
+(86)	                            process_data;
+(87)	                            packet_data
+(88)
+(89)
+(90)
+(91)
+(92)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(93)		% LAN 
+(94)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(95)
+(96)		ELEM_TYPE Lan_Type(const rate lan_rate)
+(97)
+(98)		    BEHAVIOR
+(99)
+(100)				Lan(void; void) =
+(101)					choice
+(102)	                                        {
+(103)	                                            <lanto_db, inf> . <frwdto_db, exp(lan_rate)> . Lan(),
+(104)	                                            <lanto_desk, inf> . <frwdto_desk, exp(lan_rate)> . Lan(),
+(105)	                                            <lanto_sec, inf> . <frwdto_sec, exp(lan_rate)> . Lan(),
+(106)	                                            <lanto_fta, inf> . <frwdto_fta, exp(lan_rate)> . Lan()
+(107)	                                        }
+(108)
+(109)
+(110)
+(111)
+(112)		    INPUT_INTERACTIONS
+(113)
+(114)				UNI lanto_db;
+(115)	                            lanto_desk;
+(116)	                            lanto_sec;
+(117)	                            lanto_fta
+(118)
+(119)
+(120)		    OUTPUT_INTERACTIONS
+(121)
+(122)				UNI frwdto_db;
+(123)	                            frwdto_desk;
+(124)	                            frwdto_sec;
+(125)	                            frwdto_fta
+(126)
+(127)
+(128)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(129)		% Desktop App
+(130)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(131)
+(132)		ELEM_TYPE Desk_Type(const rate ShowMap_rate)
+(133)
+(134)		    BEHAVIOR
+(135)				ShowMap(void; void)= <receive_map, _>. <show_map, exp(ShowMap_rate)> .ShowMap()
+(136)
+(137)		    INPUT_INTERACTIONS
+(138)
+(139)				UNI receive_map
+(140)
+(141)
+(142)
+(143)		    OUTPUT_INTERACTIONS
+(144)
+(145)				UNI show_map
+(146)
+(147)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(148)		% DB
+(149)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(150)
+(151)		ELEM_TYPE DB_Type(const rate db_rate)
+(152)
+(153)		    BEHAVIOR
+(154)
+(155)				StoreData(void; void) =
+(156)						<receive_fta_data, _>. <store_data, exp(db_rate)>.StoreData()
+(157)
+(158)
+(159)		    INPUT_INTERACTIONS
+(160)
+(161)				UNI receive_fta_data
+(162)
+(163)		    OUTPUT_INTERACTIONS
+(164)
+(165)				UNI store_data
+(166)
+(167)	        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(168)		% SECURITY
+(169)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(170)
+(171)		ELEM_TYPE Sec_Type(const rate dec_rate)
+(172)
+(173)		    BEHAVIOR
+(174)
+(175)				Security(void; void) =
+(176)						<receive_ftas, _>.<decrypt_data, exp(dec_rate)>.<sendto_fta, _>. Security()
+(177)
+(178)
+(179)		    INPUT_INTERACTIONS
+(180)
+(181)				UNI receive_ftas
+(182)
+(183)		    OUTPUT_INTERACTIONS
+(184)
+(185)				UNI sendto_fta;
+(186)	                            decrypt_data
+(187)
+(188)
+(189)
+(190)
+(191)
+(192)
+(193)
+(194)
+(195)
+(196)	ARCHI_TOPOLOGY
+(197)
+(198)		ARCHI_ELEM_INSTANCES
+(199)
+(200)		WSN  : Wsn_Type(wsn_rate);
+(201)	        CHN  : Channel_Type(channel_rate);
+(202)	        FTA  : Fta_Type(fta_rate, packet_rate);
+(203)	        LAN  : Lan_Type(lan_rate);
+(204)	        DB   : DB_Type(db_rate);
+(205)	        DSK  : Desk_Type(ShowMap_rate);
+(206)	        SCR  : Sec_Type(dec_rate)
+(207)
+(208)
+(209)
+(210)		ARCHI_INTERACTIONS
+(211)
+(212)	        WSN.generate_data;
+(213)	        DB.store_data;
+(214)	        DSK.show_map;
+(215)	        SCR.decrypt_data;
+(216)	        FTA.process_data;
+(217)	        FTA.packet_data
+(218)
+(219)
+(220)
+(221)		ARCHI_ATTACHMENTS
+(222)
+(223)		FROM WSN.send_data 			TO  CHN.receive_data;
+(224)	        FROM CHN.forward_data 			TO  FTA.receive;
+(225)	        FROM FTA.sendto_db      		TO  LAN.lanto_db;
+(226)	        FROM FTA.sendto_desktop		        TO  LAN.lanto_desk;
+(227)	        FROM FTA.sendto_security    		TO  LAN.lanto_sec;
+(228)	        FROM LAN.frwdto_desk    		TO  DSK.receive_map;
+(229)	        FROM LAN.frwdto_db                      TO  DB.receive_fta_data;
+(230)	        FROM LAN.frwdto_fta 			TO  FTA.receive_decrypted;
+(231)	        FROM LAN.frwdto_sec 			TO  SCR.receive_ftas;
+(232)	        FROM SCR.sendto_fta			TO  LAN.lanto_fta
+(233)
+(234)
+(235)
+(236)
+(237)
+(238)
+(239)	END
+(240)
+
+
+>>>> 0 errors
+>>>> 0 warnings

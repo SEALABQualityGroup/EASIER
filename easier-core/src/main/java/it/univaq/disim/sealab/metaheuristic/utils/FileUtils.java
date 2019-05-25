@@ -14,9 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
+import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
@@ -110,97 +109,97 @@ public class FileUtils {
 		}
 	}
 
-	public static synchronized void writeSolutionSetToCSV(List<RSolution> population) {
-		AEmiliaController.logger_.info("Writing CSV");
-		for (RSolution solution : population) {
-			try (FileWriter fw = new FileWriter(
-					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
-							solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
-					true)) {
-				List<String> line = new ArrayList<String>();
-				line.add("SolID");
-				line.add("PerQ");
-				line.add("#Changes");
-				line.add("#PAs");
-				int numberOfActions = solution.getVariableValue(0).getLength();
-				for (int i = 0; i < numberOfActions; i++) {
-					line.add("ActionTarget");
-					line.add("FoC/Null");
-				}
-				CSVUtils.writeLine(fw, line);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			writeSolutionToCSV(solution);
-			writeAnalyzableFile(solution);
-		}
-		AEmiliaController.logger_.info("Writing CSV done");
-	}
+//	public static synchronized void writeSolutionSetToCSV(List<RSolution> population) {
+//		EasierLogger.logger_.info("Writing CSV");
+//		for (RSolution solution : population) {
+//			try (FileWriter fw = new FileWriter(
+//					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
+//							solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
+//					true)) {
+//				List<String> line = new ArrayList<String>();
+//				line.add("SolID");
+//				line.add("PerQ");
+//				line.add("#Changes");
+//				line.add("#PAs");
+//				int numberOfActions = solution.getVariableValue(0).getLength();
+//				for (int i = 0; i < numberOfActions; i++) {
+//					line.add("ActionTarget");
+//					line.add("FoC/Null");
+//				}
+//				CSVUtils.writeLine(fw, line);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			writeSolutionToCSV(solution);
+//			writeAnalyzableFile(solution);
+//		}
+//		EasierLogger.logger_.info("Writing CSV done");
+//	}
 
-	public static void writeSolutionToCSV(RSolution solution) {
-		Refactoring ref = solution.getVariableValue(0).getRefactoring();
-		try (FileWriter fw = new FileWriter(
-				Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
-						solution.getProblem().getName() + "_results.csv").toFile(),
-				true)) {
-			CSVUtils.writeLine(fw, Arrays.asList("#SOL:" + Integer.toString(solution.getName())));
-			CSVUtils.writeLine(fw, Arrays.asList("Parents", "Refactored", "Crossovered", "Mutated", "PerfQ", "#Changes",
-					"#Pas", "ExeTime"));
-
-			List<String> line = new ArrayList<String>();
-			String parents = "-,-";
-			if (solution.getParents()[0] != null && solution.getParents()[1] != null) {
-				parents = Integer.toString(solution.getParents()[0].getName()) + ", "
-						+ Integer.toString(solution.getParents()[1].getName());
-			}
-			line.add(parents);
-			line.add(Boolean.toString(solution.isRefactored()));
-			line.add(Boolean.toString(solution.isCrossovered()));
-			line.add(Boolean.toString(solution.isMutated()));
-			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
-			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
-			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
-			CSVUtils.writeLine(fw, line);
-			CSVUtils.writeLine(fw, Arrays.asList("ACTIONS"));
-			CSVUtils.writeLine(fw, Arrays.asList("Type", "#Chang", "Target", "Factor"));
-
-			for (RefactoringAction action : ref.getActions()) {
-				line = null;
-				line = new ArrayList<String>();
-				if (action.getName() == null)
-					action.setName(action.getClass().getSimpleName());
-
-				String target = action instanceof AEmiliaConstChangesAction
-						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
-						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
-				String factor = action instanceof AEmiliaConstChangesAction
-						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
-						: "NULL";
-
-				line = Arrays.asList(action.getName(), Double.toString(action.getNumOfChanges()), target, factor);
-
-				CSVUtils.writeLine(fw, line);
-
-			}
-			CSVUtils.writeLine(fw, Arrays.asList("ANTIPATTERNS"));
-			CSVUtils.writeLine(fw, Arrays.asList("Key", "ContextElem"));
-
-			Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.getMapOfPAs();
-			try {
-				for (String key : mapOfPAs.keySet()) {
-					List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
-					for (ArchitecturalInteraction ai : listOfContextElems) {
-						CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
-					}
-				}
-			} catch (NullPointerException e) {
-				System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void writeSolutionToCSV(RSolution solution) {
+//		Refactoring ref = solution.getVariableValue(0).getRefactoring();
+//		try (FileWriter fw = new FileWriter(
+//				Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
+//						solution.getProblem().getName() + "_results.csv").toFile(),
+//				true)) {
+//			CSVUtils.writeLine(fw, Arrays.asList("#SOL:" + Integer.toString(solution.getName())));
+//			CSVUtils.writeLine(fw, Arrays.asList("Parents", "Refactored", "Crossovered", "Mutated", "PerfQ", "#Changes",
+//					"#Pas", "ExeTime"));
+//
+//			List<String> line = new ArrayList<String>();
+//			String parents = "-,-";
+//			if (solution.getParents()[0] != null && solution.getParents()[1] != null) {
+//				parents = Integer.toString(solution.getParents()[0].getName()) + ", "
+//						+ Integer.toString(solution.getParents()[1].getName());
+//			}
+//			line.add(parents);
+//			line.add(Boolean.toString(solution.isRefactored()));
+//			line.add(Boolean.toString(solution.isCrossovered()));
+//			line.add(Boolean.toString(solution.isMutated()));
+//			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
+//			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
+//			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
+//			CSVUtils.writeLine(fw, line);
+//			CSVUtils.writeLine(fw, Arrays.asList("ACTIONS"));
+//			CSVUtils.writeLine(fw, Arrays.asList("Type", "#Chang", "Target", "Factor"));
+//
+//			for (RefactoringAction action : ref.getActions()) {
+//				line = null;
+//				line = new ArrayList<String>();
+//				if (action.getName() == null)
+//					action.setName(action.getClass().getSimpleName());
+//
+//				String target = action instanceof AEmiliaConstChangesAction
+//						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
+//						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
+//				String factor = action instanceof AEmiliaConstChangesAction
+//						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
+//						: "NULL";
+//
+//				line = Arrays.asList(action.getName(), Double.toString(action.getNumOfChanges()), target, factor);
+//
+//				CSVUtils.writeLine(fw, line);
+//
+//			}
+//			CSVUtils.writeLine(fw, Arrays.asList("ANTIPATTERNS"));
+//			CSVUtils.writeLine(fw, Arrays.asList("Key", "ContextElem"));
+//
+//			Map<String, List<ArchitecturalInteraction>> mapOfPAs = solution.getMapOfPAs();
+//			try {
+//				for (String key : mapOfPAs.keySet()) {
+//					List<ArchitecturalInteraction> listOfContextElems = mapOfPAs.get(key);
+//					for (ArchitecturalInteraction ai : listOfContextElems) {
+//						CSVUtils.writeLine(fw, Arrays.asList(key, ai.getName()));
+//					}
+//				}
+//			} catch (NullPointerException e) {
+//				System.err.println("Solution #: " + solution.getName() + " has null mapOfPAs");
+//				e.printStackTrace();
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void writeAnalyzableFile(final RSolution solution) {
 		Controller controller = solution.getController();
@@ -245,7 +244,7 @@ public class FileUtils {
 		try {
 			org.apache.commons.io.FileUtils.copyDirectory(sourceFolder.toFile(), destFolder.toFile());
 		} catch (IOException e) {
-			AEmiliaController.logger_.warning("[WARNING] Copy tmp folder failed!!!");
+			EasierLogger.logger_.warning("[WARNING] Copy tmp folder failed!!!");
 			e.printStackTrace();
 			return;
 		}

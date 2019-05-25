@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
@@ -22,9 +21,9 @@ import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
 public abstract class OclManager {
@@ -132,7 +131,7 @@ public abstract class OclManager {
 					if (ocl.check(el, body)) {
 						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
 						apCounter++;
-						AEmiliaController.logger_.warning(nextConstraint.getName() + " DETECTED!");
+						EasierLogger.logger_.warning(nextConstraint.getName() + " DETECTED!");
 					}
 				}
 				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);

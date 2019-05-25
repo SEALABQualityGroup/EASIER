@@ -16,15 +16,12 @@ import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 @SuppressWarnings("serial")
 public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> {
 
-//	private ExecutorService executor;
-
 	public RSolutionListEvaluator() {
 	}
 
 	@Override
 	public List<RSolution> evaluate(List<RSolution> solutionList, Problem<RSolution> problem) {
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
-//		((RProblem) problem).getController().setExecutor(executor);
 
 		for (RSolution sol : solutionList) {
 			sol.executeRefactoring();
@@ -51,7 +48,7 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 		for (RSolution sol : solutionList) {
 			sol.updateModel();
 			sol.updateThresholds();
-			sol.countingPAsOnAemiliaModel();
+			sol.countingPAs();
 			sol.evaluatePerformance();
 			FileUtils.simpleSolutionWriterToCSV(sol);
 			problem.evaluate(sol);
@@ -63,19 +60,5 @@ public class RSolutionListEvaluator implements SolutionListEvaluator<RSolution> 
 	@Override
 	public void shutdown() {
 	}
-
-//	public void setExecutor(ExecutorService exc) {
-//		executor = exc;
-//	}
-
-	// for (RSolution refactoringSolution : solutionList) {
-	// if (executor != null) {
-	// Runnable worker = new RSolutionListEvaluatorRunnable(problem,
-	// refactoringSolution);
-	// executor.execute(worker);
-	// } else {
-	// problem.evaluate(refactoringSolution);
-	// }
-	// }
 
 }

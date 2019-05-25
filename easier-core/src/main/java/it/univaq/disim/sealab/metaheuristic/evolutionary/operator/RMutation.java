@@ -7,9 +7,9 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
 public class RMutation implements MutationOperator<RSolution> {
@@ -75,14 +75,13 @@ public class RMutation implements MutationOperator<RSolution> {
 		if (null == solution) {
 			throw new JMetalException("Null parameter");
 		}
-		// PAKIMOR _FIXME hardcoded
 		int allowed = 1000;
 		doMutation(mutationProbability, solution, allowed);
 		return solution;
 	}
 
 	/** Perform the mutation operation */
-	private void doMutation(double probability, RSolution solution, int allowed_failures) {
+	protected void doMutation(double probability, RSolution solution, int allowed_failures) {
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			if (randomGenerator.nextDouble() <= probability) {
@@ -102,11 +101,11 @@ public class RMutation implements MutationOperator<RSolution> {
 						}
 					}
 					if(!altered)
-						AEmiliaController.logger_.info("Mutation left solution unchanged");
+						EasierLogger.logger_.info("Mutation left solution unchanged");
 					else {
 						solution.setMutated(true);
 						RSolution.MutationCounter++;
-						AEmiliaController.logger_.info("Mutation is done");
+						EasierLogger.logger_.info("Mutation is done");
 					}
 				} catch (UnexpectedException e) {
 					// TODO Auto-generated catch block

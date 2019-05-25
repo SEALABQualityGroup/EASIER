@@ -1,0 +1,330 @@
+(1)	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(2)	%                                                               %
+(3)	% NRL Pump - Markovian model
+(4)	%                                                               %
+(5)	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(6)	% Parameters:
+(7)	% - Channel capacity: 64 Kbps.
+(8)	% - Data/control packet length: 512 bits.
+(9)	% - Ack packet length: 49 bits.
+(10)	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(11)
+(12)
+(13)	ARCHI_TYPE NRL_Pump_Type_M(const integer buffer_size     := 1,
+(14)				   const rate    conn_gen_rate   := 10,      % 1 connection every 100 ms
+(15)			           const rate    conn_init_rate  := 62.5,    % round-trip delay
+(16)	                           const rate    data_trans_rate := 125,     % trans rate / data length
+(17)			           const rate    ack_trans_rate  := 1306.12, % trans rate / ack length
+(18)			           const rate    ack_delay_rate  := 435.37,  % 3 acks
+(19)			           const rate    timeout_rate    := 57.04,   % (1 data + 1 ack) * 2
+(20)			           const weight  valid_prob      := 0.99)
+(21)
+(22)
+(23)	ARCHI_ELEM_TYPES
+(24)
+(25)
+(26)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(27)		% Low Wrapper (LW)
+(28)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(29)
+(30)		ELEM_TYPE LW_Type(const rate conn_gen_rate,
+(31)				  const rate data_trans_rate)
+(32)
+(33)		    BEHAVIOR
+(34)
+(35)		      LW_Beh(void;
+(36)			     void) =
+(37)			<send_conn_request, exp(conn_gen_rate)>.
+(38)			  choice
+(39)			  {
+(40)	                    <receive_conn_valid, _> . <receive_conn_grant, _> .
+(41)			      <send_msg, exp(data_trans_rate)> . <receive_low_ack, _> .
+(42)			        choice
+(43)			        {
+(44)			          <receive_conn_exit, _> . LW_Beh(),
+(45)			          <send_conn_close, exp(data_trans_rate)> . LW_Beh()
+(46)			        },
+(47)	                    <receive_conn_reject, _> . LW_Beh()
+(48)			  }
+(49)
+(50)		    INPUT_INTERACTIONS
+(51)
+(52)		      UNI receive_conn_valid;
+(53)	                  receive_conn_grant;
+(54)	                  receive_conn_reject;
+(55)			  receive_low_ack;
+(56)			  receive_conn_exit
+(57)
+(58)		    OUTPUT_INTERACTIONS
+(59)
+(60)		      UNI send_conn_request;
+(61)	                  send_msg;
+(62)			  send_conn_close
+(63)
+(64)
+(65)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(66)		% Main Thread (MT)
+(67)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(68)
+(69)		ELEM_TYPE MT_Type(const rate   data_trans_rate,
+(70)				  const weight valid_prob)
+(71)
+(72)		    BEHAVIOR
+(73)
+(74)		      MT_Beh(void;
+(75)			     void) =
+(76)			<receive_conn_request, _> .
+(77)	      		  choice
+(78)	      		  {
+(79)	         	    <conn_is_valid, inf(1, valid_prob)> . <wakeup_tht, inf> .
+(80)	            	      <send_conn_valid, exp(data_trans_rate)> . MT_Beh(),
+(81)	         	    <conn_not_valid, inf(1, 1 - valid_prob)> .
+(82)	            	      <send_conn_reject, exp(data_trans_rate)> . MT_Beh()
+(83)	      		  }
+(84)
+(85)		    INPUT_INTERACTIONS
+(86)
+(87)		      UNI receive_conn_request
+(88)
+(89)		    OUTPUT_INTERACTIONS
+(90)
+(91)		      UNI wakeup_tht;
+(92)	                  send_conn_valid;
+(93)	                  send_conn_reject
+(94)
+(95)
+(96)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(97)		% Trusted High Thread (THT)
+(98)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(99)
+(100)		ELEM_TYPE THT_Type(const rate conn_init_rate,
+(101)				   const rate timeout_rate)
+(102)
+(103)		    BEHAVIOR
+(104)
+(105)		      THT_Beh(void;
+(106)			      void) =
+(107)			choice
+(108)			{
+(109)	                  <receive_high_wakeup, _> . <init_high_conn, exp(conn_init_rate)> .
+(110)		            <wakeup_tlt, inf> . THT_Beh(),
+(111)	                  <read_msg, _> . <forward_msg, inf> .
+(112)			    choice
+(113)			    {
+(114)	      	              <receive_high_ack, _> . <delete_msg, inf> .
+(115)			        <send_ok_to_tlt, inf> . THT_Beh(),
+(116)	                      <wait_for_timeout, exp(timeout_rate)> . <comm_timeout, inf> . <delete_msg, inf> .
+(117)			        <send_abort_to_tlt, inf> . THT_Beh()
+(118)			    }
+(119)			}
+(120)
+(121)		    INPUT_INTERACTIONS
+(122)
+(123)		      UNI receive_high_wakeup;
+(124)			  read_msg;
+(125)	                  receive_high_ack
+(126)
+(127)		    OUTPUT_INTERACTIONS
+(128)
+(129)		      UNI wakeup_tlt;
+(130)	                  forward_msg;
+(131)	                  delete_msg;
+(132)			  send_ok_to_tlt;
+(133)			  comm_timeout;
+(134)	                  send_abort_to_tlt
+(135)
+(136)
+(137)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(138)		% Trusted Low Thread (TLT)
+(139)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(140)
+(141)		ELEM_TYPE TLT_Type(const rate data_trans_rate,
+(142)				   const rate ack_trans_rate,
+(143)				   const rate ack_delay_rate)
+(144)
+(145)		    BEHAVIOR
+(146)
+(147)		      TLT_Beh(void;
+(148)			      void) =
+(149)			<receive_low_wakeup, _> . <send_conn_grant, exp(data_trans_rate)> .
+(150)			  <receive_msg, _> . <store_msg, inf> .
+(151)			    choice
+(152)			    {
+(153)	                      <wait_delay, exp(ack_delay_rate)> . <send_low_ack, exp(ack_trans_rate)> .
+(154)			        choice
+(155)			        {
+(156)	                          <receive_abort_from_tht, _> . <send_conn_exit, exp(data_trans_rate)> . TLT_Beh(),
+(157)		                  <receive_ok_from_tht, _> . <receive_conn_close, _> . TLT_Beh()
+(158)			        },
+(159)		              <receive_abort_from_tht, _> . <send_low_ack, exp(ack_trans_rate)> .
+(160)		                <send_conn_exit, exp(data_trans_rate)> . TLT_Beh(),
+(161)		              <receive_ok_from_tht, _> . <wait_delay, exp(ack_delay_rate)> .
+(162)		                <send_low_ack, exp(ack_trans_rate)> . <receive_conn_close, _> . TLT_Beh()
+(163)			    }
+(164)
+(165)		    INPUT_INTERACTIONS
+(166)
+(167)		      UNI receive_low_wakeup;
+(168)	                  receive_msg;
+(169)			  receive_abort_from_tht;
+(170)			  receive_ok_from_tht;
+(171)			  receive_conn_close
+(172)
+(173)		    OUTPUT_INTERACTIONS
+(174)
+(175)		      UNI send_conn_grant;
+(176)	                  store_msg;
+(177)	                  send_low_ack;
+(178)			  send_conn_exit
+(179)
+(180)
+(181)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(182)		% Connection Buffer
+(183)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(184)
+(185)		ELEM_TYPE Buffer_Type(const integer buffer_size)
+(186)
+(187)		    BEHAVIOR
+(188)
+(189)		      Buffer_Beh(integer(0..buffer_size) msg_num := 0;
+(190)			         void) =
+(191)			choice
+(192)			{
+(193)			  cond(msg_num < buffer_size) ->
+(194)			    <accept_msg, _> . Buffer_Beh(msg_num + 1),
+(195)			  cond(msg_num > 0) ->
+(196)			    choice
+(197)			    {
+(198)	                      <read_msg, inf> . Buffer_Beh(msg_num),
+(199)	                      <delete_msg, _> . Buffer_Beh(msg_num - 1)
+(200)			    }
+(201)			}
+(202)
+(203)		    INPUT_INTERACTIONS
+(204)
+(205)		      UNI accept_msg;
+(206)	                  delete_msg
+(207)
+(208)		    OUTPUT_INTERACTIONS
+(209)
+(210)		      UNI read_msg
+(211)
+(212)
+(213)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(214)		% High Channel (HC)
+(215)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(216)
+(217)		ELEM_TYPE HC_Type(const rate data_trans_rate,
+(218)				  const rate ack_trans_rate)
+(219)
+(220)		    BEHAVIOR
+(221)
+(222)		      HC_Beh(void;
+(223)			     void) =
+(224)			<accept_msg, _> .
+(225)			  choice
+(226)			  {
+(227)			    <receive_timeout, _> . HC_Beh(),
+(228)			    <transmit_msg, exp(data_trans_rate)> .
+(229)			      choice
+(230)			      {
+(231)			        <receive_timeout, _> . HC_Beh(),
+(232)				<accept_high_ack, _> .
+(233)	               	          choice
+(234)	                          {
+(235)	                            <receive_timeout, _> . HC_Beh(),
+(236)	                            <transmit_high_ack, exp(ack_trans_rate)> . HC_Beh()
+(237)	                          }
+(238)			      }
+(239)			  }
+(240)
+(241)		    INPUT_INTERACTIONS
+(242)
+(243)		      UNI accept_msg;
+(244)	                  receive_timeout;
+(245)			  accept_high_ack
+(246)
+(247)		    OUTPUT_INTERACTIONS
+(248)
+(249)		      UNI transmit_msg;
+(250)			  transmit_high_ack
+(251)
+(252)
+(253)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(254)		% High Wrapper (HW)
+(255)		%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(256)
+(257)		ELEM_TYPE HW_Type(void)
+(258)
+(259)		    BEHAVIOR
+(260)
+(261)		      HW_Beh(void;
+(262)			     void) =
+(263)			<receive_msg, _> . <send_high_ack, inf> . HW_Beh()
+(264)
+(265)		    INPUT_INTERACTIONS
+(266)
+(267)		      UNI receive_msg
+(268)
+(269)		    OUTPUT_INTERACTIONS
+(270)
+(271)		      UNI send_high_ack
+(272)
+(273)
+(274)	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(275)
+(276)	ARCHI_TOPOLOGY
+(277)
+(278)
+(279)		ARCHI_ELEM_INSTANCES
+(280)
+(281)		  LW  : LW_Type(conn_gen_rate,
+(282)				data_trans_rate);
+(283)		  MT  : MT_Type(data_trans_rate,
+(284)				valid_prob);
+(285)		  THT : THT_Type(conn_init_rate,
+(286)				 timeout_rate);
+(287)		  TLT : TLT_Type(data_trans_rate,
+(288)				 ack_trans_rate,
+(289)				 ack_delay_rate);
+(290)		  B   : Buffer_Type(buffer_size);
+(291)		  HC  : HC_Type(data_trans_rate,
+(292)				ack_trans_rate);
+(293)		  HW  : HW_Type()
+(294)
+(295)
+(296)		ARCHI_INTERACTIONS
+(297)
+(298)		  void
+(299)
+(300)
+(301)		ARCHI_ATTACHMENTS
+(302)
+(303)		  FROM LW.send_conn_request  TO MT.receive_conn_request;
+(304)		  FROM MT.send_conn_valid    TO LW.receive_conn_valid;
+(305)		  FROM MT.send_conn_reject   TO LW.receive_conn_reject;
+(306)		  FROM MT.wakeup_tht         TO THT.receive_high_wakeup;
+(307)		  FROM THT.wakeup_tlt        TO TLT.receive_low_wakeup;
+(308)		  FROM TLT.send_conn_grant   TO LW.receive_conn_grant;
+(309)		  FROM LW.send_msg           TO TLT.receive_msg;
+(310)		  FROM TLT.store_msg         TO B.accept_msg;
+(311)		  FROM TLT.send_low_ack      TO LW.receive_low_ack;
+(312)		  FROM B.read_msg            TO THT.read_msg;
+(313)		  FROM THT.forward_msg       TO HC.accept_msg;
+(314)		  FROM HC.transmit_msg       TO HW.receive_msg;
+(315)		  FROM THT.comm_timeout      TO HC.receive_timeout;
+(316)		  FROM HW.send_high_ack      TO HC.accept_high_ack;
+(317)		  FROM HC.transmit_high_ack  TO THT.receive_high_ack;
+(318)		  FROM THT.delete_msg        TO B.delete_msg;
+(319)		  FROM THT.send_abort_to_tlt TO TLT.receive_abort_from_tht;
+(320)		  FROM THT.send_ok_to_tlt    TO TLT.receive_ok_from_tht;
+(321)		  FROM TLT.send_conn_exit    TO LW.receive_conn_exit;
+(322)		  FROM LW.send_conn_close    TO TLT.receive_conn_close
+(323)
+(324)
+(325)	END
+
+
+
+>>>> 0 errors
+>>>> 0 warnings

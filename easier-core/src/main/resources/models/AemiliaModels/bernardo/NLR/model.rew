@@ -1,0 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                               %
+% Performance measure specification
+%                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% MEASURE closed_connections_per_time_unit IS
+%  ENABLED(LW.send_conn_close) -> TRANS_REWARD(1);
+
+% MEASURE aborted_connections_per_time_unit IS
+%  ENABLED(TLT.send_conn_exit) -> TRANS_REWARD(1)
+
+MEASURE LW_Type_Single_throughput_send_conn_close IS
+  ENABLED(LW.send_conn_close) -> TRANS_REWARD(1);
+
+MEASURE TLT_Type_Single_throughput_send_conn_exit IS
+  ENABLED(TLT.send_conn_exit) -> TRANS_REWARD(1)

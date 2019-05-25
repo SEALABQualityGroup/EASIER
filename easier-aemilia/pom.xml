@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>it.univaq.disim.sealab</groupId>
+    <artifactId>easier</artifactId>
+    <version>0.6.2</version>
+  </parent>
+  <artifactId>easier-aemilia</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>easier-core</artifactId>
+  		<version>0.6.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>twoeaglesBridge</artifactId>
+  		<version>0.2.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>aemilia2text</artifactId>
+  		<version>0.0.3</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>aemiliaMetamodel</artifactId>
+  		<version>1.0.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>aemiliaToQn_bridge</artifactId>
+  		<version>0.0.2</version>
+  	</dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,57 @@
+(1)
+(2)			MEASURE Wsn_Type_Single_throughput_WSN_send_data IS ENABLED (WSN.send_data) ->TRANS_REWARD(1.0);
+(3)			MEASURE Wsn_Type_Single_utilization_WSN_send_data IS ENABLED (WSN.send_data) ->STATE_REWARD(1.0);
+(4)
+(5)			MEASURE Channel_Type_Single_throughput_CHN_forward_data IS ENABLED (CHN.forward_data) ->TRANS_REWARD(1.0);
+(6)			MEASURE Channel_Type_Single_utilization_CHN_forward_data IS ENABLED (CHN.forward_data) ->STATE_REWARD(1.0);
+(7)
+(8)			MEASURE Fta_Type_Single_throughput_FTA_process_data IS ENABLED (FTA.process_data) ->TRANS_REWARD(1.0);
+(9)			MEASURE Fta_Type_Single_utilization_FTA_process_data IS ENABLED (FTA.process_data) ->STATE_REWARD(1.0);
+(10)
+(11)			MEASURE Fta_Type_Single_throughput_FTA_packet_data IS ENABLED (FTA.packet_data) ->TRANS_REWARD(1.0);
+(12)			MEASURE Fta_Type_Single_utilization_FTA_packet_data IS ENABLED (FTA.packet_data) ->STATE_REWARD(1.0);
+(13)			MEASURE Fta_Type_Multiple_throughput_FTA IS
+(14)					ENABLED (FTA.process_data) ->TRANS_REWARD(1.0)
+(15)					ENABLED (FTA.packet_data) ->TRANS_REWARD(1.0);
+(16)			MEASURE Fta_Type_Multiple_utilization_FTA IS
+(17)					ENABLED (FTA.process_data) ->STATE_REWARD(1.0)
+(18)					ENABLED (FTA.packet_data) ->STATE_REWARD(1.0);
+(19)
+(20)			MEASURE Lan_Type_Single_throughput_LAN_frwdto_db IS ENABLED (LAN.frwdto_db) ->TRANS_REWARD(1.0);
+(21)			MEASURE Lan_Type_Single_utilization_LAN_frwdto_db IS ENABLED (LAN.frwdto_db) ->STATE_REWARD(1.0);
+(22)
+(23)			MEASURE Lan_Type_Single_throughput_LAN_frwdto_desk IS ENABLED (LAN.frwdto_desk) ->TRANS_REWARD(1.0);
+(24)			MEASURE Lan_Type_Single_utilization_LAN_frwdto_desk IS ENABLED (LAN.frwdto_desk) ->STATE_REWARD(1.0);
+(25)
+(26)			MEASURE Lan_Type_Single_throughput_LAN_frwdto_sec IS ENABLED (LAN.frwdto_sec) ->TRANS_REWARD(1.0);
+(27)			MEASURE Lan_Type_Single_utilization_LAN_frwdto_sec IS ENABLED (LAN.frwdto_sec) ->STATE_REWARD(1.0);
+(28)
+(29)			MEASURE Lan_Type_Single_throughput_LAN_frwdto_fta IS ENABLED (LAN.frwdto_fta) ->TRANS_REWARD(1.0);
+(30)			MEASURE Lan_Type_Single_utilization_LAN_frwdto_fta IS ENABLED (LAN.frwdto_fta) ->STATE_REWARD(1.0);
+(31)			MEASURE Lan_Type_Multiple_throughput_LAN IS
+(32)					ENABLED (LAN.frwdto_db) ->TRANS_REWARD(1.0)
+(33)					ENABLED (LAN.frwdto_desk) ->TRANS_REWARD(1.0)
+(34)					ENABLED (LAN.frwdto_sec) ->TRANS_REWARD(1.0)
+(35)					ENABLED (LAN.frwdto_fta) ->TRANS_REWARD(1.0);
+(36)			MEASURE Lan_Type_Multiple_utilization_LAN IS
+(37)					ENABLED (LAN.frwdto_db) ->STATE_REWARD(1.0)
+(38)					ENABLED (LAN.frwdto_desk) ->STATE_REWARD(1.0)
+(39)					ENABLED (LAN.frwdto_sec) ->STATE_REWARD(1.0)
+(40)					ENABLED (LAN.frwdto_fta) ->STATE_REWARD(1.0);
+(41)
+(42)			MEASURE DB_Type_Single_throughput_DB_store_data IS ENABLED (DB.store_data) ->TRANS_REWARD(1.0);
+(43)			MEASURE DB_Type_Single_utilization_DB_store_data IS ENABLED (DB.store_data) ->STATE_REWARD(1.0);
+(44)
+(45)			MEASURE Desk_Type_Single_throughput_DSK_show_map IS ENABLED (DSK.show_map) ->TRANS_REWARD(1.0);
+(46)			MEASURE Desk_Type_Single_utilization_DSK_show_map IS ENABLED (DSK.show_map) ->STATE_REWARD(1.0);
+(47)
+(48)			MEASURE Sec_Type_Single_throughput_SCR_decrypt_data IS ENABLED (SCR.decrypt_data) ->TRANS_REWARD(1.0);
+(49)			MEASURE Sec_Type_Single_utilization_SCR_decrypt_data IS ENABLED (SCR.decrypt_data) ->STATE_REWARD(1.0);
+(50)			MEASURE Sec_Type_Multiple_throughput_SCR IS
+(51)					ENABLED (SCR.decrypt_data) ->TRANS_REWARD(1.0);
+(52)			MEASURE Sec_Type_Multiple_utilization_SCR IS
+(53)					ENABLED (SCR.decrypt_data) ->STATE_REWARD(1.0)
+
+
+>>>> 0 errors
+>>>> 0 warnings

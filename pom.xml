@@ -19,6 +19,7 @@
 		<module>easier-twoeaglesBridge</module>
 		<module>easier-helper</module>
 		<module>easier-uml</module>
+		<module>easier-aemilia</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>

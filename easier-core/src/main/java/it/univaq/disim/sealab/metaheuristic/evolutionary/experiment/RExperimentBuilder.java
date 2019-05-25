@@ -12,27 +12,10 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 public class RExperimentBuilder<S extends Solution<?>, Result> extends ExperimentBuilder<S, Result>{
 
-//	private final String experimentName;
-//	private List<ExperimentAlgorithm<S, Result>> algorithmList;
-//	private List<ExperimentProblem<S>> problemList;
-//	private List<String> referenceFrontFileNames;
-//	private String referenceFrontDirectory;
-//	private String experimentBaseDirectory;
-//	private String outputParetoFrontFileName;
-//	private String outputParetoSetFileName;
-//	private int independentRuns;
-//
-//	private List<GenericIndicator<S>> indicatorList;
-//
-//	private int numberOfCores;
 	
 	public RExperimentBuilder(String experimentName) {
 		super(experimentName);
-//	    this.experimentName = experimentName ;
-//	    this.independentRuns = 1 ;
-//	    this.numberOfCores = 1 ;
-//	    this.referenceFrontFileNames = null ;
-//	    this.referenceFrontDirectory = null ;
+
 	  }
 
 	public RExperimentBuilder<S, Result> setAlgorithmList(List<ExperimentAlgorithm<S, Result>> algorithmList) {
@@ -99,48 +82,4 @@ public class RExperimentBuilder<S extends Solution<?>, Result> extends Experimen
 		return new RExperiment<S, Result>(this);
 	}
 
-//	/* Getters */
-//	public String getExperimentName() {
-//		return experimentName;
-//	}
-//
-//	public List<ExperimentAlgorithm<S, Result>> getAlgorithmList() {
-//		return algorithmList;
-//	}
-//
-//	public List<ExperimentProblem<S>> getProblemList() {
-//		return problemList;
-//	}
-//
-//	public String getExperimentBaseDirectory() {
-//		return experimentBaseDirectory;
-//	}
-//
-//	public String getOutputParetoFrontFileName() {
-//		return outputParetoFrontFileName;
-//	}
-//
-//	public String getOutputParetoSetFileName() {
-//		return outputParetoSetFileName;
-//	}
-//
-//	public int getIndependentRuns() {
-//		return independentRuns;
-//	}
-//
-//	public int getNumberOfCores() {
-//		return numberOfCores;
-//	}
-//
-//	public List<String> getReferenceFrontFileNames() {
-//		return referenceFrontFileNames;
-//	}
-//
-//	public String getReferenceFrontDirectory() {
-//		return referenceFrontDirectory;
-//	}
-//
-//	public List<GenericIndicator<S>> getIndicatorList() {
-//		return indicatorList;
-//	}
 }

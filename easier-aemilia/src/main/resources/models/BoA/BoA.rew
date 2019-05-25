@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%								%
+% Performance measure specification
+%								%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+#MEASURE MA_Type_Multiple_throughput_MA IS
+#ENABLED (MA[1].trasmit_req_best_path) ->TRANS_REWARD(1.0)
+#ENABLED (MA[2].trasmit_req_best_path) ->TRANS_REWARD(1.0)
+#ENABLED (MA[3].trasmit_req_best_path) ->TRANS_REWARD(1.0)
+#ENABLED (MA[4].trasmit_req_best_path) ->TRANS_REWARD(1.0)
+#ENABLED (MA[5].trasmit_req_best_path) ->TRANS_REWARD(1.0);
+
+MEASURE Balancer_Type_Single_throughput_LB_deliver_req_best_path_a IS
+  ENABLED(LB.deliver_req_best_path_a) -> TRANS_REWARD(1.0);
+
+MEASURE Balancer_Type_Single_throughput_LB_deliver_req_best_path_b IS 
+  ENABLED (LB.deliver_req_best_path_b) ->TRANS_REWARD(1.0);
+
+MEASURE DB_Type_Single_utilization_DB_transmit_data IS
+  ENABLED(DB.transmit_data) -> STATE_REWARD(1.0)
+		

@@ -1,84 +1,62 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 
-import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.aemilia.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
+import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
-import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
-import metamodel.mmaemilia.AEmiliaSpecification;
-import metamodel.mmaemilia.ArchitecturalInteraction;
-import metamodel.mmaemilia.mmaemiliaPackage;
-import metamodel.mmaemilia.Headers.ConstInit;
 
 @SuppressWarnings("serial")
-public class RSolution extends AbstractGenericSolution<RSequence, RProblem> implements Solution<RSequence> {
+public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem> implements Solution<RSequence> {
 
-	private final int VARIABLE_INDEX = 0;
-	private UUID ID;
-	private static int SOLUTION_COUNTER = -1;
-	private EObject model;
+	protected final int VARIABLE_INDEX = 0;
+	protected UUID ID;
+	protected static int SOLUTION_COUNTER = -1;
+	protected EObject model;
 	// private String mmaemiliaFileStr;
 
 	public static int XOverCounter = 0;
 	public static int MutationCounter = 0;
 
-	private boolean crossovered;
-	private boolean mutated;
-	private boolean refactored;
+	protected boolean crossovered;
+	protected boolean mutated;
+	protected boolean refactored;
 
-	private RSolution[] parents = new RSolution[2];
+	protected RSolution[] parents = new RSolution[2];
 
-	public static Logger logger_ = Logger.getLogger(RSolution.class.getName());
+	protected int name;
+	protected ResourceSet resourceSet;
+	protected String mmaemiliaFolderStr;
 
-	private int name;
-	private ResourceSet resourceSet;
-	private String mmaemiliaFolderStr;
+	protected Instant startingTime, endingTime;
+	protected float perfQ;
+	protected double changes;
 
-	private Instant startingTime, endingTime;
-	private Map<String, List<ArchitecturalInteraction>> mapOfPAs;
-	// private String valFilePath;
-	private float perfQ;
-	private double changes;
+	protected int numPAs = -1;
 
-	private int numPAs = -1;
+	protected Manager manager;
+	protected Controller controller;
 
-	private Manager manager;
-	private Controller controller;
-
-	private AemiliaManager metamodelManager;
-	private Path mmaemiliaFilePath;
-	private Path folderPath;
-	private Path valFilePath;
+	protected MetamodelManager metamodelManager;
+	protected Path folderPath;
 
 	protected RSolution(RProblem p) throws ParserException, UnexpectedException {
 		super(p);
@@ -86,7 +64,6 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		ID = UUID.randomUUID();
 		resetParents();
 		init(p.getController());
-		// qui si potrebbe rendere la seq di lunghezza random
 		this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
 
 		crossovered = false;
@@ -163,73 +140,55 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		refactored = false;
 	}
 
-	private void resetParents() {
-		getParents()[0] = null;
-		getParents()[1] = null;
-	}
+	protected abstract RSequence createChild(RSolution s1, RSolution s2, int point);
 
-	private void init(Controller controller) {
-		this.controller = controller;
-		manager = new Manager();
-		manager.setController(controller);
+	public abstract void countingPAs();
 
-		setResourceSet(new ResourceSetImpl());
+	public abstract void updateThresholds();
 
-		manager.setMetamodelManager(new AemiliaManager(controller));
-		manager.setOclManager(manager.getMetamodelManager().getOclManager());
-		manager.setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
+	public abstract void updateModel(MetamodelManager metamodelManager);
 
-		metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-		metamodelManager.setProblem(problem);
+	public abstract void updateModel();
 
-		folderPath = Paths.get(controller.getConfigurator().getTmpFolder().toString(),
-				String.valueOf((getName() / 100)), String.valueOf(getName()));
-		mmaemiliaFilePath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
+	public abstract void invokeSolver();
 
-		// Cpies the problem's model as solution's one
-		try {
-			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(),
-					mmaemiliaFilePath.toFile());
-			// Files.copy(this.problem.getSourceModelPath(), target);
-		} catch (IOException e) {
-			System.out.println("[ERROR] The problem's model copy generated an error!!!");
-			e.printStackTrace();
+	public abstract float evaluatePerformance();
+
+	protected abstract void init(Controller controller);
+
+	public abstract void createNewModel(Path modelFilePath);
+
+	protected abstract void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException;
+
+	protected abstract void copyRefactoringVariable(RSequence variableValue, RSolution sol);
+
+	/**
+	 * Invoke the Transformation Class in order to generate .aem e .val files
+	 * 
+	 * @param metamodelManager
+	 */
+	public abstract void applyTransformation();
+
+	/**
+	 * Starting from the solution family each refactoring action should be applied
+	 * in order to obtain a refactoring model on which a performance evaluation can
+	 * be executed
+	 * 
+	 * @param metamodelManager
+	 */
+	public abstract void executeRefactoring(MetamodelManager metamodelManager);
+
+	public abstract void executeRefactoring();
+
+	protected void resetParents() {
+		if (this.parents != null) {
+			this.parents[0] = null;
+			this.parents[1] = null;
 		}
-
-		System.out.println("Problem's model copied!!!");
-
-		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
-		createNewModel(mmaemiliaFilePath);
 	}
-
-	public void createNewModel(Path modelFilePath) {
-		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
-		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-	}
-
-	// @Deprecated
-	// public void createNewModel(String modelFilePath) {
-	// Resource res =
-	// getResourceSet().getResource(Manager.string2Uri(modelFilePath), true);
-	// assert (res.getContents().get(0).equals((AEmiliaSpecification)
-	// EcoreUtil.getObjectByType(res.getContents(),
-	// mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
-	// this.model = (AEmiliaSpecification)
-	// EcoreUtil.getObjectByType(res.getContents(),
-	// mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-	// }
 
 	public List<Resource> getResources() {
 		return this.getResourceSet().getResources();
-	}
-
-	private void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
-		RSequence seq = new RSequence(l, n, a, this);
-		this.setVariableValue(VARIABLE_INDEX, seq);
-		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
 	@Override
@@ -244,44 +203,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		return this.problem;
 	}
 
-	private void copyRefactoringVariable(RSequence variableValue, RSolution sol) {
-		RSequence newSeq = new RSequence(variableValue, sol);
-
-		this.setVariableValue(VARIABLE_INDEX, newSeq);
-	}
-
 	@Override
-	public Solution<RSequence> copy() {
-		return new RSolution(this);
-	}
-
-	private RSequence createChild(RSolution s1, RSolution s2, int point) {
-
-		RSequence seq = new RSequence(this);
-
-		assert (s1.getLength() == 4);
-		assert (s2.getLength() == 4);
-
-		try {
-			for (int j = 0; j < point; j++) {
-				RefactoringAction _new = s1.getActionAt(j).clone(this);
-				// _new.setSolution(this);
-				assert (_new.equals(s1.getActionAt(j)));
-				seq.insert(j, _new);
-			}
-			for (int j = point; j < s2.getLength(); j++) {
-				RefactoringAction _new = s2.getActionAt(j).clone(this);
-				// _new.setSolution(this);
-				assert (_new.equals(s2.getActionAt(j)));
-				seq.insert(j, _new);
-			}
-			return seq;
-		} catch (IndexOutOfBoundsException e) {
-			AEmiliaController.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
-			e.printStackTrace();
-			return null;
-		}
-	}
+	public abstract Solution<RSequence> copy();
 
 	public RefactoringAction getActionAt(int index) {
 		return getVariableValue(VARIABLE_INDEX).get(index);
@@ -295,8 +218,8 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		return this.getVariableValue(VARIABLE_INDEX).alter(i, this.problem.number_of_actions);
 	}
 
-	public void resolve(AemiliaManager metamodelManager) {
-		AEmiliaController.logger_.info("Solving Solution #" + getName());
+	public void resolve(MetamodelManager metamodelManager) {
+		EasierLogger.logger_.info("Solving Solution #" + getName());
 		startingTime = Instant.now();
 		executeRefactoring();
 
@@ -311,69 +234,13 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
 		// controller.getRuleFilePath(), this.getValPath(),
 		// metamodelManager);
-		countingPAsOnAemiliaModel();
+		countingPAs();
 
 		perfQ = evaluatePerformance();
 
 		FileUtils.simpleSolutionWriterToCSV(this);
 		endingTime = Instant.now();
-		AEmiliaController.logger_.info("Solution #" + getName() + " solved");
-	}
-
-	// public void updateThresholds(AemiliaManager metamodelManager) {
-	// ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderPath,
-	// mmaemiliaFilePath, valFilePath,
-	// metamodelManager, controller);
-	// }
-
-	public void updateThresholds() {
-		ThresholdUtils.uptodateSingleValueThresholds(folderPath, mmaemiliaFilePath, valFilePath, metamodelManager,
-				controller);
-	}
-
-	// @Deprecated
-	// public void updateThresholds() {
-	// ThresholdUtils.uptodateSingleValueThresholds(mmaemiliaFolderStr,
-	// mmaemiliaFileStr, valFilePath,
-	// metamodelManager, controller);
-	// }
-
-	public void updateModel(AemiliaManager metamodelManager) {
-		// String rewFilePath = controller.getSourceRewPath();
-
-		Path rewFilePath = problem.getSourceRewFilePath();
-
-		// String rewMappingFilePath = mmaemiliaFolderStr
-		// + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() +
-		// "_result"
-		// + AemiliaManager.getRewmappingFileExtension();
-
-		Path rewMappingFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
-						+ AemiliaManager.getRewmappingFileExtension());
-
-		metamodelManager.aemiliaModelUpdate(valFilePath, rewFilePath, rewMappingFilePath, this.mmaemiliaFilePath, this);
-	}
-
-	public void updateModel() {
-		// String rewFilePath = controller.getSourceRewPath();
-
-		Path rewFilePath = problem.getSourceRewFilePath();
-
-		// String rewMappingFilePath = mmaemiliaFolderStr
-		// + ((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() +
-		// "_result"
-		// + AemiliaManager.getRewmappingFileExtension();
-
-		Path rewMappingFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
-						+ AemiliaManager.getRewmappingFileExtension());
-
-		Path valFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
-						+ ((AemiliaManager) metamodelManager).getModelFileExtension() + ".val");
-
-		metamodelManager.aemiliaModelUpdate(valFilePath, rewFilePath, rewMappingFilePath, this.mmaemiliaFilePath, this);
+		EasierLogger.logger_.info("Solution #" + getName() + " solved");
 	}
 
 	public Duration getElapsedTime() {
@@ -384,181 +251,6 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			elapsedTime = Duration.ZERO;
 		}
 		return elapsedTime;
-	}
-
-	/**
-	 * This method counts the number of Performance Antipatterns (PAs)
-	 * 
-	 * 
-	 * @param perfQuality
-	 * @param ruleFilePath
-	 * @param valFilePath
-	 * @param metamodelManager
-	 * @return
-	 */
-	// private Map<String, List<ArchitecturalInteraction>>
-	// countingPAsOnAemiliaModel(PerformanceQualityEvaluator perfQuality,
-	// String ruleFilePath, String valFilePath, AemiliaManager metamodelManager) {
-	//
-	// refreshModel();
-	// ruleFilePath = mmaemiliaFolderPath + "detectionSingleValuePA.ocl";
-	//
-	// mapOfPAs = perfQuality.performanceAntipatternEvaluator(this.getModel(),
-	// ruleFilePath);
-	// if (mapOfPAs != null && !mapOfPAs.keySet().isEmpty()) {
-	// numPAs++;
-	// for (String paName : mapOfPAs.keySet()) {
-	// numPAs += mapOfPAs.get(paName).size();
-	// }
-	// }
-	//
-	// return mapOfPAs;
-	// }
-
-	public Map<String, List<ArchitecturalInteraction>> countingPAsOnAemiliaModel() {
-		refreshModel();
-		mapOfPAs = controller.getPerfQuality().performanceAntipatternEvaluator(this.getModel(),
-				Paths.get(folderPath.toString(), "detectionSingleValuePA.ocl"));
-		if (mapOfPAs != null && !mapOfPAs.keySet().isEmpty()) {
-			numPAs++;
-			for (String paName : mapOfPAs.keySet()) {
-				numPAs += mapOfPAs.get(paName).size();
-			}
-		}
-		return mapOfPAs;
-	}
-
-	public void invokeSolver() {
-		// String aemFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)
-		// getModel()).getArchiTypeDecl().getAtName()
-		// + "_result" + ((AemiliaManager) metamodelManager).getModelFileExtension();
-
-		Path aemFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
-						+ ((AemiliaManager) metamodelManager).getModelFileExtension());
-
-		// String rewFilePath = controller.getSourceRewPath();
-		Path rewFilePath = problem.getSourceRewFilePath();
-
-		// String outputFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)
-		// getModel()).getArchiTypeDecl().getAtName()
-		// + "_result";
-
-		Path outputFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result");
-
-		if (AEmiliaController.isSor()) {
-			metamodelManager.sorSRBMC(aemFilePath, rewFilePath, outputFilePath);
-		} else {
-			metamodelManager.gaussianEliminationSRBMC(aemFilePath, rewFilePath, outputFilePath);
-		}
-
-		if (!Files.exists(Paths.get(aemFilePath.toString() + ".val"))) {
-			((AEmiliaController) controller).checkTwoTowersOutput(outputFilePath);
-		} else {
-			this.valFilePath = Paths.get(aemFilePath.toString() + ".val");
-		}
-	}
-
-	public float evaluatePerformance() {
-		AemiliaManager metamodelManager = (AemiliaManager) manager.getMetamodelManager();
-
-		// String valFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)
-		// getModel()).getArchiTypeDecl().getAtName()
-		// + "_result" + ((AemiliaManager) metamodelManager).getModelFileExtension() +
-		// ".val";
-
-		perfQ = 0;
-		if (!Files.exists(valFilePath)) {
-			AEmiliaController.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
-					+ valFilePath + " doesn't exist.");
-			perfQ = Float.MAX_VALUE;
-		} else {
-			perfQ = controller.getPerfQuality().performanceQuality(problem.getSourceValPath(), valFilePath);
-
-		}
-		// Controller.logger_.info("Solution #" + this.getName() + ":
-		// PerformanceQualityEvaluator
-		// --> " + perfQ);
-
-		return perfQ;
-	}
-
-	/**
-	 * Invoke the Transformation Class in order to generate .aem e .val files
-	 * 
-	 * @param metamodelManager
-	 */
-	// private void applyTransformation(AemiliaManager metamodelManager) {
-	// String mmaemiliaFilePath = mmaemiliaFolderPath + getName() +
-	// metamodelManager.getMetamodelFileExtension();
-	// Transformation.GenerateAEMTransformation(mmaemiliaFilePath,
-	// mmaemiliaFolderPath);
-	// }
-
-	public void applyTransformation() {
-		Transformation.GenerateAEMTransformation(this.mmaemiliaFilePath, this.folderPath);
-	}
-
-	/**
-	 * Starting from the solution family each refactoring action should be applied
-	 * in order to obtain a refactoring model on which a performance evaluation can
-	 * be executed
-	 * 
-	 * @param metamodelManager
-	 */
-	public synchronized void executeRefactoring(AemiliaManager metamodelManager) {
-		Refactoring ref = this.getVariableValue(0).getRefactoring();
-
-		for (RefactoringAction a : ref.getActions()) {
-			assert (a.getModel() != null);
-			assert (a.getModel().equals(this.getModel()));
-
-			if (a instanceof AEmiliaConstChangesRefactoringAction) {
-				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-				assert (sourceCost != null);
-				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
-			}
-			try {
-				assert (this.getModel().equals(a.getModel()));
-				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
-				a.execute();
-				this.setRefactored(true);
-			} catch (UnsupportedOperationException e) {
-				e.printStackTrace();// TODO: handle exception
-			}
-		}
-		metamodelManager.save(this);
-		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
-		// SAVED!");
-	}
-
-	public void executeRefactoring() {
-		Refactoring ref = this.getVariableValue(0).getRefactoring();
-
-		for (RefactoringAction a : ref.getActions()) {
-			assert (a.getModel() != null);
-			assert (a.getModel().equals(this.getModel()));
-
-			if (a instanceof AEmiliaConstChangesRefactoringAction) {
-				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-				assert (sourceCost != null);
-				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
-			}
-			try {
-				assert (this.getModel().equals(a.getModel()));
-				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
-				a.execute();
-				this.setRefactored(true);
-			} catch (UnsupportedOperationException e) {
-				e.printStackTrace();// TODO: handle exception
-			}
-		}
-		metamodelManager.save(this);
-		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
-		// SAVED!");
 	}
 
 	@Override
@@ -581,8 +273,6 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 	}
 
 	public EObject getModel() {
-		// return this.getResources().get(0).getContents().get(0);
-
 		return model;
 	}
 
@@ -648,42 +338,13 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 		this.refactored = refactored;
 	}
 
-	public Map<String, List<ArchitecturalInteraction>> getMapOfPAs() {
-		return mapOfPAs;
-	}
-
-	public void setMapOfPAs(Map<String, List<ArchitecturalInteraction>> mapOfPAs) {
-		this.mapOfPAs = mapOfPAs;
-	}
-
-	// public String getValPath() {
-	// return valFilePath;
-	// }
-	//
-	// public void setValPath(String valPath) {
-	// this.valFilePath = valPath;
-	// }
-
-	public void refreshModel() {
-		getResourceSet().getResources().get(0).unload();
-		this.createNewModel(mmaemiliaFilePath);
-	}
+	public abstract void refreshModel();
 
 	public int getPAs() {
-		// Map<String, List<ArchitecturalInteraction>> mapOfPAs =
-		// this.countingPAsOnAemiliaModel(
-		// controller.getPerfQuality(), controller.getRuleFilePath(), this.getValPath(),
-		// metamodelManager);
-
-		// int numOfPAs = 0;
-		// for (String paName : mapOfPAs.keySet()) {
-		// numOfPAs += mapOfPAs.get(paName).size();
-		// }
 		return numPAs;
 	}
 
 	public float getPerfQ() {
-		// perfQ = evaluatePerformance();
 		return perfQ;
 	}
 
@@ -698,18 +359,6 @@ public class RSolution extends AbstractGenericSolution<RSequence, RProblem> impl
 			changes += action.getNumOfChanges();
 		}
 		return changes;
-	}
-
-	public String getMmaemiliaFolderPath() {
-		return mmaemiliaFolderStr;
-	}
-
-	public Path getMmaemiliaFilePath() {
-		return mmaemiliaFilePath;
-	}
-
-	public void setMmaemiliaFolderPath(String mmaemiliaFolderPath) {
-		this.mmaemiliaFolderStr = mmaemiliaFolderPath;
 	}
 
 	public Manager getManager() {
