@@ -12,7 +12,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 //import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 //import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
+//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 //import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 //import logicalSpecification.AndOperator;
 //import logicalSpecification.ExistsOperator;
@@ -204,20 +204,20 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //
 //		if (umlOpToAdd != null) {
 //			setOpToAddSVP(Manager.getInstance(UMLManager.getInstance())
-//					.createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getOperationQuery(umlOpToAdd)));
+//					.createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getOperationQuery(umlOpToAdd)));
 //			addParams.add(getOpToAddSVP());
 //		}
 //
 //		setTargetCompSVP(Manager.getInstance(UMLManager.getInstance())
-//				.createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentQuery(getUmlTargetComp())));
+//				.createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getComponentQuery(getUmlTargetComp())));
 //		addParams.add(getTargetCompSVP());
 //
 //		setAllCompsMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllComponentsQuery()));
 //		addParams.add(getAllCompsMVP());
 //
 //		setTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getOperationsOfQuery(getUmlTargetComp())));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getOperationsOfQuery(getUmlTargetComp())));
 //		addParams.add(getTargetCompOpsMVP());
 //
 //		getParameters().addAll(addParams);

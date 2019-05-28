@@ -3,14 +3,14 @@
   <parent>
     <groupId>it.univaq.disim.sealab</groupId>
     <artifactId>easier</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
   </parent>
   <artifactId>easier-aemilia</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>it.univaq.disim.sealab</groupId>
   		<artifactId>easier-core</artifactId>
-  		<version>0.6.2</version>
+  		<version>0.6.3</version>
   	</dependency>
   	<dependency>
   		<groupId>it.univaq.disim.sealab</groupId>
@@ -20,7 +20,7 @@
   	<dependency>
   		<groupId>it.univaq.disim.sealab</groupId>
   		<artifactId>aemilia2text</artifactId>
-  		<version>0.0.3</version>
+  		<version>0.0.4</version>
   	</dependency>
   	<dependency>
   		<groupId>it.univaq.disim.sealab</groupId>

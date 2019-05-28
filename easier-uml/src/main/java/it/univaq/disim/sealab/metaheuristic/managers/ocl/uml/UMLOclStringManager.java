@@ -10,14 +10,14 @@ import org.eclipse.uml2.uml.Operation;
 
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 
-public class OclUMLStringManager extends OclStringManager{
+public class UMLOclStringManager extends OclStringManager{
 
 	private static class ManagerHolder {
-		private static final OclUMLStringManager INSTANCE = new OclUMLStringManager();
+		private static final UMLOclStringManager INSTANCE = new UMLOclStringManager();
 	}
 
-	public static OclUMLStringManager getInstance() {
-		OclUMLStringManager instance = ManagerHolder.INSTANCE;
+	public static UMLOclStringManager getInstance() {
+		UMLOclStringManager instance = ManagerHolder.INSTANCE;
 		
 		return instance;
 	}

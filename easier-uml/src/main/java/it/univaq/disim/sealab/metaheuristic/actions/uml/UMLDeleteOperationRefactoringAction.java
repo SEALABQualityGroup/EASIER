@@ -11,7 +11,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 //import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 //import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
+//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 //import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 //import logicalSpecification.AndOperator;
 //import logicalSpecification.ExistsOperator;
@@ -122,11 +122,11 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //		// TODO Auto-generated method stub
 //		List<Parameter> delOpParams = new ArrayList<>();
 //		
-//		setOpToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getOperationQuery(getUmlOpToDel())));
+//		setOpToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getOperationQuery(getUmlOpToDel())));
 //		delOpParams.add(getOpToDelSVP());
 //		
 //		
-//		setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllOperationsQuery()));
+//		setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllOperationsQuery()));
 //		delOpParams.add(getAllOpsMVP());
 //		
 //		getParameters().addAll(delOpParams);

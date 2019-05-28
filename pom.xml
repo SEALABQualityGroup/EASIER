@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.univaq.disim.sealab</groupId>
 	<artifactId>easier</artifactId>
-	<version>0.6.2</version>
+	<version>0.6.3</version>
 	<name>EASIER</name>
 	<description>A multi-objective optimization framework</description>
 	<packaging>pom</packaging>
@@ -27,7 +27,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<easier.aemiliaMetamodel.version>1.0.0</easier.aemiliaMetamodel.version>
-		<easier.core.version>0.6.2</easier.core.version>
+		<easier.core.version>0.6.3</easier.core.version>
 		<easier.logicalSpecification.version>0.6</easier.logicalSpecification.version>
 		<easier.aemiliaToQnBridge.version>0.0.2</easier.aemiliaToQnBridge.version>
 		<easier.measuresToIndices.version>1.0.0</easier.measuresToIndices.version>

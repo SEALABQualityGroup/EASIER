@@ -15,7 +15,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 //import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 //import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
+//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 //import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 //import logicalSpecification.AndOperator;
 //import logicalSpecification.ExistsOperator;
@@ -215,25 +215,25 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //		// TODO Auto-generated method stub
 //		List<Parameter> moveCompParams = new ArrayList<>();
 //		
-//		setCompToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentQuery(getUmlCompToMove())));
+//		setCompToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getComponentQuery(getUmlCompToMove())));
 //		moveCompParams.add(getCompToMoveSVP());
 //		
-//		setTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(getUmlTargetNodes())));
+//		setTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(getUmlTargetNodes())));
 //		moveCompParams.add(getTargetNodesMVP());
 //		
-//		setAllArtifactsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllArtifactsQuery()));
+//		setAllArtifactsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllArtifactsQuery()));
 //		moveCompParams.add(getAllArtifactsMVP());
 //		
-//		setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
+//		setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllComponentsQuery()));
 //		moveCompParams.add(getAllCompsMVP());
 //		
-//		setAllTargetsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(getUmlTargetNodes())));
+//		setAllTargetsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(getUmlTargetNodes())));
 //		moveCompParams.add(getAllTargetsMVP());
 //		
-//		setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//		setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //		moveCompParams.add(getAllNodesMVP());
 //		
-//		setAllDeployedElemsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
+//		setAllDeployedElemsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
 //		moveCompParams.add(getAllDeployedElemsMVP());
 //		
 //		getParameters().addAll(moveCompParams);

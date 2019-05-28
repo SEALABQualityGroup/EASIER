@@ -18,13 +18,13 @@ import org.junit.Test;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
+import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 
 public class TestUMLManager {
 	
 	
 	private Model umlModel;
-	private UMLManager umlManager;
+	private UMLMetamodelManager umlManager;
 	private Controller umlController;
 	
 	private Path pathToModel;
@@ -36,7 +36,7 @@ public class TestUMLManager {
 	@Before
 	public void setUp() throws URISyntaxException {
 		umlController = new UMLController();
-		umlManager = new UMLManager(umlController);
+		umlManager = new UMLMetamodelManager(umlController);
 		umlManager.packageRegistering();
 		pathToModel = Paths.get(getClass().getResource("/models/smartFloor/smartFloor2.uml").toURI());
 		umlManager.loadModel(pathToModel);

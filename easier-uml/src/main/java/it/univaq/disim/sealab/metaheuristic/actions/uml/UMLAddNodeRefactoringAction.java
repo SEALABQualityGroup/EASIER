@@ -15,7 +15,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 //import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 //import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.OclUMLStringManager;
+//import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 //import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 //import logicalSpecification.AndOperator;
 //import logicalSpecification.ExistsOperator;
@@ -171,24 +171,24 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //			// PAKIMOR _FIXME le add non dovrebbero avere come attributo l'oggetto da
 //			// creare
 //			setNodeToAddSVP(Manager.getInstance(UMLManager.getInstance())
-//					.createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodeQuery(umlNodeToAdd)));
+//					.createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodeQuery(umlNodeToAdd)));
 //			addParams.add(getNodeToAddSVP());
 //		}
 //
 //		setNeighborsMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(this.umlNeighbors)));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(this.umlNeighbors)));
 //		addParams.add(getNeighborsMVP());
 //
 //		setCompsToDeployMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentsQuery(this.umlCompsToDeploy)));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getComponentsQuery(this.umlCompsToDeploy)));
 //		addParams.add(getCompsToDeployMVP());
 //
 //		setAllNodesMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //		addParams.add(getAllNodesMVP());
 //
 //		setAllCompsMVP(Manager.getInstance(UMLManager.getInstance())
-//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
+//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllComponentsQuery()));
 //		addParams.add(getAllCompsMVP());
 //
 //		if (getUmlNodeToAdd() != null) {
@@ -197,7 +197,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //			// appena creato ma e' vuota
 //			nList.add(getUmlNodeToAdd());
 //			setAllDeployedElemsMVP(Manager.getInstance(UMLManager.getInstance())
-//					.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(nList)));
+//					.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllDeployedElementsQuery(nList)));
 //			addParams.add(getAllDeployedElemsMVP());
 //		}
 //
@@ -293,17 +293,17 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	// AndOperator addPreAnd = Manager.createAndOperator();
 //	//
 //	// ExistsOperator addPreAndNotExists = Manager.createExistsOperator(
-//	// Manager.createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodeQuery(getNewNode())),
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//	// Manager.createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodeQuery(getNewNode())),
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //	//
 //	// NotOperator addPreAndNot = Manager.createNotOperator(addPreAndNotExists);
 //	// addPreAnd.getArguments().add(addPreAndNot);
 //	//
 //	// ForAllOperator addPreAndForall = Manager.createForAllOperator(
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(getNeighs())));
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(getNeighs())));
 //	//
 //	// ExistsOperator addPreAndForallExists =
-//	// Manager.createExistsOperator(Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//	// Manager.createExistsOperator(Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //	// addPreAndForall.setArgument(addPreAndForallExists);
 //	// addPreAnd.getArguments().add(addPreAndForall);
 //	// addPreSpec.setRootOperator(addPreAnd);
@@ -323,22 +323,22 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	// AndOperator addPostAnd = Manager.createAndOperator();
 //	//
 //	// ExistsOperator addPostAndExists = Manager.createExistsOperator(
-//	// Manager.createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodeQuery(getNewNode())),
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//	// Manager.createSingleValueParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodeQuery(getNewNode())),
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //	// addPostAnd.getArguments().add(addPostAndExists);
 //	//
 //	// ForAllOperator addPostAndForallNeighs = Manager.createForAllOperator(
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(getNeighs())));
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(getNeighs())));
 //	//
 //	// AndOperator addPostAndForallNeighsAnd = Manager.createAndOperator();
 //	//
 //	// ExistsOperator addPostAndForallNeighsAndExistsAllNodes = Manager
-//	// .createExistsOperator(Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//	// .createExistsOperator(Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
 //	// addPostAndForallNeighsAnd.getArguments().add(addPostAndForallNeighsAndExistsAllNodes);
 //	//
 //	// ExistsOperator addPostAndForallNeighsAndExistsNeighs =
 //	// Manager.createExistsOperator(
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(getNeighs())));
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getNodesQuery(getNeighs())));
 //	// addPostAndForallNeighsAnd.getArguments().add(addPostAndForallNeighsAndExistsNeighs);
 //	//
 //	// addPostAndForallNeighs.setArgument(addPostAndForallNeighsAnd);
@@ -346,12 +346,12 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	// addPostAnd.getArguments().add(addPostAndForallNeighs);
 //	//
 //	// ForAllOperator addPostAndForallDeplComps = Manager.createForAllOperator(
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentsQuery(getDeployedComps())));
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getComponentsQuery(getDeployedComps())));
 //	//
 //	// AndOperator addPostAndForallDeplCompsAnd = Manager.createAndOperator();
 //	//
 //	// ExistsOperator addPostAndForallDeplCompsAndExistsAllNodes = Manager
-//	// .createExistsOperator(Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
+//	// .createExistsOperator(Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllComponentsQuery()));
 //	// addPostAndForallDeplCompsAnd.getArguments().add(addPostAndForallDeplCompsAndExistsAllNodes);
 //	//
 //	// // TODO ANSWERED AND FIXED: non capisco a cosa si riferisce n_deplComps
@@ -361,13 +361,13 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 //	// // le deployedComps devono starci sopra)
 //	//// ExistsOperator addPostAndForallDeplCompsAndExistsNeighs =
 //	// Manager.createExistsOperator(
-//	//// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentsQuery(deployedComps)));
+//	//// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getComponentsQuery(deployedComps)));
 //	//
 //	// ArrayList<Node> nList = new ArrayList<Node>();
 //	// nList.add(getNewNode());
 //	// ExistsOperator addPostAndForallDeplCompsAndExistsNeighs =
 //	// Manager.createExistsOperator(
-//	// Manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(nList)));
+//	// Manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManager.getInstance(new UMLOclStringManager())).getAllDeployedElementsQuery(nList)));
 //	// addPostAndForallDeplCompsAnd.getArguments().add(addPostAndForallDeplCompsAndExistsNeighs);
 //	//
 //	// addPostAndForallDeplComps.setArgument(addPostAndForallDeplCompsAnd);

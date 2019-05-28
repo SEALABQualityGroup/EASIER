@@ -34,11 +34,13 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuil
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
+import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class UMLController implements Controller{
@@ -67,7 +69,7 @@ public class UMLController implements Controller{
 	private List<ExperimentProblem<RSolution>> problemList;
 
 	public UMLController() {
-		manager = new Manager(new UMLManager(this));
+		manager = new UMLManager(new UMLMetamodelManager(this));
 		manager.setController(this);
 		// perfQuality = new PerformanceQualityEvaluator(manager.getOclManager());
 		metamodelManager = manager.getMetamodelManager();
@@ -80,7 +82,7 @@ public class UMLController implements Controller{
 		configurator.getTmpFolder().toFile().mkdirs();
 
 		// Instantiates evolutionary operators
-		crossoverOperator = new RCrossover(config.getXoverProbabiliy(), this);
+		crossoverOperator = new UMLRCrossover(config.getXoverProbabiliy(), this);
 		mutationOperator = new RMutation(config.getMutationProbability(), config.getDistributionIndex());
 		selectionOpertor = new BinaryTournamentSelection<RSolution>(
 				new RankingAndCrowdingDistanceComparator<RSolution>());
@@ -89,19 +91,20 @@ public class UMLController implements Controller{
 
 	public UMLController setUp() {
 		// setting up the source models
-		for (Path path : configurator.getModelsPath()) {
-			SourceModel model = new SourceModel(path);
-			model.setSourceModelPAs(getPerfQuality().performanceAntipatternEvaluator(
-					metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
-					Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
-
-			// generates every needed files and updates the source model
-			generateSourceFiles(path);
-			updateSourceModel(path);
-			sourceModels.add(model);
-		}
-		metamodelManager.setSourceModels(sourceModels);
-		System.out.println("Setting up finished");
+//		for (Path path : configurator.getModelsPath()) {
+//			SourceModel model = new SourceModel(path);
+//			model.setSourceModelPAs(getPerfQuality().performanceAntipatternEvaluator(
+//					metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
+//					Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
+//
+//			// generates every needed files and updates the source model
+//			generateSourceFiles(path);
+//			updateSourceModel(path);
+//			sourceModels.add(model);
+//		}
+//		metamodelManager.setSourceModels(sourceModels);
+//		System.out.println("Setting up finished");
+		//TODO
 		return this;
 	}
 
@@ -127,7 +130,7 @@ public class UMLController implements Controller{
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
-						RProblem p = new RProblem(src.getSourceFolder(), l, configurator.getActions(),
+						RProblem p = new UMLRProblem(src.getSourceFolder(), l, configurator.getActions(),
 								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
 						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
 						rProblems.add(p);
@@ -257,20 +260,21 @@ public class UMLController implements Controller{
 	}
 
 	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
-		for (RSolution solution : paretoPop) {
-			final File srcDir = new File(solution.getMmaemiliaFolderPath());
-
-			final File destDir = Paths
-					.get(configurator.getOutputFolder().toString(), "pareto", String.valueOf(solution.getName()))
-					.toFile();
-			// File destDir = new File(getParetoFolder() + solution.getName());
-			try {
-				FileUtils.copyDirectory(srcDir, destDir);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+//		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
+//		for (RSolution solution : paretoPop) {
+//			final File srcDir = new File(solution.getMmaemiliaFolderPath());
+//
+//			final File destDir = Paths
+//					.get(configurator.getOutputFolder().toString(), "pareto", String.valueOf(solution.getName()))
+//					.toFile();
+//			// File destDir = new File(getParetoFolder() + solution.getName());
+//			try {
+//				FileUtils.copyDirectory(srcDir, destDir);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+		//TODO
 	}
 
 	private void cleanTmpFiles() {
@@ -283,8 +287,10 @@ public class UMLController implements Controller{
 		}
 	}
 
-	public PerformanceQualityEvaluator getPerfQuality() {
-		return new PerformanceQualityEvaluator(manager.getOclManager());
+	public UMLPerformanceQualityEvaluator getPerfQuality() {
+//		return new UMLPerformanceQualityEvaluator(manager.getOclManager());
+		//TODO
+		return null;
 	}
 
 	public RProblem getProblem() {

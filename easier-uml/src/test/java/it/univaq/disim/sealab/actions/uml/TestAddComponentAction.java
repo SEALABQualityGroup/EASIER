@@ -15,11 +15,12 @@ import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLAddComponentRefactori
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
+import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 
 public class TestAddComponentAction {
 	
 	private Model model;
-	private UMLManager manager;
+	private UMLMetamodelManager manager;
 	private Controller controller;
 	
 	private Path pathToModel;
@@ -30,7 +31,7 @@ public class TestAddComponentAction {
 	@Before
 	public void setUp() throws URISyntaxException {
 		controller = new UMLController();
-		manager = new UMLManager(controller);
+		manager = new UMLMetamodelManager(controller);
 		manager.packageRegistering();
 		pathToModel = Paths.get(getClass().getResource("/models/smartFloor/smartFloor2.uml").toURI());
 		manager.loadModel(pathToModel);

@@ -25,7 +25,7 @@ import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 @SuppressWarnings("serial")
-public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem> implements Solution<RSequence> {
+public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem<?>> implements Solution<RSequence> {
 
 	protected final int VARIABLE_INDEX = 0;
 	protected UUID ID;

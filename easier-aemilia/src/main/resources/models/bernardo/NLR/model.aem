@@ -10,14 +10,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-ARCHI_TYPE NRL_Pump_Type_M(const integer buffer_size     := 1,
-			   const rate    conn_gen_rate   := 10,      % 1 connection every 100 ms
-		           const rate    conn_init_rate  := 62.5,    % round-trip delay
-                           const rate    data_trans_rate := 125,     % trans rate / data length
-		           const rate    ack_trans_rate  := 1306.12, % trans rate / ack length
-		           const rate    ack_delay_rate  := 435.37,  % 3 acks
-		           const rate    timeout_rate    := 57.04,   % (1 data + 1 ack) * 2
-		           const weight  valid_prob      := 0.99)
+ARCHI_TYPE NRL_Pump_Type_M(
+	const integer buffer_size     := 1,
+	const rate    conn_gen_rate   := 10,      % 1 connection every 100 ms
+	const rate    conn_init_rate  := 62.5,    % round-trip delay
+    const rate    data_trans_rate := 125,     % trans rate / data length
+	const rate    ack_trans_rate  := 1306.12, % trans rate / ack length
+	const rate    ack_delay_rate  := 435.37,  % 3 acks
+	const rate    timeout_rate    := 57.04,   % (1 data + 1 ack) * 2
+	const weight  valid_prob      := 0.99)
 
 
 ARCHI_ELEM_TYPES

@@ -35,9 +35,9 @@ import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.mmaemiliaPackage;
 
-public class OclUMLManager extends OclManager{
+public class UMLOclManager extends OclManager{
 	
-	public OclUMLManager(final MetamodelManager ma) {
+	public UMLOclManager(final MetamodelManager ma) {
 		this.MM_manager  = ma;
 	}
 
@@ -214,5 +214,11 @@ public class OclUMLManager extends OclManager{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+//	@Override
+//	protected HashSet<?> getQueryResult(String query, Object model) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }

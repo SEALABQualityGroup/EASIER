@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>easier-uml</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -149,7 +149,7 @@
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>easier-core</artifactId>
-			<version>0.6.2</version>
+			<version>0.6.3</version>
 		</dependency>
 	</dependencies>
 
@@ -158,6 +158,6 @@
 	<parent>
 		<groupId>it.univaq.disim.sealab</groupId>
 		<artifactId>easier</artifactId>
-		<version>0.6.2</version>
+		<version>0.6.3</version>
 	</parent>
 </project>
