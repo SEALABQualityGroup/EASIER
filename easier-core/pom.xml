@@ -142,11 +142,11 @@
 			<version>3.3.100.v20140610-0641</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.eclipse.acceleo</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>2.10.2.v20150123-0348</version>
-		</dependency>
+		</dependency-->
 		<!-- https://mvnrepository.com/artifact/lpg.runtime/java -->
 		<dependency>
 			<groupId>lpg.runtime</groupId>
