@@ -1,0 +1,106 @@
+I"�<h2 id="the-easier-architecture">The EASIER Architecture</h2>
+
+<p>The EASIER architecture is illustrated in the following figure.</p>
+
+<p><img src="assets/images/process.png" alt="EASIER architecture" /></p>
+
+<p>The figure is vertically divided in two swimlanes. The evolutionary context is on the left, while on the right there is the Architecture Description Language (aka ADL)  context.</p>
+
+<h3 id="evolutionary-context">Evolutionary context</h3>
+
+<p>The bottom left side of figure illustrates the EASIER core, that is a multi-objective evolutionary algorithm based on the NSGA-II <a href="https://doi.org/10.1109/4235.996017">Deb 2002</a>.</p>
+
+<p>In particular, we adopted <a href="https://github.com/jMetal/jMetal">JMetal</a> as a reference library, which is a well established object–oriented Java-based framework for multi-objective optimization with metaheuristics.</p>
+
+<h4 id="data-layer">Data layer</h4>
+
+<p>An EASIER Solution represents a a sequence of a number $len$ of architectural RefactoringActions. Both Refactorings and RefactoringActions have PreConditions and PostConditions, which are first-order logical formulae evaluated during the evolutionary process to determine their feasibility.</p>
+
+<p>The adopted mechanism for calculating and verifying Refactorings and RefactoringActions pre(post)conditions is an implementation of the one in <a href="https://doi.org/10.1145/602461.602499">Cinneide 2000</a>.</p>
+
+<p>A Solution also contains a reference to the corresponding alternative architecture. 
+Each Solution has three attributes that together represent the objectives of our fitness function, namely $ArchDist$, $PerfQ$ and $#PAs$.</p>
+
+<h4 id="process">Process</h4>
+
+<p>Conformingly to the typical NSGA-II flow, the first iteration of the algorithm consists of a generation phase, aimed at randomly creating an initial population of candidate solutions (i.e. refactorings by $len$ length) with a $pop$ cardinality.</p>
+
+<p>After the generation of the initial population, solutions are evaluated with respect to the fitness function three objectives. In particular,</p>
+<ul>
+  <li>
+    <p>PerfQ (to maximize). It represents a performance quality indicator aimed at quantifying the relative performance improvement induced by a refactoring with respect to an initial architecture.</p>
+  </li>
+  <li>
+    <p>ArchDist (to minimize). It quantifies the distance of an architectural alternative A from the initial one, in terms of intensity of refactoring changes. The distance of A is defined as the sum of the distance induced by each RefactoringAction a<sub>i</sub> in the corresponding genome.</p>
+  </li>
+  <li>
+    <p>#PAs (to minimize). It counts the number of performance antipatterns (PAs) occurrences within an alternative architecture. In its current version, EASIER exploits the  OCL engine for antipatterns detection rules specification and verification.</p>
+  </li>
+</ul>
+
+<p>EASIER is the first approach that considers the number of PAs as an objective of an evolutionary algorithm’s fitness function.</p>
+
+<p>After the evaluation, non-dominated solutions are ranked according to the notion of crowding distance, and the best ones are selected and used as reproductive basis for the next iterations.</p>
+
+<p>Finally, each generated architectural alternative undergoes a Performance Analysis process in order to obtain performance indices of interest for the corresponding architectural model.</p>
+
+<h3 id="a-specific-portfolio-of-refactoring-actions-for-aemilia-adl">A specific portfolio of Refactoring Actions for AEmilia ADL</h3>
+
+<ul>
+  <li>
+    <p>CloneAEI is in charge of cloning a srcAEI AEmilia component, given as input, which is randomly selected from the \AEmilia architectural specification. From an architectural point of view, the straightforward semantics for CloneAEI is the deployment of a replica of the original component.</p>
+  </li>
+  <li>
+    <p>ChangeRate modifies a randomly selected rate of an AEmilia action by multiplying its value by an uniformly distributed FactorOfChange (FOC). ChangeRate intends to represent the option of both enhancing and worsening the performance of a certain action.</p>
+  </li>
+</ul>
+
+<h2 id="publication">Publication</h2>
+
+<p>If you are using EASIER or you have though EASIER is related to your research, please consider to cite it as follows:</p>
+
+<ul>
+  <li><a href="http://icsa-conferences.org/2018/">ICSA 2018</a></li>
+</ul>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@inproceedings<span class="p">{</span>DBLP:conf/icsa/ArcelliCDP18,
+  author    = <span class="p">{</span>Davide Arcelli and Vittorio Cortellessa and Mattia D'Emidio and Daniele Di Pompeo<span class="p">}</span>,
+  title     = <span class="p">{</span>EASIER: An Evolutionary Approach for Multi-objective Software ArchItecturE Refactoring<span class="p">}</span>,
+  booktitle = <span class="p">{</span>IEEE International Conference on Software Architecture, <span class="p">{</span>ICSA<span class="p">}</span> 2018, Seattle, WA, USA, April 30 - May 4, 2018<span class="p">}</span>,
+  pages     = <span class="p">{</span>105--114<span class="p">}</span>,
+  publisher = <span class="p">{</span>IEEE Computer Society<span class="p">}</span>,
+  year      = <span class="p">{</span>2018<span class="p">}</span>,
+  url       = <span class="p">{</span>https://doi.org/10.1109/ICSA.2018.00020<span class="p">}</span>,
+  doi       = <span class="p">{</span>10.1109/ICSA.2018.00020<span class="p">}</span>,
+  timestamp = <span class="p">{</span>Wed, 16 Oct 2019 14:14:50 +0200<span class="p">}</span>,
+  biburl    = <span class="p">{</span>https://dblp.org/rec/conf/icsa/ArcelliCDP18.bib<span class="p">}</span>,
+  bibsource = <span class="p">{</span>dblp computer science bibliography, https://dblp.org<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><a href="https://dblp.uni-trier.de/rec/bib1/conf/icsa/ArcelliCDP18.bib">download the bib from dblp</a>, <a href="https://doi.org/10.1109/ICSA.2018.00020">pdf</a>, or the <a href="http://danieledipompeo.github.io/files/papers/2018-icsa-easier.pdf">preprint version</a></p>
+
+<ul>
+  <li><a href="https://iwor.github.io/iwor2018/">IWoR 2018</a></li>
+</ul>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@inproceedings<span class="p">{</span>DBLP:conf/kbse/ArcelliCP18,
+  author    = <span class="p">{</span>Davide Arcelli and
+               Vittorio Cortellessa and
+               Daniele Di Pompeo<span class="p">}</span>,
+  editor    = <span class="p">{</span>Ali Ouni and Marouane Kessentini and  Mel <span class="p">{</span><span class="k">\'</span><span class="p">{</span>O<span class="p">}}</span> Cinn<span class="p">{</span><span class="k">\'</span><span class="p">{</span>e<span class="p">}}</span>ide<span class="p">}</span>,
+  title     = <span class="p">{</span>A metamodel for the specification and verification of model refactoring actions<span class="p">}</span>,
+  booktitle = <span class="p">{</span>Proceedings of the 2nd International Workshop on Refactoring, IWoR@ASE 2018, Montpellier, France, September 4, 2018<span class="p">}</span>,
+  pages     = <span class="p">{</span>14--21<span class="p">}</span>,
+  publisher = <span class="p">{</span>IWoR@ACM<span class="p">}</span>,
+  year      = <span class="p">{</span>2018<span class="p">}</span>,
+  url       = <span class="p">{</span>https://doi.org/10.1145/3242163.3242167<span class="p">}</span>,
+  doi       = <span class="p">{</span>10.1145/3242163.3242167<span class="p">}</span>,
+  timestamp = <span class="p">{</span>Wed, 21 Nov 2018 12:44:20 +0100<span class="p">}</span>,
+  biburl    = <span class="p">{</span>https://dblp.org/rec/conf/kbse/ArcelliCP18.bib<span class="p">}</span>,
+  bibsource = <span class="p">{</span>dblp computer science bibliography, https://dblp.org<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><a href="https://dblp.org/rec/conf/kbse/ArcelliCP18.bib">download the bib from dblp</a>, <a href="https://doi.org/10.1145/3242163.3242167">pdf</a>.</p>
+:ET
