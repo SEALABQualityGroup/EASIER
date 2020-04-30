@@ -33,10 +33,26 @@
 			<artifactId>twoeaglesBridge</artifactId>
 			<version>0.2.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
-			<artifactId>easier-core</artifactId>
-			<version>0.6.2</version>
+			<artifactId>aemilia2text</artifactId>
+			<version>0.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>it.univaq.disim.sealab</groupId>
+			<artifactId>aemiliaMetamodel</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>it.univaq.disim.sealab</groupId>
+			<artifactId>aemiliaToQn_bridge</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>it.univaq.disim.sealab</groupId>
+			<artifactId>easier-aemilia</artifactId>
+			<version>0.6.3</version>
 		</dependency>
 	</dependencies>
 </project>
