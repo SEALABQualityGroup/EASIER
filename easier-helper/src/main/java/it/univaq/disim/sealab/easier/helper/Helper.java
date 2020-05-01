@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
+import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
 import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
@@ -19,12 +20,10 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import com.beust.jcommander.JCommander;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AEmiliaController;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateLatexTablesWithStatistic;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
@@ -74,29 +73,30 @@ public class Helper implements Runnable {
 
 		if (config.generateRF()) {
 
-			AEmiliaController ctr = new AEmiliaController(config);
+			AemiliaController ctr = new AemiliaController(config);
 			List<Path> referenceFront;
 			
 			ctr.setUp();
-			List<RProblem> rProblems = ctr.createProblems();
-			List<GenericIndicator<RSolution>> qIndicators = new ArrayList<>();
+			List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
+			List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
 
-			FactoryBuilder<RSolution> factory = new FactoryBuilder<>();
+			FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
+			
 			for (String qI : config.getQualityIndicators()) {
-				GenericIndicator<RSolution> ind = factory.createQualityIndicators(qI);
+				GenericIndicator<AemiliaRSolution> ind = factory.createQualityIndicators(qI);
 				if (ind != null)
 					qIndicators.add(ind);
 			}
 			
-			List<ExperimentProblem<RSolution>> problemList = new ArrayList<>();
+			List<ExperimentProblem<AemiliaRSolution>> problemList = new ArrayList<>();
 
-			rProblems.forEach(problem -> problemList.add(new ExperimentProblem<>(problem)));
+			rProblems.forEach(problem -> problemList.add(new ExperimentProblem<AemiliaRSolution>(problem)));
 
-			List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = ctr.configureAlgorithmList(problemList);
+			List<ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>> algorithmList = ctr.configureAlgorithmList(problemList);
 
 			Path referenceFrontDirectory = Paths.get(config.getOutputFolder().toString(), "referenceFront");
 
-			RExperiment<RSolution, List<RSolution>> experiment = new RExperimentBuilder<RSolution, List<RSolution>>("Exp")
+			Experiment<AemiliaRSolution, List<AemiliaRSolution>> experiment = new RExperimentBuilder<AemiliaRSolution, List<AemiliaRSolution>>("Exp")
 					.setAlgorithmList(algorithmList).setProblemList(problemList)
 					.setExperimentBaseDirectory(referenceFrontDirectory.toString())
 					.setReferenceFrontDirectory(referenceFrontDirectory.toString()).setOutputParetoFrontFileName("FUN")

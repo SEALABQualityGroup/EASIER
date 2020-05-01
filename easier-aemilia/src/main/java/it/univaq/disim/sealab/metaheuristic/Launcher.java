@@ -21,8 +21,9 @@ import org.uma.jmetal.util.point.util.PointSolution;
 import com.beust.jcommander.JCommander;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import utils.AemiliaFileUtils;
@@ -43,7 +44,7 @@ public class Launcher {
 			referenceFront = config.getReferenceFront();
 		else {
 			ctr.setUp();
-			List<AemiliaRProblem> rProblems = ctr.createProblems();
+			List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
 			List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
 
 			FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();

@@ -5,13 +5,11 @@ import java.nio.file.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.uma.jmetal.problem.impl.AbstractGenericProblem;
-import org.uma.jmetal.solution.Solution;
 
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
-public abstract class RProblem<S extends Solution<?>> extends AbstractGenericProblem<S> {
+public abstract class RProblem<S extends RSolution> extends AbstractGenericProblem<S> {
 
 	protected final EObject model;
 	protected int length_of_refactorings;

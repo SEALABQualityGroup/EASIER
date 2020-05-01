@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.ocl.ParserException;
+import org.uma.jmetal.solution.impl.AbstractGenericSolution;
+import org.uma.jmetal.util.JMetalException;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
-public class AemiliaRCrossover extends RCrossover {
+public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S> {
 
 	// private double crossoverProbability;
 	// private JMetalRandom randomGenerator;
@@ -23,6 +27,17 @@ public class AemiliaRCrossover extends RCrossover {
 	/** Constructor */
 	public AemiliaRCrossover(double crossoverProbability, Controller ctrl) {
 		super(crossoverProbability, ctrl);
+	}
+	
+	@Override
+	public List<S> execute(List<S> solutions) {
+		if (solutions == null) {
+			throw new JMetalException("Null parameter");
+		} else if (solutions.size() != 2) {
+			throw new JMetalException("There must be two parents instead of " + solutions.size());
+		}
+
+		return doCrossover(crossoverProbability, solutions.get(0), solutions.get(1));
 	}
 
 	/**
@@ -37,16 +52,15 @@ public class AemiliaRCrossover extends RCrossover {
 	 * @return An array containing the two offspring
 	 * @throws ParserException
 	 */
-	@Override
-	public List<RSolution> doCrossover(double probability, RSolution parent1, RSolution parent2) {
+	private List<S> doCrossover(double probability, AemiliaRSolution parent1, AemiliaRSolution parent2) {
 
-		List<RSolution> offspring = new ArrayList<>(2);
+		List<S> offspring = new ArrayList<>(2);
 		AemiliaRSolution parent1copy = (AemiliaRSolution) parent1.copy();
-		offspring.add(parent1copy);
+		offspring.add((S) parent1copy);
 		assert (offspring.get(0).getModel().equals(parent1.getModel()));
 
 		AemiliaRSolution parent2copy = (AemiliaRSolution) parent2.copy();
-		offspring.add(parent2copy);
+		offspring.add((S) parent2copy);
 
 		if (randomGenerator.nextDouble() < probability) {
 			// 1. Get the total number of bits
@@ -67,14 +81,13 @@ public class AemiliaRCrossover extends RCrossover {
 			 */
 			// 4. Compute the crossover point
 
-			assert (parent1.getVariableValue(variable).getLength() == parent2.getVariableValue(variable).getLength());
+			assert (((AemiliaRSolution) parent1).getVariableValue(variable).getLength() == ((AemiliaRSolution) parent2).getVariableValue(variable).getLength());
 
 			// 5. Apply the crossover to the variable;
 
 			assert (parent1 != null);
 			assert (parent2 != null);
-			AemiliaRSolution offspring1 = new AemiliaRSolution((AemiliaRSolution) parent1, (AemiliaRSolution) parent2,
-					crossoverPoint, true);
+			AemiliaRSolution offspring1 = new AemiliaRSolution(parent1, parent2, crossoverPoint, true);
 			offspring1.setParents(parent1, parent2);
 
 			if (offspring1.getVariableValue(0).isFeasible()) {
@@ -92,7 +105,7 @@ public class AemiliaRCrossover extends RCrossover {
 					i++;
 				}
 				if (!found)
-					offspring.set(0, offspring1);
+					offspring.set(0, (S) offspring1);
 			}
 
 			assert (offspring1.getModel().equals(offspring1.getModel()));
@@ -117,7 +130,7 @@ public class AemiliaRCrossover extends RCrossover {
 					i++;
 				}
 				if (!found)
-					offspring.set(1, offspring2);
+					offspring.set(1, (S) offspring2);
 			}
 
 			assert (offspring.size() == 2);
@@ -144,7 +157,7 @@ public class AemiliaRCrossover extends RCrossover {
 			EasierLogger.logger_.info("Crossover is done");
 		}
 
-		return offspring;
+		return (List<S>) offspring;
 	}
 
 	/**

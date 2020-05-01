@@ -38,7 +38,7 @@ public abstract class MetamodelManager {
 
 	/* Source models */
 	protected List<Path> sourceModelsPath = new ArrayList<>();
-	protected List<SourceModel> sourceModels = new ArrayList();
+	protected List<SourceModel> sourceModels = new ArrayList<SourceModel>();
 
 	// protected String modelPath;
 
@@ -49,7 +49,7 @@ public abstract class MetamodelManager {
 
 	public static final double MAX_VALUE = 100;
 
-	protected RProblem problem;
+	protected RProblem<?> problem;
 	
 	private Map<UUID, ResourceSet> resourceSetMap = new HashMap<>();
 

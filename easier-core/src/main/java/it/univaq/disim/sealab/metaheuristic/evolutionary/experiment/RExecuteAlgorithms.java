@@ -8,25 +8,25 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
-public class RExecuteAlgorithms<S extends Solution<?>, Result> {
+public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 	private Experiment<S, Result> experiment;
 	private final Controller controller;
 	private List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
 
 	/** Constructor */
-	public RExecuteAlgorithms(Experiment<S, Result> configuration, final Controller ctr) {
+	public RExecuteAlgorithms(RExperiment<S, Result> exp, final Controller ctr) {
 		// super(configuration);
-		this.experiment = configuration;
+		this.experiment = exp;
 		this.controller = ctr;
 	}
 

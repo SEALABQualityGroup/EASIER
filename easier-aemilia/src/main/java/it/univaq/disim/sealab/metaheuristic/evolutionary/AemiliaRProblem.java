@@ -8,8 +8,13 @@ import org.uma.jmetal.solution.Solution;
 
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
-public class AemiliaRProblem<S extends Solution<?>> extends RProblem {
+public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Path sourceValPath;
 	
 	public AemiliaRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
@@ -23,10 +28,10 @@ public class AemiliaRProblem<S extends Solution<?>> extends RProblem {
 	public Path getSourceValPath() { return sourceValPath; }
 	
 	@Override
-	public RSolution createSolution() {
+	public S createSolution() {
 
 		try {
-			return new AemiliaRSolution(this);
+			return (S) new AemiliaRSolution(this);
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,7 +40,6 @@ public class AemiliaRProblem<S extends Solution<?>> extends RProblem {
 			e.printStackTrace();
 		}
 		return null;
-
 	}
 
 	public Path getSourceModelPath() {
@@ -52,7 +56,7 @@ public class AemiliaRProblem<S extends Solution<?>> extends RProblem {
 	 * objective for the fitness function.
 	 * 
 	 */
-	public void evaluate(Solution s) {
+	public void evaluate(S s) {
 		
 		AemiliaRSolution solution = (AemiliaRSolution)s;
 

@@ -1,15 +1,14 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.spea2;
 
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.Solution;
 
-public class CustomSPEA2Builder<S extends Solution<?>> extends SPEA2Builder<S>{
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+
+public class CustomSPEA2Builder<S extends RSolution> extends SPEA2Builder<S>{
 
 	public CustomSPEA2Builder(Problem<S> problem, CrossoverOperator<S> crossoverOperator,
 			MutationOperator<S> mutationOperator) {

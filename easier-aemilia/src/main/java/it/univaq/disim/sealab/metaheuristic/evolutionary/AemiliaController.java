@@ -18,6 +18,9 @@ import java.util.logging.FileHandler;
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -26,6 +29,7 @@ import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
 import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
 import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
@@ -66,7 +70,7 @@ public class AemiliaController implements Controller {
 	private MetamodelManager metamodelManager;
 	private Manager manager;
 	private AemiliaAvailabilityManager availabilityManager;
-	private AemiliaRProblem problem;
+	private AemiliaRProblem<AemiliaRSolution> problem;
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd.HH.mm.ss");
 	private boolean cleaningTmp = false;
 	private static boolean SOR = false;
@@ -76,10 +80,11 @@ public class AemiliaController implements Controller {
 	private Configurator configurator;
 
 	/* Evolutionary operators */
-	private CrossoverOperator<RSolution> crossoverOperator;
-	private MutationOperator<RSolution> mutationOperator;
-	private SelectionOperator<List<RSolution>, RSolution> selectionOpertor;
-	private SolutionListEvaluator<RSolution> solutionListEvaluator;
+	private CrossoverOperator<AemiliaRSolution> crossoverOperator;
+	private MutationOperator<AemiliaRSolution> mutationOperator;
+	private SelectionOperator<List<AemiliaRSolution>, AemiliaRSolution> selectionOpertor;
+
+	private SolutionListEvaluator<AemiliaRSolution> solutionListEvaluator;
 
 	/* Source models */
 	// private List<Path> sourceModels = new ArrayList<>();
@@ -101,11 +106,15 @@ public class AemiliaController implements Controller {
 		configurator.getTmpFolder().toFile().mkdirs();
 
 		// Instantiates evolutionary operators
-		crossoverOperator = new AemiliaRCrossover(config.getXoverProbabiliy(), this);
-		mutationOperator = new RMutation(config.getMutationProbability(), config.getDistributionIndex());
-		selectionOpertor = new BinaryTournamentSelection<RSolution>(
-				new RankingAndCrowdingDistanceComparator<RSolution>());
-		solutionListEvaluator = new RSolutionListEvaluator();
+		crossoverOperator = new AemiliaRCrossover<AemiliaRSolution>(config.getXoverProbabiliy(), this);
+
+		mutationOperator = new RMutation<AemiliaRSolution>(config.getMutationProbability(),
+				config.getDistributionIndex());
+
+		selectionOpertor = new BinaryTournamentSelection<AemiliaRSolution>(
+				new RankingAndCrowdingDistanceComparator<AemiliaRSolution>());
+
+		solutionListEvaluator = new RSolutionListEvaluator<AemiliaRSolution>();
 	}
 
 	public AemiliaController setUp() {
@@ -119,7 +128,7 @@ public class AemiliaController implements Controller {
 							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
 
 			// generates every needed files and updates the source model
-			
+
 			updateSourceModel(path);
 			sourceModels.add(model);
 		}
@@ -205,15 +214,16 @@ public class AemiliaController implements Controller {
 				file.renameTo(newFile);
 			}
 		}
-		
-		if(!Files.exists(sourceOCLPath)) {
-			ThresholdUtils.uptodateSingleValueThresholds(sourceOCLPath.getParent(), sourceModelPath, sourceValPath, (AemiliaMetamodelManager) metamodelManager, this);
+
+		if (!Files.exists(sourceOCLPath)) {
+			ThresholdUtils.uptodateSingleValueThresholds(sourceOCLPath.getParent(), sourceModelPath, sourceValPath,
+					(AemiliaMetamodelManager) metamodelManager, this);
 		}
 	}
 
-	public List<AemiliaRProblem> createProblems() {
+	public List<RProblem<AemiliaRSolution>> createProblems() {
 
-		List<AemiliaRProblem> rProblems = new ArrayList<>();
+		List<RProblem<AemiliaRSolution>> rProblems = new ArrayList<>();
 
 		for (SourceModel src : sourceModels) {
 			for (Integer l : configurator.getLength()) {
@@ -223,8 +233,9 @@ public class AemiliaController implements Controller {
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
-						AemiliaRProblem<AemiliaRSolution> p = new AemiliaRProblem<AemiliaRSolution>(src.getSourceFolder(), l, configurator.getActions(),
-								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
+						AemiliaRProblem<AemiliaRSolution> p = new AemiliaRProblem<AemiliaRSolution>(
+								src.getSourceFolder(), l, configurator.getActions(), configurator.getAllowedFailures(),
+								configurator.getPopulationSize(), this);
 						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
 						rProblems.add(p);
 					}
@@ -234,7 +245,7 @@ public class AemiliaController implements Controller {
 		return rProblems;
 	}
 
-	public void runExperiment(final List<AemiliaRProblem> rProblems,
+	public void runExperiment(final List<RProblem<AemiliaRSolution>> rProblems,
 			final List<GenericIndicator<AemiliaRSolution>> qualityIndicators) {
 		final int INDEPENDENT_RUNS = configurator.getIndependetRuns(); // should be 31 or 51
 		final int CORES = 1;
@@ -248,7 +259,7 @@ public class AemiliaController implements Controller {
 
 		Path referenceFrontDirectory = Paths.get(configurator.getOutputFolder().toString(), "referenceFront");
 
-		RExperiment<AemiliaRSolution, List<AemiliaRSolution>> experiment = new RExperimentBuilder<AemiliaRSolution, List<AemiliaRSolution>>(
+		Experiment<AemiliaRSolution, List<AemiliaRSolution>> experiment = new RExperimentBuilder<AemiliaRSolution, List<AemiliaRSolution>>(
 				"Exp").setAlgorithmList(algorithmList).setProblemList(problemList)
 						.setExperimentBaseDirectory(referenceFrontDirectory.toString())
 						.setReferenceFrontDirectory(referenceFrontDirectory.toString())
@@ -257,8 +268,9 @@ public class AemiliaController implements Controller {
 						.setNumberOfCores(CORES).build();
 		try {
 			List<Entry<Algorithm<List<AemiliaRSolution>>, Long>> computingTimes = new RExecuteAlgorithms<AemiliaRSolution, List<AemiliaRSolution>>(
-					experiment, this).run().getComputingTimes();
-			experiment.setComputingTime(computingTimes);
+					(RExperiment<AemiliaRSolution, List<AemiliaRSolution>>) experiment, this).run().getComputingTimes();
+
+			((RExperiment<AemiliaRSolution, List<AemiliaRSolution>>) experiment).setComputingTime(computingTimes);
 
 			// List<AemiliaRSolution> pareto = new ArrayList<>();
 
@@ -269,11 +281,11 @@ public class AemiliaController implements Controller {
 			// }
 			//
 
-			 new RComputeQualityIndicators<>(experiment).run();
-			 new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			 new GenerateBoxplotsWithR<>(experiment).run();
-			 new GenerateLatexTablesWithStatistics(experiment).run();
-			 new GenerateLatexTablesWithComputingTime(experiment).run();
+			new RComputeQualityIndicators<>(experiment).run();
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
+			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -299,34 +311,34 @@ public class AemiliaController implements Controller {
 
 		for (int i = 0; i < problemList.size(); i++) {
 
-			CustomNSGAIIBuilder<AemiliaRSolution> customNSGABuilder = new CustomNSGAIIBuilder(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
-
-			customNSGABuilder.setMaxEvaluations(configurator.getMaxEvaluation());
-			customNSGABuilder.setPopulationSize(configurator.getPopulationSize());
-			customNSGABuilder.setListEvaluator(solutionListEvaluator);
+			NSGAIIBuilder<AemiliaRSolution> customNSGABuilder = new CustomNSGAIIBuilder<AemiliaRSolution>(
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+							.setMaxEvaluations(configurator.getMaxEvaluation())
+							.setPopulationSize(configurator.getPopulationSize())
+							.setSolutionListEvaluator(solutionListEvaluator);
 
 			NSGAII<AemiliaRSolution> algorithm = customNSGABuilder.build();
 			((CustomNSGAII<AemiliaRSolution>) algorithm).setName("NSGA_II");
 
-			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new CustomExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
+			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
+					algorithm, algorithm.getName(), problemList.get(i).getTag());
+
 			algorithms.add(exp);
 		}
 
 		for (int i = 0; i < problemList.size(); i++) {
-			@SuppressWarnings("unchecked")
-			CustomSPEA2Builder<AemiliaRSolution> spea2Builder = (CustomSPEA2Builder<AemiliaRSolution>) new CustomSPEA2Builder(
+			SPEA2Builder<AemiliaRSolution> spea2Builder = new CustomSPEA2Builder<AemiliaRSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
 							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
 							.setMaxIterations(
 									Math.toIntExact(configurator.getMaxEvaluation() / configurator.getPopulationSize()))
 							.setPopulationSize(configurator.getPopulationSize());
 
-			CustomSPEA2<AemiliaRSolution> algorithm = (CustomSPEA2<AemiliaRSolution>) spea2Builder.build();
-			algorithm.setName("SPEA2");
-			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new CustomExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
+			SPEA2<AemiliaRSolution> algorithm = spea2Builder.build();
+			((CustomSPEA2<AemiliaRSolution>) algorithm).setName("SPEA2");
+
+			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
+					algorithm, algorithm.getName(), problemList.get(i).getTag());
 			algorithms.add(exp);
 		}
 		return algorithms;
@@ -420,7 +432,7 @@ public class AemiliaController implements Controller {
 				Paths.get(avaFolder.toString(), "result"));
 	}
 
-	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
+	private synchronized void saveParetoSolution(List<AemiliaRSolution> paretoPop) {
 		AemiliaFileUtils.writeSolutionSetToCSV(paretoPop);
 		for (RSolution solution : paretoPop) {
 			final File srcDir = new File(((AemiliaRSolution) solution).getMmaemiliaFolderPath());
@@ -451,12 +463,12 @@ public class AemiliaController implements Controller {
 		return new AemiliaPerformanceQualityEvaluator(manager.getOclManager());
 	}
 
-	public RProblem getProblem() {
+	public RProblem<AemiliaRSolution> getProblem() {
 		return this.problem;
 	}
 
-	public void setProblem(RProblem p) {
-		this.problem = (AemiliaRProblem) p;
+	public void setProblem(RProblem<AemiliaRSolution> p) {
+		this.problem = (AemiliaRProblem<AemiliaRSolution>) p;
 	}
 
 	public void checkTwoTowersOutput(Path valFilePath) {
