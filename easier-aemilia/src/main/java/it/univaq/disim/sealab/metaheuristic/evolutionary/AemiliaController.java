@@ -37,6 +37,7 @@ import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
+import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
@@ -160,12 +161,14 @@ public class AemiliaController implements Controller {
 
 		if (!Files.exists(sourceAemPath)) {
 			metamodelManager.packageRegistering();
-			Transformation.GenerateAEMTransformation(sourceModelPath, source);
+			EpsilonHelper.generateAemFile(sourceModelPath, source);
+//			Transformation.GenerateAEMTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("generation of source files completed!");
 		}
 
 		if (!Files.exists(sourceRewPath)) {
-			Transformation.GenerateREWTransformation(sourceModelPath, source);
+			EpsilonHelper.generateAemFile(sourceModelPath, source);
+//			Transformation.GenerateREWTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("mmamelia to rew completed");
 		}
 

@@ -33,5 +33,10 @@
   		<artifactId>aemiliaToQn_bridge</artifactId>
   		<version>0.0.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>it.univaq.disim.sealab</groupId>
+  		<artifactId>easier-epsilon</artifactId>
+  		<version>0.6.3</version>
+  	</dependency>
   </dependencies>
 </project>

@@ -5,14 +5,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.text.StringSubstitutor;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
@@ -20,7 +26,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
-import metamodel.mmaemilia.ArchitecturalInteraction;
+import metamodel.mmaemilia.AEmiliaSpecification;
 
 public class FileUtils {
 
@@ -270,5 +276,36 @@ public class FileUtils {
 			
 		}
 		return solIDs;
+	}
+	
+	public static void fillTemplateKeywords(final Path sourceFile, final Path destination, final Map<String, String> keywords) {
+		try {
+			String templateString = fileToString(sourceFile, Charset.defaultCharset());
+			StringSubstitutor sub = new StringSubstitutor(keywords);
+			String resolvedString = sub.replace(templateString);
+
+			File f = destination.toFile();
+			f.getParentFile().mkdirs();
+			f.createNewFile();
+
+			PrintWriter out = new PrintWriter(destination.toFile());
+			out.print(resolvedString);
+			out.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static String fileToString(Path path, Charset encoding) throws IOException {
+		byte[] encoded = Files.readAllBytes(path);
+		return new String(encoded, encoding);
+	}
+
+	@Deprecated
+	public static String fileToString(String path, Charset encoding) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
 	}
 }

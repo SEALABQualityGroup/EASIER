@@ -20,6 +20,7 @@
 		<module>easier-helper</module>
 		<module>easier-uml</module>
 		<module>easier-aemilia</module>
+		<module>easier-epsilon</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>
@@ -105,11 +106,16 @@
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>${emf.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<version>5.5.0-M1</version>
-		</dependency>
+
+		<!-- JUNIT -->
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13</version>
+    <scope>test</scope>
+</dependency>
+
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>

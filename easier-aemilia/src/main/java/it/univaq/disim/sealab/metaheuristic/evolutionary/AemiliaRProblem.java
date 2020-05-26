@@ -31,7 +31,7 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 	public S createSolution() {
 
 		try {
-			return (S) new AemiliaRSolution(this);
+			return (S) new AemiliaRSolution((RProblem<AemiliaRSolution>) this);
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
