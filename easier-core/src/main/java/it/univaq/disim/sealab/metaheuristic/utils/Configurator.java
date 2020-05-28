@@ -81,6 +81,10 @@ public class Configurator {
 	@Parameter(names = { "-oclTemplate",
 			"--oclTemplateFolder" }, required = true, description = "It is the ocl rule template file")
 	private String oclTemplate;
+	
+	@Parameter(names = { "-evlTemplate",
+	"--evlTemplateFolder" }, required = true, description = "It is the evl template file")
+	private String evlTemplate;
 
 	@Parameter(names = { "-ava",
 			"--availability" }, description = "Enables availability calculattion over pareto solutions")
@@ -131,6 +135,10 @@ public class Configurator {
 
 	public Path getOclTemplate() {
 		return Paths.get(oclTemplate);
+	}
+	
+	public Path getEVLTemplate() {
+		return Paths.get(evlTemplate);
 	}
 
 	public Path getTmpFolder() {

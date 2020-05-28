@@ -1,14 +1,14 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
-/* Skeleton implementation for Bison's Yacc-like parsers in C
+/* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Inc.
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,9 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -43,11 +41,14 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
+
 /* Identify Bison output.  */
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.3"
+#define YYBISON_VERSION "3.5.1"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -55,183 +56,23 @@
 /* Pure parsers.  */
 #define YYPURE 0
 
-/* Using locations.  */
-#define YYLSP_NEEDED 0
+/* Push parsers.  */
+#define YYPUSH 0
+
+/* Pull parsers.  */
+#define YYPULL 1
+
 
 /* Substitute the variable and function names.  */
-#define yyparse ltlyyparse
-#define yylex   ltlyylex
-#define yyerror ltlyyerror
-#define yylval  ltlyylval
-#define yychar  ltlyychar
-#define yydebug ltlyydebug
-#define yynerrs ltlyynerrs
+#define yyparse         ltlyyparse
+#define yylex           ltlyylex
+#define yyerror         ltlyyerror
+#define yydebug         ltlyydebug
+#define yynerrs         ltlyynerrs
+#define yylval          ltlyylval
+#define yychar          ltlyychar
 
-
-/* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     T_NUMBER = 300,
-     T_ID = 301,
-     T_FOR_ALL = 429,
-     T_IN = 430,
-     T_MOD = 446,
-     T_MIN = 447,
-     T_MAX = 448,
-     T_ABS = 449,
-     T_CEIL = 450,
-     T_FLOOR = 451,
-     T_POWER = 452,
-     T_EPOWER = 453,
-     T_LOGE = 454,
-     T_LOG10 = 455,
-     T_SQRT = 456,
-     T_SIN = 457,
-     T_COS = 458,
-     T_C_UNIFORM = 459,
-     T_ERLANG = 460,
-     T_GAMMA = 461,
-     T_EXPONENTIAL = 462,
-     T_WEIBULL = 463,
-     T_BETA = 464,
-     T_NORMAL = 465,
-     T_PARETO = 466,
-     T_B_PARETO = 467,
-     T_D_UNIFORM = 468,
-     T_BERNOULLI = 469,
-     T_BINOMIAL = 470,
-     T_POISSON = 471,
-     T_NEG_BINOMIAL = 472,
-     T_GEOMETRIC = 473,
-     T_PASCAL = 474,
-     T_TRUE = 476,
-     T_FALSE = 477,
-     T_LIST_CONS = 479,
-     T_FIRST = 480,
-     T_TAIL = 481,
-     T_CONCAT = 482,
-     T_INSERT = 483,
-     T_REMOVE = 484,
-     T_LENGTH = 485,
-     T_ARRAY_CONS = 487,
-     T_READ = 488,
-     T_WRITE = 489,
-     T_RECORD_CONS = 491,
-     T_GET = 492,
-     T_PUT = 493,
-     T_PROPERTY = 494,
-     T_IS = 495,
-     T_PROP_TRUE = 496,
-     T_PROP_FALSE = 497,
-     T_PROP_NOT = 498,
-     T_MODAL_DEADLOCK_FREE = 515,
-     T_LTL_NEXT_STATE_SAT = 524,
-     T_LTL_ALL_FUTURE_STATES_SAT = 525,
-     T_LTL_SOME_FUTURE_STATE_SAT = 526,
-     T_LTL_UNTIL = 527,
-     T_LTL_RELEASES = 528,
-     T_LTL_PREV_STATE_SAT = 529,
-     T_LTL_ALL_PAST_STATES_SAT = 530,
-     T_LTL_SOME_PAST_STATE_SAT = 531,
-     T_LTL_SINCE = 532,
-     T_LTL_TRIGGERED = 533,
-     DOTDOT = 700,
-     NE = 701,
-     LE = 702,
-     GE = 703,
-     AND = 704,
-     OR = 705,
-     PROP_AND = 706,
-     PROP_OR = 707,
-     PROP_XOR = 708,
-     PROP_IMPL = 709,
-     PROP_BI_IMPL = 710
-   };
-#endif
-/* Tokens.  */
-#define T_NUMBER 300
-#define T_ID 301
-#define T_FOR_ALL 429
-#define T_IN 430
-#define T_MOD 446
-#define T_MIN 447
-#define T_MAX 448
-#define T_ABS 449
-#define T_CEIL 450
-#define T_FLOOR 451
-#define T_POWER 452
-#define T_EPOWER 453
-#define T_LOGE 454
-#define T_LOG10 455
-#define T_SQRT 456
-#define T_SIN 457
-#define T_COS 458
-#define T_C_UNIFORM 459
-#define T_ERLANG 460
-#define T_GAMMA 461
-#define T_EXPONENTIAL 462
-#define T_WEIBULL 463
-#define T_BETA 464
-#define T_NORMAL 465
-#define T_PARETO 466
-#define T_B_PARETO 467
-#define T_D_UNIFORM 468
-#define T_BERNOULLI 469
-#define T_BINOMIAL 470
-#define T_POISSON 471
-#define T_NEG_BINOMIAL 472
-#define T_GEOMETRIC 473
-#define T_PASCAL 474
-#define T_TRUE 476
-#define T_FALSE 477
-#define T_LIST_CONS 479
-#define T_FIRST 480
-#define T_TAIL 481
-#define T_CONCAT 482
-#define T_INSERT 483
-#define T_REMOVE 484
-#define T_LENGTH 485
-#define T_ARRAY_CONS 487
-#define T_READ 488
-#define T_WRITE 489
-#define T_RECORD_CONS 491
-#define T_GET 492
-#define T_PUT 493
-#define T_PROPERTY 494
-#define T_IS 495
-#define T_PROP_TRUE 496
-#define T_PROP_FALSE 497
-#define T_PROP_NOT 498
-#define T_MODAL_DEADLOCK_FREE 515
-#define T_LTL_NEXT_STATE_SAT 524
-#define T_LTL_ALL_FUTURE_STATES_SAT 525
-#define T_LTL_SOME_FUTURE_STATE_SAT 526
-#define T_LTL_UNTIL 527
-#define T_LTL_RELEASES 528
-#define T_LTL_PREV_STATE_SAT 529
-#define T_LTL_ALL_PAST_STATES_SAT 530
-#define T_LTL_SOME_PAST_STATE_SAT 531
-#define T_LTL_SINCE 532
-#define T_LTL_TRIGGERED 533
-#define DOTDOT 700
-#define NE 701
-#define LE 702
-#define GE 703
-#define AND 704
-#define OR 705
-#define PROP_AND 706
-#define PROP_OR 707
-#define PROP_XOR 708
-#define PROP_IMPL 709
-#define PROP_BI_IMPL 710
-
-
-
-
-/* Copy the first part of user declarations.  */
+/* First part of user prologue.  */
 #line 23 "ltl_parser.y"
 
 
@@ -289,11 +130,28 @@ PRIVATE	int		ltlyyerror(char *);
 PRIVATE	void		handle_sync_ltl(void);
 
 
+#line 134 "ltl_parser.tab.c"
 
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+# ifndef YY_CAST
+#  ifdef __cplusplus
+#   define YY_CAST(Type, Val) static_cast<Type> (Val)
+#   define YY_REINTERPRET_CAST(Type, Val) reinterpret_cast<Type> (Val)
+#  else
+#   define YY_CAST(Type, Val) ((Type) (Val))
+#   define YY_REINTERPRET_CAST(Type, Val) ((Type) (Val))
+#  endif
+# endif
+# ifndef YY_NULLPTR
+#  if defined __cplusplus
+#   if 201103L <= __cplusplus
+#    define YY_NULLPTR nullptr
+#   else
+#    define YY_NULLPTR 0
+#   endif
+#  else
+#   define YY_NULLPTR ((void*)0)
+#  endif
+# endif
 
 /* Enabling verbose error messages.  */
 #ifdef YYERROR_VERBOSE
@@ -303,15 +161,107 @@ PRIVATE	void		handle_sync_ltl(void);
 # define YYERROR_VERBOSE 0
 #endif
 
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
+/* Use api.header.include to #include this header
+   instead of duplicating it here.  */
+#ifndef YY_LTLYY_LTL_PARSER_TAB_H_INCLUDED
+# define YY_LTLYY_LTL_PARSER_TAB_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int ltlyydebug;
 #endif
 
+/* Token type.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    T_NUMBER = 300,
+    T_ID = 301,
+    T_FOR_ALL = 429,
+    T_IN = 430,
+    T_MOD = 446,
+    T_MIN = 447,
+    T_MAX = 448,
+    T_ABS = 449,
+    T_CEIL = 450,
+    T_FLOOR = 451,
+    T_POWER = 452,
+    T_EPOWER = 453,
+    T_LOGE = 454,
+    T_LOG10 = 455,
+    T_SQRT = 456,
+    T_SIN = 457,
+    T_COS = 458,
+    T_C_UNIFORM = 459,
+    T_ERLANG = 460,
+    T_GAMMA = 461,
+    T_EXPONENTIAL = 462,
+    T_WEIBULL = 463,
+    T_BETA = 464,
+    T_NORMAL = 465,
+    T_PARETO = 466,
+    T_B_PARETO = 467,
+    T_D_UNIFORM = 468,
+    T_BERNOULLI = 469,
+    T_BINOMIAL = 470,
+    T_POISSON = 471,
+    T_NEG_BINOMIAL = 472,
+    T_GEOMETRIC = 473,
+    T_PASCAL = 474,
+    T_TRUE = 476,
+    T_FALSE = 477,
+    T_LIST_CONS = 479,
+    T_FIRST = 480,
+    T_TAIL = 481,
+    T_CONCAT = 482,
+    T_INSERT = 483,
+    T_REMOVE = 484,
+    T_LENGTH = 485,
+    T_ARRAY_CONS = 487,
+    T_READ = 488,
+    T_WRITE = 489,
+    T_RECORD_CONS = 491,
+    T_GET = 492,
+    T_PUT = 493,
+    T_PROPERTY = 494,
+    T_IS = 495,
+    T_PROP_TRUE = 496,
+    T_PROP_FALSE = 497,
+    T_PROP_NOT = 498,
+    T_MODAL_DEADLOCK_FREE = 515,
+    T_LTL_NEXT_STATE_SAT = 524,
+    T_LTL_ALL_FUTURE_STATES_SAT = 525,
+    T_LTL_SOME_FUTURE_STATE_SAT = 526,
+    T_LTL_UNTIL = 527,
+    T_LTL_RELEASES = 528,
+    T_LTL_PREV_STATE_SAT = 529,
+    T_LTL_ALL_PAST_STATES_SAT = 530,
+    T_LTL_SOME_PAST_STATE_SAT = 531,
+    T_LTL_SINCE = 532,
+    T_LTL_TRIGGERED = 533,
+    DOTDOT = 700,
+    NE = 701,
+    LE = 702,
+    GE = 703,
+    AND = 704,
+    OR = 705,
+    PROP_AND = 706,
+    PROP_OR = 707,
+    PROP_XOR = 708,
+    PROP_IMPL = 709,
+    PROP_BI_IMPL = 710
+  };
+#endif
+
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 86 "ltl_parser.y"
+union YYSTYPE
 {
+#line 86 "ltl_parser.y"
+
 	ST_BUCKET_CELL	*st_bucket_cell;
 				/* list of symbol table bucket cells for properties */
         ST_BUCKET       *st_bucket;
@@ -320,52 +270,97 @@ typedef union YYSTYPE
 				/* parse information about an expression */
 	LAR_PARSE_INFO	*lar_parse_info;
 				/* parse information about an expression list/array/record */
-}
-/* Line 193 of yacc.c.  */
-#line 326 "ltl_parser.tab.c"
-	YYSTYPE;
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+
+#line 275 "ltl_parser.tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
 
 
+extern YYSTYPE ltlyylval;
 
-/* Copy the second part of user declarations.  */
+int ltlyyparse (void);
+
+#endif /* !YY_LTLYY_LTL_PARSER_TAB_H_INCLUDED  */
 
 
-/* Line 216 of yacc.c.  */
-#line 339 "ltl_parser.tab.c"
 
 #ifdef short
 # undef short
 #endif
 
-#ifdef YYTYPE_UINT8
-typedef YYTYPE_UINT8 yytype_uint8;
-#else
-typedef unsigned char yytype_uint8;
+/* On compilers that do not define __PTRDIFF_MAX__ etc., make sure
+   <limits.h> and (if available) <stdint.h> are included
+   so that the code can choose integer types of a good width.  */
+
+#ifndef __PTRDIFF_MAX__
+# include <limits.h> /* INFRINGES ON USER NAME SPACE */
+# if defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
+#  include <stdint.h> /* INFRINGES ON USER NAME SPACE */
+#  define YY_STDINT_H
+# endif
 #endif
 
-#ifdef YYTYPE_INT8
-typedef YYTYPE_INT8 yytype_int8;
-#elif (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+/* Narrow types that promote to a signed type and that can represent a
+   signed or unsigned integer of at least N bits.  In tables they can
+   save space and decrease cache pressure.  Promoting to a signed type
+   helps avoid bugs in integer arithmetic.  */
+
+#ifdef __INT_LEAST8_MAX__
+typedef __INT_LEAST8_TYPE__ yytype_int8;
+#elif defined YY_STDINT_H
+typedef int_least8_t yytype_int8;
+#else
 typedef signed char yytype_int8;
-#else
-typedef short int yytype_int8;
 #endif
 
-#ifdef YYTYPE_UINT16
-typedef YYTYPE_UINT16 yytype_uint16;
+#ifdef __INT_LEAST16_MAX__
+typedef __INT_LEAST16_TYPE__ yytype_int16;
+#elif defined YY_STDINT_H
+typedef int_least16_t yytype_int16;
 #else
-typedef unsigned short int yytype_uint16;
+typedef short yytype_int16;
 #endif
 
-#ifdef YYTYPE_INT16
-typedef YYTYPE_INT16 yytype_int16;
+#if defined __UINT_LEAST8_MAX__ && __UINT_LEAST8_MAX__ <= __INT_MAX__
+typedef __UINT_LEAST8_TYPE__ yytype_uint8;
+#elif (!defined __UINT_LEAST8_MAX__ && defined YY_STDINT_H \
+       && UINT_LEAST8_MAX <= INT_MAX)
+typedef uint_least8_t yytype_uint8;
+#elif !defined __UINT_LEAST8_MAX__ && UCHAR_MAX <= INT_MAX
+typedef unsigned char yytype_uint8;
 #else
-typedef short int yytype_int16;
+typedef short yytype_uint8;
+#endif
+
+#if defined __UINT_LEAST16_MAX__ && __UINT_LEAST16_MAX__ <= __INT_MAX__
+typedef __UINT_LEAST16_TYPE__ yytype_uint16;
+#elif (!defined __UINT_LEAST16_MAX__ && defined YY_STDINT_H \
+       && UINT_LEAST16_MAX <= INT_MAX)
+typedef uint_least16_t yytype_uint16;
+#elif !defined __UINT_LEAST16_MAX__ && USHRT_MAX <= INT_MAX
+typedef unsigned short yytype_uint16;
+#else
+typedef int yytype_uint16;
+#endif
+
+#ifndef YYPTRDIFF_T
+# if defined __PTRDIFF_TYPE__ && defined __PTRDIFF_MAX__
+#  define YYPTRDIFF_T __PTRDIFF_TYPE__
+#  define YYPTRDIFF_MAXIMUM __PTRDIFF_MAX__
+# elif defined PTRDIFF_MAX
+#  ifndef ptrdiff_t
+#   include <stddef.h> /* INFRINGES ON USER NAME SPACE */
+#  endif
+#  define YYPTRDIFF_T ptrdiff_t
+#  define YYPTRDIFF_MAXIMUM PTRDIFF_MAX
+# else
+#  define YYPTRDIFF_T long
+#  define YYPTRDIFF_MAXIMUM LONG_MAX
+# endif
 #endif
 
 #ifndef YYSIZE_T
@@ -373,53 +368,96 @@ typedef short int yytype_int16;
 #  define YYSIZE_T __SIZE_TYPE__
 # elif defined size_t
 #  define YYSIZE_T size_t
-# elif ! defined YYSIZE_T && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+# elif defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned int
+#  define YYSIZE_T unsigned
 # endif
 #endif
 
-#define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
+#define YYSIZE_MAXIMUM                                  \
+  YY_CAST (YYPTRDIFF_T,                                 \
+           (YYPTRDIFF_MAXIMUM < YY_CAST (YYSIZE_T, -1)  \
+            ? YYPTRDIFF_MAXIMUM                         \
+            : YY_CAST (YYSIZE_T, -1)))
+
+#define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
+
+/* Stored state numbers (used for stacks). */
+typedef yytype_int16 yy_state_t;
+
+/* State numbers in computations.  */
+typedef int yy_state_fast_t;
 
 #ifndef YY_
 # if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
-#   define YY_(msgid) dgettext ("bison-runtime", msgid)
+#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
 #  endif
 # endif
 # ifndef YY_
-#  define YY_(msgid) msgid
+#  define YY_(Msgid) Msgid
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_PURE
+# if defined __GNUC__ && 2 < __GNUC__ + (96 <= __GNUC_MINOR__)
+#  define YY_ATTRIBUTE_PURE __attribute__ ((__pure__))
+# else
+#  define YY_ATTRIBUTE_PURE
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_UNUSED
+# if defined __GNUC__ && 2 < __GNUC__ + (7 <= __GNUC_MINOR__)
+#  define YY_ATTRIBUTE_UNUSED __attribute__ ((__unused__))
+# else
+#  define YY_ATTRIBUTE_UNUSED
 # endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+# define YYUSE(E) ((void) (E))
 #else
-# define YYUSE(e) /* empty */
+# define YYUSE(E) /* empty */
 #endif
 
-/* Identity function, used to suppress warnings about constant conditions.  */
-#ifndef lint
-# define YYID(n) (n)
+#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                            \
+    _Pragma ("GCC diagnostic push")                                     \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")              \
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END      \
+    _Pragma ("GCC diagnostic pop")
 #else
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static int
-YYID (int i)
-#else
-static int
-YYID (i)
-    int i;
+# define YY_INITIAL_VALUE(Value) Value
 #endif
-{
-  return i;
-}
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
 #endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
+#if defined __cplusplus && defined __GNUC__ && ! defined __ICC && 6 <= __GNUC__
+# define YY_IGNORE_USELESS_CAST_BEGIN                          \
+    _Pragma ("GCC diagnostic push")                            \
+    _Pragma ("GCC diagnostic ignored \"-Wuseless-cast\"")
+# define YY_IGNORE_USELESS_CAST_END            \
+    _Pragma ("GCC diagnostic pop")
+#endif
+#ifndef YY_IGNORE_USELESS_CAST_BEGIN
+# define YY_IGNORE_USELESS_CAST_BEGIN
+# define YY_IGNORE_USELESS_CAST_END
+#endif
+
+
+#define YY_ASSERT(E) ((void) (0 && (E)))
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -438,11 +476,11 @@ YYID (i)
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
-#    if ! defined _ALLOCA_H && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS
 #     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#     ifndef _STDLIB_H
-#      define _STDLIB_H 1
+      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
+#     ifndef EXIT_SUCCESS
+#      define EXIT_SUCCESS 0
 #     endif
 #    endif
 #   endif
@@ -450,8 +488,8 @@ YYID (i)
 # endif
 
 # ifdef YYSTACK_ALLOC
-   /* Pacify GCC's `empty if-body' warning.  */
-#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (YYID (0))
+   /* Pacify GCC's 'empty if-body' warning.  */
+#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (0)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
     /* The OS might guarantee only one guard page at the bottom of the stack,
        and a page size can be as small as 4096 bytes.  So we cannot safely
@@ -465,25 +503,23 @@ YYID (i)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
 #   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
 #  endif
-#  if (defined __cplusplus && ! defined _STDLIB_H \
+#  if (defined __cplusplus && ! defined EXIT_SUCCESS \
        && ! ((defined YYMALLOC || defined malloc) \
-	     && (defined YYFREE || defined free)))
+             && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#   ifndef _STDLIB_H
-#    define _STDLIB_H 1
+#   ifndef EXIT_SUCCESS
+#    define EXIT_SUCCESS 0
 #   endif
 #  endif
 #  ifndef YYMALLOC
 #   define YYMALLOC malloc
-#   if ! defined malloc && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined malloc && ! defined EXIT_SUCCESS
 void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 #  ifndef YYFREE
 #   define YYFREE free
-#   if ! defined free && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined free && ! defined EXIT_SUCCESS
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
@@ -493,59 +529,63 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  yytype_int16 yyss;
-  YYSTYPE yyvs;
-  };
+  yy_state_t yyss_alloc;
+  YYSTYPE yyvs_alloc;
+};
 
 /* The size of the maximum gap between one aligned stack and the next.  */
-# define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
+# define YYSTACK_GAP_MAXIMUM (YYSIZEOF (union yyalloc) - 1)
 
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
+     ((N) * (YYSIZEOF (yy_state_t) + YYSIZEOF (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
-/* Copy COUNT objects from FROM to TO.  The source and destination do
-   not overlap.  */
-# ifndef YYCOPY
-#  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(To, From, Count) \
-      __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
-#  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  YYSIZE_T yyi;				\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
-      while (YYID (0))
-#  endif
-# endif
+# define YYCOPY_NEEDED 1
 
 /* Relocate STACK from its old location to the new one.  The
    local variables YYSIZE and YYSTACKSIZE give the old and new number of
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack)					\
-    do									\
-      {									\
-	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack, Stack, yysize);				\
-	Stack = &yyptr->Stack;						\
-	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-	yyptr += yynewbytes / sizeof (*yyptr);				\
-      }									\
-    while (YYID (0))
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
+    do                                                                  \
+      {                                                                 \
+        YYPTRDIFF_T yynewbytes;                                         \
+        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+        Stack = &yyptr->Stack_alloc;                                    \
+        yynewbytes = yystacksize * YYSIZEOF (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / YYSIZEOF (*yyptr);                        \
+      }                                                                 \
+    while (0)
 
 #endif
+
+#if defined YYCOPY_NEEDED && YYCOPY_NEEDED
+/* Copy COUNT objects from SRC to DST.  The source and destination do
+   not overlap.  */
+# ifndef YYCOPY
+#  if defined __GNUC__ && 1 < __GNUC__
+#   define YYCOPY(Dst, Src, Count) \
+      __builtin_memcpy (Dst, Src, YY_CAST (YYSIZE_T, (Count)) * sizeof (*(Src)))
+#  else
+#   define YYCOPY(Dst, Src, Count)              \
+      do                                        \
+        {                                       \
+          YYPTRDIFF_T yyi;                      \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (Dst)[yyi] = (Src)[yyi];            \
+        }                                       \
+      while (0)
+#  endif
+# endif
+#endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  12
@@ -558,18 +598,21 @@ union yyalloc
 #define YYNNTS  24
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  110
-/* YYNRULES -- Number of states.  */
+/* YYNSTATES -- Number of states.  */
 #define YYNSTATES  361
 
-/* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   711
 
-#define YYTRANSLATE(YYX)						\
-  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
-/* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
-static const yytype_uint8 yytranslate[] =
+/* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex, with out-of-bounds checking.  */
+#define YYTRANSLATE(YYX)                                                \
+  (0 <= (YYX) && (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+
+/* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex.  */
+static const yytype_int8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -646,81 +689,8 @@ static const yytype_uint8 yytranslate[] =
 };
 
 #if YYDEBUG
-/* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
-   YYRHS.  */
-static const yytype_uint16 yyprhs[] =
-{
-       0,     0,     3,     5,     9,    10,    15,    16,    21,    23,
-      26,    27,    34,    35,    42,    44,    46,    50,    54,    59,
-      63,    67,    71,    73,    75,    80,    85,    90,    94,    98,
-     103,   108,   113,   117,   121,   125,   126,   132,   133,   134,
-     143,   144,   146,   150,   152,   154,   158,   162,   166,   170,
-     177,   182,   187,   192,   199,   206,   213,   218,   223,   228,
-     233,   238,   243,   250,   257,   264,   269,   276,   283,   290,
-     295,   304,   311,   320,   327,   332,   339,   344,   351,   353,
-     355,   359,   363,   366,   370,   374,   378,   382,   386,   390,
-     395,   400,   405,   412,   419,   426,   431,   436,   443,   452,
-     457,   458,   466,   467,   477,   481,   482,   484,   486,   488,
-     490
-};
-
-/* YYRHS -- A `-1'-separated list of the rules' RHS.  */
-static const yytype_int8 yyrhs[] =
-{
-      94,     0,    -1,    97,    -1,    97,    86,    94,    -1,    -1,
-       1,    86,    95,    94,    -1,    -1,     1,    51,    96,    94,
-      -1,    98,    -1,   105,   100,    -1,    -1,    51,     4,   108,
-      99,    52,   102,    -1,    -1,    51,     4,   109,   101,    52,
-     102,    -1,    53,    -1,    54,    -1,   102,    73,   102,    -1,
-     102,    74,   102,    -1,    55,    87,   102,    88,    -1,   102,
-      75,   102,    -1,   102,    76,   102,    -1,   102,    77,   102,
-      -1,    56,    -1,   103,    -1,    57,    87,   102,    88,    -1,
-      58,    87,   102,    88,    -1,    59,    87,   102,    88,    -1,
-     102,    60,   102,    -1,   102,    61,   102,    -1,    62,    87,
-     102,    88,    -1,    63,    87,   102,    88,    -1,    64,    87,
-     102,    88,    -1,   102,    65,   102,    -1,   102,    66,   102,
-      -1,    87,   102,    88,    -1,    -1,     4,   108,   104,    89,
-       4,    -1,    -1,    -1,     5,     4,   106,     6,   110,   107,
-      67,   110,    -1,    -1,   109,    -1,    90,   110,    91,    -1,
-       4,    -1,     3,    -1,   110,    82,   110,    -1,   110,    83,
-     110,    -1,   110,    84,   110,    -1,   110,    85,   110,    -1,
-       7,    87,   110,    92,   110,    88,    -1,    10,    87,   110,
-      88,    -1,    11,    87,   110,    88,    -1,    12,    87,   110,
-      88,    -1,     8,    87,   110,    92,   110,    88,    -1,     9,
-      87,   110,    92,   110,    88,    -1,    13,    87,   110,    92,
-     110,    88,    -1,    14,    87,   110,    88,    -1,    15,    87,
-     110,    88,    -1,    16,    87,   110,    88,    -1,    17,    87,
-     110,    88,    -1,    18,    87,   110,    88,    -1,    19,    87,
-     110,    88,    -1,    20,    87,   110,    92,   110,    88,    -1,
-      21,    87,   110,    92,   110,    88,    -1,    22,    87,   110,
-      92,   110,    88,    -1,    23,    87,   110,    88,    -1,    24,
-      87,   110,    92,   110,    88,    -1,    25,    87,   110,    92,
-     110,    88,    -1,    26,    87,   110,    92,   110,    88,    -1,
-      27,    87,   110,    88,    -1,    28,    87,   110,    92,   110,
-      92,   110,    88,    -1,    29,    87,   110,    92,   110,    88,
-      -1,    30,    87,   110,    92,   110,    92,   110,    88,    -1,
-      31,    87,   110,    92,   110,    88,    -1,    32,    87,   110,
-      88,    -1,    33,    87,   110,    92,   110,    88,    -1,    34,
-      87,   110,    88,    -1,    35,    87,   110,    92,   110,    88,
-      -1,    36,    -1,    37,    -1,   110,    71,   110,    -1,   110,
-      72,   110,    -1,    78,   110,    -1,   110,    79,   110,    -1,
-     110,    68,   110,    -1,   110,    80,   110,    -1,   110,    69,
-     110,    -1,   110,    81,   110,    -1,   110,    70,   110,    -1,
-      38,    87,   113,    88,    -1,    39,    87,   110,    88,    -1,
-      40,    87,   110,    88,    -1,    41,    87,   110,    92,   110,
-      88,    -1,    42,    87,   110,    92,   110,    88,    -1,    43,
-      87,   110,    92,   110,    88,    -1,    44,    87,   110,    88,
-      -1,    45,    87,   114,    88,    -1,    46,    87,   110,    92,
-     110,    88,    -1,    47,    87,   110,    92,   110,    92,   110,
-      88,    -1,    48,    87,   115,    88,    -1,    -1,    49,    87,
-       4,   111,    92,   110,    88,    -1,    -1,    50,    87,     4,
-     112,    92,   110,    92,   110,    88,    -1,    87,   110,    88,
-      -1,    -1,   116,    -1,   116,    -1,   116,    -1,   110,    -1,
-     110,    92,   116,    -1
-};
-
-/* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint16 yyrline[] =
+  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+static const yytype_int16 yyrline[] =
 {
        0,   239,   239,   243,   249,   248,   257,   256,   267,   274,
      287,   286,   303,   302,   320,   325,   330,   344,   358,   371,
@@ -737,7 +707,7 @@ static const yytype_uint16 yyrline[] =
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
+#if YYDEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -759,18 +729,18 @@ static const char *const yytname[] =
   "T_LTL_TRIGGERED", "DOTDOT", "NE", "LE", "GE", "AND", "OR", "PROP_AND",
   "PROP_OR", "PROP_XOR", "PROP_IMPL", "PROP_BI_IMPL", "'!'", "'='", "'<'",
   "'>'", "'+'", "'-'", "'*'", "'/'", "';'", "'('", "')'", "'.'", "'['",
-  "']'", "','", "$accept", "prop_def_list", "@1", "@2", "property_def",
-  "s_property_def", "@3", "i_property_def", "@4", "property_expr",
-  "act_type", "@5", "iteration", "@6", "@7", "poss_aei_index", "aei_index",
-  "expr", "@8", "@9", "expr_list", "expr_array", "expr_record",
-  "struct_expr", 0
+  "']'", "','", "$accept", "prop_def_list", "$@1", "$@2", "property_def",
+  "s_property_def", "$@3", "i_property_def", "$@4", "property_expr",
+  "act_type", "$@5", "iteration", "$@6", "$@7", "poss_aei_index",
+  "aei_index", "expr", "$@8", "$@9", "expr_list", "expr_array",
+  "expr_record", "struct_expr", YY_NULLPTR
 };
 #endif
 
 # ifdef YYPRINT
-/* YYTOKNUM[YYLEX-NUM] -- Internal token number corresponding to
-   token YYLEX-NUM.  */
-static const yytype_uint16 yytoknum[] =
+/* YYTOKNUM[NUM] -- (External) token number corresponding to the
+   (internal) symbol number NUM (which must be that of a token).  */
+static const yytype_int16 yytoknum[] =
 {
        0,   256,   711,   300,   301,   429,   430,   446,   447,   448,
      449,   450,   451,   452,   453,   454,   455,   456,   457,   458,
@@ -785,95 +755,18 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-/* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
-static const yytype_uint8 yyr1[] =
-{
-       0,    93,    94,    94,    95,    94,    96,    94,    97,    97,
-      99,    98,   101,   100,   102,   102,   102,   102,   102,   102,
-     102,   102,   102,   102,   102,   102,   102,   102,   102,   102,
-     102,   102,   102,   102,   102,   104,   103,   106,   107,   105,
-     108,   108,   109,   110,   110,   110,   110,   110,   110,   110,
-     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
-     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
-     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
-     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
-     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
-     111,   110,   112,   110,   110,   113,   113,   114,   115,   116,
-     116
-};
+#define YYPACT_NINF (-115)
 
-/* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
-static const yytype_uint8 yyr2[] =
-{
-       0,     2,     1,     3,     0,     4,     0,     4,     1,     2,
-       0,     6,     0,     6,     1,     1,     3,     3,     4,     3,
-       3,     3,     1,     1,     4,     4,     4,     3,     3,     4,
-       4,     4,     3,     3,     3,     0,     5,     0,     0,     8,
-       0,     1,     3,     1,     1,     3,     3,     3,     3,     6,
-       4,     4,     4,     6,     6,     6,     4,     4,     4,     4,
-       4,     4,     6,     6,     6,     4,     6,     6,     6,     4,
-       8,     6,     8,     6,     4,     6,     4,     6,     1,     1,
-       3,     3,     2,     3,     3,     3,     3,     3,     3,     4,
-       4,     4,     6,     6,     6,     4,     4,     6,     8,     4,
-       0,     7,     0,     9,     3,     0,     1,     1,     1,     1,
-       3
-};
+#define yypact_value_is_default(Yyn) \
+  ((Yyn) == YYPACT_NINF)
 
-/* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
-   STATE-NUM when YYTABLE doesn't specify something else to do.  Zero
-   means the default is an error.  */
-static const yytype_uint8 yydefact[] =
-{
-       0,     0,     0,     0,     0,     2,     8,     0,     6,     4,
-      37,    40,     1,     0,     0,     9,     0,     0,     0,     0,
-      10,    41,     3,     0,     7,     5,     0,    44,    43,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    78,    79,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    12,    38,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   105,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    82,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    42,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   109,     0,
-     106,     0,     0,     0,     0,     0,     0,     0,   107,     0,
-       0,     0,   108,   100,   102,   104,    84,    86,    88,    80,
-      81,    83,    85,    87,    45,    46,    47,    48,    40,    14,
-      15,     0,    22,     0,     0,     0,     0,     0,     0,     0,
-      11,    23,     0,     0,     0,     0,     0,    50,    51,    52,
-       0,    56,    57,    58,    59,    60,    61,     0,     0,     0,
-      65,     0,     0,     0,    69,     0,     0,     0,     0,    74,
-       0,    76,     0,     0,    89,    90,    91,     0,     0,     0,
-      95,    96,     0,     0,    99,     0,     0,    35,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    13,    39,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,   110,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,    34,
-      27,    28,    32,    33,    16,    17,    19,    20,    21,    49,
-      53,    54,    55,    62,    63,    64,    66,    67,    68,     0,
-      71,     0,    73,    75,    77,    92,    93,    94,    97,     0,
-       0,     0,     0,    18,    24,    25,    26,    29,    30,    31,
-       0,     0,     0,   101,     0,    36,    70,    72,    98,     0,
-     103
-};
+#define YYTABLE_NINF (-1)
 
-/* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int16 yydefgoto[] =
-{
-      -1,     4,    17,    16,     5,     6,    76,    15,   137,   210,
-     211,   301,     7,    18,   138,    20,    21,   168,   255,   256,
-     169,   177,   181,   170
-};
+#define yytable_value_is_error(Yyn) \
+  ((Yyn) == YYTABLE_NINF)
 
-/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-   STATE-NUM.  */
-#define YYPACT_NINF -115
+  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+     STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
        1,   -48,     8,    15,     5,   -66,  -115,   -21,  -115,  -115,
@@ -915,7 +808,51 @@ static const yytype_int16 yypact[] =
     -115
 };
 
-/* YYPGOTO[NTERM-NUM].  */
+  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+     Performed when YYTABLE does not specify something else to do.  Zero
+     means the default is an error.  */
+static const yytype_int8 yydefact[] =
+{
+       0,     0,     0,     0,     0,     2,     8,     0,     6,     4,
+      37,    40,     1,     0,     0,     9,     0,     0,     0,     0,
+      10,    41,     3,     0,     7,     5,     0,    44,    43,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    78,    79,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    12,    38,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,   105,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    82,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    42,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,   109,     0,
+     106,     0,     0,     0,     0,     0,     0,     0,   107,     0,
+       0,     0,   108,   100,   102,   104,    84,    86,    88,    80,
+      81,    83,    85,    87,    45,    46,    47,    48,    40,    14,
+      15,     0,    22,     0,     0,     0,     0,     0,     0,     0,
+      11,    23,     0,     0,     0,     0,     0,    50,    51,    52,
+       0,    56,    57,    58,    59,    60,    61,     0,     0,     0,
+      65,     0,     0,     0,    69,     0,     0,     0,     0,    74,
+       0,    76,     0,     0,    89,    90,    91,     0,     0,     0,
+      95,    96,     0,     0,    99,     0,     0,    35,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    13,    39,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,   110,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,    34,
+      27,    28,    32,    33,    16,    17,    19,    20,    21,    49,
+      53,    54,    55,    62,    63,    64,    66,    67,    68,     0,
+      71,     0,    73,    75,    77,    92,    93,    94,    97,     0,
+       0,     0,     0,    18,    24,    25,    26,    29,    30,    31,
+       0,     0,     0,   101,     0,    36,    70,    72,    98,     0,
+     103
+};
+
+  /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
     -115,    33,  -115,  -115,  -115,  -115,  -115,  -115,  -115,    -9,
@@ -923,11 +860,17 @@ static const yytype_int16 yypgoto[] =
     -115,  -115,  -115,  -114
 };
 
-/* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
-   positive, shift that token.  If negative, reduce the rule which
-   number is the opposite.  If zero, do what YYDEFACT says.
-   If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
+  /* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_int16 yydefgoto[] =
+{
+      -1,     4,    17,    16,     5,     6,    76,    15,   137,   210,
+     211,   301,     7,    18,   138,    20,    21,   168,   255,   256,
+     169,   177,   181,   170
+};
+
+  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+     positive, shift that token.  If negative, reduce the rule whose
+     number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
       75,   178,     1,     8,   182,    12,     2,    78,   266,   267,
@@ -1290,9 +1233,9 @@ static const yytype_int16 yycheck[] =
       -1,    -1,    73,    74,    75
 };
 
-/* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-   symbol of state STATE-NUM.  */
-static const yytype_uint8 yystos[] =
+  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+     symbol of state STATE-NUM.  */
+static const yytype_int8 yystos[] =
 {
        0,     1,     5,    51,    94,    97,    98,   105,    51,    86,
        4,     4,     0,    86,    51,   100,    96,    95,   106,    90,
@@ -1333,95 +1276,75 @@ static const yytype_uint8 yystos[] =
       88
 };
 
-#define yyerrok		(yyerrstatus = 0)
-#define yyclearin	(yychar = YYEMPTY)
-#define YYEMPTY		(-2)
-#define YYEOF		0
+  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+static const yytype_int8 yyr1[] =
+{
+       0,    93,    94,    94,    95,    94,    96,    94,    97,    97,
+      99,    98,   101,   100,   102,   102,   102,   102,   102,   102,
+     102,   102,   102,   102,   102,   102,   102,   102,   102,   102,
+     102,   102,   102,   102,   102,   104,   103,   106,   107,   105,
+     108,   108,   109,   110,   110,   110,   110,   110,   110,   110,
+     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
+     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
+     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
+     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
+     110,   110,   110,   110,   110,   110,   110,   110,   110,   110,
+     111,   110,   112,   110,   110,   113,   113,   114,   115,   116,
+     116
+};
 
-#define YYACCEPT	goto yyacceptlab
-#define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrorlab
+  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+static const yytype_int8 yyr2[] =
+{
+       0,     2,     1,     3,     0,     4,     0,     4,     1,     2,
+       0,     6,     0,     6,     1,     1,     3,     3,     4,     3,
+       3,     3,     1,     1,     4,     4,     4,     3,     3,     4,
+       4,     4,     3,     3,     3,     0,     5,     0,     0,     8,
+       0,     1,     3,     1,     1,     3,     3,     3,     3,     6,
+       4,     4,     4,     6,     6,     6,     4,     4,     4,     4,
+       4,     4,     6,     6,     6,     4,     6,     6,     6,     4,
+       8,     6,     8,     6,     4,     6,     4,     6,     1,     1,
+       3,     3,     2,     3,     3,     3,     3,     3,     3,     4,
+       4,     4,     6,     6,     6,     4,     4,     6,     8,     4,
+       0,     7,     0,     9,     3,     0,     1,     1,     1,     1,
+       3
+};
 
 
-/* Like YYERROR except do call yyerror.  This remains here temporarily
-   to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  */
+#define yyerrok         (yyerrstatus = 0)
+#define yyclearin       (yychar = YYEMPTY)
+#define YYEMPTY         (-2)
+#define YYEOF           0
 
-#define YYFAIL		goto yyerrlab
+#define YYACCEPT        goto yyacceptlab
+#define YYABORT         goto yyabortlab
+#define YYERROR         goto yyerrorlab
+
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      yytoken = YYTRANSLATE (yychar);				\
-      YYPOPSTACK (1);						\
-      goto yybackup;						\
-    }								\
-  else								\
-    {								\
-      yyerror (YY_("syntax error: cannot back up")); \
-      YYERROR;							\
-    }								\
-while (YYID (0))
+#define YYBACKUP(Token, Value)                                    \
+  do                                                              \
+    if (yychar == YYEMPTY)                                        \
+      {                                                           \
+        yychar = (Token);                                         \
+        yylval = (Value);                                         \
+        YYPOPSTACK (yylen);                                       \
+        yystate = *yyssp;                                         \
+        goto yybackup;                                            \
+      }                                                           \
+    else                                                          \
+      {                                                           \
+        yyerror (YY_("syntax error: cannot back up")); \
+        YYERROR;                                                  \
+      }                                                           \
+  while (0)
+
+/* Error token number */
+#define YYTERROR        1
+#define YYERRCODE       256
 
 
-#define YYTERROR	1
-#define YYERRCODE	256
-
-
-/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
-   If N is 0, then set CURRENT to the empty location which ends
-   the previous symbol: RHS[0] (always defined).  */
-
-#define YYRHSLOC(Rhs, K) ((Rhs)[K])
-#ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)				\
-    do									\
-      if (YYID (N))                                                    \
-	{								\
-	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
-	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
-	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
-	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
-	}								\
-      else								\
-	{								\
-	  (Current).first_line   = (Current).last_line   =		\
-	    YYRHSLOC (Rhs, 0).last_line;				\
-	  (Current).first_column = (Current).last_column =		\
-	    YYRHSLOC (Rhs, 0).last_column;				\
-	}								\
-    while (YYID (0))
-#endif
-
-
-/* YY_LOCATION_PRINT -- Print the location on the stream.
-   This macro was not mandated originally: define only if we know
-   we won't break user code: when these are the locations we know.  */
-
-#ifndef YY_LOCATION_PRINT
-# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
-#  define YY_LOCATION_PRINT(File, Loc)			\
-     fprintf (File, "%d.%d-%d.%d",			\
-	      (Loc).first_line, (Loc).first_column,	\
-	      (Loc).last_line,  (Loc).last_column)
-# else
-#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
-# endif
-#endif
-
-
-/* YYLEX -- calling `yylex' with the right arguments.  */
-
-#ifdef YYLEX_PARAM
-# define YYLEX yylex (YYLEX_PARAM)
-#else
-# define YYLEX yylex ()
-#endif
 
 /* Enable debugging if requested.  */
 #if YYDEBUG
@@ -1431,80 +1354,63 @@ while (YYID (0))
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)			\
-do {						\
-  if (yydebug)					\
-    YYFPRINTF Args;				\
-} while (YYID (0))
+# define YYDPRINTF(Args)                        \
+do {                                            \
+  if (yydebug)                                  \
+    YYFPRINTF Args;                             \
+} while (0)
 
-# define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
-do {									  \
-  if (yydebug)								  \
-    {									  \
-      YYFPRINTF (stderr, "%s ", Title);					  \
-      yy_symbol_print (stderr,						  \
-		  Type, Value); \
-      YYFPRINTF (stderr, "\n");						  \
-    }									  \
-} while (YYID (0))
-
-
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
-
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
+/* This macro is provided for backward compatibility. */
+#ifndef YY_LOCATION_PRINT
+# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
 #endif
+
+
+# define YY_SYMBOL_PRINT(Title, Type, Value, Location)                    \
+do {                                                                      \
+  if (yydebug)                                                            \
+    {                                                                     \
+      YYFPRINTF (stderr, "%s ", Title);                                   \
+      yy_symbol_print (stderr,                                            \
+                  Type, Value); \
+      YYFPRINTF (stderr, "\n");                                           \
+    }                                                                     \
+} while (0)
+
+
+/*-----------------------------------.
+| Print this symbol's value on YYO.  |
+`-----------------------------------*/
+
+static void
+yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 {
+  FILE *yyoutput = yyo;
+  YYUSE (yyoutput);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
-    YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
-# else
-  YYUSE (yyoutput);
+    YYPRINT (yyo, yytoknum[yytype], *yyvaluep);
 # endif
-  switch (yytype)
-    {
-      default:
-	break;
-    }
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+  YYUSE (yytype);
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
 
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
+/*---------------------------.
+| Print this symbol on YYO.  |
+`---------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-#endif
+yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 {
-  if (yytype < YYNTOKENS)
-    YYFPRINTF (yyoutput, "token %s (", yytname[yytype]);
-  else
-    YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
+  YYFPRINTF (yyo, "%s %s (",
+             yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
-  YYFPRINTF (yyoutput, ")");
+  yy_symbol_value_print (yyo, yytype, yyvaluep);
+  YYFPRINTF (yyo, ")");
 }
 
 /*------------------------------------------------------------------.
@@ -1512,66 +1418,54 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
 | TOP (included).                                                   |
 `------------------------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_stack_print (yytype_int16 *bottom, yytype_int16 *top)
-#else
-static void
-yy_stack_print (bottom, top)
-    yytype_int16 *bottom;
-    yytype_int16 *top;
-#endif
+yy_stack_print (yy_state_t *yybottom, yy_state_t *yytop)
 {
   YYFPRINTF (stderr, "Stack now");
-  for (; bottom <= top; ++bottom)
-    YYFPRINTF (stderr, " %d", *bottom);
+  for (; yybottom <= yytop; yybottom++)
+    {
+      int yybot = *yybottom;
+      YYFPRINTF (stderr, " %d", yybot);
+    }
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)				\
-do {								\
-  if (yydebug)							\
-    yy_stack_print ((Bottom), (Top));				\
-} while (YYID (0))
+# define YY_STACK_PRINT(Bottom, Top)                            \
+do {                                                            \
+  if (yydebug)                                                  \
+    yy_stack_print ((Bottom), (Top));                           \
+} while (0)
 
 
 /*------------------------------------------------.
 | Report that the YYRULE is going to be reduced.  |
 `------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule)
-#else
-static void
-yy_reduce_print (yyvsp, yyrule)
-    YYSTYPE *yyvsp;
-    int yyrule;
-#endif
+yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
+  int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
-  unsigned long int yylno = yyrline[yyrule];
-  YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-	     yyrule - 1, yylno);
+  YYFPRINTF (stderr, "Reducing stack by rule %d (line %d):\n",
+             yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
-      fprintf (stderr, "   $%d = ", yyi + 1);
-      yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
-		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       );
-      fprintf (stderr, "\n");
+      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
+      yy_symbol_print (stderr,
+                       yystos[+yyssp[yyi + 1 - yynrhs]],
+                       &yyvsp[(yyi + 1) - (yynrhs)]
+                                              );
+      YYFPRINTF (stderr, "\n");
     }
 }
 
-# define YY_REDUCE_PRINT(Rule)		\
-do {					\
-  if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule); \
-} while (YYID (0))
+# define YY_REDUCE_PRINT(Rule)          \
+do {                                    \
+  if (yydebug)                          \
+    yy_reduce_print (yyssp, yyvsp, Rule); \
+} while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
@@ -1585,7 +1479,7 @@ int yydebug;
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef	YYINITDEPTH
+#ifndef YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -1600,26 +1494,18 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
 
 #if YYERROR_VERBOSE
 
 # ifndef yystrlen
 #  if defined __GLIBC__ && defined _STRING_H
-#   define yystrlen strlen
+#   define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
 #  else
 /* Return the length of YYSTR.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static YYSIZE_T
+static YYPTRDIFF_T
 yystrlen (const char *yystr)
-#else
-static YYSIZE_T
-yystrlen (yystr)
-    const char *yystr;
-#endif
 {
-  YYSIZE_T yylen;
+  YYPTRDIFF_T yylen;
   for (yylen = 0; yystr[yylen]; yylen++)
     continue;
   return yylen;
@@ -1633,16 +1519,8 @@ yystrlen (yystr)
 #  else
 /* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
    YYDEST.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static char *
 yystpcpy (char *yydest, const char *yysrc)
-#else
-static char *
-yystpcpy (yydest, yysrc)
-    char *yydest;
-    const char *yysrc;
-#endif
 {
   char *yyd = yydest;
   const char *yys = yysrc;
@@ -1663,408 +1541,392 @@ yystpcpy (yydest, yysrc)
    backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
    null, do not copy; instead, return the length of what the result
    would have been.  */
-static YYSIZE_T
+static YYPTRDIFF_T
 yytnamerr (char *yyres, const char *yystr)
 {
   if (*yystr == '"')
     {
-      YYSIZE_T yyn = 0;
+      YYPTRDIFF_T yyn = 0;
       char const *yyp = yystr;
 
       for (;;)
-	switch (*++yyp)
-	  {
-	  case '\'':
-	  case ',':
-	    goto do_not_strip_quotes;
+        switch (*++yyp)
+          {
+          case '\'':
+          case ',':
+            goto do_not_strip_quotes;
 
-	  case '\\':
-	    if (*++yyp != '\\')
-	      goto do_not_strip_quotes;
-	    /* Fall through.  */
-	  default:
-	    if (yyres)
-	      yyres[yyn] = *yyp;
-	    yyn++;
-	    break;
+          case '\\':
+            if (*++yyp != '\\')
+              goto do_not_strip_quotes;
+            else
+              goto append;
 
-	  case '"':
-	    if (yyres)
-	      yyres[yyn] = '\0';
-	    return yyn;
-	  }
+          append:
+          default:
+            if (yyres)
+              yyres[yyn] = *yyp;
+            yyn++;
+            break;
+
+          case '"':
+            if (yyres)
+              yyres[yyn] = '\0';
+            return yyn;
+          }
     do_not_strip_quotes: ;
     }
 
-  if (! yyres)
+  if (yyres)
+    return yystpcpy (yyres, yystr) - yyres;
+  else
     return yystrlen (yystr);
-
-  return yystpcpy (yyres, yystr) - yyres;
 }
 # endif
 
-/* Copy into YYRESULT an error message about the unexpected token
-   YYCHAR while in state YYSTATE.  Return the number of bytes copied,
-   including the terminating null byte.  If YYRESULT is null, do not
-   copy anything; just return the number of bytes that would be
-   copied.  As a special case, return 0 if an ordinary "syntax error"
-   message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
-   size calculation.  */
-static YYSIZE_T
-yysyntax_error (char *yyresult, int yystate, int yychar)
+/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
+   about the unexpected token YYTOKEN for the state stack whose top is
+   YYSSP.
+
+   Return 0 if *YYMSG was successfully written.  Return 1 if *YYMSG is
+   not large enough to hold the message.  In that case, also set
+   *YYMSG_ALLOC to the required number of bytes.  Return 2 if the
+   required number of bytes is too large to store.  */
+static int
+yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
+                yy_state_t *yyssp, int yytoken)
 {
-  int yyn = yypact[yystate];
+  enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULLPTR;
+  /* Arguments of yyformat: reported tokens (one for the "unexpected",
+     one per "expected"). */
+  char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
+  /* Actual size of YYARG. */
+  int yycount = 0;
+  /* Cumulated lengths of YYARG.  */
+  YYPTRDIFF_T yysize = 0;
 
-  if (! (YYPACT_NINF < yyn && yyn <= YYLAST))
-    return 0;
-  else
+  /* There are many possibilities here to consider:
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+     - Of course, the expected token list depends on states to have
+       correct lookahead information, and it depends on the parser not
+       to perform extra reductions after fetching a lookahead from the
+       scanner and before detecting a syntax error.  Thus, state merging
+       (from LALR or IELR) and default reductions corrupt the expected
+       token list.  However, the list is correct for canonical LR with
+       one exception: it will still contain any token that will not be
+       accepted due to an error action in a later state.
+  */
+  if (yytoken != YYEMPTY)
     {
-      int yytype = YYTRANSLATE (yychar);
-      YYSIZE_T yysize0 = yytnamerr (0, yytname[yytype]);
-      YYSIZE_T yysize = yysize0;
-      YYSIZE_T yysize1;
-      int yysize_overflow = 0;
-      enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
-      char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-      int yyx;
+      int yyn = yypact[+*yyssp];
+      YYPTRDIFF_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
+      yysize = yysize0;
+      yyarg[yycount++] = yytname[yytoken];
+      if (!yypact_value_is_default (yyn))
+        {
+          /* Start YYX at -YYN if negative to avoid negative indexes in
+             YYCHECK.  In other words, skip the first -YYN actions for
+             this state because they are default actions.  */
+          int yyxbegin = yyn < 0 ? -yyn : 0;
+          /* Stay within bounds of both yycheck and yytname.  */
+          int yychecklim = YYLAST - yyn + 1;
+          int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+          int yyx;
 
-# if 0
-      /* This is so xgettext sees the translatable formats that are
-	 constructed on the fly.  */
-      YY_("syntax error, unexpected %s");
-      YY_("syntax error, unexpected %s, expecting %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
-# endif
-      char *yyfmt;
-      char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
-      static char const yyexpecting[] = ", expecting %s";
-      static char const yyor[] = " or %s";
-      char yyformat[sizeof yyunexpected
-		    + sizeof yyexpecting - 1
-		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-		       * (sizeof yyor - 1))];
-      char const *yyprefix = yyexpecting;
-
-      /* Start YYX at -YYN if negative to avoid negative indexes in
-	 YYCHECK.  */
-      int yyxbegin = yyn < 0 ? -yyn : 0;
-
-      /* Stay within bounds of both yycheck and yytname.  */
-      int yychecklim = YYLAST - yyn + 1;
-      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-      int yycount = 1;
-
-      yyarg[0] = yytname[yytype];
-      yyfmt = yystpcpy (yyformat, yyunexpected);
-
-      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	  {
-	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-	      {
-		yycount = 1;
-		yysize = yysize0;
-		yyformat[sizeof yyunexpected - 1] = '\0';
-		break;
-	      }
-	    yyarg[yycount++] = yytname[yyx];
-	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-	    yysize_overflow |= (yysize1 < yysize);
-	    yysize = yysize1;
-	    yyfmt = yystpcpy (yyfmt, yyprefix);
-	    yyprefix = yyor;
-	  }
-
-      yyf = YY_(yyformat);
-      yysize1 = yysize + yystrlen (yyf);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
-
-      if (yysize_overflow)
-	return YYSIZE_MAXIMUM;
-
-      if (yyresult)
-	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
-	     Don't have undefined behavior even if the translation
-	     produced a string with the wrong number of "%s"s.  */
-	  char *yyp = yyresult;
-	  int yyi = 0;
-	  while ((*yyp = *yyf) != '\0')
-	    {
-	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
-		{
-		  yyp += yytnamerr (yyp, yyarg[yyi++]);
-		  yyf += 2;
-		}
-	      else
-		{
-		  yyp++;
-		  yyf++;
-		}
-	    }
-	}
-      return yysize;
+          for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+            if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR
+                && !yytable_value_is_error (yytable[yyx + yyn]))
+              {
+                if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+                  {
+                    yycount = 1;
+                    yysize = yysize0;
+                    break;
+                  }
+                yyarg[yycount++] = yytname[yyx];
+                {
+                  YYPTRDIFF_T yysize1
+                    = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
+                  if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
+                    yysize = yysize1;
+                  else
+                    return 2;
+                }
+              }
+        }
     }
+
+  switch (yycount)
+    {
+# define YYCASE_(N, S)                      \
+      case N:                               \
+        yyformat = S;                       \
+      break
+    default: /* Avoid compiler warnings. */
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+# undef YYCASE_
+    }
+
+  {
+    /* Don't count the "%s"s in the final size, but reserve room for
+       the terminator.  */
+    YYPTRDIFF_T yysize1 = yysize + (yystrlen (yyformat) - 2 * yycount) + 1;
+    if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
+      yysize = yysize1;
+    else
+      return 2;
+  }
+
+  if (*yymsg_alloc < yysize)
+    {
+      *yymsg_alloc = 2 * yysize;
+      if (! (yysize <= *yymsg_alloc
+             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
+        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
+      return 1;
+    }
+
+  /* Avoid sprintf, as that infringes on the user's name space.
+     Don't have undefined behavior even if the translation
+     produced a string with the wrong number of "%s"s.  */
+  {
+    char *yyp = *yymsg;
+    int yyi = 0;
+    while ((*yyp = *yyformat) != '\0')
+      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+        {
+          yyp += yytnamerr (yyp, yyarg[yyi++]);
+          yyformat += 2;
+        }
+      else
+        {
+          ++yyp;
+          ++yyformat;
+        }
+  }
+  return 0;
 }
 #endif /* YYERROR_VERBOSE */
-
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
-#else
-static void
-yydestruct (yymsg, yytype, yyvaluep)
-    const char *yymsg;
-    int yytype;
-    YYSTYPE *yyvaluep;
-#endif
 {
   YYUSE (yyvaluep);
-
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
 
-  switch (yytype)
-    {
-
-      default:
-	break;
-    }
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+  YYUSE (yytype);
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
-
-
-/* Prevent warnings from -Wmissing-prototypes.  */
-
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
 
 
 
-/* The look-ahead symbol.  */
+
+/* The lookahead symbol.  */
 int yychar;
 
-/* The semantic value of the look-ahead symbol.  */
+/* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
-
 /* Number of syntax errors so far.  */
 int yynerrs;
-
 
 
 /*----------.
 | yyparse.  |
 `----------*/
 
-#ifdef YYPARSE_PARAM
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-int
-yyparse (void *YYPARSE_PARAM)
-#else
-int
-yyparse (YYPARSE_PARAM)
-    void *YYPARSE_PARAM;
-#endif
-#else /* ! YYPARSE_PARAM */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yyparse (void)
-#else
-int
-yyparse ()
-
-#endif
-#endif
 {
-  
-  int yystate;
+    yy_state_fast_t yystate;
+    /* Number of tokens to shift before error messages enabled.  */
+    int yyerrstatus;
+
+    /* The stacks and their tools:
+       'yyss': related to states.
+       'yyvs': related to semantic values.
+
+       Refer to the stacks through separate pointers, to allow yyoverflow
+       to reallocate them elsewhere.  */
+
+    /* The state stack.  */
+    yy_state_t yyssa[YYINITDEPTH];
+    yy_state_t *yyss;
+    yy_state_t *yyssp;
+
+    /* The semantic value stack.  */
+    YYSTYPE yyvsa[YYINITDEPTH];
+    YYSTYPE *yyvs;
+    YYSTYPE *yyvsp;
+
+    YYPTRDIFF_T yystacksize;
+
   int yyn;
   int yyresult;
-  /* Number of tokens to shift before error messages enabled.  */
-  int yyerrstatus;
-  /* Look-ahead token as an internal (translated) token number.  */
+  /* Lookahead token as an internal (translated) token number.  */
   int yytoken = 0;
-#if YYERROR_VERBOSE
-  /* Buffer for error messages, and its allocated size.  */
-  char yymsgbuf[128];
-  char *yymsg = yymsgbuf;
-  YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
-#endif
-
-  /* Three stacks and their tools:
-     `yyss': related to states,
-     `yyvs': related to semantic values,
-     `yyls': related to locations.
-
-     Refer to the stacks thru separate pointers, to allow yyoverflow
-     to reallocate them elsewhere.  */
-
-  /* The state stack.  */
-  yytype_int16 yyssa[YYINITDEPTH];
-  yytype_int16 *yyss = yyssa;
-  yytype_int16 *yyssp;
-
-  /* The semantic value stack.  */
-  YYSTYPE yyvsa[YYINITDEPTH];
-  YYSTYPE *yyvs = yyvsa;
-  YYSTYPE *yyvsp;
-
-
-
-#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
-
-  YYSIZE_T yystacksize = YYINITDEPTH;
-
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
 
+#if YYERROR_VERBOSE
+  /* Buffer for error messages, and its allocated size.  */
+  char yymsgbuf[128];
+  char *yymsg = yymsgbuf;
+  YYPTRDIFF_T yymsg_alloc = sizeof yymsgbuf;
+#endif
+
+#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
+
+  yyssp = yyss = yyssa;
+  yyvsp = yyvs = yyvsa;
+  yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
 
   yystate = 0;
   yyerrstatus = 0;
   yynerrs = 0;
-  yychar = YYEMPTY;		/* Cause a token to be read.  */
-
-  /* Initialize stack pointers.
-     Waste one element of value and location stack
-     so that they stay on the same level as the state stack.
-     The wasted elements are never initialized.  */
-
-  yyssp = yyss;
-  yyvsp = yyvs;
-
+  yychar = YYEMPTY; /* Cause a token to be read.  */
   goto yysetstate;
 
+
 /*------------------------------------------------------------.
-| yynewstate -- Push a new state, which is found in yystate.  |
+| yynewstate -- push a new state, which is found in yystate.  |
 `------------------------------------------------------------*/
- yynewstate:
+yynewstate:
   /* In all cases, when you get here, the value and location stacks
      have just been pushed.  So pushing a state here evens the stacks.  */
   yyssp++;
 
- yysetstate:
-  *yyssp = yystate;
+
+/*--------------------------------------------------------------------.
+| yysetstate -- set current state (the top of the stack) to yystate.  |
+`--------------------------------------------------------------------*/
+yysetstate:
+  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
+  YY_ASSERT (0 <= yystate && yystate < YYNSTATES);
+  YY_IGNORE_USELESS_CAST_BEGIN
+  *yyssp = YY_CAST (yy_state_t, yystate);
+  YY_IGNORE_USELESS_CAST_END
 
   if (yyss + yystacksize - 1 <= yyssp)
+#if !defined yyoverflow && !defined YYSTACK_RELOCATE
+    goto yyexhaustedlab;
+#else
     {
       /* Get the current used size of the three stacks, in elements.  */
-      YYSIZE_T yysize = yyssp - yyss + 1;
+      YYPTRDIFF_T yysize = yyssp - yyss + 1;
 
-#ifdef yyoverflow
+# if defined yyoverflow
       {
-	/* Give user a chance to reallocate the stack.  Use copies of
-	   these so that the &'s don't force the real ones into
-	   memory.  */
-	YYSTYPE *yyvs1 = yyvs;
-	yytype_int16 *yyss1 = yyss;
+        /* Give user a chance to reallocate the stack.  Use copies of
+           these so that the &'s don't force the real ones into
+           memory.  */
+        yy_state_t *yyss1 = yyss;
+        YYSTYPE *yyvs1 = yyvs;
 
-
-	/* Each stack pointer address is followed by the size of the
-	   data in use in that stack, in bytes.  This used to be a
-	   conditional around just the two extra args, but that might
-	   be undefined if yyoverflow is a macro.  */
-	yyoverflow (YY_("memory exhausted"),
-		    &yyss1, yysize * sizeof (*yyssp),
-		    &yyvs1, yysize * sizeof (*yyvsp),
-
-		    &yystacksize);
-
-	yyss = yyss1;
-	yyvs = yyvs1;
+        /* Each stack pointer address is followed by the size of the
+           data in use in that stack, in bytes.  This used to be a
+           conditional around just the two extra args, but that might
+           be undefined if yyoverflow is a macro.  */
+        yyoverflow (YY_("memory exhausted"),
+                    &yyss1, yysize * YYSIZEOF (*yyssp),
+                    &yyvs1, yysize * YYSIZEOF (*yyvsp),
+                    &yystacksize);
+        yyss = yyss1;
+        yyvs = yyvs1;
       }
-#else /* no yyoverflow */
-# ifndef YYSTACK_RELOCATE
-      goto yyexhaustedlab;
-# else
+# else /* defined YYSTACK_RELOCATE */
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-	goto yyexhaustedlab;
+        goto yyexhaustedlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-	yystacksize = YYMAXDEPTH;
+        yystacksize = YYMAXDEPTH;
 
       {
-	yytype_int16 *yyss1 = yyss;
-	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-	if (! yyptr)
-	  goto yyexhaustedlab;
-	YYSTACK_RELOCATE (yyss);
-	YYSTACK_RELOCATE (yyvs);
-
-#  undef YYSTACK_RELOCATE
-	if (yyss1 != yyssa)
-	  YYSTACK_FREE (yyss1);
+        yy_state_t *yyss1 = yyss;
+        union yyalloc *yyptr =
+          YY_CAST (union yyalloc *,
+                   YYSTACK_ALLOC (YY_CAST (YYSIZE_T, YYSTACK_BYTES (yystacksize))));
+        if (! yyptr)
+          goto yyexhaustedlab;
+        YYSTACK_RELOCATE (yyss_alloc, yyss);
+        YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+# undef YYSTACK_RELOCATE
+        if (yyss1 != yyssa)
+          YYSTACK_FREE (yyss1);
       }
 # endif
-#endif /* no yyoverflow */
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
-
-      YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-		  (unsigned long int) yystacksize));
+      YY_IGNORE_USELESS_CAST_BEGIN
+      YYDPRINTF ((stderr, "Stack size increased to %ld\n",
+                  YY_CAST (long, yystacksize)));
+      YY_IGNORE_USELESS_CAST_END
 
       if (yyss + yystacksize - 1 <= yyssp)
-	YYABORT;
+        YYABORT;
     }
+#endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
 
-  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
+  if (yystate == YYFINAL)
+    YYACCEPT;
 
   goto yybackup;
+
 
 /*-----------.
 | yybackup.  |
 `-----------*/
 yybackup:
-
   /* Do appropriate processing given the current state.  Read a
-     look-ahead token if we need one and don't already have one.  */
+     lookahead token if we need one and don't already have one.  */
 
-  /* First try to decide what to do without reference to look-ahead token.  */
+  /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
-  if (yyn == YYPACT_NINF)
+  if (yypact_value_is_default (yyn))
     goto yydefault;
 
-  /* Not known => get a look-ahead token if don't already have one.  */
+  /* Not known => get a lookahead token if don't already have one.  */
 
-  /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
+  /* YYCHAR is either YYEMPTY or YYEOF or a valid lookahead symbol.  */
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token: "));
-      yychar = YYLEX;
+      yychar = yylex ();
     }
 
   if (yychar <= YYEOF)
@@ -2086,30 +1948,26 @@ yybackup:
   yyn = yytable[yyn];
   if (yyn <= 0)
     {
-      if (yyn == 0 || yyn == YYTABLE_NINF)
-	goto yyerrlab;
+      if (yytable_value_is_error (yyn))
+        goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
-
-  if (yyn == YYFINAL)
-    YYACCEPT;
 
   /* Count tokens shifted since error; after three, turn off error
      status.  */
   if (yyerrstatus)
     yyerrstatus--;
 
-  /* Shift the look-ahead token.  */
+  /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
-
-  /* Discard the shifted token unless it is eof.  */
-  if (yychar != YYEOF)
-    yychar = YYEMPTY;
-
   yystate = yyn;
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
+  /* Discard the shifted token.  */
+  yychar = YYEMPTY;
   goto yynewstate;
 
 
@@ -2124,14 +1982,14 @@ yydefault:
 
 
 /*-----------------------------.
-| yyreduce -- Do a reduction.  |
+| yyreduce -- do a reduction.  |
 `-----------------------------*/
 yyreduce:
   /* yyn is the number of a rule to reduce with.  */
   yylen = yyr2[yyn];
 
   /* If YYLEN is nonzero, implement the default value of the action:
-     `$$ = $1'.
+     '$$ = $1'.
 
      Otherwise, the following line sets YYVAL to garbage.
      This behavior is undocumented and Bison
@@ -2144,231 +2002,251 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 2:
+  case 2:
 #line 240 "ltl_parser.y"
-    {
-			      property_list = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      property_list = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2011 "ltl_parser.tab.c"
     break;
 
   case 3:
 #line 244 "ltl_parser.y"
-    {
-			      property_list = append_list((yyvsp[(1) - (3)].st_bucket_cell),
+                            {
+			      property_list = append_list((yyvsp[-2].st_bucket_cell),
 							  property_list);
-			    ;}
+			    }
+#line 2020 "ltl_parser.tab.c"
     break;
 
   case 4:
 #line 249 "ltl_parser.y"
-    {
+                            {
                               handle_sync_ltl();
                               yyerrok;
-                            ;}
+                            }
+#line 2029 "ltl_parser.tab.c"
     break;
 
   case 5:
 #line 254 "ltl_parser.y"
-    {
-                            ;}
+                            {
+                            }
+#line 2036 "ltl_parser.tab.c"
     break;
 
   case 6:
 #line 257 "ltl_parser.y"
-    {
+                            {
 			      handle_sync_ltl();
 			      yyerrok;
-			    ;}
+			    }
+#line 2045 "ltl_parser.tab.c"
     break;
 
   case 7:
 #line 262 "ltl_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2052 "ltl_parser.tab.c"
     break;
 
   case 8:
 #line 268 "ltl_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
                                      NULL:
-                                     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+                                     alloc_st_bucket_cell((yyvsp[0].st_bucket),
                                                           NULL);
-                            ;}
+                            }
+#line 2063 "ltl_parser.tab.c"
     break;
 
   case 9:
 #line 275 "ltl_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      (yyval.st_bucket_cell) = (((yyvsp[(1) - (2)].st_bucket) == NULL) ||
-                                    ((yyvsp[(2) - (2)].st_bucket) == NULL))?
+			      (yyval.st_bucket_cell) = (((yyvsp[-1].st_bucket) == NULL) ||
+                                    ((yyvsp[0].st_bucket) == NULL))?
                                      NULL:
-                                     expand_iterative_property_def((yyvsp[(2) - (2)].st_bucket));
+                                     expand_iterative_property_def((yyvsp[0].st_bucket));
 			      selector[0] = NULL;
-                            ;}
+                            }
+#line 2076 "ltl_parser.tab.c"
     break;
 
   case 10:
 #line 287 "ltl_parser.y"
-    {
-			      handle_unprefixed_concretely_indexed_id(&(yyvsp[(2) - (3)].st_bucket),
-						                      (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_unprefixed_concretely_indexed_id(&(yyvsp[-1].st_bucket),
+						                      (yyvsp[0].expr_parse_info),
 								      PROPERTY_ID_DEF);
-			    ;}
+			    }
+#line 2086 "ltl_parser.tab.c"
     break;
 
   case 11:
 #line 293 "ltl_parser.y"
-    {
-			      if (((yyvsp[(2) - (6)].st_bucket) != NULL) &&
-				  ((yyvsp[(6) - (6)].expr_parse_info) != NULL))
-				(yyvsp[(2) - (6)].st_bucket)->info.property_expr = set_nusmv_expr_bucket((yyvsp[(6) - (6)].expr_parse_info)->expr);
-			      (yyval.st_bucket) = (yyvsp[(2) - (6)].st_bucket);
-			    ;}
+                            {
+			      if (((yyvsp[-4].st_bucket) != NULL) &&
+				  ((yyvsp[0].expr_parse_info) != NULL))
+				(yyvsp[-4].st_bucket)->info.property_expr = set_nusmv_expr_bucket((yyvsp[0].expr_parse_info)->expr);
+			      (yyval.st_bucket) = (yyvsp[-4].st_bucket);
+			    }
+#line 2097 "ltl_parser.tab.c"
     break;
 
   case 12:
 #line 303 "ltl_parser.y"
-    {
-			      handle_unprefixed_symbolically_indexed_id(&(yyvsp[(2) - (3)].st_bucket),
-						                        (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_unprefixed_symbolically_indexed_id(&(yyvsp[-1].st_bucket),
+						                        (yyvsp[0].expr_parse_info),
 						                        0,
 								        PROPERTY_ID_DEF);
 			      act_type_list = NULL;
-			    ;}
+			    }
+#line 2109 "ltl_parser.tab.c"
     break;
 
   case 13:
 #line 311 "ltl_parser.y"
-    {
-			      if (((yyvsp[(2) - (6)].st_bucket) != NULL) &&
-				  ((yyvsp[(6) - (6)].expr_parse_info) != NULL))
-				(yyvsp[(2) - (6)].st_bucket)->info.property_expr = (yyvsp[(6) - (6)].expr_parse_info)->expr;
-			      (yyval.st_bucket) = (yyvsp[(2) - (6)].st_bucket);
-			    ;}
+                            {
+			      if (((yyvsp[-4].st_bucket) != NULL) &&
+				  ((yyvsp[0].expr_parse_info) != NULL))
+				(yyvsp[-4].st_bucket)->info.property_expr = (yyvsp[0].expr_parse_info)->expr;
+			      (yyval.st_bucket) = (yyvsp[-4].st_bucket);
+			    }
+#line 2120 "ltl_parser.tab.c"
     break;
 
   case 14:
 #line 321 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 2129 "ltl_parser.tab.c"
     break;
 
   case 15:
 #line 326 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 2138 "ltl_parser.tab.c"
     break;
 
   case 16:
 #line 331 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_AND_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2156 "ltl_parser.tab.c"
     break;
 
   case 17:
 #line 345 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_OR_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2174 "ltl_parser.tab.c"
     break;
 
   case 18:
 #line 359 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_NOT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2191 "ltl_parser.tab.c"
     break;
 
   case 19:
 #line 372 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_XOR_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2209 "ltl_parser.tab.c"
     break;
 
   case 20:
 #line 386 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_IMPL_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2227 "ltl_parser.tab.c"
     break;
 
   case 21:
 #line 400 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PROP_BI_IMPL_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2245 "ltl_parser.tab.c"
     break;
 
   case 22:
 #line 414 "ltl_parser.y"
-    {
+                            {
 			      (yyval.expr_parse_info) = alloc_expr_parse_info(
 				     set_expr_bucket(
 				       LTL_ALL_FUTURE_STATES_SAT_OP,
@@ -2387,277 +2265,297 @@ yyreduce:
                                        NULL,
                                        FALSE),
                                      NULL);
-			    ;}
+			    }
+#line 2270 "ltl_parser.tab.c"
     break;
 
   case 23:
 #line 435 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(
                                        set_expr_bucket(EQ_OP,
 						       (ST_BUCKET *)search_lexeme_table("_action_type",
 				 						        SYT),
-						       (yyvsp[(1) - (1)].st_bucket),
+						       (yyvsp[0].st_bucket),
 						       NULL,
 						       0.0,
 						       NULL,
 						       FALSE),
 				       NULL);
-			    ;}
+			    }
+#line 2289 "ltl_parser.tab.c"
     break;
 
   case 24:
 #line 450 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_NEXT_STATE_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2306 "ltl_parser.tab.c"
     break;
 
   case 25:
 #line 463 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_ALL_FUTURE_STATES_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2323 "ltl_parser.tab.c"
     break;
 
   case 26:
 #line 476 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_SOME_FUTURE_STATE_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2340 "ltl_parser.tab.c"
     break;
 
   case 27:
 #line 489 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_UNTIL_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2358 "ltl_parser.tab.c"
     break;
 
   case 28:
 #line 503 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_RELEASES_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2376 "ltl_parser.tab.c"
     break;
 
   case 29:
 #line 517 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_PREV_STATE_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2393 "ltl_parser.tab.c"
     break;
 
   case 30:
 #line 530 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_ALL_PAST_STATES_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2410 "ltl_parser.tab.c"
     break;
 
   case 31:
 #line 543 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_SOME_PAST_STATE_SAT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2427 "ltl_parser.tab.c"
     break;
 
   case 32:
 #line 556 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_SINCE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2445 "ltl_parser.tab.c"
     break;
 
   case 33:
 #line 570 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LTL_TRIGGERED_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2463 "ltl_parser.tab.c"
     break;
 
   case 34:
 #line 584 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(2) - (3)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 2471 "ltl_parser.tab.c"
     break;
 
   case 35:
 #line 591 "ltl_parser.y"
-    {
-                              handle_concretely_indexed_aei(&(yyvsp[(1) - (2)].st_bucket),
-                                                            (yyvsp[(2) - (2)].expr_parse_info),
+                            {
+                              handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+                                                            (yyvsp[0].expr_parse_info),
                                                             1,
                                                             FALSE,
                                                             selector_enabled[0]);
-                            ;}
+                            }
+#line 2483 "ltl_parser.tab.c"
     break;
 
   case 36:
 #line 599 "ltl_parser.y"
-    {
-                              handle_prefixed_indexed_id((yyvsp[(1) - (5)].st_bucket),
-                                                         &(yyvsp[(5) - (5)].st_bucket),
+                            {
+                              handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+                                                         &(yyvsp[0].st_bucket),
                                                          1,
                                                          selector_enabled[0],
                                                          FALSE,
                                                          ACT_TYPE_ID_USE_AUX_SPEC);
-                              if (((yyvsp[(5) - (5)].st_bucket) != NULL) &&
+                              if (((yyvsp[0].st_bucket) != NULL) &&
                                   selector_enabled[0] &&
                                   (index_expr[1] != NULL))
 			      {
-				(yyvsp[(5) - (5)].st_bucket)->symbol_index = ACT_TYPE_ID;
-                                act_type_list = alloc_st_bucket4_cell((yyvsp[(5) - (5)].st_bucket),
+				(yyvsp[0].st_bucket)->symbol_index = ACT_TYPE_ID;
+                                act_type_list = alloc_st_bucket4_cell((yyvsp[0].st_bucket),
                                                                       unindexed_aei[1],
                                                                       index_expr[1],
                                                                       unindexed_id[1],
                                                                       act_type_list);
 			      }
-                              (yyval.st_bucket) = (yyvsp[(5) - (5)].st_bucket);
-                            ;}
+                              (yyval.st_bucket) = (yyvsp[0].st_bucket);
+                            }
+#line 2508 "ltl_parser.tab.c"
     break;
 
   case 37:
 #line 623 "ltl_parser.y"
-    {
-			      handle_iteration_1(&(yyvsp[(2) - (2)].st_bucket));
-			    ;}
+                            {
+			      handle_iteration_1(&(yyvsp[0].st_bucket));
+			    }
+#line 2516 "ltl_parser.tab.c"
     break;
 
   case 38:
 #line 627 "ltl_parser.y"
-    {
-			      handle_iteration_2(&(yyvsp[(5) - (5)].expr_parse_info));
-			    ;}
+                            {
+			      handle_iteration_2(&(yyvsp[0].expr_parse_info));
+			    }
+#line 2524 "ltl_parser.tab.c"
     break;
 
   case 39:
 #line 631 "ltl_parser.y"
-    {
-			      (yyval.st_bucket) = handle_iteration_3((yyvsp[(2) - (8)].st_bucket),
-						      (yyvsp[(5) - (8)].expr_parse_info),
-						      (yyvsp[(8) - (8)].expr_parse_info));
-			    ;}
+                            {
+			      (yyval.st_bucket) = handle_iteration_3((yyvsp[-6].st_bucket),
+						      (yyvsp[-3].expr_parse_info),
+						      (yyvsp[0].expr_parse_info));
+			    }
+#line 2534 "ltl_parser.tab.c"
     break;
 
   case 40:
 #line 640 "ltl_parser.y"
-    {
+                            {
 			      poss_aei_index_parsed = FALSE;
 			      (yyval.expr_parse_info) = NULL;
-			    ;}
+			    }
+#line 2543 "ltl_parser.tab.c"
     break;
 
   case 41:
 #line 645 "ltl_parser.y"
-    {
+                            {
 			      poss_aei_index_parsed = TRUE;
-			      (yyval.expr_parse_info) = (yyvsp[(1) - (1)].expr_parse_info);
-			    ;}
+			      (yyval.expr_parse_info) = (yyvsp[0].expr_parse_info);
+			    }
+#line 2552 "ltl_parser.tab.c"
     break;
 
   case 42:
 #line 653 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(2) - (3)].expr_parse_info) != NULL) &&
-				    !check_expr_all((yyvsp[(2) - (3)].expr_parse_info)->expr,
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-1].expr_parse_info) != NULL) &&
+				    !check_expr_all((yyvsp[-1].expr_parse_info)->expr,
 						    selector[0],
 						    selector[1],
 						    (ST_BUCKET *)search_lexeme_table("integer",
@@ -2666,965 +2564,1028 @@ yyreduce:
 						    AEI_INDEX_EXPR_NOT_RANDOMNESS_FREE,
 						    ILL_TYPED_AEI_INDEX))?
 				     NULL:
-				     (yyvsp[(2) - (3)].expr_parse_info);
-			    ;}
+				     (yyvsp[-1].expr_parse_info);
+			    }
+#line 2570 "ltl_parser.tab.c"
     break;
 
   case 43:
 #line 670 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = handle_id_in_expr(&(yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = handle_id_in_expr(&(yyvsp[0].st_bucket),
 						     NULL,
 						     NULL,
 						     FALSE,
 						     TRUE);
-			    ;}
+			    }
+#line 2582 "ltl_parser.tab.c"
     break;
 
   case 44:
 #line 678 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 2591 "ltl_parser.tab.c"
     break;
 
   case 45:
 #line 683 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PLUS_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2609 "ltl_parser.tab.c"
     break;
 
   case 46:
 #line 697 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MINUS_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2627 "ltl_parser.tab.c"
     break;
 
   case 47:
 #line 711 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(TIMES_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2645 "ltl_parser.tab.c"
     break;
 
   case 48:
 #line 725 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(DIV_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2663 "ltl_parser.tab.c"
     break;
 
   case 49:
 #line 739 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MOD_OP,
-                                                                          (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                          (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                          (yyvsp[-3].expr_parse_info)->expr,
+                                                                          (yyvsp[-1].expr_parse_info)->expr,
                                                                           NULL,
                                                                           0.0,
                                                                           NULL,
                                                                           FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2681 "ltl_parser.tab.c"
     break;
 
   case 50:
 #line 753 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ABS_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2698 "ltl_parser.tab.c"
     break;
 
   case 51:
 #line 766 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(CEIL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2715 "ltl_parser.tab.c"
     break;
 
   case 52:
 #line 779 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(FLOOR_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2732 "ltl_parser.tab.c"
     break;
 
   case 53:
 #line 792 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MIN_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2750 "ltl_parser.tab.c"
     break;
 
   case 54:
 #line 806 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MAX_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2768 "ltl_parser.tab.c"
     break;
 
   case 55:
 #line 820 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(POWER_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2786 "ltl_parser.tab.c"
     break;
 
   case 56:
 #line 834 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EPOWER_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2803 "ltl_parser.tab.c"
     break;
 
   case 57:
 #line 847 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LOGE_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2820 "ltl_parser.tab.c"
     break;
 
   case 58:
 #line 860 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LOG10_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2837 "ltl_parser.tab.c"
     break;
 
   case 59:
 #line 873 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(SQRT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2854 "ltl_parser.tab.c"
     break;
 
   case 60:
 #line 886 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(SIN_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2871 "ltl_parser.tab.c"
     break;
 
   case 61:
 #line 899 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(COS_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2888 "ltl_parser.tab.c"
     break;
 
   case 62:
 #line 912 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(C_UNIFORM_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2906 "ltl_parser.tab.c"
     break;
 
   case 63:
 #line 926 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ERLANG_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2924 "ltl_parser.tab.c"
     break;
 
   case 64:
 #line 940 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GAMMA_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2942 "ltl_parser.tab.c"
     break;
 
   case 65:
 #line 954 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EXPONENTIAL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2959 "ltl_parser.tab.c"
     break;
 
   case 66:
 #line 967 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(WEIBULL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2977 "ltl_parser.tab.c"
     break;
 
   case 67:
 #line 981 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BETA_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 2995 "ltl_parser.tab.c"
     break;
 
   case 68:
 #line 995 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NORMAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3013 "ltl_parser.tab.c"
     break;
 
   case 69:
 #line 1009 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PARETO_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3030 "ltl_parser.tab.c"
     break;
 
   case 70:
 #line 1022 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(B_PARETO_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3049 "ltl_parser.tab.c"
     break;
 
   case 71:
 #line 1037 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(D_UNIFORM_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3067 "ltl_parser.tab.c"
     break;
 
   case 72:
 #line 1051 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BERNOULLI_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3086 "ltl_parser.tab.c"
     break;
 
   case 73:
 #line 1066 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BINOMIAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3104 "ltl_parser.tab.c"
     break;
 
   case 74:
 #line 1080 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(POISSON_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3121 "ltl_parser.tab.c"
     break;
 
   case 75:
 #line 1093 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NEG_BINOMIAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3139 "ltl_parser.tab.c"
     break;
 
   case 76:
 #line 1107 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GEOMETRIC_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3156 "ltl_parser.tab.c"
     break;
 
   case 77:
 #line 1120 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PASCAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3174 "ltl_parser.tab.c"
     break;
 
   case 78:
 #line 1134 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 3183 "ltl_parser.tab.c"
     break;
 
   case 79:
 #line 1139 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 3192 "ltl_parser.tab.c"
     break;
 
   case 80:
 #line 1144 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(AND_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3210 "ltl_parser.tab.c"
     break;
 
   case 81:
 #line 1158 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(OR_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3228 "ltl_parser.tab.c"
     break;
 
   case 82:
 #line 1172 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(2) - (2)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NOT_OP,
-                                                                           (yyvsp[(2) - (2)].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3245 "ltl_parser.tab.c"
     break;
 
   case 83:
 #line 1185 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EQ_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3263 "ltl_parser.tab.c"
     break;
 
   case 84:
 #line 1199 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3281 "ltl_parser.tab.c"
     break;
 
   case 85:
 #line 1213 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LT_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3299 "ltl_parser.tab.c"
     break;
 
   case 86:
 #line 1227 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3317 "ltl_parser.tab.c"
     break;
 
   case 87:
 #line 1241 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GT_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3335 "ltl_parser.tab.c"
     break;
 
   case 88:
 #line 1255 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3353 "ltl_parser.tab.c"
     break;
 
   case 89:
 #line 1269 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 3361 "ltl_parser.tab.c"
     break;
 
   case 90:
 #line 1273 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(FIRST_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3378 "ltl_parser.tab.c"
     break;
 
   case 91:
 #line 1286 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(TAIL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3395 "ltl_parser.tab.c"
     break;
 
   case 92:
 #line 1299 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(CONCAT_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3413 "ltl_parser.tab.c"
     break;
 
   case 93:
 #line 1313 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(INSERT_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3431 "ltl_parser.tab.c"
     break;
 
   case 94:
 #line 1327 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(REMOVE_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3449 "ltl_parser.tab.c"
     break;
 
   case 95:
 #line 1341 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LENGTH_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3466 "ltl_parser.tab.c"
     break;
 
   case 96:
 #line 1354 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 3474 "ltl_parser.tab.c"
     break;
 
   case 97:
 #line 1358 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(READ_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3492 "ltl_parser.tab.c"
     break;
 
   case 98:
 #line 1372 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(WRITE_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3511 "ltl_parser.tab.c"
     break;
 
   case 99:
 #line 1387 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 3519 "ltl_parser.tab.c"
     break;
 
   case 100:
 #line 1391 "ltl_parser.y"
-    {
+                            {
 			      check_id(REC_FIELD_ID_USE_AUX_SPEC,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			    ;}
+			    }
+#line 3529 "ltl_parser.tab.c"
     break;
 
   case 101:
 #line 1397 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (7)].st_bucket) == NULL) ||
-				    ((yyvsp[(6) - (7)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-4].st_bucket) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GET_OP,
-                                                                           (yyvsp[(3) - (7)].st_bucket),
-                                                                           (yyvsp[(6) - (7)].expr_parse_info)->expr,
+                                                                           (yyvsp[-4].st_bucket),
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3547 "ltl_parser.tab.c"
     break;
 
   case 102:
 #line 1411 "ltl_parser.y"
-    {
+                            {
 			      check_id(REC_FIELD_ID_USE_AUX_SPEC,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			    ;}
+			    }
+#line 3557 "ltl_parser.tab.c"
     break;
 
   case 103:
 #line 1417 "ltl_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (9)].st_bucket) == NULL) ||
-				    ((yyvsp[(6) - (9)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(8) - (9)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-6].st_bucket) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PUT_OP,
-                                                                           (yyvsp[(3) - (9)].st_bucket),
-                                                                           (yyvsp[(6) - (9)].expr_parse_info)->expr,
-                                                                           (yyvsp[(8) - (9)].expr_parse_info)->expr,
+                                                                           (yyvsp[-6].st_bucket),
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3576 "ltl_parser.tab.c"
     break;
 
   case 104:
 #line 1432 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(2) - (3)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 3584 "ltl_parser.tab.c"
     break;
 
   case 105:
 #line 1439 "ltl_parser.y"
-    {
+                            {
 			      (yyval.expr_parse_info) = alloc_expr_parse_info(set_expr_bucket(LIST_CONS_OP,
 						     			 NULL,
 									 NULL,
@@ -3636,93 +3597,110 @@ yyreduce:
 											  NULL),
 									 FALSE),
 							 NULL);
-			    ;}
+			    }
+#line 3602 "ltl_parser.tab.c"
     break;
 
   case 106:
 #line 1453 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LIST_CONS_OP,
 						     			   NULL,
 									   NULL,
 									   NULL,
 									   0.0L,
-						     			   (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
+						     			   (yyvsp[0].lar_parse_info)->struct_value,
 									   FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3619 "ltl_parser.tab.c"
     break;
 
   case 107:
 #line 1469 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ARRAY_CONS_OP,
 								           NULL,
 								           NULL,
 								           NULL,
-								           (yyvsp[(1) - (1)].lar_parse_info)->value_num,
+								           (yyvsp[0].lar_parse_info)->value_num,
 								           transform_list_into_array(
-									     (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
-									     (yyvsp[(1) - (1)].lar_parse_info)->value_num),
+									     (yyvsp[0].lar_parse_info)->struct_value,
+									     (yyvsp[0].lar_parse_info)->value_num),
 								           FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3638 "ltl_parser.tab.c"
     break;
 
   case 108:
 #line 1487 "ltl_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(RECORD_CONS_OP,
 						     			   NULL,
 									   NULL,
 									   NULL,
 									   0.0L,
-						     			   (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
+						     			   (yyvsp[0].lar_parse_info)->struct_value,
 									   FALSE),
                                                            NULL);
-			    ;}
+			    }
+#line 3655 "ltl_parser.tab.c"
     break;
 
   case 109:
 #line 1503 "ltl_parser.y"
-    {
-			      (yyval.lar_parse_info) = ((yyvsp[(1) - (1)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.lar_parse_info) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
-				     alloc_lar_parse_info(alloc_value_cell((yyvsp[(1) - (1)].expr_parse_info)->expr,
+				     alloc_lar_parse_info(alloc_value_cell((yyvsp[0].expr_parse_info)->expr,
 						      			   0.0L,
 						      			   NULL,
 						      			   NULL),
 						          1,
                                                           NULL);
-			    ;}
+			    }
+#line 3670 "ltl_parser.tab.c"
     break;
 
   case 110:
 #line 1514 "ltl_parser.y"
-    {
-			      (yyval.lar_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].lar_parse_info) == NULL))?
+                            {
+			      (yyval.lar_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].lar_parse_info) == NULL))?
 				     NULL:
-				     alloc_lar_parse_info(alloc_value_cell((yyvsp[(1) - (3)].expr_parse_info)->expr,
+				     alloc_lar_parse_info(alloc_value_cell((yyvsp[-2].expr_parse_info)->expr,
 						      			   0.0L,
 						      			   NULL,
-						      			   (yyvsp[(3) - (3)].lar_parse_info)->struct_value),
-						          (yyvsp[(3) - (3)].lar_parse_info)->value_num + 1,
+						      			   (yyvsp[0].lar_parse_info)->struct_value),
+						          (yyvsp[0].lar_parse_info)->value_num + 1,
                                                           NULL);
-			    ;}
+			    }
+#line 3686 "ltl_parser.tab.c"
     break;
 
 
-/* Line 1267 of yacc.c.  */
-#line 3724 "ltl_parser.tab.c"
+#line 3690 "ltl_parser.tab.c"
+
       default: break;
     }
+  /* User semantic actions sometimes alter yychar, and that requires
+     that yytoken be updated with the new translation.  We take the
+     approach of translating immediately before every use of yytoken.
+     One alternative is translating here after every semantic action,
+     but that translation would be missed if the semantic action invokes
+     YYABORT, YYACCEPT, or YYERROR immediately after altering yychar or
+     if it invokes YYBACKUP.  In the case of YYABORT or YYACCEPT, an
+     incorrect destructor might then be invoked immediately.  In the
+     case of YYERROR or YYBACKUP, subsequent parser actions might lead
+     to an incorrect destructor call or verbose syntax error message
+     before the lookahead is translated.  */
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
 
   YYPOPSTACK (yylen);
@@ -3731,26 +3709,28 @@ yyreduce:
 
   *++yyvsp = yyval;
 
-
-  /* Now `shift' the result of the reduction.  Determine what state
+  /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
-
-  yyn = yyr1[yyn];
-
-  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
-  if (0 <= yystate && yystate <= YYLAST && yycheck[yystate] == *yyssp)
-    yystate = yytable[yystate];
-  else
-    yystate = yydefgoto[yyn - YYNTOKENS];
+  {
+    const int yylhs = yyr1[yyn] - YYNTOKENS;
+    const int yyi = yypgoto[yylhs] + *yyssp;
+    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
+               ? yytable[yyi]
+               : yydefgoto[yylhs]);
+  }
 
   goto yynewstate;
 
 
-/*------------------------------------.
-| yyerrlab -- here on detecting error |
-`------------------------------------*/
+/*--------------------------------------.
+| yyerrlab -- here on detecting error.  |
+`--------------------------------------*/
 yyerrlab:
+  /* Make sure we have latest lookahead translation.  See comments at
+     user semantic actions for why this is necessary.  */
+  yytoken = yychar == YYEMPTY ? YYEMPTY : YYTRANSLATE (yychar);
+
   /* If not already recovering from an error, report this error.  */
   if (!yyerrstatus)
     {
@@ -3758,37 +3738,36 @@ yyerrlab:
 #if ! YYERROR_VERBOSE
       yyerror (YY_("syntax error"));
 #else
+# define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
+                                        yyssp, yytoken)
       {
-	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
-	if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
-	  {
-	    YYSIZE_T yyalloc = 2 * yysize;
-	    if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
-	      yyalloc = YYSTACK_ALLOC_MAXIMUM;
-	    if (yymsg != yymsgbuf)
-	      YYSTACK_FREE (yymsg);
-	    yymsg = (char *) YYSTACK_ALLOC (yyalloc);
-	    if (yymsg)
-	      yymsg_alloc = yyalloc;
-	    else
-	      {
-		yymsg = yymsgbuf;
-		yymsg_alloc = sizeof yymsgbuf;
-	      }
-	  }
-
-	if (0 < yysize && yysize <= yymsg_alloc)
-	  {
-	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (yymsg);
-	  }
-	else
-	  {
-	    yyerror (YY_("syntax error"));
-	    if (yysize != 0)
-	      goto yyexhaustedlab;
-	  }
+        char const *yymsgp = YY_("syntax error");
+        int yysyntax_error_status;
+        yysyntax_error_status = YYSYNTAX_ERROR;
+        if (yysyntax_error_status == 0)
+          yymsgp = yymsg;
+        else if (yysyntax_error_status == 1)
+          {
+            if (yymsg != yymsgbuf)
+              YYSTACK_FREE (yymsg);
+            yymsg = YY_CAST (char *, YYSTACK_ALLOC (YY_CAST (YYSIZE_T, yymsg_alloc)));
+            if (!yymsg)
+              {
+                yymsg = yymsgbuf;
+                yymsg_alloc = sizeof yymsgbuf;
+                yysyntax_error_status = 2;
+              }
+            else
+              {
+                yysyntax_error_status = YYSYNTAX_ERROR;
+                yymsgp = yymsg;
+              }
+          }
+        yyerror (yymsgp);
+        if (yysyntax_error_status == 2)
+          goto yyexhaustedlab;
       }
+# undef YYSYNTAX_ERROR
 #endif
     }
 
@@ -3796,24 +3775,24 @@ yyerrlab:
 
   if (yyerrstatus == 3)
     {
-      /* If just tried and failed to reuse look-ahead token after an
-	 error, discard it.  */
+      /* If just tried and failed to reuse lookahead token after an
+         error, discard it.  */
 
       if (yychar <= YYEOF)
-	{
-	  /* Return failure if at end of input.  */
-	  if (yychar == YYEOF)
-	    YYABORT;
-	}
+        {
+          /* Return failure if at end of input.  */
+          if (yychar == YYEOF)
+            YYABORT;
+        }
       else
-	{
-	  yydestruct ("Error: discarding",
-		      yytoken, &yylval);
-	  yychar = YYEMPTY;
-	}
+        {
+          yydestruct ("Error: discarding",
+                      yytoken, &yylval);
+          yychar = YYEMPTY;
+        }
     }
 
-  /* Else will try to reuse look-ahead token after shifting the error
+  /* Else will try to reuse lookahead token after shifting the error
      token.  */
   goto yyerrlab1;
 
@@ -3822,14 +3801,12 @@ yyerrlab:
 | yyerrorlab -- error raised explicitly by YYERROR.  |
 `---------------------------------------------------*/
 yyerrorlab:
+  /* Pacify compilers when the user code never invokes YYERROR and the
+     label yyerrorlab therefore never appears in user code.  */
+  if (0)
+    YYERROR;
 
-  /* Pacify compilers like GCC when the user code never invokes
-     YYERROR and the label yyerrorlab therefore never appears in user
-     code.  */
-  if (/*CONSTCOND*/ 0)
-     goto yyerrorlab;
-
-  /* Do not reclaim the symbols of the rule which action triggered
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
   yylen = 0;
@@ -3842,38 +3819,37 @@ yyerrorlab:
 | yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
-  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
+  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
-      if (yyn != YYPACT_NINF)
-	{
-	  yyn += YYTERROR;
-	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-	    {
-	      yyn = yytable[yyn];
-	      if (0 < yyn)
-		break;
-	    }
-	}
+      if (!yypact_value_is_default (yyn))
+        {
+          yyn += YYTERROR;
+          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+            {
+              yyn = yytable[yyn];
+              if (0 < yyn)
+                break;
+            }
+        }
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-	YYABORT;
+        YYABORT;
 
 
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp);
+                  yystos[yystate], yyvsp);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
     }
 
-  if (yyn == YYFINAL)
-    YYACCEPT;
-
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
 
   /* Shift the error token.  */
@@ -3890,6 +3866,7 @@ yyacceptlab:
   yyresult = 0;
   goto yyreturn;
 
+
 /*-----------------------------------.
 | yyabortlab -- YYABORT comes here.  |
 `-----------------------------------*/
@@ -3897,7 +3874,8 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#ifndef yyoverflow
+
+#if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -3907,18 +3885,27 @@ yyexhaustedlab:
   /* Fall through.  */
 #endif
 
+
+/*-----------------------------------------------------.
+| yyreturn -- parsing is finished, return the result.  |
+`-----------------------------------------------------*/
 yyreturn:
-  if (yychar != YYEOF && yychar != YYEMPTY)
-     yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval);
-  /* Do not reclaim the symbols of the rule which action triggered
+  if (yychar != YYEMPTY)
+    {
+      /* Make sure we have latest lookahead translation.  See comments at
+         user semantic actions for why this is necessary.  */
+      yytoken = YYTRANSLATE (yychar);
+      yydestruct ("Cleanup: discarding lookahead",
+                  yytoken, &yylval);
+    }
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
   YY_STACK_PRINT (yyss, yyssp);
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp);
+                  yystos[+*yyssp], yyvsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -3929,11 +3916,8 @@ yyreturn:
   if (yymsg != yymsgbuf)
     YYSTACK_FREE (yymsg);
 #endif
-  /* Make sure YYID is used.  */
-  return YYID (yyresult);
+  return yyresult;
 }
-
-
 #line 1528 "ltl_parser.y"
 
 
@@ -4073,4 +4057,3 @@ void		handle_sync_ltl(void)
                      NULL,
                      NULL);
 }
-

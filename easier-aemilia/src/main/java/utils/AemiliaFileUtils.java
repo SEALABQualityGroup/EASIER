@@ -19,7 +19,6 @@ import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.AemiliaRCrossover;
 import it.univaq.disim.sealab.metaheuristic.utils.CSVUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
@@ -113,9 +112,9 @@ public class AemiliaFileUtils {
 		}
 	}
 
-	public static synchronized void writeSolutionSetToCSV(List<RSolution> population) {
+	public static synchronized void writeSolutionSetToCSV(List<AemiliaRSolution> population) {
 		EasierLogger.logger_.info("Writing CSV");
-		for (RSolution solution : population) {
+		for (AemiliaRSolution solution : population) {
 			try (FileWriter fw = new FileWriter(
 					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
 							solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
@@ -140,7 +139,7 @@ public class AemiliaFileUtils {
 		EasierLogger.logger_.info("Writing CSV done");
 	}
 
-	public static void writeSolutionToCSV(RSolution solution) {
+	public static void writeSolutionToCSV(AemiliaRSolution solution) {
 		Refactoring ref = solution.getVariableValue(0).getRefactoring();
 		try (FileWriter fw = new FileWriter(
 				Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
@@ -205,7 +204,7 @@ public class AemiliaFileUtils {
 		}
 	}
 
-	public static void writeAnalyzableFile(final RSolution solution) {
+	public static void writeAnalyzableFile(final AemiliaRSolution solution) {
 		Controller controller = solution.getController();
 
 		try (FileWriter analyzableCSV = new FileWriter(

@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
 import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
 import metamodel.mmaemilia.AEmiliaSpecification;
@@ -27,18 +28,22 @@ import metamodel.mmaemilia.Headers.ConstInit;
 
 public class ThresholdUtils {
 
-	
-	public static void uptodateSingleValueThresholds(Path detestinationFolder, Path mmaemiliaFilePath,
-			Path valFilePath, AemiliaMetamodelManager metamodelManager, Controller controller) {
+	public static void uptodateSingleValueThresholds(Path detestinationFolder, Path mmaemiliaFilePath, Path valFilePath,
+			AemiliaMetamodelManager metamodelManager, Controller controller) {
 
 		// Controller controller = Manager.getInstance(null).getController();
 		ValSpec valSpec = metamodelManager.getTwoEaglesBridge().getValSpec(valFilePath);
 		AEmiliaSpecification aemiliaModel = metamodelManager.getModel(mmaemiliaFilePath);
 
-		createNewOclFile(controller.getConfigurator().getOclTemplate(), detestinationFolder, aemiliaModel, valSpec);
+		// createNewOclFile(controller.getConfigurator().getOclTemplate(),
+		// detestinationFolder, aemiliaModel, valSpec);
+
+		
+		createNewThresholdFile(Paths.get(controller.getConfigurator().getEVLTemplate().getParent().toString(), "/library/thresholds_baseline.eol"), detestinationFolder, aemiliaModel,
+				valSpec);
 
 	}
-	
+
 //	@Deprecated
 //	public static void uptodateSingleValueThresholds(String detestinationFolder, String mmaemiliaFilePath,
 //			String valFilePath, AemiliaMetamodelManager metamodelManager, Controller controller) {
@@ -55,9 +60,10 @@ public class ThresholdUtils {
 		String instanceName = measure.substring(0, measure.indexOf("_"));
 		return instanceName;
 	}
-	
-	private static void createNewOclFile(Path ruleTemplateFilePath, Path pathToSave,
-			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
+
+	@Deprecated
+	private static void createNewOclFile(Path ruleTemplateFilePath, Path pathToSave, AEmiliaSpecification aemiliaModel,
+			ValSpec valSpec) {
 		String templateString;
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		// Pipe and Filter
@@ -69,27 +75,73 @@ public class ThresholdUtils {
 		valuesMap.put("respTimeUB", Float.toString(calculateRespTimeUP()));
 		valuesMap.put("opResDemLB", Float.toString(calculateOpResDemLB()));
 		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
-		try {
-			templateString = readFile(ruleTemplateFilePath, Charset.defaultCharset());
-			StringSubstitutor sub = new StringSubstitutor(valuesMap);
-			String resolvedString = sub.replace(templateString);
+//		try {
+//			templateString = readFile(ruleTemplateFilePath, Charset.defaultCharset());
+//			StringSubstitutor sub = new StringSubstitutor(valuesMap);
+//			String resolvedString = sub.replace(templateString);
 
 			Path newRuleFilePath = Paths.get(pathToSave.toString(), "detectionSingleValuePA.ocl");
 
-			File f = newRuleFilePath.toFile();
-			f.getParentFile().mkdirs();
-			f.createNewFile();
-
-			PrintWriter out = new PrintWriter(newRuleFilePath.toFile());
-			out.print(resolvedString);
-			out.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			FileUtils.fillTemplateKeywords(ruleTemplateFilePath, newRuleFilePath, valuesMap);
+//			File f = newRuleFilePath.toFile();
+//			f.getParentFile().mkdirs();
+//			f.createNewFile();
+//
+//			PrintWriter out = new PrintWriter(newRuleFilePath.toFile());
+//			out.print(resolvedString);
+//			out.close();
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
-	
+
+	/**
+	 * The ruleTemplateFilePath must be the threshold template file path
+	 * @param ruleTemplateFilePath
+	 * @param pathToSave
+	 * @param aemiliaModel
+	 * @param valSpec
+	 */
+	private static void createNewThresholdFile(Path ruleTemplateFilePath, Path pathToSave,
+			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
+				
+		Map<String, String> valuesMap = new HashMap<String, String>();
+		// Pipe and Filter
+		float serviceThLB = calculateServiceThLB(valSpec);
+		valuesMap.put("serviceThLB", Float.toString(serviceThLB));
+		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
+
+		// Extensive Processing
+		valuesMap.put("respTimeUB", Float.toString(calculateRespTimeUP()));
+		valuesMap.put("opResDemLB", Float.toString(calculateOpResDemLB()));
+		valuesMap.put("opResDemUB", Float.toString(calculateOpResDemUB(aemiliaModel)));
+
+//		try {
+//			templateString = FileUtils.readFile(ruleTemplateFilePath, Charset.defaultCharset());
+//			StringSubstitutor sub = new StringSubstitutor(valuesMap);
+//			String resolvedString = sub.replace(templateString);
+
+			Path newRuleFilePath = Paths.get(pathToSave.toString(), "thresholds.eol");
+			
+			FileUtils.fillTemplateKeywords(ruleTemplateFilePath, newRuleFilePath, valuesMap);
+			
+
+//			File f = newRuleFilePath.toFile();
+//			f.getParentFile().mkdirs();
+//			f.createNewFile();
+//
+//			PrintWriter out = new PrintWriter(newRuleFilePath.toFile());
+//			out.print(resolvedString);
+//			out.close();
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
+
 //	@Deprecated
 //	private static void createNewOclFile(String ruleTemplateFilePath, String pathToSave,
 //			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
@@ -191,16 +243,4 @@ public class ThresholdUtils {
 
 		return th_Throughput;
 	}
-
-	static String readFile(Path path, Charset encoding) throws IOException {
-		byte[] encoded = Files.readAllBytes(path);
-		return new String(encoded, encoding);
-	}
-	
-	@Deprecated
-	static String readFile(String path, Charset encoding) throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return new String(encoded, encoding);
-	}
-
 }

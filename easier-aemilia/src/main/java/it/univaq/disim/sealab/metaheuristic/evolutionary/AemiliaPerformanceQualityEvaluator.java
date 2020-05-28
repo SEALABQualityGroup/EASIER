@@ -3,6 +3,7 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.regex.Pattern;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
+import it.univaq.disim.sealab.epsilon.EpsilonHelper;
+import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.ttep.val.ValParser;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
@@ -31,6 +34,22 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 	public AemiliaPerformanceQualityEvaluator(OclManager oclManager) {
 		qualityMap = new HashMap<>();
 		this.oclManager = oclManager;
+	}
+	
+	/**
+	 * Counts the number of performance antipatterns
+	 * on the emf model, based on the rule file
+	 * @param mmaemiliaFilePath
+	 * @param ruleFilePath
+	 */
+	public void performanceAntipatternEvaluatorEpsilon(Path mmaemiliaFilePath, Path ruleFilePath) {
+		try {
+			EpsilonHelper.aemiliaPasChecker(mmaemiliaFilePath, ruleFilePath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 	}
 
 	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,

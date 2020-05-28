@@ -3,14 +3,12 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
-import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
@@ -23,7 +21,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
 
-public class FactoryBuilder<S extends Solution<?>> {
+public class FactoryBuilder<S extends RSolution> {
 
 	private final static String NSGA_II = "NSGA_II";
 	private final static String SPEA2 = "SPEA2";
@@ -39,13 +37,13 @@ public class FactoryBuilder<S extends Solution<?>> {
 
 	public FactoryBuilder() {}
 
-	public AlgorithmBuilder createBuilder(String builder, Problem<S> problem,
+	public AlgorithmBuilder<?> createBuilder(String builder, Problem<S> problem,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator) {
 		
-		AlgorithmBuilder algo = null;
+		AlgorithmBuilder<?> algo = null;
 		
 		if(builder.equals(NSGA_II))
-			algo = new CustomNSGAIIBuilder((Problem<AemiliaRSolution>) problem, crossoverOperator, mutationOperator);
+			algo = new CustomNSGAIIBuilder<S>(problem, crossoverOperator, mutationOperator);
 		if(builder.equals(SPEA2))
 			algo = new SPEA2Builder<>(problem, crossoverOperator, mutationOperator);
 		
@@ -54,9 +52,9 @@ public class FactoryBuilder<S extends Solution<?>> {
 		return algo;
 	}
 	
-	public GenericIndicator<AemiliaRSolution> createQualityIndicators(String qI) {
+	public GenericIndicator<S> createQualityIndicators(String qI) {
 		try {
-			return (GenericIndicator<AemiliaRSolution>) qualityIndicatorsMap.get(qI).newInstance();
+			return (GenericIndicator<S>) qualityIndicatorsMap.get(qI).newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			System.out.println("[ERROR]");
