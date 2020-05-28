@@ -38,7 +38,8 @@ public class ThresholdUtils {
 		// createNewOclFile(controller.getConfigurator().getOclTemplate(),
 		// detestinationFolder, aemiliaModel, valSpec);
 
-		createNewThresholdFile(controller.getConfigurator().getEVLTemplate(), detestinationFolder, aemiliaModel,
+		
+		createNewThresholdFile(Paths.get(controller.getConfigurator().getEVLTemplate().getParent().toString(), "/library/thresholds_baseline.eol"), detestinationFolder, aemiliaModel,
 				valSpec);
 
 	}
@@ -60,6 +61,7 @@ public class ThresholdUtils {
 		return instanceName;
 	}
 
+	@Deprecated
 	private static void createNewOclFile(Path ruleTemplateFilePath, Path pathToSave, AEmiliaSpecification aemiliaModel,
 			ValSpec valSpec) {
 		String templateString;
@@ -95,6 +97,13 @@ public class ThresholdUtils {
 //		}
 	}
 
+	/**
+	 * The ruleTemplateFilePath must be the threshold template file path
+	 * @param ruleTemplateFilePath
+	 * @param pathToSave
+	 * @param aemiliaModel
+	 * @param valSpec
+	 */
 	private static void createNewThresholdFile(Path ruleTemplateFilePath, Path pathToSave,
 			AEmiliaSpecification aemiliaModel, ValSpec valSpec) {
 				

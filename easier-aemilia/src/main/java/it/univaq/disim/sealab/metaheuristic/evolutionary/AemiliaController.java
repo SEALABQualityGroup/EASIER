@@ -146,6 +146,10 @@ public class AemiliaController implements Controller {
 		return mutationOperator;
 	}
 
+	/**
+	 * Source is the containing folder
+	 * @param source
+	 */
 	private void generateSourceFiles(final Path source) {
 		final Path sourceAemPath = source.resolve("model.aem");
 		final Path sourceRewPath = source.resolve("model.rew");
@@ -159,6 +163,7 @@ public class AemiliaController implements Controller {
 //			return;
 		}
 
+		// Generates the aem file from the emf model
 		if (!Files.exists(sourceAemPath)) {
 			metamodelManager.packageRegistering();
 			EpsilonHelper.generateAemFile(sourceModelPath, source);
@@ -166,8 +171,10 @@ public class AemiliaController implements Controller {
 			EasierLogger.logger_.info("generation of source files completed!");
 		}
 
+		// Generates the REW file from the emf model
+		// TODO
 		if (!Files.exists(sourceRewPath)) {
-			EpsilonHelper.generateAemFile(sourceModelPath, source);
+			//EpsilonHelper.generateRewFile(sourceModelPath, source);
 //			Transformation.GenerateREWTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("mmamelia to rew completed");
 		}
@@ -229,9 +236,9 @@ public class AemiliaController implements Controller {
 		List<RProblem<AemiliaRSolution>> rProblems = new ArrayList<>();
 
 		for (SourceModel src : sourceModels) {
-			for (Integer l : configurator.getLength()) {
-				for (Double w : configurator.getCloningWeight()) {
-					for (Integer mc : configurator.getMaxCloning()) {
+			for (int l : configurator.getLength()) {
+				for (double w : configurator.getCloningWeight()) {
+					for (int mc : configurator.getMaxCloning()) {
 						if (mc == -1)
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"

@@ -58,6 +58,7 @@ public class Launcher {
 			referenceFront = ctr.getReferenceFront();
 		}
 
+		// calculates the availability, if set in the config file
 		if (config.hasAvailability()) {
 			List<String> solIDs = AemiliaFileUtils.getParetoSolIDs(referenceFront);
 			ctr.generateAvailability(solIDs);

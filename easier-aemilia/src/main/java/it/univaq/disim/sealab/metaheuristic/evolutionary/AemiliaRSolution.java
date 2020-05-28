@@ -73,6 +73,8 @@ public class AemiliaRSolution extends RSolution {
 	private boolean refactored;
 
 	private static int SOLUTION_COUNTER = -1;
+	
+	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
 	private int name;
 	private ResourceSet resourceSet;
@@ -425,7 +427,8 @@ public class AemiliaRSolution extends RSolution {
 	 */
 	public void countingPAs() {
 		refreshModel();
-		numPAs = EpsilonHelper.aemiliaPasChecker(this.mmaemiliaFilePath);
+		
+		numPAs = EpsilonHelper.aemiliaPasChecker(this.mmaemiliaFilePath, Paths.get(folderPath.toString(), EVL_MODULE));
 
 		/*
 		 * mapOfPAs = ((AemiliaPerformanceQualityEvaluator)
