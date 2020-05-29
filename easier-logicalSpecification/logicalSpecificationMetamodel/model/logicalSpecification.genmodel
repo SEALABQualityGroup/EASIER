@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/it.disim.univaq.sealab.logicalSpecificationMetamodel/src"
-    modelPluginID="it.disim.univaq.sealab.logicalSpecificationMetamodel" modelName="LogicalSpecification"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="10.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/LogicalSpecification/src" modelPluginID="it.disim.univaq.sealab.logicalSpecificationMetamodel"
+    modelName="LogicalSpecification" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="10.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>logicalSpecification.ecore</foreignModel>
   <genPackages prefix="LogicalSpecification" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="logicalSpecification.ecore#//TypesEnum">
@@ -275,6 +275,23 @@
           <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/allConstInitsMVP"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaChangeAction"/>
+        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/sourceAEI"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/clonedAEI"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfInputInteractions"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfOutputInteractions"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfNewAttachments"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/aeiToCloneSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/clonedAeiSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOrInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allInLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOutLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allUniInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allAeisMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allInRemoteInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOutRemoteInteractsMVP"/>
+        </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
     <nestedGenPackages prefix="Antipatterns" basePackage="logicalSpecification" disposableProviderFactory="true"

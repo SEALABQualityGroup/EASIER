@@ -361,6 +361,38 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="AEmiliaChangeAction" eSuperTypes="#//ChangeAction"/>
       <eClassifiers xsi:type="ecore:EDataType" name="ConstInit" instanceClassName="metamodel.mmaemilia.Headers.ConstInit"/>
+      <eClassifiers xsi:type="ecore:EClass" name="AEmiliaRemoveClonedAEIAction" eSuperTypes="#//actions/AEmilia/AEmiliaDeleteAction">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceAEI" lowerBound="1"
+            eType="#//actions/AEmilia/ArchiElemInstance"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="clonedAEI" lowerBound="1"
+            eType="#//actions/AEmilia/ArchiElemInstance"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfInputInteractions"
+            upperBound="-1" eType="#//actions/AEmilia/InputInteraction"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfOutputInteractions"
+            upperBound="-1" eType="#//actions/AEmilia/OutputInteraction"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfNewAttachments"
+            upperBound="-1" eType="#//actions/AEmilia/Attachment"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="aeiToCloneSVP" lowerBound="1"
+            eType="#//SingleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="clonedAeiSVP" lowerBound="1"
+            eType="#//SingleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOrInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allInLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOutLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allUniInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allAeisMVP" lowerBound="1"
+            eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allInRemoteInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOutRemoteInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+      </eClassifiers>
     </eSubpackages>
   </eSubpackages>
   <eSubpackages name="antipatterns" nsURI="http://it.univaq.disim.seagroup/logicalSpecification/antipatterns"
