@@ -39,7 +39,7 @@
         containment="true" eOpposite="#//PreCondition/action"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="post" eType="#//PostCondition"
         containment="true" eOpposite="#//PostCondition/action"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="model" eType="#//model"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="model" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SingleValuedParameter" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="existsOperator" upperBound="-1"
@@ -184,41 +184,6 @@
           eSuperTypes="#//DeleteAction"/>
       <eClassifiers xsi:type="ecore:EClass" name="UMLMoveAction" abstract="true" eSuperTypes="#//MoveAction"/>
       <eClassifiers xsi:type="ecore:EClass" name="UMLAddNodeAction" eSuperTypes="#//actions/UML/UMLAddAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log();&#xA;&#x9;&#x9;if (getUmlNodeToAdd() != null) {&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(getUmlNodeToAdd().getName());&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(&quot;--------Deployment----------&quot;);&#xA;&#x9;&#x9;&#x9;for (Deployment depl : this.umlNodeToAdd.getDeployments())&#xA;&#x9;&#x9;&#x9;&#x9;Controller.logger_.info(depl.toString());&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(&quot;--------CommunicationPath----------&quot;);&#xA;&#x9;&#x9;&#x9;for (CommunicationPath cp : umlNodeToAdd.getCommunicationPaths())&#xA;&#x9;&#x9;&#x9;&#x9;Controller.logger_.info(cp.toString());&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="umlNodeToAdd = UMLFactory.eINSTANCE.createNode();&#xA;&#x9;&#x9;umlNodeToAdd.setName(&quot;newNode&quot; + Math.random());&#xA;&#x9;&#x9;umlNodeToAdd.setPackage(umlSourcePackage);&#xA;&#xA;&#x9;&#x9;addCommunicationPaths();&#xA;&#xA;&#x9;&#x9;addDeployedComps();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="addDeployedComps">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="Artifact art;&#xA;&#x9;&#x9;for (Component comp : getUmlCompsToDeploy()) {&#xA;&#x9;&#x9;&#x9;art = UMLFactory.eINSTANCE.createArtifact();&#xA;&#x9;&#x9;&#x9;art.setName(comp.getName() + &quot;_Artifact&quot;);&#xA;&#x9;&#x9;&#x9;art.createManifestation(comp.getName() + &quot;_Manifestation&quot;, comp);&#xA;&#x9;&#x9;&#x9;Deployment deploy = umlNodeToAdd.createDeployment(comp.getName() + &quot;_Deployment&quot;);&#xA;&#x9;&#x9;&#x9;deploy.getDeployedArtifacts().add(art);&#xA;&#x9;&#x9;&#x9;umlNodeToAdd.getDeployments().add(deploy);&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="addCommunicationPaths">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="for (Node node : umlNeighbors) {&#xA;&#x9;&#x9;&#x9;/**&#xA;&#x9;&#x9;&#x9; * createCommunicationPath(boolean end1IsNavigable, AggregationKind&#xA;&#x9;&#x9;&#x9; * end1Aggregation, String end1Name, int end1Lower,int end1Upper,&#xA;&#x9;&#x9;&#x9; * Node end1Node, boolean end2IsNavigable,AggregationKind&#xA;&#x9;&#x9;&#x9; * end2Aggregation, String end2Name, int end2Lower,int end2Upper);&#xA;&#x9;&#x9;&#x9; */&#xA;&#x9;&#x9;&#x9;umlNodeToAdd&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;.createCommunicationPath(true, AggregationKind.COMPOSITE_LITERAL, node.getName(), 1, 1, node, true,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AggregationKind.COMPOSITE_LITERAL, umlNodeToAdd.getName(), 1, 1)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;.setName(umlNodeToAdd.getName() + &quot;_cp_&quot; + node.getName());&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> addParams = new ArrayList&lt;>();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;if (umlNodeToAdd != null) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// FIXME le add non dovrebbero avere come attributo l'oggetto da&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// creare&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;setNodeToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodeQuery(umlNodeToAdd)));&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;addParams.add(getNodeToAddSVP());&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;setNeighborsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getNodesQuery(this.umlNeighbors)));&#xA;&#x9;&#x9;&#x9;&#x9;addParams.add(getNeighborsMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;setCompsToDeployMVP(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getComponentsQuery(this.umlCompsToDeploy)));&#xA;&#x9;&#x9;&#x9;&#x9;addParams.add(getCompsToDeployMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));&#xA;&#x9;&#x9;&#x9;&#x9;addParams.add(getAllNodesMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));&#xA;&#x9;&#x9;&#x9;&#x9;addParams.add(getAllCompsMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;if (getUmlNodeToAdd() != null) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ArrayList&lt;Node> nList = new ArrayList&lt;Node>();&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// FIXME qui facciamo la query dei componenti deploiati sul nodo&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// appena creato ma e' vuota&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;nList.add(getUmlNodeToAdd());&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;setAllDeployedElemsMVP(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(nList)));&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;addParams.add(getAllDeployedElemsMVP());&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;getParameters().addAll(addParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;FOLSpecification addPreSpec = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddNodePrecondition&quot;);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;// ExistsOperator addPreAndNotExists =&#xA;&#x9;&#x9;&#x9;&#x9;// Manager.createExistsOperator(getNodeToAddSVP(), getAllNodesMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;// NotOperator addPreAndNot =&#xA;&#x9;&#x9;&#x9;&#x9;// Manager.createNotOperator(addPreAndNotExists);&#xA;&#x9;&#x9;&#x9;&#x9;// addPreAnd.getArguments().add(addPreAndNot);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ForAllOperator addPreAndForall = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getNeighborsMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPreAndForallExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPreAndForall.setArgument(addPreAndForallExists);&#xA;&#x9;&#x9;&#x9;&#x9;addPreAnd.getArguments().add(addPreAndForall);&#xA;&#x9;&#x9;&#x9;&#x9;addPreSpec.setRootOperator(addPreAnd);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;preCondition.setConditionFormula(addPreSpec);&#xA;&#x9;&#x9;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;FOLSpecification addPostSpec = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddNodePostcondition&quot;);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;AndOperator addPostAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPostAndExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getNodeToAddSVP(), getAllNodesMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPostAnd.getArguments().add(addPostAndExists);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ForAllOperator addPostAndForallNeighs = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getNeighborsMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;AndOperator addPostAndForallNeighsAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPostAndForallNeighsAndExistsAllNodes = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallNeighsAnd.getArguments().add(addPostAndForallNeighsAndExistsAllNodes);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPostAndForallNeighsAndExistsNeighs = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getNeighborsMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallNeighsAnd.getArguments().add(addPostAndForallNeighsAndExistsNeighs);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallNeighs.setArgument(addPostAndForallNeighsAnd);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;addPostAnd.getArguments().add(addPostAndForallNeighs);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ForAllOperator addPostAndForallDeplComps = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getCompsToDeployMVP());&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;AndOperator addPostAndForallDeplCompsAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPostAndForallDeplCompsAndExistsAllNodes = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllCompsMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallDeplCompsAnd.getArguments().add(addPostAndForallDeplCompsAndExistsAllNodes);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;ExistsOperator addPostAndForallDeplCompsAndExistsNeighs = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getAllDeployedElemsMVP());&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallDeplCompsAnd.getArguments().add(addPostAndForallDeplCompsAndExistsNeighs);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;addPostAndForallDeplComps.setArgument(addPostAndForallDeplCompsAnd);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;addPostAnd.getArguments().add(addPostAndForallDeplComps);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;addPostSpec.setRootOperator(addPostAnd);&#xA;&#x9;&#x9;&#x9;&#x9;postCondition.setConditionFormula(addPostSpec);&#xA;&#x9;&#x9;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="nodeToAddSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="neighborsMVP" lowerBound="1"
@@ -241,37 +206,6 @@
             eType="#//actions/UML/Package"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLAddComponentAction" eSuperTypes="#//actions/UML/UMLAddAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log(); &#xA;if(getUmlCompToAdd() != null)&#xA;&#x9;Controller.logger_.info(getUmlCompToAdd().toString());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="setUmlCompToAdd(UMLFactory.eINSTANCE.createComponent());&#xA;&#x9;&#x9;getUmlCompToAdd().setName(&quot;newComp&quot; + Math.random());&#xA;&#x9;&#x9;getUmlCompToAdd().setPackage(getUmlSourcePackage());&#xA;&#x9;&#x9;setParameters();&#xA;&#x9;&#x9;deployOn(getUmlTargetNodes());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="deployOn">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="Artifact art;&#xA;&#x9;&#x9;for (Node target : targets) {&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Package targetPackage = target.getPackage();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;art = UMLFactory.eINSTANCE.createArtifact();&#xA;&#x9;&#x9;&#x9;targetPackage.getPackagedElements().add(art);&#xA;&#x9;&#x9;&#x9;art.setName(getUmlCompToAdd().getName() + &quot;_Artifact&quot;);&#xA;&#x9;&#x9;&#x9;art.createManifestation(getUmlCompToAdd().getName() + &quot;_Manifestation&quot;, getUmlCompToAdd());&#xA;&#x9;&#x9;&#x9;art.setPackage(targetPackage);&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Deployment deploy = target.createDeployment(getUmlCompToAdd().getName() + &quot;_Deployment&quot;);&#xA;&#x9;&#x9;&#x9;deploy.getDeployedArtifacts().add(art);&#xA;&#x9;&#x9;&#x9;target.getDeployments().add(deploy);&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-          <eParameters name="targets" upperBound="-1" eType="#//actions/UML/Node"/>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="// ACTION add PARAMETERS&#xA;&#x9;&#x9;List&lt;Parameter> addParams = new ArrayList&lt;>();&#xA;&#x9;&#x9;// FIXME le add non dovrebbero avere come attributo l'oggetto da creare&#xA;&#xA;&#x9;&#x9;// setCompToAddSVP(Manager.createSingleValueParameter(&quot;Component.allInstances()->select(c&#xA;&#x9;&#x9;// | c.name = 'Pippo Node')&quot;));&#xA;&#x9;&#x9;// addParams.add(getCompToAddSVP());&#xA;&#xA;&#x9;&#x9;if (umlCompToAdd != null) {&#xA;&#x9;&#x9;&#x9;setComponentToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getComponentQuery(umlCompToAdd)));&#xA;&#x9;&#x9;&#x9;addParams.add(getComponentToAddSVP());&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;setTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getNodesQuery(umlTargetNodes)));&#xA;&#x9;&#x9;addParams.add(getTargetNodesMVP());&#xA;&#xA;&#x9;&#x9;// List&lt;Component> list_of_random_components = new&#xA;&#x9;&#x9;// ArrayList&lt;Component>();&#xA;&#x9;&#x9;// list_of_random_components = OclManager.getRandomComponents();&#xA;&#x9;&#x9;// setDeployedCompsMVP(Manager.createMultipleValuedParameter(OclStringManager.getComponentsQuery(list_of_random_components)));&#xA;&#x9;&#x9;// addParams.add(getDeployedCompsMVP());&#xA;&#xA;&#x9;&#x9;setDeployedCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllDeployedElementsQuery(getUmlTargetNodes())));&#xA;&#x9;&#x9;addParams.add(getDeployedCompsMVP());&#xA;&#xA;&#x9;&#x9;setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));&#xA;&#x9;&#x9;addParams.add(getAllNodesMVP());&#xA;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllComponentsQuery()));&#xA;&#x9;&#x9;addParams.add(getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(addParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="&#x9;PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddComponentPreCondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;// NotOperator addPreAndNot = Manager.createNotOperator();&#xA;&#x9;&#x9;// ExistsOperator addPreAndNotExists =&#xA;&#x9;&#x9;// Manager.createExistsOperator(getCompToAddSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;//&#xA;&#x9;&#x9;// addPreAndNot.setArgument(addPreAndNotExists);&#xA;&#x9;&#x9;// addPreAnd.getArguments().add(addPreAndNot);&#xA;&#xA;&#x9;&#x9;ForAllOperator addPreAndForall = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());&#xA;&#x9;&#x9;ExistsOperator addPreAndForallExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;addPreAndForall.setArgument(addPreAndForallExists);&#xA;&#x9;&#x9;addPreAnd.getArguments().add(addPreAndForall);&#xA;&#xA;&#x9;&#x9;addPreSpecification.setRootOperator(addPreAnd);&#xA;&#x9;&#x9;preCondition.setConditionFormula(addPreSpecification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition addPost = LogicalSpecificationFactory.eINSTANCE.createPostCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification addPostSpec = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddNodePostcondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator addPostAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;ExistsOperator addPostAndExistsInC = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getComponentToAddSVP(), getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;addPostAnd.getArguments().add(addPostAndExistsInC);&#xA;&#xA;&#x9;&#x9;ForAllOperator addPostAndForallTargets = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());&#xA;&#x9;&#x9;AndOperator addPostAndForallTargetsAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;ExistsOperator addPostAndForallTargetsExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;addPostAndForallTargetsAnd.getArguments().add(addPostAndForallTargetsExists);&#xA;&#xA;&#x9;&#x9;// TODO getDeployedComps è l'insieme delle Component deployate sui&#xA;&#x9;&#x9;// target Nodes. Non va bene: la condition dice che&#xA;&#x9;&#x9;// su ogni target Node ci deve stare la Component aggiunta. Con l'unione&#xA;&#x9;&#x9;// basta che stia su uno dei target...&#xA;&#x9;&#x9;ExistsOperator addPostAndExistsInD = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getComponentToAddSVP(),&#xA;&#x9;&#x9;&#x9;&#x9;getDeployedCompsMVP());&#xA;&#xA;&#x9;&#x9;addPostAndForallTargetsAnd.getArguments().add(addPostAndExistsInD);&#xA;&#x9;&#x9;addPostAndForallTargets.setArgument(addPostAndForallTargetsAnd);&#xA;&#x9;&#x9;addPostAnd.getArguments().add(addPostAndForallTargets);&#xA;&#xA;&#x9;&#x9;addPostSpec.setRootOperator(addPostAnd);&#xA;&#x9;&#x9;addPost.setConditionFormula(addPostSpec);&#xA;&#x9;&#x9;setPost(addPost);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="componentToAddSVP"
             lowerBound="1" eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodesMVP" lowerBound="1"
@@ -290,31 +224,6 @@
             upperBound="-1" eType="#//actions/UML/Node"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLAddOperationAction" eSuperTypes="#//actions/UML/UMLAddAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log();&#xA;&#x9;&#x9;if (umlOpToAdd != null)&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(umlOpToAdd.toString());&#xA;&#xA;&#x9;&#x9;for (Operation op : umlTargetComp.getOperations()) {&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(op.getName());&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="&#xA;&#x9;&#x9;/**&#xA;&#x9;&#x9; * Operation createOwnedOperation(String name, EList&lt;String>&#xA;&#x9;&#x9; * parameterNames, EList&lt;Type> parameterTypes, Type returnType);&#xA;&#x9;&#x9; * &#xA;&#x9;&#x9; */&#xA;&#x9;&#x9;umlOpToAdd = umlTargetComp.createOwnedOperation(&quot;newOp&quot; + Math.random(), null, null);&#xA;"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="// ACTION add PARAMETERS&#xA;&#x9;&#x9;List&lt;Parameter> addParams = new ArrayList&lt;>();&#xA;&#x9;&#x9;// FIXME le add non dovrebbero avere come attributo l'oggetto da creare&#xA;&#xA;&#x9;&#x9;if (umlOpToAdd != null) {&#xA;&#x9;&#x9;&#x9;setOpToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getOperationQuery(umlOpToAdd)));&#xA;&#x9;&#x9;&#x9;addParams.add(getOpToAddSVP());&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;setTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getComponentQuery(getUmlTargetComp())));&#xA;&#x9;&#x9;addParams.add(getTargetCompSVP());&#xA;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllComponentsQuery()));&#xA;&#x9;&#x9;addParams.add(getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;setTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getOperationsOfQuery(getUmlTargetComp())));&#xA;&#x9;&#x9;addParams.add(getTargetCompOpsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(addParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();&#xA;&#x9;&#x9;FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddOperationPreCondition&quot;);&#xA;&#x9;&#x9;AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;ExistsOperator addPreAndExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;addPreAnd.getArguments().add(addPreAndExists);&#xA;&#xA;&#x9;&#x9;// NotOperator addPreAndNot = Manager.createNotOperator();&#xA;&#x9;&#x9;// ExistsOperator addPreAndNotExists =&#xA;&#x9;&#x9;// Manager.createExistsOperator(getNewOpSVP(), getTargetCompOps());&#xA;&#x9;&#x9;// addPreAndNot.setArgument(addPreAndNotExists);&#xA;&#x9;&#x9;// addPreAnd.getArguments().add(addPreAndNot);&#xA;&#xA;&#x9;&#x9;addPreSpecification.setRootOperator(addPreAnd);&#xA;&#x9;&#x9;preCondition.setConditionFormula(addPreSpecification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = LogicalSpecificationFactory.eINSTANCE.createPostCondition();&#xA;&#x9;&#x9;FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(&quot;AddOperationPostCondition&quot;);&#xA;&#x9;&#x9;AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;ExistsOperator addPreAndExists1 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;addPreAnd.getArguments().add(addPreAndExists1);&#xA;&#xA;&#x9;&#x9;ExistsOperator addPreAndExists2 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getOpToAddSVP(), getTargetCompOpsMVP());&#xA;&#x9;&#x9;addPreAnd.getArguments().add(addPreAndExists2);&#xA;&#xA;&#x9;&#x9;addPreSpecification.setRootOperator(addPreAnd);&#xA;&#x9;&#x9;postCondition.setConditionFormula(addPreSpecification);&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="opToAddSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="targetCompSVP" lowerBound="1"
@@ -329,31 +238,6 @@
             eType="#//actions/UML/Component"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLDeleteNodeAction" eSuperTypes="#//actions/UML/UMLDeleteAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log(); &#xA;&#x9;&#x9;Controller.logger_.info(getUmlNodeToDel().getName());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="umlNodeToDel.destroy();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> delNodeParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setNodeToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getNodeQuery(getUmlNodeToDel())));&#xA;&#x9;&#x9;delNodeParams.add(getNodeToDelSVP());&#xA;&#xA;&#x9;&#x9;setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));&#xA;&#x9;&#x9;delNodeParams.add(getAllNodesMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(delNodeParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteNodePreCondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getNodeToDelSVP(), getAllNodesMVP());&#xA;&#xA;&#x9;&#x9;preAnd.getArguments().add(existsOperator);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#x9;&#x9;preCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteNodePostCondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;NotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();&#xA;&#x9;&#x9;ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getNodeToDelSVP(), getAllNodesMVP());&#xA;&#xA;&#x9;&#x9;notOperator.setArgument(existsOperator);&#xA;&#x9;&#x9;preAnd.getArguments().add(notOperator);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#x9;&#x9;postCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="nodeToDelSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="allNodesMVP" lowerBound="1"
@@ -362,31 +246,6 @@
             eType="#//actions/UML/Node"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLDeleteComponentAction" eSuperTypes="#//actions/UML/UMLDeleteAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log();&#xA;&#x9;&#x9;Controller.logger_.info(this.toString());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Manifestation> list_of_manifestations = ((UMLManager) Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.getMetamodelManager()).getAllManifestationsOf(getUmlCompToDel());&#xA;&#x9;&#x9;for (Manifestation man : list_of_manifestations) {&#xA;&#x9;&#x9;&#x9;if (man.getUtilizedElement().getNamespace() == getUmlCompToDel().getNamespace()) {&#xA;&#x9;&#x9;&#x9;&#x9;man.destroy();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;umlCompToDel.destroy();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> delCompParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setCompToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getComponentQuery(getUmlCompToDel())));&#xA;&#x9;&#x9;delCompParams.add(getCompToDelSVP());&#xA;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllComponentsQuery()));&#xA;&#x9;&#x9;delCompParams.add(getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(delCompParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteComponentPreCondition&quot;);&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;ExistsOperator exists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getCompToDelSVP(),&#xA;&#x9;&#x9;&#x9;&#x9;getAllCompsMVP());&#xA;&#x9;&#x9;preAnd.getArguments().add(exists);&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#x9;&#x9;preCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteComponentPostCondition&quot;);&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;NotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();&#xA;&#x9;&#x9;ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getCompToDelSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;notOperator.setArgument(existsOperator);&#xA;&#x9;&#x9;preAnd.getArguments().add(notOperator);&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#x9;&#x9;postCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="compToDelSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="allCompsMVP" lowerBound="1"
@@ -395,31 +254,6 @@
             eType="#//actions/UML/Component"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLDeleteOperationAction" eSuperTypes="#//actions/UML/UMLDeleteAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log(); &#xA;&#x9;&#x9;Controller.logger_.info(getUmlOpToDel().toString());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="getUmlOpToDel().destroy();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> delOpParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setOpToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getOperationQuery(getUmlOpToDel())));&#xA;&#x9;&#x9;delOpParams.add(getOpToDelSVP());&#xA;&#xA;&#x9;&#x9;setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllOperationsQuery()));&#xA;&#x9;&#x9;delOpParams.add(getAllOpsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(delOpParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteOperationPreCondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToDelSVP(), getAllOpsMVP());&#xA;&#xA;&#x9;&#x9;preAnd.getArguments().add(existsOperator);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#x9;&#x9;preCondition.setConditionFormula(specification);&#xA;&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;DeleteOperationPostCondition&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#xA;&#x9;&#x9;NotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();&#xA;&#x9;&#x9;ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToDelSVP(), getAllOpsMVP());&#xA;&#x9;&#x9;notOperator.setArgument(existsOperator);&#xA;&#xA;&#x9;&#x9;preAnd.getArguments().add(notOperator);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(preAnd);&#xA;&#xA;&#x9;&#x9;postCondition.setConditionFormula(specification);&#xA;&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="opToDelSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="allOpsMVP" lowerBound="1"
@@ -428,41 +262,6 @@
             eType="#//actions/UML/Operation"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLMoveComponentAction" eSuperTypes="#//actions/UML/UMLMoveAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="Controller.logger_.info(umlCompToMove.toString());&#xA;&#x9;&#x9;for (Node target : umlTargetNodes) {&#xA;&#x9;&#x9;&#x9;for (Deployment dep : target.getDeployments()) {&#xA;&#x9;&#x9;&#x9;&#x9;Controller.logger_.info(dep.toString());&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;for (Artifact art : getUmlArtifacts()) {&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(art.toString());&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(Integer.toString(art.getManifestations().size()));&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="moveDeployments();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="moveDeployments">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Manifestation> manifestations = new ArrayList&lt;Manifestation>();&#xA;&#xA;&#x9;&#x9;manifestations = ((UMLManager) Manager.getInstance(UMLManager.getInstance()).getMetamodelManager())&#xA;&#x9;&#x9;&#x9;&#x9;.getAllManifestations();&#xA;&#xA;&#x9;&#x9;for (Manifestation man : manifestations) {&#xA;&#x9;&#x9;&#x9;if (man.getUtilizedElement().getQualifiedName().equals(umlCompToMove.getQualifiedName())) {&#xA;&#x9;&#x9;&#x9;&#x9;man.destroy();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;umlArtifacts = ((UMLManager) Manager.getInstance(UMLManager.getInstance()).getMetamodelManager())&#xA;&#x9;&#x9;&#x9;&#x9;.getAllArtifacts();&#xA;&#xA;&#x9;&#x9;for (Artifact art : umlArtifacts) {&#xA;&#x9;&#x9;&#x9;if (art.getManifestations().isEmpty()) {&#xA;&#x9;&#x9;&#x9;&#x9;art.destroy();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;deployOn();"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="deployOn">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="Artifact art;&#xA;&#x9;&#x9;for (Node target : umlTargetNodes) {&#xA;&#x9;&#x9;&#x9;art = UMLFactory.eINSTANCE.createArtifact();&#xA;&#x9;&#x9;&#x9;art.setName(umlCompToMove.getName() + &quot;_Artifact&quot;);&#xA;&#x9;&#x9;&#x9;art.createManifestation(umlCompToMove.getName() + &quot;_Manifestation&quot;, umlCompToMove);&#xA;&#x9;&#x9;&#x9;Deployment deploy = target.createDeployment(umlCompToMove.getName() + &quot;_Deployment&quot;);&#xA;&#x9;&#x9;&#x9;deploy.getDeployedArtifacts().add(art);&#xA;&#x9;&#x9;&#x9;target.getDeployments().add(deploy);&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> moveCompParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setCompToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getComponentQuery(getUmlCompToMove())));&#xA;&#x9;&#x9;moveCompParams.add(getCompToMoveSVP());&#xA;&#xA;&#x9;&#x9;setTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getNodesQuery(getUmlTargetNodes())));&#xA;&#x9;&#x9;moveCompParams.add(getTargetNodesMVP());&#xA;&#xA;&#x9;&#x9;setAllArtifactsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllArtifactsQuery()));&#xA;&#x9;&#x9;moveCompParams.add(getAllArtifactsMVP());&#xA;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllComponentsQuery()));&#xA;&#x9;&#x9;moveCompParams.add(getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;setAllTargetsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getNodesQuery(getUmlTargetNodes())));&#xA;&#x9;&#x9;moveCompParams.add(getAllTargetsMVP());&#xA;&#xA;&#x9;&#x9;setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));&#xA;&#x9;&#x9;moveCompParams.add(getAllNodesMVP());&#xA;&#xA;&#x9;&#x9;setAllDeployedElemsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllDeployedElementsQuery(getUmlTargetNodes())));&#xA;&#x9;&#x9;moveCompParams.add(getAllDeployedElemsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(moveCompParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;MoveComponentPreCondition&quot;);&#xA;&#xA;&#x9;&#x9;ExistsOperator existsComponentInComponents = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getCompToMoveSVP(), getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;ForAllOperator forAllNode = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createForAllOperator(getTargetNodesMVP());&#xA;&#x9;&#x9;ExistsOperator existsTargetInNodes = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;NotOperator componentNotOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();&#xA;&#xA;&#x9;&#x9;// TODO getAllDeployedElems è l'insieme delle Component deployate sui target&#xA;&#x9;&#x9;// Nodes. Non va bene: la condition dice che&#xA;&#x9;&#x9;// su ogni target Node ci deve stare la Component spostata. Con l'unione basta&#xA;&#x9;&#x9;// che stia su uno dei target...&#xA;&#x9;&#x9;ExistsOperator componentExists = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getCompToMoveSVP(), getAllDeployedElemsMVP());&#xA;&#xA;&#x9;&#x9;componentNotOperator.setArgument(componentExists);&#xA;&#x9;&#x9;AndOperator andOperator = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andOperator.getArguments().add(existsTargetInNodes);&#xA;&#x9;&#x9;andOperator.getArguments().add(componentNotOperator);&#xA;&#x9;&#x9;forAllNode.setArgument(andOperator);&#xA;&#xA;&#x9;&#x9;AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andRoot.getArguments().add(existsComponentInComponents);&#xA;&#x9;&#x9;andRoot.getArguments().add(forAllNode);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(andRoot);&#xA;&#x9;&#x9;preCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;MoveComponentPostCondition&quot;);&#xA;&#xA;&#x9;&#x9;ExistsOperator existsComponentInComponents = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getCompToMoveSVP(), getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;ForAllOperator forAllNode = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createForAllOperator(getTargetNodesMVP());&#xA;&#x9;&#x9;ExistsOperator existsTargetInNodes = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getAllNodesMVP());&#xA;&#x9;&#x9;ExistsOperator componentExists = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getCompToMoveSVP(), getAllDeployedElemsMVP());&#xA;&#x9;&#x9;AndOperator andOperator = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andOperator.getArguments().add(existsTargetInNodes);&#xA;&#x9;&#x9;andOperator.getArguments().add(componentExists);&#xA;&#x9;&#x9;forAllNode.setArgument(andOperator);&#xA;&#xA;&#x9;&#x9;AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andRoot.getArguments().add(existsComponentInComponents);&#xA;&#x9;&#x9;andRoot.getArguments().add(forAllNode);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(andRoot);&#xA;&#x9;&#x9;postCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="compToMoveSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodesMVP" lowerBound="1"
@@ -485,31 +284,6 @@
             eType="#//actions/UML/Artifact"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="UMLMoveOperationAction" eSuperTypes="#//actions/UML/UMLMoveAction">
-        <eOperations name="log">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="super.log();&#xA;&#x9;&#x9;Controller.logger_.info(getUmlTargetComp().toString());&#xA;&#x9;&#x9;for (Operation op : getUmlTargetComp().getOperations()) {&#xA;&#x9;&#x9;&#x9;Controller.logger_.info(op.toString());&#xA;&#x9;&#x9;}"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="execute">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="getUmlOpToMove().setClass_(getUmlTargetComp());"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="setParameters">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="List&lt;Parameter> moveOpParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setOpToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getOperationQuery(getUmlOpToMove())));&#xA;&#x9;&#x9;moveOpParams.add(getOpToMoveSVP());&#xA;&#xA;&#x9;&#x9;setTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getComponentQuery(getUmlTargetComp())));&#xA;&#x9;&#x9;moveOpParams.add(getTargetCompSVP());&#xA;&#xA;&#x9;&#x9;setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllOperationsQuery()));&#xA;&#x9;&#x9;moveOpParams.add(getAllOpsMVP());&#xA;&#xA;&#x9;&#x9;setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getAllComponentsQuery()));&#xA;&#x9;&#x9;moveOpParams.add(getAllCompsMVP());&#xA;&#xA;&#x9;&#x9;setAllTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.getOperationsOfQuery(getUmlTargetComp())));&#xA;&#x9;&#x9;moveOpParams.add(getAllTargetCompOpsMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(moveOpParams);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPreCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;MoveOperationPreCondition&quot;);&#xA;&#xA;&#x9;&#x9;ExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());&#xA;&#x9;&#x9;ExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;ExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());&#xA;&#x9;&#x9;NotOperator notExistsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createNotOperator(existsOpInOpsOfTarget);&#xA;&#xA;&#x9;&#x9;AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andRoot.getArguments().add(existsOpInOperations);&#xA;&#x9;&#x9;andRoot.getArguments().add(existsTargetInComponents);&#xA;&#x9;&#x9;andRoot.getArguments().add(notExistsOpInOpsOfTarget);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(andRoot);&#xA;&#x9;&#x9;preCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPre(preCondition);"/>
-          </eAnnotations>
-        </eOperations>
-        <eOperations name="createPostCondition">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();&#xA;&#x9;&#x9;FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createFOLSpectification(&quot;MoveOperationPostCondition&quot;);&#xA;&#xA;&#x9;&#x9;ExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());&#xA;&#x9;&#x9;ExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());&#xA;&#x9;&#x9;ExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())&#xA;&#x9;&#x9;&#x9;&#x9;.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());&#xA;&#xA;&#x9;&#x9;AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();&#xA;&#x9;&#x9;andRoot.getArguments().add(existsOpInOperations);&#xA;&#x9;&#x9;andRoot.getArguments().add(existsTargetInComponents);&#xA;&#x9;&#x9;andRoot.getArguments().add(existsOpInOpsOfTarget);&#xA;&#xA;&#x9;&#x9;specification.setRootOperator(andRoot);&#xA;&#x9;&#x9;postCondition.setConditionFormula(specification);&#xA;&#x9;&#x9;setPost(postCondition);"/>
-          </eAnnotations>
-        </eOperations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="opToMoveSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="targetCompSVP" lowerBound="1"
@@ -587,6 +361,38 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="AEmiliaChangeAction" eSuperTypes="#//ChangeAction"/>
       <eClassifiers xsi:type="ecore:EDataType" name="ConstInit" instanceClassName="metamodel.mmaemilia.Headers.ConstInit"/>
+      <eClassifiers xsi:type="ecore:EClass" name="AEmiliaRemoveClonedAEIAction" eSuperTypes="#//actions/AEmilia/AEmiliaDeleteAction">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceAEI" lowerBound="1"
+            eType="#//actions/AEmilia/ArchiElemInstance"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="clonedAEI" lowerBound="1"
+            eType="#//actions/AEmilia/ArchiElemInstance"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfInputInteractions"
+            upperBound="-1" eType="#//actions/AEmilia/InputInteraction"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfOutputInteractions"
+            upperBound="-1" eType="#//actions/AEmilia/OutputInteraction"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="listOfNewAttachments"
+            upperBound="-1" eType="#//actions/AEmilia/Attachment"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="aeiToCloneSVP" lowerBound="1"
+            eType="#//SingleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="clonedAeiSVP" lowerBound="1"
+            eType="#//SingleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOrInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allInLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOutLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allUniInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allLocalInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allAeisMVP" lowerBound="1"
+            eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allInRemoteInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="allOutRemoteInteractsMVP"
+            lowerBound="1" eType="#//MultipleValuedParameter" containment="true"/>
+      </eClassifiers>
     </eSubpackages>
   </eSubpackages>
   <eSubpackages name="antipatterns" nsURI="http://it.univaq.disim.seagroup/logicalSpecification/antipatterns"
