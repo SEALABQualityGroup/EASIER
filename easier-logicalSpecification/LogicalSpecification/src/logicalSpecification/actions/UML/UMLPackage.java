@@ -7,7 +7,6 @@ import logicalSpecification.LogicalSpecificationPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -677,40 +676,22 @@ public interface UMLPackage extends EPackage {
 	int UML_ADD_NODE_ACTION_FEATURE_COUNT = UML_ADD_ACTION_FEATURE_COUNT + 10;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_ADD_NODE_ACTION___LOG = UML_ADD_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION___EXECUTE = UML_ADD_ACTION_OPERATION_COUNT + 1;
+	int UML_ADD_NODE_ACTION___EXECUTE = UML_ADD_ACTION___EXECUTE;
 
 	/**
-	 * The operation id for the '<em>Add Deployed Comps</em>' operation.
+	 * The operation id for the '<em>Log</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION___ADD_DEPLOYED_COMPS = UML_ADD_ACTION_OPERATION_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Add Communication Paths</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_ADD_NODE_ACTION___ADD_COMMUNICATION_PATHS = UML_ADD_ACTION_OPERATION_COUNT + 3;
+	int UML_ADD_NODE_ACTION___LOG = UML_ADD_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -719,7 +700,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION___SET_PARAMETERS = UML_ADD_ACTION_OPERATION_COUNT + 4;
+	int UML_ADD_NODE_ACTION___SET_PARAMETERS = UML_ADD_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -728,7 +709,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 5;
+	int UML_ADD_NODE_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -737,7 +718,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 6;
+	int UML_ADD_NODE_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Add Node Action</em>' class.
@@ -746,7 +727,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_NODE_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 7;
+	int UML_ADD_NODE_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLAddComponentActionImpl <em>Add Component Action</em>}' class.
@@ -912,31 +893,22 @@ public interface UMLPackage extends EPackage {
 	int UML_ADD_COMPONENT_ACTION_FEATURE_COUNT = UML_ADD_ACTION_FEATURE_COUNT + 8;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_ADD_COMPONENT_ACTION___LOG = UML_ADD_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION___EXECUTE = UML_ADD_ACTION_OPERATION_COUNT + 1;
+	int UML_ADD_COMPONENT_ACTION___EXECUTE = UML_ADD_ACTION___EXECUTE;
 
 	/**
-	 * The operation id for the '<em>Deploy On</em>' operation.
+	 * The operation id for the '<em>Log</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION___DEPLOY_ON__ELIST = UML_ADD_ACTION_OPERATION_COUNT + 2;
+	int UML_ADD_COMPONENT_ACTION___LOG = UML_ADD_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -945,7 +917,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION___SET_PARAMETERS = UML_ADD_ACTION_OPERATION_COUNT + 3;
+	int UML_ADD_COMPONENT_ACTION___SET_PARAMETERS = UML_ADD_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -954,7 +926,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 4;
+	int UML_ADD_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -963,7 +935,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 5;
+	int UML_ADD_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Add Component Action</em>' class.
@@ -972,7 +944,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_COMPONENT_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 6;
+	int UML_ADD_COMPONENT_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLAddOperationActionImpl <em>Add Operation Action</em>}' class.
@@ -1120,22 +1092,22 @@ public interface UMLPackage extends EPackage {
 	int UML_ADD_OPERATION_ACTION_FEATURE_COUNT = UML_ADD_ACTION_FEATURE_COUNT + 6;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_ADD_OPERATION_ACTION___LOG = UML_ADD_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_OPERATION_ACTION___EXECUTE = UML_ADD_ACTION_OPERATION_COUNT + 1;
+	int UML_ADD_OPERATION_ACTION___EXECUTE = UML_ADD_ACTION___EXECUTE;
+
+	/**
+	 * The operation id for the '<em>Log</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UML_ADD_OPERATION_ACTION___LOG = UML_ADD_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -1144,7 +1116,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_OPERATION_ACTION___SET_PARAMETERS = UML_ADD_ACTION_OPERATION_COUNT + 2;
+	int UML_ADD_OPERATION_ACTION___SET_PARAMETERS = UML_ADD_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -1153,7 +1125,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 3;
+	int UML_ADD_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_ADD_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -1162,7 +1134,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_OPERATION_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION_OPERATION_COUNT + 4;
+	int UML_ADD_OPERATION_ACTION___CREATE_POST_CONDITION = UML_ADD_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Add Operation Action</em>' class.
@@ -1171,7 +1143,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_ADD_OPERATION_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 5;
+	int UML_ADD_OPERATION_ACTION_OPERATION_COUNT = UML_ADD_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteNodeActionImpl <em>Delete Node Action</em>}' class.
@@ -1292,22 +1264,22 @@ public interface UMLPackage extends EPackage {
 	int UML_DELETE_NODE_ACTION_FEATURE_COUNT = UML_DELETE_ACTION_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_DELETE_NODE_ACTION___LOG = UML_DELETE_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_NODE_ACTION___EXECUTE = UML_DELETE_ACTION_OPERATION_COUNT + 1;
+	int UML_DELETE_NODE_ACTION___EXECUTE = UML_DELETE_ACTION___EXECUTE;
+
+	/**
+	 * The operation id for the '<em>Log</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UML_DELETE_NODE_ACTION___LOG = UML_DELETE_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -1316,7 +1288,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_NODE_ACTION___SET_PARAMETERS = UML_DELETE_ACTION_OPERATION_COUNT + 2;
+	int UML_DELETE_NODE_ACTION___SET_PARAMETERS = UML_DELETE_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -1325,7 +1297,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_NODE_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 3;
+	int UML_DELETE_NODE_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -1334,7 +1306,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_NODE_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 4;
+	int UML_DELETE_NODE_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Delete Node Action</em>' class.
@@ -1343,7 +1315,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_NODE_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 5;
+	int UML_DELETE_NODE_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteComponentActionImpl <em>Delete Component Action</em>}' class.
@@ -1464,22 +1436,22 @@ public interface UMLPackage extends EPackage {
 	int UML_DELETE_COMPONENT_ACTION_FEATURE_COUNT = UML_DELETE_ACTION_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_DELETE_COMPONENT_ACTION___LOG = UML_DELETE_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_COMPONENT_ACTION___EXECUTE = UML_DELETE_ACTION_OPERATION_COUNT + 1;
+	int UML_DELETE_COMPONENT_ACTION___EXECUTE = UML_DELETE_ACTION___EXECUTE;
+
+	/**
+	 * The operation id for the '<em>Log</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UML_DELETE_COMPONENT_ACTION___LOG = UML_DELETE_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -1488,7 +1460,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_COMPONENT_ACTION___SET_PARAMETERS = UML_DELETE_ACTION_OPERATION_COUNT + 2;
+	int UML_DELETE_COMPONENT_ACTION___SET_PARAMETERS = UML_DELETE_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -1497,7 +1469,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 3;
+	int UML_DELETE_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -1506,7 +1478,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 4;
+	int UML_DELETE_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Delete Component Action</em>' class.
@@ -1515,7 +1487,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_COMPONENT_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 5;
+	int UML_DELETE_COMPONENT_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteOperationActionImpl <em>Delete Operation Action</em>}' class.
@@ -1636,22 +1608,22 @@ public interface UMLPackage extends EPackage {
 	int UML_DELETE_OPERATION_ACTION_FEATURE_COUNT = UML_DELETE_ACTION_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_DELETE_OPERATION_ACTION___LOG = UML_DELETE_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_OPERATION_ACTION___EXECUTE = UML_DELETE_ACTION_OPERATION_COUNT + 1;
+	int UML_DELETE_OPERATION_ACTION___EXECUTE = UML_DELETE_ACTION___EXECUTE;
+
+	/**
+	 * The operation id for the '<em>Log</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UML_DELETE_OPERATION_ACTION___LOG = UML_DELETE_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -1660,7 +1632,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_OPERATION_ACTION___SET_PARAMETERS = UML_DELETE_ACTION_OPERATION_COUNT + 2;
+	int UML_DELETE_OPERATION_ACTION___SET_PARAMETERS = UML_DELETE_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -1669,7 +1641,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 3;
+	int UML_DELETE_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_DELETE_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -1678,7 +1650,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_OPERATION_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION_OPERATION_COUNT + 4;
+	int UML_DELETE_OPERATION_ACTION___CREATE_POST_CONDITION = UML_DELETE_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Delete Operation Action</em>' class.
@@ -1687,7 +1659,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_DELETE_OPERATION_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 5;
+	int UML_DELETE_OPERATION_ACTION_OPERATION_COUNT = UML_DELETE_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl <em>Move Component Action</em>}' class.
@@ -1871,40 +1843,22 @@ public interface UMLPackage extends EPackage {
 	int UML_MOVE_COMPONENT_ACTION_FEATURE_COUNT = UML_MOVE_ACTION_FEATURE_COUNT + 10;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_MOVE_COMPONENT_ACTION___LOG = UML_MOVE_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION___EXECUTE = UML_MOVE_ACTION_OPERATION_COUNT + 1;
+	int UML_MOVE_COMPONENT_ACTION___EXECUTE = UML_MOVE_ACTION___EXECUTE;
 
 	/**
-	 * The operation id for the '<em>Move Deployments</em>' operation.
+	 * The operation id for the '<em>Log</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION___MOVE_DEPLOYMENTS = UML_MOVE_ACTION_OPERATION_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Deploy On</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_MOVE_COMPONENT_ACTION___DEPLOY_ON = UML_MOVE_ACTION_OPERATION_COUNT + 3;
+	int UML_MOVE_COMPONENT_ACTION___LOG = UML_MOVE_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -1913,7 +1867,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION___SET_PARAMETERS = UML_MOVE_ACTION_OPERATION_COUNT + 4;
+	int UML_MOVE_COMPONENT_ACTION___SET_PARAMETERS = UML_MOVE_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -1922,7 +1876,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_MOVE_ACTION_OPERATION_COUNT + 5;
+	int UML_MOVE_COMPONENT_ACTION___CREATE_PRE_CONDITION = UML_MOVE_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -1931,7 +1885,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_MOVE_ACTION_OPERATION_COUNT + 6;
+	int UML_MOVE_COMPONENT_ACTION___CREATE_POST_CONDITION = UML_MOVE_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Move Component Action</em>' class.
@@ -1940,7 +1894,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_COMPONENT_ACTION_OPERATION_COUNT = UML_MOVE_ACTION_OPERATION_COUNT + 7;
+	int UML_MOVE_COMPONENT_ACTION_OPERATION_COUNT = UML_MOVE_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl <em>Move Operation Action</em>}' class.
@@ -2097,22 +2051,22 @@ public interface UMLPackage extends EPackage {
 	int UML_MOVE_OPERATION_ACTION_FEATURE_COUNT = UML_MOVE_ACTION_FEATURE_COUNT + 7;
 
 	/**
-	 * The operation id for the '<em>Log</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UML_MOVE_OPERATION_ACTION___LOG = UML_MOVE_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Execute</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_OPERATION_ACTION___EXECUTE = UML_MOVE_ACTION_OPERATION_COUNT + 1;
+	int UML_MOVE_OPERATION_ACTION___EXECUTE = UML_MOVE_ACTION___EXECUTE;
+
+	/**
+	 * The operation id for the '<em>Log</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UML_MOVE_OPERATION_ACTION___LOG = UML_MOVE_ACTION___LOG;
 
 	/**
 	 * The operation id for the '<em>Set Parameters</em>' operation.
@@ -2121,7 +2075,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_OPERATION_ACTION___SET_PARAMETERS = UML_MOVE_ACTION_OPERATION_COUNT + 2;
+	int UML_MOVE_OPERATION_ACTION___SET_PARAMETERS = UML_MOVE_ACTION___SET_PARAMETERS;
 
 	/**
 	 * The operation id for the '<em>Create Pre Condition</em>' operation.
@@ -2130,7 +2084,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_MOVE_ACTION_OPERATION_COUNT + 3;
+	int UML_MOVE_OPERATION_ACTION___CREATE_PRE_CONDITION = UML_MOVE_ACTION___CREATE_PRE_CONDITION;
 
 	/**
 	 * The operation id for the '<em>Create Post Condition</em>' operation.
@@ -2139,7 +2093,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_OPERATION_ACTION___CREATE_POST_CONDITION = UML_MOVE_ACTION_OPERATION_COUNT + 4;
+	int UML_MOVE_OPERATION_ACTION___CREATE_POST_CONDITION = UML_MOVE_ACTION___CREATE_POST_CONDITION;
 
 	/**
 	 * The number of operations of the '<em>Move Operation Action</em>' class.
@@ -2148,7 +2102,7 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UML_MOVE_OPERATION_ACTION_OPERATION_COUNT = UML_MOVE_ACTION_OPERATION_COUNT + 5;
+	int UML_MOVE_OPERATION_ACTION_OPERATION_COUNT = UML_MOVE_ACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '<em>Component</em>' data type.
@@ -2352,76 +2306,6 @@ public interface UMLPackage extends EPackage {
 	EAttribute getUMLAddNodeAction_UmlSourcePackage();
 
 	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#log()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#addDeployedComps() <em>Add Deployed Comps</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Add Deployed Comps</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#addDeployedComps()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__AddDeployedComps();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#addCommunicationPaths() <em>Add Communication Paths</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Add Communication Paths</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#addCommunicationPaths()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__AddCommunicationPaths();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddNodeAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddNodeAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddNodeAction__CreatePostCondition();
-
-	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLAddComponentAction <em>Add Component Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2520,66 +2404,6 @@ public interface UMLPackage extends EPackage {
 	EAttribute getUMLAddComponentAction_UmlTargetNodes();
 
 	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#log()
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#deployOn(org.eclipse.emf.common.util.EList) <em>Deploy On</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Deploy On</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#deployOn(org.eclipse.emf.common.util.EList)
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__DeployOn__EList();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddComponentAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddComponentAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddComponentAction__CreatePostCondition();
-
-	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLAddOperationAction <em>Add Operation Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2656,56 +2480,6 @@ public interface UMLPackage extends EPackage {
 	EAttribute getUMLAddOperationAction_UmlTargetComp();
 
 	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddOperationAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddOperationAction#log()
-	 * @generated
-	 */
-	EOperation getUMLAddOperationAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddOperationAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddOperationAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLAddOperationAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddOperationAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddOperationAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLAddOperationAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddOperationAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddOperationAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddOperationAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLAddOperationAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLAddOperationAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLAddOperationAction__CreatePostCondition();
-
-	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction <em>Delete Node Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2747,56 +2521,6 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUMLDeleteNodeAction_UmlNodeToDel();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteNodeAction#log()
-	 * @generated
-	 */
-	EOperation getUMLDeleteNodeAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteNodeAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLDeleteNodeAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteNodeAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLDeleteNodeAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteNodeAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteNodeAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteNodeAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteNodeAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteNodeAction__CreatePostCondition();
 
 	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction <em>Delete Component Action</em>}'.
@@ -2842,56 +2566,6 @@ public interface UMLPackage extends EPackage {
 	EAttribute getUMLDeleteComponentAction_UmlCompToDel();
 
 	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteComponentAction#log()
-	 * @generated
-	 */
-	EOperation getUMLDeleteComponentAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteComponentAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLDeleteComponentAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteComponentAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLDeleteComponentAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteComponentAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteComponentAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteComponentAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteComponentAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteComponentAction__CreatePostCondition();
-
-	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction <em>Delete Operation Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2933,56 +2607,6 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUMLDeleteOperationAction_UmlOpToDel();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteOperationAction#log()
-	 * @generated
-	 */
-	EOperation getUMLDeleteOperationAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteOperationAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLDeleteOperationAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteOperationAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLDeleteOperationAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteOperationAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteOperationAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLDeleteOperationAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLDeleteOperationAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLDeleteOperationAction__CreatePostCondition();
 
 	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLMoveComponentAction <em>Move Component Action</em>}'.
@@ -3105,76 +2729,6 @@ public interface UMLPackage extends EPackage {
 	EAttribute getUMLMoveComponentAction_UmlArtifacts();
 
 	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#log()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#moveDeployments() <em>Move Deployments</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Move Deployments</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#moveDeployments()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__MoveDeployments();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#deployOn() <em>Deploy On</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Deploy On</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#deployOn()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__DeployOn();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveComponentAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveComponentAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLMoveComponentAction__CreatePostCondition();
-
-	/**
 	 * Returns the meta object for class '{@link logicalSpecification.actions.UML.UMLMoveOperationAction <em>Move Operation Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3260,56 +2814,6 @@ public interface UMLPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUMLMoveOperationAction_UmlTargetComp();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveOperationAction#log() <em>Log</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Log</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveOperationAction#log()
-	 * @generated
-	 */
-	EOperation getUMLMoveOperationAction__Log();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveOperationAction#execute() <em>Execute</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Execute</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveOperationAction#execute()
-	 * @generated
-	 */
-	EOperation getUMLMoveOperationAction__Execute();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveOperationAction#setParameters() <em>Set Parameters</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Set Parameters</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveOperationAction#setParameters()
-	 * @generated
-	 */
-	EOperation getUMLMoveOperationAction__SetParameters();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveOperationAction#createPreCondition() <em>Create Pre Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Pre Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveOperationAction#createPreCondition()
-	 * @generated
-	 */
-	EOperation getUMLMoveOperationAction__CreatePreCondition();
-
-	/**
-	 * Returns the meta object for the '{@link logicalSpecification.actions.UML.UMLMoveOperationAction#createPostCondition() <em>Create Post Condition</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Post Condition</em>' operation.
-	 * @see logicalSpecification.actions.UML.UMLMoveOperationAction#createPostCondition()
-	 * @generated
-	 */
-	EOperation getUMLMoveOperationAction__CreatePostCondition();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.uml2.uml.Component <em>Component</em>}'.
@@ -3510,62 +3014,6 @@ public interface UMLPackage extends EPackage {
 		EAttribute UML_ADD_NODE_ACTION__UML_SOURCE_PACKAGE = eINSTANCE.getUMLAddNodeAction_UmlSourcePackage();
 
 		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___LOG = eINSTANCE.getUMLAddNodeAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___EXECUTE = eINSTANCE.getUMLAddNodeAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Add Deployed Comps</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___ADD_DEPLOYED_COMPS = eINSTANCE.getUMLAddNodeAction__AddDeployedComps();
-
-		/**
-		 * The meta object literal for the '<em><b>Add Communication Paths</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___ADD_COMMUNICATION_PATHS = eINSTANCE.getUMLAddNodeAction__AddCommunicationPaths();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___SET_PARAMETERS = eINSTANCE.getUMLAddNodeAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLAddNodeAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_NODE_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLAddNodeAction__CreatePostCondition();
-
-		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLAddComponentActionImpl <em>Add Component Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3640,54 +3088,6 @@ public interface UMLPackage extends EPackage {
 		EAttribute UML_ADD_COMPONENT_ACTION__UML_TARGET_NODES = eINSTANCE.getUMLAddComponentAction_UmlTargetNodes();
 
 		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___LOG = eINSTANCE.getUMLAddComponentAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___EXECUTE = eINSTANCE.getUMLAddComponentAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Deploy On</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___DEPLOY_ON__ELIST = eINSTANCE.getUMLAddComponentAction__DeployOn__EList();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___SET_PARAMETERS = eINSTANCE.getUMLAddComponentAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLAddComponentAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_COMPONENT_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLAddComponentAction__CreatePostCondition();
-
-		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLAddOperationActionImpl <em>Add Operation Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3746,46 +3146,6 @@ public interface UMLPackage extends EPackage {
 		EAttribute UML_ADD_OPERATION_ACTION__UML_TARGET_COMP = eINSTANCE.getUMLAddOperationAction_UmlTargetComp();
 
 		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_OPERATION_ACTION___LOG = eINSTANCE.getUMLAddOperationAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_OPERATION_ACTION___EXECUTE = eINSTANCE.getUMLAddOperationAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_OPERATION_ACTION___SET_PARAMETERS = eINSTANCE.getUMLAddOperationAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_OPERATION_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLAddOperationAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_ADD_OPERATION_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLAddOperationAction__CreatePostCondition();
-
-		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteNodeActionImpl <em>Delete Node Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3818,46 +3178,6 @@ public interface UMLPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute UML_DELETE_NODE_ACTION__UML_NODE_TO_DEL = eINSTANCE.getUMLDeleteNodeAction_UmlNodeToDel();
-
-		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_NODE_ACTION___LOG = eINSTANCE.getUMLDeleteNodeAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_NODE_ACTION___EXECUTE = eINSTANCE.getUMLDeleteNodeAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_NODE_ACTION___SET_PARAMETERS = eINSTANCE.getUMLDeleteNodeAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_NODE_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLDeleteNodeAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_NODE_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLDeleteNodeAction__CreatePostCondition();
 
 		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteComponentActionImpl <em>Delete Component Action</em>}' class.
@@ -3894,46 +3214,6 @@ public interface UMLPackage extends EPackage {
 		EAttribute UML_DELETE_COMPONENT_ACTION__UML_COMP_TO_DEL = eINSTANCE.getUMLDeleteComponentAction_UmlCompToDel();
 
 		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_COMPONENT_ACTION___LOG = eINSTANCE.getUMLDeleteComponentAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_COMPONENT_ACTION___EXECUTE = eINSTANCE.getUMLDeleteComponentAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_COMPONENT_ACTION___SET_PARAMETERS = eINSTANCE.getUMLDeleteComponentAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_COMPONENT_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLDeleteComponentAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_COMPONENT_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLDeleteComponentAction__CreatePostCondition();
-
-		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLDeleteOperationActionImpl <em>Delete Operation Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3966,46 +3246,6 @@ public interface UMLPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute UML_DELETE_OPERATION_ACTION__UML_OP_TO_DEL = eINSTANCE.getUMLDeleteOperationAction_UmlOpToDel();
-
-		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_OPERATION_ACTION___LOG = eINSTANCE.getUMLDeleteOperationAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_OPERATION_ACTION___EXECUTE = eINSTANCE.getUMLDeleteOperationAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_OPERATION_ACTION___SET_PARAMETERS = eINSTANCE.getUMLDeleteOperationAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_OPERATION_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLDeleteOperationAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_DELETE_OPERATION_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLDeleteOperationAction__CreatePostCondition();
 
 		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl <em>Move Component Action</em>}' class.
@@ -4098,62 +3338,6 @@ public interface UMLPackage extends EPackage {
 		EAttribute UML_MOVE_COMPONENT_ACTION__UML_ARTIFACTS = eINSTANCE.getUMLMoveComponentAction_UmlArtifacts();
 
 		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___LOG = eINSTANCE.getUMLMoveComponentAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___EXECUTE = eINSTANCE.getUMLMoveComponentAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Move Deployments</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___MOVE_DEPLOYMENTS = eINSTANCE.getUMLMoveComponentAction__MoveDeployments();
-
-		/**
-		 * The meta object literal for the '<em><b>Deploy On</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___DEPLOY_ON = eINSTANCE.getUMLMoveComponentAction__DeployOn();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___SET_PARAMETERS = eINSTANCE.getUMLMoveComponentAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLMoveComponentAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_COMPONENT_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLMoveComponentAction__CreatePostCondition();
-
-		/**
 		 * The meta object literal for the '{@link logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl <em>Move Operation Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -4218,46 +3402,6 @@ public interface UMLPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute UML_MOVE_OPERATION_ACTION__UML_TARGET_COMP = eINSTANCE.getUMLMoveOperationAction_UmlTargetComp();
-
-		/**
-		 * The meta object literal for the '<em><b>Log</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_OPERATION_ACTION___LOG = eINSTANCE.getUMLMoveOperationAction__Log();
-
-		/**
-		 * The meta object literal for the '<em><b>Execute</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_OPERATION_ACTION___EXECUTE = eINSTANCE.getUMLMoveOperationAction__Execute();
-
-		/**
-		 * The meta object literal for the '<em><b>Set Parameters</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_OPERATION_ACTION___SET_PARAMETERS = eINSTANCE.getUMLMoveOperationAction__SetParameters();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Pre Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_OPERATION_ACTION___CREATE_PRE_CONDITION = eINSTANCE.getUMLMoveOperationAction__CreatePreCondition();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Post Condition</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation UML_MOVE_OPERATION_ACTION___CREATE_POST_CONDITION = eINSTANCE.getUMLMoveOperationAction__CreatePostCondition();
 
 		/**
 		 * The meta object literal for the '<em>Component</em>' data type.

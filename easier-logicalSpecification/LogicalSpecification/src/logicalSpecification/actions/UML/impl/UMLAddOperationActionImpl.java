@@ -2,8 +2,6 @@
  */
 package logicalSpecification.actions.UML.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
@@ -11,9 +9,6 @@ import logicalSpecification.actions.UML.UMLAddOperationAction;
 import logicalSpecification.actions.UML.UMLPackage;
 
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -339,117 +334,6 @@ public class UMLAddOperationActionImpl extends UMLAddActionImpl implements UMLAd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void log() {
-		super.log();
-//				if (umlOpToAdd != null)
-//					Controller.logger_.info(umlOpToAdd.toString());
-//		
-//				for (Operation op : umlTargetComp.getOperations()) {
-//					Controller.logger_.info(op.getName());
-//				}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void execute() {
-		
-				/**
-				 * Operation createOwnedOperation(String name, EList<String>
-				 * parameterNames, EList<Type> parameterTypes, Type returnType);
-				 * 
-				 */
-				umlOpToAdd = umlTargetComp.createOwnedOperation("newOp" + Math.random(), null, null);
-		
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setParameters() {
-//		// ACTION add PARAMETERS
-//				List<Parameter> addParams = new ArrayList<>();
-//				// FIXME le add non dovrebbero avere come attributo l'oggetto da creare
-//		
-//				if (umlOpToAdd != null) {
-//					setOpToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//							((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//									.getOperationQuery(umlOpToAdd)));
-//					addParams.add(getOpToAddSVP());
-//				}
-//		
-//				setTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getComponentQuery(getUmlTargetComp())));
-//				addParams.add(getTargetCompSVP());
-//		
-//				setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getAllComponentsQuery()));
-//				addParams.add(getAllCompsMVP());
-//		
-//				setTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getOperationsOfQuery(getUmlTargetComp())));
-//				addParams.add(getTargetCompOpsMVP());
-//		
-//				getParameters().addAll(addParams);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPreCondition() {
-//		PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
-//				FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddOperationPreCondition");
-//				AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//		
-//				ExistsOperator addPreAndExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());
-//				addPreAnd.getArguments().add(addPreAndExists);
-//		
-//				// NotOperator addPreAndNot = Manager.createNotOperator();
-//				// ExistsOperator addPreAndNotExists =
-//				// Manager.createExistsOperator(getNewOpSVP(), getTargetCompOps());
-//				// addPreAndNot.setArgument(addPreAndNotExists);
-//				// addPreAnd.getArguments().add(addPreAndNot);
-//		
-//				addPreSpecification.setRootOperator(addPreAnd);
-//				preCondition.setConditionFormula(addPreSpecification);
-//				setPre(preCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPostCondition() {
-//		PostCondition postCondition = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
-//				FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddOperationPostCondition");
-//				AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//		
-//				ExistsOperator addPreAndExists1 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());
-//				addPreAnd.getArguments().add(addPreAndExists1);
-//		
-//				ExistsOperator addPreAndExists2 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getOpToAddSVP(), getTargetCompOpsMVP());
-//				addPreAnd.getArguments().add(addPreAndExists2);
-//		
-//				addPreSpecification.setRootOperator(addPreAnd);
-//				postCondition.setConditionFormula(addPreSpecification);
-//				setPost(postCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -563,37 +447,10 @@ public class UMLAddOperationActionImpl extends UMLAddActionImpl implements UMLAd
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case UMLPackage.UML_ADD_OPERATION_ACTION___LOG:
-				log();
-				return null;
-			case UMLPackage.UML_ADD_OPERATION_ACTION___EXECUTE:
-				execute();
-				return null;
-			case UMLPackage.UML_ADD_OPERATION_ACTION___SET_PARAMETERS:
-				setParameters();
-				return null;
-			case UMLPackage.UML_ADD_OPERATION_ACTION___CREATE_PRE_CONDITION:
-				createPreCondition();
-				return null;
-			case UMLPackage.UML_ADD_OPERATION_ACTION___CREATE_POST_CONDITION:
-				createPostCondition();
-				return null;
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (umlOpToAdd: ");
 		result.append(umlOpToAdd);
 		result.append(", umlTargetComp: ");

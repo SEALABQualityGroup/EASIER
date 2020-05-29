@@ -70,6 +70,7 @@ public class AEmiliaFactoryImpl extends EFactoryImpl implements AEmiliaFactory {
 			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION: return createAEmiliaCloneAEIAction();
 			case AEmiliaPackage.AEMILIA_CONST_CHANGES_ACTION: return createAEmiliaConstChangesAction();
 			case AEmiliaPackage.AEMILIA_CHANGE_ACTION: return createAEmiliaChangeAction();
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION: return createAEmiliaRemoveClonedAEIAction();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -157,6 +158,16 @@ public class AEmiliaFactoryImpl extends EFactoryImpl implements AEmiliaFactory {
 	public AEmiliaChangeAction createAEmiliaChangeAction() {
 		AEmiliaChangeActionImpl aEmiliaChangeAction = new AEmiliaChangeActionImpl();
 		return aEmiliaChangeAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AEmiliaRemoveClonedAEIAction createAEmiliaRemoveClonedAEIAction() {
+		AEmiliaRemoveClonedAEIActionImpl aEmiliaRemoveClonedAEIAction = new AEmiliaRemoveClonedAEIActionImpl();
+		return aEmiliaRemoveClonedAEIAction;
 	}
 
 	/**

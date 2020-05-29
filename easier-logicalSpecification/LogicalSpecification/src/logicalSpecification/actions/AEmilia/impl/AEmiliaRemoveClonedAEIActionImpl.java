@@ -7,8 +7,8 @@ import java.util.Collection;
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
-import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
 import logicalSpecification.actions.AEmilia.AEmiliaPackage;
+import logicalSpecification.actions.AEmilia.AEmiliaRemoveClonedAEIAction;
 
 import metamodel.mmaemilia.ArchiElemInstance;
 import metamodel.mmaemilia.Attachment;
@@ -29,32 +29,32 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Clone AEI Action</b></em>'.
+ * An implementation of the model object '<em><b>Remove Cloned AEI Action</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getSourceAEI <em>Source AEI</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getClonedAEI <em>Cloned AEI</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getListOfInputInteractions <em>List Of Input Interactions</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getListOfOutputInteractions <em>List Of Output Interactions</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getListOfNewAttachments <em>List Of New Attachments</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAeiToCloneSVP <em>Aei To Clone SVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getClonedAeiSVP <em>Cloned Aei SVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllOrInteractsMVP <em>All Or Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllInLocalInteractsMVP <em>All In Local Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllOutLocalInteractsMVP <em>All Out Local Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllUniInteractsMVP <em>All Uni Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllLocalInteractsMVP <em>All Local Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllAeisMVP <em>All Aeis MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllInRemoteInteractsMVP <em>All In Remote Interacts MVP</em>}</li>
- *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaCloneAEIActionImpl#getAllOutRemoteInteractsMVP <em>All Out Remote Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getSourceAEI <em>Source AEI</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getClonedAEI <em>Cloned AEI</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getListOfInputInteractions <em>List Of Input Interactions</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getListOfOutputInteractions <em>List Of Output Interactions</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getListOfNewAttachments <em>List Of New Attachments</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAeiToCloneSVP <em>Aei To Clone SVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getClonedAeiSVP <em>Cloned Aei SVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllOrInteractsMVP <em>All Or Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllInLocalInteractsMVP <em>All In Local Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllOutLocalInteractsMVP <em>All Out Local Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllUniInteractsMVP <em>All Uni Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllLocalInteractsMVP <em>All Local Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllAeisMVP <em>All Aeis MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllInRemoteInteractsMVP <em>All In Remote Interacts MVP</em>}</li>
+ *   <li>{@link logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl#getAllOutRemoteInteractsMVP <em>All Out Remote Interacts MVP</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements AEmiliaCloneAEIAction {
+public class AEmiliaRemoveClonedAEIActionImpl extends AEmiliaDeleteActionImpl implements AEmiliaRemoveClonedAEIAction {
 	/**
 	 * The default value of the '{@link #getSourceAEI() <em>Source AEI</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -230,7 +230,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected AEmiliaCloneAEIActionImpl() {
+	protected AEmiliaRemoveClonedAEIActionImpl() {
 		super();
 	}
 
@@ -241,7 +241,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return AEmiliaPackage.Literals.AEMILIA_CLONE_AEI_ACTION;
+		return AEmiliaPackage.Literals.AEMILIA_REMOVE_CLONED_AEI_ACTION;
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		ArchiElemInstance oldSourceAEI = sourceAEI;
 		sourceAEI = newSourceAEI;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__SOURCE_AEI, oldSourceAEI, sourceAEI));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI, oldSourceAEI, sourceAEI));
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		ArchiElemInstance oldClonedAEI = clonedAEI;
 		clonedAEI = newClonedAEI;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI, oldClonedAEI, clonedAEI));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI, oldClonedAEI, clonedAEI));
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	 */
 	public EList<InputInteraction> getListOfInputInteractions() {
 		if (listOfInputInteractions == null) {
-			listOfInputInteractions = new EDataTypeUniqueEList<InputInteraction>(InputInteraction.class, this, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS);
+			listOfInputInteractions = new EDataTypeUniqueEList<InputInteraction>(InputInteraction.class, this, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS);
 		}
 		return listOfInputInteractions;
 	}
@@ -305,7 +305,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	 */
 	public EList<OutputInteraction> getListOfOutputInteractions() {
 		if (listOfOutputInteractions == null) {
-			listOfOutputInteractions = new EDataTypeUniqueEList<OutputInteraction>(OutputInteraction.class, this, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS);
+			listOfOutputInteractions = new EDataTypeUniqueEList<OutputInteraction>(OutputInteraction.class, this, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS);
 		}
 		return listOfOutputInteractions;
 	}
@@ -317,7 +317,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	 */
 	public EList<Attachment> getListOfNewAttachments() {
 		if (listOfNewAttachments == null) {
-			listOfNewAttachments = new EDataTypeUniqueEList<Attachment>(Attachment.class, this, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS);
+			listOfNewAttachments = new EDataTypeUniqueEList<Attachment>(Attachment.class, this, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS);
 		}
 		return listOfNewAttachments;
 	}
@@ -340,7 +340,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		SingleValuedParameter oldAeiToCloneSVP = aeiToCloneSVP;
 		aeiToCloneSVP = newAeiToCloneSVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP, oldAeiToCloneSVP, newAeiToCloneSVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP, oldAeiToCloneSVP, newAeiToCloneSVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -355,14 +355,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAeiToCloneSVP != aeiToCloneSVP) {
 			NotificationChain msgs = null;
 			if (aeiToCloneSVP != null)
-				msgs = ((InternalEObject)aeiToCloneSVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP, null, msgs);
+				msgs = ((InternalEObject)aeiToCloneSVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP, null, msgs);
 			if (newAeiToCloneSVP != null)
-				msgs = ((InternalEObject)newAeiToCloneSVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP, null, msgs);
+				msgs = ((InternalEObject)newAeiToCloneSVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP, null, msgs);
 			msgs = basicSetAeiToCloneSVP(newAeiToCloneSVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP, newAeiToCloneSVP, newAeiToCloneSVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP, newAeiToCloneSVP, newAeiToCloneSVP));
 	}
 
 	/**
@@ -383,7 +383,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		SingleValuedParameter oldClonedAeiSVP = clonedAeiSVP;
 		clonedAeiSVP = newClonedAeiSVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP, oldClonedAeiSVP, newClonedAeiSVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP, oldClonedAeiSVP, newClonedAeiSVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -398,14 +398,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newClonedAeiSVP != clonedAeiSVP) {
 			NotificationChain msgs = null;
 			if (clonedAeiSVP != null)
-				msgs = ((InternalEObject)clonedAeiSVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP, null, msgs);
+				msgs = ((InternalEObject)clonedAeiSVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP, null, msgs);
 			if (newClonedAeiSVP != null)
-				msgs = ((InternalEObject)newClonedAeiSVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP, null, msgs);
+				msgs = ((InternalEObject)newClonedAeiSVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP, null, msgs);
 			msgs = basicSetClonedAeiSVP(newClonedAeiSVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP, newClonedAeiSVP, newClonedAeiSVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP, newClonedAeiSVP, newClonedAeiSVP));
 	}
 
 	/**
@@ -426,7 +426,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllOrInteractsMVP = allOrInteractsMVP;
 		allOrInteractsMVP = newAllOrInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP, oldAllOrInteractsMVP, newAllOrInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP, oldAllOrInteractsMVP, newAllOrInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -441,14 +441,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllOrInteractsMVP != allOrInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allOrInteractsMVP != null)
-				msgs = ((InternalEObject)allOrInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allOrInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP, null, msgs);
 			if (newAllOrInteractsMVP != null)
-				msgs = ((InternalEObject)newAllOrInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllOrInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllOrInteractsMVP(newAllOrInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP, newAllOrInteractsMVP, newAllOrInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP, newAllOrInteractsMVP, newAllOrInteractsMVP));
 	}
 
 	/**
@@ -469,7 +469,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllInLocalInteractsMVP = allInLocalInteractsMVP;
 		allInLocalInteractsMVP = newAllInLocalInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, oldAllInLocalInteractsMVP, newAllInLocalInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, oldAllInLocalInteractsMVP, newAllInLocalInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -484,14 +484,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllInLocalInteractsMVP != allInLocalInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allInLocalInteractsMVP != null)
-				msgs = ((InternalEObject)allInLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allInLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, null, msgs);
 			if (newAllInLocalInteractsMVP != null)
-				msgs = ((InternalEObject)newAllInLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllInLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllInLocalInteractsMVP(newAllInLocalInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, newAllInLocalInteractsMVP, newAllInLocalInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP, newAllInLocalInteractsMVP, newAllInLocalInteractsMVP));
 	}
 
 	/**
@@ -512,7 +512,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllOutLocalInteractsMVP = allOutLocalInteractsMVP;
 		allOutLocalInteractsMVP = newAllOutLocalInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, oldAllOutLocalInteractsMVP, newAllOutLocalInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, oldAllOutLocalInteractsMVP, newAllOutLocalInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -527,14 +527,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllOutLocalInteractsMVP != allOutLocalInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allOutLocalInteractsMVP != null)
-				msgs = ((InternalEObject)allOutLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allOutLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, null, msgs);
 			if (newAllOutLocalInteractsMVP != null)
-				msgs = ((InternalEObject)newAllOutLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllOutLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllOutLocalInteractsMVP(newAllOutLocalInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, newAllOutLocalInteractsMVP, newAllOutLocalInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP, newAllOutLocalInteractsMVP, newAllOutLocalInteractsMVP));
 	}
 
 	/**
@@ -555,7 +555,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllUniInteractsMVP = allUniInteractsMVP;
 		allUniInteractsMVP = newAllUniInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP, oldAllUniInteractsMVP, newAllUniInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP, oldAllUniInteractsMVP, newAllUniInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -570,14 +570,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllUniInteractsMVP != allUniInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allUniInteractsMVP != null)
-				msgs = ((InternalEObject)allUniInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allUniInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP, null, msgs);
 			if (newAllUniInteractsMVP != null)
-				msgs = ((InternalEObject)newAllUniInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllUniInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllUniInteractsMVP(newAllUniInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP, newAllUniInteractsMVP, newAllUniInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP, newAllUniInteractsMVP, newAllUniInteractsMVP));
 	}
 
 	/**
@@ -598,7 +598,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllLocalInteractsMVP = allLocalInteractsMVP;
 		allLocalInteractsMVP = newAllLocalInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, oldAllLocalInteractsMVP, newAllLocalInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, oldAllLocalInteractsMVP, newAllLocalInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -613,14 +613,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllLocalInteractsMVP != allLocalInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allLocalInteractsMVP != null)
-				msgs = ((InternalEObject)allLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allLocalInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, null, msgs);
 			if (newAllLocalInteractsMVP != null)
-				msgs = ((InternalEObject)newAllLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllLocalInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllLocalInteractsMVP(newAllLocalInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, newAllLocalInteractsMVP, newAllLocalInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP, newAllLocalInteractsMVP, newAllLocalInteractsMVP));
 	}
 
 	/**
@@ -641,7 +641,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllAeisMVP = allAeisMVP;
 		allAeisMVP = newAllAeisMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP, oldAllAeisMVP, newAllAeisMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP, oldAllAeisMVP, newAllAeisMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -656,14 +656,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllAeisMVP != allAeisMVP) {
 			NotificationChain msgs = null;
 			if (allAeisMVP != null)
-				msgs = ((InternalEObject)allAeisMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP, null, msgs);
+				msgs = ((InternalEObject)allAeisMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP, null, msgs);
 			if (newAllAeisMVP != null)
-				msgs = ((InternalEObject)newAllAeisMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllAeisMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP, null, msgs);
 			msgs = basicSetAllAeisMVP(newAllAeisMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP, newAllAeisMVP, newAllAeisMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP, newAllAeisMVP, newAllAeisMVP));
 	}
 
 	/**
@@ -684,7 +684,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllInRemoteInteractsMVP = allInRemoteInteractsMVP;
 		allInRemoteInteractsMVP = newAllInRemoteInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, oldAllInRemoteInteractsMVP, newAllInRemoteInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, oldAllInRemoteInteractsMVP, newAllInRemoteInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -699,14 +699,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllInRemoteInteractsMVP != allInRemoteInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allInRemoteInteractsMVP != null)
-				msgs = ((InternalEObject)allInRemoteInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allInRemoteInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, null, msgs);
 			if (newAllInRemoteInteractsMVP != null)
-				msgs = ((InternalEObject)newAllInRemoteInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllInRemoteInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllInRemoteInteractsMVP(newAllInRemoteInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, newAllInRemoteInteractsMVP, newAllInRemoteInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP, newAllInRemoteInteractsMVP, newAllInRemoteInteractsMVP));
 	}
 
 	/**
@@ -727,7 +727,7 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		MultipleValuedParameter oldAllOutRemoteInteractsMVP = allOutRemoteInteractsMVP;
 		allOutRemoteInteractsMVP = newAllOutRemoteInteractsMVP;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, oldAllOutRemoteInteractsMVP, newAllOutRemoteInteractsMVP);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, oldAllOutRemoteInteractsMVP, newAllOutRemoteInteractsMVP);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -742,14 +742,14 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		if (newAllOutRemoteInteractsMVP != allOutRemoteInteractsMVP) {
 			NotificationChain msgs = null;
 			if (allOutRemoteInteractsMVP != null)
-				msgs = ((InternalEObject)allOutRemoteInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)allOutRemoteInteractsMVP).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, null, msgs);
 			if (newAllOutRemoteInteractsMVP != null)
-				msgs = ((InternalEObject)newAllOutRemoteInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, null, msgs);
+				msgs = ((InternalEObject)newAllOutRemoteInteractsMVP).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, null, msgs);
 			msgs = basicSetAllOutRemoteInteractsMVP(newAllOutRemoteInteractsMVP, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, newAllOutRemoteInteractsMVP, newAllOutRemoteInteractsMVP));
+			eNotify(new ENotificationImpl(this, Notification.SET, AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP, newAllOutRemoteInteractsMVP, newAllOutRemoteInteractsMVP));
 	}
 
 	/**
@@ -760,25 +760,25 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP:
 				return basicSetAeiToCloneSVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP:
 				return basicSetClonedAeiSVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP:
 				return basicSetAllOrInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
 				return basicSetAllInLocalInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
 				return basicSetAllOutLocalInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
 				return basicSetAllUniInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
 				return basicSetAllLocalInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP:
 				return basicSetAllAeisMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
 				return basicSetAllInRemoteInteractsMVP(null, msgs);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
 				return basicSetAllOutRemoteInteractsMVP(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -792,35 +792,35 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__SOURCE_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI:
 				return getSourceAEI();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI:
 				return getClonedAEI();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
 				return getListOfInputInteractions();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
 				return getListOfOutputInteractions();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
 				return getListOfNewAttachments();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP:
 				return getAeiToCloneSVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP:
 				return getClonedAeiSVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP:
 				return getAllOrInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
 				return getAllInLocalInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
 				return getAllOutLocalInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
 				return getAllUniInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
 				return getAllLocalInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP:
 				return getAllAeisMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
 				return getAllInRemoteInteractsMVP();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
 				return getAllOutRemoteInteractsMVP();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -835,52 +835,52 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__SOURCE_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI:
 				setSourceAEI((ArchiElemInstance)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI:
 				setClonedAEI((ArchiElemInstance)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
 				getListOfInputInteractions().clear();
 				getListOfInputInteractions().addAll((Collection<? extends InputInteraction>)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
 				getListOfOutputInteractions().clear();
 				getListOfOutputInteractions().addAll((Collection<? extends OutputInteraction>)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
 				getListOfNewAttachments().clear();
 				getListOfNewAttachments().addAll((Collection<? extends Attachment>)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP:
 				setAeiToCloneSVP((SingleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP:
 				setClonedAeiSVP((SingleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP:
 				setAllOrInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
 				setAllInLocalInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
 				setAllOutLocalInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
 				setAllUniInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
 				setAllLocalInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP:
 				setAllAeisMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
 				setAllInRemoteInteractsMVP((MultipleValuedParameter)newValue);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
 				setAllOutRemoteInteractsMVP((MultipleValuedParameter)newValue);
 				return;
 		}
@@ -895,49 +895,49 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__SOURCE_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI:
 				setSourceAEI(SOURCE_AEI_EDEFAULT);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI:
 				setClonedAEI(CLONED_AEI_EDEFAULT);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
 				getListOfInputInteractions().clear();
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
 				getListOfOutputInteractions().clear();
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
 				getListOfNewAttachments().clear();
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP:
 				setAeiToCloneSVP((SingleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP:
 				setClonedAeiSVP((SingleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP:
 				setAllOrInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
 				setAllInLocalInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
 				setAllOutLocalInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
 				setAllUniInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
 				setAllLocalInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP:
 				setAllAeisMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
 				setAllInRemoteInteractsMVP((MultipleValuedParameter)null);
 				return;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
 				setAllOutRemoteInteractsMVP((MultipleValuedParameter)null);
 				return;
 		}
@@ -952,35 +952,35 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__SOURCE_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI:
 				return SOURCE_AEI_EDEFAULT == null ? sourceAEI != null : !SOURCE_AEI_EDEFAULT.equals(sourceAEI);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI:
 				return CLONED_AEI_EDEFAULT == null ? clonedAEI != null : !CLONED_AEI_EDEFAULT.equals(clonedAEI);
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS:
 				return listOfInputInteractions != null && !listOfInputInteractions.isEmpty();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS:
 				return listOfOutputInteractions != null && !listOfOutputInteractions.isEmpty();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS:
 				return listOfNewAttachments != null && !listOfNewAttachments.isEmpty();
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__AEI_TO_CLONE_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP:
 				return aeiToCloneSVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__CLONED_AEI_SVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP:
 				return clonedAeiSVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OR_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP:
 				return allOrInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP:
 				return allInLocalInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP:
 				return allOutLocalInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP:
 				return allUniInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP:
 				return allLocalInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_AEIS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP:
 				return allAeisMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP:
 				return allInRemoteInteractsMVP != null;
-			case AEmiliaPackage.AEMILIA_CLONE_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
+			case AEmiliaPackage.AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP:
 				return allOutRemoteInteractsMVP != null;
 		}
 		return super.eIsSet(featureID);
@@ -1010,4 +1010,4 @@ public class AEmiliaCloneAEIActionImpl extends AEmiliaAddActionImpl implements A
 		return result.toString();
 	}
 
-} //AEmiliaCloneAEIActionImpl
+} //AEmiliaRemoveClonedAEIActionImpl

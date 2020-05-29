@@ -49,6 +49,15 @@ public interface AEmiliaFactory extends EFactory {
 	AEmiliaChangeAction createAEmiliaChangeAction();
 
 	/**
+	 * Returns a new object of class '<em>Remove Cloned AEI Action</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Remove Cloned AEI Action</em>'.
+	 * @generated
+	 */
+	AEmiliaRemoveClonedAEIAction createAEmiliaRemoveClonedAEIAction();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

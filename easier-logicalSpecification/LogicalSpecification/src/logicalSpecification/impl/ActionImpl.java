@@ -118,6 +118,16 @@ public class ActionImpl extends NamedElementImpl implements Action {
 	protected PostCondition post;
 
 	/**
+	 * The default value of the '{@link #getModel() <em>Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object MODEL_EDEFAULT = null;
+
+	/**
 	 * The cached value of the '{@link #getModel() <em>Model</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -125,7 +135,7 @@ public class ActionImpl extends NamedElementImpl implements Action {
 	 * @generated
 	 * @ordered
 	 */
-	protected Object model;
+	protected Object model = MODEL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -552,7 +562,7 @@ public class ActionImpl extends NamedElementImpl implements Action {
 				setPost((PostCondition)null);
 				return;
 			case LogicalSpecificationPackage.ACTION__MODEL:
-				setModel((Object)null);
+				setModel(MODEL_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -579,7 +589,7 @@ public class ActionImpl extends NamedElementImpl implements Action {
 			case LogicalSpecificationPackage.ACTION__POST:
 				return post != null;
 			case LogicalSpecificationPackage.ACTION__MODEL:
-				return model != null;
+				return MODEL_EDEFAULT == null ? model != null : !MODEL_EDEFAULT.equals(model);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -620,7 +630,7 @@ public class ActionImpl extends NamedElementImpl implements Action {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (numOfChanges: ");
 		result.append(numOfChanges);
 		result.append(", cost: ");
