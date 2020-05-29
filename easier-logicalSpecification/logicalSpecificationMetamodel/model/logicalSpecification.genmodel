@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/LogicalSpecification/src" modelPluginID="LogicalSpecification"
-    modelName="LogicalSpecification" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
-    operationReflection="true" importOrganizing="true">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/it.disim.univaq.sealab.logicalSpecificationMetamodel/src"
+    modelPluginID="it.disim.univaq.sealab.logicalSpecificationMetamodel" modelName="LogicalSpecification"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="10.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>logicalSpecification.ecore</foreignModel>
   <genPackages prefix="LogicalSpecification" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="logicalSpecification.ecore#//TypesEnum">
@@ -13,14 +13,14 @@
       <genEnumLiterals ecoreEnumLiteral="logicalSpecification.ecore#//TypesEnum/REAL"/>
     </genEnums>
     <genDataTypes ecoreDataType="logicalSpecification.ecore#//model"/>
-    <genClasses ecoreClass="logicalSpecification.ecore#//NamedElement">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//NamedElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//NamedElement/name"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//Refactoring">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/actions"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/pre"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/post"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/lola4rapsRoot"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/pre"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/post"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/lola4rapsRoot"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Refactoring/cost"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Refactoring/numOfChanges"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Refactoring/cloneRefactoring"/>
@@ -28,17 +28,16 @@
     <genClasses ecoreClass="logicalSpecification.ecore#//Action">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/numOfChanges"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/cost"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/refactoring"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/parameters"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/pre"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/post"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/refactoring"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/pre"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/post"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/model"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/execute"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/log"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/setParameters"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/createPreCondition"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/createPostCondition"/>
-      <genOperations ecoreOperation="logicalSpecification.ecore#//Action/cloneAction"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//SingleValuedParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//SingleValuedParameter/existsOperator"/>
@@ -47,51 +46,51 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//MultipleValuedParameter/forAllOperator"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//MultipleValuedParameter/existsOperator"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Parameter">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Parameter/type"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/action"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Parameter/resolvingExpr"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/lhsRelationalOperator"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/rhsRelationalOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/antipattern"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/antipattern"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Condition">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Condition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Condition/conditionFormula"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//PreCondition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/action"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/refactoring"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/refactoring"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//PostCondition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/action"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/refactoring"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/refactoring"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//FOLSpecification">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/condition"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/rootOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/rootOperator"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/antipattern"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//LogicalOperator"/>
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//LogicalOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//VoidOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//ForAllOperator">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/collection"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//ExistsOperator">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/element"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/collection"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//OrOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//OrOperator/arguments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//OrOperator/arguments"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//NotOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//NotOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//NotOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//AndOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//AndOperator/arguments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//AndOperator/arguments"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//RelationalOperator">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//RelationalOperator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//RelationalOperator/factor"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//RelationalOperator/lhs"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//RelationalOperator/rhs"/>
@@ -101,17 +100,17 @@
     <genClasses ecoreClass="logicalSpecification.ecore#//GreaterEqualOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//LessEqualOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//LessOperator"/>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Operator">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/folspecification"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/forAlloperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/notOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/andOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/orOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/existsOperator"/>
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Operator">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/folspecification"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/forAlloperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/notOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/andOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/orOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/existsOperator"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//Antipattern">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/lola4rapsRoot"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/parameters"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/lola4rapsRoot"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/formula"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/setParametersForPartialDetection"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/partialDetection"/>
@@ -121,8 +120,8 @@
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/createFormula"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//LoLa4RAPSRoot">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/refactorings"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/antipatterns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/refactorings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/antipatterns"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//AddAction"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//DeleteAction"/>
@@ -157,13 +156,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlNeighbors"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlCompsToDeploy"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlSourcePackage"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/addDeployedComps"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/addCommunicationPaths"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -179,14 +171,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlCompToAdd"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlSourcePackage"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlTargetNodes"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/deployOn">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/deployOn/targets"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -199,11 +183,6 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/targetCompOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/umlOpToAdd"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/umlTargetComp"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -211,11 +190,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/allNodesMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/umlNodeToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -223,11 +197,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/allCompsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/umlCompToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -235,11 +204,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/allOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/umlOpToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -259,13 +223,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlCompToMove"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlTargetNodes"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlArtifacts"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/moveDeployments"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/deployOn"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -280,11 +237,6 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/allTargetCompOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/umlOpToMove"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/umlTargetComp"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/createPostCondition"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="AEmilia" basePackage="logicalSpecification.actions"
@@ -299,43 +251,28 @@
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaAddAction"/>
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaDeleteAction"/>
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveAction"/>
-        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction">
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction/execute"/>
-        </genClasses>
-        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction">
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction/execute"/>
-        </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/sourceAEI"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/clonedAEI"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfInputInteractions"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfOutputInteractions"/>
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/aemiliaModel"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfNewAttachments"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningInputInteractions"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningOutputInteractions"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningArchitecturalInteraction"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/setSelector"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isClonable">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isClonable/aei"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getAttachmentsOfAEI">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getAttachmentsOfAEI/aei"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isApplicable"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getListOfClonableInstances"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/aeiToCloneSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/clonedAeiSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOrInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allInLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOutLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allUniInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allAeisMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allInRemoteInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOutRemoteInteractsMVP"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/sourceConstInit"/>
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/aemiliaModel"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/factorOfChange"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/getFactorOfChange_impl"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/sourceConstInitSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/allConstInitsMVP"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaChangeAction"/>
       </nestedGenPackages>
@@ -371,13 +308,15 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/BlobPA/T_minNetUtilSVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/BlobPA/contextualElement"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;(OclStringManager.getInstance(null)).getClientConnectsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numClientConnectsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxClientConnectsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));&#xA;&#x9;&#x9;blobParams.add(getT_maxClientConnectsSVP());&#xA;&#xA;&#x9;&#x9;setF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;(OclStringManager.getInstance(null)).getSupplierConnectsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numSupplierConnectsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxSupplierConnectsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));&#xA;&#x9;&#x9;blobParams.add(getT_maxSupplierConnectsSVP());&#xA;&#xA;&#x9;&#x9;setF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;(OclStringManager.getInstance(null)).getNumSentMsgsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numSentMsgsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));&#xA;&#x9;&#x9;blobParams.add(getT_maxSentMsgsSVP());&#xA;&#xA;&#x9;&#x9;setF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;(OclStringManager.getInstance(null)).getNumReceivedMsgsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numReceivedMsgsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxReceivedMsgsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));&#xA;&#x9;&#x9;blobParams.add(getT_maxReceivedMsgsSVP());&#xA;&#xA;&#x9;&#x9;if (getF_hwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_hwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxHwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxHwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getF_netUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_netUtilSVP().getResolvingExpr() != null || !getF_netUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_netUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_minNetUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_minNetUtilSVP().getResolvingExpr() != null || !getT_minNetUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_minNetUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxClientConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxSupplierConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxSentMsgs"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxReceivedMsgs"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getClientConnectsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numClientConnectsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxClientConnectsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));&#xA;&#x9;&#x9;blobParams.add(getT_maxClientConnectsSVP());&#xA;&#xA;&#x9;&#x9;setF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getSupplierConnectsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numSupplierConnectsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxSupplierConnectsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));&#xA;&#x9;&#x9;blobParams.add(getT_maxSupplierConnectsSVP());&#xA;&#xA;&#x9;&#x9;setF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getNumSentMsgsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numSentMsgsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));&#xA;&#x9;&#x9;blobParams.add(getT_maxSentMsgsSVP());&#xA;&#xA;&#x9;&#x9;setF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getNumReceivedMsgsQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_numReceivedMsgsSVP());&#xA;&#xA;&#x9;&#x9;setT_maxReceivedMsgsSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));&#xA;&#x9;&#x9;blobParams.add(getT_maxReceivedMsgsSVP());&#xA;&#xA;&#x9;&#x9;setF_hwUtilSVP(Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_hwUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_maxHwUtilSVP());&#xA;&#xA;&#x9;&#x9;setF_netUtilSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getNetUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_netUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_minNetUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minNetUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_minNetUtilSVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection/T_maxClientConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection/T_maxSupplierConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection/T_maxSentMsgs"/>
@@ -385,14 +324,17 @@
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForFullDetection/T_minNetUtil"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/createFormula"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/createFormula"
+              body="FOLSpecification blobCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();&#xA;&#x9;&#x9;blobCF.setName(&quot;BlobFormula&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator blobCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();&#xA;&#xA;&#x9;&#x9;OrOperator blobCFAndOr1 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();&#xA;&#x9;&#x9;GreaterEqualOperator blobCFAndOr1Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr1Geq1.setLhs(getF_numClientConnectsSVP());&#xA;&#x9;&#x9;blobCFAndOr1Geq1.setRhs(getT_maxClientConnectsSVP());&#xA;&#x9;&#x9;GreaterEqualOperator blobCFAndOr1Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr1Geq2.setLhs(getF_numSupplierConnectsSVP());&#xA;&#x9;&#x9;blobCFAndOr1Geq2.setRhs(getT_maxSupplierConnectsSVP());&#xA;&#x9;&#x9;blobCFAndOr1.getArguments().add(blobCFAndOr1Geq1);&#xA;&#x9;&#x9;blobCFAndOr1.getArguments().add(blobCFAndOr1Geq2);&#xA;&#xA;&#x9;&#x9;OrOperator blobCFAndOr2 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();&#xA;&#x9;&#x9;GreaterEqualOperator blobCFAndOr2Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr2Geq1.setLhs(getF_numSentMsgsSVP());&#xA;&#x9;&#x9;blobCFAndOr2Geq1.setRhs(getT_maxSentMsgsSVP());&#xA;&#x9;&#x9;GreaterEqualOperator blobCFAndOr2Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr2Geq2.setLhs(getF_numReceivedMsgsSVP());&#xA;&#x9;&#x9;blobCFAndOr2Geq2.setRhs(getT_maxReceivedMsgsSVP());&#xA;&#x9;&#x9;blobCFAndOr2.getArguments().add(blobCFAndOr2Geq1);&#xA;&#x9;&#x9;blobCFAndOr2.getArguments().add(blobCFAndOr2Geq2);&#xA;&#xA;&#x9;&#x9;OrOperator blobCFAndOr3 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();&#xA;&#x9;&#x9;GreaterEqualOperator blobCFAndOr3Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr3Geq1.setLhs(getF_hwUtilSVP());&#xA;&#x9;&#x9;blobCFAndOr3Geq1.setRhs(getT_maxHwUtilSVP());&#xA;&#x9;&#x9;LessEqualOperator blobCFAndOr3Geq2 = LogicalSpecificationFactory.eINSTANCE.createLessEqualOperator();&#xA;&#x9;&#x9;blobCFAndOr3Geq2.setLhs(getF_netUtilSVP());&#xA;&#x9;&#x9;blobCFAndOr3Geq2.setRhs(getT_minNetUtilSVP());&#xA;&#x9;&#x9;blobCFAndOr3.getArguments().add(blobCFAndOr3Geq1);&#xA;&#x9;&#x9;blobCFAndOr3.getArguments().add(blobCFAndOr3Geq2);&#xA;&#xA;&#x9;&#x9;blobCFAnd.getArguments().add(blobCFAndOr1);&#xA;&#x9;&#x9;blobCFAnd.getArguments().add(blobCFAndOr2);&#xA;&#x9;&#x9;blobCFAnd.getArguments().add(blobCFAndOr3);&#xA;&#x9;&#x9;blobCF.setRootOperator(blobCFAnd);&#xA;&#x9;&#x9;setFormula(blobCF);"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForPartialDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())&#xA;&#x9;&#x9;&#x9;&#x9;.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element c : components) {&#xA;&#x9;&#x9;&#x9;if (c instanceof Component &amp;&amp; c.getAppliedStereotype(&quot;PaRunTInstance&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection/T_maxClientConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection/T_maxSupplierConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection/T_maxSentMsgs"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/partialDetection/T_maxReceivedMsgs"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForFullDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs,&#xA;&#x9;&#x9;&#x9;&#x9;T_maxHwUtil, T_minNetUtil);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())&#xA;&#x9;&#x9;&#x9;&#x9;.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element c : components) {&#xA;&#x9;&#x9;&#x9;if (c instanceof Component &amp;&amp; c.getAppliedStereotype(&quot;PaRunTInstance&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection/T_maxClientConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection/T_maxSupplierConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection/T_maxSentMsgs"/>
@@ -400,7 +342,8 @@
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/fullDetection/T_minNetUtil"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/log"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/log"
+              body="super.log();"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//antipatterns/performance/CpsPA">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -420,26 +363,32 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/CpsPA/T_maxOpDemandMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/CpsPA/contextualElement"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForPartialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForPartialDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;if (getF_queueLengthSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_queueLengthSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getF_queueLengthSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_queueLengthSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxQueueLengthSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxQueueLengthSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getT_maxQueueLengthSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxQueueLengthSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getF_overUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_overUtilSVP().getResolvingExpr() != null || !getF_overUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_overUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxOverUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxOverUtilSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getT_maxOverUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxOverUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getF_underUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_underUtilSVP().getResolvingExpr() != null || !getF_underUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_underUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_minUnderUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_minUnderUtilSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getT_minUnderUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_minUnderUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;// if(getF_opDemandMVP() != null)&#xA;&#x9;&#x9;// if(getF_opDemandMVP().getResolvingExpr() != null ||&#xA;&#x9;&#x9;// !getF_opDemandMVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;// getF_opDemandMVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;setF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_opDemandMVP());&#xA;&#xA;&#x9;&#x9;// if(getT_maxOpDemandMVP() != null)&#xA;&#x9;&#x9;// if(getT_maxOpDemandMVP().getResolvingExpr() != null ||&#xA;&#x9;&#x9;// !getT_maxOpDemandMVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;// getT_maxOpDemandMVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;setT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxOpDemandMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForPartialDetection/T_maxOpDemand"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_queueLengthSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getQueueLengthQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_queueLengthSVP());&#xA;&#xA;&#x9;&#x9;setT_maxQueueLengthSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxQueueLength)));&#xA;&#x9;&#x9;blobParams.add(getT_maxQueueLengthSVP());&#xA;&#xA;&#x9;&#x9;setF_overUtilSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOverUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_overUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_maxOverUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxOverUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_maxOverUtilSVP());&#xA;&#xA;&#x9;&#x9;setF_underUtilSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getUnderUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_underUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_minUnderUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minUnderUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_minUnderUtilSVP());&#xA;&#xA;&#x9;&#x9;setF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_opDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxOpDemandMVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection/T_maxQueueLength"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection/T_maxOverUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection/T_minUnderUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForFullDetection/T_maxOpDemand"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/createFormula"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/partialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/createFormula"
+              body="FOLSpecification cpsCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();&#xA;&#x9;&#x9;cpsCF.setName(&quot;CpsFormula&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator cpsCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();&#xA;&#xA;&#x9;&#x9;GreaterEqualOperator cpsCFAndGeq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;cpsCFAndGeq1.setLhs(getF_queueLengthSVP());&#xA;&#x9;&#x9;cpsCFAndGeq1.setRhs(getT_maxQueueLengthSVP());&#xA;&#x9;&#x9;cpsCFAnd.getArguments().add(cpsCFAndGeq1);&#xA;&#xA;&#x9;&#x9;AndOperator cpsCFAndAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();&#xA;&#x9;&#x9;GreaterEqualOperator cpsCFAndAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;cpsCFAndAndGeq.setLhs(getF_overUtilSVP());&#xA;&#x9;&#x9;cpsCFAndAndGeq.setRhs(getT_maxOverUtilSVP());&#xA;&#x9;&#x9;cpsCFAndAnd.getArguments().add(cpsCFAndAndGeq);&#xA;&#x9;&#x9;LessOperator cpsCFAndAndLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();&#xA;&#x9;&#x9;cpsCFAndAndLe.setLhs(getF_underUtilSVP());&#xA;&#x9;&#x9;cpsCFAndAndLe.setRhs(getT_minUnderUtilSVP());&#xA;&#x9;&#x9;cpsCFAndAnd.getArguments().add(cpsCFAndAndLe);&#xA;&#x9;&#x9;cpsCFAnd.getArguments().add(cpsCFAndAnd);&#xA;&#xA;&#x9;&#x9;GreaterEqualOperator cpsCFAndGeq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;cpsCFAndGeq2.setLhs(getF_opDemandMVP());&#xA;&#x9;&#x9;cpsCFAndGeq2.setRhs(getT_maxOpDemandMVP());&#xA;&#x9;&#x9;cpsCFAnd.getArguments().add(cpsCFAndGeq2);&#xA;&#xA;&#x9;&#x9;cpsCF.setRootOperator(cpsCFAnd);&#xA;&#x9;&#x9;setFormula(cpsCF);"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/partialDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForPartialDetection(T_maxOpDemand);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)&#xA;&#x9;&#x9;&#x9;&#x9;.allOwnedElements();&#xA;&#x9;&#x9;for (Element n : nodes) {&#xA;&#x9;&#x9;&#x9;if (n instanceof Component &amp;&amp; n.getAppliedStereotype(&quot;GaExecHost&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/partialDetection/T_maxOpDemand"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForFullDetection(T_maxQueueLength, T_maxOverUtil, T_minUnderUtil, T_maxOpDemand);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)&#xA;&#x9;&#x9;&#x9;&#x9;.allOwnedElements();&#xA;&#x9;&#x9;for (Element n : nodes) {&#xA;&#x9;&#x9;&#x9;if (n instanceof Node &amp;&amp; n.getAppliedStereotype(&quot;GaExecHost&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection/T_maxQueueLength"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection/T_maxOverUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection/T_minUnderUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/fullDetection/T_maxOpDemand"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/log"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/log"
+              body="super.log();"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//antipatterns/performance/PafPA">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -459,28 +408,34 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/PafPA/T_minServiceThroughputSVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/PafPA/contextualElement"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_resDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getResDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_resDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_maxResDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxResDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxResDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOpProbExecQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_opProbExecSVP());&#xA;&#xA;&#x9;&#x9;setT_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_opProbExec)));&#xA;&#x9;&#x9;blobParams.add(getT_opProbExecSVP());&#xA;&#xA;&#x9;&#x9;if (getF_hwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_hwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxHwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxHwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getF_serviceThroughputSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_serviceThroughputSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getF_serviceThroughputSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_serviceThroughputSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_minServiceThroughputSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_minServiceThroughputSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getT_minServiceThroughputSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_minServiceThroughputSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection/T_maxResDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection/T_opProbExec"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_resDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getResDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_resDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_maxResDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxResDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxResDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOpProbExecQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_opProbExecSVP());&#xA;&#xA;&#x9;&#x9;setT_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_opProbExec)));&#xA;&#x9;&#x9;blobParams.add(getT_opProbExecSVP());&#xA;&#xA;&#x9;&#x9;setF_hwUtilSVP(Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_hwUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_maxHwUtilSVP());&#xA;&#xA;&#x9;&#x9;setF_serviceThroughputSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getServiceThroughputQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_serviceThroughputSVP());&#xA;&#xA;&#x9;&#x9;setT_minServiceThroughputSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minServiceThroughput)));&#xA;&#x9;&#x9;blobParams.add(getT_minServiceThroughputSVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection/T_maxResDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection/T_opProbExec"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForFullDetection/T_minServiceThroughput"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/createFormula"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/partialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/createFormula"
+              body="FOLSpecification pafCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();&#xA;&#x9;&#x9;pafCF.setName(&quot;PafFormula&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator pafCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();&#xA;&#xA;&#x9;&#x9;GreaterEqualOperator pafCFAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;pafCFAndGeq.setLhs(getF_resDemandMVP());&#xA;&#x9;&#x9;pafCFAndGeq.setRhs(getT_maxResDemandMVP());&#xA;&#x9;&#x9;pafCFAnd.getArguments().add(pafCFAndGeq);&#xA;&#xA;&#x9;&#x9;EqualOperator pafCFAndEq = LogicalSpecificationFactory.eINSTANCE.createEqualOperator();&#xA;&#x9;&#x9;pafCFAndEq.setLhs(getF_opProbExecSVP());&#xA;&#x9;&#x9;pafCFAndEq.setRhs(getT_opProbExecSVP());&#xA;&#x9;&#x9;pafCFAnd.getArguments().add(pafCFAndEq);&#xA;&#xA;&#x9;&#x9;OrOperator pafCFAndOr = LogicalSpecificationFactory.eINSTANCE.createOrOperator();&#xA;&#x9;&#x9;GreaterEqualOperator pafCFAndOrGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;pafCFAndOrGeq.setLhs(getF_hwUtilSVP());&#xA;&#x9;&#x9;pafCFAndOrGeq.setRhs(getT_maxHwUtilSVP());&#xA;&#x9;&#x9;LessOperator pafCFAndOrLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();&#xA;&#x9;&#x9;pafCFAndOrLe.setLhs(getF_serviceThroughputSVP());&#xA;&#x9;&#x9;pafCFAndOrLe.setRhs(getT_minServiceThroughputSVP());&#xA;&#x9;&#x9;pafCFAndOr.getArguments().add(pafCFAndOrGeq);&#xA;&#x9;&#x9;pafCFAndOr.getArguments().add(pafCFAndOrLe);&#xA;&#x9;&#x9;pafCFAnd.getArguments().add(pafCFAndOr);&#xA;&#xA;&#x9;&#x9;pafCF.setRootOperator(pafCFAnd);&#xA;&#x9;&#x9;setFormula(pafCF);"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/partialDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForPartialDetection(T_maxResDemand, T_opProbExec);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> operations = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()&#xA;&#x9;&#x9;&#x9;&#x9;.get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element o : operations) {&#xA;&#x9;&#x9;&#x9;if (o instanceof Operation &amp;&amp; o.getAppliedStereotype(&quot;GaAcqStep&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/partialDetection/T_maxResDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/partialDetection/T_opProbExec"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForFullDetection(T_maxResDemand, T_opProbExec, T_maxHwUtil, T_minServiceThroughput);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> operations = ((Model) Manager.getInstance(UMLManager.getInstance())).getModel()&#xA;&#x9;&#x9;&#x9;&#x9;.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element o : operations) {&#xA;&#x9;&#x9;&#x9;if (o instanceof Operation &amp;&amp; o.getAppliedStereotype(&quot;GaAcqStep&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection/T_maxResDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection/T_opProbExec"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/fullDetection/T_minServiceThroughput"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/log"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/log"
+              body="super.log();"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//antipatterns/performance/EpPA">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -508,32 +463,38 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/EpPA/T_maxServiceResponseTimeSVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/EpPA/contextualElement"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_overDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOverDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_overDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_maxOverDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOverDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxOverDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_underDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getUnderDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_underDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_minUnderDemandMVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_minUnderDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_minUnderDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_overDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOverDemandProbQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_overDemandProbSVP());&#xA;&#xA;&#x9;&#x9;setF_underDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getUnderDemandProbQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_underDemandProbSVP());&#xA;&#xA;&#x9;&#x9;setT_demandsProbSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_demandsProb)));&#xA;&#x9;&#x9;blobParams.add(getT_demandsProbSVP());&#xA;&#xA;&#x9;&#x9;if (getF_hwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_hwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxHwUtilSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxHwUtilSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getF_serviceResponseTimeSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getF_serviceResponseTimeSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getF_serviceResponseTimeSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getF_serviceResponseTimeSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;if (getT_maxServiceResponseTimeSVP() != null)&#xA;&#x9;&#x9;&#x9;if (getT_maxServiceResponseTimeSVP().getResolvingExpr() != null&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;|| !getT_maxServiceResponseTimeSVP().getResolvingExpr().equals(&quot;&quot;))&#xA;&#x9;&#x9;&#x9;&#x9;getT_maxServiceResponseTimeSVP().setResolvingExpr(null);&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection/T_maxOverDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection/T_minUnderDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection/T_demandsProb"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection"
+              body="List&lt;Parameter> blobParams = new ArrayList&lt;>();&#xA;&#xA;&#x9;&#x9;setF_overDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOverDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_overDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_maxOverDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOverDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_maxOverDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_underDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getUnderDemandQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_underDemandMVP());&#xA;&#xA;&#x9;&#x9;setT_minUnderDemandMVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_minUnderDemand)));&#xA;&#x9;&#x9;blobParams.add(getT_minUnderDemandMVP());&#xA;&#xA;&#x9;&#x9;setF_overDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getOverDemandProbQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_overDemandProbSVP());&#xA;&#xA;&#x9;&#x9;setF_underDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getUnderDemandProbQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_underDemandProbSVP());&#xA;&#xA;&#x9;&#x9;setT_demandsProbSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_demandsProb)));&#xA;&#x9;&#x9;blobParams.add(getT_demandsProbSVP());&#xA;&#xA;&#x9;&#x9;setF_hwUtilSVP(Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_hwUtilSVP());&#xA;&#xA;&#x9;&#x9;setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));&#xA;&#x9;&#x9;blobParams.add(getT_maxHwUtilSVP());&#xA;&#xA;&#x9;&#x9;setF_serviceResponseTimeSVP(Manager.getInstance(null).createSingleValueParameter(&#xA;&#x9;&#x9;&#x9;&#x9;OclStringManager.getInstance(null).getServiceResponseTimeQuery(getContextualElement())));&#xA;&#x9;&#x9;blobParams.add(getF_serviceResponseTimeSVP());&#xA;&#xA;&#x9;&#x9;setT_maxServiceResponseTimeSVP(&#xA;&#x9;&#x9;&#x9;&#x9;Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxServiceResponseTime)));&#xA;&#x9;&#x9;blobParams.add(getT_maxServiceResponseTimeSVP());&#xA;&#xA;&#x9;&#x9;getParameters().addAll(blobParams);">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection/T_maxOverDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection/T_minUnderDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection/T_demandsProb"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForFullDetection/T_maxServiceResponseTime"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/createFormula"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/partialDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/createFormula"
+              body="FOLSpecification epCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();&#xA;&#x9;&#x9;epCF.setName(&quot;EpFormula&quot;);&#xA;&#xA;&#x9;&#x9;AndOperator epCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();&#xA;&#xA;&#x9;&#x9;GreaterEqualOperator epAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;epAndGeq.setLhs(getF_overDemandMVP());&#xA;&#x9;&#x9;epAndGeq.setRhs(getT_maxOverDemandMVP());&#xA;&#x9;&#x9;epCFAnd.getArguments().add(epAndGeq);&#xA;&#xA;&#x9;&#x9;LessOperator blobCFAndLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();&#xA;&#x9;&#x9;blobCFAndLe.setLhs(getF_underDemandMVP());&#xA;&#x9;&#x9;blobCFAndLe.setRhs(getT_minUnderDemandMVP());&#xA;&#x9;&#x9;epCFAnd.getArguments().add(blobCFAndLe);&#xA;&#xA;&#x9;&#x9;EqualOperator epCFAndEq = LogicalSpecificationFactory.eINSTANCE.createEqualOperator();&#xA;&#x9;&#x9;epCFAndEq.setLhs(getF_demandSumProbSVP());&#xA;&#x9;&#x9;epCFAndEq.setRhs(getT_demandsProbSVP());&#xA;&#x9;&#x9;epCFAnd.getArguments().add(epCFAndEq);&#xA;&#xA;&#x9;&#x9;OrOperator epCFAndOr = LogicalSpecificationFactory.eINSTANCE.createOrOperator();&#xA;&#x9;&#x9;GreaterEqualOperator epCFAndOrGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();&#xA;&#x9;&#x9;epCFAndOrGeq.setLhs(getF_hwUtilSVP());&#xA;&#x9;&#x9;epCFAndOrGeq.setRhs(getT_maxHwUtilSVP());&#xA;&#x9;&#x9;GreaterOperator epCFAndOrGr = LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();&#xA;&#x9;&#x9;epCFAndOrGr.setLhs(getF_serviceResponseTimeSVP());&#xA;&#x9;&#x9;epCFAndOrGr.setRhs(getT_maxServiceResponseTimeSVP());&#xA;&#x9;&#x9;epCFAndOr.getArguments().add(epCFAndOrGeq);&#xA;&#x9;&#x9;epCFAndOr.getArguments().add(epCFAndOrGr);&#xA;&#x9;&#x9;epCFAnd.getArguments().add(epCFAndOr);&#xA;&#xA;&#x9;&#x9;epCF.setRootOperator(epCFAnd);&#xA;&#x9;&#x9;setFormula(epCF);"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/partialDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForPartialDetection(T_maxOverDemand, T_minUnderDemand, T_demandsProb);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> operations = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()&#xA;&#x9;&#x9;&#x9;&#x9;.get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element o : operations) {&#xA;&#x9;&#x9;&#x9;if (o instanceof Operation &amp;&amp; o.getAppliedStereotype(&quot;GaAcqStep&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/partialDetection/T_maxOverDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/partialDetection/T_minUnderDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/partialDetection/T_demandsProb"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection">
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection"
+              body="int occurrences = 0;&#xA;&#x9;&#x9;setParametersForFullDetection(T_maxOverDemand, T_minUnderDemand, T_demandsProb, T_maxHwUtil,&#xA;&#x9;&#x9;&#x9;&#x9;T_maxServiceResponseTime);&#xA;&#x9;&#x9;createFormula();&#xA;&#x9;&#x9;List&lt;Element> operations =((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()&#xA;&#x9;&#x9;&#x9;&#x9;.get(0).allOwnedElements();&#xA;&#x9;&#x9;for (Element o : operations) {&#xA;&#x9;&#x9;&#x9;if (o instanceof Operation &amp;&amp; o.getAppliedStereotype(&quot;GaAcqStep&quot;) != null) {&#xA;&#x9;&#x9;&#x9;&#x9;try {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;boolean app = Manager.getInstance(null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;if (app)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;occurrences++;&#xA;&#x9;&#x9;&#x9;&#x9;} catch (ParserException e) {&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// TODO Auto-generated catch block&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.printStackTrace();&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return occurrences;">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection/T_maxOverDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection/T_minUnderDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection/T_demandsProb"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection/T_maxHwUtil"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/fullDetection/T_maxServiceResponseTime"/>
           </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/log"/>
+          <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/log"
+              body="super.log();"/>
         </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
