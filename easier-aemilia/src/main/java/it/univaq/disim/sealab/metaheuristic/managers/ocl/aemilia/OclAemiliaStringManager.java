@@ -86,13 +86,11 @@ public class OclAemiliaStringManager extends OclStringManager {
 	}
 
 	public String getNodesQuery(List<Node> list_of_nodes) {
-		assert (list_of_nodes == null);
 		String query;
 		query = "Node.allInstances()->select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
 				+ "select(n | ";
 		Iterator<Node> iterator = list_of_nodes.iterator();
 		while (iterator.hasNext()) {
-			assert (iterator.next() == null);
 			query += "n.name = '" + iterator.next().getName() + "'";
 			if (iterator.hasNext())
 				query += " or ";

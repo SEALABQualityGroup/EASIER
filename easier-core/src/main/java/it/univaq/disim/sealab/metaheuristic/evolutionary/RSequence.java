@@ -47,7 +47,6 @@ public abstract class RSequence {
 		this.controller = solution.getController();
 		this.metamodelManager = manager.getMetamodelManager();
 
-		assert (this.refactoring.getActions().size() == 0);
 		int num_failures = 0;
 
 		while (this.refactoring.getActions().size() < length) {
@@ -60,7 +59,6 @@ public abstract class RSequence {
 				this.refactoring = null;
 				this.refactoring = new Refactoring(solution);
 				this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
-				assert (this.refactoring.getActions().size() == 0);
 			}
 		}
 		if (this.refactoring.getActions().size() != length) {
@@ -74,7 +72,6 @@ public abstract class RSequence {
 	public RSequence(RSequence seq) {
 		this.refactoring = seq.getRefactoring().clone(getSolution());
 		this.refactoring.setName(Integer.toString(RandomUtils.nextInt(0, 100)));
-		assert (this.refactoring.equals(seq.getRefactoring()));
 
 	}
 
@@ -86,9 +83,6 @@ public abstract class RSequence {
 		controller = this.solution.getController();
 		metamodelManager = manager.getMetamodelManager();
 
-		assert (seq.refactoring.getActions().size() == 4);
-		assert (this.refactoring.getActions().size() == 4);
-		assert (solution.getModel() != null);
 	}
 
 	public Refactoring getRefactoring() {

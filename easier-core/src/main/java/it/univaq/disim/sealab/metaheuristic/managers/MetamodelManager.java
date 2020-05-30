@@ -114,7 +114,6 @@ public abstract class MetamodelManager {
 	}
 
 	public void unloadModelResource(RSolution solution) {
-		assert (solution.getResources().size() == 1);
 		for (Iterator<Resource> i = solution.getResources().iterator(); i.hasNext();) {
 			Resource current = (Resource) i.next();
 			current.unload();
@@ -165,7 +164,6 @@ public abstract class MetamodelManager {
 			if (solution.getResources() == null) {
 				EasierLogger.logger_.warning("RSolution doesn't have resources");
 			}
-			assert (solution.getResources().get(0).getContents().get(0).equals(solution.getModel()));
 
 			solution.getResources().get(0).save(null);
 

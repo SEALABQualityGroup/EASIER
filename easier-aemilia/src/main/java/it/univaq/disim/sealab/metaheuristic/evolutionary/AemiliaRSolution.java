@@ -135,13 +135,6 @@ public class AemiliaRSolution extends RSolution {
 
 		init(s1.problem.getController());
 
-		assert (!this.model.equals(s1.getModel()) && !this.model.equals(s2.getModel()));
-		assert (s1.problem.equals(s2.problem));
-		assert (s1.getNumberOfObjectives() == s2.getNumberOfObjectives());
-		assert (s1.getNumberOfVariables() == s2.getNumberOfVariables());
-		assert (s1.getLength() == s2.getLength());
-		assert (point > 0 && point < s1.getLength());
-
 		for (int i = 0; i < s1.problem.getNumberOfVariables(); i++) {
 			if (i == VARIABLE_INDEX) {
 				if (left) {
@@ -150,7 +143,6 @@ public class AemiliaRSolution extends RSolution {
 					this.setVariableValue(VARIABLE_INDEX, this.createChild(s2, s1, point));
 
 				}
-				assert (this.getLength() == s1.getLength() && s1.getLength() == s2.getLength());
 			} else {
 				try {
 					throw new UnexpectedException("Should not happen");
@@ -166,9 +158,6 @@ public class AemiliaRSolution extends RSolution {
 		}
 
 		this.setAttribute(CrowdingDistance.class, 0.0);
-
-		assert (this.getVariableValue(VARIABLE_INDEX).getLength() == s1.getVariableValue(VARIABLE_INDEX).getLength());
-		assert (this.getVariableValue(0).getRefactoring().getActions().size() == this.getLength());
 
 		crossovered = false;
 		mutated = false;
@@ -239,8 +228,6 @@ public class AemiliaRSolution extends RSolution {
 
 	public void createNewModel(Path modelFilePath) {
 		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
@@ -301,20 +288,15 @@ public class AemiliaRSolution extends RSolution {
 
 		AemiliaRSequence seq = new AemiliaRSequence(this);
 
-		assert (s1.getLength() == 4);
-		assert (s2.getLength() == 4);
-
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
 				// _new.setSolution(this);
-				assert (_new.equals(s1.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			for (int j = point; j < s2.getLength(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
 				// _new.setSolution(this);
-				assert (_new.equals(s2.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			return seq;
@@ -515,18 +497,12 @@ public class AemiliaRSolution extends RSolution {
 		Refactoring ref = this.getVariableValue(0).getRefactoring();
 
 		for (RefactoringAction a : ref.getActions()) {
-			assert (a.getModel() != null);
-			assert (a.getModel().equals(this.getModel()));
 
 			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-				assert (sourceCost != null);
 				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
 			}
 			try {
-				assert (this.getModel().equals(a.getModel()));
-				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
 				a.execute();
 				this.setRefactored(true);
 			} catch (UnsupportedOperationException e) {
@@ -542,18 +518,12 @@ public class AemiliaRSolution extends RSolution {
 		Refactoring ref = this.getVariableValue(0).getRefactoring();
 
 		for (RefactoringAction a : ref.getActions()) {
-			assert (a.getModel() != null);
-			assert (a.getModel().equals(this.getModel()));
 
 			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-				assert (sourceCost != null);
 				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
 			}
 			try {
-				assert (this.getModel().equals(a.getModel()));
-				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
 				a.execute();
 				this.setRefactored(true);
 			} catch (UnsupportedOperationException e) {
@@ -686,7 +656,6 @@ public class AemiliaRSolution extends RSolution {
 
 	public void setResourceSet(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
-		assert (getResourceSet().getResources().isEmpty());
 	}
 
 }
