@@ -88,7 +88,6 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			if (randomGenerator.nextDouble() <= probability) {
 				try {
-					assert(i==0);
 					boolean altered = false;
 					int num_failures = 0;
 					while(!altered){

@@ -57,7 +57,6 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 		List<S> offspring = new ArrayList<>(2);
 		AemiliaRSolution parent1copy = (AemiliaRSolution) parent1.copy();
 		offspring.add((S) parent1copy);
-		assert (offspring.get(0).getModel().equals(parent1.getModel()));
 
 		AemiliaRSolution parent2copy = (AemiliaRSolution) parent2.copy();
 		offspring.add((S) parent2copy);
@@ -81,12 +80,8 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 			 */
 			// 4. Compute the crossover point
 
-			assert (((AemiliaRSolution) parent1).getVariableValue(variable).getLength() == ((AemiliaRSolution) parent2).getVariableValue(variable).getLength());
-
 			// 5. Apply the crossover to the variable;
 
-			assert (parent1 != null);
-			assert (parent2 != null);
 			AemiliaRSolution offspring1 = new AemiliaRSolution(parent1, parent2, crossoverPoint, true);
 			offspring1.setParents(parent1, parent2);
 
@@ -108,7 +103,6 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 					offspring.set(0, (S) offspring1);
 			}
 
-			assert (offspring1.getModel().equals(offspring1.getModel()));
 
 			AemiliaRSolution offspring2 = new AemiliaRSolution((AemiliaRSolution) parent1, (AemiliaRSolution) parent2,
 					crossoverPoint, false);
@@ -132,9 +126,6 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 				if (!found)
 					offspring.set(1, (S) offspring2);
 			}
-
-			assert (offspring.size() == 2);
-
 		}
 
 		if (offspring.get(0).equals(parent1copy))

@@ -44,13 +44,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 			// Remove the cloned
 			this.sourceAEI = listOfRemovableClonedAEI.get(randomInt);
 
-			/*
-			 * // this.setRandomCloneIndex(rand); this.setRandomCloneIndex(getSaltString());
-			 * // this.setRandomCloneIndex(RandomUtils.nextInt(0, 100)); if
-			 * (sourceAEI.getSelector() != null) { setSelector(); }
-			 */
-
-			// this.setName("AEmiliaCloneAEIAction_" + sourceAEI.getInstanceName());
 			this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
 			// TODO decide the cost of the removing action, at now it has the same cost of
 			// the adding action
@@ -63,8 +56,8 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	}
 
 	public AEmiliaRemoveClonedAEIRefactoringAction(RSolution sol) {
-		// this.solution = (AemiliaRSolution) sol;
-		// this.manager = sol.getManager();
+		this.solution = (AemiliaRSolution) sol;
+		this.manager = sol.getManager();
 
 		EList<ArchiElemInstance> listOfRemovableClonedAEI = this.getListOfRemovableCloneInstances();
 		int randomInt = RandomUtils.nextInt(0, listOfRemovableClonedAEI.size());
@@ -75,12 +68,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		} else {
 			// Remove the cloned
 			this.sourceAEI = listOfRemovableClonedAEI.get(randomInt);
-
-			/*
-			 * // this.setRandomCloneIndex(rand); this.setRandomCloneIndex(getSaltString());
-			 * // this.setRandomCloneIndex(RandomUtils.nextInt(0, 100)); if
-			 * (sourceAEI.getSelector() != null) { setSelector(); }
-			 */
 
 			// this.setName("AEmiliaCloneAEIAction_" + sourceAEI.getInstanceName());
 			this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
@@ -95,15 +82,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	}
 
 	public void execute() {
-
-		/*
-		 * clonedAEI = (ArchiElemInstance) EcoreUtil.copy(sourceAEI);
-		 * clonedAEI.setTypeOf(sourceAEI.getTypeOf());
-		 * clonedAEI.setInstanceName(sourceAEI.getInstanceName() + "_cloned_" +
-		 * getRandomCloneIndex()); ((AEmiliaSpecification)
-		 * this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().add(
-		 * clonedAEI);
-		 */
 
 		removingInteractions();
 		removingArchitecturalInteraction();
@@ -122,23 +100,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 			for (OutputInteraction oi : listOfOI) {
 				if (oi.getIntName().equals(att.getStart().getIsOutput().getIntName())
 						&& att.getStart().getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
-					// listOfOI.contains(att.getStart().getIsOutput())) {
-
-					/*
-					 * att.getEnd().getIsInput().setType(metamodel.mmaemilia.InteractionType.OR);
-					 * 
-					 * Attachment newAtt = mmaemiliaFactory.eINSTANCE.createAttachment();
-					 * 
-					 * From from = mmaemiliaFactory.eINSTANCE.createFrom();
-					 * from.setFromInstance(clonedAEI);
-					 * from.setIsOutput(att.getStart().getIsOutput());
-					 * 
-					 * To to = mmaemiliaFactory.eINSTANCE.createTo();
-					 * to.setToInstance(att.getEnd().getToInstance());
-					 * to.setIsInput(att.getEnd().getIsInput());
-					 * 
-					 * newAtt.setStart(from); newAtt.setEnd(to);
-					 */
 
 					((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAttDecl()
 							.remove(att);
@@ -147,20 +108,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 			for (InputInteraction ii : listOFII) {
 				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName())
 						&& att.getEnd().getToInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
-					/*
-					 * att.getStart().getIsOutput().setType(metamodel.mmaemilia.InteractionType.OR);
-					 * 
-					 * Attachment newAtt = mmaemiliaFactory.eINSTANCE.createAttachment();
-					 * 
-					 * From from = mmaemiliaFactory.eINSTANCE.createFrom();
-					 * from.setFromInstance(att.getStart().getFromInstance());
-					 * from.setIsOutput(att.getStart().getIsOutput());
-					 * 
-					 * To to = mmaemiliaFactory.eINSTANCE.createTo(); to.setToInstance(clonedAEI);
-					 * to.setIsInput(att.getEnd().getIsInput());
-					 * 
-					 * newAtt.setStart(from); newAtt.setEnd(to);
-					 */
 
 					((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAttDecl()
 							.remove(att);
@@ -178,20 +125,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 			for (InputInteraction ii : listOFII) {
 				if (ii.getIntName().equals(att.getEnd().getIsInput().getIntName())
 						&& att.getEnd().getToInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
-					/*
-					 * att.getStart().getIsOutput().setType(metamodel.mmaemilia.InteractionType.OR);
-					 * 
-					 * Attachment newAtt = mmaemiliaFactory.eINSTANCE.createAttachment();
-					 * 
-					 * From from = mmaemiliaFactory.eINSTANCE.createFrom();
-					 * from.setFromInstance(att.getStart().getFromInstance());
-					 * from.setIsOutput(att.getStart().getIsOutput());
-					 * 
-					 * To to = mmaemiliaFactory.eINSTANCE.createTo(); to.setToInstance(clonedAEI);
-					 * to.setIsInput(att.getEnd().getIsInput());
-					 * 
-					 * newAtt.setStart(from); newAtt.setEnd(to);
-					 */
 
 					((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAttDecl()
 							.remove(att);
@@ -220,11 +153,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 						.remove(architecturalInteraction);
 			}
 		}
-		/*
-		 * if (!listOfClonedArchitecturalInteraction.isEmpty()) {
-		 * listOfArchitecturalInteraction.addAll(listOfClonedArchitecturalInteraction);
-		 * }
-		 */
 	}
 
 	/**

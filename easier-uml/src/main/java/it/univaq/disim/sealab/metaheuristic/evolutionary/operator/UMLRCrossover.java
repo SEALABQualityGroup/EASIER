@@ -37,7 +37,6 @@ public class UMLRCrossover extends RCrossover {
 //		List<RSolution> offspring = new ArrayList<>(2);
 //		UMLRSolution parent1copy = (UMLRSolution) parent1.copy();
 //		offspring.add(parent1copy);
-//		assert (offspring.get(0).getModel().equals(parent1.getModel()));
 //
 //		UMLRSolution parent2copy = (UMLRSolution) parent2.copy();
 //		offspring.add(parent2copy);
@@ -61,12 +60,9 @@ public class UMLRCrossover extends RCrossover {
 //			 */
 //			// 4. Compute the crossover point
 //
-//			assert (parent1.getVariableValue(variable).getLength() == parent2.getVariableValue(variable).getLength());
 //
 //			// 5. Apply the crossover to the variable;
 //
-//			assert (parent1 != null);
-//			assert (parent2 != null);
 //			UMLRSolution offspring1 = new UMLRSolution((UMLRSolution) parent1, (UMLRSolution) parent2,
 //					crossoverPoint, true);
 //			offspring1.setParents(parent1, parent2);
@@ -89,7 +85,6 @@ public class UMLRCrossover extends RCrossover {
 //					offspring.set(0, offspring1);
 //			}
 //
-//			assert (offspring1.getModel().equals(offspring1.getModel()));
 //
 //			UMLRSolution offspring2 = new UMLRSolution((UMLRSolution) parent1, (UMLRSolution) parent2,
 //					crossoverPoint, false);
@@ -114,7 +109,6 @@ public class UMLRCrossover extends RCrossover {
 //					offspring.set(1, offspring2);
 //			}
 //
-//			assert (offspring.size() == 2);
 //
 //		}
 //

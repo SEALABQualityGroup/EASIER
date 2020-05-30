@@ -46,7 +46,6 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		this.sourceModelPath = srcModelPath;
 		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
-		assert (!this.model.equals(manager.getMetamodelManager().getModel()));
 		
 		this.length_of_refactorings = desired_length;
 		this.allowed_failures = allowedFailures;
