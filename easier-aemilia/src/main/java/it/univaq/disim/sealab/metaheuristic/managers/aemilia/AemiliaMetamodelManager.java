@@ -694,8 +694,6 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	public void refreshModel(String mmaemiliaFilePath) {
 		getResourceSet().getResources().get(0).unload();
 		Resource res = getResourceSet().getResource(Manager.string2Uri(mmaemiliaFilePath), true);
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
@@ -762,9 +760,6 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	public void refreshModel(final Path sourceModelPath) {
 		getResourceSet().getResources().get(0).unload();
 		Resource res = getResourceSet().getResource(Manager.string2Uri(sourceModelPath.toString()), true);
-
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
