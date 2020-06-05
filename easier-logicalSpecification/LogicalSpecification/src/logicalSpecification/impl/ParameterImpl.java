@@ -452,7 +452,7 @@ public abstract class ParameterImpl extends NamedElementImpl implements Paramete
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (type: ");
 		result.append(type);
 		result.append(", resolvingExpr: ");

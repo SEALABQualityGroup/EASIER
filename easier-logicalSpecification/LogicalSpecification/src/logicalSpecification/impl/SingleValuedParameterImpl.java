@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.LogicalSpecificationPackage;
-import logicalSpecification.Parameter;
 import logicalSpecification.SingleValuedParameter;
 
 import org.eclipse.emf.common.notify.NotificationChain;

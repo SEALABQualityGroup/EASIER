@@ -2,8 +2,6 @@
  */
 package logicalSpecification.actions.UML.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
@@ -11,9 +9,6 @@ import logicalSpecification.actions.UML.UMLMoveOperationAction;
 import logicalSpecification.actions.UML.UMLPackage;
 
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -388,120 +383,6 @@ public class UMLMoveOperationActionImpl extends UMLMoveActionImpl implements UML
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void log() {
-		super.log();
-//				Controller.logger_.info(getUmlTargetComp().toString());
-//				for (Operation op : getUmlTargetComp().getOperations()) {
-//					Controller.logger_.info(op.toString());
-//				}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void execute() {
-		getUmlOpToMove().setClass_(getUmlTargetComp());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setParameters() {
-//		List<Parameter> moveOpParams = new ArrayList<>();
-//		
-//				setOpToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getOperationQuery(getUmlOpToMove())));
-//				moveOpParams.add(getOpToMoveSVP());
-//		
-//				setTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getComponentQuery(getUmlTargetComp())));
-//				moveOpParams.add(getTargetCompSVP());
-//		
-//				setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getAllOperationsQuery()));
-//				moveOpParams.add(getAllOpsMVP());
-//		
-//				setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getAllComponentsQuery()));
-//				moveOpParams.add(getAllCompsMVP());
-//		
-//				setAllTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getOperationsOfQuery(getUmlTargetComp())));
-//				moveOpParams.add(getAllTargetCompOpsMVP());
-//		
-//				getParameters().addAll(moveOpParams);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPreCondition() {
-//		PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("MoveOperationPreCondition");
-//		
-//				ExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());
-//				ExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());
-//				ExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());
-//				NotOperator notExistsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())
-//						.createNotOperator(existsOpInOpsOfTarget);
-//		
-//				AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//				andRoot.getArguments().add(existsOpInOperations);
-//				andRoot.getArguments().add(existsTargetInComponents);
-//				andRoot.getArguments().add(notExistsOpInOpsOfTarget);
-//		
-//				specification.setRootOperator(andRoot);
-//				preCondition.setConditionFormula(specification);
-//				setPre(preCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPostCondition() {
-//		PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("MoveOperationPostCondition");
-//		
-//				ExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());
-//				ExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());
-//				ExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());
-//		
-//				AndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//				andRoot.getArguments().add(existsOpInOperations);
-//				andRoot.getArguments().add(existsTargetInComponents);
-//				andRoot.getArguments().add(existsOpInOpsOfTarget);
-//		
-//				specification.setRootOperator(andRoot);
-//				postCondition.setConditionFormula(specification);
-//				setPost(postCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -626,37 +507,10 @@ public class UMLMoveOperationActionImpl extends UMLMoveActionImpl implements UML
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case UMLPackage.UML_MOVE_OPERATION_ACTION___LOG:
-				log();
-				return null;
-			case UMLPackage.UML_MOVE_OPERATION_ACTION___EXECUTE:
-				execute();
-				return null;
-			case UMLPackage.UML_MOVE_OPERATION_ACTION___SET_PARAMETERS:
-				setParameters();
-				return null;
-			case UMLPackage.UML_MOVE_OPERATION_ACTION___CREATE_PRE_CONDITION:
-				createPreCondition();
-				return null;
-			case UMLPackage.UML_MOVE_OPERATION_ACTION___CREATE_POST_CONDITION:
-				createPostCondition();
-				return null;
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (umlOpToMove: ");
 		result.append(umlOpToMove);
 		result.append(", umlTargetComp: ");

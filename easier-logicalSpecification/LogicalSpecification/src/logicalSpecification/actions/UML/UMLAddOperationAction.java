@@ -186,44 +186,4 @@ public interface UMLAddOperationAction extends UMLAddAction {
 	 */
 	void setUmlTargetComp(Component value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log();\n\t\tif (umlOpToAdd != null)\n\t\t\tController.logger_.info(umlOpToAdd.toString());\n\n\t\tfor (Operation op : umlTargetComp.getOperations()) {\n\t\t\tController.logger_.info(op.getName());\n\t\t}'"
-	 * @generated
-	 */
-	void log();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='\n\t\t/**\n\t\t * Operation createOwnedOperation(String name, EList&lt;String&gt;\n\t\t * parameterNames, EList&lt;Type&gt; parameterTypes, Type returnType);\n\t\t * \n\t\t \052/\n\t\tumlOpToAdd = umlTargetComp.createOwnedOperation(\"newOp\" + Math.random(), null, null);\n'"
-	 * @generated
-	 */
-	void execute();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='// ACTION add PARAMETERS\n\t\tList&lt;Parameter&gt; addParams = new ArrayList&lt;&gt;();\n\t\t// FIXME le add non dovrebbero avere come attributo l\'oggetto da creare\n\n\t\tif (umlOpToAdd != null) {\n\t\t\tsetOpToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t\t.getOperationQuery(umlOpToAdd)));\n\t\t\taddParams.add(getOpToAddSVP());\n\t\t}\n\n\t\tsetTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getComponentQuery(getUmlTargetComp())));\n\t\taddParams.add(getTargetCompSVP());\n\n\t\tsetAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllComponentsQuery()));\n\t\taddParams.add(getAllCompsMVP());\n\n\t\tsetTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getOperationsOfQuery(getUmlTargetComp())));\n\t\taddParams.add(getTargetCompOpsMVP());\n\n\t\tgetParameters().addAll(addParams);'"
-	 * @generated
-	 */
-	void setParameters();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();\n\t\tFOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(\"AddOperationPreCondition\");\n\t\tAndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\n\t\tExistsOperator addPreAndExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());\n\t\taddPreAnd.getArguments().add(addPreAndExists);\n\n\t\t// NotOperator addPreAndNot = Manager.createNotOperator();\n\t\t// ExistsOperator addPreAndNotExists =\n\t\t// Manager.createExistsOperator(getNewOpSVP(), getTargetCompOps());\n\t\t// addPreAndNot.setArgument(addPreAndNotExists);\n\t\t// addPreAnd.getArguments().add(addPreAndNot);\n\n\t\taddPreSpecification.setRootOperator(addPreAnd);\n\t\tpreCondition.setConditionFormula(addPreSpecification);\n\t\tsetPre(preCondition);'"
-	 * @generated
-	 */
-	void createPreCondition();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PostCondition postCondition = LogicalSpecificationFactory.eINSTANCE.createPostCondition();\n\t\tFOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification(\"AddOperationPostCondition\");\n\t\tAndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\n\t\tExistsOperator addPreAndExists1 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getTargetCompSVP(), getAllCompsMVP());\n\t\taddPreAnd.getArguments().add(addPreAndExists1);\n\n\t\tExistsOperator addPreAndExists2 = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getOpToAddSVP(), getTargetCompOpsMVP());\n\t\taddPreAnd.getArguments().add(addPreAndExists2);\n\n\t\taddPreSpecification.setRootOperator(addPreAnd);\n\t\tpostCondition.setConditionFormula(addPreSpecification);\n\t\tsetPost(postCondition);'"
-	 * @generated
-	 */
-	void createPostCondition();
-
 } // UMLAddOperationAction

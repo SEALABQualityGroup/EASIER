@@ -317,7 +317,7 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link LogicalSpecificationPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -331,14 +331,18 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		if (isInited) return (LogicalSpecificationPackage)EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
 
 		// Obtain or create and register package
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof LogicalSpecificationPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new LogicalSpecificationPackageImpl());
+		Object registeredLogicalSpecificationPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = registeredLogicalSpecificationPackage instanceof LogicalSpecificationPackageImpl ? (LogicalSpecificationPackageImpl)registeredLogicalSpecificationPackage : new LogicalSpecificationPackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) instanceof UMLPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) : UMLPackage.eINSTANCE);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) instanceof AEmiliaPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) : AEmiliaPackage.eINSTANCE);
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) instanceof PerformancePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) : PerformancePackage.eINSTANCE);
+		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
+		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
+		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theLogicalSpecificationPackage.createPackageContents();
@@ -355,7 +359,6 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		// Mark meta-data to indicate it can't be changed
 		theLogicalSpecificationPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(LogicalSpecificationPackage.eNS_URI, theLogicalSpecificationPackage);
 		return theLogicalSpecificationPackage;
@@ -1481,7 +1484,7 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		initEReference(getAction_Parameters(), this.getParameter(), this.getParameter_Action(), "parameters", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Pre(), this.getPreCondition(), this.getPreCondition_Action(), "pre", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Post(), this.getPostCondition(), this.getPostCondition_Action(), "post", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Model(), this.getmodel(), "model", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Model(), ecorePackage.getEJavaObject(), "model", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAction__Execute(), null, "execute", 1, 1, IS_UNIQUE, IS_ORDERED);
 

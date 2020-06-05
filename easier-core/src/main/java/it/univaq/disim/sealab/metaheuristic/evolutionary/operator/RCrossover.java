@@ -77,7 +77,6 @@ public abstract class RCrossover<S extends RSolution> implements CrossoverOperat
 //		List<RSolution> offspring = new ArrayList<>(2);
 //		RSolution parent1copy = (RSolution) parent1.copy();
 //		offspring.add(parent1copy);
-//		assert (offspring.get(0).getModel().equals(parent1.getModel()));
 //
 //		RSolution parent2copy = (RSolution) parent2.copy();
 //		offspring.add(parent2copy);
@@ -101,12 +100,9 @@ public abstract class RCrossover<S extends RSolution> implements CrossoverOperat
 //			 */
 //			// 4. Compute the crossover point
 //
-//			assert (parent1.getVariableValue(variable).getLength() == parent2.getVariableValue(variable).getLength());
 //
 //			// 5. Apply the crossover to the variable;
 //
-//			assert (parent1 != null);
-//			assert (parent2 != null);
 //			RSolution offspring1 = new RSolution(parent1, parent2, crossoverPoint, true);
 //			offspring1.setParents(parent1, parent2);
 //
@@ -125,8 +121,6 @@ public abstract class RCrossover<S extends RSolution> implements CrossoverOperat
 //				if(!found)
 //					offspring.set(0, offspring1);
 //			}
-//
-//			assert (offspring1.getModel().equals(offspring1.getModel()));
 //
 //			RSolution offspring2 = new RSolution(parent1, parent2, crossoverPoint, false);
 //			offspring2.setParents(parent2, parent1);
@@ -159,8 +153,6 @@ public abstract class RCrossover<S extends RSolution> implements CrossoverOperat
 //				if(!found)
 //					offspring.set(1, offspring2);
 //			}
-//
-//			assert (offspring.size() == 2);
 //
 //			// for (int i = intoVariableCrossoverPoint; i < offspring1.getBinarySetLength();
 //			// i++) {

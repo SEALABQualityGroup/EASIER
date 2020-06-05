@@ -100,7 +100,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link PerformancePackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -114,14 +114,18 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		if (isInited) return (PerformancePackage)EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
 
 		// Obtain or create and register package
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof PerformancePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new PerformancePackageImpl());
+		Object registeredPerformancePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		PerformancePackageImpl thePerformancePackage = registeredPerformancePackage instanceof PerformancePackageImpl ? (PerformancePackageImpl)registeredPerformancePackage : new PerformancePackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) instanceof LogicalSpecificationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) : LogicalSpecificationPackage.eINSTANCE);
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) instanceof UMLPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) : UMLPackage.eINSTANCE);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) instanceof AEmiliaPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) : AEmiliaPackage.eINSTANCE);
+		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(registeredPackage instanceof LogicalSpecificationPackageImpl ? registeredPackage : LogicalSpecificationPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
+		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		thePerformancePackage.createPackageContents();
@@ -138,7 +142,6 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		// Mark meta-data to indicate it can't be changed
 		thePerformancePackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(PerformancePackage.eNS_URI, thePerformancePackage);
 		return thePerformancePackage;

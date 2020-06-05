@@ -15,7 +15,6 @@ import logicalSpecification.ExistsOperator;
 import logicalSpecification.ForAllOperator;
 import logicalSpecification.LogicalSpecificationPackage;
 import logicalSpecification.MultipleValuedParameter;
-import logicalSpecification.Parameter;
 
 /**
  * <!-- begin-user-doc -->

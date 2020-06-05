@@ -99,6 +99,10 @@ public class AEmiliaAdapterFactory extends AdapterFactoryImpl {
 				return createAEmiliaChangeActionAdapter();
 			}
 			@Override
+			public Adapter caseAEmiliaRemoveClonedAEIAction(AEmiliaRemoveClonedAEIAction object) {
+				return createAEmiliaRemoveClonedAEIActionAdapter();
+			}
+			@Override
 			public Adapter caseNamedElement(NamedElement object) {
 				return createNamedElementAdapter();
 			}
@@ -223,6 +227,20 @@ public class AEmiliaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAEmiliaChangeActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link logicalSpecification.actions.AEmilia.AEmiliaRemoveClonedAEIAction <em>Remove Cloned AEI Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see logicalSpecification.actions.AEmilia.AEmiliaRemoveClonedAEIAction
+	 * @generated
+	 */
+	public Adapter createAEmiliaRemoveClonedAEIActionAdapter() {
 		return null;
 	}
 
