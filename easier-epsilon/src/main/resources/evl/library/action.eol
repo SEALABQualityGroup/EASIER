@@ -36,7 +36,7 @@ operation Sequence(ConstInit) getConstantIdentExpr() : Sequence(IdentExpr) {
 operation Sequence(IdentExpr) getActionRateValue() : Real {
 	var app : IdentExpr = self.first();
 	if(app.isDefined() and app.type = IdentifierType#NUMERIC_CONST) {
-		return app.name.asReal().println();
+		return app.name.asReal();
 	}
 	else {
 		return 0.0;
