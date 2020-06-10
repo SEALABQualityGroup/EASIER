@@ -240,8 +240,10 @@ public class AemiliaRSolution extends RSolution {
 
 	@Override
 	public String getVariableValueString(int index) {
-		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0) + ", " + getObjective(1) + ", "
-				+ getObjective(2) + " )" + "\n\t";
+		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0); 
+		if(!controller.getConfigurator().isWorsen())
+				strValue += ", " + getObjective(1) + ", " + getObjective(2);
+		strValue += " )" + "\n\t";
 		strValue += getVariableValue(index).toString();
 		return strValue;
 	}
@@ -460,9 +462,13 @@ public class AemiliaRSolution extends RSolution {
 					+ valFilePath + " doesn't exist.");
 			perfQ = Float.MAX_VALUE;
 		} else {
-			perfQ = ((AemiliaPerformanceQualityEvaluator) controller.getPerfQuality())
-					.performanceQuality(((AemiliaRProblem<?>) problem).getSourceValPath(), valFilePath);
-
+			try {
+				perfQ = ((AemiliaPerformanceQualityEvaluator) controller.getPerfQuality())
+						.performanceQuality(((AemiliaRProblem<?>) problem).getSourceValPath(), valFilePath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return perfQ;
 	}
@@ -566,7 +572,6 @@ public class AemiliaRSolution extends RSolution {
 	}
 
 	public float getPerfQ() {
-		// perfQ = evaluatePerformance();
 		return perfQ;
 	}
 

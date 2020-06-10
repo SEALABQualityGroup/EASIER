@@ -40,6 +40,7 @@ public class Launcher {
 
 		AemiliaController ctr = new AemiliaController(config);
 		List<Path> referenceFront;
+		
 		if (config.getReferenceFront() != null)
 			referenceFront = config.getReferenceFront();
 		else {

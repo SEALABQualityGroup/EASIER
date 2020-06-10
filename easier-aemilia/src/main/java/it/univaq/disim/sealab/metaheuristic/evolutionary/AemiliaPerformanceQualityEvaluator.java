@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
+import it.univaq.disim.sealab.metaheuristic.twoeagles.NewValParser;
 import it.univaq.disim.sealab.ttep.val.ValParser;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
 import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
@@ -28,17 +29,18 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 	private String refactoredValFile;
 	private ValSpec valSpecToBeEvaluated;
 	private ValSpec originalValSpec;
-	private Map<MeasureValue, Float> qualityMap;
+	private Map<MeasureValue, Double> qualityMap;
 	private OclManager oclManager;
 
 	public AemiliaPerformanceQualityEvaluator(OclManager oclManager) {
 		qualityMap = new HashMap<>();
 		this.oclManager = oclManager;
 	}
-	
+
 	/**
-	 * Counts the number of performance antipatterns
-	 * on the emf model, based on the rule file
+	 * Counts the number of performance antipatterns on the emf model, based on the
+	 * rule file
+	 * 
 	 * @param mmaemiliaFilePath
 	 * @param ruleFilePath
 	 */
@@ -48,8 +50,8 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 	}
 
 	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
@@ -68,17 +70,16 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		}
 		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
 	}
-	
 
 	/**
 	 * Returns the PerfQ value calculated as refactoredValFile over sourceValFile.
-	 * Since the fitness function minimises, the final value is multiplied by -1.
 	 * 
 	 * @param sourceValFile
 	 * @param refactoredValFile
 	 * @return the calculated quality
+	 * @throws Exception 
 	 */
-	public float performanceQuality(final Path sourceValFile, final Path refactoredValFile) {
+	public float performanceQuality(final Path sourceValFile, final Path refactoredValFile) throws Exception {
 		setOriginalValSpec(sourceValFile);
 		setValSpecToBeEvaluated(refactoredValFile);
 		qualityMap.clear();
@@ -89,19 +90,21 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 				}
 			}
 		}
-		return -1 * calcuateWholeQuality();
+		System.out.println(refactoredValFile.getFileName() + " --> " + calcuateWholeQuality());
+		return calcuateWholeQuality();
 	}
 
 	private Float calcuateWholeQuality() {
 		float overallQuality = 0;
-		for (float val : qualityMap.values()) {
+		for (double val : qualityMap.values()) {
 			overallQuality += val;
 		}
 		return (overallQuality / qualityMap.size());
 	}
 
-	private void calculateQuality(MeasureValue sourceMes, MeasureValue refMes) {
-		Float quality = Float.parseFloat("0.0");
+	private void calculateQuality(MeasureValue sourceMes, MeasureValue refMes) throws Exception {
+		// Float quality = Float.parseFloat("0.0");
+		double quality = 0.0;
 		// if(sourceMes.getValue() == 0) {
 		// if (Pattern.compile(Pattern.quote(IndexType.THROUGHPUT.getLiteral()),
 		// Pattern.CASE_INSENSITIVE).matcher(sourceMes.getMeasure()).find())
@@ -124,9 +127,12 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		// else
 		// quality = refMes.getValue();
 		// } else {
-		if (sourceMes.getValue() == 0 && refMes.getValue() == 0)
-			quality = Float.parseFloat("0.0");
-		else
+		if (sourceMes.getValue() == 0)
+			throw new Exception("There is a problem in the source val measure");
+		if (refMes.getValue() == 0) {
+			System.out.println("The refactored model has measure --> " + refMes.getMeasure() + " with 0 value!!!");
+			quality = 0.0;
+		} else
 			quality = (refMes.getValue() - sourceMes.getValue()) / (refMes.getValue() + sourceMes.getValue());
 		// if (Pattern.compile(Pattern.quote(IndexType.THROUGHPUT.getLiteral()),
 		// Pattern.CASE_INSENSITIVE).matcher(sourceMes.getMeasure()).find()) {
@@ -155,24 +161,21 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 	}
 
 	private ValSpec getValSpec(Path valFilePath) {
-		FileInputStream valFileInputStream = null;
-		try {
-			valFileInputStream = new FileInputStream(valFilePath.toFile());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-		ValParser valParser = new ValParser(valFileInputStream);
 
-		ValSpec valSpec = null;
-		try {
-			valSpec = valParser.ValSpec();
-		} catch (it.univaq.disim.sealab.ttep.val.ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return NewValParser.parsingValFile(valFilePath);
 
-		return valSpec;
+		/*
+		 * FileInputStream valFileInputStream = null; try { valFileInputStream = new
+		 * FileInputStream(valFilePath.toFile()); } catch (FileNotFoundException e) {
+		 * e.printStackTrace(); return null; } ValParser valParser = new
+		 * ValParser(valFileInputStream);
+		 * 
+		 * ValSpec valSpec = null; try { valSpec = valParser.ValSpec(); } catch
+		 * (it.univaq.disim.sealab.ttep.val.ParseException e) { e.printStackTrace();
+		 * return null; }
+		 * 
+		 * return valSpec;
+		 */
 	}
 
 	public String getSourceValFile() {

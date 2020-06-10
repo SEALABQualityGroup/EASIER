@@ -14,19 +14,22 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Path sourceValPath;
-	
+
 	public AemiliaRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
 			Controller ctrl) {
-		super(srcFolderPath, srcFolderPath.resolve("model.mmaemilia"), desired_length, length, allowedFailures, populationSize, ctrl);
-		
+		super(srcFolderPath, srcFolderPath.resolve("model.mmaemilia"), desired_length, length, allowedFailures,
+				populationSize, ctrl);
+
 		this.sourceValPath = srcFolderPath.resolve("model.val");
 		this.sourceModelPath = srcFolderPath.resolve("model.mmaemilia");
 	}
-	
-	public Path getSourceValPath() { return sourceValPath; }
-	
+
+	public Path getSourceValPath() {
+		return sourceValPath;
+	}
+
 	@Override
 	public S createSolution() {
 
@@ -45,8 +48,10 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 	public Path getSourceModelPath() {
 		return sourceFolderPath.resolve("model.mmaemilia");
 	}
-	
-	public Path getSourceRewFilePath() { return sourceFolderPath.resolve("model.rew"); }
+
+	public Path getSourceRewFilePath() {
+		return sourceFolderPath.resolve("model.rew");
+	}
 
 	@Override
 	/**
@@ -57,14 +62,20 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 	 * 
 	 */
 	public void evaluate(S s) {
-		
-		AemiliaRSolution solution = (AemiliaRSolution)s;
+
+		AemiliaRSolution solution = (AemiliaRSolution) s;
 
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
+			// If worsen is enabled, perfQ should be the only objective
 			if (i == FIRST_OBJ) {
-				float quality = solution.getPerfQ();
+				EasierLogger.logger_
+						.info("SOLUTION #" + solution.getName() + ": PerfQ --> " + solution.getPerfQ());
+				// if isWorsen perfQ does not be change, if not worsen must be multiply by -1 to
+				// maximize better perfQ
+				float quality = (getController().getConfigurator().isWorsen()) ? solution.getPerfQ()
+						: (-1 * solution.getPerfQ());
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);
-				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getPerfQuality());
+				solution.setObjective(i, quality);
 			} else if (i == SECOND_OBJ) {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());

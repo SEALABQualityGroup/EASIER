@@ -104,6 +104,9 @@ public class Configurator {
 	
 	@Parameter(names = {"--genRF"}, description = "It allows the generation of reference front by tsv files")
 	private boolean generateRF = false;
+	
+	@Parameter(names= {"--worsen"}, description = "It enables the generation of worsen models")
+	private boolean worsen = false;
 
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
@@ -111,6 +114,10 @@ public class Configurator {
 		for (String s : referenceFront)
 			paths.add(Paths.get(s));
 		return paths;
+	}
+	
+	public boolean isWorsen() {
+		return worsen;
 	}
 	
 	public boolean generateRF() {

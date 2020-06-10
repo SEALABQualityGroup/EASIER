@@ -243,6 +243,8 @@ public class AemiliaController implements Controller {
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+						if(configurator.isWorsen()) pName += "_Worsen_";
+						
 						AemiliaRProblem<AemiliaRSolution> p = new AemiliaRProblem<AemiliaRSolution>(
 								src.getSourceFolder(), l, configurator.getActions(), configurator.getAllowedFailures(),
 								configurator.getPopulationSize(), this);
@@ -587,5 +589,15 @@ public class AemiliaController implements Controller {
 
 	public Path getPermanentTmpFolder() {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
+	}
+	
+	public void generateWorseModels() {
+		List<RProblem<AemiliaRSolution>> problems = createProblems();
+		
+		for (RProblem<AemiliaRSolution> rProblem : problems) {
+			rProblem.createSolution();
+		}
+			
+		
 	}
 }
