@@ -105,6 +105,9 @@ public class FileUtils {
 						rSolution.getProblem().getName() + "_solutions.csv").toFile(),
 				true)) {
 			List<String> line = new ArrayList<String>();
+			line.addAll(Arrays.asList("SolID", "PerfQ", "ArchDist", "PAs"));
+			CSVUtils.writeHeader(fw, line);
+			line.clear();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPerfQ()));
 			line.add(String.valueOf(rSolution.getNumOfChanges()));
