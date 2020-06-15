@@ -21,6 +21,7 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaRemoveClonedAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
@@ -292,10 +293,34 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		case 3:
 			return getRandomWeightChangeAction((AemiliaRSequence) seq);
 		case 4:
+			return getRandomRemoveCloneAction((AemiliaRSequence) seq);
+		case 5:
 			return getRandomWorkloadChangeAction((AemiliaRSequence) seq);
 		default:
 			throw new UnexpectedException("");
 		}
+	}
+	
+	private RefactoringAction getRandomRemoveCloneAction(AemiliaRSequence seq) {
+		AEmiliaRemoveClonedAEIRefactoringAction action = null;
+		try {
+			action = new AEmiliaRemoveClonedAEIRefactoringAction((AemiliaRSolution) seq.getSolution());
+
+			if (action.getSourceAEI() == null)
+				return null;
+
+//			if (!action.isApplicable())
+//				return null;
+
+//			if (!isApplicable(action, seq))
+//				return null;
+		} catch (IllegalArgumentException e) {
+//			AemiliaRSolution s = (AemiliaRSolution) seq.getSolution();
+			System.out.println(seq.toString());
+			System.out.println(seq.getSolution().toString());
+			e.printStackTrace();
+		} 
+		return action;
 	}
 
 	private RefactoringAction getRandomCloneAEIAction(AemiliaRSequence seq) {

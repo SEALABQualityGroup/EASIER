@@ -429,7 +429,7 @@ public class OclAemiliaStringManager extends OclStringManager {
 		String query;
 		//query = "LocalInteraction.allInstances()->asSequence()->select(li | li.type = UNI)->asSequence()";
 		//query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "' or a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "')"; 
-		query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "' or a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "')->iterate(x : Attachment; acc : Sequence(LocalInteraction) = Sequence{} | acc->including(x.end.isInput))->asSet()->union(Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "' or a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "')->iterate(x : Attachment; acc : Sequence(LocalInteraction) = Sequence{} | acc->including(x.start.isOutput))->asSet())";
+		query = "Attachment.allInstances()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "' or a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "')->iterate(x : Attachment; acc : Sequence(LocalInteraction) = Sequence{} | acc->including(x.end.isInput))->asSet()->union(Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "' or a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName='" + name + "')->iterate(x : Attachment; acc : Sequence(LocalInteraction) = Sequence{} | acc->including(x.start.isOutput))->asSet())";
 		return query;
 	}
 	
@@ -448,7 +448,7 @@ public class OclAemiliaStringManager extends OclStringManager {
 	//OK
 	public String getAllInteractsQuery() {
 		String query;
-		query = "Interaction.allInstances()->asSequence()->select(i | i.oclIsTypeOf(InputInteraction) or i.oclIsTypeOf(OutputInteraction))->asSequence()";
+		query = "Interaction.allInstances()->select(i | i.oclIsTypeOf(InputInteraction) or i.oclIsTypeOf(OutputInteraction))->asSequence()";
 		return query;
 	}
 	
@@ -461,33 +461,33 @@ public class OclAemiliaStringManager extends OclStringManager {
 	
 	public String getAllOrInteractsQuery() {
 		String query;
-		query = "LocalInteraction.allInstances()->asSequence()->select(i | (i.oclIsTypeOf(InputInteraction) or i.oclIsTypeOf(OutputInteraction)) and i.type=InteractionType::OR)->asSequence()";
+		query = "LocalInteraction.allInstances()->select(i | (i.oclIsTypeOf(InputInteraction) or i.oclIsTypeOf(OutputInteraction)) and i.type=InteractionType::OR)->asSequence()";
 		return query;
 	}
 	
 	public String getAllInLocalInteractsQuery(String name) {
 		String query;
-		query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.end.isInput))";
+		query = "Attachment.allInstances()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.end.isInput))";
 		return query;
 	}
 	
 	
 	public String getAllOutLocalInteractsQuery(String name) {
 		String query;
-		query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.start.isOutput))";
+		query = "Attachment.allInstances()->select(a:Attachment|a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.start.isOutput))";
 		return query;
 	}
 	
 	public String getAllOutRemoteInteractsQuery(String name) {
 		String query;
-		query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.start.isOutput))";
+		query = "Attachment.allInstances()->select(a:Attachment|a.end.toInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.start.isOutput))";
 		return query;
 	}
 	
 	
 	public String getAllInRemoteInteractsQuery(String name) {
 		String query;
-		query = "Attachment.allInstances()->asSequence()->select(a:Attachment|a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.end.isInput))";
+		query = "Attachment.allInstances()->select(a:Attachment|a.start.fromInstance.oclAsType(ArchiElemInstance).instanceName.startsWith('" + name + "')->collect(a:Attachment|a.end.isInput))";
 		return query;
 	}
 	
@@ -518,13 +518,13 @@ public class OclAemiliaStringManager extends OclStringManager {
 	//OK
 	public String getAEIQuery(String name) {
 		String query;
-		query = "ArchiElemInstance.allInstances()->asSequence()->select(aei | aei.instanceName = '" + name + "')->first()";
+		query = "ArchiElemInstance.allInstances()->select(aei | aei.instanceName = '" + name + "')->asSequence()->first()";
 		return query;
 	}
 	
 	public String getConstInitQuery(String name) {
 		String query;
-		query = "Headers::ConstInit.allInstances()->asSequence()->select(ci | ci.name = '" + name + "')->first()";
+		query = "Headers::ConstInit.allInstances()->select(ci | ci.name = '" + name + "')->asSequence()->first()";
 		return query;
 	}
 	
@@ -537,7 +537,7 @@ public class OclAemiliaStringManager extends OclStringManager {
 	//OK
 	public String getClonedAEIQuery(String name) {
 		String query;
-		query = "ArchiElemInstance.allInstances()->asSequence()->select(aei | aei.instanceName.startsWith('" + name + "'))->first()";
+		query = "ArchiElemInstance.allInstances()->select(aei | aei.instanceName.startsWith('" + name + "'))->asSequence()->first()";
 		//query = "ArchiElemInstance.allInstances()->asSequence()->select(aei | aei.oclIsNew())->first()";
 		return query;
 	}
