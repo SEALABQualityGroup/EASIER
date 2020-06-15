@@ -1,23 +1,42 @@
 package it.univaq.disim.sealab.epsilon.evl;
 
+
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.EvlModule;
-import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 
+import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 
-public class EVLStandalone extends EpsilonStandalone{
-	
+public class EVLStandalone extends EpsilonStandalone {
+
 //	public static void main(String[] args) throws Exception {
 //		new EVLStandalone().execute();
 //	}
-	
+
+	public EVLStandalone() {
+		if (Files.exists(Paths.get("/tmp/aemilia-pas-checker.evl"))) {
+			rulePath = Paths.get("/tmp/aemilia-pas-checker.evl");
+		}else {
+			InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("evl/aemilia-pas-checker.evl");
+//		metamodelPath = Files.createTempFile("", "");
+			rulePath = Paths.get("/tmp/aemilia-pas-checker.evl");
+			try {
+				Files.copy(mmIn, rulePath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public IEolModule createModule() {
 		return new EvlModule();
@@ -25,20 +44,20 @@ public class EVLStandalone extends EpsilonStandalone{
 
 	@Override
 	public IModel getModel(Path mmaemiliaFilePath) throws Exception {
-		return createEmfModel("aemilia", mmaemiliaFilePath, Paths.get(getClass().getResource("/metamodels/mmAEmilia.ecore").getFile()), true, true);
+		return createEmfModel("aemilia", mmaemiliaFilePath, EpsilonStandalone.getMetamodelPath().toString(), true, true);
 	}
 
 	@Override
-	public String getSource() throws Exception {
+	public Path getSource() throws Exception {
 //		final File rootFolder = Utility.getFileFromResource(RULES_FOLDER);
 //		List<File> allEVLFilesPath = new ArrayList<File>();
 //		Utility.search(".*\\.evl", rootFolder, allEVLFilesPath);
-		return "evl/aemilia-pas-checker.evl";
+		return rulePath;
 	}
 
 	@Override
 	public void postProcess(Path destFilePath) {
-		
+
 //		EvlModule module = (EvlModule) this.module;
 //		
 //		Collection<UnsatisfiedConstraint> unsatisfied = module.getContext().getUnsatisfiedConstraints();
@@ -53,26 +72,31 @@ public class EVLStandalone extends EpsilonStandalone{
 //			System.out.println("All constraints have been satisfied");
 //		}
 	}
-	
+
 	/**
 	 * 
 	 * @param mmaemiliaFilePath
 	 * @return
 	 */
-	public int getPAs(Path mmaemiliaFilePath, Path ruleFilePath) {
+	public int getPAs(Path mmaemiliaFilePath, Path rulePath) {
 		try {
-			execute(mmaemiliaFilePath, File.createTempFile("evl", "tmp").toPath(), ruleFilePath);
+			this.setSource(rulePath);
+			execute(mmaemiliaFilePath, File.createTempFile("evl", "tmp").toPath());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ((EvlModule)this.module).getContext().getUnsatisfiedConstraints().size();
+		return ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
 	}
 
 	@Override
 	public void preProcess() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public IModel getModel(Path modelFilePath, Path metamodelPath) throws Exception {
+		return getModel(modelFilePath);
 	}
 }
-
