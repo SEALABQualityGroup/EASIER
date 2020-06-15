@@ -30,19 +30,25 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 		return sourceValPath;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public S createSolution() {
-
-		try {
-			return (S) new AemiliaRSolution((RProblem<AemiliaRSolution>) this);
-		} catch (ParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnexpectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		
+		AemiliaRSolution sol= null;
+		
+//		try {
+		do{
+			sol = new AemiliaRSolution((RProblem<AemiliaRSolution>) this);
+		}while(sol == null);
+		
+//		} catch (ParserException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (UnexpectedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		return (S) sol;
 	}
 
 	public Path getSourceModelPath() {

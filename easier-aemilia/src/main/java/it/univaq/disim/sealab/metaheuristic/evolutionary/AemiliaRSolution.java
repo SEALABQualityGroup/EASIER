@@ -73,7 +73,7 @@ public class AemiliaRSolution extends RSolution {
 	private boolean refactored;
 
 	private static int SOLUTION_COUNTER = -1;
-	
+
 	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
 	private int name;
@@ -91,17 +91,22 @@ public class AemiliaRSolution extends RSolution {
 
 	private Path folderPath;
 
-	protected AemiliaRSolution(RProblem<AemiliaRSolution> p) throws ParserException, UnexpectedException {
+	protected AemiliaRSolution(RProblem<AemiliaRSolution> p) {
 		super(p);
 		setName(++SOLUTION_COUNTER);
 		ID = UUID.randomUUID();
 		resetParents();
 		init(p.getController());
-		this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
-
 		crossovered = false;
 		mutated = false;
 		refactored = false;
+		
+		try {
+			this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
+		} catch (UnexpectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 
 	}
 
@@ -199,8 +204,10 @@ public class AemiliaRSolution extends RSolution {
 					Paths.get(folderPath.toString(), "aemilia-pas-checker.evl").toFile());
 
 			// fix paths in the copied EVL file
-			FileUtils.fillTemplateKeywords(controller.getConfigurator().getEVLTemplate(), Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"),
-					Stream.of(new Object[][] { { "basepath",  controller.getConfigurator().getEVLTemplate().getParent().toString()} })
+			FileUtils.fillTemplateKeywords(controller.getConfigurator().getEVLTemplate(),
+					Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"),
+					Stream.of(new Object[][] {
+							{ "basepath", controller.getConfigurator().getEVLTemplate().getParent().toString() } })
 							.collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1])));
 			EasierLogger.logger_.info("The EVL Template File has been filled and copied");
 
@@ -232,7 +239,7 @@ public class AemiliaRSolution extends RSolution {
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
 
-	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
+	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException {
 		AemiliaRSequence seq = new AemiliaRSequence(l, n, a, this);
 		this.setVariableValue(VARIABLE_INDEX, seq);
 		this.setAttribute(CrowdingDistance.class, 0.0);
@@ -240,9 +247,17 @@ public class AemiliaRSolution extends RSolution {
 
 	@Override
 	public String getVariableValueString(int index) {
-		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0); 
-		if(!controller.getConfigurator().isWorsen())
-				strValue += ", " + getObjective(1) + ", " + getObjective(2);
+		String strValue = "Solution ID : " + this.getName() + " ( ";
+		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
+			if (i == 0 && !controller.getConfigurator().isWorsen()) {
+				strValue += (-1 * getObjective(i));
+			} else {
+				strValue += getObjective(i);
+			}
+			if (i < this.getNumberOfObjectives() - 1)
+				strValue += ", ";
+		}
+		// strValue += ", " + getObjective(1) + ", " + getObjective(2);
 		strValue += " )" + "\n\t";
 		strValue += getVariableValue(index).toString();
 		return strValue;
@@ -411,7 +426,7 @@ public class AemiliaRSolution extends RSolution {
 	 */
 	public void countingPAs() {
 		refreshModel();
-		
+
 		numPAs = EpsilonHelper.aemiliaPasChecker(this.mmaemiliaFilePath, Paths.get(folderPath.toString(), EVL_MODULE));
 
 		/*
@@ -486,6 +501,7 @@ public class AemiliaRSolution extends RSolution {
 	// }
 
 	public void applyTransformation() {
+
 		EpsilonHelper.generateAemFile(this.mmaemiliaFilePath,
 				Paths.get(this.folderPath.toString(), Integer.toString(this.name) + ".aem"));
 		// Transformation.GenerateAEMTransformation(this.mmaemiliaFilePath,
