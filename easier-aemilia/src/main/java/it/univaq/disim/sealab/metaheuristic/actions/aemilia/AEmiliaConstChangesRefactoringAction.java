@@ -244,7 +244,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		FOLSpecification constChangePreSpecification = manager.createFOLSpectification("ConstChangePreCondition");
 		AndOperator constChangePreAnd = manager.createAndOperator();
 
-		ExistsOperator existsConstInitToChange = manager.createExistsOperator(getSourceConstInitSVP(),
+		ExistsOperator existsConstInitToChange = manager.createExistsInCollectionOperator(getSourceConstInitSVP(),
 				getAllConstInitsMVP());
 		constChangePreAnd.getArguments().add(existsConstInitToChange);
 
@@ -258,7 +258,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		FOLSpecification constChangePostSpecification = manager.createFOLSpectification("ConstChangePostCondition");
 		AndOperator constChangePostAnd = manager.createAndOperator();
 
-		ExistsOperator existsConstInitToChange = manager.createExistsOperator(getSourceConstInitSVP(),
+		ExistsOperator existsConstInitToChange = manager.createExistsInCollectionOperator(getSourceConstInitSVP(),
 				getAllConstInitsMVP());
 		constChangePostAnd.getArguments().add(existsConstInitToChange);
 

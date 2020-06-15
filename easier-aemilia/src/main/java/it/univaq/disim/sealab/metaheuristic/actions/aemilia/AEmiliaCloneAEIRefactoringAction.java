@@ -233,9 +233,9 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 
 	public void setParameters() {
 		// ACTION CLONE AEI
-		List<Parameter> addParams = new ArrayList<>();
+//		List<Parameter> addParams = new ArrayList<>();
 
-		OclManager oclManager = manager.getOclManager();
+//		OclManager oclManager = manager.getOclManager();
 		OclAemiliaStringManager oclStringManager = (OclAemiliaStringManager) manager.getOclStringManager();
 
 		if (sourceAEI != null) {
@@ -286,7 +286,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		AndOperator clonePreAnd = manager.createAndOperator();
 
 		ExistsOperator existsAeiToClone = manager
-				.createExistsOperator(getAeiToCloneSVP(), getAllAeisMVP());
+				.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
 		clonePreAnd.getArguments().add(existsAeiToClone);
 
 		ForAllOperator forallLocalInteracts = manager.createForAllOperator(getAllLocalInteractsMVP());
@@ -304,10 +304,10 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		FOLSpecification clonePostSpecification = manager.createFOLSpectification("CloneAeiPostCondition");
 		AndOperator clonePostAnd = manager.createAndOperator();
 
-		ExistsOperator existsAeiToClone = manager.createExistsOperator(getAeiToCloneSVP(), getAllAeisMVP());
+		ExistsOperator existsAeiToClone = manager.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
 		clonePostAnd.getArguments().add(existsAeiToClone);
 
-		ExistsOperator existsClonedAei = manager.createExistsOperator(getClonedAeiSVP(), getAllAeisMVP());
+		ExistsOperator existsClonedAei = manager.createExistsInCollectionOperator(getClonedAeiSVP(), getAllAeisMVP());
 		clonePostAnd.getArguments().add(existsClonedAei);
 
 		ForAllOperator forallAttSrcAeiIsTo = manager.createForAllOperator(getAllInLocalInteractsMVP());
