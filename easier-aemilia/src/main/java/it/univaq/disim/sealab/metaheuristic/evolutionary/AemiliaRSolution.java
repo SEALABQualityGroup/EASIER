@@ -21,11 +21,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 
-import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
@@ -34,7 +32,6 @@ import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
@@ -42,8 +39,8 @@ import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
 import metamodel.mmaemilia.Headers.ConstInit;
-import utils.AemiliaFileUtils;
-import utils.ThresholdUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 
 public class AemiliaRSolution extends RSolution {
 

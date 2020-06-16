@@ -10,8 +10,6 @@ import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaRemoveClonedAEIRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.Action;

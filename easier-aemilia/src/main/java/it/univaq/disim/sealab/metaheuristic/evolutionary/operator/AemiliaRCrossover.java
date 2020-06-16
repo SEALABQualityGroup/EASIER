@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.ocl.ParserException;
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.jmetal.util.JMetalException;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 

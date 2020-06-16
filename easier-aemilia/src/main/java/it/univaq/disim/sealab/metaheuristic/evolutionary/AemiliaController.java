@@ -36,7 +36,6 @@ import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
-import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
@@ -59,9 +58,8 @@ import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelMan
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
-import metamodel.mmaemilia.mmaemiliaPackage;
-import utils.AemiliaFileUtils;
-import utils.ThresholdUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 
 public class AemiliaController implements Controller {
 

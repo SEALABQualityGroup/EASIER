@@ -1,4 +1,4 @@
-package utils;
+package it.univaq.disim.sealab.metaheuristic.utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +11,7 @@ import com.beust.jcommander.JCommander;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 
 public class ThresholdUtilsTest {
 	

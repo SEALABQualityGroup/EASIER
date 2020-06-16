@@ -1,9 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +11,8 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
-import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.twoeagles.NewValParser;
-import it.univaq.disim.sealab.ttep.val.ValParser;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
 import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
 import mapmeasurestoindices.IndexType;

@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
@@ -23,14 +20,11 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.UMLPackage;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
-import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
 
 public class OclAemiliaManager extends OclManager {

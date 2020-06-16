@@ -1,8 +1,5 @@
 package it.univaq.disim.sealab.metaheuristic.actions.aemilia;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -14,16 +11,13 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
-import logicalSpecification.ForAllOperator;
 import logicalSpecification.LogicalSpecificationFactory;
 import logicalSpecification.NotOperator;
-import logicalSpecification.Parameter;
 import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl;

@@ -1,4 +1,4 @@
-package utils;
+package it.univaq.disim.sealab.metaheuristic.utils;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,15 +1,14 @@
 package it.univaq.disim.sealab.metaheuristic.twoeagles;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
 import it.univaq.disim.sealab.ttep.val.classes.MeasureValue;
+import it.univaq.disim.sealab.ttep.val.classes.ValSpec;
 
 public class NewValParser {
 

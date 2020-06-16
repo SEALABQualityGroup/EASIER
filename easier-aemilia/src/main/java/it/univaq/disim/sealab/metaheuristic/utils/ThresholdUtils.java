@@ -1,10 +1,5 @@
-package utils;
+package it.univaq.disim.sealab.metaheuristic.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -12,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.text.StringSubstitutor;
 import org.eclipse.emf.common.util.EList;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
