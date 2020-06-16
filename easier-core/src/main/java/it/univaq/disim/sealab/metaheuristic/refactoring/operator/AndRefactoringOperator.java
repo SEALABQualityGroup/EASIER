@@ -29,6 +29,7 @@ public class AndRefactoringOperator extends AndOperatorImpl {
 			if (this != op2) {
 				if (this.getArguments() != null) {
 					for (int i = 0; i < this.getArguments().size(); i++) {
+						//TODO check java.lang.UnsupportedOperationException
 						if (this.getArguments().get(i).guarantees(op2))
 							return true;
 					}

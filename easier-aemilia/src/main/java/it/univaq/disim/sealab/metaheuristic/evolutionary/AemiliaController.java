@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.FileHandler;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -57,6 +59,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
 import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
@@ -106,7 +109,7 @@ public class AemiliaController implements Controller {
 		configurator = config;
 
 		configurator.getTmpFolder().toFile().mkdirs();
-		
+
 		METAMODEL_PATH = configurator.getMetamodelPath();
 
 		// Instantiates evolutionary operators
@@ -163,6 +166,7 @@ public class AemiliaController implements Controller {
 		final Path sourceValPath = source.resolve("model.val");
 		final Path sourceModelPath = source.resolve("model.mmaemilia");
 		final Path sourceOCLPath = source.resolve("ocl/detectionSingleValuePA.ocl");
+		final Path sourceEVLPath = source.resolve("aemilia-pas-checker.evl");
 
 		if (!Files.exists(sourceModelPath) && Files.exists(sourceAemPath)) {
 			new TwoEaglesBridge().aemiliaModelGeneration(sourceAemPath, sourceModelPath);
@@ -198,6 +202,28 @@ public class AemiliaController implements Controller {
 				checkTwoTowersOutput(source.resolve("ttresult"));
 				System.out.println("The val file must exist, please check TTkernel output file!!!!");
 				return; // TODO manage the exception
+			}
+		}
+
+		if (!Files.exists(sourceEVLPath)) {
+			try {
+				// copy the EVL template into the solution folder
+				org.apache.commons.io.FileUtils.copyFile(configurator.getEVLTemplate().toFile(),
+						sourceEVLPath.toFile());
+				// fix paths in the copied EVL file
+				FileUtils.fillTemplateKeywords(configurator.getEVLTemplate(), sourceEVLPath,
+						Stream.of(
+								new Object[][] { { "basepath", configurator.getEVLTemplate().getParent().toString() } })
+								.collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1])));
+
+				//copy the threshold file into the source folder
+				ThresholdUtils.uptodateSingleValueThresholds(source, sourceModelPath, sourceValPath, (AemiliaMetamodelManager) metamodelManager,
+						this);
+
+				EasierLogger.logger_.info("The EVL Template File has been filled and copied");
+			} catch (IOException e) {
+				System.err.println("Error in copying the evl template file to the source folder.");
+				e.printStackTrace();
 			}
 		}
 
