@@ -332,6 +332,7 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/BlobPA/T_maxHwUtilSVP"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/BlobPA/T_minNetUtilSVP"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/BlobPA/contextualElement"/>
           <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxClientConnects"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/BlobPA/setParametersForPartialDetection/T_maxSupplierConnects"/>
@@ -380,6 +381,7 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/CpsPA/T_minUnderUtilSVP"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/CpsPA/T_maxOpDemandMVP"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/CpsPA/contextualElement"/>
           <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForPartialDetection">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/CpsPA/setParametersForPartialDetection/T_maxOpDemand"/>
           </genOperations>
@@ -418,6 +420,7 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/PafPA/T_maxHwUtilSVP"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/PafPA/T_minServiceThroughputSVP"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/PafPA/contextualElement"/>
           <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection/T_maxResDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/PafPA/setParametersForPartialDetection/T_opProbExec"/>
@@ -466,6 +469,7 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/EpPA/T_maxHwUtilSVP"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//antipatterns/performance/EpPA/T_maxServiceResponseTimeSVP"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//antipatterns/performance/EpPA/contextualElement"/>
           <genOperations ecoreOperation="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection">
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection/T_maxOverDemand"/>
             <genParameters ecoreParameter="logicalSpecification.ecore#//antipatterns/performance/EpPA/setParametersForPartialDetection/T_minUnderDemand"/>
