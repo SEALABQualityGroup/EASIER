@@ -70,7 +70,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/rootOperator"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/antipattern"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//LogicalOperator"/>
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//LogicalOperator">
+      <genOperations ecoreOperation="logicalSpecification.ecore#//LogicalOperator/guarantees">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//LogicalOperator/guarantees/operator"/>
+      </genOperations>
+      <genOperations ecoreOperation="logicalSpecification.ecore#//LogicalOperator/evaluateOperator">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//LogicalOperator/evaluateOperator/operator"/>
+      </genOperations>
+    </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//VoidOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//ForAllOperator">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/collection"/>
