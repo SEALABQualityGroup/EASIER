@@ -59,6 +59,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelMan
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
+import metamodel.mmaemilia.mmaemiliaPackage;
 import utils.AemiliaFileUtils;
 import utils.ThresholdUtils;
 
@@ -67,6 +68,8 @@ public class AemiliaController implements Controller {
 	public static boolean append = false;
 
 	public static FileHandler handler;
+
+	public static Path METAMODEL_PATH;
 
 	private MetamodelManager metamodelManager;
 	private Manager manager;
@@ -105,6 +108,8 @@ public class AemiliaController implements Controller {
 		configurator = config;
 
 		configurator.getTmpFolder().toFile().mkdirs();
+		
+		METAMODEL_PATH = configurator.getMetamodelPath();
 
 		// Instantiates evolutionary operators
 		crossoverOperator = new AemiliaRCrossover<AemiliaRSolution>(config.getXoverProbabiliy(), this);
@@ -123,10 +128,13 @@ public class AemiliaController implements Controller {
 		for (Path path : configurator.getModelsPath()) {
 			generateSourceFiles(path);
 			SourceModel model = new SourceModel(path);
-			model.setSourceModelPAs(
-					((AemiliaPerformanceQualityEvaluator) getPerfQuality()).performanceAntipatternEvaluator(
-							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
-							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
+			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
+					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),
+							Paths.get(path.toString(), "aemilia-pas-checker.evl")));
+//			model.setSourceModelPAs(
+//					((AemiliaPerformanceQualityEvaluator) getPerfQuality()).performanceAntipatternEvaluator(
+//							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
+//							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
 
 			// generates every needed files and updates the source model
 
@@ -148,6 +156,7 @@ public class AemiliaController implements Controller {
 
 	/**
 	 * Source is the containing folder
+	 * 
 	 * @param source
 	 */
 	private void generateSourceFiles(final Path source) {
@@ -166,6 +175,7 @@ public class AemiliaController implements Controller {
 		// Generates the aem file from the emf model
 		if (!Files.exists(sourceAemPath)) {
 			metamodelManager.packageRegistering();
+
 			EpsilonHelper.generateAemFile(sourceModelPath, source);
 //			Transformation.GenerateAEMTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("generation of source files completed!");
@@ -174,7 +184,7 @@ public class AemiliaController implements Controller {
 		// Generates the REW file from the emf model
 		// TODO
 		if (!Files.exists(sourceRewPath)) {
-			//EpsilonHelper.generateRewFile(sourceModelPath, source);
+			// EpsilonHelper.generateRewFile(sourceModelPath, source);
 //			Transformation.GenerateREWTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("mmamelia to rew completed");
 		}
@@ -243,8 +253,9 @@ public class AemiliaController implements Controller {
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
-						if(configurator.isWorsen()) pName += "_Worsen_";
-						
+						if (configurator.isWorsen())
+							pName += "_Worsen_";
+
 						AemiliaRProblem<AemiliaRSolution> p = new AemiliaRProblem<AemiliaRSolution>(
 								src.getSourceFolder(), l, configurator.getActions(), configurator.getAllowedFailures(),
 								configurator.getPopulationSize(), this);
@@ -293,10 +304,14 @@ public class AemiliaController implements Controller {
 			// }
 			//
 
-			new RComputeQualityIndicators<>(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
+			try {
+				new RComputeQualityIndicators<>(experiment).run();
+				new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+				new GenerateBoxplotsWithR<>(experiment).run();
+				new GenerateLatexTablesWithStatistics(experiment).run();
+			} catch (org.uma.jmetal.util.JMetalException jE) {
+				jE.printStackTrace();
+			}
 			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -590,14 +605,13 @@ public class AemiliaController implements Controller {
 	public Path getPermanentTmpFolder() {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
 	}
-	
-	public void generateWorseModels() {
-		List<RProblem<AemiliaRSolution>> problems = createProblems();
-		
-		for (RProblem<AemiliaRSolution> rProblem : problems) {
-			rProblem.createSolution();
-		}
-			
-		
-	}
+
+//	public void generateWorseModels() {
+//		List<RProblem<AemiliaRSolution>> problems = createProblems();
+//
+//		for (RProblem<AemiliaRSolution> rProblem : problems) {
+//			rProblem.createSolution();
+//		}
+//
+//	}
 }

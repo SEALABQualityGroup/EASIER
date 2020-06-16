@@ -44,16 +44,17 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 	 * @param mmaemiliaFilePath
 	 * @param ruleFilePath
 	 */
-	public void performanceAntipatternEvaluatorEpsilon(Path mmaemiliaFilePath, Path ruleFilePath) {
+	public int performanceAntipatternEvaluatorEpsilon(Path mmaemiliaFilePath, Path ruleFilePath) {
 		try {
-			EpsilonHelper.aemiliaPasChecker(mmaemiliaFilePath, ruleFilePath);
+			return EpsilonHelper.aemiliaPasChecker(mmaemiliaFilePath, ruleFilePath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		return -1;
 	}
 
+	@Deprecated
 	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
 			Path ruleFilePath) {
 		int numOfPAs = 0;
@@ -90,7 +91,6 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 				}
 			}
 		}
-		System.out.println(refactoredValFile.getFileName() + " --> " + calcuateWholeQuality());
 		return calcuateWholeQuality();
 	}
 
