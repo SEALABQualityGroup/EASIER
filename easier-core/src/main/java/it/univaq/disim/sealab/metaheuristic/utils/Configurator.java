@@ -72,8 +72,8 @@ public class Configurator {
 	@Parameter(names = { "-af", "--allowedFaiulures" }, description = "Set the maximunm number of failures")
 	private int aw = 1000;
 
-	@Parameter(names = { "-a", "--actions" }, description = "Set the number of failures")
-	private int actions = 5;
+	@Parameter(names = { "-a", "--actions" }, description = "Set the number of available actions")
+	private int actions = 5; //clone, removeClone, const change, probability, size
 
 	@Parameter(names = { "-tmpF", "--tempFolder" }, required = true, description = "It is the temporary file folder")
 	private String tmpF;
@@ -107,6 +107,13 @@ public class Configurator {
 	
 	@Parameter(names= {"--worsen"}, description = "It enables the generation of worsen models")
 	private boolean worsen = false;
+	
+	@Parameter(names= {"-mmp", "--metamodel-path"}, description = "It points to the metamodel file")
+	private String metamodelPath;
+	
+	public Path getMetamodelPath() {
+		return Paths.get(metamodelPath);
+	}
 
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
