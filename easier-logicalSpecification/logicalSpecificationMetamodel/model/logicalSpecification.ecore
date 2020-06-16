@@ -94,7 +94,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="antipattern" eType="#//Antipattern"
         eOpposite="#//Antipattern/formula"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="LogicalOperator" abstract="true" eSuperTypes="#//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LogicalOperator" abstract="true" eSuperTypes="#//Operator">
+    <eOperations name="guarantees" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="operator" eType="#//Operator"/>
+    </eOperations>
+    <eOperations name="evaluateOperator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="operator" eType="#//Operator"/>
+    </eOperations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VoidOperator" eSuperTypes="#//LogicalOperator"/>
   <eClassifiers xsi:type="ecore:EClass" name="ForAllOperator" eSuperTypes="#//LogicalOperator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="collection" lowerBound="1"
@@ -462,6 +469,8 @@
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="T_minNetUtilSVP" lowerBound="1"
             eType="#//SingleValuedParameter"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextualElement"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="CpsPA" eSuperTypes="#//antipatterns/performance/PerformanceAntipattern">
         <eOperations name="setParametersForPartialDetection" lowerBound="1">
@@ -500,6 +509,8 @@
             lowerBound="1" eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="T_maxOpDemandMVP" lowerBound="1"
             eType="#//MultipleValuedParameter"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextualElement"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="PafPA" eSuperTypes="#//antipatterns/performance/PerformanceAntipattern">
         <eOperations name="setParametersForPartialDetection" lowerBound="1">
@@ -540,6 +551,8 @@
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="T_minServiceThroughputSVP"
             lowerBound="1" eType="#//SingleValuedParameter"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextualElement"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="EpPA" eSuperTypes="#//antipatterns/performance/PerformanceAntipattern">
         <eOperations name="setParametersForPartialDetection" lowerBound="1">
@@ -592,6 +605,8 @@
             eType="#//SingleValuedParameter"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="T_maxServiceResponseTimeSVP"
             lowerBound="1" eType="#//SingleValuedParameter"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextualElement"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>
