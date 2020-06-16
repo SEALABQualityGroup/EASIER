@@ -22,6 +22,7 @@ import logicalSpecification.SingleValuedParameter;
  *   <li>{@link logicalSpecification.antipatterns.performance.PafPA#getT_opProbExecSVP <em>Top Prob Exec SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.PafPA#getT_maxHwUtilSVP <em>Tmax Hw Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.PafPA#getT_minServiceThroughputSVP <em>Tmin Service Throughput SVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.PafPA#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @see logicalSpecification.antipatterns.performance.PerformancePackage#getPafPA()
@@ -236,6 +237,32 @@ public interface PafPA extends PerformanceAntipattern {
 	 * @generated
 	 */
 	void setT_minServiceThroughputSVP(SingleValuedParameter value);
+
+	/**
+	 * Returns the value of the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Contextual Element</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Contextual Element</em>' attribute.
+	 * @see #setContextualElement(Object)
+	 * @see logicalSpecification.antipatterns.performance.PerformancePackage#getPafPA_ContextualElement()
+	 * @model required="true"
+	 * @generated
+	 */
+	Object getContextualElement();
+
+	/**
+	 * Sets the value of the '{@link logicalSpecification.antipatterns.performance.PafPA#getContextualElement <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Contextual Element</em>' attribute.
+	 * @see #getContextualElement()
+	 * @generated
+	 */
+	void setContextualElement(Object value);
 
 	/**
 	 * <!-- begin-user-doc -->

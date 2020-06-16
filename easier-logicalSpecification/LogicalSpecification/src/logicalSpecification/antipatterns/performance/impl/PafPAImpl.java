@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.PafPAImpl#getT_opProbExecSVP <em>Top Prob Exec SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.PafPAImpl#getT_maxHwUtilSVP <em>Tmax Hw Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.PafPAImpl#getT_minServiceThroughputSVP <em>Tmin Service Throughput SVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.impl.PafPAImpl#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @generated
@@ -119,6 +120,26 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * @ordered
 	 */
 	protected SingleValuedParameter t_minServiceThroughputSVP;
+
+	/**
+	 * The default value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -448,6 +469,27 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Object getContextualElement() {
+		return contextualElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
+		contextualElement = newContextualElement;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void setParametersForPartialDetection(double T_maxResDemand, double T_opProbExec) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -519,6 +561,8 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 			case PerformancePackage.PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP:
 				if (resolve) return getT_minServiceThroughputSVP();
 				return basicGetT_minServiceThroughputSVP();
+			case PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT:
+				return getContextualElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -554,6 +598,9 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 				return;
 			case PerformancePackage.PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP:
 				setT_minServiceThroughputSVP((SingleValuedParameter)newValue);
+				return;
+			case PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -591,6 +638,9 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 			case PerformancePackage.PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP:
 				setT_minServiceThroughputSVP((SingleValuedParameter)null);
 				return;
+			case PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(CONTEXTUAL_ELEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -619,6 +669,8 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 				return t_maxHwUtilSVP != null;
 			case PerformancePackage.PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP:
 				return t_minServiceThroughputSVP != null;
+			case PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT:
+				return CONTEXTUAL_ELEMENT_EDEFAULT == null ? contextualElement != null : !CONTEXTUAL_ELEMENT_EDEFAULT.equals(contextualElement);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -643,6 +695,22 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
 		}
 		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (contextualElement: ");
+		result.append(contextualElement);
+		result.append(')');
+		return result.toString();
 	}
 
 } //PafPAImpl

@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.CpsPAImpl#getT_maxOverUtilSVP <em>Tmax Over Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.CpsPAImpl#getT_minUnderUtilSVP <em>Tmin Under Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.CpsPAImpl#getT_maxOpDemandMVP <em>Tmax Op Demand MVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.impl.CpsPAImpl#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @generated
@@ -119,6 +120,26 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * @ordered
 	 */
 	protected MultipleValuedParameter t_maxOpDemandMVP;
+
+	/**
+	 * The default value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -448,6 +469,27 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Object getContextualElement() {
+		return contextualElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
+		contextualElement = newContextualElement;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void setParametersForPartialDetection(double T_maxOpDemand) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -519,6 +561,8 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 			case PerformancePackage.CPS_PA__TMAX_OP_DEMAND_MVP:
 				if (resolve) return getT_maxOpDemandMVP();
 				return basicGetT_maxOpDemandMVP();
+			case PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT:
+				return getContextualElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -554,6 +598,9 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 				return;
 			case PerformancePackage.CPS_PA__TMAX_OP_DEMAND_MVP:
 				setT_maxOpDemandMVP((MultipleValuedParameter)newValue);
+				return;
+			case PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -591,6 +638,9 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 			case PerformancePackage.CPS_PA__TMAX_OP_DEMAND_MVP:
 				setT_maxOpDemandMVP((MultipleValuedParameter)null);
 				return;
+			case PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(CONTEXTUAL_ELEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -619,6 +669,8 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 				return t_minUnderUtilSVP != null;
 			case PerformancePackage.CPS_PA__TMAX_OP_DEMAND_MVP:
 				return t_maxOpDemandMVP != null;
+			case PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT:
+				return CONTEXTUAL_ELEMENT_EDEFAULT == null ? contextualElement != null : !CONTEXTUAL_ELEMENT_EDEFAULT.equals(contextualElement);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -643,6 +695,22 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
 		}
 		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (contextualElement: ");
+		result.append(contextualElement);
+		result.append(')');
+		return result.toString();
 	}
 
 } //CpsPAImpl

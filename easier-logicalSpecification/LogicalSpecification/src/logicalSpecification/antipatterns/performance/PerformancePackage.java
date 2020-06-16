@@ -4,6 +4,7 @@ package logicalSpecification.antipatterns.performance;
 
 import logicalSpecification.LogicalSpecificationPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -331,13 +332,22 @@ public interface PerformancePackage extends EPackage {
 	int BLOB_PA__TMIN_NET_UTIL_SVP = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 11;
 
 	/**
+	 * The feature id for the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BLOB_PA__CONTEXTUAL_ELEMENT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 12;
+
+	/**
 	 * The number of structural features of the '<em>Blob PA</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BLOB_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 12;
+	int BLOB_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 13;
 
 	/**
 	 * The operation id for the '<em>Set Parameters For Partial Detection</em>' operation.
@@ -557,13 +567,22 @@ public interface PerformancePackage extends EPackage {
 	int CPS_PA__TMAX_OP_DEMAND_MVP = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CPS_PA__CONTEXTUAL_ELEMENT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Cps PA</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CPS_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 8;
+	int CPS_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 9;
 
 	/**
 	 * The operation id for the '<em>Set Parameters For Partial Detection</em>' operation.
@@ -783,13 +802,22 @@ public interface PerformancePackage extends EPackage {
 	int PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAF_PA__CONTEXTUAL_ELEMENT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Paf PA</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAF_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 8;
+	int PAF_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 9;
 
 	/**
 	 * The operation id for the '<em>Set Parameters For Partial Detection</em>' operation.
@@ -1045,13 +1073,22 @@ public interface PerformancePackage extends EPackage {
 	int EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 11;
 
 	/**
+	 * The feature id for the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EP_PA__CONTEXTUAL_ELEMENT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 12;
+
+	/**
 	 * The number of structural features of the '<em>Ep PA</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EP_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 12;
+	int EP_PA_FEATURE_COUNT = PERFORMANCE_ANTIPATTERN_FEATURE_COUNT + 13;
 
 	/**
 	 * The operation id for the '<em>Set Parameters For Partial Detection</em>' operation.
@@ -1306,6 +1343,17 @@ public interface PerformancePackage extends EPackage {
 	EReference getBlobPA_T_minNetUtilSVP();
 
 	/**
+	 * Returns the meta object for the attribute '{@link logicalSpecification.antipatterns.performance.BlobPA#getContextualElement <em>Contextual Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contextual Element</em>'.
+	 * @see logicalSpecification.antipatterns.performance.BlobPA#getContextualElement()
+	 * @see #getBlobPA()
+	 * @generated
+	 */
+	EAttribute getBlobPA_ContextualElement();
+
+	/**
 	 * Returns the meta object for the '{@link logicalSpecification.antipatterns.performance.BlobPA#setParametersForPartialDetection(double, double, double, double) <em>Set Parameters For Partial Detection</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1464,6 +1512,17 @@ public interface PerformancePackage extends EPackage {
 	EReference getCpsPA_T_maxOpDemandMVP();
 
 	/**
+	 * Returns the meta object for the attribute '{@link logicalSpecification.antipatterns.performance.CpsPA#getContextualElement <em>Contextual Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contextual Element</em>'.
+	 * @see logicalSpecification.antipatterns.performance.CpsPA#getContextualElement()
+	 * @see #getCpsPA()
+	 * @generated
+	 */
+	EAttribute getCpsPA_ContextualElement();
+
+	/**
 	 * Returns the meta object for the '{@link logicalSpecification.antipatterns.performance.CpsPA#setParametersForPartialDetection(double) <em>Set Parameters For Partial Detection</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1620,6 +1679,17 @@ public interface PerformancePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getPafPA_T_minServiceThroughputSVP();
+
+	/**
+	 * Returns the meta object for the attribute '{@link logicalSpecification.antipatterns.performance.PafPA#getContextualElement <em>Contextual Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contextual Element</em>'.
+	 * @see logicalSpecification.antipatterns.performance.PafPA#getContextualElement()
+	 * @see #getPafPA()
+	 * @generated
+	 */
+	EAttribute getPafPA_ContextualElement();
 
 	/**
 	 * Returns the meta object for the '{@link logicalSpecification.antipatterns.performance.PafPA#setParametersForPartialDetection(double, double) <em>Set Parameters For Partial Detection</em>}' operation.
@@ -1824,6 +1894,17 @@ public interface PerformancePackage extends EPackage {
 	EReference getEpPA_T_maxServiceResponseTimeSVP();
 
 	/**
+	 * Returns the meta object for the attribute '{@link logicalSpecification.antipatterns.performance.EpPA#getContextualElement <em>Contextual Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contextual Element</em>'.
+	 * @see logicalSpecification.antipatterns.performance.EpPA#getContextualElement()
+	 * @see #getEpPA()
+	 * @generated
+	 */
+	EAttribute getEpPA_ContextualElement();
+
+	/**
 	 * Returns the meta object for the '{@link logicalSpecification.antipatterns.performance.EpPA#setParametersForPartialDetection(double, double, double) <em>Set Parameters For Partial Detection</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2023,6 +2104,14 @@ public interface PerformancePackage extends EPackage {
 		EReference BLOB_PA__TMIN_NET_UTIL_SVP = eINSTANCE.getBlobPA_T_minNetUtilSVP();
 
 		/**
+		 * The meta object literal for the '<em><b>Contextual Element</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BLOB_PA__CONTEXTUAL_ELEMENT = eINSTANCE.getBlobPA_ContextualElement();
+
+		/**
 		 * The meta object literal for the '<em><b>Set Parameters For Partial Detection</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2145,6 +2234,14 @@ public interface PerformancePackage extends EPackage {
 		EReference CPS_PA__TMAX_OP_DEMAND_MVP = eINSTANCE.getCpsPA_T_maxOpDemandMVP();
 
 		/**
+		 * The meta object literal for the '<em><b>Contextual Element</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CPS_PA__CONTEXTUAL_ELEMENT = eINSTANCE.getCpsPA_ContextualElement();
+
+		/**
 		 * The meta object literal for the '<em><b>Set Parameters For Partial Detection</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2265,6 +2362,14 @@ public interface PerformancePackage extends EPackage {
 		 * @generated
 		 */
 		EReference PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP = eINSTANCE.getPafPA_T_minServiceThroughputSVP();
+
+		/**
+		 * The meta object literal for the '<em><b>Contextual Element</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PAF_PA__CONTEXTUAL_ELEMENT = eINSTANCE.getPafPA_ContextualElement();
 
 		/**
 		 * The meta object literal for the '<em><b>Set Parameters For Partial Detection</b></em>' operation.
@@ -2419,6 +2524,14 @@ public interface PerformancePackage extends EPackage {
 		 * @generated
 		 */
 		EReference EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP = eINSTANCE.getEpPA_T_maxServiceResponseTimeSVP();
+
+		/**
+		 * The meta object literal for the '<em><b>Contextual Element</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EP_PA__CONTEXTUAL_ELEMENT = eINSTANCE.getEpPA_ContextualElement();
 
 		/**
 		 * The meta object literal for the '<em><b>Set Parameters For Partial Detection</b></em>' operation.

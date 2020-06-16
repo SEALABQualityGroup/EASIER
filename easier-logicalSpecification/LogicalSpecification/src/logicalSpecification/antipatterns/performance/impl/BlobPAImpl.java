@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.BlobPAImpl#getT_maxReceivedMsgsSVP <em>Tmax Received Msgs SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.BlobPAImpl#getT_maxHwUtilSVP <em>Tmax Hw Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.BlobPAImpl#getT_minNetUtilSVP <em>Tmin Net Util SVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.impl.BlobPAImpl#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @generated
@@ -162,6 +163,26 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * @ordered
 	 */
 	protected SingleValuedParameter t_minNetUtilSVP;
+
+	/**
+	 * The default value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -643,6 +664,27 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Object getContextualElement() {
+		return contextualElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
+		contextualElement = newContextualElement;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void setParametersForPartialDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -726,6 +768,8 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 			case PerformancePackage.BLOB_PA__TMIN_NET_UTIL_SVP:
 				if (resolve) return getT_minNetUtilSVP();
 				return basicGetT_minNetUtilSVP();
+			case PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT:
+				return getContextualElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -773,6 +817,9 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 				return;
 			case PerformancePackage.BLOB_PA__TMIN_NET_UTIL_SVP:
 				setT_minNetUtilSVP((SingleValuedParameter)newValue);
+				return;
+			case PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -822,6 +869,9 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 			case PerformancePackage.BLOB_PA__TMIN_NET_UTIL_SVP:
 				setT_minNetUtilSVP((SingleValuedParameter)null);
 				return;
+			case PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(CONTEXTUAL_ELEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -858,6 +908,8 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 				return t_maxHwUtilSVP != null;
 			case PerformancePackage.BLOB_PA__TMIN_NET_UTIL_SVP:
 				return t_minNetUtilSVP != null;
+			case PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT:
+				return CONTEXTUAL_ELEMENT_EDEFAULT == null ? contextualElement != null : !CONTEXTUAL_ELEMENT_EDEFAULT.equals(contextualElement);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -882,6 +934,22 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4), (Double)arguments.get(5));
 		}
 		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (contextualElement: ");
+		result.append(contextualElement);
+		result.append(')');
+		return result.toString();
 	}
 
 } //BlobPAImpl

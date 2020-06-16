@@ -22,6 +22,7 @@ import logicalSpecification.SingleValuedParameter;
  *   <li>{@link logicalSpecification.antipatterns.performance.CpsPA#getT_maxOverUtilSVP <em>Tmax Over Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.CpsPA#getT_minUnderUtilSVP <em>Tmin Under Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.CpsPA#getT_maxOpDemandMVP <em>Tmax Op Demand MVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.CpsPA#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @see logicalSpecification.antipatterns.performance.PerformancePackage#getCpsPA()
@@ -236,6 +237,32 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * @generated
 	 */
 	void setT_maxOpDemandMVP(MultipleValuedParameter value);
+
+	/**
+	 * Returns the value of the '<em><b>Contextual Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Contextual Element</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Contextual Element</em>' attribute.
+	 * @see #setContextualElement(Object)
+	 * @see logicalSpecification.antipatterns.performance.PerformancePackage#getCpsPA_ContextualElement()
+	 * @model required="true"
+	 * @generated
+	 */
+	Object getContextualElement();
+
+	/**
+	 * Sets the value of the '{@link logicalSpecification.antipatterns.performance.CpsPA#getContextualElement <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Contextual Element</em>' attribute.
+	 * @see #getContextualElement()
+	 * @generated
+	 */
+	void setContextualElement(Object value);
 
 	/**
 	 * <!-- begin-user-doc -->

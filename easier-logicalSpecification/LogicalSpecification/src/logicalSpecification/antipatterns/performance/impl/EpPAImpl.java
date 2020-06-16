@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.EpPAImpl#getT_demandsProbSVP <em>Tdemands Prob SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.EpPAImpl#getT_maxHwUtilSVP <em>Tmax Hw Util SVP</em>}</li>
  *   <li>{@link logicalSpecification.antipatterns.performance.impl.EpPAImpl#getT_maxServiceResponseTimeSVP <em>Tmax Service Response Time SVP</em>}</li>
+ *   <li>{@link logicalSpecification.antipatterns.performance.impl.EpPAImpl#getContextualElement <em>Contextual Element</em>}</li>
  * </ul>
  *
  * @generated
@@ -163,6 +164,26 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * @ordered
 	 */
 	protected SingleValuedParameter t_maxServiceResponseTimeSVP;
+
+	/**
+	 * The default value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContextualElement()
+	 * @generated
+	 * @ordered
+	 */
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -644,6 +665,27 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Object getContextualElement() {
+		return contextualElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
+		contextualElement = newContextualElement;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public void setParametersForPartialDetection(double T_maxOverDemand, double T_minUnderDemand, double T_demandsProb) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -727,6 +769,8 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 			case PerformancePackage.EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP:
 				if (resolve) return getT_maxServiceResponseTimeSVP();
 				return basicGetT_maxServiceResponseTimeSVP();
+			case PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT:
+				return getContextualElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -774,6 +818,9 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 				return;
 			case PerformancePackage.EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP:
 				setT_maxServiceResponseTimeSVP((SingleValuedParameter)newValue);
+				return;
+			case PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -823,6 +870,9 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 			case PerformancePackage.EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP:
 				setT_maxServiceResponseTimeSVP((SingleValuedParameter)null);
 				return;
+			case PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT:
+				setContextualElement(CONTEXTUAL_ELEMENT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -859,6 +909,8 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 				return t_maxHwUtilSVP != null;
 			case PerformancePackage.EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP:
 				return t_maxServiceResponseTimeSVP != null;
+			case PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT:
+				return CONTEXTUAL_ELEMENT_EDEFAULT == null ? contextualElement != null : !CONTEXTUAL_ELEMENT_EDEFAULT.equals(contextualElement);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -883,6 +935,22 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4));
 		}
 		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (contextualElement: ");
+		result.append(contextualElement);
+		result.append(')');
+		return result.toString();
 	}
 
 } //EpPAImpl

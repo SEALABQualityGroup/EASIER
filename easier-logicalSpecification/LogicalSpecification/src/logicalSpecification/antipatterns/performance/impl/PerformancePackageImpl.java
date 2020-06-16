@@ -22,6 +22,7 @@ import logicalSpecification.antipatterns.performance.PerformancePackage;
 
 import logicalSpecification.impl.LogicalSpecificationPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -277,6 +278,15 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getBlobPA_ContextualElement() {
+		return (EAttribute)blobPAEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getBlobPA__SetParametersForPartialDetection__double_double_double_double() {
 		return blobPAEClass.getEOperations().get(0);
 	}
@@ -412,6 +422,15 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCpsPA_ContextualElement() {
+		return (EAttribute)cpsPAEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getCpsPA__SetParametersForPartialDetection__double() {
 		return cpsPAEClass.getEOperations().get(0);
 	}
@@ -540,6 +559,15 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	 */
 	public EReference getPafPA_T_minServiceThroughputSVP() {
 		return (EReference)pafPAEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPafPA_ContextualElement() {
+		return (EAttribute)pafPAEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -718,6 +746,15 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getEpPA_ContextualElement() {
+		return (EAttribute)epPAEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getEpPA__SetParametersForPartialDetection__double_double_double() {
 		return epPAEClass.getEOperations().get(0);
 	}
@@ -810,6 +847,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		createEReference(blobPAEClass, BLOB_PA__TMAX_RECEIVED_MSGS_SVP);
 		createEReference(blobPAEClass, BLOB_PA__TMAX_HW_UTIL_SVP);
 		createEReference(blobPAEClass, BLOB_PA__TMIN_NET_UTIL_SVP);
+		createEAttribute(blobPAEClass, BLOB_PA__CONTEXTUAL_ELEMENT);
 		createEOperation(blobPAEClass, BLOB_PA___SET_PARAMETERS_FOR_PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(blobPAEClass, BLOB_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(blobPAEClass, BLOB_PA___CREATE_FORMULA);
@@ -826,6 +864,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		createEReference(cpsPAEClass, CPS_PA__TMAX_OVER_UTIL_SVP);
 		createEReference(cpsPAEClass, CPS_PA__TMIN_UNDER_UTIL_SVP);
 		createEReference(cpsPAEClass, CPS_PA__TMAX_OP_DEMAND_MVP);
+		createEAttribute(cpsPAEClass, CPS_PA__CONTEXTUAL_ELEMENT);
 		createEOperation(cpsPAEClass, CPS_PA___SET_PARAMETERS_FOR_PARTIAL_DETECTION__DOUBLE);
 		createEOperation(cpsPAEClass, CPS_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(cpsPAEClass, CPS_PA___CREATE_FORMULA);
@@ -842,6 +881,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		createEReference(pafPAEClass, PAF_PA__TOP_PROB_EXEC_SVP);
 		createEReference(pafPAEClass, PAF_PA__TMAX_HW_UTIL_SVP);
 		createEReference(pafPAEClass, PAF_PA__TMIN_SERVICE_THROUGHPUT_SVP);
+		createEAttribute(pafPAEClass, PAF_PA__CONTEXTUAL_ELEMENT);
 		createEOperation(pafPAEClass, PAF_PA___SET_PARAMETERS_FOR_PARTIAL_DETECTION__DOUBLE_DOUBLE);
 		createEOperation(pafPAEClass, PAF_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(pafPAEClass, PAF_PA___CREATE_FORMULA);
@@ -862,6 +902,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		createEReference(epPAEClass, EP_PA__TDEMANDS_PROB_SVP);
 		createEReference(epPAEClass, EP_PA__TMAX_HW_UTIL_SVP);
 		createEReference(epPAEClass, EP_PA__TMAX_SERVICE_RESPONSE_TIME_SVP);
+		createEAttribute(epPAEClass, EP_PA__CONTEXTUAL_ELEMENT);
 		createEOperation(epPAEClass, EP_PA___SET_PARAMETERS_FOR_PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(epPAEClass, EP_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(epPAEClass, EP_PA___CREATE_FORMULA);
@@ -923,6 +964,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getBlobPA_T_maxReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBlobPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBlobPA_T_minNetUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minNetUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBlobPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = initEOperation(getBlobPA__SetParametersForPartialDetection__double_double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -965,6 +1007,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getCpsPA_T_maxOverUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxOverUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCpsPA_T_minUnderUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minUnderUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCpsPA_T_maxOpDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_maxOpDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCpsPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getCpsPA__SetParametersForPartialDetection__double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOpDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -997,6 +1040,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getPafPA_T_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPafPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPafPA_T_minServiceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minServiceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPafPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getPafPA__SetParametersForPartialDetection__double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1035,6 +1079,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getEpPA_T_demandsProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_demandsProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEpPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEpPA_T_maxServiceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxServiceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEpPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getEpPA__SetParametersForPartialDetection__double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
