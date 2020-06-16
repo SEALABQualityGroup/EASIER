@@ -21,6 +21,9 @@ public class EVLStandalone extends EpsilonStandalone {
 //		new EVLStandalone().execute();
 //	}
 
+	/*
+	 * It retrieves the evl file from the resources and then copies it to the tmp folder
+	 */
 	public EVLStandalone() {
 		if (Files.exists(Paths.get("/tmp/aemilia-pas-checker.evl"))) {
 			rulePath = Paths.get("/tmp/aemilia-pas-checker.evl");
@@ -31,7 +34,7 @@ public class EVLStandalone extends EpsilonStandalone {
 			try {
 				Files.copy(mmIn, rulePath);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("Error in copying the EVL file to " + rulePath);
 				e.printStackTrace();
 			}
 		}
@@ -81,9 +84,9 @@ public class EVLStandalone extends EpsilonStandalone {
 	public int getPAs(Path mmaemiliaFilePath, Path rulePath) {
 		try {
 			this.setSource(rulePath);
-			execute(mmaemiliaFilePath, File.createTempFile("evl", "tmp").toPath());
+			execute(mmaemiliaFilePath);//, File.createTempFile("evl", "tmp").toPath());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in Performance antipattern detection using the file " + mmaemiliaFilePath);
 			e.printStackTrace();
 		}
 		return ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();

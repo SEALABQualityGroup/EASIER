@@ -181,8 +181,7 @@ public class AemiliaController implements Controller {
 			EasierLogger.logger_.info("generation of source files completed!");
 		}
 
-		// Generates the REW file from the emf model
-		// TODO
+		// TODO Generates the REW file from the emf model
 		if (!Files.exists(sourceRewPath)) {
 			// EpsilonHelper.generateRewFile(sourceModelPath, source);
 //			Transformation.GenerateREWTransformation(sourceModelPath, source);

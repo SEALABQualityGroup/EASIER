@@ -59,6 +59,21 @@ public abstract class EpsilonStandalone {
 	 */
 	public void execute(Path mmaemiliaFilePath, Path destFilePath) throws Exception {
 
+		doExecute(mmaemiliaFilePath);
+
+		postProcess(destFilePath);
+
+		module.getContext().getModelRepository().dispose();
+	}
+	
+	public void execute(Path mmaemiliaFilePath) throws Exception {
+
+		doExecute(mmaemiliaFilePath);
+
+		module.getContext().getModelRepository().dispose();
+	}
+	
+	private void doExecute(Path mmaemiliaFilePath) throws Exception {
 		module = createModule();
 //		module.parse(getRulePath().toFile());
 		module.parse(getSource().toFile());
@@ -81,9 +96,6 @@ public abstract class EpsilonStandalone {
 
 		preProcess();
 		result = execute(module);
-		postProcess(destFilePath);
-
-		module.getContext().getModelRepository().dispose();
 	}
 
 	public static Path getMetamodelPath() throws IOException {
@@ -122,7 +134,7 @@ public abstract class EpsilonStandalone {
 		try {
 			emfModel.load(properties, (IRelativePathResolver) null);
 		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in loading the model with properties!");
 			e.printStackTrace();
 		}
 		return emfModel;
@@ -141,7 +153,7 @@ public abstract class EpsilonStandalone {
 		try {
 			emfModel.load(properties, (IRelativePathResolver) null);
 		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in loading the model with properties!");
 			e.printStackTrace();
 		}
 		return emfModel;
@@ -160,18 +172,18 @@ public abstract class EpsilonStandalone {
 		return emfModel;
 	}
 
-	public PlainXmlModel createXMLModel(String name, String xmlFilePath) {
-		// Load the XML document
-		PlainXmlModel xmlModel = new PlainXmlModel();
-		try {
-			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
-			xmlModel.setName(name);
-			xmlModel.load();
-		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return xmlModel;
-	}
+	// TODO remove, it is no longer used
+//	public PlainXmlModel createXMLModel(String name, String xmlFilePath) {
+//		// Load the XML document
+//		PlainXmlModel xmlModel = new PlainXmlModel();
+//		try {
+//			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
+//			xmlModel.setName(name);
+//			xmlModel.load();
+//		} catch (EolModelLoadingException e) {
+//			e.printStackTrace();
+//		}
+//		return xmlModel;
+//	}
 
 }

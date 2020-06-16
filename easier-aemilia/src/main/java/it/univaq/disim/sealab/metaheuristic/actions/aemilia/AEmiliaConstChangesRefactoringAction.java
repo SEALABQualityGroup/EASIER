@@ -51,7 +51,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		// this.setSolution(sol);
 		// this.setSourceConstInit(getRandomRate(sol));
 		this.setSourceConstInit(getRandomConst(sol));
-		if(sourceConstInit.getName().contains("workload"))
+		if (sourceConstInit.getName().contains("workload"))
 			System.out.println("There was an error in filtering workload");
 		this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
 
@@ -83,7 +83,8 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		if (sol.getController().getConfigurator().getWorkloadRange() == -1)
 			return getRandomRate(sol);
 		else {
-			return listOfConsts.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1));
+			return listOfConsts
+					.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(0, listOfConsts.size() - 1));
 		}
 	}
 
@@ -104,10 +105,11 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		}
 
 		int rangeMin = 0;
-		int rangeMax = listOfRandomRanges.size()-1;
+		int rangeMax = listOfRandomRanges.size() - 1;
 //		return listOfRandomRanges.get((int) (RandomUtils.nextInt(rangeMin, rangeMax)));
-		ConstInit returnValue = listOfRandomRanges.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
-		if(returnValue.getName().contains("workload"))
+		ConstInit returnValue = listOfRandomRanges
+				.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
+		if (returnValue.getName().contains("workload"))
 			System.out.println("There was an error in filtering random rate!!!");
 		return returnValue;
 	}
@@ -153,7 +155,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 				}
 				((IdentExpr) sourceConstInit.getInitConstExpr()).setName(rep_val);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				System.err.println("Error in parsing the value --> " + rep);
 				e.printStackTrace();
 			}
 
@@ -163,11 +165,6 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		log();
 	}
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public double generateFactorOfChange() {
 		double rangeMin = 0.5;
 		double rangeMax = 2;
@@ -182,20 +179,20 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 			number = format.parse(new DecimalFormat("##.####").format(factorOfChange));
 			factorOfChange = number.doubleValue();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in formatting the factor of change --> " + factorOfChange);
 			e.printStackTrace();
 		}
 		return factorOfChange;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (sourceConstInit.getName().contains("workload"))
-			return "CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
-							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
+			return "CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue() + ") --> "
+					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
 		else
-			return "CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
-					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "
+			return "CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
+					+ ") * (" + getFactorOfChange() + ") --> "
 					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName();
 	}
 
@@ -303,7 +300,8 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 	@Override
 	public RefactoringAction clone(RSolution solution) {
-		AEmiliaConstChangesRefactoringAction newAction = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) solution);
+		AEmiliaConstChangesRefactoringAction newAction = new AEmiliaConstChangesRefactoringAction(
+				(AemiliaRSolution) solution);
 
 		for (ConstInit constInit : ((AEmiliaSpecification) solution.getModel()).getArchiTypeDecl().getHeader()
 				.getInitConst()) {
@@ -331,7 +329,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 	@Override
 	public void setSolution(RSolution sol) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

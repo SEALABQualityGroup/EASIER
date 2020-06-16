@@ -50,37 +50,49 @@ public abstract class MetamodelManager {
 	public static final double MAX_VALUE = 100;
 
 	protected RProblem<?> problem;
-	
+
 	private Map<UUID, ResourceSet> resourceSetMap = new HashMap<>();
 
-
 	public abstract void init(Path modelUri);
+
 	public abstract EObject getModel();
+
 	public abstract EObject getModel(final Path sourcePath);
+
 	public abstract void setModel(EObject model);
-	public abstract boolean isApplicable(RefactoringAction act, RSequence sequence); 
+
+	public abstract boolean isApplicable(RefactoringAction act, RSequence sequence);
+
 	public abstract String getModelFileExtension();
+
 	public abstract String getMetamodelFileExtension();
+
 	public abstract OclStringManager getOclStringManager();
+
 	public abstract Action getRandomAction(int n) throws UnexpectedException;
+
 	public abstract RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException;
+
 	public abstract void packageRegistering();
+
 	public abstract void createNewResourceSet();
+
 	public abstract void refreshModel(Path sourceModelPath);
+
 	public abstract OclManager getOclManager();
-	
+
 	public MetamodelManager() {
 		resourceSet = new ResourceSetImpl();
 	}
 
 	public Resource getResource() {
-		if(resource == null) {
+		if (resource == null) {
 			resource = getResourceSet().getResources().get(0);
 		}
-		
+
 		return resource;
 	}
-	
+
 	public void setProblem(final Problem p) {
 		this.problem = (RProblem) p;
 	}
@@ -127,7 +139,7 @@ public abstract class MetamodelManager {
 			getResource().save(null);
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in saving the model " + getResource().toString());
 			e.printStackTrace();
 			return false;
 		}
@@ -138,7 +150,7 @@ public abstract class MetamodelManager {
 			modelToSave.save(null);
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in saving the model " + modelToSave.toString());
 			e.printStackTrace();
 			return false;
 		}
@@ -154,8 +166,9 @@ public abstract class MetamodelManager {
 		res.getContents().add(EcoreUtil.copy(this.getModel()));
 		try {
 			res.save(null);
-		} catch (IOException ioe) {
-			System.err.println(ioe.getMessage());
+		} catch (IOException e) {
+			System.err.println("Error in saving the model to -->" + destionationPath);
+			e.printStackTrace();
 		}
 	}
 
@@ -193,10 +206,9 @@ public abstract class MetamodelManager {
 	public void setSourceModelsPath(final List<Path> modelsPath) {
 		modelsPath.forEach(model -> sourceModelsPath.add(model.resolve("model" + getMetamodelFileExtension())));
 	}
-	
+
 	public void setSourceModels(final List<SourceModel> models) {
 		sourceModels.addAll(models);
 	}
-
 
 }

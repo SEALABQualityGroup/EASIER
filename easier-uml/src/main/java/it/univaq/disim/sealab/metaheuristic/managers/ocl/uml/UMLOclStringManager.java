@@ -10,7 +10,7 @@ import org.eclipse.uml2.uml.Operation;
 
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 
-public class UMLOclStringManager extends OclStringManager{
+public class UMLOclStringManager implements OclStringManager{
 
 	private static class ManagerHolder {
 		private static final UMLOclStringManager INSTANCE = new UMLOclStringManager();

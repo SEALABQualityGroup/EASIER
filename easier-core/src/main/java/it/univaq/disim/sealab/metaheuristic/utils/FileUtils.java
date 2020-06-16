@@ -296,7 +296,7 @@ public class FileUtils {
 			out.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in filling the threshold and EVL pas checker file!");
 			e.printStackTrace();
 		}
 	}

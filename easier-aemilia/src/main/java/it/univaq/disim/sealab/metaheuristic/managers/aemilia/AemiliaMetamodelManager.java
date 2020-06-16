@@ -758,7 +758,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 					throw new Exception("error in clone action");
 				}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in saving the model of Solution #"+ solution.getName());
 			e.printStackTrace();
 		}
 	}

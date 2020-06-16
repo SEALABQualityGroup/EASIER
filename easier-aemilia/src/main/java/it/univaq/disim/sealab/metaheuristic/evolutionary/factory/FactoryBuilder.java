@@ -56,8 +56,7 @@ public class FactoryBuilder<S extends RSolution> {
 		try {
 			return (GenericIndicator<S>) qualityIndicatorsMap.get(qI).newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			System.out.println("[ERROR]");
+			System.err.println("Error in generating quality indicators!");
 			e.printStackTrace();
 		}
 		

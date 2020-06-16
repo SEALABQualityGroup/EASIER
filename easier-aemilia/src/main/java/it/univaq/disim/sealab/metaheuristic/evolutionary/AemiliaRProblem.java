@@ -42,10 +42,8 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 		}while(sol == null);
 		
 //		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		} catch (UnexpectedException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		return (S) sol;

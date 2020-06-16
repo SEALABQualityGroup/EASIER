@@ -15,7 +15,7 @@ public class CSVUtils {
 //			FileWriter writer = new FileWriter(path);
 			writeLine(writer, values, DEFAULT_SEPARATOR, ' ');
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in saving a line to the file " + path);
 			e.printStackTrace();
 		}
 	}

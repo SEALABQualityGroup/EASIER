@@ -50,7 +50,7 @@ public class AemiliaManager extends Manager {
 
 	private OclManager oclManager;
 
-	private OclStringManager oclStringManager;
+	private OclAemiliaStringManager oclStringManager;
 
 	private Controller controller;
 
@@ -61,7 +61,7 @@ public class AemiliaManager extends Manager {
 
 	public AemiliaManager(AemiliaMetamodelManager mmManager) {
 		super(mmManager);
-		setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
+		setOclStringManager(OclAemiliaStringManager.getInstance());
 	}
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {

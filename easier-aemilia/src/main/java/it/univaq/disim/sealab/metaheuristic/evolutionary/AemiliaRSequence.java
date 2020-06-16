@@ -177,7 +177,6 @@ public class AemiliaRSequence extends RSequence {
 			fol = manager.evaluateFOL(app, this.getSolution().getModel());
 		} catch (ParserException e) {
 			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " has generated a Parser Exception!");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -200,7 +199,6 @@ public class AemiliaRSequence extends RSequence {
 //		try {
 //			return this.isFeasible(this.refactoring);
 //		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //		return false;

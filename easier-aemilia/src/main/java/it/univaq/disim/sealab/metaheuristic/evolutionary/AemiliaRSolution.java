@@ -100,13 +100,15 @@ public class AemiliaRSolution extends RSolution {
 		crossovered = false;
 		mutated = false;
 		refactored = false;
-		
+
 		try {
 			this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
 		} catch (UnexpectedException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in genereting a refactoring sequence of a new Solution with:");
+			System.err.println("lenght --> " + p.length_of_refactorings + "Number of action -->" + p.number_of_actions
+					+ "Allowed failures -->" + p.allowed_failures);
 			e.printStackTrace();
-		} 
+		}
 
 	}
 
@@ -186,7 +188,7 @@ public class AemiliaRSolution extends RSolution {
 
 		manager.setMetamodelManager(new AemiliaMetamodelManager(controller));
 		manager.setOclManager(manager.getMetamodelManager().getOclManager());
-		manager.setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
+		manager.setOclStringManager(OclAemiliaStringManager.getInstance());
 
 		metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
 		metamodelManager.setProblem(problem);
@@ -481,7 +483,7 @@ public class AemiliaRSolution extends RSolution {
 				perfQ = ((AemiliaPerformanceQualityEvaluator) controller.getPerfQuality())
 						.performanceQuality(((AemiliaRProblem<?>) problem).getSourceValPath(), valFilePath);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				System.err.println("Error in computing the perfQ of Solution #" + this.getName());
 				e.printStackTrace();
 			}
 		}

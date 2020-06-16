@@ -28,7 +28,6 @@ public class EpsilonHelper {
 			new EGLStandalone().execute(mmaemiliaFilePath, destFilePath);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			System.err.println("mmaemiliaFilePath  --> " + mmaemiliaFilePath);
 			System.err.println("destFilePath  --> " + destFilePath);
 			System.err.println("GetResource getFile NULL");

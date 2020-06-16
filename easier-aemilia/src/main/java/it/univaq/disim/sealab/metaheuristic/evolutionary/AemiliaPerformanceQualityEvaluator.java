@@ -48,7 +48,7 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		try {
 			return EpsilonHelper.aemiliaPasChecker(mmaemiliaFilePath, ruleFilePath);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in Performance Antipattern detection phase for " + mmaemiliaFilePath);
 			e.printStackTrace();
 		}
 		return -1;
