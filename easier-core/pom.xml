@@ -86,59 +86,59 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.uml -->
-		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.uml</artifactId>
-			<version>5.0.1.v20140910-1354</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.uml2</groupId> -->
+<!-- 			<artifactId>org.eclipse.uml2.uml</artifactId> -->
+<!-- 			<version>5.0.1.v20140910-1354</version> -->
+<!-- 		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.types -->
-		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.types</artifactId>
-			<version>2.0.0.v20140910-1354</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.uml2</groupId> -->
+<!-- 			<artifactId>org.eclipse.uml2.types</artifactId> -->
+<!-- 			<version>2.0.0.v20140910-1354</version> -->
+<!-- 		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.mapping.ecore2xml -->
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
-			<version>2.11.0</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.emf</groupId> -->
+<!-- 			<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId> -->
+<!-- 			<version>2.11.0</version> -->
+<!-- 		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.common -->
-		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.common</artifactId>
-			<version>2.0.1.v20140910-1354</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>marte</artifactId>
-			<version>1.2.0.201703081153</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.uml2</groupId> -->
+<!-- 			<artifactId>org.eclipse.uml2.common</artifactId> -->
+<!-- 			<version>2.0.1.v20140910-1354</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>it.univaq.disim.sealab.profiles</groupId> -->
+<!-- 			<artifactId>marte</artifactId> -->
+<!-- 			<version>1.2.0.201703081153</version> -->
+<!-- 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2.uml.profile/standard -->
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.standard</artifactId>
-			<version>1.0.0.v20150202-0947</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l3</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l2</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>it.univaq.disim.sealab.profiles</groupId> -->
+<!-- 			<artifactId>uml.standard</artifactId> -->
+<!-- 			<version>1.0.0.v20150202-0947</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>it.univaq.disim.sealab.profiles</groupId> -->
+<!-- 			<artifactId>uml.l3</artifactId> -->
+<!-- 			<version>1.1.0-v20130902-0826</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>it.univaq.disim.sealab.profiles</groupId> -->
+<!-- 			<artifactId>uml.l2</artifactId> -->
+<!-- 			<version>1.1.0-v20130902-0826</version> -->
+<!-- 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.eclipse.ocl/org.eclipse.ocl.ecore -->
-		<dependency>
-			<groupId>org.eclipse.acceleo</groupId>
-			<artifactId>org.eclipse.ocl.ecore</artifactId>
-			<version>3.3.100.v20140610-0641</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.acceleo</groupId> -->
+<!-- 			<artifactId>org.eclipse.ocl.ecore</artifactId> -->
+<!-- 			<version>3.3.100.v20140610-0641</version> -->
+<!-- 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
 		<!--dependency> <groupId>org.eclipse.acceleo</groupId> <artifactId>org.eclipse.emf.ecore</artifactId> 
 			<version>2.10.2.v20150123-0348</version> </dependency -->
@@ -154,23 +154,13 @@
 			<artifactId>org.eclipse.ocl.common</artifactId>
 			<version>1.2.0.v20140610-0641</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.acceleo</groupId>
-			<artifactId>org.eclipse.acceleo.engine</artifactId>
-			<version>3.5.1.201409021433</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.acceleo/org.eclipse.acceleo.maven -->
-		<dependency>
-			<groupId>org.eclipse.acceleo</groupId>
-			<artifactId>org.eclipse.acceleo.maven</artifactId>
-			<version>3.6.4</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.core.runtime -->
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.core.runtime</artifactId>
-			<version>3.13.0</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.platform</groupId> -->
+<!-- 			<artifactId>org.eclipse.core.runtime</artifactId> -->
+<!-- 			<version>3.13.0</version> -->
+<!-- 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
