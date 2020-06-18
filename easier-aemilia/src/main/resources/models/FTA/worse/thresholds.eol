@@ -1,6 +1,6 @@
 operation th_maxOpResDemand() : List(Real){
 	var th_maxOpResDemand : List( Real ) = new List( Real );
-	th_maxOpResDemand.add(3.475136); //CPU
+	th_maxOpResDemand.add(3.9205542); //CPU
 	return th_maxOpResDemand;
 }
 
@@ -16,6 +16,6 @@ operation th_SrtReq() : Real{
 }
 
 operation th_SthReq() : Real{	
-	var th_SthReq = 0.055396456;
+	var th_SthReq = 0.05529333;
 	return th_SthReq;
 }

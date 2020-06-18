@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<mmaemilia:AEmiliaSpecification xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Behavior="http://behavior.ecore" xmlns:DataType="http://datatype.ecore" xmlns:Expressions="http://expressions.ecore" xmlns:mmaemilia="http://mmaemilia.ecore" xsi:schemaLocation="http://behavior.ecore http://mmaemilia.ecore#//Behavior http://datatype.ecore http://mmaemilia.ecore#//DataType http://expressions.ecore http://mmaemilia.ecore#//Expressions">
+<mmaemilia:AEmiliaSpecification xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Behavior="http://behavior.ecore" xmlns:DataType="http://datatype.ecore" xmlns:Expressions="http://expressions.ecore" xmlns:mmaemilia="http://mmaemilia.ecore" xsi:schemaLocation="http://behavior.ecore /tmp/mmAemlia.ecore#//Behavior http://datatype.ecore /tmp/mmAemlia.ecore#//DataType http://expressions.ecore /tmp/mmAemlia.ecore#//Expressions http://mmaemilia.ecore /tmp/mmAemlia.ecore">
   <archiTypeDecl atName="fta">
     <aetDeclaration>
       <etDeclaration etName="Wsn_Type">
@@ -31,7 +31,7 @@
                   <rate xsi:type="Behavior:RateExp">
                     <expr xsi:type="Expressions:IdentExpr" name="wsn_rate"/>
                   </rate>
-                  <is xsi:type="mmaemilia:OutputInteraction" intName="send_data" type="OR"/>
+                  <is xsi:type="mmaemilia:OutputInteraction" intName="send_data"/>
                 </act>
               </process>
               <act name="generate_data" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.0">
@@ -125,13 +125,13 @@
                           <act name="sendto_desktop" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
                             <type/>
                             <rate xsi:type="Behavior:RatePas"/>
-                            <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_desktop" type="OR"/>
+                            <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_desktop"/>
                           </act>
                         </process>
                         <act name="sendto_db" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
                           <type/>
                           <rate xsi:type="Behavior:RatePas"/>
-                          <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_db" type="OR"/>
+                          <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_db"/>
                         </act>
                       </process>
                       <act name="process_data" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
@@ -145,13 +145,13 @@
                     <act name="receive_decrypted" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
                       <type/>
                       <rate xsi:type="Behavior:RatePas"/>
-                      <is xsi:type="mmaemilia:InputInteraction" intName="receive_decrypted" type="OR"/>
+                      <is xsi:type="mmaemilia:InputInteraction" intName="receive_decrypted"/>
                     </act>
                   </process>
                   <act name="sendto_security" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
                     <type/>
                     <rate xsi:type="Behavior:RatePas"/>
-                    <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_security" type="OR"/>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_security"/>
                   </act>
                 </process>
                 <act name="packet_data" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
@@ -165,7 +165,7 @@
               <act name="receive" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.2">
                 <type/>
                 <rate xsi:type="Behavior:RatePas"/>
-                <is xsi:type="mmaemilia:InputInteraction" intName="receive" type="OR"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="receive"/>
               </act>
             </pt>
           </equations>
@@ -322,7 +322,7 @@
               <act name="receive_map" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.4">
                 <type/>
                 <rate xsi:type="Behavior:RatePas"/>
-                <is xsi:type="mmaemilia:InputInteraction" intName="receive_map" type="OR"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="receive_map"/>
               </act>
             </pt>
           </equations>
@@ -360,7 +360,7 @@
               <act name="receive_fta_data" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.5">
                 <type/>
                 <rate xsi:type="Behavior:RatePas"/>
-                <is xsi:type="mmaemilia:InputInteraction" intName="receive_fta_data" type="OR"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="receive_fta_data"/>
               </act>
             </pt>
           </equations>
@@ -393,7 +393,7 @@
                   <act name="sendto_fta" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.6">
                     <type/>
                     <rate xsi:type="Behavior:RatePas"/>
-                    <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_fta" type="OR"/>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_fta"/>
                   </act>
                 </process>
                 <act name="decrypt_data" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.6">
@@ -407,7 +407,7 @@
               <act name="receive_ftas" belongs="//@archiTypeDecl/@aetDeclaration/@etDeclaration.6">
                 <type/>
                 <rate xsi:type="Behavior:RatePas"/>
-                <is xsi:type="mmaemilia:InputInteraction" intName="receive_ftas" type="OR"/>
+                <is xsi:type="mmaemilia:InputInteraction" intName="receive_ftas"/>
               </act>
             </pt>
           </equations>
@@ -437,7 +437,7 @@
                     <rate xsi:type="Behavior:RateExp">
                       <expr xsi:type="Expressions:IdentExpr" name="1.457" type="NUMERIC_CONST"/>
                     </rate>
-                    <is xsi:type="mmaemilia:OutputInteraction" intName="send_data" type="OR"/>
+                    <is xsi:type="mmaemilia:OutputInteraction" intName="send_data"/>
                   </act>
                 </process>
                 <act name="generate_data" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.0/@elem">
@@ -522,7 +522,7 @@
                                 <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                                 <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                               </rate>
-                              <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_desktop" type="OR"/>
+                              <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_desktop"/>
                             </act>
                           </process>
                           <act name="sendto_db" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
@@ -531,13 +531,13 @@
                               <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                               <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                             </rate>
-                            <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_db" type="OR"/>
+                            <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_db"/>
                           </act>
                         </process>
                         <act name="process_data" actThroughtput="0.129018" actUtilization="0.0200127" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
                           <type/>
                           <rate xsi:type="Behavior:RateExp">
-                            <expr xsi:type="Expressions:IdentExpr" name="11.4788" type="NUMERIC_CONST"/>
+                            <expr xsi:type="Expressions:IdentExpr" name="6.634" type="NUMERIC_CONST"/>
                           </rate>
                           <is xsi:type="mmaemilia:OutputInteraction" intName="process_data"/>
                         </act>
@@ -548,7 +548,7 @@
                           <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                           <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                         </rate>
-                        <is xsi:type="mmaemilia:InputInteraction" intName="receive_decrypted" type="OR"/>
+                        <is xsi:type="mmaemilia:InputInteraction" intName="receive_decrypted"/>
                       </act>
                     </process>
                     <act name="sendto_security" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
@@ -557,7 +557,7 @@
                         <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                         <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                       </rate>
-                      <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_security" type="OR"/>
+                      <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_security"/>
                     </act>
                   </process>
                   <act name="packet_data" actThroughtput="0.129018" actUtilization="0.0200127" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.2/@elem">
@@ -574,7 +574,7 @@
                     <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                     <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                   </rate>
-                  <is xsi:type="mmaemilia:InputInteraction" intName="receive" type="OR"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="receive"/>
                 </act>
               </pt>
             </equations>
@@ -726,7 +726,7 @@
                     <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                     <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                   </rate>
-                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_fta_data" type="OR"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_fta_data"/>
                 </act>
               </pt>
             </equations>
@@ -763,7 +763,7 @@
                     <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                     <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                   </rate>
-                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_map" type="OR"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_map"/>
                 </act>
               </pt>
             </equations>
@@ -794,13 +794,13 @@
                         <priority xsi:type="Expressions:IdentExpr" name="1" type="NUMERIC_CONST"/>
                         <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                       </rate>
-                      <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_fta" type="OR"/>
+                      <is xsi:type="mmaemilia:OutputInteraction" intName="sendto_fta"/>
                     </act>
                   </process>
                   <act name="decrypt_data" actThroughtput="0.0645089" actUtilization="0.880067" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.6/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateExp">
-                      <expr xsi:type="Expressions:IdentExpr" name="0.0733" type="NUMERIC_CONST"/>
+                      <expr xsi:type="Expressions:IdentExpr" name="0.139" type="NUMERIC_CONST"/>
                     </rate>
                     <is xsi:type="mmaemilia:OutputInteraction" intName="decrypt_data"/>
                   </act>
@@ -811,7 +811,7 @@
                     <priority xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                     <weight xsi:type="Expressions:IdentExpr" name="0" type="NUMERIC_CONST"/>
                   </rate>
-                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_ftas" type="OR"/>
+                  <is xsi:type="mmaemilia:InputInteraction" intName="receive_ftas"/>
                 </act>
               </pt>
             </equations>
@@ -834,7 +834,7 @@
                   <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.1/@behaviorDecl/@equations.0">
                     <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                   </process>
-                  <act name="forward_data" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.7/@elem">
+                  <act name="forward_data" actThroughtput="0.102831" actUtilization="0.0401371" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.7/@elem">
                     <type/>
                     <rate xsi:type="Behavior:RateExp">
                       <expr xsi:type="Expressions:IdentExpr" name="2.562" type="NUMERIC_CONST"/>
@@ -876,7 +876,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="frwdto_db" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
+                    <act name="frwdto_db" actThroughtput="0.411325" actUtilization="0.174567" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="3.829" type="NUMERIC_CONST"/>
@@ -900,7 +900,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="frwdto_desk" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
+                    <act name="frwdto_desk" actThroughtput="0.411325" actUtilization="0.174567" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="9.945" type="NUMERIC_CONST"/>
@@ -924,7 +924,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="frwdto_sec" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
+                    <act name="frwdto_sec" actThroughtput="0.411325" actUtilization="0.174567" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="0.839" type="NUMERIC_CONST"/>
@@ -948,7 +948,7 @@
                     <process xsi:type="Behavior:BehavProcess" eqCall="//@archiTypeDecl/@aetDeclaration/@etDeclaration.3/@behaviorDecl/@equations.0">
                       <condition xsi:type="Expressions:IdentExpr" name="true" type="TRUTH_VAL"/>
                     </process>
-                    <act name="frwdto_fta" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
+                    <act name="frwdto_fta" actThroughtput="0.411325" actUtilization="0.174567" elem="//@archiTypeDecl/@atDeclaration/@aeiDecl.8/@elem">
                       <type/>
                       <rate xsi:type="Behavior:RateExp">
                         <expr xsi:type="Expressions:IdentExpr" name="6.945" type="NUMERIC_CONST"/>
