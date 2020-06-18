@@ -1,22 +1,20 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.InvokeSolverRunnable;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 @SuppressWarnings("serial")
-public class RSolutionListEvaluator<S extends RSolution> implements SolutionListEvaluator<S>{
+public class RSolutionListEvaluator<S extends RSolution> implements SolutionListEvaluator<S> {
 
 	public RSolutionListEvaluator() {
 	}
@@ -35,6 +33,7 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 				Runnable worker = new InvokeSolverRunnable(refactoringSolution);
 				executor.execute(worker);
 			} else {
+				//check if it needs other methods before evaluating the solution see the loop below
 				problem.evaluate(refactoringSolution);
 			}
 		}
@@ -46,16 +45,36 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		for (S sol : solutionList) {
-			sol.updateModel();
-			sol.updateThresholds();
-			sol.countingPAs();
-			sol.evaluatePerformance();
-			FileUtils.simpleSolutionWriterToCSV(sol);
-			problem.evaluate(sol);
+		
+		// Ignore solution with perfQ == 0
+		ListIterator<S> iter = solutionList.listIterator();
+		while(iter.hasNext()){
+			S sol = iter.next();
+		    if(sol.evaluatePerformance() == 0){
+		        iter.remove();
+		    }
+		    else {
+				sol.updateModel();
+				sol.updateThresholds();
+				sol.countingPAs();
+				FileUtils.simpleSolutionWriterToCSV(sol);
+				problem.evaluate(sol);
+			}
+		    
 		}
 
+//		for (S sol : solutionList) {
+//			//Verify if it works
+//			if (sol.evaluatePerformance() == 0)
+//				solutionList.remove(sol);
+//			else {
+//				sol.updateModel();
+//				sol.updateThresholds();
+//				sol.countingPAs();
+//				FileUtils.simpleSolutionWriterToCSV(sol);
+//				problem.evaluate(sol);
+//			}
+//		}
 		return solutionList;
 	}
 

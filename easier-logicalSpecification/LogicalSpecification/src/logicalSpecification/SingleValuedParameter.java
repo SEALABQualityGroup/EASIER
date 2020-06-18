@@ -38,7 +38,5 @@ public interface SingleValuedParameter extends Parameter {
 	 * @generated
 	 */
 	EList<ExistsOperator> getExistsOperator();
-	
-	boolean equals(SingleValuedParameter op2);
 
 } // SingleValuedParameter

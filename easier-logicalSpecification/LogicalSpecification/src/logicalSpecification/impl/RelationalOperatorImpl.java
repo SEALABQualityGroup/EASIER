@@ -15,8 +15,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object
- * '<em><b>Relational Operator</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Relational Operator</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -31,7 +32,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public abstract class RelationalOperatorImpl extends OperatorImpl implements RelationalOperator {
 	/**
 	 * The default value of the '{@link #getFactor() <em>Factor</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFactor()
 	 * @generated
 	 * @ordered
@@ -40,7 +42,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 
 	/**
 	 * The cached value of the '{@link #getFactor() <em>Factor</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getFactor()
 	 * @generated
 	 * @ordered
@@ -48,9 +51,9 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	protected double factor = FACTOR_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getLhs() <em>Lhs</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getLhs()
 	 * @generated
 	 * @ordered
@@ -58,9 +61,9 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	protected Parameter lhs;
 
 	/**
-	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getRhs() <em>Rhs</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getRhs()
 	 * @generated
 	 * @ordered
@@ -68,7 +71,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	protected Parameter rhs;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected RelationalOperatorImpl() {
@@ -76,7 +80,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -85,7 +90,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public double getFactor() {
@@ -93,7 +99,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setFactor(double newFactor) {
@@ -104,7 +111,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Parameter getLhs() {
@@ -120,7 +128,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Parameter basicGetLhs() {
@@ -128,7 +137,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetLhs(Parameter newLhs, NotificationChain msgs) {
@@ -142,7 +152,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setLhs(Parameter newLhs) {
@@ -160,7 +171,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Parameter getRhs() {
@@ -176,7 +188,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Parameter basicGetRhs() {
@@ -184,7 +197,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetRhs(Parameter newRhs, NotificationChain msgs) {
@@ -198,7 +212,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setRhs(Parameter newRhs) {
@@ -216,7 +231,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -235,7 +251,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -250,7 +267,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -269,7 +287,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -289,7 +308,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -309,7 +329,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -326,7 +347,8 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -340,12 +362,4 @@ public abstract class RelationalOperatorImpl extends OperatorImpl implements Rel
 		return result.toString();
 	}
 
-	public boolean equals(RelationalOperator op2) {
-		if (op2 != null) {
-			// if (op1.getClass().equals(op2.getClass()))
-			return this.getLhs().equals(op2.getRhs());
-		}
-		return false;
-	}
-
-} // RelationalOperatorImpl
+} //RelationalOperatorImpl

@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.uml2.uml.Operation;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Ep PA</b></em>'.
@@ -175,7 +173,7 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Operation CONTEXTUAL_ELEMENT_EDEFAULT = null;
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
@@ -185,7 +183,7 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected Operation contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -667,7 +665,7 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Operation getContextualElement() {
+	public Object getContextualElement() {
 		return contextualElement;
 	}
 
@@ -676,8 +674,8 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContextualElement(Operation newContextualElement) {
-		Operation oldContextualElement = contextualElement;
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
 		contextualElement = newContextualElement;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
@@ -688,54 +686,10 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForPartialDetection(final double T_maxOverDemand, final double T_minUnderDemand, final double T_demandsProb) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_overDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getOverDemandQuery(getContextualElement())));
-				blobParams.add(getF_overDemandMVP());
-		
-				setT_maxOverDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOverDemand)));
-				blobParams.add(getT_maxOverDemandMVP());
-		
-				setF_underDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getUnderDemandQuery(getContextualElement())));
-				blobParams.add(getF_underDemandMVP());
-		
-				setT_minUnderDemandMVP(
-						Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_minUnderDemand)));
-				blobParams.add(getT_minUnderDemandMVP());
-		
-				setF_overDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getOverDemandProbQuery(getContextualElement())));
-				blobParams.add(getF_overDemandProbSVP());
-		
-				setF_underDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getUnderDemandProbQuery(getContextualElement())));
-				blobParams.add(getF_underDemandProbSVP());
-		
-				setT_demandsProbSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_demandsProb)));
-				blobParams.add(getT_demandsProbSVP());
-		
-				if (getF_hwUtilSVP() != null)
-					if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(""))
-						getF_hwUtilSVP().setResolvingExpr(null);
-		
-				if (getT_maxHwUtilSVP() != null)
-					if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(""))
-						getT_maxHwUtilSVP().setResolvingExpr(null);
-		
-				if (getF_serviceResponseTimeSVP() != null)
-					if (getF_serviceResponseTimeSVP().getResolvingExpr() != null
-							|| !getF_serviceResponseTimeSVP().getResolvingExpr().equals(""))
-						getF_serviceResponseTimeSVP().setResolvingExpr(null);
-		
-				if (getT_maxServiceResponseTimeSVP() != null)
-					if (getT_maxServiceResponseTimeSVP().getResolvingExpr() != null
-							|| !getT_maxServiceResponseTimeSVP().getResolvingExpr().equals(""))
-						getT_maxServiceResponseTimeSVP().setResolvingExpr(null);
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForPartialDetection(double T_maxOverDemand, double T_minUnderDemand, double T_demandsProb) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -743,51 +697,10 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForFullDetection(final double T_maxOverDemand, final double T_minUnderDemand, final double T_demandsProb, final double T_maxHwUtil, final double T_maxServiceResponseTime) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_overDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getOverDemandQuery(getContextualElement())));
-				blobParams.add(getF_overDemandMVP());
-		
-				setT_maxOverDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOverDemand)));
-				blobParams.add(getT_maxOverDemandMVP());
-		
-				setF_underDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getUnderDemandQuery(getContextualElement())));
-				blobParams.add(getF_underDemandMVP());
-		
-				setT_minUnderDemandMVP(
-						Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_minUnderDemand)));
-				blobParams.add(getT_minUnderDemandMVP());
-		
-				setF_overDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getOverDemandProbQuery(getContextualElement())));
-				blobParams.add(getF_overDemandProbSVP());
-		
-				setF_underDemandProbSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getUnderDemandProbQuery(getContextualElement())));
-				blobParams.add(getF_underDemandProbSVP());
-		
-				setT_demandsProbSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_demandsProb)));
-				blobParams.add(getT_demandsProbSVP());
-		
-				setF_hwUtilSVP(Manager.getInstance(null)
-						.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));
-				blobParams.add(getF_hwUtilSVP());
-		
-				setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));
-				blobParams.add(getT_maxHwUtilSVP());
-		
-				setF_serviceResponseTimeSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getServiceResponseTimeQuery(getContextualElement())));
-				blobParams.add(getF_serviceResponseTimeSVP());
-		
-				setT_maxServiceResponseTimeSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxServiceResponseTime)));
-				blobParams.add(getT_maxServiceResponseTimeSVP());
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForFullDetection(double T_maxOverDemand, double T_minUnderDemand, double T_demandsProb, double T_maxHwUtil, double T_maxServiceResponseTime) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -795,40 +708,10 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void createFormula() {
-		FOLSpecification epCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-				epCF.setName("EpFormula");
-		
-				AndOperator epCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-		
-				GreaterEqualOperator epAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				epAndGeq.setLhs(getF_overDemandMVP());
-				epAndGeq.setRhs(getT_maxOverDemandMVP());
-				epCFAnd.getArguments().add(epAndGeq);
-		
-				LessOperator blobCFAndLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();
-				blobCFAndLe.setLhs(getF_underDemandMVP());
-				blobCFAndLe.setRhs(getT_minUnderDemandMVP());
-				epCFAnd.getArguments().add(blobCFAndLe);
-		
-				EqualOperator epCFAndEq = LogicalSpecificationFactory.eINSTANCE.createEqualOperator();
-				epCFAndEq.setLhs(getF_demandSumProbSVP());
-				epCFAndEq.setRhs(getT_demandsProbSVP());
-				epCFAnd.getArguments().add(epCFAndEq);
-		
-				OrOperator epCFAndOr = LogicalSpecificationFactory.eINSTANCE.createOrOperator();
-				GreaterEqualOperator epCFAndOrGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				epCFAndOrGeq.setLhs(getF_hwUtilSVP());
-				epCFAndOrGeq.setRhs(getT_maxHwUtilSVP());
-				GreaterOperator epCFAndOrGr = LogicalSpecificationFactory.eINSTANCE.createGreaterOperator();
-				epCFAndOrGr.setLhs(getF_serviceResponseTimeSVP());
-				epCFAndOrGr.setRhs(getT_maxServiceResponseTimeSVP());
-				epCFAndOr.getArguments().add(epCFAndOrGeq);
-				epCFAndOr.getArguments().add(epCFAndOrGr);
-				epCFAnd.getArguments().add(epCFAndOr);
-		
-				epCF.setRootOperator(epCFAnd);
-				setFormula(epCF);
+	public int partialDetection(double T_maxOverDemand, double T_minUnderDemand, double T_demandsProb) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -836,63 +719,10 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int partialDetection(final double T_maxOverDemand, final double T_minUnderDemand, final double T_demandsProb) {
-		int occurrences = 0;
-				setParametersForPartialDetection(T_maxOverDemand, T_minUnderDemand, T_demandsProb);
-				createFormula();
-				List<Element> operations = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()
-						.get(0).allOwnedElements();
-				for (Element o : operations) {
-					if (o instanceof Operation && o.getAppliedStereotype("GaAcqStep") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int fullDetection(final double T_maxOverDemand, final double T_minUnderDemand, final double T_demandsProb, final double T_maxHwUtil, final double T_maxServiceResponseTime) {
-		int occurrences = 0;
-				setParametersForFullDetection(T_maxOverDemand, T_minUnderDemand, T_demandsProb, T_maxHwUtil,
-						T_maxServiceResponseTime);
-				createFormula();
-				List<Element> operations =((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()
-						.get(0).allOwnedElements();
-				for (Element o : operations) {
-					if (o instanceof Operation && o.getAppliedStereotype("GaAcqStep") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void log() {
-		super.log();
+	public int fullDetection(double T_maxOverDemand, double T_minUnderDemand, double T_demandsProb, double T_maxHwUtil, double T_maxServiceResponseTime) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -990,7 +820,7 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 				setT_maxServiceResponseTimeSVP((SingleValuedParameter)newValue);
 				return;
 			case PerformancePackage.EP_PA__CONTEXTUAL_ELEMENT:
-				setContextualElement((Operation)newValue);
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -1099,16 +929,10 @@ public class EpPAImpl extends PerformanceAntipatternImpl implements EpPA {
 			case PerformancePackage.EP_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				setParametersForFullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4));
 				return null;
-			case PerformancePackage.EP_PA___CREATE_FORMULA:
-				createFormula();
-				return null;
 			case PerformancePackage.EP_PA___PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE:
 				return partialDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2));
 			case PerformancePackage.EP_PA___FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4));
-			case PerformancePackage.EP_PA___LOG:
-				log();
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

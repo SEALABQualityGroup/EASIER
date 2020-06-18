@@ -801,6 +801,24 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getLogicalOperator__Guarantees__Operator() {
+		return logicalOperatorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getLogicalOperator__EvaluateOperator__Operator() {
+		return logicalOperatorEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVoidOperator() {
 		return voidOperatorEClass;
 	}
@@ -1071,6 +1089,24 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getOperator__EvaluateOperator__Object() {
+		return operatorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getOperator__Guarantees__Operator() {
+		return operatorEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getAntipattern() {
 		return antipatternEClass;
 	}
@@ -1323,6 +1359,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		createEReference(folSpecificationEClass, FOL_SPECIFICATION__ANTIPATTERN);
 
 		logicalOperatorEClass = createEClass(LOGICAL_OPERATOR);
+		createEOperation(logicalOperatorEClass, LOGICAL_OPERATOR___GUARANTEES__OPERATOR);
+		createEOperation(logicalOperatorEClass, LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR);
 
 		voidOperatorEClass = createEClass(VOID_OPERATOR);
 
@@ -1366,6 +1404,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		createEReference(operatorEClass, OPERATOR__AND_OPERATOR);
 		createEReference(operatorEClass, OPERATOR__OR_OPERATOR);
 		createEReference(operatorEClass, OPERATOR__EXISTS_OPERATOR);
+		createEOperation(operatorEClass, OPERATOR___EVALUATE_OPERATOR__OBJECT);
+		createEOperation(operatorEClass, OPERATOR___GUARANTEES__OPERATOR);
 
 		antipatternEClass = createEClass(ANTIPATTERN);
 		createEReference(antipatternEClass, ANTIPATTERN__LOLA4RAPS_ROOT);
@@ -1529,6 +1569,12 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 		initEClass(logicalOperatorEClass, LogicalOperator.class, "LogicalOperator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		EOperation op = initEOperation(getLogicalOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getLogicalOperator__EvaluateOperator__Operator(), ecorePackage.getEBoolean(), "evaluateOperator", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(voidOperatorEClass, VoidOperator.class, "VoidOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(forAllOperatorEClass, ForAllOperator.class, "ForAllOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1571,6 +1617,12 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		initEReference(getOperator_AndOperator(), this.getAndOperator(), this.getAndOperator_Arguments(), "andOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOperator_OrOperator(), this.getOrOperator(), this.getOrOperator_Arguments(), "orOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOperator_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Argument(), "existsOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = initEOperation(getOperator__EvaluateOperator__Object(), ecorePackage.getEBoolean(), "evaluateOperator", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "contextualElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "op", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(antipatternEClass, Antipattern.class, "Antipattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAntipattern_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Antipatterns(), "lola4rapsRoot", null, 0, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

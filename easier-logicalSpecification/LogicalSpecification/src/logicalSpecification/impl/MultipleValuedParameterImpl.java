@@ -4,17 +4,20 @@ package logicalSpecification.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.ForAllOperator;
 import logicalSpecification.LogicalSpecificationPackage;
 import logicalSpecification.MultipleValuedParameter;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -196,11 +199,6 @@ public class MultipleValuedParameterImpl extends ParameterImpl implements Multip
 				return existsOperator != null && !existsOperator.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-	
-	@Override
-	public boolean equals(MultipleValuedParameter p2) {
-		return this.getResolvingExpr().equals(p2.getResolvingExpr());
 	}
 
 } //MultipleValuedParameterImpl

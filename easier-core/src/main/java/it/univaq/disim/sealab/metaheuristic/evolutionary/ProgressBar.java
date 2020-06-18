@@ -51,4 +51,24 @@ public class ProgressBar {
     private void init() {
         this.progress = new StringBuilder(60);
     }
+    
+    
+    public static void showBar(final int actual, final int max) {
+    	int j = actual+1;
+		String bar ="Indepentent run " + (actual+1) + " over " + max;
+
+		bar +="\n[";
+		while (j > 0) {
+			bar += "=";
+			j--;
+		}
+		j = actual+1;
+		while (j < max) {
+			bar += " ";
+			j++;
+		}
+		bar += "] " + String.format(java.util.Locale.US,"%.2f", ( ((float) (actual+1) / max) * 100)) + " %";
+		
+		System.out.println(bar);
+    }
 }

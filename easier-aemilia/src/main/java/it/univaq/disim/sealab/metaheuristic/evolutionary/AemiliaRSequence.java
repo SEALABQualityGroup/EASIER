@@ -9,8 +9,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaRemoveClonedAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.Action;
@@ -39,17 +38,16 @@ public class AemiliaRSequence extends RSequence {
 	}
 
 	public AemiliaRSequence(int length, int number_of_actions, int allowed_failures, AemiliaRSolution solution)
-			throws ParserException, UnexpectedException {
+			throws UnexpectedException {
 
 		super(length, number_of_actions, allowed_failures, solution);
 
 	}
 
 	@Override
-	protected boolean tryRandomPush(int n) throws UnexpectedException, ParserException {
+	protected boolean tryRandomPush(int n) throws UnexpectedException {
 		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 
- 
 		RefactoringAction candidate;
 		do {
 			candidate = manager.getMetamodelManager().getRandomAction(n, this);
@@ -88,7 +86,7 @@ public class AemiliaRSequence extends RSequence {
 	}
 
 	@Override
-	protected boolean isFeasible(Refactoring tr) throws ParserException {
+	protected boolean isFeasible(Refactoring tr) {//throws ParserException {
 		// Controller controller = Manager.getInstance(null).getController();
 		int maxCloning = 0;
 		for (RefactoringAction a : tr.getActions()) {
@@ -102,11 +100,12 @@ public class AemiliaRSequence extends RSequence {
 			return false;
 		}
 
-		for (RefactoringAction action : tr.getActions()) {
+		//can be removed it is done within the constructor
+		/*for (RefactoringAction action : tr.getActions()) {
 			action.setParameters();
 			action.createPreCondition();
 			action.createPostCondition();
-		}
+		}*/
 
 		for (RefactoringAction ac : tr.getActions()) {
 			int counter = 0;
@@ -123,7 +122,27 @@ public class AemiliaRSequence extends RSequence {
 				}
 			}
 			if (counter > 1) {
-				EasierLogger.logger_.warning("Too much clones in Solution #" + this.getSolution().getName() + "!");
+				EasierLogger.logger_.warning("Too much clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
+				return false;
+			}
+		}
+		
+		for (RefactoringAction ac : tr.getActions()) {
+			int counter = 0;
+			if (ac instanceof AEmiliaRemoveClonedAEIRefactoringAction) {
+				int j = 0;
+				while (j < tr.getActions().size()) {
+					Action a2 = tr.getActions().get(j);
+					if (a2 instanceof AEmiliaRemoveClonedAEIRefactoringAction) {
+						if (((AEmiliaRemoveClonedAEIRefactoringAction) a2).getSourceAEI().getInstanceName()
+								.equals(((AEmiliaRemoveClonedAEIRefactoringAction) ac).getSourceAEI().getInstanceName()))
+							counter++;
+					}
+					j++;
+				}
+			}
+			if (counter > 1) {
+				EasierLogger.logger_.warning("Too much remove clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
 				return false;
 			}
 		}
@@ -151,7 +170,13 @@ public class AemiliaRSequence extends RSequence {
 		}
 
 		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
-		boolean fol = manager.evaluateFOL(app, this.getSolution().getModel());
+		boolean fol = false;
+		try {
+			fol = manager.evaluateFOL(app, this.getSolution().getModel());
+		} catch (ParserException e) {
+			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " has generated a Parser Exception!");
+			e.printStackTrace();
+		}
 
 		if (!fol) {
 			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
@@ -172,7 +197,6 @@ public class AemiliaRSequence extends RSequence {
 //		try {
 //			return this.isFeasible(this.refactoring);
 //		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //		return false;

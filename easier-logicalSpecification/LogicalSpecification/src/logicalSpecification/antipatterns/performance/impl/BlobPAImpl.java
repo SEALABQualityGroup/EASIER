@@ -18,8 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.uml2.uml.Component;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Blob PA</b></em>'.
@@ -174,7 +172,7 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Component CONTEXTUAL_ELEMENT_EDEFAULT = null;
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
@@ -184,7 +182,7 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected Component contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -666,7 +664,7 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Component getContextualElement() {
+	public Object getContextualElement() {
 		return contextualElement;
 	}
 
@@ -675,8 +673,8 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContextualElement(Component newContextualElement) {
-		Component oldContextualElement = contextualElement;
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
 		contextualElement = newContextualElement;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
@@ -687,57 +685,10 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForPartialDetection(final double T_maxClientConnects, final double T_maxSupplierConnects, final double T_maxSentMsgs, final double T_maxReceivedMsgs) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(
-						(OclStringManager.getInstance(null)).getClientConnectsQuery(getContextualElement())));
-				blobParams.add(getF_numClientConnectsSVP());
-		
-				setT_maxClientConnectsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));
-				blobParams.add(getT_maxClientConnectsSVP());
-		
-				setF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(
-						(OclStringManager.getInstance(null)).getSupplierConnectsQuery(getContextualElement())));
-				blobParams.add(getF_numSupplierConnectsSVP());
-		
-				setT_maxSupplierConnectsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));
-				blobParams.add(getT_maxSupplierConnectsSVP());
-		
-				setF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(
-						(OclStringManager.getInstance(null)).getNumSentMsgsQuery(getContextualElement())));
-				blobParams.add(getF_numSentMsgsSVP());
-		
-				setT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));
-				blobParams.add(getT_maxSentMsgsSVP());
-		
-				setF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(
-						(OclStringManager.getInstance(null)).getNumReceivedMsgsQuery(getContextualElement())));
-				blobParams.add(getF_numReceivedMsgsSVP());
-		
-				setT_maxReceivedMsgsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));
-				blobParams.add(getT_maxReceivedMsgsSVP());
-		
-				if (getF_hwUtilSVP() != null)
-					if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(""))
-						getF_hwUtilSVP().setResolvingExpr(null);
-		
-				if (getT_maxHwUtilSVP() != null)
-					if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(""))
-						getT_maxHwUtilSVP().setResolvingExpr(null);
-		
-				if (getF_netUtilSVP() != null)
-					if (getF_netUtilSVP().getResolvingExpr() != null || !getF_netUtilSVP().getResolvingExpr().equals(""))
-						getF_netUtilSVP().setResolvingExpr(null);
-		
-				if (getT_minNetUtilSVP() != null)
-					if (getT_minNetUtilSVP().getResolvingExpr() != null || !getT_minNetUtilSVP().getResolvingExpr().equals(""))
-						getT_minNetUtilSVP().setResolvingExpr(null);
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForPartialDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -745,55 +696,10 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForFullDetection(final double T_maxClientConnects, final double T_maxSupplierConnects, final double T_maxSentMsgs, final double T_maxReceivedMsgs, final double T_maxHwUtil, final double T_minNetUtil) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getClientConnectsQuery(getContextualElement())));
-				blobParams.add(getF_numClientConnectsSVP());
-		
-				setT_maxClientConnectsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));
-				blobParams.add(getT_maxClientConnectsSVP());
-		
-				setF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getSupplierConnectsQuery(getContextualElement())));
-				blobParams.add(getF_numSupplierConnectsSVP());
-		
-				setT_maxSupplierConnectsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));
-				blobParams.add(getT_maxSupplierConnectsSVP());
-		
-				setF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getNumSentMsgsQuery(getContextualElement())));
-				blobParams.add(getF_numSentMsgsSVP());
-		
-				setT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));
-				blobParams.add(getT_maxSentMsgsSVP());
-		
-				setF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getNumReceivedMsgsQuery(getContextualElement())));
-				blobParams.add(getF_numReceivedMsgsSVP());
-		
-				setT_maxReceivedMsgsSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));
-				blobParams.add(getT_maxReceivedMsgsSVP());
-		
-				setF_hwUtilSVP(Manager.getInstance(null)
-						.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));
-				blobParams.add(getF_hwUtilSVP());
-		
-				setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));
-				blobParams.add(getT_maxHwUtilSVP());
-		
-				setF_netUtilSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getNetUtilQuery(getContextualElement())));
-				blobParams.add(getF_netUtilSVP());
-		
-				setT_minNetUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minNetUtil)));
-				blobParams.add(getT_minNetUtilSVP());
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForFullDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs, double T_maxHwUtil, double T_minNetUtil) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -801,47 +707,10 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void createFormula() {
-		FOLSpecification blobCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-				blobCF.setName("BlobFormula");
-		
-				AndOperator blobCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-		
-				OrOperator blobCFAndOr1 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();
-				GreaterEqualOperator blobCFAndOr1Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				blobCFAndOr1Geq1.setLhs(getF_numClientConnectsSVP());
-				blobCFAndOr1Geq1.setRhs(getT_maxClientConnectsSVP());
-				GreaterEqualOperator blobCFAndOr1Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				blobCFAndOr1Geq2.setLhs(getF_numSupplierConnectsSVP());
-				blobCFAndOr1Geq2.setRhs(getT_maxSupplierConnectsSVP());
-				blobCFAndOr1.getArguments().add(blobCFAndOr1Geq1);
-				blobCFAndOr1.getArguments().add(blobCFAndOr1Geq2);
-		
-				OrOperator blobCFAndOr2 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();
-				GreaterEqualOperator blobCFAndOr2Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				blobCFAndOr2Geq1.setLhs(getF_numSentMsgsSVP());
-				blobCFAndOr2Geq1.setRhs(getT_maxSentMsgsSVP());
-				GreaterEqualOperator blobCFAndOr2Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				blobCFAndOr2Geq2.setLhs(getF_numReceivedMsgsSVP());
-				blobCFAndOr2Geq2.setRhs(getT_maxReceivedMsgsSVP());
-				blobCFAndOr2.getArguments().add(blobCFAndOr2Geq1);
-				blobCFAndOr2.getArguments().add(blobCFAndOr2Geq2);
-		
-				OrOperator blobCFAndOr3 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();
-				GreaterEqualOperator blobCFAndOr3Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				blobCFAndOr3Geq1.setLhs(getF_hwUtilSVP());
-				blobCFAndOr3Geq1.setRhs(getT_maxHwUtilSVP());
-				LessEqualOperator blobCFAndOr3Geq2 = LogicalSpecificationFactory.eINSTANCE.createLessEqualOperator();
-				blobCFAndOr3Geq2.setLhs(getF_netUtilSVP());
-				blobCFAndOr3Geq2.setRhs(getT_minNetUtilSVP());
-				blobCFAndOr3.getArguments().add(blobCFAndOr3Geq1);
-				blobCFAndOr3.getArguments().add(blobCFAndOr3Geq2);
-		
-				blobCFAnd.getArguments().add(blobCFAndOr1);
-				blobCFAnd.getArguments().add(blobCFAndOr2);
-				blobCFAnd.getArguments().add(blobCFAndOr3);
-				blobCF.setRootOperator(blobCFAnd);
-				setFormula(blobCF);
+	public int partialDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -849,63 +718,10 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int partialDetection(final double T_maxClientConnects, final double T_maxSupplierConnects, final double T_maxSentMsgs, final double T_maxReceivedMsgs) {
-		int occurrences = 0;
-				setParametersForPartialDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs);
-				createFormula();
-				List<Element> components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())
-						.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();
-				for (Element c : components) {
-					if (c instanceof Component && c.getAppliedStereotype("PaRunTInstance") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int fullDetection(final double T_maxClientConnects, final double T_maxSupplierConnects, final double T_maxSentMsgs, final double T_maxReceivedMsgs, final double T_maxHwUtil, final double T_minNetUtil) {
-		int occurrences = 0;
-				setParametersForFullDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs,
-						T_maxHwUtil, T_minNetUtil);
-				createFormula();
-				List<Element> components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())
-						.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();
-				for (Element c : components) {
-					if (c instanceof Component && c.getAppliedStereotype("PaRunTInstance") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void log() {
-		super.log();
+	public int fullDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs, double T_maxHwUtil, double T_minNetUtil) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -1003,7 +819,7 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 				setT_minNetUtilSVP((SingleValuedParameter)newValue);
 				return;
 			case PerformancePackage.BLOB_PA__CONTEXTUAL_ELEMENT:
-				setContextualElement((Component)newValue);
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -1112,16 +928,10 @@ public class BlobPAImpl extends PerformanceAntipatternImpl implements BlobPA {
 			case PerformancePackage.BLOB_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				setParametersForFullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4), (Double)arguments.get(5));
 				return null;
-			case PerformancePackage.BLOB_PA___CREATE_FORMULA:
-				createFormula();
-				return null;
 			case PerformancePackage.BLOB_PA___PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				return partialDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
 			case PerformancePackage.BLOB_PA___FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3), (Double)arguments.get(4), (Double)arguments.get(5));
-			case PerformancePackage.BLOB_PA___LOG:
-				log();
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

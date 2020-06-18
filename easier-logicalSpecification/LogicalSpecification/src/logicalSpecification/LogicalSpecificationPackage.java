@@ -926,13 +926,31 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int OPERATOR_FEATURE_COUNT = 6;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPERATOR___EVALUATE_OPERATOR__OBJECT = 0;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OPERATOR___GUARANTEES__OPERATOR = 1;
+
+	/**
 	 * The number of operations of the '<em>Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OPERATOR_OPERATION_COUNT = 0;
+	int OPERATOR_OPERATION_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.impl.LogicalOperatorImpl <em>Logical Operator</em>}' class.
@@ -1008,13 +1026,40 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int LOGICAL_OPERATOR_FEATURE_COUNT = OPERATOR_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT = OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOGICAL_OPERATOR___GUARANTEES__OPERATOR = OPERATOR_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR = OPERATOR_OPERATION_COUNT + 1;
+
+	/**
 	 * The number of operations of the '<em>Logical Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LOGICAL_OPERATOR_OPERATION_COUNT = OPERATOR_OPERATION_COUNT + 0;
+	int LOGICAL_OPERATOR_OPERATION_COUNT = OPERATOR_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link logicalSpecification.impl.VoidOperatorImpl <em>Void Operator</em>}' class.
@@ -1088,6 +1133,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int VOID_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VOID_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VOID_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VOID_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>Void Operator</em>' class.
@@ -1188,6 +1260,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int FOR_ALL_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOR_ALL_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOR_ALL_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOR_ALL_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>For All Operator</em>' class.
@@ -1299,6 +1398,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int EXISTS_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 3;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTS_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTS_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXISTS_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
+
+	/**
 	 * The number of operations of the '<em>Exists Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1388,6 +1514,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int OR_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OR_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OR_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OR_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>Or Operator</em>' class.
@@ -1481,6 +1634,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int NOT_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
+
+	/**
 	 * The number of operations of the '<em>Not Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1570,6 +1750,33 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int AND_OPERATOR_FEATURE_COUNT = LOGICAL_OPERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AND_OPERATOR___EVALUATE_OPERATOR__OBJECT = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AND_OPERATOR___GUARANTEES__OPERATOR = LOGICAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AND_OPERATOR___EVALUATE_OPERATOR__OPERATOR = LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>And Operator</em>' class.
@@ -1681,6 +1888,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int RELATIONAL_OPERATOR_FEATURE_COUNT = OPERATOR_FEATURE_COUNT + 3;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT = OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RELATIONAL_OPERATOR___GUARANTEES__OPERATOR = OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
 	 * The number of operations of the '<em>Relational Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1788,6 +2013,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int EQUAL_OPERATOR_FEATURE_COUNT = RELATIONAL_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUAL_OPERATOR___EVALUATE_OPERATOR__OBJECT = RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUAL_OPERATOR___GUARANTEES__OPERATOR = RELATIONAL_OPERATOR___GUARANTEES__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>Equal Operator</em>' class.
@@ -1899,6 +2142,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int GREATER_OPERATOR_FEATURE_COUNT = RELATIONAL_OPERATOR_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GREATER_OPERATOR___EVALUATE_OPERATOR__OBJECT = RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GREATER_OPERATOR___GUARANTEES__OPERATOR = RELATIONAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
 	 * The number of operations of the '<em>Greater Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2006,6 +2267,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int GREATER_EQUAL_OPERATOR_FEATURE_COUNT = RELATIONAL_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GREATER_EQUAL_OPERATOR___EVALUATE_OPERATOR__OBJECT = RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GREATER_EQUAL_OPERATOR___GUARANTEES__OPERATOR = RELATIONAL_OPERATOR___GUARANTEES__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>Greater Equal Operator</em>' class.
@@ -2117,6 +2396,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	int LESS_EQUAL_OPERATOR_FEATURE_COUNT = RELATIONAL_OPERATOR_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LESS_EQUAL_OPERATOR___EVALUATE_OPERATOR__OBJECT = RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LESS_EQUAL_OPERATOR___GUARANTEES__OPERATOR = RELATIONAL_OPERATOR___GUARANTEES__OPERATOR;
+
+	/**
 	 * The number of operations of the '<em>Less Equal Operator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2224,6 +2521,24 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @ordered
 	 */
 	int LESS_OPERATOR_FEATURE_COUNT = RELATIONAL_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Evaluate Operator</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LESS_OPERATOR___EVALUATE_OPERATOR__OBJECT = RELATIONAL_OPERATOR___EVALUATE_OPERATOR__OBJECT;
+
+	/**
+	 * The operation id for the '<em>Guarantees</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LESS_OPERATOR___GUARANTEES__OPERATOR = RELATIONAL_OPERATOR___GUARANTEES__OPERATOR;
 
 	/**
 	 * The number of operations of the '<em>Less Operator</em>' class.
@@ -3520,6 +3835,26 @@ public interface LogicalSpecificationPackage extends EPackage {
 	EClass getLogicalOperator();
 
 	/**
+	 * Returns the meta object for the '{@link logicalSpecification.LogicalOperator#guarantees(logicalSpecification.Operator) <em>Guarantees</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Guarantees</em>' operation.
+	 * @see logicalSpecification.LogicalOperator#guarantees(logicalSpecification.Operator)
+	 * @generated
+	 */
+	EOperation getLogicalOperator__Guarantees__Operator();
+
+	/**
+	 * Returns the meta object for the '{@link logicalSpecification.LogicalOperator#evaluateOperator(logicalSpecification.Operator) <em>Evaluate Operator</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Evaluate Operator</em>' operation.
+	 * @see logicalSpecification.LogicalOperator#evaluateOperator(logicalSpecification.Operator)
+	 * @generated
+	 */
+	EOperation getLogicalOperator__EvaluateOperator__Operator();
+
+	/**
 	 * Returns the meta object for class '{@link logicalSpecification.VoidOperator <em>Void Operator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3835,6 +4170,26 @@ public interface LogicalSpecificationPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getOperator_ExistsOperator();
+
+	/**
+	 * Returns the meta object for the '{@link logicalSpecification.Operator#evaluateOperator(java.lang.Object) <em>Evaluate Operator</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Evaluate Operator</em>' operation.
+	 * @see logicalSpecification.Operator#evaluateOperator(java.lang.Object)
+	 * @generated
+	 */
+	EOperation getOperator__EvaluateOperator__Object();
+
+	/**
+	 * Returns the meta object for the '{@link logicalSpecification.Operator#guarantees(logicalSpecification.Operator) <em>Guarantees</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Guarantees</em>' operation.
+	 * @see logicalSpecification.Operator#guarantees(logicalSpecification.Operator)
+	 * @generated
+	 */
+	EOperation getOperator__Guarantees__Operator();
 
 	/**
 	 * Returns the meta object for class '{@link logicalSpecification.Antipattern <em>Antipattern</em>}'.
@@ -4462,6 +4817,22 @@ public interface LogicalSpecificationPackage extends EPackage {
 		EClass LOGICAL_OPERATOR = eINSTANCE.getLogicalOperator();
 
 		/**
+		 * The meta object literal for the '<em><b>Guarantees</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation LOGICAL_OPERATOR___GUARANTEES__OPERATOR = eINSTANCE.getLogicalOperator__Guarantees__Operator();
+
+		/**
+		 * The meta object literal for the '<em><b>Evaluate Operator</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR = eINSTANCE.getLogicalOperator__EvaluateOperator__Operator();
+
+		/**
 		 * The meta object literal for the '{@link logicalSpecification.impl.VoidOperatorImpl <em>Void Operator</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -4726,6 +5097,22 @@ public interface LogicalSpecificationPackage extends EPackage {
 		 * @generated
 		 */
 		EReference OPERATOR__EXISTS_OPERATOR = eINSTANCE.getOperator_ExistsOperator();
+
+		/**
+		 * The meta object literal for the '<em><b>Evaluate Operator</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation OPERATOR___EVALUATE_OPERATOR__OBJECT = eINSTANCE.getOperator__EvaluateOperator__Object();
+
+		/**
+		 * The meta object literal for the '<em><b>Guarantees</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation OPERATOR___GUARANTEES__OPERATOR = eINSTANCE.getOperator__Guarantees__Operator();
 
 		/**
 		 * The meta object literal for the '{@link logicalSpecification.impl.AntipatternImpl <em>Antipattern</em>}' class.

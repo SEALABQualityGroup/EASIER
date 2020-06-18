@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.uml2.uml.Operation;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Paf PA</b></em>'.
@@ -131,7 +129,7 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Operation CONTEXTUAL_ELEMENT_EDEFAULT = null;
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
@@ -141,7 +139,7 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected Operation contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -471,7 +469,7 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Operation getContextualElement() {
+	public Object getContextualElement() {
 		return contextualElement;
 	}
 
@@ -480,8 +478,8 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContextualElement(Operation newContextualElement) {
-		Operation oldContextualElement = contextualElement;
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
 		contextualElement = newContextualElement;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
@@ -492,42 +490,10 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForPartialDetection(final double T_maxResDemand, final double T_opProbExec) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_resDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getResDemandQuery(getContextualElement())));
-				blobParams.add(getF_resDemandMVP());
-		
-				setT_maxResDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxResDemand)));
-				blobParams.add(getT_maxResDemandMVP());
-		
-				setF_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getOpProbExecQuery(getContextualElement())));
-				blobParams.add(getF_opProbExecSVP());
-		
-				setT_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_opProbExec)));
-				blobParams.add(getT_opProbExecSVP());
-		
-				if (getF_hwUtilSVP() != null)
-					if (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(""))
-						getF_hwUtilSVP().setResolvingExpr(null);
-		
-				if (getT_maxHwUtilSVP() != null)
-					if (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(""))
-						getT_maxHwUtilSVP().setResolvingExpr(null);
-		
-				if (getF_serviceThroughputSVP() != null)
-					if (getF_serviceThroughputSVP().getResolvingExpr() != null
-							|| !getF_serviceThroughputSVP().getResolvingExpr().equals(""))
-						getF_serviceThroughputSVP().setResolvingExpr(null);
-		
-				if (getT_minServiceThroughputSVP() != null)
-					if (getT_minServiceThroughputSVP().getResolvingExpr() != null
-							|| !getT_minServiceThroughputSVP().getResolvingExpr().equals(""))
-						getT_minServiceThroughputSVP().setResolvingExpr(null);
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForPartialDetection(double T_maxResDemand, double T_opProbExec) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -535,39 +501,10 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForFullDetection(final double T_maxResDemand, final double T_opProbExec, final double T_maxHwUtil, final double T_minServiceThroughput) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_resDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getResDemandQuery(getContextualElement())));
-				blobParams.add(getF_resDemandMVP());
-		
-				setT_maxResDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxResDemand)));
-				blobParams.add(getT_maxResDemandMVP());
-		
-				setF_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getOpProbExecQuery(getContextualElement())));
-				blobParams.add(getF_opProbExecSVP());
-		
-				setT_opProbExecSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_opProbExec)));
-				blobParams.add(getT_opProbExecSVP());
-		
-				setF_hwUtilSVP(Manager.getInstance(null)
-						.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));
-				blobParams.add(getF_hwUtilSVP());
-		
-				setT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));
-				blobParams.add(getT_maxHwUtilSVP());
-		
-				setF_serviceThroughputSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getServiceThroughputQuery(getContextualElement())));
-				blobParams.add(getF_serviceThroughputSVP());
-		
-				setT_minServiceThroughputSVP(
-						Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minServiceThroughput)));
-				blobParams.add(getT_minServiceThroughputSVP());
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForFullDetection(double T_maxResDemand, double T_opProbExec, double T_maxHwUtil, double T_minServiceThroughput) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -575,35 +512,10 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void createFormula() {
-		FOLSpecification pafCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-				pafCF.setName("PafFormula");
-		
-				AndOperator pafCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-		
-				GreaterEqualOperator pafCFAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				pafCFAndGeq.setLhs(getF_resDemandMVP());
-				pafCFAndGeq.setRhs(getT_maxResDemandMVP());
-				pafCFAnd.getArguments().add(pafCFAndGeq);
-		
-				EqualOperator pafCFAndEq = LogicalSpecificationFactory.eINSTANCE.createEqualOperator();
-				pafCFAndEq.setLhs(getF_opProbExecSVP());
-				pafCFAndEq.setRhs(getT_opProbExecSVP());
-				pafCFAnd.getArguments().add(pafCFAndEq);
-		
-				OrOperator pafCFAndOr = LogicalSpecificationFactory.eINSTANCE.createOrOperator();
-				GreaterEqualOperator pafCFAndOrGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				pafCFAndOrGeq.setLhs(getF_hwUtilSVP());
-				pafCFAndOrGeq.setRhs(getT_maxHwUtilSVP());
-				LessOperator pafCFAndOrLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();
-				pafCFAndOrLe.setLhs(getF_serviceThroughputSVP());
-				pafCFAndOrLe.setRhs(getT_minServiceThroughputSVP());
-				pafCFAndOr.getArguments().add(pafCFAndOrGeq);
-				pafCFAndOr.getArguments().add(pafCFAndOrLe);
-				pafCFAnd.getArguments().add(pafCFAndOr);
-		
-				pafCF.setRootOperator(pafCFAnd);
-				setFormula(pafCF);
+	public int partialDetection(double T_maxResDemand, double T_opProbExec) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -611,62 +523,10 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int partialDetection(final double T_maxResDemand, final double T_opProbExec) {
-		int occurrences = 0;
-				setParametersForPartialDetection(T_maxResDemand, T_opProbExec);
-				createFormula();
-				List<Element> operations = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages()
-						.get(0).allOwnedElements();
-				for (Element o : operations) {
-					if (o instanceof Operation && o.getAppliedStereotype("GaAcqStep") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int fullDetection(final double T_maxResDemand, final double T_opProbExec, final double T_maxHwUtil, final double T_minServiceThroughput) {
-		int occurrences = 0;
-				setParametersForFullDetection(T_maxResDemand, T_opProbExec, T_maxHwUtil, T_minServiceThroughput);
-				createFormula();
-				List<Element> operations = ((Model) Manager.getInstance(UMLManager.getInstance())).getModel()
-						.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();
-				for (Element o : operations) {
-					if (o instanceof Operation && o.getAppliedStereotype("GaAcqStep") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Operation) o);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void log() {
-		super.log();
+	public int fullDetection(double T_maxResDemand, double T_opProbExec, double T_maxHwUtil, double T_minServiceThroughput) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -740,7 +600,7 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 				setT_minServiceThroughputSVP((SingleValuedParameter)newValue);
 				return;
 			case PerformancePackage.PAF_PA__CONTEXTUAL_ELEMENT:
-				setContextualElement((Operation)newValue);
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -829,16 +689,10 @@ public class PafPAImpl extends PerformanceAntipatternImpl implements PafPA {
 			case PerformancePackage.PAF_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				setParametersForFullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
 				return null;
-			case PerformancePackage.PAF_PA___CREATE_FORMULA:
-				createFormula();
-				return null;
 			case PerformancePackage.PAF_PA___PARTIAL_DETECTION__DOUBLE_DOUBLE:
 				return partialDetection((Double)arguments.get(0), (Double)arguments.get(1));
 			case PerformancePackage.PAF_PA___FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
-			case PerformancePackage.PAF_PA___LOG:
-				log();
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

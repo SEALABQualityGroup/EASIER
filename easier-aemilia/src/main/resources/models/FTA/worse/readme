@@ -1,0 +1,9 @@
+A worse version of the `workload_5` model. It has been generated through
+ -maxEvaluation 40
+ -populationSize 64
+ -independent_runs 31
+ -genome lenght 4
+ -maxCloning 3
+ -cloningWeight 1.5
+ -constChangesWeight 1
+ -algo NSGA-II, SPEA2

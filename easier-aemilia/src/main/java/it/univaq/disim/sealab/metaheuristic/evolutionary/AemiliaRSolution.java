@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -21,11 +22,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 
-import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
@@ -34,7 +33,6 @@ import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
@@ -42,8 +40,8 @@ import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
 import metamodel.mmaemilia.Headers.ConstInit;
-import utils.AemiliaFileUtils;
-import utils.ThresholdUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 
 public class AemiliaRSolution extends RSolution {
 
@@ -73,7 +71,7 @@ public class AemiliaRSolution extends RSolution {
 	private boolean refactored;
 
 	private static int SOLUTION_COUNTER = -1;
-	
+
 	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
 	private int name;
@@ -91,17 +89,24 @@ public class AemiliaRSolution extends RSolution {
 
 	private Path folderPath;
 
-	protected AemiliaRSolution(RProblem<AemiliaRSolution> p) throws ParserException, UnexpectedException {
+	protected AemiliaRSolution(RProblem<AemiliaRSolution> p) {
 		super(p);
 		setName(++SOLUTION_COUNTER);
 		ID = UUID.randomUUID();
 		resetParents();
 		init(p.getController());
-		this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
-
 		crossovered = false;
 		mutated = false;
 		refactored = false;
+
+		try {
+			this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
+		} catch (UnexpectedException e) {
+			System.err.println("Error in genereting a refactoring sequence of a new Solution with:");
+			System.err.println("lenght --> " + p.length_of_refactorings + "Number of action -->" + p.number_of_actions
+					+ "Allowed failures -->" + p.allowed_failures);
+			e.printStackTrace();
+		}
 
 	}
 
@@ -181,7 +186,7 @@ public class AemiliaRSolution extends RSolution {
 
 		manager.setMetamodelManager(new AemiliaMetamodelManager(controller));
 		manager.setOclManager(manager.getMetamodelManager().getOclManager());
-		manager.setOclStringManager(OclStringManager.getInstance(new OclAemiliaStringManager()));
+		manager.setOclStringManager(OclAemiliaStringManager.getInstance());
 
 		metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
 		metamodelManager.setProblem(problem);
@@ -199,8 +204,10 @@ public class AemiliaRSolution extends RSolution {
 					Paths.get(folderPath.toString(), "aemilia-pas-checker.evl").toFile());
 
 			// fix paths in the copied EVL file
-			FileUtils.fillTemplateKeywords(controller.getConfigurator().getEVLTemplate(), Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"),
-					Stream.of(new Object[][] { { "basepath",  controller.getConfigurator().getEVLTemplate().getParent().toString()} })
+			FileUtils.fillTemplateKeywords(controller.getConfigurator().getEVLTemplate(),
+					Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"),
+					Stream.of(new Object[][] {
+							{ "basepath", controller.getConfigurator().getEVLTemplate().getParent().toString() } })
 							.collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1])));
 			EasierLogger.logger_.info("The EVL Template File has been filled and copied");
 
@@ -209,7 +216,7 @@ public class AemiliaRSolution extends RSolution {
 			e.printStackTrace();
 		}
 
-		System.out.println("Problem's model copied!!!");
+		EasierLogger.logger_.info("Problem's model copied!!!");
 
 		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
 		createNewModel(mmaemiliaFilePath);
@@ -227,12 +234,21 @@ public class AemiliaRSolution extends RSolution {
 	}
 
 	public void createNewModel(Path modelFilePath) {
-		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+//		Resource res;
+		try {
+//			res = getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()), true);
+//			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
+//					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+			this.model = metamodelManager.getModel(modelFilePath);
+		} catch (Exception e) {
+			System.err.println("Error in creating the model for Solution #"+this.getName());
+			System.err.println(this.getVariableValue(0).toString());
+			e.printStackTrace();
+		}
+		
 	}
 
-	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
+	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException {
 		AemiliaRSequence seq = new AemiliaRSequence(l, n, a, this);
 		this.setVariableValue(VARIABLE_INDEX, seq);
 		this.setAttribute(CrowdingDistance.class, 0.0);
@@ -240,8 +256,18 @@ public class AemiliaRSolution extends RSolution {
 
 	@Override
 	public String getVariableValueString(int index) {
-		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0) + ", " + getObjective(1) + ", "
-				+ getObjective(2) + " )" + "\n\t";
+		String strValue = "Solution ID : " + this.getName() + " ( ";
+		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
+			if (i == 0 && !controller.getConfigurator().isWorsen()) {
+				strValue += (-1 * getObjective(i));
+			} else {
+				strValue += getObjective(i);
+			}
+			if (i < this.getNumberOfObjectives() - 1)
+				strValue += ", ";
+		}
+		// strValue += ", " + getObjective(1) + ", " + getObjective(2);
+		strValue += " )" + "\n\t";
 		strValue += getVariableValue(index).toString();
 		return strValue;
 	}
@@ -409,7 +435,7 @@ public class AemiliaRSolution extends RSolution {
 	 */
 	public void countingPAs() {
 		refreshModel();
-		
+
 		numPAs = EpsilonHelper.aemiliaPasChecker(this.mmaemiliaFilePath, Paths.get(folderPath.toString(), EVL_MODULE));
 
 		/*
@@ -460,9 +486,13 @@ public class AemiliaRSolution extends RSolution {
 					+ valFilePath + " doesn't exist.");
 			perfQ = Float.MAX_VALUE;
 		} else {
-			perfQ = ((AemiliaPerformanceQualityEvaluator) controller.getPerfQuality())
-					.performanceQuality(((AemiliaRProblem<?>) problem).getSourceValPath(), valFilePath);
-
+			try {
+				perfQ = ((AemiliaPerformanceQualityEvaluator) controller.getPerfQuality())
+						.performanceQuality(((AemiliaRProblem<?>) problem).getSourceValPath(), valFilePath);
+			} catch (Exception e) {
+				System.err.println("Error in computing the perfQ of Solution #" + this.getName());
+				e.printStackTrace();
+			}
 		}
 		return perfQ;
 	}
@@ -480,6 +510,7 @@ public class AemiliaRSolution extends RSolution {
 	// }
 
 	public void applyTransformation() {
+
 		EpsilonHelper.generateAemFile(this.mmaemiliaFilePath,
 				Paths.get(this.folderPath.toString(), Integer.toString(this.name) + ".aem"));
 		// Transformation.GenerateAEMTransformation(this.mmaemiliaFilePath,
@@ -558,7 +589,8 @@ public class AemiliaRSolution extends RSolution {
 
 	public void refreshModel() {
 		getResourceSet().getResources().get(0).unload();
-		this.createNewModel(mmaemiliaFilePath);
+//		this.createNewModel(mmaemiliaFilePath);
+		this.model = metamodelManager.getModel(mmaemiliaFilePath);
 	}
 
 	public int getPAs() {
@@ -566,7 +598,6 @@ public class AemiliaRSolution extends RSolution {
 	}
 
 	public float getPerfQ() {
-		// perfQ = evaluatePerformance();
 		return perfQ;
 	}
 

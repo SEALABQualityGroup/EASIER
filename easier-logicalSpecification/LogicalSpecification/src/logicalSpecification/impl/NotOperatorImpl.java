@@ -15,8 +15,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Not
- * Operator</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Not Operator</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -29,7 +30,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator {
 	/**
 	 * The cached value of the '{@link #getArgument() <em>Argument</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getArgument()
 	 * @generated
 	 * @ordered
@@ -37,7 +39,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	protected Operator argument;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected NotOperatorImpl() {
@@ -45,7 +48,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -54,7 +58,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Operator getArgument() {
@@ -62,7 +67,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetArgument(Operator newArgument, NotificationChain msgs) {
@@ -76,7 +82,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setArgument(Operator newArgument) {
@@ -94,7 +101,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -109,7 +117,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -122,7 +131,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -135,7 +145,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -149,7 +160,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -163,7 +175,8 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -175,18 +188,4 @@ public class NotOperatorImpl extends LogicalOperatorImpl implements NotOperator 
 		return super.eIsSet(featureID);
 	}
 
-	public boolean equals(NotOperator op2) {
-		if (op2 != null)
-			return this.getArgument().equals(op2.getArgument());
-		return false;
-	}
-
-	public boolean guarantees(Operator op2) {
-		if (op2 != null) {
-			if (this != op2)
-				return this.getArgument().guarantees(op2);
-			return true;
-		}
-		return false;
-	}
-} // NotOperatorImpl
+} //NotOperatorImpl

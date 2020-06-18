@@ -173,6 +173,4 @@ public interface Parameter extends NamedElement {
 	 */
 	void setAntipattern(Antipattern value);
 
-//	boolean equals(Parameter p2);
-
 } // Parameter

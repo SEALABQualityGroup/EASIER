@@ -162,33 +162,4 @@ public class AndOperatorImpl extends LogicalOperatorImpl implements AndOperator 
 		return super.eIsSet(featureID);
 	}
 
-	public boolean equals(AndOperator op2) {
-		if (op2 != null) {
-			if (this.getArguments() != null && op2.getArguments() != null) {
-				if (this.getArguments().size() == op2.getArguments().size()) {
-					for (int i = 0; i < this.getArguments().size(); i++) {
-						if (!this.getArguments().get(i).equals(op2.getArguments().get(i)))
-							return false;
-					}
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean guarantees(Operator op2) {
-		if (op2 != null) {
-			if (this != op2) {
-				if (this.getArguments() != null) {
-					for (int i = 0; i < this.getArguments().size(); i++) {
-						if (this.getArguments().get(i).guarantees(op2))
-							return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 } //AndOperatorImpl

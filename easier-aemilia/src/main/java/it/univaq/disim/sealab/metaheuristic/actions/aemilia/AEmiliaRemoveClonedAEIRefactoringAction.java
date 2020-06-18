@@ -3,6 +3,7 @@ package it.univaq.disim.sealab.metaheuristic.actions.aemilia;
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
@@ -10,7 +11,15 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import logicalSpecification.AndOperator;
+import logicalSpecification.ExistsOperator;
+import logicalSpecification.FOLSpecification;
+import logicalSpecification.LogicalSpecificationFactory;
+import logicalSpecification.NotOperator;
+import logicalSpecification.PostCondition;
+import logicalSpecification.PreCondition;
 import logicalSpecification.actions.AEmilia.impl.AEmiliaRemoveClonedAEIActionImpl;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchiElemInstance;
@@ -25,8 +34,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	private AemiliaRSolution solution;
 	private Manager manager;
 	private String randomCloneIndex;
-
-	private ArchiElemInstance sourceAEI;
 
 	public AEmiliaRemoveClonedAEIRefactoringAction(AEmiliaSpecification model) {
 		// this.solution = (AemiliaRSolution) sol;
@@ -55,7 +62,7 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		}
 	}
 
-	public AEmiliaRemoveClonedAEIRefactoringAction(RSolution sol) {
+	public AEmiliaRemoveClonedAEIRefactoringAction(AemiliaRSolution sol) {
 		this.solution = (AemiliaRSolution) sol;
 		this.manager = sol.getManager();
 
@@ -81,12 +88,82 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		}
 	}
 
+	public void setParameters() {
+
+		OclAemiliaStringManager oclStringManager = (OclAemiliaStringManager) manager.getOclStringManager();
+		setAllAeisMVP(manager.createMultipleValuedParameter(oclStringManager.getAEIListQuery()));
+		
+		if (sourceAEI != null) {
+			setAeiToCloneSVP(
+					manager.createSingleValueParameter(oclStringManager.getAEIQuery(sourceAEI.getInstanceName())));
+			// addParams.add(getAeiToCloneSVP());
+		}
+		
+	}
+
+	public void createPreCondition() {
+
+		PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
+		FOLSpecification preconditionSpecification = manager.createFOLSpectification("RemoveCloneAeiPreCondition");
+		AndOperator rootAnd = manager.createAndOperator();
+
+		ExistsOperator existsAeiClonedToRemove = manager.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
+		rootAnd.getArguments().add(existsAeiClonedToRemove);
+
+//		ForAllOperator forallLocalInteracts = manager.createForAllOperator(getAllLocalInteractsMVP());
+//		ExistsOperator localInteractsAreUni = manager.createExistsOperator(getAllUniInteractsMVP());
+//		forallLocalInteracts.setArgument(localInteractsAreUni);
+//		
+//		clonePreAnd.getArguments().add(forallLocalInteracts);
+
+//		preconditionSpecification.setRootOperator(clonePreAnd);
+		preconditionSpecification.setRootOperator(rootAnd);
+		preCondition.setConditionFormula(preconditionSpecification);
+		setPre(preCondition);
+
+	}
+
+	public void createPostCondition() {
+		PostCondition postCondition = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
+		FOLSpecification clonePostSpecification = manager.createFOLSpectification("RemoveCloneAeiPostCondition");
+		AndOperator clonePostAnd = manager.createAndOperator();
+
+//		ExistsOperator existsAeiToClone = manager.createExistsOperator(getAeiToCloneSVP(), getAllAeisMVP());
+//		clonePostAnd.getArguments().add(existsAeiToClone);
+
+		NotOperator notOperator = manager.createNotOperator();
+
+		ExistsOperator existsClonedAei = manager.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
+		clonePostAnd.getArguments().add(existsClonedAei);
+
+		notOperator.setExistsOperator(existsClonedAei);
+
+		/*
+		 * ForAllOperator forallAttSrcAeiIsTo =
+		 * manager.createForAllOperator(getAllInLocalInteractsMVP()); ExistsOperator
+		 * attSrcAeiIsToExists = manager.createExistsOperator(getAllUniInteractsMVP());
+		 * forallAttSrcAeiIsTo.setArgument(attSrcAeiIsToExists);
+		 * clonePostAnd.getArguments().add(forallAttSrcAeiIsTo);
+		 * 
+		 * ForAllOperator forallAttSrcAeiIsFrom =
+		 * manager.createForAllOperator(getAllOutLocalInteractsMVP()); ExistsOperator
+		 * attSrcAeiIsFromExists = manager.createExistsOperator(getAllOrInteractsMVP());
+		 * forallAttSrcAeiIsFrom.setArgument(attSrcAeiIsFromExists);
+		 * clonePostAnd.getArguments().add(forallAttSrcAeiIsFrom);
+		 */
+
+//		clonePostSpecification.setRootOperator(clonePostAnd);
+		clonePostSpecification.setRootOperator(clonePostAnd);
+		postCondition.setConditionFormula(clonePostSpecification);
+		setPost(postCondition);
+	}
+
 	public void execute() {
 
 		removingInteractions();
 		removingArchitecturalInteraction();
-		
-		((AEmiliaSpecification)this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().remove(sourceAEI);
+
+		((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAeiDecl().remove(sourceAEI);
 
 		log();
 	}
@@ -143,7 +220,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 				.getArchiTypeDecl().getAtDeclaration().getAiDecl();
 
 		for (ArchitecturalInteraction architecturalInteraction : listOfArchitecturalInteraction) {
-			System.out.println(architecturalInteraction.getFromInstance().getInstanceName().toString());
 			if (architecturalInteraction.getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
 				/*
 				 * ArchitecturalInteraction ai = EcoreUtil.copy(architecturalInteraction);
@@ -166,10 +242,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 				.getAtDeclaration().getAttDecl();
 		EList<Attachment> listOfAtts = new BasicEList<Attachment>();
 		for (Attachment att : listOfAttachment) {
-
-			System.out.println(att.getStart().getFromInstance().getInstanceName() + "-->"
-					+ att.getEnd().getToInstance().getInstanceName());
-
 			if (att.getEnd().getToInstance().getInstanceName().equals(aei.getInstanceName())
 					|| att.getStart().getFromInstance().getInstanceName().equals(aei.getInstanceName())) {
 				listOfAtts.add(att);
@@ -200,14 +272,54 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	}
 
 	@Override
-	public RefactoringAction clone(RSolution solution) {
-		// TODO Auto-generated method stub
-		return null;
+	public EObject getModel() {
+		return this.solution.getModel();
 	}
 
 	@Override
 	public void setSolution(RSolution sol) {
 		this.solution = (AemiliaRSolution) sol;
+	}
+	
+	@Override
+	public AEmiliaRemoveClonedAEIRefactoringAction clone(RSolution sol) {
+		// long rand = ((AemiliaMetamodelManager)
+		// Manager.getInstance(null).getMetamodelManager()).getNextUniqueIndex();
+		AEmiliaRemoveClonedAEIRefactoringAction newAction = new AEmiliaRemoveClonedAEIRefactoringAction((AemiliaRSolution)sol);
+
+		for (ArchiElemInstance aei : ((AEmiliaSpecification) sol.getModel()).getArchiTypeDecl().getAtDeclaration()
+				.getAeiDecl()) {
+			if (aei.getInstanceName().equals(this.sourceAEI.getInstanceName())) {
+				newAction.setSourceAEI(aei);
+				break;
+			}
+		}
+
+		//newAction.setClonedAEI(null);
+//		newAction.setSolution(solution);
+		newAction.setNumOfChanges(this.getNumOfChanges());
+		newAction.setCost(this.getCost());
+		newAction.setName(this.getName());
+
+		// TODO to be checked
+		newAction.setParameters();
+		newAction.createPreCondition();
+		newAction.createPostCondition();
+		// newAction.setAeiToCloneSVP(this.getAeiToCloneSVP());
+		// newAction.setAllAeisMVP(this.getAllAeisMVP());
+		// newAction.setAllAttachesMVP(this.getAllAttachesMVP());
+		// newAction.setAllInAttachesMVP(this.getAllInAttachesMVP());
+		// newAction.setAllLocalInteractsMVP(this.getAllLocalInteractsMVP());
+		// newAction.setAllOutAttachesMVP(this.getAllOutAttachesMVP());
+		// newAction.setAllUniInteractsMVP(this.getAllUniInteractsMVP());
+		// newAction.setClonedAeiSVP(this.getClonedAeiSVP());
+
+		return newAction;
+	}
+	
+	@Override
+	public String toString() {
+		return "REMOVE CLONE " + sourceAEI.getInstanceName();
 	}
 
 }

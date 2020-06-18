@@ -1,7 +1,16 @@
 package it.univaq.disim.sealab.epsilon;
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +32,19 @@ public abstract class EpsilonStandalone {
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<Variable>();
 
+	private static Path metamodelPath;
+	
+	protected static Path rulePath;
+
 	protected Object result;
 
 	public abstract IEolModule createModule();
 
-	public abstract String getSource() throws Exception;
+	public abstract Path getSource() throws Exception;
 
 	public abstract IModel getModel(Path modelFilePath) throws Exception;
+
+	public abstract IModel getModel(Path modelFilePath, Path metamodelPath) throws Exception;
 
 	public abstract void postProcess(Path destFilePath);
 
@@ -42,10 +57,26 @@ public abstract class EpsilonStandalone {
 	 * @param ruleFilePath
 	 * @throws Exception
 	 */
-	public void execute(Path mmaemiliaFilePath, Path destFilePath, Path ruleFilePath) throws Exception {
+	public void execute(Path mmaemiliaFilePath, Path destFilePath) throws Exception {
 
+		doExecute(mmaemiliaFilePath);
+
+		postProcess(destFilePath);
+
+		module.getContext().getModelRepository().dispose();
+	}
+	
+	public void execute(Path mmaemiliaFilePath) throws Exception {
+
+		doExecute(mmaemiliaFilePath);
+
+		module.getContext().getModelRepository().dispose();
+	}
+	
+	private void doExecute(Path mmaemiliaFilePath) throws Exception {
 		module = createModule();
-		module.parse(ruleFilePath.toFile());
+//		module.parse(getRulePath().toFile());
+		module.parse(getSource().toFile());
 
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -56,7 +87,7 @@ public abstract class EpsilonStandalone {
 		}
 
 //		for (IModel model : getModels()) {
-			module.getContext().getModelRepository().addModel(getModel(mmaemiliaFilePath));
+		module.getContext().getModelRepository().addModel(getModel(mmaemiliaFilePath, getMetamodelPath()));
 //		}
 
 		for (Variable parameter : parameters) {
@@ -65,32 +96,45 @@ public abstract class EpsilonStandalone {
 
 		preProcess();
 		result = execute(module);
-		postProcess(destFilePath);
+	}
 
-		module.getContext().getModelRepository().dispose();
+	public static Path getMetamodelPath() throws IOException {
+		if(Files.exists(Paths.get("/tmp/mmAemlia.ecore")))
+			metamodelPath = Paths.get("/tmp/mmAemlia.ecore");
+		if (metamodelPath == null) {
+			InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("metamodels/mmAEmilia.ecore");
+//			metamodelPath = Files.createTempFile("", "");
+			metamodelPath = Paths.get("/tmp/mmAemlia.ecore");
+			Files.copy(mmIn, metamodelPath);
+		}
+		return metamodelPath;
 	}
 
 	public List<Variable> getParameters() {
 		return parameters;
+	}
+	
+	public void setSource(Path rp) {
+		rulePath = rp;
 	}
 
 	protected Object execute(IEolModule module) throws EolRuntimeException {
 		return module.execute();
 	}
 
-	public EmfModel createEmfModel(String name, Path model, Path metamodel, boolean readOnLoad,
+	public EmfModel createEmfModel(String name, Path model, String metamodel, boolean readOnLoad,
 			boolean storeOnDisposal) {
 		EmfModel emfModel = new EmfModel();
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, metamodel.toUri().toString());
+		properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, metamodel);
 		properties.put(EmfModel.PROPERTY_MODEL_URI, model.toUri().toString());
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
 		try {
 			emfModel.load(properties, (IRelativePathResolver) null);
 		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in loading the model with properties!");
 			e.printStackTrace();
 		}
 		return emfModel;
@@ -109,7 +153,7 @@ public abstract class EpsilonStandalone {
 		try {
 			emfModel.load(properties, (IRelativePathResolver) null);
 		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in loading the model with properties!");
 			e.printStackTrace();
 		}
 		return emfModel;
@@ -128,18 +172,18 @@ public abstract class EpsilonStandalone {
 		return emfModel;
 	}
 
-	public PlainXmlModel createXMLModel(String name, String xmlFilePath) {
-		// Load the XML document
-		PlainXmlModel xmlModel = new PlainXmlModel();
-		try {
-			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
-			xmlModel.setName(name);
-			xmlModel.load();
-		} catch (EolModelLoadingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return xmlModel;
-	}
+	// TODO remove, it is no longer used
+//	public PlainXmlModel createXMLModel(String name, String xmlFilePath) {
+//		// Load the XML document
+//		PlainXmlModel xmlModel = new PlainXmlModel();
+//		try {
+//			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
+//			xmlModel.setName(name);
+//			xmlModel.load();
+//		} catch (EolModelLoadingException e) {
+//			e.printStackTrace();
+//		}
+//		return xmlModel;
+//	}
 
 }

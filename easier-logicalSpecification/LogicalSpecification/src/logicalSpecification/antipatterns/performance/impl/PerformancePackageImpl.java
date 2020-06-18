@@ -936,7 +936,6 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 		// Obtain other dependent packages
 		LogicalSpecificationPackage theLogicalSpecificationPackage = (LogicalSpecificationPackage)EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
-		UMLPackage theUMLPackage = (UMLPackage)EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -965,7 +964,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getBlobPA_T_maxReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBlobPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBlobPA_T_minNetUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minNetUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBlobPA_ContextualElement(), theUMLPackage.getComponent(), "contextualElement", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBlobPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = initEOperation(getBlobPA__SetParametersForPartialDetection__double_double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1008,7 +1007,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getCpsPA_T_maxOverUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxOverUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCpsPA_T_minUnderUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minUnderUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCpsPA_T_maxOpDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_maxOpDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCpsPA_ContextualElement(), theUMLPackage.getNode(), "contextualElement", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCpsPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getCpsPA__SetParametersForPartialDetection__double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOpDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1041,7 +1040,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getPafPA_T_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPafPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPafPA_T_minServiceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minServiceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPafPA_ContextualElement(), theUMLPackage.getOperation(), "contextualElement", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPafPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getPafPA__SetParametersForPartialDetection__double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1080,7 +1079,7 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEReference(getEpPA_T_demandsProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_demandsProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEpPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEpPA_T_maxServiceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxServiceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEpPA_ContextualElement(), theUMLPackage.getOperation(), "contextualElement", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEpPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getEpPA__SetParametersForPartialDetection__double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);

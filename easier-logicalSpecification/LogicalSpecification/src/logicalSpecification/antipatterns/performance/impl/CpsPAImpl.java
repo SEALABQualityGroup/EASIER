@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.uml2.uml.Node;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Cps PA</b></em>'.
@@ -131,7 +129,7 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Node CONTEXTUAL_ELEMENT_EDEFAULT = null;
+	protected static final Object CONTEXTUAL_ELEMENT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getContextualElement() <em>Contextual Element</em>}' attribute.
@@ -141,7 +139,7 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * @generated
 	 * @ordered
 	 */
-	protected Node contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
+	protected Object contextualElement = CONTEXTUAL_ELEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -471,7 +469,7 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Node getContextualElement() {
+	public Object getContextualElement() {
 		return contextualElement;
 	}
 
@@ -480,8 +478,8 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setContextualElement(Node newContextualElement) {
-		Node oldContextualElement = contextualElement;
+	public void setContextualElement(Object newContextualElement) {
+		Object oldContextualElement = contextualElement;
 		contextualElement = newContextualElement;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT, oldContextualElement, contextualElement));
@@ -492,55 +490,10 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForPartialDetection(final double T_maxOpDemand) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				if (getF_queueLengthSVP() != null)
-					if (getF_queueLengthSVP().getResolvingExpr() != null
-							|| !getF_queueLengthSVP().getResolvingExpr().equals(""))
-						getF_queueLengthSVP().setResolvingExpr(null);
-		
-				if (getT_maxQueueLengthSVP() != null)
-					if (getT_maxQueueLengthSVP().getResolvingExpr() != null
-							|| !getT_maxQueueLengthSVP().getResolvingExpr().equals(""))
-						getT_maxQueueLengthSVP().setResolvingExpr(null);
-		
-				if (getF_overUtilSVP() != null)
-					if (getF_overUtilSVP().getResolvingExpr() != null || !getF_overUtilSVP().getResolvingExpr().equals(""))
-						getF_overUtilSVP().setResolvingExpr(null);
-		
-				if (getT_maxOverUtilSVP() != null)
-					if (getT_maxOverUtilSVP().getResolvingExpr() != null
-							|| !getT_maxOverUtilSVP().getResolvingExpr().equals(""))
-						getT_maxOverUtilSVP().setResolvingExpr(null);
-		
-				if (getF_underUtilSVP() != null)
-					if (getF_underUtilSVP().getResolvingExpr() != null || !getF_underUtilSVP().getResolvingExpr().equals(""))
-						getF_underUtilSVP().setResolvingExpr(null);
-		
-				if (getT_minUnderUtilSVP() != null)
-					if (getT_minUnderUtilSVP().getResolvingExpr() != null
-							|| !getT_minUnderUtilSVP().getResolvingExpr().equals(""))
-						getT_minUnderUtilSVP().setResolvingExpr(null);
-		
-				// if(getF_opDemandMVP() != null)
-				// if(getF_opDemandMVP().getResolvingExpr() != null ||
-				// !getF_opDemandMVP().getResolvingExpr().equals(""))
-				// getF_opDemandMVP().setResolvingExpr(null);
-		
-				setF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));
-				blobParams.add(getF_opDemandMVP());
-		
-				// if(getT_maxOpDemandMVP() != null)
-				// if(getT_maxOpDemandMVP().getResolvingExpr() != null ||
-				// !getT_maxOpDemandMVP().getResolvingExpr().equals(""))
-				// getT_maxOpDemandMVP().setResolvingExpr(null);
-		
-				setT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));
-				blobParams.add(getT_maxOpDemandMVP());
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForPartialDetection(double T_maxOpDemand) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -548,38 +501,10 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParametersForFullDetection(final double T_maxQueueLength, final double T_maxOverUtil, final double T_minUnderUtil, final double T_maxOpDemand) {
-		List<Parameter> blobParams = new ArrayList<>();
-		
-				setF_queueLengthSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getQueueLengthQuery(getContextualElement())));
-				blobParams.add(getF_queueLengthSVP());
-		
-				setT_maxQueueLengthSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxQueueLength)));
-				blobParams.add(getT_maxQueueLengthSVP());
-		
-				setF_overUtilSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getOverUtilQuery(getContextualElement())));
-				blobParams.add(getF_overUtilSVP());
-		
-				setT_maxOverUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxOverUtil)));
-				blobParams.add(getT_maxOverUtilSVP());
-		
-				setF_underUtilSVP(Manager.getInstance(null).createSingleValueParameter(
-						OclStringManager.getInstance(null).getUnderUtilQuery(getContextualElement())));
-				blobParams.add(getF_underUtilSVP());
-		
-				setT_minUnderUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minUnderUtil)));
-				blobParams.add(getT_minUnderUtilSVP());
-		
-				setF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(
-						OclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));
-				blobParams.add(getF_opDemandMVP());
-		
-				setT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));
-				blobParams.add(getT_maxOpDemandMVP());
-		
-				getParameters().addAll(blobParams);
+	public void setParametersForFullDetection(double T_maxQueueLength, double T_maxOverUtil, double T_minUnderUtil, double T_maxOpDemand) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -587,35 +512,10 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void createFormula() {
-		FOLSpecification cpsCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();
-				cpsCF.setName("CpsFormula");
-		
-				AndOperator cpsCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-		
-				GreaterEqualOperator cpsCFAndGeq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				cpsCFAndGeq1.setLhs(getF_queueLengthSVP());
-				cpsCFAndGeq1.setRhs(getT_maxQueueLengthSVP());
-				cpsCFAnd.getArguments().add(cpsCFAndGeq1);
-		
-				AndOperator cpsCFAndAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();
-				GreaterEqualOperator cpsCFAndAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				cpsCFAndAndGeq.setLhs(getF_overUtilSVP());
-				cpsCFAndAndGeq.setRhs(getT_maxOverUtilSVP());
-				cpsCFAndAnd.getArguments().add(cpsCFAndAndGeq);
-				LessOperator cpsCFAndAndLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();
-				cpsCFAndAndLe.setLhs(getF_underUtilSVP());
-				cpsCFAndAndLe.setRhs(getT_minUnderUtilSVP());
-				cpsCFAndAnd.getArguments().add(cpsCFAndAndLe);
-				cpsCFAnd.getArguments().add(cpsCFAndAnd);
-		
-				GreaterEqualOperator cpsCFAndGeq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();
-				cpsCFAndGeq2.setLhs(getF_opDemandMVP());
-				cpsCFAndGeq2.setRhs(getT_maxOpDemandMVP());
-				cpsCFAnd.getArguments().add(cpsCFAndGeq2);
-		
-				cpsCF.setRootOperator(cpsCFAnd);
-				setFormula(cpsCF);
+	public int partialDetection(double T_maxOpDemand) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -623,62 +523,10 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int partialDetection(final double T_maxOpDemand) {
-		int occurrences = 0;
-				setParametersForPartialDetection(T_maxOpDemand);
-				createFormula();
-				List<Element> nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)
-						.allOwnedElements();
-				for (Element n : nodes) {
-					if (n instanceof Component && n.getAppliedStereotype("GaExecHost") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int fullDetection(final double T_maxQueueLength, final double T_maxOverUtil, final double T_minUnderUtil, final double T_maxOpDemand) {
-		int occurrences = 0;
-				setParametersForFullDetection(T_maxQueueLength, T_maxOverUtil, T_minUnderUtil, T_maxOpDemand);
-				createFormula();
-				List<Element> nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)
-						.allOwnedElements();
-				for (Element n : nodes) {
-					if (n instanceof Node && n.getAppliedStereotype("GaExecHost") != null) {
-						try {
-							boolean app = Manager.getInstance(null)
-									.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);
-							if (app)
-								occurrences++;
-						} catch (ParserException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				return occurrences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void log() {
-		super.log();
+	public int fullDetection(double T_maxQueueLength, double T_maxOverUtil, double T_minUnderUtil, double T_maxOpDemand) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -752,7 +600,7 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 				setT_maxOpDemandMVP((MultipleValuedParameter)newValue);
 				return;
 			case PerformancePackage.CPS_PA__CONTEXTUAL_ELEMENT:
-				setContextualElement((Node)newValue);
+				setContextualElement(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -841,16 +689,10 @@ public class CpsPAImpl extends PerformanceAntipatternImpl implements CpsPA {
 			case PerformancePackage.CPS_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				setParametersForFullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
 				return null;
-			case PerformancePackage.CPS_PA___CREATE_FORMULA:
-				createFormula();
-				return null;
 			case PerformancePackage.CPS_PA___PARTIAL_DETECTION__DOUBLE:
 				return partialDetection((Double)arguments.get(0));
 			case PerformancePackage.CPS_PA___FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE:
 				return fullDetection((Double)arguments.get(0), (Double)arguments.get(1), (Double)arguments.get(2), (Double)arguments.get(3));
-			case PerformancePackage.CPS_PA___LOG:
-				log();
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

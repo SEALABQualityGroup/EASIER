@@ -8,7 +8,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: logicalSpecification,
+Export-Package: DataType,
+ DataType.impl,
+ DataType.util,
+ logicalSpecification,
  logicalSpecification.actions.AEmilia,
  logicalSpecification.actions.AEmilia.impl,
  logicalSpecification.actions.AEmilia.util,
@@ -19,7 +22,25 @@ Export-Package: logicalSpecification,
  logicalSpecification.antipatterns.performance.impl,
  logicalSpecification.antipatterns.performance.util,
  logicalSpecification.impl,
- logicalSpecification.util
+ logicalSpecification.util,
+ mmaemilia,
+ mmaemilia.Behavior,
+ mmaemilia.Behavior.impl,
+ mmaemilia.Behavior.util,
+ mmaemilia.DataType,
+ mmaemilia.DataType.impl,
+ mmaemilia.DataType.util,
+ mmaemilia.Expressions,
+ mmaemilia.Expressions.impl,
+ mmaemilia.Expressions.util,
+ mmaemilia.Headers,
+ mmaemilia.Headers.impl,
+ mmaemilia.Headers.util,
+ mmaemilia.QueueingNetwork,
+ mmaemilia.QueueingNetwork.impl,
+ mmaemilia.QueueingNetwork.util,
+ mmaemilia.impl,
+ mmaemilia.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy

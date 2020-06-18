@@ -3,6 +3,6 @@ easier-helper/src/main/resources
 target/
 .settings
 .idea
-/bin/
+bin/
 jMetal.log.lck
 *.project

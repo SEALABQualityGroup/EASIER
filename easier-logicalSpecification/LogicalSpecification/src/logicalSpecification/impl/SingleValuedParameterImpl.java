@@ -161,9 +161,5 @@ public class SingleValuedParameterImpl extends ParameterImpl implements SingleVa
 		}
 		return super.eIsSet(featureID);
 	}
-	
-	public boolean equals(SingleValuedParameter p2) {
-		return this.getResolvingExpr().equals(p2.getResolvingExpr());
-	}
 
 } //SingleValuedParameterImpl

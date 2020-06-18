@@ -38,7 +38,7 @@ public abstract class RSequence {
 	}
 
 	public RSequence(int length, int number_of_actions, int allowed_failures, RSolution solution)
-			throws ParserException, UnexpectedException {
+			throws UnexpectedException {
 		this.solution = solution;
 		this.refactoring = new Refactoring(solution);
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
@@ -66,7 +66,7 @@ public abstract class RSequence {
 		}
 	}
 
-	protected abstract boolean tryRandomPush(int n) throws UnexpectedException, ParserException;
+	protected abstract boolean tryRandomPush(int n) throws UnexpectedException;
 	protected abstract boolean isFeasible(Refactoring tr) throws ParserException;
 
 	public RSequence(RSequence seq) {

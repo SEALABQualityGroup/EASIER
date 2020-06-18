@@ -36,7 +36,12 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 
 		controller = ctrl;
 
-		this.setNumberOfObjectives(NUM_OBJ);
+		//Enables the generation of worsen models
+		if(controller.getConfigurator().isWorsen())
+			this.setNumberOfObjectives(1);
+		else
+			this.setNumberOfObjectives(NUM_OBJ);
+		
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 

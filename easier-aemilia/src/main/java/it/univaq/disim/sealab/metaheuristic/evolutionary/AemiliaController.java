@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -36,7 +39,6 @@ import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
-import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.availability.AemiliaAvailabilityManager;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
@@ -58,15 +60,18 @@ import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.disim.sealab.twoeagles_bridge.TwoEaglesBridge;
-import utils.AemiliaFileUtils;
-import utils.ThresholdUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
 
 public class AemiliaController implements Controller {
 
 	public static boolean append = false;
 
 	public static FileHandler handler;
+
+	public static Path METAMODEL_PATH;
 
 	private MetamodelManager metamodelManager;
 	private Manager manager;
@@ -106,6 +111,8 @@ public class AemiliaController implements Controller {
 
 		configurator.getTmpFolder().toFile().mkdirs();
 
+		METAMODEL_PATH = configurator.getMetamodelPath();
+
 		// Instantiates evolutionary operators
 		crossoverOperator = new AemiliaRCrossover<AemiliaRSolution>(config.getXoverProbabiliy(), this);
 
@@ -123,10 +130,13 @@ public class AemiliaController implements Controller {
 		for (Path path : configurator.getModelsPath()) {
 			generateSourceFiles(path);
 			SourceModel model = new SourceModel(path);
-			model.setSourceModelPAs(
-					((AemiliaPerformanceQualityEvaluator) getPerfQuality()).performanceAntipatternEvaluator(
-							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
-							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
+			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
+					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),
+							Paths.get(path.toString(), "aemilia-pas-checker.evl")));
+//			model.setSourceModelPAs(
+//					((AemiliaPerformanceQualityEvaluator) getPerfQuality()).performanceAntipatternEvaluator(
+//							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
+//							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
 
 			// generates every needed files and updates the source model
 
@@ -148,6 +158,7 @@ public class AemiliaController implements Controller {
 
 	/**
 	 * Source is the containing folder
+	 * 
 	 * @param source
 	 */
 	private void generateSourceFiles(final Path source) {
@@ -155,7 +166,8 @@ public class AemiliaController implements Controller {
 		final Path sourceRewPath = source.resolve("model.rew");
 		final Path sourceValPath = source.resolve("model.val");
 		final Path sourceModelPath = source.resolve("model.mmaemilia");
-		final Path sourceOCLPath = source.resolve("ocl/detectionSingleValuePA.ocl");
+//		final Path sourceOCLPath = source.resolve("ocl/detectionSingleValuePA.ocl");
+		final Path sourceEVLPath = source.resolve("aemilia-pas-checker.evl");
 
 		if (!Files.exists(sourceModelPath) && Files.exists(sourceAemPath)) {
 			new TwoEaglesBridge().aemiliaModelGeneration(sourceAemPath, sourceModelPath);
@@ -166,17 +178,17 @@ public class AemiliaController implements Controller {
 		// Generates the aem file from the emf model
 		if (!Files.exists(sourceAemPath)) {
 			metamodelManager.packageRegistering();
+
 			EpsilonHelper.generateAemFile(sourceModelPath, source);
 //			Transformation.GenerateAEMTransformation(sourceModelPath, source);
 			EasierLogger.logger_.info("generation of source files completed!");
 		}
 
-		// Generates the REW file from the emf model
-		// TODO
+		// TODO Generates the REW file from the emf model
 		if (!Files.exists(sourceRewPath)) {
-			//EpsilonHelper.generateRewFile(sourceModelPath, source);
+			// EpsilonHelper.generateRewFile(sourceModelPath, source);
 //			Transformation.GenerateREWTransformation(sourceModelPath, source);
-			EasierLogger.logger_.info("mmamelia to rew completed");
+			EasierLogger.logger_.warning("REW generation not yet supported");
 		}
 
 		if (!Files.exists(sourceValPath)) {
@@ -187,48 +199,75 @@ public class AemiliaController implements Controller {
 				((AemiliaMetamodelManager) metamodelManager).gaussianEliminationSRBMC(sourceAemPath, sourceRewPath,
 						source.resolve("ttresult"));
 
-			if (!checkSourceVal(source)) {
+//			org.apache.commons.io.FileUtils.moveFile(source.resolve("model.aem.val").toFile(),sourceValPath.toFile());
+			source.resolve("model.aem.val").toFile().renameTo(sourceValPath.toFile());
+
+			if (!checkSourceVal(sourceValPath)) {
 				checkTwoTowersOutput(source.resolve("ttresult"));
-				System.out.println("The val file must exist, please check TTkernel output file!!!!");
-				return; // TODO manage the exception
+				System.err.println("The val file must exist, please check TTkernel output file!!!!");
+				return;
 			}
 		}
 
+		if (!Files.exists(sourceEVLPath)) {
+			try {
+				// copy the EVL template into the solution folder
+				org.apache.commons.io.FileUtils.copyFile(configurator.getEVLTemplate().toFile(),
+						sourceEVLPath.toFile());
+				// fix paths in the copied EVL file
+				FileUtils.fillTemplateKeywords(configurator.getEVLTemplate(), sourceEVLPath,
+						Stream.of(
+								new Object[][] { { "basepath", configurator.getEVLTemplate().getParent().toString() } })
+								.collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1])));
+
+				// copy the threshold file into the source folder
+				ThresholdUtils.uptodateSingleValueThresholds(source, sourceModelPath, sourceValPath,
+						(AemiliaMetamodelManager) metamodelManager, this);
+
+				EasierLogger.logger_.info("The EVL Template File has been filled and copied");
+			} catch (IOException e) {
+				System.err.println("Error in copying the evl template file to the source folder.");
+				e.printStackTrace();
+			}
+		}
+
+		// is no longer needed
 		// Renaming of generated files by M2T transformation
-		File folder = source.toFile();
-		File[] listOfFiles = folder.listFiles();
+//		File folder = source.toFile();
+//		File[] listOfFiles = folder.listFiles();
+//
+//		for (File file : listOfFiles) {
+//			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("aem")) {
+//				File newFile = sourceAemPath.toFile();
+//				// File newFile = new File(sourceAemPath);
+//				file.renameTo(newFile);
+//			} else if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("rew")) {
+//				// File newFile = new File(sourceRewPath);
+//				File newFile = sourceRewPath.toFile();
+//				file.renameTo(newFile);
+//			} else if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
+//				// File newFile = new File(sourceValPath);
+//				File newFile = sourceValPath.toFile();
+//				file.renameTo(newFile);
+//			}
+//		}
 
-		for (File file : listOfFiles) {
-			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("aem")) {
-				File newFile = sourceAemPath.toFile();
-				// File newFile = new File(sourceAemPath);
-				file.renameTo(newFile);
-			} else if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("rew")) {
-				// File newFile = new File(sourceRewPath);
-				File newFile = sourceRewPath.toFile();
-				file.renameTo(newFile);
-			} else if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
-				// File newFile = new File(sourceValPath);
-				File newFile = sourceValPath.toFile();
-				file.renameTo(newFile);
-			}
-		}
+//		folder = null;
+//		listOfFiles = null;
+//		folder = source.toFile();
+//		listOfFiles = folder.listFiles();
+//		for (File file : listOfFiles) {
+//			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
+//				File newFile = sourceValPath.toFile();
+//				file.renameTo(newFile);
+//			}
+//		}
 
-		folder = null;
-		listOfFiles = null;
-		folder = source.toFile();
-		listOfFiles = folder.listFiles();
-		for (File file : listOfFiles) {
-			if (file.isFile() && FilenameUtils.getExtension(file.getAbsolutePath()).equals("val")) {
-				File newFile = sourceValPath.toFile();
-				file.renameTo(newFile);
-			}
-		}
-
-		if (!Files.exists(sourceOCLPath)) {
-			ThresholdUtils.uptodateSingleValueThresholds(sourceOCLPath.getParent(), sourceModelPath, sourceValPath,
-					(AemiliaMetamodelManager) metamodelManager, this);
-		}
+		// TODO is no longer used
+//		if (!Files.exists(sourceOCLPath)) {
+//			ThresholdUtils.uptodateSingleValueThresholds(sourceOCLPath.getParent(), sourceModelPath, sourceValPath,
+//					(AemiliaMetamodelManager) metamodelManager, this);
+//		}
 	}
 
 	public List<RProblem<AemiliaRSolution>> createProblems() {
@@ -243,6 +282,9 @@ public class AemiliaController implements Controller {
 							mc = l; // whether mc is -1, mc will be the chromosome's length
 						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+						if (configurator.isWorsen())
+							pName += "_Worse_";
+
 						AemiliaRProblem<AemiliaRSolution> p = new AemiliaRProblem<AemiliaRSolution>(
 								src.getSourceFolder(), l, configurator.getActions(), configurator.getAllowedFailures(),
 								configurator.getPopulationSize(), this);
@@ -291,11 +333,12 @@ public class AemiliaController implements Controller {
 			// }
 			//
 
+			new GenerateLatexTablesWithComputingTime(experiment).run();
+
 			new RComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 			new GenerateBoxplotsWithR<>(experiment).run();
 			new GenerateLatexTablesWithStatistics(experiment).run();
-			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -528,20 +571,20 @@ public class AemiliaController implements Controller {
 		if (!Files.exists(sourceRewmappingPath)) {
 			((AemiliaMetamodelManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath,
 					sourceRewmappingPath, sourceModelPath, null);
-			metamodelManager.refreshModel(sourceModelPath);
-			EasierLogger.logger_.info("source model " + sourceModelPath + " UPDATED!!");
-		} else {
-			EasierLogger.logger_.info("source model " + sourceModelPath + " already UPDATED!!");
-		}
+//			metamodelManager.refreshModel(sourceModelPath);
+
+		} // else {
+//			EasierLogger.logger_.info("source model " + sourceModelPath + " already UPDATED!!");
+//		}
 
 		if (Files.exists(sourceRewmappingPath)) {
 			checkSourceVal(sourceValPath);
 			((AemiliaMetamodelManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath,
 					sourceRewmappingPath, sourceModelPath, null);
 			((AemiliaMetamodelManager) metamodelManager).refreshModel(sourceModelPath);
-			EasierLogger.logger_.info("source model UPDATED!!");
+			EasierLogger.logger_.info("source model " + sourceModelPath + " updated!!");
 		} else {
-			EasierLogger.logger_.info("source model already UPDATED!!");
+			EasierLogger.logger_.info("source model " + sourceModelPath + " already updated!!");
 		}
 	}
 
@@ -588,4 +631,13 @@ public class AemiliaController implements Controller {
 	public Path getPermanentTmpFolder() {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
 	}
+
+//	public void generateWorseModels() {
+//		List<RProblem<AemiliaRSolution>> problems = createProblems();
+//
+//		for (RProblem<AemiliaRSolution> rProblem : problems) {
+//			rProblem.createSolution();
+//		}
+//
+//	}
 }

@@ -5,8 +5,6 @@ package logicalSpecification.antipatterns.performance;
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
-import org.eclipse.uml2.uml.Node;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Cps PA</b></em>'.
@@ -249,12 +247,12 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Contextual Element</em>' attribute.
-	 * @see #setContextualElement(Node)
+	 * @see #setContextualElement(Object)
 	 * @see logicalSpecification.antipatterns.performance.PerformancePackage#getCpsPA_ContextualElement()
-	 * @model dataType="logicalSpecification.actions.UML.Node" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
-	Node getContextualElement();
+	Object getContextualElement();
 
 	/**
 	 * Sets the value of the '{@link logicalSpecification.antipatterns.performance.CpsPA#getContextualElement <em>Contextual Element</em>}' attribute.
@@ -264,13 +262,12 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * @see #getContextualElement()
 	 * @generated
 	 */
-	void setContextualElement(Node value);
+	void setContextualElement(Object value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model T_maxOpDemandRequired="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; blobParams = new ArrayList&lt;&gt;();\n\n\t\tif (getF_queueLengthSVP() != null)\n\t\t\tif (getF_queueLengthSVP().getResolvingExpr() != null\n\t\t\t\t\t|| !getF_queueLengthSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetF_queueLengthSVP().setResolvingExpr(null);\n\n\t\tif (getT_maxQueueLengthSVP() != null)\n\t\t\tif (getT_maxQueueLengthSVP().getResolvingExpr() != null\n\t\t\t\t\t|| !getT_maxQueueLengthSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetT_maxQueueLengthSVP().setResolvingExpr(null);\n\n\t\tif (getF_overUtilSVP() != null)\n\t\t\tif (getF_overUtilSVP().getResolvingExpr() != null || !getF_overUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetF_overUtilSVP().setResolvingExpr(null);\n\n\t\tif (getT_maxOverUtilSVP() != null)\n\t\t\tif (getT_maxOverUtilSVP().getResolvingExpr() != null\n\t\t\t\t\t|| !getT_maxOverUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetT_maxOverUtilSVP().setResolvingExpr(null);\n\n\t\tif (getF_underUtilSVP() != null)\n\t\t\tif (getF_underUtilSVP().getResolvingExpr() != null || !getF_underUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetF_underUtilSVP().setResolvingExpr(null);\n\n\t\tif (getT_minUnderUtilSVP() != null)\n\t\t\tif (getT_minUnderUtilSVP().getResolvingExpr() != null\n\t\t\t\t\t|| !getT_minUnderUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetT_minUnderUtilSVP().setResolvingExpr(null);\n\n\t\t// if(getF_opDemandMVP() != null)\n\t\t// if(getF_opDemandMVP().getResolvingExpr() != null ||\n\t\t// !getF_opDemandMVP().getResolvingExpr().equals(\"\"))\n\t\t// getF_opDemandMVP().setResolvingExpr(null);\n\n\t\tsetF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(\n\t\t\t\tOclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));\n\t\tblobParams.add(getF_opDemandMVP());\n\n\t\t// if(getT_maxOpDemandMVP() != null)\n\t\t// if(getT_maxOpDemandMVP().getResolvingExpr() != null ||\n\t\t// !getT_maxOpDemandMVP().getResolvingExpr().equals(\"\"))\n\t\t// getT_maxOpDemandMVP().setResolvingExpr(null);\n\n\t\tsetT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));\n\t\tblobParams.add(getT_maxOpDemandMVP());\n\n\t\tgetParameters().addAll(blobParams);'"
 	 * @generated
 	 */
 	void setParametersForPartialDetection(double T_maxOpDemand);
@@ -279,7 +276,6 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model T_maxQueueLengthRequired="true" T_maxOverUtilRequired="true" T_minUnderUtilRequired="true" T_maxOpDemandRequired="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; blobParams = new ArrayList&lt;&gt;();\n\n\t\tsetF_queueLengthSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getQueueLengthQuery(getContextualElement())));\n\t\tblobParams.add(getF_queueLengthSVP());\n\n\t\tsetT_maxQueueLengthSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxQueueLength)));\n\t\tblobParams.add(getT_maxQueueLengthSVP());\n\n\t\tsetF_overUtilSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getOverUtilQuery(getContextualElement())));\n\t\tblobParams.add(getF_overUtilSVP());\n\n\t\tsetT_maxOverUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxOverUtil)));\n\t\tblobParams.add(getT_maxOverUtilSVP());\n\n\t\tsetF_underUtilSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getUnderUtilQuery(getContextualElement())));\n\t\tblobParams.add(getF_underUtilSVP());\n\n\t\tsetT_minUnderUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minUnderUtil)));\n\t\tblobParams.add(getT_minUnderUtilSVP());\n\n\t\tsetF_opDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(\n\t\t\t\tOclStringManager.getInstance(null).getOpDemandQuery(getContextualElement())));\n\t\tblobParams.add(getF_opDemandMVP());\n\n\t\tsetT_maxOpDemandMVP(Manager.getInstance(null).createMultipleValuedParameter(String.valueOf(T_maxOpDemand)));\n\t\tblobParams.add(getT_maxOpDemandMVP());\n\n\t\tgetParameters().addAll(blobParams);'"
 	 * @generated
 	 */
 	void setParametersForFullDetection(double T_maxQueueLength, double T_maxOverUtil, double T_minUnderUtil, double T_maxOpDemand);
@@ -287,7 +283,7 @@ public interface CpsPA extends PerformanceAntipattern {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='FOLSpecification cpsCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();\n\t\tcpsCF.setName(\"CpsFormula\");\n\n\t\tAndOperator cpsCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();\n\n\t\tGreaterEqualOperator cpsCFAndGeq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tcpsCFAndGeq1.setLhs(getF_queueLengthSVP());\n\t\tcpsCFAndGeq1.setRhs(getT_maxQueueLengthSVP());\n\t\tcpsCFAnd.getArguments().add(cpsCFAndGeq1);\n\n\t\tAndOperator cpsCFAndAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();\n\t\tGreaterEqualOperator cpsCFAndAndGeq = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tcpsCFAndAndGeq.setLhs(getF_overUtilSVP());\n\t\tcpsCFAndAndGeq.setRhs(getT_maxOverUtilSVP());\n\t\tcpsCFAndAnd.getArguments().add(cpsCFAndAndGeq);\n\t\tLessOperator cpsCFAndAndLe = LogicalSpecificationFactory.eINSTANCE.createLessOperator();\n\t\tcpsCFAndAndLe.setLhs(getF_underUtilSVP());\n\t\tcpsCFAndAndLe.setRhs(getT_minUnderUtilSVP());\n\t\tcpsCFAndAnd.getArguments().add(cpsCFAndAndLe);\n\t\tcpsCFAnd.getArguments().add(cpsCFAndAnd);\n\n\t\tGreaterEqualOperator cpsCFAndGeq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tcpsCFAndGeq2.setLhs(getF_opDemandMVP());\n\t\tcpsCFAndGeq2.setRhs(getT_maxOpDemandMVP());\n\t\tcpsCFAnd.getArguments().add(cpsCFAndGeq2);\n\n\t\tcpsCF.setRootOperator(cpsCFAnd);\n\t\tsetFormula(cpsCF);'"
+	 * @model
 	 * @generated
 	 */
 	void createFormula();
@@ -296,7 +292,6 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model required="true" T_maxOpDemandRequired="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='int occurrences = 0;\n\t\tsetParametersForPartialDetection(T_maxOpDemand);\n\t\tcreateFormula();\n\t\tList&lt;Element&gt; nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)\n\t\t\t\t.allOwnedElements();\n\t\tfor (Element n : nodes) {\n\t\t\tif (n instanceof Component &amp;&amp; n.getAppliedStereotype(\"GaExecHost\") != null) {\n\t\t\t\ttry {\n\t\t\t\t\tboolean app = Manager.getInstance(null)\n\t\t\t\t\t\t\t.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);\n\t\t\t\t\tif (app)\n\t\t\t\t\t\toccurrences++;\n\t\t\t\t} catch (ParserException e) {\n\t\t\t\t\t// TODO Auto-generated catch block\n\t\t\t\t\te.printStackTrace();\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\treturn occurrences;'"
 	 * @generated
 	 */
 	int partialDetection(double T_maxOpDemand);
@@ -305,7 +300,6 @@ public interface CpsPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model required="true" T_maxQueueLengthRequired="true" T_maxOverUtilRequired="true" T_minUnderUtilRequired="true" T_maxOpDemandRequired="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='int occurrences = 0;\n\t\tsetParametersForFullDetection(T_maxQueueLength, T_maxOverUtil, T_minUnderUtil, T_maxOpDemand);\n\t\tcreateFormula();\n\t\tList&lt;Element&gt; nodes = ((Model)Manager.getInstance(UMLManager.getInstance())).getModel().getNestedPackages().get(0).getNestedPackages().get(0)\n\t\t\t\t.allOwnedElements();\n\t\tfor (Element n : nodes) {\n\t\t\tif (n instanceof Node &amp;&amp; n.getAppliedStereotype(\"GaExecHost\") != null) {\n\t\t\t\ttry {\n\t\t\t\t\tboolean app = Manager.getInstance(null)\n\t\t\t\t\t\t\t.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Node) n);\n\t\t\t\t\tif (app)\n\t\t\t\t\t\toccurrences++;\n\t\t\t\t} catch (ParserException e) {\n\t\t\t\t\t// TODO Auto-generated catch block\n\t\t\t\t\te.printStackTrace();\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\treturn occurrences;'"
 	 * @generated
 	 */
 	int fullDetection(double T_maxQueueLength, double T_maxOverUtil, double T_minUnderUtil, double T_maxOpDemand);
@@ -313,7 +307,7 @@ public interface CpsPA extends PerformanceAntipattern {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log();'"
+	 * @model
 	 * @generated
 	 */
 	void log();

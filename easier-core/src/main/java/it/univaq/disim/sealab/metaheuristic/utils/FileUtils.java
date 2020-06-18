@@ -105,6 +105,9 @@ public class FileUtils {
 						rSolution.getProblem().getName() + "_solutions.csv").toFile(),
 				true)) {
 			List<String> line = new ArrayList<String>();
+			line.addAll(Arrays.asList("SolID", "PerfQ", "ArchDist", "PAs"));
+			CSVUtils.writeHeader(fw, line);
+			line.clear();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPerfQ()));
 			line.add(String.valueOf(rSolution.getNumOfChanges()));
@@ -293,7 +296,7 @@ public class FileUtils {
 			out.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in filling the threshold and EVL pas checker file!");
 			e.printStackTrace();
 		}
 	}
