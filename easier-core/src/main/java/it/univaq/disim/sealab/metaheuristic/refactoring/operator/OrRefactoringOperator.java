@@ -55,4 +55,33 @@ public class OrRefactoringOperator extends OrOperatorImpl {
 		return app;
 	}
 	
+	public boolean equals(OrOperator op2) {
+		if (op2 != null) {
+			if (this.getArguments() != null && op2.getArguments() != null) {
+				if (this.getArguments().size() == op2.getArguments().size()) {
+					for (int i = 0; i < this.getArguments().size(); i++) {
+						if (!this.getArguments().get(i).equals(op2.getArguments().get(i)))
+							return false;
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean guarantees(Operator op2) {
+		if (op2 != null) {
+			if (this != op2) {
+				if (this.getArguments() != null) {
+					for (int i = 0; i < this.getArguments().size(); i++) {
+						if (this.getArguments().get(i).guarantees(op2))
+							return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 }

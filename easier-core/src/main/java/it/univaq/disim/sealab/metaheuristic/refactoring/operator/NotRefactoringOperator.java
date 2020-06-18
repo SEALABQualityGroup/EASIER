@@ -44,4 +44,19 @@ public class NotRefactoringOperator extends NotOperatorImpl {
 		// System.out.print(")");
 		return app;
 	}
+	
+	public boolean equals(NotRefactoringOperator op2) {
+		if (op2 != null)
+			return this.getArgument().equals(op2.getArgument());
+		return false;
+	}
+
+	public boolean guarantees(Operator op2) {
+		if (op2 != null) {
+			if (this != op2)
+				return this.getArgument().guarantees(op2);
+			return true;
+		}
+		return false;
+	}
 }

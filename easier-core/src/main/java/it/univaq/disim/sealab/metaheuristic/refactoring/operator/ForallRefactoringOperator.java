@@ -15,6 +15,7 @@ import logicalSpecification.LessEqualOperator;
 import logicalSpecification.LessOperator;
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.NotOperator;
+import logicalSpecification.Operator;
 import logicalSpecification.OrOperator;
 import logicalSpecification.impl.ForAllOperatorImpl;
 import metamodel.mmaemilia.ArchiElemInstance;
@@ -56,7 +57,8 @@ public class ForallRefactoringOperator extends ForAllOperatorImpl {
 		boolean app = true;
 		for (Object obj : coll) {
 			// boolean app = true;
-			this.getArgument().evaluateOperator(obj);
+			
+			((ExistsRefactoringOperator)this.getArgument()).evaluateOperator(obj, contextualElement);
 
 			/*
 			 * if (operator.getArgument() instanceof NotOperator) app =
@@ -88,5 +90,26 @@ public class ForallRefactoringOperator extends ForAllOperatorImpl {
 		}
 		// System.out.print(")");
 		return app;
+	}
+	
+	public boolean equals(ForAllOperator op2) {
+		if (op2 != null) {
+			if (this.getCollection().equals(op2.getCollection()))
+				return this.getArgument().equals(op2.getArgument());
+		}
+		return false;
+	}
+
+	public boolean guarantees(Operator op2) {
+		if (op2 != null) {
+			if (this != op2) {
+				if (this.getArgument() != null)
+					return this.getArgument().guarantees(op2);
+				else if (op2 instanceof ExistsOperator)
+					return this.equals(op2);
+				return false;
+			}
+		}
+		return false;
 	}
 }
