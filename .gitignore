@@ -1,7 +1,8 @@
 easier-helper/src/main/resources
 *.class
 target/
-<<<<<<< Updated upstream
+.settings
 .idea
-=======
->>>>>>> Stashed changes
+bin/
+jMetal.log.lck
+*.project

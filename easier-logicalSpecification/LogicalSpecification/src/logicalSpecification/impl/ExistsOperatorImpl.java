@@ -366,31 +366,4 @@ public class ExistsOperatorImpl extends LogicalOperatorImpl implements ExistsOpe
 		return super.eIsSet(featureID);
 	}
 
-
-	public boolean equals(ExistsOperator op2) {
-		if (op2 != null) {
-			if (this.getCollection().equals(op2.getCollection()))
-				if (this.getElement() != null && op2.getElement() != null)
-					if (this.getElement().equals(op2.getElement())) {
-						if (this.getArgument() != null && op2.getArgument() != null)
-							return this.getArgument().equals(op2.getArgument());
-					}
-		}
-		return false;
-	}
-
-	public boolean guarantees(Operator op2) {
-		if (op2 != null) {
-			if (this != op2) {
-				if (this.getArgument() != null)
-					return this.getArgument().guarantees(op2);
-				else if (op2 instanceof ExistsOperator)
-					return this.equals(op2);
-				return false;
-			}
-			return false;
-		}
-		return false;
-	}
-
 } //ExistsOperatorImpl

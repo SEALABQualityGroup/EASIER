@@ -15,12 +15,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaCloneAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaRemoveClonedAEIRefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
@@ -128,6 +128,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		} catch (Exception e) {
 			System.err.println(ExceptionUtils.getStackTrace(e));
 			System.err.println("Solution number: " + solution.getName());
+			e.printStackTrace();
 		}
 	}
 
@@ -292,10 +293,34 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		case 3:
 			return getRandomWeightChangeAction((AemiliaRSequence) seq);
 		case 4:
+			return getRandomRemoveCloneAction((AemiliaRSequence) seq);
+		case 5:
 			return getRandomWorkloadChangeAction((AemiliaRSequence) seq);
 		default:
 			throw new UnexpectedException("");
 		}
+	}
+	
+	private RefactoringAction getRandomRemoveCloneAction(AemiliaRSequence seq) {
+		AEmiliaRemoveClonedAEIRefactoringAction action = null;
+		try {
+			action = new AEmiliaRemoveClonedAEIRefactoringAction((AemiliaRSolution) seq.getSolution());
+
+			if (action.getSourceAEI() == null)
+				return null;
+
+//			if (!action.isApplicable())
+//				return null;
+
+//			if (!isApplicable(action, seq))
+//				return null;
+		} catch (IllegalArgumentException e) {
+//			AemiliaRSolution s = (AemiliaRSolution) seq.getSolution();
+			System.out.println(seq.toString());
+			System.out.println(seq.getSolution().toString());
+			e.printStackTrace();
+		} 
+		return action;
 	}
 
 	private RefactoringAction getRandomCloneAEIAction(AemiliaRSequence seq) {
@@ -694,8 +719,6 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	public void refreshModel(String mmaemiliaFilePath) {
 		getResourceSet().getResources().get(0).unload();
 		Resource res = getResourceSet().getResource(Manager.string2Uri(mmaemiliaFilePath), true);
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
@@ -735,7 +758,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 					throw new Exception("error in clone action");
 				}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in saving the model of Solution #"+ solution.getName());
 			e.printStackTrace();
 		}
 	}
@@ -760,11 +783,8 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	 * @param sourceModelPath
 	 */
 	public void refreshModel(final Path sourceModelPath) {
-		getResourceSet().getResources().get(0).unload();
-		Resource res = getResourceSet().getResource(Manager.string2Uri(sourceModelPath.toString()), true);
-
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
+		getResourceSet().getResources().forEach(resource -> resource.unload());
+		Resource res = getResourceSet().getResource(URI.createFileURI(sourceModelPath.toString()), true);
 
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);

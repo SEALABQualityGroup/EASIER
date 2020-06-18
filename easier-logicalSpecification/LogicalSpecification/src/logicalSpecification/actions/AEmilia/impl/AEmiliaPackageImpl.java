@@ -12,6 +12,7 @@ import logicalSpecification.actions.AEmilia.AEmiliaDeleteAction;
 import logicalSpecification.actions.AEmilia.AEmiliaFactory;
 import logicalSpecification.actions.AEmilia.AEmiliaMoveAction;
 import logicalSpecification.actions.AEmilia.AEmiliaPackage;
+import logicalSpecification.actions.AEmilia.AEmiliaRemoveClonedAEIAction;
 
 import logicalSpecification.actions.UML.UMLPackage;
 
@@ -95,6 +96,13 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass aEmiliaRemoveClonedAEIActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType elemTypeEDataType = null;
 
 	/**
@@ -167,7 +175,7 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link AEmiliaPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -181,14 +189,18 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 		if (isInited) return (AEmiliaPackage)EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
 
 		// Obtain or create and register package
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof AEmiliaPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new AEmiliaPackageImpl());
+		Object registeredAEmiliaPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		AEmiliaPackageImpl theAEmiliaPackage = registeredAEmiliaPackage instanceof AEmiliaPackageImpl ? (AEmiliaPackageImpl)registeredAEmiliaPackage : new AEmiliaPackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) instanceof LogicalSpecificationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) : LogicalSpecificationPackage.eINSTANCE);
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) instanceof UMLPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) : UMLPackage.eINSTANCE);
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) instanceof PerformancePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) : PerformancePackage.eINSTANCE);
+		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(registeredPackage instanceof LogicalSpecificationPackageImpl ? registeredPackage : LogicalSpecificationPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
+		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theAEmiliaPackage.createPackageContents();
@@ -205,7 +217,6 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 		// Mark meta-data to indicate it can't be changed
 		theAEmiliaPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(AEmiliaPackage.eNS_URI, theAEmiliaPackage);
 		return theAEmiliaPackage;
@@ -441,6 +452,150 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getAEmiliaRemoveClonedAEIAction() {
+		return aEmiliaRemoveClonedAEIActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAEmiliaRemoveClonedAEIAction_SourceAEI() {
+		return (EAttribute)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAEmiliaRemoveClonedAEIAction_ClonedAEI() {
+		return (EAttribute)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAEmiliaRemoveClonedAEIAction_ListOfInputInteractions() {
+		return (EAttribute)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAEmiliaRemoveClonedAEIAction_ListOfOutputInteractions() {
+		return (EAttribute)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAEmiliaRemoveClonedAEIAction_ListOfNewAttachments() {
+		return (EAttribute)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AeiToCloneSVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_ClonedAeiSVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllOrInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllInLocalInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllOutLocalInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllUniInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllLocalInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllAeisMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllInRemoteInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAEmiliaRemoveClonedAEIAction_AllOutRemoteInteractsMVP() {
+		return (EReference)aEmiliaRemoveClonedAEIActionEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getElemType() {
 		return elemTypeEDataType;
 	}
@@ -558,6 +713,23 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 
 		aEmiliaChangeActionEClass = createEClass(AEMILIA_CHANGE_ACTION);
 
+		aEmiliaRemoveClonedAEIActionEClass = createEClass(AEMILIA_REMOVE_CLONED_AEI_ACTION);
+		createEAttribute(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__SOURCE_AEI);
+		createEAttribute(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI);
+		createEAttribute(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_INPUT_INTERACTIONS);
+		createEAttribute(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_OUTPUT_INTERACTIONS);
+		createEAttribute(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__LIST_OF_NEW_ATTACHMENTS);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__AEI_TO_CLONE_SVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__CLONED_AEI_SVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OR_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_LOCAL_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_LOCAL_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_UNI_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_LOCAL_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_AEIS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_IN_REMOTE_INTERACTS_MVP);
+		createEReference(aEmiliaRemoveClonedAEIActionEClass, AEMILIA_REMOVE_CLONED_AEI_ACTION__ALL_OUT_REMOTE_INTERACTS_MVP);
+
 		// Create data types
 		elemTypeEDataType = createEDataType(ELEM_TYPE);
 		inputInteractionEDataType = createEDataType(INPUT_INTERACTION);
@@ -605,6 +777,7 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 		aEmiliaCloneAEIActionEClass.getESuperTypes().add(this.getAEmiliaAddAction());
 		aEmiliaConstChangesActionEClass.getESuperTypes().add(this.getAEmiliaChangeAction());
 		aEmiliaChangeActionEClass.getESuperTypes().add(theLogicalSpecificationPackage.getChangeAction());
+		aEmiliaRemoveClonedAEIActionEClass.getESuperTypes().add(this.getAEmiliaDeleteAction());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(aEmiliaAddActionEClass, AEmiliaAddAction.class, "AEmiliaAddAction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -637,6 +810,23 @@ public class AEmiliaPackageImpl extends EPackageImpl implements AEmiliaPackage {
 		initEReference(getAEmiliaConstChangesAction_AllConstInitsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allConstInitsMVP", null, 1, 1, AEmiliaConstChangesAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(aEmiliaChangeActionEClass, AEmiliaChangeAction.class, "AEmiliaChangeAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(aEmiliaRemoveClonedAEIActionEClass, AEmiliaRemoveClonedAEIAction.class, "AEmiliaRemoveClonedAEIAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAEmiliaRemoveClonedAEIAction_SourceAEI(), this.getArchiElemInstance(), "sourceAEI", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAEmiliaRemoveClonedAEIAction_ClonedAEI(), this.getArchiElemInstance(), "clonedAEI", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAEmiliaRemoveClonedAEIAction_ListOfInputInteractions(), this.getInputInteraction(), "listOfInputInteractions", null, 0, -1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAEmiliaRemoveClonedAEIAction_ListOfOutputInteractions(), this.getOutputInteraction(), "listOfOutputInteractions", null, 0, -1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAEmiliaRemoveClonedAEIAction_ListOfNewAttachments(), this.getAttachment(), "listOfNewAttachments", null, 0, -1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AeiToCloneSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "aeiToCloneSVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_ClonedAeiSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "clonedAeiSVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllOrInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allOrInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllInLocalInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allInLocalInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllOutLocalInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allOutLocalInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllUniInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allUniInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllLocalInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allLocalInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllAeisMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allAeisMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllInRemoteInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allInRemoteInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAEmiliaRemoveClonedAEIAction_AllOutRemoteInteractsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allOutRemoteInteractsMVP", null, 1, 1, AEmiliaRemoveClonedAEIAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(elemTypeEDataType, ElemType.class, "ElemType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

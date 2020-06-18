@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.LogicalSpecificationPackage;
-import logicalSpecification.Parameter;
 import logicalSpecification.SingleValuedParameter;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -161,10 +160,6 @@ public class SingleValuedParameterImpl extends ParameterImpl implements SingleVa
 				return existsOperator != null && !existsOperator.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-	
-	public boolean equals(SingleValuedParameter p2) {
-		return this.getResolvingExpr().equals(p2.getResolvingExpr());
 	}
 
 } //SingleValuedParameterImpl

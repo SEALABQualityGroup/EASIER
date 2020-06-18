@@ -5,13 +5,11 @@ import java.nio.file.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.uma.jmetal.problem.impl.AbstractGenericProblem;
-import org.uma.jmetal.solution.Solution;
 
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
-public abstract class RProblem<S extends Solution<?>> extends AbstractGenericProblem<S> {
+public abstract class RProblem<S extends RSolution> extends AbstractGenericProblem<S> {
 
 	protected final EObject model;
 	protected int length_of_refactorings;
@@ -38,7 +36,12 @@ public abstract class RProblem<S extends Solution<?>> extends AbstractGenericPro
 
 		controller = ctrl;
 
-		this.setNumberOfObjectives(NUM_OBJ);
+		//Enables the generation of worsen models
+		if(controller.getConfigurator().isWorsen())
+			this.setNumberOfObjectives(1);
+		else
+			this.setNumberOfObjectives(NUM_OBJ);
+		
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 
@@ -48,7 +51,6 @@ public abstract class RProblem<S extends Solution<?>> extends AbstractGenericPro
 		this.sourceModelPath = srcModelPath;
 		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
-		assert (!this.model.equals(manager.getMetamodelManager().getModel()));
 		
 		this.length_of_refactorings = desired_length;
 		this.allowed_failures = allowedFailures;

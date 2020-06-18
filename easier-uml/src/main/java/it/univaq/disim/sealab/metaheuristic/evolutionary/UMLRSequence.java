@@ -41,16 +41,12 @@ public class UMLRSequence extends RSequence {
 	protected boolean tryRandomPush(int n) throws UnexpectedException, ParserException {
 //		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 //
-//		// assert (temporary_ref.equals(this.refactoring));
-//		assert (temporary_ref.getName().equals(this.refactoring.getName()));
 //
 //		RefactoringAction candidate;
 //		do {
 //			candidate = manager.getMetamodelManager().getRandomAction(n, this);
 //		} while (candidate == null);
 //
-//		assert (candidate != null);
-//		// candidate.setModel(this.getModel());
 //
 //		temporary_ref.getActions().add(candidate);
 //
@@ -161,7 +157,6 @@ public class UMLRSequence extends RSequence {
 
 	public UMLRSequence(UMLRSequence seq) {
 		super(seq);
-		assert (this.refactoring.equals(seq.getRefactoring()));
 	}
 
 	public UMLRSequence(UMLRSequence seq, UMLRSolution solution) {
@@ -183,7 +178,6 @@ public class UMLRSequence extends RSequence {
 //		// Refactoring temporary_ref =
 //		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
 //		Refactoring temporary_ref = this.refactoring.clone(getSolution());
-//		assert (temporary_ref.equals(this.refactoring));
 //
 //		// Action candidate = Manager.getTautologyRandomAction(n, this);
 //
@@ -194,11 +188,6 @@ public class UMLRSequence extends RSequence {
 //
 //		// Action candidate =
 //		// Manager.getInstance(null).getMetamodelManager().getRandomAction(n);
-//		assert (candidate != null);
-//		// assert
-//		// (Manager.getInstance(null).evaluateFOL(candidate.getPre().getConditionFormula()));
-//		// assert
-//		// (Manager.getInstance(null).evaluateFOL(candidate.getPost().getConditionFormula()));
 //
 //		temporary_ref.getActions().set(position, candidate);
 //		if (this.isFeasible(temporary_ref)) {

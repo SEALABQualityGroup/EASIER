@@ -2,8 +2,6 @@
  */
 package logicalSpecification.actions.UML.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
@@ -11,8 +9,6 @@ import logicalSpecification.actions.UML.UMLDeleteOperationAction;
 import logicalSpecification.actions.UML.UMLPackage;
 
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -198,95 +194,6 @@ public class UMLDeleteOperationActionImpl extends UMLDeleteActionImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void log() {
-		super.log(); 
-//				Controller.logger_.info(getUmlOpToDel().toString());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void execute() {
-		getUmlOpToDel().destroy();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setParameters() {
-//		List<Parameter> delOpParams = new ArrayList<>();
-//		
-//				setOpToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getOperationQuery(getUmlOpToDel())));
-//				delOpParams.add(getOpToDelSVP());
-//		
-//				setAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getAllOperationsQuery()));
-//				delOpParams.add(getAllOpsMVP());
-//		
-//				getParameters().addAll(delOpParams);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPreCondition() {
-//		PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("DeleteOperationPreCondition");
-//		
-//				AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//		
-//				ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToDelSVP(), getAllOpsMVP());
-//		
-//				preAnd.getArguments().add(existsOperator);
-//		
-//				specification.setRootOperator(preAnd);
-//				preCondition.setConditionFormula(specification);
-//		
-//				setPre(preCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPostCondition() {
-//		PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("DeleteOperationPostCondition");
-//		
-//				AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//		
-//				NotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();
-//				ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getOpToDelSVP(), getAllOpsMVP());
-//				notOperator.setArgument(existsOperator);
-//		
-//				preAnd.getArguments().add(notOperator);
-//		
-//				specification.setRootOperator(preAnd);
-//		
-//				postCondition.setConditionFormula(specification);
-//		
-//				setPost(postCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -368,37 +275,10 @@ public class UMLDeleteOperationActionImpl extends UMLDeleteActionImpl implements
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case UMLPackage.UML_DELETE_OPERATION_ACTION___LOG:
-				log();
-				return null;
-			case UMLPackage.UML_DELETE_OPERATION_ACTION___EXECUTE:
-				execute();
-				return null;
-			case UMLPackage.UML_DELETE_OPERATION_ACTION___SET_PARAMETERS:
-				setParameters();
-				return null;
-			case UMLPackage.UML_DELETE_OPERATION_ACTION___CREATE_PRE_CONDITION:
-				createPreCondition();
-				return null;
-			case UMLPackage.UML_DELETE_OPERATION_ACTION___CREATE_POST_CONDITION:
-				createPostCondition();
-				return null;
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (umlOpToDel: ");
 		result.append(umlOpToDel);
 		result.append(')');

@@ -317,7 +317,7 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link LogicalSpecificationPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -331,14 +331,18 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		if (isInited) return (LogicalSpecificationPackage)EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
 
 		// Obtain or create and register package
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof LogicalSpecificationPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new LogicalSpecificationPackageImpl());
+		Object registeredLogicalSpecificationPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = registeredLogicalSpecificationPackage instanceof LogicalSpecificationPackageImpl ? (LogicalSpecificationPackageImpl)registeredLogicalSpecificationPackage : new LogicalSpecificationPackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) instanceof UMLPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI) : UMLPackage.eINSTANCE);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) instanceof AEmiliaPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) : AEmiliaPackage.eINSTANCE);
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) instanceof PerformancePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) : PerformancePackage.eINSTANCE);
+		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
+		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
+		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
+		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theLogicalSpecificationPackage.createPackageContents();
@@ -355,7 +359,6 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		// Mark meta-data to indicate it can't be changed
 		theLogicalSpecificationPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(LogicalSpecificationPackage.eNS_URI, theLogicalSpecificationPackage);
 		return theLogicalSpecificationPackage;
@@ -798,6 +801,24 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getLogicalOperator__Guarantees__Operator() {
+		return logicalOperatorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getLogicalOperator__EvaluateOperator__Operator() {
+		return logicalOperatorEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVoidOperator() {
 		return voidOperatorEClass;
 	}
@@ -1068,6 +1089,24 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getOperator__EvaluateOperator__Object() {
+		return operatorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getOperator__Guarantees__Operator() {
+		return operatorEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getAntipattern() {
 		return antipatternEClass;
 	}
@@ -1320,6 +1359,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		createEReference(folSpecificationEClass, FOL_SPECIFICATION__ANTIPATTERN);
 
 		logicalOperatorEClass = createEClass(LOGICAL_OPERATOR);
+		createEOperation(logicalOperatorEClass, LOGICAL_OPERATOR___GUARANTEES__OPERATOR);
+		createEOperation(logicalOperatorEClass, LOGICAL_OPERATOR___EVALUATE_OPERATOR__OPERATOR);
 
 		voidOperatorEClass = createEClass(VOID_OPERATOR);
 
@@ -1363,6 +1404,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		createEReference(operatorEClass, OPERATOR__AND_OPERATOR);
 		createEReference(operatorEClass, OPERATOR__OR_OPERATOR);
 		createEReference(operatorEClass, OPERATOR__EXISTS_OPERATOR);
+		createEOperation(operatorEClass, OPERATOR___EVALUATE_OPERATOR__OBJECT);
+		createEOperation(operatorEClass, OPERATOR___GUARANTEES__OPERATOR);
 
 		antipatternEClass = createEClass(ANTIPATTERN);
 		createEReference(antipatternEClass, ANTIPATTERN__LOLA4RAPS_ROOT);
@@ -1481,7 +1524,7 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		initEReference(getAction_Parameters(), this.getParameter(), this.getParameter_Action(), "parameters", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Pre(), this.getPreCondition(), this.getPreCondition_Action(), "pre", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Post(), this.getPostCondition(), this.getPostCondition_Action(), "post", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Model(), this.getmodel(), "model", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Model(), ecorePackage.getEJavaObject(), "model", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAction__Execute(), null, "execute", 1, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1526,6 +1569,12 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 		initEClass(logicalOperatorEClass, LogicalOperator.class, "LogicalOperator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		EOperation op = initEOperation(getLogicalOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getLogicalOperator__EvaluateOperator__Operator(), ecorePackage.getEBoolean(), "evaluateOperator", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(voidOperatorEClass, VoidOperator.class, "VoidOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(forAllOperatorEClass, ForAllOperator.class, "ForAllOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1568,6 +1617,12 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		initEReference(getOperator_AndOperator(), this.getAndOperator(), this.getAndOperator_Arguments(), "andOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOperator_OrOperator(), this.getOrOperator(), this.getOrOperator_Arguments(), "orOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOperator_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Argument(), "existsOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = initEOperation(getOperator__EvaluateOperator__Object(), ecorePackage.getEBoolean(), "evaluateOperator", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "contextualElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getOperator(), "op", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(antipatternEClass, Antipattern.class, "Antipattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAntipattern_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Antipatterns(), "lola4rapsRoot", null, 0, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

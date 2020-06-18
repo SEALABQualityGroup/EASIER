@@ -2,8 +2,6 @@
  */
 package logicalSpecification.actions.UML.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
@@ -11,8 +9,6 @@ import logicalSpecification.actions.UML.UMLDeleteComponentAction;
 import logicalSpecification.actions.UML.UMLPackage;
 
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -198,92 +194,6 @@ public class UMLDeleteComponentActionImpl extends UMLDeleteActionImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void log() {
-		super.log();
-//				Controller.logger_.info(this.toString());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void execute() {
-//		List<Manifestation> list_of_manifestations = ((UMLManager) Manager.getInstance(UMLManager.getInstance())
-//						.getMetamodelManager()).getAllManifestationsOf(getUmlCompToDel());
-//				for (Manifestation man : list_of_manifestations) {
-//					if (man.getUtilizedElement().getNamespace() == getUmlCompToDel().getNamespace()) {
-//						man.destroy();
-//					}
-//				}
-//				umlCompToDel.destroy();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setParameters() {
-//		List<Parameter> delCompParams = new ArrayList<>();
-//		
-//				setCompToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getComponentQuery(getUmlCompToDel())));
-//				delCompParams.add(getCompToDelSVP());
-//		
-//				setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
-//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
-//								.getAllComponentsQuery()));
-//				delCompParams.add(getAllCompsMVP());
-//		
-//				getParameters().addAll(delCompParams);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPreCondition() {
-//		PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("DeleteComponentPreCondition");
-//				AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//				ExistsOperator exists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getCompToDelSVP(),
-//						getAllCompsMVP());
-//				preAnd.getArguments().add(exists);
-//				specification.setRootOperator(preAnd);
-//				preCondition.setConditionFormula(specification);
-//				setPre(preCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPostCondition() {
-//		PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();
-//		
-//				FOLSpecification specification = Manager.getInstance(UMLManager.getInstance())
-//						.createFOLSpectification("DeleteComponentPostCondition");
-//				AndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
-//				NotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();
-//				ExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())
-//						.createExistsOperator(getCompToDelSVP(), getAllCompsMVP());
-//				notOperator.setArgument(existsOperator);
-//				preAnd.getArguments().add(notOperator);
-//				specification.setRootOperator(preAnd);
-//				postCondition.setConditionFormula(specification);
-//				setPost(postCondition);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -365,37 +275,10 @@ public class UMLDeleteComponentActionImpl extends UMLDeleteActionImpl implements
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case UMLPackage.UML_DELETE_COMPONENT_ACTION___LOG:
-				log();
-				return null;
-			case UMLPackage.UML_DELETE_COMPONENT_ACTION___EXECUTE:
-				execute();
-				return null;
-			case UMLPackage.UML_DELETE_COMPONENT_ACTION___SET_PARAMETERS:
-				setParameters();
-				return null;
-			case UMLPackage.UML_DELETE_COMPONENT_ACTION___CREATE_PRE_CONDITION:
-				createPreCondition();
-				return null;
-			case UMLPackage.UML_DELETE_COMPONENT_ACTION___CREATE_POST_CONDITION:
-				createPostCondition();
-				return null;
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (umlCompToDel: ");
 		result.append(umlCompToDel);
 		result.append(')');

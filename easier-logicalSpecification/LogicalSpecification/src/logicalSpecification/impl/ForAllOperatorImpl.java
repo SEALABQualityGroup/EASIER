@@ -2,7 +2,6 @@
  */
 package logicalSpecification.impl;
 
-import logicalSpecification.ExistsOperator;
 import logicalSpecification.ForAllOperator;
 import logicalSpecification.LogicalSpecificationPackage;
 import logicalSpecification.MultipleValuedParameter;
@@ -276,27 +275,6 @@ public class ForAllOperatorImpl extends LogicalOperatorImpl implements ForAllOpe
 				return argument != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	public boolean equals(ForAllOperator op2) {
-		if (op2 != null) {
-			if (this.getCollection().equals(op2.getCollection()))
-				return this.getArgument().equals(op2.getArgument());
-		}
-		return false;
-	}
-
-	public boolean guarantees(Operator op2) {
-		if (op2 != null) {
-			if (this != op2) {
-				if (this.getArgument() != null)
-					return this.getArgument().guarantees(op2);
-				else if (op2 instanceof ExistsOperator)
-					return this.equals(op2);
-				return false;
-			}
-		}
-		return false;
 	}
 
 } //ForAllOperatorImpl

@@ -1,6 +1,5 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.ocl.ParserException;
@@ -19,16 +18,16 @@ import org.eclipse.ocl.ParserException;
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 
 @SuppressWarnings("serial")
-public abstract class RCrossover implements CrossoverOperator<RSolution> {
+public abstract class RCrossover<S extends RSolution> implements CrossoverOperator<S> {
 
 	protected double crossoverProbability;
 	protected JMetalRandom randomGenerator;
@@ -49,16 +48,16 @@ public abstract class RCrossover implements CrossoverOperator<RSolution> {
 		return crossoverProbability;
 	}
 
-	@Override
-	public List<RSolution> execute(List<RSolution> solutions) {
-		if (solutions == null) {
-			throw new JMetalException("Null parameter");
-		} else if (solutions.size() != 2) {
-			throw new JMetalException("There must be two parents instead of " + solutions.size());
-		}
-
-		return doCrossover(crossoverProbability, solutions.get(0), solutions.get(1));
-	}
+//	@Override
+//	public List<S> execute(List<S> solutions) {
+//		if (solutions == null) {
+//			throw new JMetalException("Null parameter");
+//		} else if (solutions.size() != 2) {
+//			throw new JMetalException("There must be two parents instead of " + solutions.size());
+//		}
+//
+//		return doCrossover(crossoverProbability, solutions.get(0), solutions.get(1));
+//	}
 
 	/**
 	 * Perform the crossover operation.
@@ -72,13 +71,12 @@ public abstract class RCrossover implements CrossoverOperator<RSolution> {
 	 * @return An array containing the two offspring
 	 * @throws ParserException
 	 */
-	public abstract List<RSolution> doCrossover(double probability, RSolution parent1, RSolution parent2);
+//	public abstract List<S> doCrossover(double probability, S parent1, S parent2);
 //	{
 //
 //		List<RSolution> offspring = new ArrayList<>(2);
 //		RSolution parent1copy = (RSolution) parent1.copy();
 //		offspring.add(parent1copy);
-//		assert (offspring.get(0).getModel().equals(parent1.getModel()));
 //
 //		RSolution parent2copy = (RSolution) parent2.copy();
 //		offspring.add(parent2copy);
@@ -102,12 +100,9 @@ public abstract class RCrossover implements CrossoverOperator<RSolution> {
 //			 */
 //			// 4. Compute the crossover point
 //
-//			assert (parent1.getVariableValue(variable).getLength() == parent2.getVariableValue(variable).getLength());
 //
 //			// 5. Apply the crossover to the variable;
 //
-//			assert (parent1 != null);
-//			assert (parent2 != null);
 //			RSolution offspring1 = new RSolution(parent1, parent2, crossoverPoint, true);
 //			offspring1.setParents(parent1, parent2);
 //
@@ -126,8 +121,6 @@ public abstract class RCrossover implements CrossoverOperator<RSolution> {
 //				if(!found)
 //					offspring.set(0, offspring1);
 //			}
-//
-//			assert (offspring1.getModel().equals(offspring1.getModel()));
 //
 //			RSolution offspring2 = new RSolution(parent1, parent2, crossoverPoint, false);
 //			offspring2.setParents(parent2, parent1);
@@ -160,8 +153,6 @@ public abstract class RCrossover implements CrossoverOperator<RSolution> {
 //				if(!found)
 //					offspring.set(1, offspring2);
 //			}
-//
-//			assert (offspring.size() == 2);
 //
 //			// for (int i = intoVariableCrossoverPoint; i < offspring1.getBinarySetLength();
 //			// i++) {

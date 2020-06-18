@@ -104,44 +104,4 @@ public interface UMLDeleteComponentAction extends UMLDeleteAction {
 	 */
 	void setUmlCompToDel(Component value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log();\n\t\tController.logger_.info(this.toString());'"
-	 * @generated
-	 */
-	void log();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Manifestation&gt; list_of_manifestations = ((UMLManager) Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.getMetamodelManager()).getAllManifestationsOf(getUmlCompToDel());\n\t\tfor (Manifestation man : list_of_manifestations) {\n\t\t\tif (man.getUtilizedElement().getNamespace() == getUmlCompToDel().getNamespace()) {\n\t\t\t\tman.destroy();\n\t\t\t}\n\t\t}\n\t\tumlCompToDel.destroy();'"
-	 * @generated
-	 */
-	void execute();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; delCompParams = new ArrayList&lt;&gt;();\n\n\t\tsetCompToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getComponentQuery(getUmlCompToDel())));\n\t\tdelCompParams.add(getCompToDelSVP());\n\n\t\tsetAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllComponentsQuery()));\n\t\tdelCompParams.add(getAllCompsMVP());\n\n\t\tgetParameters().addAll(delCompParams);'"
-	 * @generated
-	 */
-	void setParameters();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"DeleteComponentPreCondition\");\n\t\tAndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tExistsOperator exists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getCompToDelSVP(),\n\t\t\t\tgetAllCompsMVP());\n\t\tpreAnd.getArguments().add(exists);\n\t\tspecification.setRootOperator(preAnd);\n\t\tpreCondition.setConditionFormula(specification);\n\t\tsetPre(preCondition);'"
-	 * @generated
-	 */
-	void createPreCondition();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();\n\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"DeleteComponentPostCondition\");\n\t\tAndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tNotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();\n\t\tExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getCompToDelSVP(), getAllCompsMVP());\n\t\tnotOperator.setArgument(existsOperator);\n\t\tpreAnd.getArguments().add(notOperator);\n\t\tspecification.setRootOperator(preAnd);\n\t\tpostCondition.setConditionFormula(specification);\n\t\tsetPost(postCondition);'"
-	 * @generated
-	 */
-	void createPostCondition();
-
 } // UMLDeleteComponentAction

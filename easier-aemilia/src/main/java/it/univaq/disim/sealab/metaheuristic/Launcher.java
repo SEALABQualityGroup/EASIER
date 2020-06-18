@@ -21,11 +21,11 @@ import org.uma.jmetal.util.point.util.PointSolution;
 import com.beust.jcommander.JCommander;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
-import utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
 
 public class Launcher {
 
@@ -39,11 +39,12 @@ public class Launcher {
 
 		AemiliaController ctr = new AemiliaController(config);
 		List<Path> referenceFront;
+		
 		if (config.getReferenceFront() != null)
 			referenceFront = config.getReferenceFront();
 		else {
 			ctr.setUp();
-			List<AemiliaRProblem> rProblems = ctr.createProblems();
+			List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
 			List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
 
 			FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
@@ -57,6 +58,7 @@ public class Launcher {
 			referenceFront = ctr.getReferenceFront();
 		}
 
+		// calculates the availability, if set in the config file
 		if (config.hasAvailability()) {
 			List<String> solIDs = AemiliaFileUtils.getParetoSolIDs(referenceFront);
 			ctr.generateAvailability(solIDs);

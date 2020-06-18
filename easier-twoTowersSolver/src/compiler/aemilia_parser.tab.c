@@ -1,14 +1,14 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
-/* Skeleton implementation for Bison's Yacc-like parsers in C
+/* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Inc.
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,9 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -43,11 +41,14 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
+
 /* Identify Bison output.  */
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.3"
+#define YYBISON_VERSION "3.5.1"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -55,239 +56,23 @@
 /* Pure parsers.  */
 #define YYPURE 0
 
-/* Using locations.  */
-#define YYLSP_NEEDED 0
+/* Push parsers.  */
+#define YYPUSH 0
+
+/* Pull parsers.  */
+#define YYPULL 1
+
 
 /* Substitute the variable and function names.  */
-#define yyparse aemiliayyparse
-#define yylex   aemiliayylex
-#define yyerror aemiliayyerror
-#define yylval  aemiliayylval
-#define yychar  aemiliayychar
-#define yydebug aemiliayydebug
-#define yynerrs aemiliayynerrs
+#define yyparse         aemiliayyparse
+#define yylex           aemiliayylex
+#define yyerror         aemiliayyerror
+#define yydebug         aemiliayydebug
+#define yynerrs         aemiliayynerrs
+#define yylval          aemiliayylval
+#define yychar          aemiliayychar
 
-
-/* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     T_NUMBER = 300,
-     T_ID = 301,
-     T_ARCHITECTURAL_TYPE = 400,
-     T_ARCHI_ELEM_TYPES = 401,
-     T_ELEM_TYPE = 402,
-     T_BEHAVIOR = 403,
-     T_INPUT_INTERACTIONS = 404,
-     T_OUTPUT_INTERACTIONS = 405,
-     T_UNI = 406,
-     T_AND = 407,
-     T_OR = 408,
-     T_ARCHI_TOPOLOGY = 409,
-     T_ARCHI_ELEM_INSTANCES = 410,
-     T_ARCHI_INTERACTIONS = 411,
-     T_ARCHI_ATTACHMENTS = 412,
-     T_FROM = 413,
-     T_TO = 414,
-     T_BEHAV_VARIATIONS = 415,
-     T_BEHAV_HIDINGS = 416,
-     T_HIDE = 417,
-     T_INTERNALS = 418,
-     T_INTERACTIONS = 419,
-     T_ALL = 420,
-     T_BEHAV_RESTRICTIONS = 421,
-     T_RESTRICT = 422,
-     T_OBS_INTERNALS = 423,
-     T_OBS_INTERACTIONS = 424,
-     T_ALL_OBSERVABLES = 425,
-     T_BEHAV_RENAMINGS = 426,
-     T_RENAME = 427,
-     T_AS = 428,
-     T_FOR_ALL = 429,
-     T_IN = 430,
-     T_END = 431,
-     T_CONST = 432,
-     T_LOCAL = 433,
-     T_STOP = 434,
-     T_EXP = 436,
-     T_INF = 437,
-     T_CHOICE = 438,
-     T_COND = 439,
-     T_VOID = 440,
-     T_PRIO = 441,
-     T_RATE = 442,
-     T_WEIGHT = 443,
-     T_INTEGER = 444,
-     T_REAL = 445,
-     T_MOD = 446,
-     T_MIN = 447,
-     T_MAX = 448,
-     T_ABS = 449,
-     T_CEIL = 450,
-     T_FLOOR = 451,
-     T_POWER = 452,
-     T_EPOWER = 453,
-     T_LOGE = 454,
-     T_LOG10 = 455,
-     T_SQRT = 456,
-     T_SIN = 457,
-     T_COS = 458,
-     T_C_UNIFORM = 459,
-     T_ERLANG = 460,
-     T_GAMMA = 461,
-     T_EXPONENTIAL = 462,
-     T_WEIBULL = 463,
-     T_BETA = 464,
-     T_NORMAL = 465,
-     T_PARETO = 466,
-     T_B_PARETO = 467,
-     T_D_UNIFORM = 468,
-     T_BERNOULLI = 469,
-     T_BINOMIAL = 470,
-     T_POISSON = 471,
-     T_NEG_BINOMIAL = 472,
-     T_GEOMETRIC = 473,
-     T_PASCAL = 474,
-     T_BOOLEAN = 475,
-     T_TRUE = 476,
-     T_FALSE = 477,
-     T_LIST = 478,
-     T_LIST_CONS = 479,
-     T_FIRST = 480,
-     T_TAIL = 481,
-     T_CONCAT = 482,
-     T_INSERT = 483,
-     T_REMOVE = 484,
-     T_LENGTH = 485,
-     T_ARRAY = 486,
-     T_ARRAY_CONS = 487,
-     T_READ = 488,
-     T_WRITE = 489,
-     T_RECORD = 490,
-     T_RECORD_CONS = 491,
-     T_GET = 492,
-     T_PUT = 493,
-     ASSIGN = 700,
-     DOTDOT = 701,
-     NE = 702,
-     LE = 703,
-     GE = 704,
-     AND = 705,
-     OR = 706,
-     IMPL = 707
-   };
-#endif
-/* Tokens.  */
-#define T_NUMBER 300
-#define T_ID 301
-#define T_ARCHITECTURAL_TYPE 400
-#define T_ARCHI_ELEM_TYPES 401
-#define T_ELEM_TYPE 402
-#define T_BEHAVIOR 403
-#define T_INPUT_INTERACTIONS 404
-#define T_OUTPUT_INTERACTIONS 405
-#define T_UNI 406
-#define T_AND 407
-#define T_OR 408
-#define T_ARCHI_TOPOLOGY 409
-#define T_ARCHI_ELEM_INSTANCES 410
-#define T_ARCHI_INTERACTIONS 411
-#define T_ARCHI_ATTACHMENTS 412
-#define T_FROM 413
-#define T_TO 414
-#define T_BEHAV_VARIATIONS 415
-#define T_BEHAV_HIDINGS 416
-#define T_HIDE 417
-#define T_INTERNALS 418
-#define T_INTERACTIONS 419
-#define T_ALL 420
-#define T_BEHAV_RESTRICTIONS 421
-#define T_RESTRICT 422
-#define T_OBS_INTERNALS 423
-#define T_OBS_INTERACTIONS 424
-#define T_ALL_OBSERVABLES 425
-#define T_BEHAV_RENAMINGS 426
-#define T_RENAME 427
-#define T_AS 428
-#define T_FOR_ALL 429
-#define T_IN 430
-#define T_END 431
-#define T_CONST 432
-#define T_LOCAL 433
-#define T_STOP 434
-#define T_EXP 436
-#define T_INF 437
-#define T_CHOICE 438
-#define T_COND 439
-#define T_VOID 440
-#define T_PRIO 441
-#define T_RATE 442
-#define T_WEIGHT 443
-#define T_INTEGER 444
-#define T_REAL 445
-#define T_MOD 446
-#define T_MIN 447
-#define T_MAX 448
-#define T_ABS 449
-#define T_CEIL 450
-#define T_FLOOR 451
-#define T_POWER 452
-#define T_EPOWER 453
-#define T_LOGE 454
-#define T_LOG10 455
-#define T_SQRT 456
-#define T_SIN 457
-#define T_COS 458
-#define T_C_UNIFORM 459
-#define T_ERLANG 460
-#define T_GAMMA 461
-#define T_EXPONENTIAL 462
-#define T_WEIBULL 463
-#define T_BETA 464
-#define T_NORMAL 465
-#define T_PARETO 466
-#define T_B_PARETO 467
-#define T_D_UNIFORM 468
-#define T_BERNOULLI 469
-#define T_BINOMIAL 470
-#define T_POISSON 471
-#define T_NEG_BINOMIAL 472
-#define T_GEOMETRIC 473
-#define T_PASCAL 474
-#define T_BOOLEAN 475
-#define T_TRUE 476
-#define T_FALSE 477
-#define T_LIST 478
-#define T_LIST_CONS 479
-#define T_FIRST 480
-#define T_TAIL 481
-#define T_CONCAT 482
-#define T_INSERT 483
-#define T_REMOVE 484
-#define T_LENGTH 485
-#define T_ARRAY 486
-#define T_ARRAY_CONS 487
-#define T_READ 488
-#define T_WRITE 489
-#define T_RECORD 490
-#define T_RECORD_CONS 491
-#define T_GET 492
-#define T_PUT 493
-#define ASSIGN 700
-#define DOTDOT 701
-#define NE 702
-#define LE 703
-#define GE 704
-#define AND 705
-#define OR 706
-#define IMPL 707
-
-
-
-
-/* Copy the first part of user declarations.  */
+/* First part of user prologue.  */
 #line 90 "aemilia_parser.y"
 
 
@@ -524,11 +309,28 @@ PRIVATE	void		handle_sync_aemilia(void),
 PRIVATE	char		*find_aei_lexeme(int);
 
 
+#line 313 "aemilia_parser.tab.c"
 
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+# ifndef YY_CAST
+#  ifdef __cplusplus
+#   define YY_CAST(Type, Val) static_cast<Type> (Val)
+#   define YY_REINTERPRET_CAST(Type, Val) reinterpret_cast<Type> (Val)
+#  else
+#   define YY_CAST(Type, Val) ((Type) (Val))
+#   define YY_REINTERPRET_CAST(Type, Val) ((Type) (Val))
+#  endif
+# endif
+# ifndef YY_NULLPTR
+#  if defined __cplusplus
+#   if 201103L <= __cplusplus
+#    define YY_NULLPTR nullptr
+#   else
+#    define YY_NULLPTR 0
+#   endif
+#  else
+#   define YY_NULLPTR ((void*)0)
+#  endif
+# endif
 
 /* Enabling verbose error messages.  */
 #ifdef YYERROR_VERBOSE
@@ -538,15 +340,135 @@ PRIVATE	char		*find_aei_lexeme(int);
 # define YYERROR_VERBOSE 0
 #endif
 
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
+/* Use api.header.include to #include this header
+   instead of duplicating it here.  */
+#ifndef YY_AEMILIAYY_AEMILIA_PARSER_TAB_H_INCLUDED
+# define YY_AEMILIAYY_AEMILIA_PARSER_TAB_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int aemiliayydebug;
 #endif
 
+/* Token type.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    T_NUMBER = 300,
+    T_ID = 301,
+    T_ARCHITECTURAL_TYPE = 400,
+    T_ARCHI_ELEM_TYPES = 401,
+    T_ELEM_TYPE = 402,
+    T_BEHAVIOR = 403,
+    T_INPUT_INTERACTIONS = 404,
+    T_OUTPUT_INTERACTIONS = 405,
+    T_UNI = 406,
+    T_AND = 407,
+    T_OR = 408,
+    T_ARCHI_TOPOLOGY = 409,
+    T_ARCHI_ELEM_INSTANCES = 410,
+    T_ARCHI_INTERACTIONS = 411,
+    T_ARCHI_ATTACHMENTS = 412,
+    T_FROM = 413,
+    T_TO = 414,
+    T_BEHAV_VARIATIONS = 415,
+    T_BEHAV_HIDINGS = 416,
+    T_HIDE = 417,
+    T_INTERNALS = 418,
+    T_INTERACTIONS = 419,
+    T_ALL = 420,
+    T_BEHAV_RESTRICTIONS = 421,
+    T_RESTRICT = 422,
+    T_OBS_INTERNALS = 423,
+    T_OBS_INTERACTIONS = 424,
+    T_ALL_OBSERVABLES = 425,
+    T_BEHAV_RENAMINGS = 426,
+    T_RENAME = 427,
+    T_AS = 428,
+    T_FOR_ALL = 429,
+    T_IN = 430,
+    T_END = 431,
+    T_CONST = 432,
+    T_LOCAL = 433,
+    T_STOP = 434,
+    T_EXP = 436,
+    T_INF = 437,
+    T_CHOICE = 438,
+    T_COND = 439,
+    T_VOID = 440,
+    T_PRIO = 441,
+    T_RATE = 442,
+    T_WEIGHT = 443,
+    T_INTEGER = 444,
+    T_REAL = 445,
+    T_MOD = 446,
+    T_MIN = 447,
+    T_MAX = 448,
+    T_ABS = 449,
+    T_CEIL = 450,
+    T_FLOOR = 451,
+    T_POWER = 452,
+    T_EPOWER = 453,
+    T_LOGE = 454,
+    T_LOG10 = 455,
+    T_SQRT = 456,
+    T_SIN = 457,
+    T_COS = 458,
+    T_C_UNIFORM = 459,
+    T_ERLANG = 460,
+    T_GAMMA = 461,
+    T_EXPONENTIAL = 462,
+    T_WEIBULL = 463,
+    T_BETA = 464,
+    T_NORMAL = 465,
+    T_PARETO = 466,
+    T_B_PARETO = 467,
+    T_D_UNIFORM = 468,
+    T_BERNOULLI = 469,
+    T_BINOMIAL = 470,
+    T_POISSON = 471,
+    T_NEG_BINOMIAL = 472,
+    T_GEOMETRIC = 473,
+    T_PASCAL = 474,
+    T_BOOLEAN = 475,
+    T_TRUE = 476,
+    T_FALSE = 477,
+    T_LIST = 478,
+    T_LIST_CONS = 479,
+    T_FIRST = 480,
+    T_TAIL = 481,
+    T_CONCAT = 482,
+    T_INSERT = 483,
+    T_REMOVE = 484,
+    T_LENGTH = 485,
+    T_ARRAY = 486,
+    T_ARRAY_CONS = 487,
+    T_READ = 488,
+    T_WRITE = 489,
+    T_RECORD = 490,
+    T_RECORD_CONS = 491,
+    T_GET = 492,
+    T_PUT = 493,
+    ASSIGN = 700,
+    DOTDOT = 701,
+    NE = 702,
+    LE = 703,
+    GE = 704,
+    AND = 705,
+    OR = 706,
+    IMPL = 707
+  };
+#endif
+
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 332 "aemilia_parser.y"
+union YYSTYPE
 {
+#line 332 "aemilia_parser.y"
+
 	BOOLEAN		boolean;
 				/* flag indicating whether an iterative declaration is correct */
 	ST_BUCKET_CELL	*st_bucket_cell;
@@ -565,52 +487,97 @@ typedef union YYSTYPE
 				/* parse information about an expression */
 	LAR_PARSE_INFO	*lar_parse_info;
 				/* parse information about an expression list/array/record */
-}
-/* Line 193 of yacc.c.  */
-#line 571 "aemilia_parser.tab.c"
-	YYSTYPE;
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+
+#line 492 "aemilia_parser.tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
 
 
+extern YYSTYPE aemiliayylval;
 
-/* Copy the second part of user declarations.  */
+int aemiliayyparse (void);
+
+#endif /* !YY_AEMILIAYY_AEMILIA_PARSER_TAB_H_INCLUDED  */
 
 
-/* Line 216 of yacc.c.  */
-#line 584 "aemilia_parser.tab.c"
 
 #ifdef short
 # undef short
 #endif
 
-#ifdef YYTYPE_UINT8
-typedef YYTYPE_UINT8 yytype_uint8;
-#else
-typedef unsigned char yytype_uint8;
+/* On compilers that do not define __PTRDIFF_MAX__ etc., make sure
+   <limits.h> and (if available) <stdint.h> are included
+   so that the code can choose integer types of a good width.  */
+
+#ifndef __PTRDIFF_MAX__
+# include <limits.h> /* INFRINGES ON USER NAME SPACE */
+# if defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
+#  include <stdint.h> /* INFRINGES ON USER NAME SPACE */
+#  define YY_STDINT_H
+# endif
 #endif
 
-#ifdef YYTYPE_INT8
-typedef YYTYPE_INT8 yytype_int8;
-#elif (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+/* Narrow types that promote to a signed type and that can represent a
+   signed or unsigned integer of at least N bits.  In tables they can
+   save space and decrease cache pressure.  Promoting to a signed type
+   helps avoid bugs in integer arithmetic.  */
+
+#ifdef __INT_LEAST8_MAX__
+typedef __INT_LEAST8_TYPE__ yytype_int8;
+#elif defined YY_STDINT_H
+typedef int_least8_t yytype_int8;
+#else
 typedef signed char yytype_int8;
-#else
-typedef short int yytype_int8;
 #endif
 
-#ifdef YYTYPE_UINT16
-typedef YYTYPE_UINT16 yytype_uint16;
+#ifdef __INT_LEAST16_MAX__
+typedef __INT_LEAST16_TYPE__ yytype_int16;
+#elif defined YY_STDINT_H
+typedef int_least16_t yytype_int16;
 #else
-typedef unsigned short int yytype_uint16;
+typedef short yytype_int16;
 #endif
 
-#ifdef YYTYPE_INT16
-typedef YYTYPE_INT16 yytype_int16;
+#if defined __UINT_LEAST8_MAX__ && __UINT_LEAST8_MAX__ <= __INT_MAX__
+typedef __UINT_LEAST8_TYPE__ yytype_uint8;
+#elif (!defined __UINT_LEAST8_MAX__ && defined YY_STDINT_H \
+       && UINT_LEAST8_MAX <= INT_MAX)
+typedef uint_least8_t yytype_uint8;
+#elif !defined __UINT_LEAST8_MAX__ && UCHAR_MAX <= INT_MAX
+typedef unsigned char yytype_uint8;
 #else
-typedef short int yytype_int16;
+typedef short yytype_uint8;
+#endif
+
+#if defined __UINT_LEAST16_MAX__ && __UINT_LEAST16_MAX__ <= __INT_MAX__
+typedef __UINT_LEAST16_TYPE__ yytype_uint16;
+#elif (!defined __UINT_LEAST16_MAX__ && defined YY_STDINT_H \
+       && UINT_LEAST16_MAX <= INT_MAX)
+typedef uint_least16_t yytype_uint16;
+#elif !defined __UINT_LEAST16_MAX__ && USHRT_MAX <= INT_MAX
+typedef unsigned short yytype_uint16;
+#else
+typedef int yytype_uint16;
+#endif
+
+#ifndef YYPTRDIFF_T
+# if defined __PTRDIFF_TYPE__ && defined __PTRDIFF_MAX__
+#  define YYPTRDIFF_T __PTRDIFF_TYPE__
+#  define YYPTRDIFF_MAXIMUM __PTRDIFF_MAX__
+# elif defined PTRDIFF_MAX
+#  ifndef ptrdiff_t
+#   include <stddef.h> /* INFRINGES ON USER NAME SPACE */
+#  endif
+#  define YYPTRDIFF_T ptrdiff_t
+#  define YYPTRDIFF_MAXIMUM PTRDIFF_MAX
+# else
+#  define YYPTRDIFF_T long
+#  define YYPTRDIFF_MAXIMUM LONG_MAX
+# endif
 #endif
 
 #ifndef YYSIZE_T
@@ -618,53 +585,96 @@ typedef short int yytype_int16;
 #  define YYSIZE_T __SIZE_TYPE__
 # elif defined size_t
 #  define YYSIZE_T size_t
-# elif ! defined YYSIZE_T && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+# elif defined __STDC_VERSION__ && 199901 <= __STDC_VERSION__
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned int
+#  define YYSIZE_T unsigned
 # endif
 #endif
 
-#define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
+#define YYSIZE_MAXIMUM                                  \
+  YY_CAST (YYPTRDIFF_T,                                 \
+           (YYPTRDIFF_MAXIMUM < YY_CAST (YYSIZE_T, -1)  \
+            ? YYPTRDIFF_MAXIMUM                         \
+            : YY_CAST (YYSIZE_T, -1)))
+
+#define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
+
+/* Stored state numbers (used for stacks). */
+typedef yytype_int16 yy_state_t;
+
+/* State numbers in computations.  */
+typedef int yy_state_fast_t;
 
 #ifndef YY_
 # if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
-#   define YY_(msgid) dgettext ("bison-runtime", msgid)
+#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
 #  endif
 # endif
 # ifndef YY_
-#  define YY_(msgid) msgid
+#  define YY_(Msgid) Msgid
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_PURE
+# if defined __GNUC__ && 2 < __GNUC__ + (96 <= __GNUC_MINOR__)
+#  define YY_ATTRIBUTE_PURE __attribute__ ((__pure__))
+# else
+#  define YY_ATTRIBUTE_PURE
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_UNUSED
+# if defined __GNUC__ && 2 < __GNUC__ + (7 <= __GNUC_MINOR__)
+#  define YY_ATTRIBUTE_UNUSED __attribute__ ((__unused__))
+# else
+#  define YY_ATTRIBUTE_UNUSED
 # endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+# define YYUSE(E) ((void) (E))
 #else
-# define YYUSE(e) /* empty */
+# define YYUSE(E) /* empty */
 #endif
 
-/* Identity function, used to suppress warnings about constant conditions.  */
-#ifndef lint
-# define YYID(n) (n)
+#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                            \
+    _Pragma ("GCC diagnostic push")                                     \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")              \
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END      \
+    _Pragma ("GCC diagnostic pop")
 #else
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static int
-YYID (int i)
-#else
-static int
-YYID (i)
-    int i;
+# define YY_INITIAL_VALUE(Value) Value
 #endif
-{
-  return i;
-}
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
 #endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
+#if defined __cplusplus && defined __GNUC__ && ! defined __ICC && 6 <= __GNUC__
+# define YY_IGNORE_USELESS_CAST_BEGIN                          \
+    _Pragma ("GCC diagnostic push")                            \
+    _Pragma ("GCC diagnostic ignored \"-Wuseless-cast\"")
+# define YY_IGNORE_USELESS_CAST_END            \
+    _Pragma ("GCC diagnostic pop")
+#endif
+#ifndef YY_IGNORE_USELESS_CAST_BEGIN
+# define YY_IGNORE_USELESS_CAST_BEGIN
+# define YY_IGNORE_USELESS_CAST_END
+#endif
+
+
+#define YY_ASSERT(E) ((void) (0 && (E)))
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -683,11 +693,11 @@ YYID (i)
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
-#    if ! defined _ALLOCA_H && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS
 #     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#     ifndef _STDLIB_H
-#      define _STDLIB_H 1
+      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
+#     ifndef EXIT_SUCCESS
+#      define EXIT_SUCCESS 0
 #     endif
 #    endif
 #   endif
@@ -695,8 +705,8 @@ YYID (i)
 # endif
 
 # ifdef YYSTACK_ALLOC
-   /* Pacify GCC's `empty if-body' warning.  */
-#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (YYID (0))
+   /* Pacify GCC's 'empty if-body' warning.  */
+#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (0)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
     /* The OS might guarantee only one guard page at the bottom of the stack,
        and a page size can be as small as 4096 bytes.  So we cannot safely
@@ -710,25 +720,23 @@ YYID (i)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
 #   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
 #  endif
-#  if (defined __cplusplus && ! defined _STDLIB_H \
+#  if (defined __cplusplus && ! defined EXIT_SUCCESS \
        && ! ((defined YYMALLOC || defined malloc) \
-	     && (defined YYFREE || defined free)))
+             && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#   ifndef _STDLIB_H
-#    define _STDLIB_H 1
+#   ifndef EXIT_SUCCESS
+#    define EXIT_SUCCESS 0
 #   endif
 #  endif
 #  ifndef YYMALLOC
 #   define YYMALLOC malloc
-#   if ! defined malloc && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined malloc && ! defined EXIT_SUCCESS
 void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 #  ifndef YYFREE
 #   define YYFREE free
-#   if ! defined free && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined free && ! defined EXIT_SUCCESS
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
@@ -738,59 +746,63 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  yytype_int16 yyss;
-  YYSTYPE yyvs;
-  };
+  yy_state_t yyss_alloc;
+  YYSTYPE yyvs_alloc;
+};
 
 /* The size of the maximum gap between one aligned stack and the next.  */
-# define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
+# define YYSTACK_GAP_MAXIMUM (YYSIZEOF (union yyalloc) - 1)
 
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
+     ((N) * (YYSIZEOF (yy_state_t) + YYSIZEOF (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
-/* Copy COUNT objects from FROM to TO.  The source and destination do
-   not overlap.  */
-# ifndef YYCOPY
-#  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(To, From, Count) \
-      __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
-#  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  YYSIZE_T yyi;				\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
-      while (YYID (0))
-#  endif
-# endif
+# define YYCOPY_NEEDED 1
 
 /* Relocate STACK from its old location to the new one.  The
    local variables YYSIZE and YYSTACKSIZE give the old and new number of
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack)					\
-    do									\
-      {									\
-	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack, Stack, yysize);				\
-	Stack = &yyptr->Stack;						\
-	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-	yyptr += yynewbytes / sizeof (*yyptr);				\
-      }									\
-    while (YYID (0))
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
+    do                                                                  \
+      {                                                                 \
+        YYPTRDIFF_T yynewbytes;                                         \
+        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+        Stack = &yyptr->Stack_alloc;                                    \
+        yynewbytes = yystacksize * YYSIZEOF (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / YYSIZEOF (*yyptr);                        \
+      }                                                                 \
+    while (0)
 
 #endif
+
+#if defined YYCOPY_NEEDED && YYCOPY_NEEDED
+/* Copy COUNT objects from SRC to DST.  The source and destination do
+   not overlap.  */
+# ifndef YYCOPY
+#  if defined __GNUC__ && 1 < __GNUC__
+#   define YYCOPY(Dst, Src, Count) \
+      __builtin_memcpy (Dst, Src, YY_CAST (YYSIZE_T, (Count)) * sizeof (*(Src)))
+#  else
+#   define YYCOPY(Dst, Src, Count)              \
+      do                                        \
+        {                                       \
+          YYPTRDIFF_T yyi;                      \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (Dst)[yyi] = (Src)[yyi];            \
+        }                                       \
+      while (0)
+#  endif
+# endif
+#endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  17
@@ -803,18 +815,21 @@ union yyalloc
 #define YYNNTS  169
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  349
-/* YYNRULES -- Number of states.  */
+/* YYNSTATES -- Number of states.  */
 #define YYNSTATES  803
 
-/* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   708
 
-#define YYTRANSLATE(YYX)						\
-  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
-/* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
-static const yytype_uint8 yytranslate[] =
+/* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex, with out-of-bounds checking.  */
+#define YYTRANSLATE(YYX)                                                \
+  (0 <= (YYX) && (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+
+/* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex.  */
+static const yytype_int8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -890,177 +905,8 @@ static const yytype_uint8 yytranslate[] =
 };
 
 #if YYDEBUG
-/* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
-   YYRHS.  */
-static const yytype_uint16 yyprhs[] =
-{
-       0,     0,     3,     9,    10,    15,    16,    24,    25,    32,
-      33,    42,    43,    51,    52,    59,    60,    66,    67,    75,
-      76,    83,    84,    90,    91,    96,    97,   104,   106,   108,
-     110,   114,   115,   122,   125,   126,   131,   133,   136,   137,
-     142,   145,   146,   147,   148,   162,   164,   166,   168,   172,
-     176,   180,   181,   182,   193,   195,   197,   199,   203,   204,
-     210,   211,   213,   215,   218,   219,   224,   227,   228,   229,
-     241,   243,   245,   247,   251,   254,   256,   258,   260,   264,
-     268,   270,   272,   274,   275,   276,   285,   287,   289,   294,
-     295,   303,   308,   310,   314,   317,   319,   321,   323,   325,
-     329,   335,   337,   338,   344,   347,   348,   349,   356,   358,
-     361,   364,   365,   366,   367,   377,   378,   383,   388,   390,
-     391,   396,   398,   399,   404,   405,   411,   414,   417,   418,
-     419,   420,   428,   429,   431,   433,   437,   439,   443,   444,
-     447,   448,   451,   452,   455,   457,   458,   463,   464,   469,
-     474,   477,   479,   483,   484,   489,   493,   496,   498,   501,
-     502,   503,   513,   514,   515,   525,   526,   528,   530,   531,
-     536,   539,   541,   543,   545,   549,   550,   555,   559,   562,
-     564,   567,   568,   574,   575,   581,   584,   586,   588,   590,
-     594,   595,   600,   604,   607,   611,   614,   616,   620,   621,
-     622,   623,   637,   638,   639,   640,   654,   655,   656,   662,
-     663,   666,   668,   672,   673,   678,   682,   685,   689,   692,
-     696,   699,   701,   704,   705,   712,   715,   718,   721,   722,
-     729,   731,   733,   735,   737,   738,   741,   743,   747,   748,
-     753,   757,   760,   764,   767,   769,   772,   773,   780,   783,
-     786,   789,   790,   797,   799,   801,   803,   805,   806,   809,
-     811,   815,   816,   821,   825,   828,   830,   833,   834,   835,
-     846,   847,   848,   859,   860,   861,   870,   871,   872,   876,
-     877,   879,   883,   885,   887,   891,   895,   899,   903,   910,
-     915,   920,   925,   932,   939,   946,   951,   956,   961,   966,
-     971,   976,   983,   990,   997,  1002,  1009,  1016,  1023,  1028,
-    1037,  1044,  1053,  1060,  1065,  1072,  1077,  1084,  1086,  1088,
-    1092,  1096,  1099,  1103,  1107,  1111,  1115,  1119,  1123,  1128,
-    1133,  1138,  1145,  1152,  1159,  1164,  1169,  1176,  1185,  1190,
-    1191,  1199,  1200,  1210,  1214,  1215,  1217,  1219,  1221,  1223
-};
-
-/* YYRHS -- A `-1'-separated list of the rules' RHS.  */
-static const yytype_int16 yyrhs[] =
-{
-     127,     0,    -1,   139,   145,   215,   251,    36,    -1,    -1,
-       1,     5,   128,   127,    -1,    -1,     1,     6,   129,   145,
-     215,   251,    36,    -1,    -1,     1,    14,   130,   215,   251,
-      36,    -1,    -1,     1,    15,   131,   216,   229,   238,   251,
-      36,    -1,    -1,     1,    16,   132,   229,   238,   251,    36,
-      -1,    -1,     1,    17,   133,   238,   251,    36,    -1,    -1,
-       1,    20,   134,   251,    36,    -1,    -1,     1,    21,   135,
-     253,   262,   271,    36,    -1,    -1,     1,    26,   136,   262,
-     271,    36,    -1,    -1,     1,    31,   137,   271,    36,    -1,
-      -1,     1,    36,   138,    36,    -1,    -1,     5,     4,   140,
-     114,   141,   115,    -1,    44,    -1,   142,    -1,   143,    -1,
-     143,   116,   142,    -1,    -1,    37,   176,     4,   144,    98,
-     288,    -1,     6,   147,    -1,    -1,     1,     7,   146,   147,
-      -1,   149,    -1,   149,   147,    -1,    -1,     1,     7,   148,
-     147,    -1,     1,    14,    -1,    -1,    -1,    -1,     7,     4,
-     150,   114,   153,   115,   156,   151,     9,   208,   152,    10,
-     208,    -1,    44,    -1,   154,    -1,   155,    -1,   155,   116,
-     154,    -1,    37,   176,     4,    -1,     8,   157,   164,    -1,
-      -1,    -1,     4,   158,   114,   160,   117,   173,   115,   159,
-     107,   184,    -1,    44,    -1,   161,    -1,   162,    -1,   162,
-     116,   161,    -1,    -1,   177,     4,   163,    98,   288,    -1,
-      -1,   165,    -1,   167,    -1,   167,   165,    -1,    -1,     1,
-     117,   166,   165,    -1,     1,     9,    -1,    -1,    -1,   117,
-       4,   168,   114,   170,   117,   173,   115,   169,   107,   184,
-      -1,    44,    -1,   171,    -1,   172,    -1,   172,   116,   171,
-      -1,   177,     4,    -1,    44,    -1,   174,    -1,   175,    -1,
-     175,   116,   174,    -1,    38,   177,     4,    -1,   177,    -1,
-     183,    -1,    48,    -1,    -1,    -1,    48,   114,   288,   178,
-      99,   288,   179,   115,    -1,    49,    -1,    79,    -1,    82,
-     114,   177,   115,    -1,    -1,    90,   114,   288,   180,   116,
-     177,   115,    -1,    94,   114,   181,   115,    -1,   182,    -1,
-     181,   116,   182,    -1,   177,     4,    -1,    45,    -1,    46,
-      -1,    47,    -1,    39,    -1,   192,   118,   185,    -1,    42,
-     119,   187,   190,   120,    -1,   184,    -1,    -1,     4,   186,
-     114,   206,   115,    -1,   188,   184,    -1,    -1,    -1,    43,
-     114,   288,   189,   115,   105,    -1,   191,    -1,   191,   190,
-      -1,   116,   187,    -1,    -1,    -1,    -1,   108,     4,   193,
-     196,   194,   116,   201,   195,   109,    -1,    -1,   121,   114,
-     197,   115,    -1,   106,   114,   199,   115,    -1,     4,    -1,
-      -1,     4,   198,   116,   197,    -1,   288,    -1,    -1,   288,
-     200,   116,   199,    -1,    -1,    40,   114,   288,   202,   115,
-      -1,    41,   203,    -1,   122,   203,    -1,    -1,    -1,    -1,
-     114,   288,   204,   116,   288,   205,   115,    -1,    -1,   207,
-      -1,   288,    -1,   288,   116,   207,    -1,    44,    -1,   209,
-     210,   211,    -1,    -1,    11,   212,    -1,    -1,    12,   212,
-      -1,    -1,    13,   212,    -1,     4,    -1,    -1,     4,   213,
-     117,   212,    -1,    -1,     1,   117,   214,   212,    -1,    14,
-     216,   229,   238,    -1,    15,   217,    -1,   219,    -1,   219,
-     117,   217,    -1,    -1,     1,   117,   218,   217,    -1,   219,
-       1,    16,    -1,     1,    16,    -1,   220,    -1,   281,   223,
-      -1,    -1,    -1,     4,   286,   221,   123,     4,   222,   114,
-     226,   115,    -1,    -1,    -1,     4,   287,   224,   123,     4,
-     225,   114,   226,   115,    -1,    -1,   227,    -1,   288,    -1,
-      -1,   288,   228,   116,   227,    -1,    16,   230,    -1,    44,
-      -1,   231,    -1,   233,    -1,   233,   117,   231,    -1,    -1,
-       1,   117,   232,   231,    -1,   233,     1,    17,    -1,     1,
-      17,    -1,   234,    -1,   281,   236,    -1,    -1,     4,   286,
-     235,   118,     4,    -1,    -1,     4,   287,   237,   118,     4,
-      -1,    17,   239,    -1,    44,    -1,   240,    -1,   242,    -1,
-     242,   117,   240,    -1,    -1,     1,   117,   241,   240,    -1,
-     242,     1,    20,    -1,     1,    20,    -1,   242,     1,    36,
-      -1,     1,    36,    -1,   243,    -1,   281,   284,   247,    -1,
-      -1,    -1,    -1,    18,     4,   286,   244,   118,     4,   245,
-      19,     4,   286,   246,   118,     4,    -1,    -1,    -1,    -1,
-      18,     4,   286,   248,   118,     4,   249,    19,     4,   286,
-     250,   118,     4,    -1,    -1,    -1,    20,   252,   253,   262,
-     271,    -1,    -1,    21,   254,    -1,   256,    -1,   256,   117,
-     254,    -1,    -1,     1,   117,   255,   254,    -1,   256,     1,
-      26,    -1,     1,    26,    -1,   256,     1,    31,    -1,     1,
-      31,    -1,   256,     1,    36,    -1,     1,    36,    -1,   257,
-      -1,   281,   259,    -1,    -1,    22,     4,   286,   258,   118,
-     261,    -1,    22,    23,    -1,    22,    24,    -1,    22,    25,
-      -1,    -1,    22,     4,   287,   260,   118,   261,    -1,     4,
-      -1,    23,    -1,    24,    -1,    25,    -1,    -1,    26,   263,
-      -1,   265,    -1,   265,   117,   263,    -1,    -1,     1,   117,
-     264,   263,    -1,   265,     1,    31,    -1,     1,    31,    -1,
-     265,     1,    36,    -1,     1,    36,    -1,   266,    -1,   281,
-     268,    -1,    -1,    27,     4,   286,   267,   118,   270,    -1,
-      27,    28,    -1,    27,    29,    -1,    27,    30,    -1,    -1,
-      27,     4,   287,   269,   118,   270,    -1,     4,    -1,    28,
-      -1,    29,    -1,    30,    -1,    -1,    31,   272,    -1,   274,
-      -1,   274,   117,   272,    -1,    -1,     1,   117,   273,   272,
-      -1,   274,     1,    36,    -1,     1,    36,    -1,   275,    -1,
-     281,   278,    -1,    -1,    -1,    32,     4,   286,   276,   118,
-       4,   277,    33,     4,   286,    -1,    -1,    -1,    32,     4,
-     287,   279,   118,     4,   280,    33,     4,   286,    -1,    -1,
-      -1,    34,     4,   282,    35,   288,   283,    99,   288,    -1,
-      -1,    -1,    12,   285,   281,    -1,    -1,   287,    -1,   124,
-     288,   125,    -1,     4,    -1,     3,    -1,   288,   110,   288,
-      -1,   288,   111,   288,    -1,   288,   112,   288,    -1,   288,
-     113,   288,    -1,    50,   114,   288,   116,   288,   115,    -1,
-      53,   114,   288,   115,    -1,    54,   114,   288,   115,    -1,
-      55,   114,   288,   115,    -1,    51,   114,   288,   116,   288,
-     115,    -1,    52,   114,   288,   116,   288,   115,    -1,    56,
-     114,   288,   116,   288,   115,    -1,    57,   114,   288,   115,
-      -1,    58,   114,   288,   115,    -1,    59,   114,   288,   115,
-      -1,    60,   114,   288,   115,    -1,    61,   114,   288,   115,
-      -1,    62,   114,   288,   115,    -1,    63,   114,   288,   116,
-     288,   115,    -1,    64,   114,   288,   116,   288,   115,    -1,
-      65,   114,   288,   116,   288,   115,    -1,    66,   114,   288,
-     115,    -1,    67,   114,   288,   116,   288,   115,    -1,    68,
-     114,   288,   116,   288,   115,    -1,    69,   114,   288,   116,
-     288,   115,    -1,    70,   114,   288,   115,    -1,    71,   114,
-     288,   116,   288,   116,   288,   115,    -1,    72,   114,   288,
-     116,   288,   115,    -1,    73,   114,   288,   116,   288,   116,
-     288,   115,    -1,    74,   114,   288,   116,   288,   115,    -1,
-      75,   114,   288,   115,    -1,    76,   114,   288,   116,   288,
-     115,    -1,    77,   114,   288,   115,    -1,    78,   114,   288,
-     116,   288,   115,    -1,    80,    -1,    81,    -1,   288,   103,
-     288,    -1,   288,   104,   288,    -1,   106,   288,    -1,   288,
-     107,   288,    -1,   288,   100,   288,    -1,   288,   108,   288,
-      -1,   288,   101,   288,    -1,   288,   109,   288,    -1,   288,
-     102,   288,    -1,    83,   114,   291,   115,    -1,    84,   114,
-     288,   115,    -1,    85,   114,   288,   115,    -1,    86,   114,
-     288,   116,   288,   115,    -1,    87,   114,   288,   116,   288,
-     115,    -1,    88,   114,   288,   116,   288,   115,    -1,    89,
-     114,   288,   115,    -1,    91,   114,   292,   115,    -1,    92,
-     114,   288,   116,   288,   115,    -1,    93,   114,   288,   116,
-     288,   116,   288,   115,    -1,    95,   114,   293,   115,    -1,
-      -1,    96,   114,     4,   289,   116,   288,   115,    -1,    -1,
-      97,   114,     4,   290,   116,   288,   116,   288,   115,    -1,
-     114,   288,   115,    -1,    -1,   294,    -1,   294,    -1,   294,
-      -1,   288,    -1,   288,   116,   294,    -1
-};
-
-/* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint16 yyrline[] =
+  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+static const yytype_int16 yyrline[] =
 {
        0,   567,   567,   571,   570,   579,   578,   587,   586,   595,
      594,   603,   602,   611,   610,   619,   618,   627,   626,   635,
@@ -1100,7 +946,7 @@ static const yytype_uint16 yyrline[] =
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
+#if YYDEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -1127,43 +973,44 @@ static const char *const yytname[] =
   "T_GET", "T_PUT", "ASSIGN", "DOTDOT", "NE", "LE", "GE", "AND", "OR",
   "IMPL", "'!'", "'='", "'<'", "'>'", "'+'", "'-'", "'*'", "'/'", "'('",
   "')'", "','", "';'", "'.'", "'{'", "'}'", "'?'", "'_'", "':'", "'['",
-  "']'", "$accept", "archi_type", "@1", "@2", "@3", "@4", "@5", "@6", "@7",
-  "@8", "@9", "@10", "@11", "archi_header", "@12", "archi_par_list",
-  "archi_par_list1", "archi_par", "@13", "archi_elem_types", "@14",
-  "aet_def_list", "@15", "aet_def", "@16", "@17", "@18", "aet_par_list",
-  "aet_par_list1", "aet_par", "behavior", "first_behav_def", "@19", "@20",
-  "f_beh_par_list", "f_beh_par_list1", "first_behav_par", "@21",
-  "behav_def_list", "behav_def_list1", "@22", "behav_def", "@23", "@24",
-  "behav_par_list", "behav_par_list1", "behav_par", "behav_var_list",
-  "behav_var_list1", "behav_var", "all_data_type", "var_data_type", "@25",
-  "@26", "@27", "field_decl_list", "field_decl", "num_data_type", "term",
-  "term1", "@28", "term2", "guard", "@29", "term2_list", "enclosed_term2",
-  "action", "@30", "@31", "@32", "act_input_output", "act_input_list",
-  "@33", "act_output_list", "@34", "act_rate", "@35", "act_prio_weight",
-  "@36", "@37", "behav_apar_list", "behav_apar_list1", "interactions",
-  "uni_interacts", "and_interacts", "or_interacts", "act_type_list", "@38",
-  "@39", "archi_topology", "archi_elem_insts", "aei_decl_list", "@40",
-  "aei_decl", "s_aei_decl", "@41", "@42", "i_aei_decl", "@43", "@44",
-  "aei_par_list", "aei_par_list1", "@45", "archi_interacts",
-  "a_interact_list", "a_interact_list1", "@46", "a_interact",
-  "s_a_interact", "@47", "i_a_interact", "@48", "archi_attachs",
-  "attach_list", "attach_list1", "@49", "attach", "s_attach", "@50", "@51",
-  "@52", "i_attach", "@53", "@54", "@55", "behav_variations", "@56",
-  "behav_hidings", "hiding_list", "@57", "hiding", "s_hiding", "@58",
-  "i_hiding", "@59", "act_type_set_h", "behav_restricts", "restrict_list",
-  "@60", "restriction", "s_restriction", "@61", "i_restriction", "@62",
-  "act_type_set_r", "behav_renamings", "renaming_list", "@63", "renaming",
-  "s_renaming", "@64", "@65", "i_renaming", "@66", "@67", "iteration",
-  "@68", "@69", "add_iteration", "@70", "poss_aei_index", "aei_index",
-  "expr", "@71", "@72", "expr_list", "expr_array", "expr_record",
-  "struct_expr", 0
+  "']'", "$accept", "archi_type", "$@1", "$@2", "$@3", "$@4", "$@5", "$@6",
+  "$@7", "$@8", "$@9", "$@10", "$@11", "archi_header", "$@12",
+  "archi_par_list", "archi_par_list1", "archi_par", "$@13",
+  "archi_elem_types", "$@14", "aet_def_list", "$@15", "aet_def", "$@16",
+  "$@17", "$@18", "aet_par_list", "aet_par_list1", "aet_par", "behavior",
+  "first_behav_def", "$@19", "$@20", "f_beh_par_list", "f_beh_par_list1",
+  "first_behav_par", "$@21", "behav_def_list", "behav_def_list1", "$@22",
+  "behav_def", "$@23", "$@24", "behav_par_list", "behav_par_list1",
+  "behav_par", "behav_var_list", "behav_var_list1", "behav_var",
+  "all_data_type", "var_data_type", "$@25", "$@26", "$@27",
+  "field_decl_list", "field_decl", "num_data_type", "term", "term1",
+  "$@28", "term2", "guard", "$@29", "term2_list", "enclosed_term2",
+  "action", "$@30", "$@31", "$@32", "act_input_output", "act_input_list",
+  "$@33", "act_output_list", "$@34", "act_rate", "$@35", "act_prio_weight",
+  "$@36", "$@37", "behav_apar_list", "behav_apar_list1", "interactions",
+  "uni_interacts", "and_interacts", "or_interacts", "act_type_list",
+  "$@38", "$@39", "archi_topology", "archi_elem_insts", "aei_decl_list",
+  "$@40", "aei_decl", "s_aei_decl", "$@41", "$@42", "i_aei_decl", "$@43",
+  "$@44", "aei_par_list", "aei_par_list1", "$@45", "archi_interacts",
+  "a_interact_list", "a_interact_list1", "$@46", "a_interact",
+  "s_a_interact", "$@47", "i_a_interact", "$@48", "archi_attachs",
+  "attach_list", "attach_list1", "$@49", "attach", "s_attach", "$@50",
+  "$@51", "$@52", "i_attach", "$@53", "$@54", "$@55", "behav_variations",
+  "$@56", "behav_hidings", "hiding_list", "$@57", "hiding", "s_hiding",
+  "$@58", "i_hiding", "$@59", "act_type_set_h", "behav_restricts",
+  "restrict_list", "$@60", "restriction", "s_restriction", "$@61",
+  "i_restriction", "$@62", "act_type_set_r", "behav_renamings",
+  "renaming_list", "$@63", "renaming", "s_renaming", "$@64", "$@65",
+  "i_renaming", "$@66", "$@67", "iteration", "$@68", "$@69",
+  "add_iteration", "$@70", "poss_aei_index", "aei_index", "expr", "$@71",
+  "$@72", "expr_list", "expr_array", "expr_record", "struct_expr", YY_NULLPTR
 };
 #endif
 
 # ifdef YYPRINT
-/* YYTOKNUM[YYLEX-NUM] -- Internal token number corresponding to
-   token YYLEX-NUM.  */
-static const yytype_uint16 yytoknum[] =
+/* YYTOKNUM[NUM] -- (External) token number corresponding to the
+   (internal) symbol number NUM (which must be that of a token).  */
+static const yytype_int16 yytoknum[] =
 {
        0,   256,   708,   300,   301,   400,   401,   402,   403,   404,
      405,   406,   407,   408,   409,   410,   411,   412,   413,   414,
@@ -1181,199 +1028,18 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-/* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
-static const yytype_uint16 yyr1[] =
-{
-       0,   126,   127,   128,   127,   129,   127,   130,   127,   131,
-     127,   132,   127,   133,   127,   134,   127,   135,   127,   136,
-     127,   137,   127,   138,   127,   140,   139,   141,   141,   142,
-     142,   144,   143,   145,   146,   145,   147,   147,   148,   147,
-     147,   150,   151,   152,   149,   153,   153,   154,   154,   155,
-     156,   158,   159,   157,   160,   160,   161,   161,   163,   162,
-     164,   164,   165,   165,   166,   165,   165,   168,   169,   167,
-     170,   170,   171,   171,   172,   173,   173,   174,   174,   175,
-     176,   176,   177,   178,   179,   177,   177,   177,   177,   180,
-     177,   177,   181,   181,   182,   183,   183,   183,   184,   184,
-     184,   185,   186,   185,   187,   188,   189,   188,   190,   190,
-     191,   193,   194,   195,   192,   196,   196,   196,   197,   198,
-     197,   199,   200,   199,   202,   201,   201,   201,   203,   204,
-     205,   203,   206,   206,   207,   207,   208,   208,   209,   209,
-     210,   210,   211,   211,   212,   213,   212,   214,   212,   215,
-     216,   217,   217,   218,   217,   217,   217,   219,   219,   221,
-     222,   220,   224,   225,   223,   226,   226,   227,   228,   227,
-     229,   230,   230,   231,   231,   232,   231,   231,   231,   233,
-     233,   235,   234,   237,   236,   238,   239,   239,   240,   240,
-     241,   240,   240,   240,   240,   240,   242,   242,   244,   245,
-     246,   243,   248,   249,   250,   247,   251,   252,   251,   253,
-     253,   254,   254,   255,   254,   254,   254,   254,   254,   254,
-     254,   256,   256,   258,   257,   257,   257,   257,   260,   259,
-     261,   261,   261,   261,   262,   262,   263,   263,   264,   263,
-     263,   263,   263,   263,   265,   265,   267,   266,   266,   266,
-     266,   269,   268,   270,   270,   270,   270,   271,   271,   272,
-     272,   273,   272,   272,   272,   274,   274,   276,   277,   275,
-     279,   280,   278,   282,   283,   281,   284,   285,   284,   286,
-     286,   287,   288,   288,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   288,   288,   288,   288,   289,
-     288,   290,   288,   288,   291,   291,   292,   293,   294,   294
-};
+#define YYPACT_NINF (-589)
 
-/* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
-static const yytype_uint8 yyr2[] =
-{
-       0,     2,     5,     0,     4,     0,     7,     0,     6,     0,
-       8,     0,     7,     0,     6,     0,     5,     0,     7,     0,
-       6,     0,     5,     0,     4,     0,     6,     1,     1,     1,
-       3,     0,     6,     2,     0,     4,     1,     2,     0,     4,
-       2,     0,     0,     0,    13,     1,     1,     1,     3,     3,
-       3,     0,     0,    10,     1,     1,     1,     3,     0,     5,
-       0,     1,     1,     2,     0,     4,     2,     0,     0,    11,
-       1,     1,     1,     3,     2,     1,     1,     1,     3,     3,
-       1,     1,     1,     0,     0,     8,     1,     1,     4,     0,
-       7,     4,     1,     3,     2,     1,     1,     1,     1,     3,
-       5,     1,     0,     5,     2,     0,     0,     6,     1,     2,
-       2,     0,     0,     0,     9,     0,     4,     4,     1,     0,
-       4,     1,     0,     4,     0,     5,     2,     2,     0,     0,
-       0,     7,     0,     1,     1,     3,     1,     3,     0,     2,
-       0,     2,     0,     2,     1,     0,     4,     0,     4,     4,
-       2,     1,     3,     0,     4,     3,     2,     1,     2,     0,
-       0,     9,     0,     0,     9,     0,     1,     1,     0,     4,
-       2,     1,     1,     1,     3,     0,     4,     3,     2,     1,
-       2,     0,     5,     0,     5,     2,     1,     1,     1,     3,
-       0,     4,     3,     2,     3,     2,     1,     3,     0,     0,
-       0,    13,     0,     0,     0,    13,     0,     0,     5,     0,
-       2,     1,     3,     0,     4,     3,     2,     3,     2,     3,
-       2,     1,     2,     0,     6,     2,     2,     2,     0,     6,
-       1,     1,     1,     1,     0,     2,     1,     3,     0,     4,
-       3,     2,     3,     2,     1,     2,     0,     6,     2,     2,
-       2,     0,     6,     1,     1,     1,     1,     0,     2,     1,
-       3,     0,     4,     3,     2,     1,     2,     0,     0,    10,
-       0,     0,    10,     0,     0,     8,     0,     0,     3,     0,
-       1,     3,     1,     1,     3,     3,     3,     3,     6,     4,
-       4,     4,     6,     6,     6,     4,     4,     4,     4,     4,
-       4,     6,     6,     6,     4,     6,     6,     6,     4,     8,
-       6,     8,     6,     4,     6,     4,     6,     1,     1,     3,
-       3,     2,     3,     3,     3,     3,     3,     3,     4,     4,
-       4,     6,     6,     6,     4,     4,     6,     8,     4,     0,
-       7,     0,     9,     3,     0,     1,     1,     1,     1,     3
-};
+#define yypact_value_is_default(Yyn) \
+  ((Yyn) == YYPACT_NINF)
 
-/* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
-   STATE-NUM when YYTABLE doesn't specify something else to do.  Zero
-   means the default is an error.  */
-static const yytype_uint16 yydefact[] =
-{
-       0,     0,     0,     0,     0,     3,     5,     7,     9,    11,
-      13,    15,    17,    19,    21,    23,    25,     1,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   206,   209,   234,
-     257,     0,     0,    34,     0,     0,    33,     0,     0,   206,
-       4,     0,   206,     0,     0,     0,     0,     0,   206,   207,
-       0,     0,   234,     0,   257,     0,     0,    24,     0,     0,
-      38,    40,    41,    37,     0,     0,   206,     0,     0,   279,
-       0,   150,     0,   157,     0,     0,     0,   279,   171,   170,
-     172,     0,   179,     0,   206,     0,     0,   186,   185,   187,
-       0,   196,   276,     0,   209,    16,     0,     0,   210,     0,
-     221,     0,   257,     0,     0,   235,     0,   244,     0,     0,
-       0,     0,   258,     0,   265,     0,    22,     0,    27,     0,
-      28,    29,    35,     0,     0,     0,     2,     0,     8,   156,
-     153,     0,   159,   280,   273,     0,     0,     0,   158,   206,
-     178,   175,   181,     0,     0,     0,   180,     0,   193,   195,
-     190,   279,     0,     0,   277,     0,    14,   234,   216,   218,
-     220,   213,   279,   225,   226,   227,     0,     0,     0,   222,
-       0,   241,   243,   238,   279,   248,   249,   250,     0,     0,
-       0,   245,    20,   264,   261,   279,     0,     0,     0,   266,
-      95,    96,    97,    82,    86,    87,     0,     0,     0,     0,
-      80,    81,    26,     0,    39,     0,   149,     6,     0,   283,
-     282,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     317,   318,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     155,   152,   162,     0,     0,     0,   177,   174,   183,    12,
-       0,   198,   192,   194,   189,     0,     0,   197,   257,     0,
-     223,   215,   217,   219,   212,     0,    18,     0,   246,   240,
-     242,   237,     0,     0,   267,   263,   260,     0,     0,     0,
-       0,     0,    31,    30,     0,    45,     0,    46,    47,   154,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   344,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,   321,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,   281,     0,     0,     0,
-      10,   176,     0,     0,   191,     0,   278,   279,   208,   214,
-       0,   228,   239,     0,   251,   262,     0,   270,    83,     0,
-      89,     0,     0,    92,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   348,     0,   345,
-       0,     0,     0,     0,     0,     0,     0,   346,     0,     0,
-       0,   347,   339,   341,   343,   323,   325,   327,   319,   320,
-     322,   324,   326,   284,   285,   286,   287,   160,   274,     0,
-     182,     0,     0,   202,     0,     0,     0,     0,     0,     0,
-       0,    88,     0,    94,    91,     0,     0,    49,     0,    42,
-      48,     0,     0,     0,   289,   290,   291,     0,   295,   296,
-     297,   298,   299,   300,     0,     0,     0,   304,     0,     0,
-       0,   308,     0,     0,     0,     0,   313,     0,   315,     0,
-       0,   328,   329,   330,     0,     0,     0,   334,   335,     0,
-       0,   338,     0,     0,     0,     0,   163,   184,   199,     0,
-     230,   231,   232,   233,   224,     0,   253,   254,   255,   256,
-     247,     0,   268,     0,     0,     0,    93,    32,    51,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   349,     0,     0,
-       0,     0,     0,     0,     0,   165,     0,     0,     0,     0,
-     229,   252,     0,   271,    84,     0,     0,     0,     0,    50,
-      61,     0,   138,   288,   292,   293,   294,   301,   302,   303,
-     305,   306,   307,     0,   310,     0,   312,   314,   316,   331,
-     332,   333,   336,     0,     0,     0,     0,   166,   167,   275,
-     165,     0,   203,     0,     0,     0,    90,     0,    66,    64,
-      67,    63,     0,   136,    43,   140,     0,     0,     0,   340,
-       0,   161,     0,     0,   279,     0,   279,     0,    85,    54,
-       0,    55,    56,     0,     0,     0,     0,   144,   139,     0,
-       0,   142,   309,   311,   337,     0,     0,   164,   200,     0,
-     269,   279,     0,     0,    58,    65,     0,   147,     0,   138,
-     141,     0,   137,   342,   169,     0,   279,   272,     0,    75,
-       0,    76,    77,    57,     0,    70,     0,    71,    72,     0,
-       0,     0,    44,   143,     0,   204,     0,    52,     0,     0,
-       0,     0,    74,   148,   146,   201,     0,    79,     0,    78,
-      59,     0,    73,     0,     0,    68,   205,    98,     0,     0,
-      53,     0,     0,   105,   111,     0,     0,     0,     0,     0,
-     115,   102,   101,    99,    69,     0,   105,     0,   108,   104,
-       0,     0,   112,     0,   106,   110,   100,   109,     0,     0,
-       0,   132,     0,     0,   121,   118,     0,     0,     0,   133,
-     134,     0,   117,     0,     0,   116,     0,   128,   128,   113,
-     103,     0,   107,     0,     0,     0,     0,   126,   127,     0,
-     135,   123,   120,   124,   129,   114,     0,     0,   125,     0,
-     130,     0,   131
-};
+#define YYTABLE_NINF (-260)
 
-/* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int16 yydefgoto[] =
-{
-      -1,     3,    21,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    31,     4,    32,   119,   120,   121,   394,    20,
-      59,    36,   123,    37,   124,   550,   659,   306,   307,   308,
-     479,   549,   586,   718,   650,   651,   652,   694,   589,   590,
-     654,   591,   655,   732,   696,   697,   698,   690,   691,   692,
-     199,   200,   470,   625,   472,   392,   393,   201,   730,   743,
-     753,   738,   739,   762,   747,   748,   731,   740,   760,   789,
-     752,   766,   774,   763,   773,   779,   796,   787,   797,   801,
-     768,   769,   634,   635,   661,   682,   658,   678,   700,    39,
-      44,    71,   208,    72,    73,   258,   524,   138,   369,   577,
-     616,   617,   642,    46,    79,    80,   264,    81,    82,   265,
-     146,   373,    48,    88,    89,   270,    90,    91,   375,   578,
-     685,   277,   529,   645,   716,    50,    94,    52,    98,   279,
-      99,   100,   380,   169,   465,   534,    54,   105,   287,   106,
-     107,   383,   181,   467,   540,    56,   112,   293,   113,   114,
-     386,   582,   189,   469,   624,    74,   259,   525,   155,   275,
-     132,   133,   427,   522,   523,   428,   436,   440,   429
-};
+#define yytable_value_is_error(Yyn) \
+  ((Yyn) == YYTABLE_NINF)
 
-/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-   STATE-NUM.  */
-#define YYPACT_NINF -589
+  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+     STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
       90,   289,    49,    64,   253,  -589,  -589,  -589,  -589,  -589,
@@ -1459,7 +1125,95 @@ static const yytype_int16 yypact[] =
     1574,   821,  -589
 };
 
-/* YYPGOTO[NTERM-NUM].  */
+  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+     Performed when YYTABLE does not specify something else to do.  Zero
+     means the default is an error.  */
+static const yytype_int16 yydefact[] =
+{
+       0,     0,     0,     0,     0,     3,     5,     7,     9,    11,
+      13,    15,    17,    19,    21,    23,    25,     1,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   206,   209,   234,
+     257,     0,     0,    34,     0,     0,    33,     0,     0,   206,
+       4,     0,   206,     0,     0,     0,     0,     0,   206,   207,
+       0,     0,   234,     0,   257,     0,     0,    24,     0,     0,
+      38,    40,    41,    37,     0,     0,   206,     0,     0,   279,
+       0,   150,     0,   157,     0,     0,     0,   279,   171,   170,
+     172,     0,   179,     0,   206,     0,     0,   186,   185,   187,
+       0,   196,   276,     0,   209,    16,     0,     0,   210,     0,
+     221,     0,   257,     0,     0,   235,     0,   244,     0,     0,
+       0,     0,   258,     0,   265,     0,    22,     0,    27,     0,
+      28,    29,    35,     0,     0,     0,     2,     0,     8,   156,
+     153,     0,   159,   280,   273,     0,     0,     0,   158,   206,
+     178,   175,   181,     0,     0,     0,   180,     0,   193,   195,
+     190,   279,     0,     0,   277,     0,    14,   234,   216,   218,
+     220,   213,   279,   225,   226,   227,     0,     0,     0,   222,
+       0,   241,   243,   238,   279,   248,   249,   250,     0,     0,
+       0,   245,    20,   264,   261,   279,     0,     0,     0,   266,
+      95,    96,    97,    82,    86,    87,     0,     0,     0,     0,
+      80,    81,    26,     0,    39,     0,   149,     6,     0,   283,
+     282,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     317,   318,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     155,   152,   162,     0,     0,     0,   177,   174,   183,    12,
+       0,   198,   192,   194,   189,     0,     0,   197,   257,     0,
+     223,   215,   217,   219,   212,     0,    18,     0,   246,   240,
+     242,   237,     0,     0,   267,   263,   260,     0,     0,     0,
+       0,     0,    31,    30,     0,    45,     0,    46,    47,   154,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   344,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,   321,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,   281,     0,     0,     0,
+      10,   176,     0,     0,   191,     0,   278,   279,   208,   214,
+       0,   228,   239,     0,   251,   262,     0,   270,    83,     0,
+      89,     0,     0,    92,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   348,     0,   345,
+       0,     0,     0,     0,     0,     0,     0,   346,     0,     0,
+       0,   347,   339,   341,   343,   323,   325,   327,   319,   320,
+     322,   324,   326,   284,   285,   286,   287,   160,   274,     0,
+     182,     0,     0,   202,     0,     0,     0,     0,     0,     0,
+       0,    88,     0,    94,    91,     0,     0,    49,     0,    42,
+      48,     0,     0,     0,   289,   290,   291,     0,   295,   296,
+     297,   298,   299,   300,     0,     0,     0,   304,     0,     0,
+       0,   308,     0,     0,     0,     0,   313,     0,   315,     0,
+       0,   328,   329,   330,     0,     0,     0,   334,   335,     0,
+       0,   338,     0,     0,     0,     0,   163,   184,   199,     0,
+     230,   231,   232,   233,   224,     0,   253,   254,   255,   256,
+     247,     0,   268,     0,     0,     0,    93,    32,    51,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   349,     0,     0,
+       0,     0,     0,     0,     0,   165,     0,     0,     0,     0,
+     229,   252,     0,   271,    84,     0,     0,     0,     0,    50,
+      61,     0,   138,   288,   292,   293,   294,   301,   302,   303,
+     305,   306,   307,     0,   310,     0,   312,   314,   316,   331,
+     332,   333,   336,     0,     0,     0,     0,   166,   167,   275,
+     165,     0,   203,     0,     0,     0,    90,     0,    66,    64,
+      67,    63,     0,   136,    43,   140,     0,     0,     0,   340,
+       0,   161,     0,     0,   279,     0,   279,     0,    85,    54,
+       0,    55,    56,     0,     0,     0,     0,   144,   139,     0,
+       0,   142,   309,   311,   337,     0,     0,   164,   200,     0,
+     269,   279,     0,     0,    58,    65,     0,   147,     0,   138,
+     141,     0,   137,   342,   169,     0,   279,   272,     0,    75,
+       0,    76,    77,    57,     0,    70,     0,    71,    72,     0,
+       0,     0,    44,   143,     0,   204,     0,    52,     0,     0,
+       0,     0,    74,   148,   146,   201,     0,    79,     0,    78,
+      59,     0,    73,     0,     0,    68,   205,    98,     0,     0,
+      53,     0,     0,   105,   111,     0,     0,     0,     0,     0,
+     115,   102,   101,    99,    69,     0,   105,     0,   108,   104,
+       0,     0,   112,     0,   106,   110,   100,   109,     0,     0,
+       0,   132,     0,     0,   121,   118,     0,     0,     0,   133,
+     134,     0,   117,     0,     0,   116,     0,   128,   128,   113,
+     103,     0,   107,     0,     0,     0,     0,   126,   127,     0,
+     135,   123,   120,   124,   129,   114,     0,     0,   125,     0,
+     130,     0,   131
+};
+
+  /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
     -589,   857,  -589,  -589,  -589,  -589,  -589,  -589,  -589,  -589,
@@ -1481,11 +1235,31 @@ static const yytype_int16 yypgoto[] =
      -76,  -133,  -131,  -589,  -589,  -589,  -589,  -589,  -344
 };
 
-/* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
-   positive, shift that token.  If negative, reduce the rule which
-   number is the opposite.  If zero, do what YYDEFACT says.
-   If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -260
+  /* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_int16 yydefgoto[] =
+{
+      -1,     3,    21,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,    31,     4,    32,   119,   120,   121,   394,    20,
+      59,    36,   123,    37,   124,   550,   659,   306,   307,   308,
+     479,   549,   586,   718,   650,   651,   652,   694,   589,   590,
+     654,   591,   655,   732,   696,   697,   698,   690,   691,   692,
+     199,   200,   470,   625,   472,   392,   393,   201,   730,   743,
+     753,   738,   739,   762,   747,   748,   731,   740,   760,   789,
+     752,   766,   774,   763,   773,   779,   796,   787,   797,   801,
+     768,   769,   634,   635,   661,   682,   658,   678,   700,    39,
+      44,    71,   208,    72,    73,   258,   524,   138,   369,   577,
+     616,   617,   642,    46,    79,    80,   264,    81,    82,   265,
+     146,   373,    48,    88,    89,   270,    90,    91,   375,   578,
+     685,   277,   529,   645,   716,    50,    94,    52,    98,   279,
+      99,   100,   380,   169,   465,   534,    54,   105,   287,   106,
+     107,   383,   181,   467,   540,    56,   112,   293,   113,   114,
+     386,   582,   189,   469,   624,    74,   259,   525,   155,   275,
+     132,   133,   427,   522,   523,   428,   436,   440,   429
+};
+
+  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+     positive, shift that token.  If negative, reduce the rule whose
+     number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
      257,   142,   437,   267,   262,   441,   166,   284,   628,   274,
@@ -1836,9 +1610,9 @@ static const yytype_int16 yycheck[] =
      112,   113
 };
 
-/* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-   symbol of state STATE-NUM.  */
-static const yytype_uint16 yystos[] =
+  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+     symbol of state STATE-NUM.  */
+static const yytype_int16 yystos[] =
 {
        0,     1,     5,   127,   139,     5,     6,    14,    15,    16,
       17,    20,    21,    26,    31,    36,     4,     0,     1,     6,
@@ -1923,95 +1697,121 @@ static const yytype_uint16 yystos[] =
      288,   205,   115
 };
 
-#define yyerrok		(yyerrstatus = 0)
-#define yyclearin	(yychar = YYEMPTY)
-#define YYEMPTY		(-2)
-#define YYEOF		0
+  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+static const yytype_int16 yyr1[] =
+{
+       0,   126,   127,   128,   127,   129,   127,   130,   127,   131,
+     127,   132,   127,   133,   127,   134,   127,   135,   127,   136,
+     127,   137,   127,   138,   127,   140,   139,   141,   141,   142,
+     142,   144,   143,   145,   146,   145,   147,   147,   148,   147,
+     147,   150,   151,   152,   149,   153,   153,   154,   154,   155,
+     156,   158,   159,   157,   160,   160,   161,   161,   163,   162,
+     164,   164,   165,   165,   166,   165,   165,   168,   169,   167,
+     170,   170,   171,   171,   172,   173,   173,   174,   174,   175,
+     176,   176,   177,   178,   179,   177,   177,   177,   177,   180,
+     177,   177,   181,   181,   182,   183,   183,   183,   184,   184,
+     184,   185,   186,   185,   187,   188,   189,   188,   190,   190,
+     191,   193,   194,   195,   192,   196,   196,   196,   197,   198,
+     197,   199,   200,   199,   202,   201,   201,   201,   203,   204,
+     205,   203,   206,   206,   207,   207,   208,   208,   209,   209,
+     210,   210,   211,   211,   212,   213,   212,   214,   212,   215,
+     216,   217,   217,   218,   217,   217,   217,   219,   219,   221,
+     222,   220,   224,   225,   223,   226,   226,   227,   228,   227,
+     229,   230,   230,   231,   231,   232,   231,   231,   231,   233,
+     233,   235,   234,   237,   236,   238,   239,   239,   240,   240,
+     241,   240,   240,   240,   240,   240,   242,   242,   244,   245,
+     246,   243,   248,   249,   250,   247,   251,   252,   251,   253,
+     253,   254,   254,   255,   254,   254,   254,   254,   254,   254,
+     254,   256,   256,   258,   257,   257,   257,   257,   260,   259,
+     261,   261,   261,   261,   262,   262,   263,   263,   264,   263,
+     263,   263,   263,   263,   265,   265,   267,   266,   266,   266,
+     266,   269,   268,   270,   270,   270,   270,   271,   271,   272,
+     272,   273,   272,   272,   272,   274,   274,   276,   277,   275,
+     279,   280,   278,   282,   283,   281,   284,   285,   284,   286,
+     286,   287,   288,   288,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   288,   288,   288,   288,   289,
+     288,   290,   288,   288,   291,   291,   292,   293,   294,   294
+};
 
-#define YYACCEPT	goto yyacceptlab
-#define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrorlab
+  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+static const yytype_int8 yyr2[] =
+{
+       0,     2,     5,     0,     4,     0,     7,     0,     6,     0,
+       8,     0,     7,     0,     6,     0,     5,     0,     7,     0,
+       6,     0,     5,     0,     4,     0,     6,     1,     1,     1,
+       3,     0,     6,     2,     0,     4,     1,     2,     0,     4,
+       2,     0,     0,     0,    13,     1,     1,     1,     3,     3,
+       3,     0,     0,    10,     1,     1,     1,     3,     0,     5,
+       0,     1,     1,     2,     0,     4,     2,     0,     0,    11,
+       1,     1,     1,     3,     2,     1,     1,     1,     3,     3,
+       1,     1,     1,     0,     0,     8,     1,     1,     4,     0,
+       7,     4,     1,     3,     2,     1,     1,     1,     1,     3,
+       5,     1,     0,     5,     2,     0,     0,     6,     1,     2,
+       2,     0,     0,     0,     9,     0,     4,     4,     1,     0,
+       4,     1,     0,     4,     0,     5,     2,     2,     0,     0,
+       0,     7,     0,     1,     1,     3,     1,     3,     0,     2,
+       0,     2,     0,     2,     1,     0,     4,     0,     4,     4,
+       2,     1,     3,     0,     4,     3,     2,     1,     2,     0,
+       0,     9,     0,     0,     9,     0,     1,     1,     0,     4,
+       2,     1,     1,     1,     3,     0,     4,     3,     2,     1,
+       2,     0,     5,     0,     5,     2,     1,     1,     1,     3,
+       0,     4,     3,     2,     3,     2,     1,     3,     0,     0,
+       0,    13,     0,     0,     0,    13,     0,     0,     5,     0,
+       2,     1,     3,     0,     4,     3,     2,     3,     2,     3,
+       2,     1,     2,     0,     6,     2,     2,     2,     0,     6,
+       1,     1,     1,     1,     0,     2,     1,     3,     0,     4,
+       3,     2,     3,     2,     1,     2,     0,     6,     2,     2,
+       2,     0,     6,     1,     1,     1,     1,     0,     2,     1,
+       3,     0,     4,     3,     2,     1,     2,     0,     0,    10,
+       0,     0,    10,     0,     0,     8,     0,     0,     3,     0,
+       1,     3,     1,     1,     3,     3,     3,     3,     6,     4,
+       4,     4,     6,     6,     6,     4,     4,     4,     4,     4,
+       4,     6,     6,     6,     4,     6,     6,     6,     4,     8,
+       6,     8,     6,     4,     6,     4,     6,     1,     1,     3,
+       3,     2,     3,     3,     3,     3,     3,     3,     4,     4,
+       4,     6,     6,     6,     4,     4,     6,     8,     4,     0,
+       7,     0,     9,     3,     0,     1,     1,     1,     1,     3
+};
 
 
-/* Like YYERROR except do call yyerror.  This remains here temporarily
-   to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  */
+#define yyerrok         (yyerrstatus = 0)
+#define yyclearin       (yychar = YYEMPTY)
+#define YYEMPTY         (-2)
+#define YYEOF           0
 
-#define YYFAIL		goto yyerrlab
+#define YYACCEPT        goto yyacceptlab
+#define YYABORT         goto yyabortlab
+#define YYERROR         goto yyerrorlab
+
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      yytoken = YYTRANSLATE (yychar);				\
-      YYPOPSTACK (1);						\
-      goto yybackup;						\
-    }								\
-  else								\
-    {								\
-      yyerror (YY_("syntax error: cannot back up")); \
-      YYERROR;							\
-    }								\
-while (YYID (0))
+#define YYBACKUP(Token, Value)                                    \
+  do                                                              \
+    if (yychar == YYEMPTY)                                        \
+      {                                                           \
+        yychar = (Token);                                         \
+        yylval = (Value);                                         \
+        YYPOPSTACK (yylen);                                       \
+        yystate = *yyssp;                                         \
+        goto yybackup;                                            \
+      }                                                           \
+    else                                                          \
+      {                                                           \
+        yyerror (YY_("syntax error: cannot back up")); \
+        YYERROR;                                                  \
+      }                                                           \
+  while (0)
+
+/* Error token number */
+#define YYTERROR        1
+#define YYERRCODE       256
 
 
-#define YYTERROR	1
-#define YYERRCODE	256
-
-
-/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
-   If N is 0, then set CURRENT to the empty location which ends
-   the previous symbol: RHS[0] (always defined).  */
-
-#define YYRHSLOC(Rhs, K) ((Rhs)[K])
-#ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)				\
-    do									\
-      if (YYID (N))                                                    \
-	{								\
-	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
-	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
-	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
-	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
-	}								\
-      else								\
-	{								\
-	  (Current).first_line   = (Current).last_line   =		\
-	    YYRHSLOC (Rhs, 0).last_line;				\
-	  (Current).first_column = (Current).last_column =		\
-	    YYRHSLOC (Rhs, 0).last_column;				\
-	}								\
-    while (YYID (0))
-#endif
-
-
-/* YY_LOCATION_PRINT -- Print the location on the stream.
-   This macro was not mandated originally: define only if we know
-   we won't break user code: when these are the locations we know.  */
-
-#ifndef YY_LOCATION_PRINT
-# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
-#  define YY_LOCATION_PRINT(File, Loc)			\
-     fprintf (File, "%d.%d-%d.%d",			\
-	      (Loc).first_line, (Loc).first_column,	\
-	      (Loc).last_line,  (Loc).last_column)
-# else
-#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
-# endif
-#endif
-
-
-/* YYLEX -- calling `yylex' with the right arguments.  */
-
-#ifdef YYLEX_PARAM
-# define YYLEX yylex (YYLEX_PARAM)
-#else
-# define YYLEX yylex ()
-#endif
 
 /* Enable debugging if requested.  */
 #if YYDEBUG
@@ -2021,80 +1821,63 @@ while (YYID (0))
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)			\
-do {						\
-  if (yydebug)					\
-    YYFPRINTF Args;				\
-} while (YYID (0))
+# define YYDPRINTF(Args)                        \
+do {                                            \
+  if (yydebug)                                  \
+    YYFPRINTF Args;                             \
+} while (0)
 
-# define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
-do {									  \
-  if (yydebug)								  \
-    {									  \
-      YYFPRINTF (stderr, "%s ", Title);					  \
-      yy_symbol_print (stderr,						  \
-		  Type, Value); \
-      YYFPRINTF (stderr, "\n");						  \
-    }									  \
-} while (YYID (0))
-
-
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
-
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
+/* This macro is provided for backward compatibility. */
+#ifndef YY_LOCATION_PRINT
+# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
 #endif
+
+
+# define YY_SYMBOL_PRINT(Title, Type, Value, Location)                    \
+do {                                                                      \
+  if (yydebug)                                                            \
+    {                                                                     \
+      YYFPRINTF (stderr, "%s ", Title);                                   \
+      yy_symbol_print (stderr,                                            \
+                  Type, Value); \
+      YYFPRINTF (stderr, "\n");                                           \
+    }                                                                     \
+} while (0)
+
+
+/*-----------------------------------.
+| Print this symbol's value on YYO.  |
+`-----------------------------------*/
+
+static void
+yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 {
+  FILE *yyoutput = yyo;
+  YYUSE (yyoutput);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
-    YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
-# else
-  YYUSE (yyoutput);
+    YYPRINT (yyo, yytoknum[yytype], *yyvaluep);
 # endif
-  switch (yytype)
-    {
-      default:
-	break;
-    }
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+  YYUSE (yytype);
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
 
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
+/*---------------------------.
+| Print this symbol on YYO.  |
+`---------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-#endif
+yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 {
-  if (yytype < YYNTOKENS)
-    YYFPRINTF (yyoutput, "token %s (", yytname[yytype]);
-  else
-    YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
+  YYFPRINTF (yyo, "%s %s (",
+             yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
-  YYFPRINTF (yyoutput, ")");
+  yy_symbol_value_print (yyo, yytype, yyvaluep);
+  YYFPRINTF (yyo, ")");
 }
 
 /*------------------------------------------------------------------.
@@ -2102,66 +1885,54 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
 | TOP (included).                                                   |
 `------------------------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_stack_print (yytype_int16 *bottom, yytype_int16 *top)
-#else
-static void
-yy_stack_print (bottom, top)
-    yytype_int16 *bottom;
-    yytype_int16 *top;
-#endif
+yy_stack_print (yy_state_t *yybottom, yy_state_t *yytop)
 {
   YYFPRINTF (stderr, "Stack now");
-  for (; bottom <= top; ++bottom)
-    YYFPRINTF (stderr, " %d", *bottom);
+  for (; yybottom <= yytop; yybottom++)
+    {
+      int yybot = *yybottom;
+      YYFPRINTF (stderr, " %d", yybot);
+    }
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)				\
-do {								\
-  if (yydebug)							\
-    yy_stack_print ((Bottom), (Top));				\
-} while (YYID (0))
+# define YY_STACK_PRINT(Bottom, Top)                            \
+do {                                                            \
+  if (yydebug)                                                  \
+    yy_stack_print ((Bottom), (Top));                           \
+} while (0)
 
 
 /*------------------------------------------------.
 | Report that the YYRULE is going to be reduced.  |
 `------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule)
-#else
-static void
-yy_reduce_print (yyvsp, yyrule)
-    YYSTYPE *yyvsp;
-    int yyrule;
-#endif
+yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
+  int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
-  unsigned long int yylno = yyrline[yyrule];
-  YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-	     yyrule - 1, yylno);
+  YYFPRINTF (stderr, "Reducing stack by rule %d (line %d):\n",
+             yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
-      fprintf (stderr, "   $%d = ", yyi + 1);
-      yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
-		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       );
-      fprintf (stderr, "\n");
+      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
+      yy_symbol_print (stderr,
+                       yystos[+yyssp[yyi + 1 - yynrhs]],
+                       &yyvsp[(yyi + 1) - (yynrhs)]
+                                              );
+      YYFPRINTF (stderr, "\n");
     }
 }
 
-# define YY_REDUCE_PRINT(Rule)		\
-do {					\
-  if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule); \
-} while (YYID (0))
+# define YY_REDUCE_PRINT(Rule)          \
+do {                                    \
+  if (yydebug)                          \
+    yy_reduce_print (yyssp, yyvsp, Rule); \
+} while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
@@ -2175,7 +1946,7 @@ int yydebug;
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef	YYINITDEPTH
+#ifndef YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -2190,26 +1961,18 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
 
 #if YYERROR_VERBOSE
 
 # ifndef yystrlen
 #  if defined __GLIBC__ && defined _STRING_H
-#   define yystrlen strlen
+#   define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
 #  else
 /* Return the length of YYSTR.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static YYSIZE_T
+static YYPTRDIFF_T
 yystrlen (const char *yystr)
-#else
-static YYSIZE_T
-yystrlen (yystr)
-    const char *yystr;
-#endif
 {
-  YYSIZE_T yylen;
+  YYPTRDIFF_T yylen;
   for (yylen = 0; yystr[yylen]; yylen++)
     continue;
   return yylen;
@@ -2223,16 +1986,8 @@ yystrlen (yystr)
 #  else
 /* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
    YYDEST.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static char *
 yystpcpy (char *yydest, const char *yysrc)
-#else
-static char *
-yystpcpy (yydest, yysrc)
-    char *yydest;
-    const char *yysrc;
-#endif
 {
   char *yyd = yydest;
   const char *yys = yysrc;
@@ -2253,408 +2008,392 @@ yystpcpy (yydest, yysrc)
    backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
    null, do not copy; instead, return the length of what the result
    would have been.  */
-static YYSIZE_T
+static YYPTRDIFF_T
 yytnamerr (char *yyres, const char *yystr)
 {
   if (*yystr == '"')
     {
-      YYSIZE_T yyn = 0;
+      YYPTRDIFF_T yyn = 0;
       char const *yyp = yystr;
 
       for (;;)
-	switch (*++yyp)
-	  {
-	  case '\'':
-	  case ',':
-	    goto do_not_strip_quotes;
+        switch (*++yyp)
+          {
+          case '\'':
+          case ',':
+            goto do_not_strip_quotes;
 
-	  case '\\':
-	    if (*++yyp != '\\')
-	      goto do_not_strip_quotes;
-	    /* Fall through.  */
-	  default:
-	    if (yyres)
-	      yyres[yyn] = *yyp;
-	    yyn++;
-	    break;
+          case '\\':
+            if (*++yyp != '\\')
+              goto do_not_strip_quotes;
+            else
+              goto append;
 
-	  case '"':
-	    if (yyres)
-	      yyres[yyn] = '\0';
-	    return yyn;
-	  }
+          append:
+          default:
+            if (yyres)
+              yyres[yyn] = *yyp;
+            yyn++;
+            break;
+
+          case '"':
+            if (yyres)
+              yyres[yyn] = '\0';
+            return yyn;
+          }
     do_not_strip_quotes: ;
     }
 
-  if (! yyres)
+  if (yyres)
+    return yystpcpy (yyres, yystr) - yyres;
+  else
     return yystrlen (yystr);
-
-  return yystpcpy (yyres, yystr) - yyres;
 }
 # endif
 
-/* Copy into YYRESULT an error message about the unexpected token
-   YYCHAR while in state YYSTATE.  Return the number of bytes copied,
-   including the terminating null byte.  If YYRESULT is null, do not
-   copy anything; just return the number of bytes that would be
-   copied.  As a special case, return 0 if an ordinary "syntax error"
-   message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
-   size calculation.  */
-static YYSIZE_T
-yysyntax_error (char *yyresult, int yystate, int yychar)
+/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
+   about the unexpected token YYTOKEN for the state stack whose top is
+   YYSSP.
+
+   Return 0 if *YYMSG was successfully written.  Return 1 if *YYMSG is
+   not large enough to hold the message.  In that case, also set
+   *YYMSG_ALLOC to the required number of bytes.  Return 2 if the
+   required number of bytes is too large to store.  */
+static int
+yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
+                yy_state_t *yyssp, int yytoken)
 {
-  int yyn = yypact[yystate];
+  enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULLPTR;
+  /* Arguments of yyformat: reported tokens (one for the "unexpected",
+     one per "expected"). */
+  char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
+  /* Actual size of YYARG. */
+  int yycount = 0;
+  /* Cumulated lengths of YYARG.  */
+  YYPTRDIFF_T yysize = 0;
 
-  if (! (YYPACT_NINF < yyn && yyn <= YYLAST))
-    return 0;
-  else
+  /* There are many possibilities here to consider:
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+     - Of course, the expected token list depends on states to have
+       correct lookahead information, and it depends on the parser not
+       to perform extra reductions after fetching a lookahead from the
+       scanner and before detecting a syntax error.  Thus, state merging
+       (from LALR or IELR) and default reductions corrupt the expected
+       token list.  However, the list is correct for canonical LR with
+       one exception: it will still contain any token that will not be
+       accepted due to an error action in a later state.
+  */
+  if (yytoken != YYEMPTY)
     {
-      int yytype = YYTRANSLATE (yychar);
-      YYSIZE_T yysize0 = yytnamerr (0, yytname[yytype]);
-      YYSIZE_T yysize = yysize0;
-      YYSIZE_T yysize1;
-      int yysize_overflow = 0;
-      enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
-      char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-      int yyx;
+      int yyn = yypact[+*yyssp];
+      YYPTRDIFF_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
+      yysize = yysize0;
+      yyarg[yycount++] = yytname[yytoken];
+      if (!yypact_value_is_default (yyn))
+        {
+          /* Start YYX at -YYN if negative to avoid negative indexes in
+             YYCHECK.  In other words, skip the first -YYN actions for
+             this state because they are default actions.  */
+          int yyxbegin = yyn < 0 ? -yyn : 0;
+          /* Stay within bounds of both yycheck and yytname.  */
+          int yychecklim = YYLAST - yyn + 1;
+          int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+          int yyx;
 
-# if 0
-      /* This is so xgettext sees the translatable formats that are
-	 constructed on the fly.  */
-      YY_("syntax error, unexpected %s");
-      YY_("syntax error, unexpected %s, expecting %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
-# endif
-      char *yyfmt;
-      char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
-      static char const yyexpecting[] = ", expecting %s";
-      static char const yyor[] = " or %s";
-      char yyformat[sizeof yyunexpected
-		    + sizeof yyexpecting - 1
-		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-		       * (sizeof yyor - 1))];
-      char const *yyprefix = yyexpecting;
-
-      /* Start YYX at -YYN if negative to avoid negative indexes in
-	 YYCHECK.  */
-      int yyxbegin = yyn < 0 ? -yyn : 0;
-
-      /* Stay within bounds of both yycheck and yytname.  */
-      int yychecklim = YYLAST - yyn + 1;
-      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-      int yycount = 1;
-
-      yyarg[0] = yytname[yytype];
-      yyfmt = yystpcpy (yyformat, yyunexpected);
-
-      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	  {
-	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-	      {
-		yycount = 1;
-		yysize = yysize0;
-		yyformat[sizeof yyunexpected - 1] = '\0';
-		break;
-	      }
-	    yyarg[yycount++] = yytname[yyx];
-	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-	    yysize_overflow |= (yysize1 < yysize);
-	    yysize = yysize1;
-	    yyfmt = yystpcpy (yyfmt, yyprefix);
-	    yyprefix = yyor;
-	  }
-
-      yyf = YY_(yyformat);
-      yysize1 = yysize + yystrlen (yyf);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
-
-      if (yysize_overflow)
-	return YYSIZE_MAXIMUM;
-
-      if (yyresult)
-	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
-	     Don't have undefined behavior even if the translation
-	     produced a string with the wrong number of "%s"s.  */
-	  char *yyp = yyresult;
-	  int yyi = 0;
-	  while ((*yyp = *yyf) != '\0')
-	    {
-	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
-		{
-		  yyp += yytnamerr (yyp, yyarg[yyi++]);
-		  yyf += 2;
-		}
-	      else
-		{
-		  yyp++;
-		  yyf++;
-		}
-	    }
-	}
-      return yysize;
+          for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+            if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR
+                && !yytable_value_is_error (yytable[yyx + yyn]))
+              {
+                if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+                  {
+                    yycount = 1;
+                    yysize = yysize0;
+                    break;
+                  }
+                yyarg[yycount++] = yytname[yyx];
+                {
+                  YYPTRDIFF_T yysize1
+                    = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
+                  if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
+                    yysize = yysize1;
+                  else
+                    return 2;
+                }
+              }
+        }
     }
+
+  switch (yycount)
+    {
+# define YYCASE_(N, S)                      \
+      case N:                               \
+        yyformat = S;                       \
+      break
+    default: /* Avoid compiler warnings. */
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+# undef YYCASE_
+    }
+
+  {
+    /* Don't count the "%s"s in the final size, but reserve room for
+       the terminator.  */
+    YYPTRDIFF_T yysize1 = yysize + (yystrlen (yyformat) - 2 * yycount) + 1;
+    if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
+      yysize = yysize1;
+    else
+      return 2;
+  }
+
+  if (*yymsg_alloc < yysize)
+    {
+      *yymsg_alloc = 2 * yysize;
+      if (! (yysize <= *yymsg_alloc
+             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
+        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
+      return 1;
+    }
+
+  /* Avoid sprintf, as that infringes on the user's name space.
+     Don't have undefined behavior even if the translation
+     produced a string with the wrong number of "%s"s.  */
+  {
+    char *yyp = *yymsg;
+    int yyi = 0;
+    while ((*yyp = *yyformat) != '\0')
+      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+        {
+          yyp += yytnamerr (yyp, yyarg[yyi++]);
+          yyformat += 2;
+        }
+      else
+        {
+          ++yyp;
+          ++yyformat;
+        }
+  }
+  return 0;
 }
 #endif /* YYERROR_VERBOSE */
-
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
-#else
-static void
-yydestruct (yymsg, yytype, yyvaluep)
-    const char *yymsg;
-    int yytype;
-    YYSTYPE *yyvaluep;
-#endif
 {
   YYUSE (yyvaluep);
-
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
 
-  switch (yytype)
-    {
-
-      default:
-	break;
-    }
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+  YYUSE (yytype);
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
-
-
-/* Prevent warnings from -Wmissing-prototypes.  */
-
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
 
 
 
-/* The look-ahead symbol.  */
+
+/* The lookahead symbol.  */
 int yychar;
 
-/* The semantic value of the look-ahead symbol.  */
+/* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
-
 /* Number of syntax errors so far.  */
 int yynerrs;
-
 
 
 /*----------.
 | yyparse.  |
 `----------*/
 
-#ifdef YYPARSE_PARAM
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-int
-yyparse (void *YYPARSE_PARAM)
-#else
-int
-yyparse (YYPARSE_PARAM)
-    void *YYPARSE_PARAM;
-#endif
-#else /* ! YYPARSE_PARAM */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yyparse (void)
-#else
-int
-yyparse ()
-
-#endif
-#endif
 {
-  
-  int yystate;
+    yy_state_fast_t yystate;
+    /* Number of tokens to shift before error messages enabled.  */
+    int yyerrstatus;
+
+    /* The stacks and their tools:
+       'yyss': related to states.
+       'yyvs': related to semantic values.
+
+       Refer to the stacks through separate pointers, to allow yyoverflow
+       to reallocate them elsewhere.  */
+
+    /* The state stack.  */
+    yy_state_t yyssa[YYINITDEPTH];
+    yy_state_t *yyss;
+    yy_state_t *yyssp;
+
+    /* The semantic value stack.  */
+    YYSTYPE yyvsa[YYINITDEPTH];
+    YYSTYPE *yyvs;
+    YYSTYPE *yyvsp;
+
+    YYPTRDIFF_T yystacksize;
+
   int yyn;
   int yyresult;
-  /* Number of tokens to shift before error messages enabled.  */
-  int yyerrstatus;
-  /* Look-ahead token as an internal (translated) token number.  */
+  /* Lookahead token as an internal (translated) token number.  */
   int yytoken = 0;
-#if YYERROR_VERBOSE
-  /* Buffer for error messages, and its allocated size.  */
-  char yymsgbuf[128];
-  char *yymsg = yymsgbuf;
-  YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
-#endif
-
-  /* Three stacks and their tools:
-     `yyss': related to states,
-     `yyvs': related to semantic values,
-     `yyls': related to locations.
-
-     Refer to the stacks thru separate pointers, to allow yyoverflow
-     to reallocate them elsewhere.  */
-
-  /* The state stack.  */
-  yytype_int16 yyssa[YYINITDEPTH];
-  yytype_int16 *yyss = yyssa;
-  yytype_int16 *yyssp;
-
-  /* The semantic value stack.  */
-  YYSTYPE yyvsa[YYINITDEPTH];
-  YYSTYPE *yyvs = yyvsa;
-  YYSTYPE *yyvsp;
-
-
-
-#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
-
-  YYSIZE_T yystacksize = YYINITDEPTH;
-
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
 
+#if YYERROR_VERBOSE
+  /* Buffer for error messages, and its allocated size.  */
+  char yymsgbuf[128];
+  char *yymsg = yymsgbuf;
+  YYPTRDIFF_T yymsg_alloc = sizeof yymsgbuf;
+#endif
+
+#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
+
+  yyssp = yyss = yyssa;
+  yyvsp = yyvs = yyvsa;
+  yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
 
   yystate = 0;
   yyerrstatus = 0;
   yynerrs = 0;
-  yychar = YYEMPTY;		/* Cause a token to be read.  */
-
-  /* Initialize stack pointers.
-     Waste one element of value and location stack
-     so that they stay on the same level as the state stack.
-     The wasted elements are never initialized.  */
-
-  yyssp = yyss;
-  yyvsp = yyvs;
-
+  yychar = YYEMPTY; /* Cause a token to be read.  */
   goto yysetstate;
 
+
 /*------------------------------------------------------------.
-| yynewstate -- Push a new state, which is found in yystate.  |
+| yynewstate -- push a new state, which is found in yystate.  |
 `------------------------------------------------------------*/
- yynewstate:
+yynewstate:
   /* In all cases, when you get here, the value and location stacks
      have just been pushed.  So pushing a state here evens the stacks.  */
   yyssp++;
 
- yysetstate:
-  *yyssp = yystate;
+
+/*--------------------------------------------------------------------.
+| yysetstate -- set current state (the top of the stack) to yystate.  |
+`--------------------------------------------------------------------*/
+yysetstate:
+  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
+  YY_ASSERT (0 <= yystate && yystate < YYNSTATES);
+  YY_IGNORE_USELESS_CAST_BEGIN
+  *yyssp = YY_CAST (yy_state_t, yystate);
+  YY_IGNORE_USELESS_CAST_END
 
   if (yyss + yystacksize - 1 <= yyssp)
+#if !defined yyoverflow && !defined YYSTACK_RELOCATE
+    goto yyexhaustedlab;
+#else
     {
       /* Get the current used size of the three stacks, in elements.  */
-      YYSIZE_T yysize = yyssp - yyss + 1;
+      YYPTRDIFF_T yysize = yyssp - yyss + 1;
 
-#ifdef yyoverflow
+# if defined yyoverflow
       {
-	/* Give user a chance to reallocate the stack.  Use copies of
-	   these so that the &'s don't force the real ones into
-	   memory.  */
-	YYSTYPE *yyvs1 = yyvs;
-	yytype_int16 *yyss1 = yyss;
+        /* Give user a chance to reallocate the stack.  Use copies of
+           these so that the &'s don't force the real ones into
+           memory.  */
+        yy_state_t *yyss1 = yyss;
+        YYSTYPE *yyvs1 = yyvs;
 
-
-	/* Each stack pointer address is followed by the size of the
-	   data in use in that stack, in bytes.  This used to be a
-	   conditional around just the two extra args, but that might
-	   be undefined if yyoverflow is a macro.  */
-	yyoverflow (YY_("memory exhausted"),
-		    &yyss1, yysize * sizeof (*yyssp),
-		    &yyvs1, yysize * sizeof (*yyvsp),
-
-		    &yystacksize);
-
-	yyss = yyss1;
-	yyvs = yyvs1;
+        /* Each stack pointer address is followed by the size of the
+           data in use in that stack, in bytes.  This used to be a
+           conditional around just the two extra args, but that might
+           be undefined if yyoverflow is a macro.  */
+        yyoverflow (YY_("memory exhausted"),
+                    &yyss1, yysize * YYSIZEOF (*yyssp),
+                    &yyvs1, yysize * YYSIZEOF (*yyvsp),
+                    &yystacksize);
+        yyss = yyss1;
+        yyvs = yyvs1;
       }
-#else /* no yyoverflow */
-# ifndef YYSTACK_RELOCATE
-      goto yyexhaustedlab;
-# else
+# else /* defined YYSTACK_RELOCATE */
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-	goto yyexhaustedlab;
+        goto yyexhaustedlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-	yystacksize = YYMAXDEPTH;
+        yystacksize = YYMAXDEPTH;
 
       {
-	yytype_int16 *yyss1 = yyss;
-	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-	if (! yyptr)
-	  goto yyexhaustedlab;
-	YYSTACK_RELOCATE (yyss);
-	YYSTACK_RELOCATE (yyvs);
-
-#  undef YYSTACK_RELOCATE
-	if (yyss1 != yyssa)
-	  YYSTACK_FREE (yyss1);
+        yy_state_t *yyss1 = yyss;
+        union yyalloc *yyptr =
+          YY_CAST (union yyalloc *,
+                   YYSTACK_ALLOC (YY_CAST (YYSIZE_T, YYSTACK_BYTES (yystacksize))));
+        if (! yyptr)
+          goto yyexhaustedlab;
+        YYSTACK_RELOCATE (yyss_alloc, yyss);
+        YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+# undef YYSTACK_RELOCATE
+        if (yyss1 != yyssa)
+          YYSTACK_FREE (yyss1);
       }
 # endif
-#endif /* no yyoverflow */
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
-
-      YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-		  (unsigned long int) yystacksize));
+      YY_IGNORE_USELESS_CAST_BEGIN
+      YYDPRINTF ((stderr, "Stack size increased to %ld\n",
+                  YY_CAST (long, yystacksize)));
+      YY_IGNORE_USELESS_CAST_END
 
       if (yyss + yystacksize - 1 <= yyssp)
-	YYABORT;
+        YYABORT;
     }
+#endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
 
-  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
+  if (yystate == YYFINAL)
+    YYACCEPT;
 
   goto yybackup;
+
 
 /*-----------.
 | yybackup.  |
 `-----------*/
 yybackup:
-
   /* Do appropriate processing given the current state.  Read a
-     look-ahead token if we need one and don't already have one.  */
+     lookahead token if we need one and don't already have one.  */
 
-  /* First try to decide what to do without reference to look-ahead token.  */
+  /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
-  if (yyn == YYPACT_NINF)
+  if (yypact_value_is_default (yyn))
     goto yydefault;
 
-  /* Not known => get a look-ahead token if don't already have one.  */
+  /* Not known => get a lookahead token if don't already have one.  */
 
-  /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
+  /* YYCHAR is either YYEMPTY or YYEOF or a valid lookahead symbol.  */
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token: "));
-      yychar = YYLEX;
+      yychar = yylex ();
     }
 
   if (yychar <= YYEOF)
@@ -2676,30 +2415,26 @@ yybackup:
   yyn = yytable[yyn];
   if (yyn <= 0)
     {
-      if (yyn == 0 || yyn == YYTABLE_NINF)
-	goto yyerrlab;
+      if (yytable_value_is_error (yyn))
+        goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
-
-  if (yyn == YYFINAL)
-    YYACCEPT;
 
   /* Count tokens shifted since error; after three, turn off error
      status.  */
   if (yyerrstatus)
     yyerrstatus--;
 
-  /* Shift the look-ahead token.  */
+  /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
-
-  /* Discard the shifted token unless it is eof.  */
-  if (yychar != YYEOF)
-    yychar = YYEMPTY;
-
   yystate = yyn;
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
+  /* Discard the shifted token.  */
+  yychar = YYEMPTY;
   goto yynewstate;
 
 
@@ -2714,14 +2449,14 @@ yydefault:
 
 
 /*-----------------------------.
-| yyreduce -- Do a reduction.  |
+| yyreduce -- do a reduction.  |
 `-----------------------------*/
 yyreduce:
   /* yyn is the number of a rule to reduce with.  */
   yylen = yyr2[yyn];
 
   /* If YYLEN is nonzero, implement the default value of the action:
-     `$$ = $1'.
+     '$$ = $1'.
 
      Otherwise, the following line sets YYVAL to garbage.
      This behavior is undocumented and Bison
@@ -2734,715 +2469,795 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 2:
+  case 2:
 #line 568 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2477 "aemilia_parser.tab.c"
     break;
 
   case 3:
 #line 571 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2486 "aemilia_parser.tab.c"
     break;
 
   case 4:
 #line 576 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2493 "aemilia_parser.tab.c"
     break;
 
   case 5:
 #line 579 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2502 "aemilia_parser.tab.c"
     break;
 
   case 6:
 #line 584 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2509 "aemilia_parser.tab.c"
     break;
 
   case 7:
 #line 587 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2518 "aemilia_parser.tab.c"
     break;
 
   case 8:
 #line 592 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2525 "aemilia_parser.tab.c"
     break;
 
   case 9:
 #line 595 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2534 "aemilia_parser.tab.c"
     break;
 
   case 10:
 #line 600 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2541 "aemilia_parser.tab.c"
     break;
 
   case 11:
 #line 603 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2550 "aemilia_parser.tab.c"
     break;
 
   case 12:
 #line 608 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2557 "aemilia_parser.tab.c"
     break;
 
   case 13:
 #line 611 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2566 "aemilia_parser.tab.c"
     break;
 
   case 14:
 #line 616 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2573 "aemilia_parser.tab.c"
     break;
 
   case 15:
 #line 619 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2582 "aemilia_parser.tab.c"
     break;
 
   case 16:
 #line 624 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2589 "aemilia_parser.tab.c"
     break;
 
   case 17:
 #line 627 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2598 "aemilia_parser.tab.c"
     break;
 
   case 18:
 #line 632 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2605 "aemilia_parser.tab.c"
     break;
 
   case 19:
 #line 635 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2614 "aemilia_parser.tab.c"
     break;
 
   case 20:
 #line 640 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2621 "aemilia_parser.tab.c"
     break;
 
   case 21:
 #line 643 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2630 "aemilia_parser.tab.c"
     break;
 
   case 22:
 #line 648 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2637 "aemilia_parser.tab.c"
     break;
 
   case 23:
 #line 651 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2646 "aemilia_parser.tab.c"
     break;
 
   case 24:
 #line 656 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 2653 "aemilia_parser.tab.c"
     break;
 
   case 25:
 #line 662 "aemilia_parser.y"
-    {
+                            {
 			      check_id(ARCHI_TYPE_ID_DEF,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      if ((yyvsp[(2) - (2)].st_bucket) != NULL)
+			      if ((yyvsp[0].st_bucket) != NULL)
 			      {
-			        (yyvsp[(2) - (2)].st_bucket)->info = archi_type[spec_no]->info;
-			        archi_type[spec_no] = (yyvsp[(2) - (2)].st_bucket);
+			        (yyvsp[0].st_bucket)->info = archi_type[spec_no]->info;
+			        archi_type[spec_no] = (yyvsp[0].st_bucket);
 			      }
-	     		    ;}
+	     		    }
+#line 2668 "aemilia_parser.tab.c"
     break;
 
   case 26:
 #line 673 "aemilia_parser.y"
-    {
-			      (yyvsp[(2) - (6)].st_bucket)->info.archi_type->formal_const_par_list = (yyvsp[(5) - (6)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyvsp[-4].st_bucket)->info.archi_type->formal_const_par_list = (yyvsp[-1].st_bucket_cell);
+			    }
+#line 2676 "aemilia_parser.tab.c"
     break;
 
   case 27:
 #line 680 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 2684 "aemilia_parser.tab.c"
     break;
 
   case 28:
 #line 684 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2692 "aemilia_parser.tab.c"
     break;
 
   case 29:
 #line 691 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 2703 "aemilia_parser.tab.c"
     break;
 
   case 30:
 #line 698 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].st_bucket),
-					                  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 2714 "aemilia_parser.tab.c"
     break;
 
   case 31:
 #line 708 "aemilia_parser.y"
-    {
+                            {
 			      check_id(VAR_ID_DECL,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      store_var_decl((yyvsp[(3) - (3)].st_bucket),
+			      store_var_decl((yyvsp[0].st_bucket),
 					     FORMAL_CONST_PAR_ID,
-					     (yyvsp[(2) - (3)].expr),
+					     (yyvsp[-1].expr),
 					     value_passing);
-			    ;}
+			    }
+#line 2728 "aemilia_parser.tab.c"
     break;
 
   case 32:
 #line 718 "aemilia_parser.y"
-    {
-			      handle_archi_type_par_assign((yyvsp[(3) - (6)].st_bucket),
-							   (yyvsp[(6) - (6)].expr_parse_info));
-			      (yyval.st_bucket) = (yyvsp[(3) - (6)].st_bucket);
-			    ;}
+                            {
+			      handle_archi_type_par_assign((yyvsp[-3].st_bucket),
+							   (yyvsp[0].expr_parse_info));
+			      (yyval.st_bucket) = (yyvsp[-3].st_bucket);
+			    }
+#line 2738 "aemilia_parser.tab.c"
     break;
 
   case 33:
 #line 727 "aemilia_parser.y"
-    {
-			      archi_type[spec_no]->info.archi_type->aet_list = (yyvsp[(2) - (2)].st_bucket_cell);
-			    ;}
+                            {
+			      archi_type[spec_no]->info.archi_type->aet_list = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2746 "aemilia_parser.tab.c"
     break;
 
   case 34:
 #line 731 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2755 "aemilia_parser.tab.c"
     break;
 
   case 35:
 #line 736 "aemilia_parser.y"
-    {
-			      archi_type[spec_no]->info.archi_type->aet_list = (yyvsp[(4) - (4)].st_bucket_cell);
-			    ;}
+                            {
+			      archi_type[spec_no]->info.archi_type->aet_list = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2763 "aemilia_parser.tab.c"
     break;
 
   case 36:
 #line 743 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
 			      aet = NULL;
-			    ;}
+			    }
+#line 2775 "aemilia_parser.tab.c"
     break;
 
   case 37:
 #line 751 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (2)].st_bucket) == NULL)?
-				     (yyvsp[(2) - (2)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (2)].st_bucket),
-					                  (yyvsp[(2) - (2)].st_bucket_cell));
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-1].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-1].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
 			      aet = NULL;
-			    ;}
+			    }
+#line 2787 "aemilia_parser.tab.c"
     break;
 
   case 38:
 #line 759 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 2796 "aemilia_parser.tab.c"
     break;
 
   case 39:
 #line 764 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(4) - (4)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2804 "aemilia_parser.tab.c"
     break;
 
   case 40:
 #line 768 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 2814 "aemilia_parser.tab.c"
     break;
 
   case 41:
 #line 777 "aemilia_parser.y"
-    {
+                            {
 			      check_id(AET_ID_DEF,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      aet = (yyvsp[(2) - (2)].st_bucket);
+			      aet = (yyvsp[0].st_bucket);
 			      id_prefix_in_expr = aet;
 			      act_type_list = NULL;
-			    ;}
+			    }
+#line 2827 "aemilia_parser.tab.c"
     break;
 
   case 42:
 #line 786 "aemilia_parser.y"
-    {
+                            {
 			      interaction_index = INPUT_UNI;
 			      no_declarations = TRUE;
-			    ;}
+			    }
+#line 2836 "aemilia_parser.tab.c"
     break;
 
   case 43:
 #line 791 "aemilia_parser.y"
-    {
+                            {
 			      interaction_index = OUTPUT_UNI;
 			      no_declarations = TRUE;
-			    ;}
+			    }
+#line 2845 "aemilia_parser.tab.c"
     break;
 
   case 44:
 #line 796 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket) = (yyvsp[(2) - (13)].st_bucket);
+                            {
+			      (yyval.st_bucket) = (yyvsp[-11].st_bucket);
 			      if ((yyval.st_bucket) != NULL)
-			        (yyval.st_bucket)->info.aet = alloc_aet((yyvsp[(5) - (13)].st_bucket_cell),
-						         (yyvsp[(7) - (13)].st_bucket_cell),
+			        (yyval.st_bucket)->info.aet = alloc_aet((yyvsp[-8].st_bucket_cell),
+						         (yyvsp[-6].st_bucket_cell),
 						         act_type_list);
-			    ;}
+			    }
+#line 2857 "aemilia_parser.tab.c"
     break;
 
   case 45:
 #line 807 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 2865 "aemilia_parser.tab.c"
     break;
 
   case 46:
 #line 811 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2873 "aemilia_parser.tab.c"
     break;
 
   case 47:
 #line 818 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 2884 "aemilia_parser.tab.c"
     break;
 
   case 48:
 #line 825 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].st_bucket),
-						          (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].st_bucket),
+						          (yyvsp[0].st_bucket_cell));
+			    }
+#line 2895 "aemilia_parser.tab.c"
     break;
 
   case 49:
 #line 835 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(aet,
-						&(yyvsp[(3) - (3)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(VAR_ID_DECL,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      store_var_decl((yyvsp[(3) - (3)].st_bucket),
+			      store_var_decl((yyvsp[0].st_bucket),
 					     FORMAL_CONST_PAR_ID,
-					     (yyvsp[(2) - (3)].expr),
+					     (yyvsp[-1].expr),
 					     value_passing);
-			      (yyval.st_bucket) = (yyvsp[(3) - (3)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 2912 "aemilia_parser.tab.c"
     break;
 
   case 50:
 #line 851 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(2) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(2) - (3)].st_bucket),
-							  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-1].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-1].st_bucket),
+							  (yyvsp[0].st_bucket_cell));
+			    }
+#line 2923 "aemilia_parser.tab.c"
     break;
 
   case 51:
 #line 861 "aemilia_parser.y"
-    {
-			      handle_behavior_def_1(&(yyvsp[(1) - (1)].st_bucket),
+                            {
+			      handle_behavior_def_1(&(yyvsp[0].st_bucket),
 						    TRUE);
-			    ;}
+			    }
+#line 2932 "aemilia_parser.tab.c"
     break;
 
   case 52:
 #line 866 "aemilia_parser.y"
-    {
-			      handle_behavior_def_2((yyvsp[(1) - (7)].st_bucket),
-						    (yyvsp[(4) - (7)].st_bucket_cell),
-						    (yyvsp[(6) - (7)].st_bucket_cell),
+                            {
+			      handle_behavior_def_2((yyvsp[-6].st_bucket),
+						    (yyvsp[-3].st_bucket_cell),
+						    (yyvsp[-1].st_bucket_cell),
 						    TRUE);
-			    ;}
+			    }
+#line 2943 "aemilia_parser.tab.c"
     break;
 
   case 53:
 #line 873 "aemilia_parser.y"
-    {
-			      handle_behavior_def_3((yyvsp[(1) - (10)].st_bucket),
-						    (yyvsp[(10) - (10)].term_parse_info));
-			      (yyval.st_bucket) = (yyvsp[(1) - (10)].st_bucket);
-			    ;}
+                            {
+			      handle_behavior_def_3((yyvsp[-9].st_bucket),
+						    (yyvsp[0].term_parse_info));
+			      (yyval.st_bucket) = (yyvsp[-9].st_bucket);
+			    }
+#line 2953 "aemilia_parser.tab.c"
     break;
 
   case 54:
 #line 882 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 2961 "aemilia_parser.tab.c"
     break;
 
   case 55:
 #line 886 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 2969 "aemilia_parser.tab.c"
     break;
 
   case 56:
 #line 893 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 2980 "aemilia_parser.tab.c"
     break;
 
   case 57:
 #line 900 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].st_bucket),
-					                  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 2991 "aemilia_parser.tab.c"
     break;
 
   case 58:
 #line 910 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(behavior,
-						&(yyvsp[(2) - (2)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(VAR_ID_DECL,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      store_var_decl((yyvsp[(2) - (2)].st_bucket),
+			      store_var_decl((yyvsp[0].st_bucket),
 					     FORMAL_VAR_PAR_ID,
-					     (yyvsp[(1) - (2)].expr),
+					     (yyvsp[-1].expr),
 					     value_passing);
-			    ;}
+			    }
+#line 3007 "aemilia_parser.tab.c"
     break;
 
   case 59:
 #line 922 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(2) - (5)].st_bucket) != NULL) &&
-			          ((yyvsp[(5) - (5)].expr_parse_info) != NULL) &&
-				  check_expr_all((yyvsp[(5) - (5)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[-3].st_bucket) != NULL) &&
+			          ((yyvsp[0].expr_parse_info) != NULL) &&
+				  check_expr_all((yyvsp[0].expr_parse_info)->expr,
 						 NULL,
 						 NULL,
-						 (yyvsp[(2) - (5)].st_bucket),
+						 (yyvsp[-3].st_bucket),
 						 ACTUAL_PAR_NOT_UNDECL_ID_FREE,
 						 NO_ERROR,
 						 ILL_TYPED_ASSIGN))
 			      {
 			        if (init_behav_actual_var_par_list == NULL)
 			          last_init_behav_actual_var_par_cell = init_behav_actual_var_par_list =
-				    alloc_st_bucket_cell((yyvsp[(5) - (5)].expr_parse_info)->expr,
+				    alloc_st_bucket_cell((yyvsp[0].expr_parse_info)->expr,
 						         NULL);
 			        else
 			          last_init_behav_actual_var_par_cell =
 				    last_init_behav_actual_var_par_cell->next_st_bucket_cell =
-				      alloc_st_bucket_cell((yyvsp[(5) - (5)].expr_parse_info)->expr,
+				      alloc_st_bucket_cell((yyvsp[0].expr_parse_info)->expr,
 						           NULL);
 			      }
-			      (yyval.st_bucket) = (yyvsp[(2) - (5)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[-3].st_bucket);
+			    }
+#line 3035 "aemilia_parser.tab.c"
     break;
 
   case 60:
 #line 949 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 3043 "aemilia_parser.tab.c"
     break;
 
   case 61:
 #line 953 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 3051 "aemilia_parser.tab.c"
     break;
 
   case 62:
 #line 960 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 3062 "aemilia_parser.tab.c"
     break;
 
   case 63:
 #line 967 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (2)].st_bucket) == NULL)?
-				     (yyvsp[(2) - (2)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (2)].st_bucket),
-					                  (yyvsp[(2) - (2)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-1].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-1].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 3073 "aemilia_parser.tab.c"
     break;
 
   case 64:
 #line 974 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 3082 "aemilia_parser.tab.c"
     break;
 
   case 65:
 #line 979 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(4) - (4)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 3090 "aemilia_parser.tab.c"
     break;
 
   case 66:
 #line 983 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 3100 "aemilia_parser.tab.c"
     break;
 
   case 67:
 #line 992 "aemilia_parser.y"
-    {
-			      handle_behavior_def_1(&(yyvsp[(2) - (2)].st_bucket),
+                            {
+			      handle_behavior_def_1(&(yyvsp[0].st_bucket),
 						    FALSE);
-			    ;}
+			    }
+#line 3109 "aemilia_parser.tab.c"
     break;
 
   case 68:
 #line 997 "aemilia_parser.y"
-    {
-			      handle_behavior_def_2((yyvsp[(2) - (8)].st_bucket),
-						    (yyvsp[(5) - (8)].st_bucket_cell),
-						    (yyvsp[(7) - (8)].st_bucket_cell),
+                            {
+			      handle_behavior_def_2((yyvsp[-6].st_bucket),
+						    (yyvsp[-3].st_bucket_cell),
+						    (yyvsp[-1].st_bucket_cell),
 						    FALSE);
-			    ;}
+			    }
+#line 3120 "aemilia_parser.tab.c"
     break;
 
   case 69:
 #line 1004 "aemilia_parser.y"
-    {
-			      handle_behavior_def_3((yyvsp[(2) - (11)].st_bucket),
-						    (yyvsp[(11) - (11)].term_parse_info));
-			      (yyval.st_bucket) = (yyvsp[(2) - (11)].st_bucket);
-			    ;}
+                            {
+			      handle_behavior_def_3((yyvsp[-9].st_bucket),
+						    (yyvsp[0].term_parse_info));
+			      (yyval.st_bucket) = (yyvsp[-9].st_bucket);
+			    }
+#line 3130 "aemilia_parser.tab.c"
     break;
 
   case 70:
 #line 1013 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 3138 "aemilia_parser.tab.c"
     break;
 
   case 71:
 #line 1017 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 3146 "aemilia_parser.tab.c"
     break;
 
   case 72:
 #line 1024 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 3157 "aemilia_parser.tab.c"
     break;
 
   case 73:
 #line 1031 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].st_bucket),
-					                  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 3168 "aemilia_parser.tab.c"
     break;
 
   case 74:
 #line 1041 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(behavior,
-						&(yyvsp[(2) - (2)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(VAR_ID_DECL,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      store_var_decl((yyvsp[(2) - (2)].st_bucket),
+			      store_var_decl((yyvsp[0].st_bucket),
 					     FORMAL_VAR_PAR_ID,
-					     (yyvsp[(1) - (2)].expr),
+					     (yyvsp[-1].expr),
 					     value_passing);
-			      (yyval.st_bucket) = (yyvsp[(2) - (2)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 3185 "aemilia_parser.tab.c"
     break;
 
   case 75:
 #line 1057 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 3193 "aemilia_parser.tab.c"
     break;
 
   case 76:
 #line 1061 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 3201 "aemilia_parser.tab.c"
     break;
 
   case 77:
 #line 1068 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 3212 "aemilia_parser.tab.c"
     break;
 
   case 78:
 #line 1075 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].st_bucket),
-					                  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 3223 "aemilia_parser.tab.c"
     break;
 
   case 79:
 #line 1085 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(behavior,
-						&(yyvsp[(3) - (3)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(VAR_ID_DECL,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      store_var_decl((yyvsp[(3) - (3)].st_bucket),
+			      store_var_decl((yyvsp[0].st_bucket),
 					     LOCAL_VAR_ID,
-					     (yyvsp[(2) - (3)].expr),
+					     (yyvsp[-1].expr),
 					     value_passing);
-			      (yyval.st_bucket) = (yyvsp[(3) - (3)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 3240 "aemilia_parser.tab.c"
     break;
 
   case 80:
 #line 1101 "aemilia_parser.y"
-    {
-			      (yyval.expr) = (yyvsp[(1) - (1)].expr);
-			    ;}
+                            {
+			      (yyval.expr) = (yyvsp[0].expr);
+			    }
+#line 3248 "aemilia_parser.tab.c"
     break;
 
   case 81:
 #line 1105 "aemilia_parser.y"
-    {
-			      (yyval.expr) = (yyvsp[(1) - (1)].expr);
-			    ;}
+                            {
+			      (yyval.expr) = (yyvsp[0].expr);
+			    }
+#line 3256 "aemilia_parser.tab.c"
     break;
 
   case 82:
 #line 1112 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3453,14 +3268,15 @@ yyreduce:
 					      0.0L,
 					      NULL);
 			      value_passing = SYMBOLIC_VP;
-			    ;}
+			    }
+#line 3273 "aemilia_parser.tab.c"
     break;
 
   case 83:
 #line 1125 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(3) - (3)].expr_parse_info) != NULL) &&
-			          !check_expr_all((yyvsp[(3) - (3)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+			          !check_expr_all((yyvsp[0].expr_parse_info)->expr,
 						  NULL,
 						  NULL,
 						  (ST_BUCKET *)search_lexeme_table("integer",
@@ -3468,15 +3284,16 @@ yyreduce:
 						  INTEGER_BOUND_NOT_UNDECL_ID_FREE,
 						  INTEGER_BOUND_NOT_RANDOMNESS_FREE,
 						  ILL_TYPED_INTEGER_BOUND))
-				(yyvsp[(3) - (3)].expr_parse_info) = NULL;
-			    ;}
+				(yyvsp[0].expr_parse_info) = NULL;
+			    }
+#line 3290 "aemilia_parser.tab.c"
     break;
 
   case 84:
 #line 1138 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(6) - (6)].expr_parse_info) != NULL) &&
-			          !check_expr_all((yyvsp[(6) - (6)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+			          !check_expr_all((yyvsp[0].expr_parse_info)->expr,
 						  NULL,
 						  NULL,
 						  (ST_BUCKET *)search_lexeme_table("integer",
@@ -3484,21 +3301,22 @@ yyreduce:
 						  INTEGER_BOUND_NOT_UNDECL_ID_FREE,
 						  INTEGER_BOUND_NOT_RANDOMNESS_FREE,
 						  ILL_TYPED_INTEGER_BOUND))
-				(yyvsp[(6) - (6)].expr_parse_info) = NULL;
-			    ;}
+				(yyvsp[0].expr_parse_info) = NULL;
+			    }
+#line 3307 "aemilia_parser.tab.c"
     break;
 
   case 85:
 #line 1151 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
-					      (((yyvsp[(3) - (8)].expr_parse_info) != NULL) &&
-					       ((yyvsp[(6) - (8)].expr_parse_info) != NULL))?
-					        (yyvsp[(3) - (8)].expr_parse_info)->expr:
+					      (((yyvsp[-5].expr_parse_info) != NULL) &&
+					       ((yyvsp[-2].expr_parse_info) != NULL))?
+					        (yyvsp[-5].expr_parse_info)->expr:
 						NULL,
-					      (((yyvsp[(3) - (8)].expr_parse_info) != NULL) &&
-					       ((yyvsp[(6) - (8)].expr_parse_info) != NULL))?
-					        (yyvsp[(6) - (8)].expr_parse_info)->expr:
+					      (((yyvsp[-5].expr_parse_info) != NULL) &&
+					       ((yyvsp[-2].expr_parse_info) != NULL))?
+					        (yyvsp[-2].expr_parse_info)->expr:
 						NULL,
 					      NULL,
 					      (DTT_BUCKET *)search_lexeme_table("i()",
@@ -3506,12 +3324,13 @@ yyreduce:
 					      FALSE,
 					      0.0L,
 					      NULL);
-			    ;}
+			    }
+#line 3329 "aemilia_parser.tab.c"
     break;
 
   case 86:
 #line 1169 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3522,12 +3341,13 @@ yyreduce:
 					      0.0L,
 					      NULL);
 			      value_passing = SYMBOLIC_VP;
-			    ;}
+			    }
+#line 3346 "aemilia_parser.tab.c"
     break;
 
   case 87:
 #line 1182 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3537,26 +3357,28 @@ yyreduce:
 					      FALSE,
 					      0.0L,
 					      NULL);
-			    ;}
+			    }
+#line 3362 "aemilia_parser.tab.c"
     break;
 
   case 88:
 #line 1194 "aemilia_parser.y"
-    {
+                            {
 			      handle_struct_data_type_decl(LIST_CONS_OP,
 					       		   &(yyval.expr),
-					       		   (yyvsp[(3) - (4)].expr),
+					       		   (yyvsp[-1].expr),
 					       		   NULL,
 					       		   NULL);
 			      value_passing = SYMBOLIC_VP;
-			    ;}
+			    }
+#line 3375 "aemilia_parser.tab.c"
     break;
 
   case 89:
 #line 1203 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(3) - (3)].expr_parse_info) != NULL) &&
-			          !check_expr_all((yyvsp[(3) - (3)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+			          !check_expr_all((yyvsp[0].expr_parse_info)->expr,
 						  NULL,
 						  NULL,
 						  (ST_BUCKET *)search_lexeme_table("integer",
@@ -3564,89 +3386,95 @@ yyreduce:
 						  ARRAY_LENGTH_NOT_UNDECL_ID_FREE,
 						  ARRAY_LENGTH_NOT_RANDOMNESS_FREE,
 						  ILL_TYPED_ARRAY_LENGTH))
-				(yyvsp[(3) - (3)].expr_parse_info) = NULL;
-			    ;}
+				(yyvsp[0].expr_parse_info) = NULL;
+			    }
+#line 3392 "aemilia_parser.tab.c"
     break;
 
   case 90:
 #line 1216 "aemilia_parser.y"
-    {
+                            {
 			      handle_struct_data_type_decl(ARRAY_CONS_OP,
 					       		   &(yyval.expr),
-					       		   (yyvsp[(6) - (7)].expr),
-					       		   (yyvsp[(3) - (7)].expr_parse_info),
+					       		   (yyvsp[-1].expr),
+					       		   (yyvsp[-4].expr_parse_info),
 					       		   NULL);
-			    ;}
+			    }
+#line 3404 "aemilia_parser.tab.c"
     break;
 
   case 91:
 #line 1224 "aemilia_parser.y"
-    {
+                            {
 			      handle_struct_data_type_decl(RECORD_CONS_OP,
 					       		   &(yyval.expr),
 					       		   NULL,
 					       		   NULL,
-					       		   (yyvsp[(3) - (4)].st_bucket_cell));
-			    ;}
+					       		   (yyvsp[-1].st_bucket_cell));
+			    }
+#line 3416 "aemilia_parser.tab.c"
     break;
 
   case 92:
 #line 1235 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 3427 "aemilia_parser.tab.c"
     break;
 
   case 93:
 #line 1242 "aemilia_parser.y"
-    {
-			      if (check_list_membership((yyvsp[(3) - (3)].st_bucket),
-							(yyvsp[(1) - (3)].st_bucket_cell),
+                            {
+			      if (check_list_membership((yyvsp[0].st_bucket),
+							(yyvsp[-2].st_bucket_cell),
 							TRUE))
 			      {
 				signal_error(REC_FIELD_REDECL,
 					     NULL,
 					     NULL);
-				(yyvsp[(3) - (3)].st_bucket) = NULL;
+				(yyvsp[0].st_bucket) = NULL;
 			      }
-			      (yyval.st_bucket_cell) = ((yyvsp[(3) - (3)].st_bucket) == NULL)?
-				     (yyvsp[(1) - (3)].st_bucket_cell):
-				     append_list((yyvsp[(1) - (3)].st_bucket_cell),
-						 alloc_st_bucket_cell((yyvsp[(3) - (3)].st_bucket),
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
+				     (yyvsp[-2].st_bucket_cell):
+				     append_list((yyvsp[-2].st_bucket_cell),
+						 alloc_st_bucket_cell((yyvsp[0].st_bucket),
 								      NULL));
-			    ;}
+			    }
+#line 3448 "aemilia_parser.tab.c"
     break;
 
   case 94:
 #line 1262 "aemilia_parser.y"
-    {
+                            {
 			      /* the first check without prefixing the record field identifier is needed */
 			      /* to find as declared the identifier whenever it is used (no usage occurs */
 			      /* with the corresponding prefix) */
 			      check_id(REC_FIELD_ID_DECL,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      if ((yyvsp[(2) - (2)].st_bucket) != NULL)
+			      if ((yyvsp[0].st_bucket) != NULL)
 			      {
-				(yyvsp[(2) - (2)].st_bucket)->info.expr = (yyvsp[(1) - (2)].expr);
-			        build_typed_rec_field_id((yyvsp[(1) - (2)].expr),
-						         &(yyvsp[(2) - (2)].st_bucket));
+				(yyvsp[0].st_bucket)->info.expr = (yyvsp[-1].expr);
+			        build_typed_rec_field_id((yyvsp[-1].expr),
+						         &(yyvsp[0].st_bucket));
 			        check_id(REC_FIELD_ID_DECL,
-				         &(yyvsp[(2) - (2)].st_bucket),
+				         &(yyvsp[0].st_bucket),
 				         FALSE);
-			        if ((yyvsp[(2) - (2)].st_bucket) != NULL)
-				  (yyvsp[(2) - (2)].st_bucket)->info.expr = (yyvsp[(1) - (2)].expr);
+			        if ((yyvsp[0].st_bucket) != NULL)
+				  (yyvsp[0].st_bucket)->info.expr = (yyvsp[-1].expr);
 			      }
-			      (yyval.st_bucket) = (yyvsp[(2) - (2)].st_bucket);
-	  		    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+	  		    }
+#line 3473 "aemilia_parser.tab.c"
     break;
 
   case 95:
 #line 1286 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3656,12 +3484,13 @@ yyreduce:
 					      FALSE,
 					      0.0L,
 					      NULL);
-			    ;}
+			    }
+#line 3489 "aemilia_parser.tab.c"
     break;
 
   case 96:
 #line 1298 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3671,12 +3500,13 @@ yyreduce:
 					      FALSE,
 					      0.0L,
 					      NULL);
-			    ;}
+			    }
+#line 3505 "aemilia_parser.tab.c"
     break;
 
   case 97:
 #line 1310 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr) = alloc_expr(NO_EXPR_OP,
 					      NULL,
 					      NULL,
@@ -3686,12 +3516,13 @@ yyreduce:
 					      FALSE,
 					      0.0L,
 					      NULL);
-			    ;}
+			    }
+#line 3521 "aemilia_parser.tab.c"
     break;
 
   case 98:
 #line 1325 "aemilia_parser.y"
-    {
+                            {
 			      handle_term(&(yyval.term_parse_info),
 					  STOP_OP,
 					  NULL,
@@ -3700,218 +3531,233 @@ yyreduce:
 					  NULL,
 					  NULL,
 					  NULL);
-			    ;}
+			    }
+#line 3536 "aemilia_parser.tab.c"
     break;
 
   case 99:
 #line 1336 "aemilia_parser.y"
-    {
+                            {
 			      handle_term(&(yyval.term_parse_info),
 					  ACT_PREFIX_OP,
-					  (yyvsp[(3) - (3)].term_parse_info),
+					  (yyvsp[0].term_parse_info),
 					  NULL,
-					  (yyvsp[(1) - (3)].action_parse_info),
+					  (yyvsp[-2].action_parse_info),
 					  NULL,
 					  NULL,
 					  NULL);
-			    ;}
+			    }
+#line 3551 "aemilia_parser.tab.c"
     break;
 
   case 100:
 #line 1347 "aemilia_parser.y"
-    {
+                            {
 			      handle_term(&(yyval.term_parse_info),
 					  ALT_COMP_OP,
-					  (yyvsp[(3) - (5)].term_parse_info),
-					  (yyvsp[(4) - (5)].term_parse_info),
+					  (yyvsp[-2].term_parse_info),
+					  (yyvsp[-1].term_parse_info),
 					  NULL,
 					  NULL,
 					  NULL,
 					  NULL);
-			    ;}
+			    }
+#line 3566 "aemilia_parser.tab.c"
     break;
 
   case 101:
 #line 1361 "aemilia_parser.y"
-    {
-			      (yyval.term_parse_info) = (yyvsp[(1) - (1)].term_parse_info);
-			    ;}
+                            {
+			      (yyval.term_parse_info) = (yyvsp[0].term_parse_info);
+			    }
+#line 3574 "aemilia_parser.tab.c"
     break;
 
   case 102:
 #line 1365 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(aet,
-						&(yyvsp[(1) - (1)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(BEHAV_ID_USE,
-				       &(yyvsp[(1) - (1)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
 			      local_var_actual_par_list = NULL;
-			    ;}
+			    }
+#line 3587 "aemilia_parser.tab.c"
     break;
 
   case 103:
 #line 1374 "aemilia_parser.y"
-    {
+                            {
 			      handle_term(&(yyval.term_parse_info),
 					  BEHAV_INVOC_OP,
 					  NULL,
 					  NULL,
 					  NULL,
 					  NULL,
-					  (yyvsp[(1) - (5)].st_bucket),
-					  (yyvsp[(4) - (5)].st_bucket_cell));
-			      if ((yyvsp[(1) - (5)].st_bucket) != NULL)
-				invoked_behavior_list = alloc_st_bucket_cell((yyvsp[(1) - (5)].st_bucket),
+					  (yyvsp[-4].st_bucket),
+					  (yyvsp[-1].st_bucket_cell));
+			      if ((yyvsp[-4].st_bucket) != NULL)
+				invoked_behavior_list = alloc_st_bucket_cell((yyvsp[-4].st_bucket),
 									     invoked_behavior_list);
-			    ;}
+			    }
+#line 3605 "aemilia_parser.tab.c"
     break;
 
   case 104:
 #line 1391 "aemilia_parser.y"
-    {
-			      if ((yyvsp[(1) - (2)].expr_parse_info) == NULL)
-				(yyval.term_parse_info) = (yyvsp[(2) - (2)].term_parse_info);
+                            {
+			      if ((yyvsp[-1].expr_parse_info) == NULL)
+				(yyval.term_parse_info) = (yyvsp[0].term_parse_info);
 			      else
 			        handle_term(&(yyval.term_parse_info),
 					    COND_OP,
-					    (yyvsp[(2) - (2)].term_parse_info),
+					    (yyvsp[0].term_parse_info),
 					    NULL,
 					    NULL,
-					    (yyvsp[(1) - (2)].expr_parse_info),
+					    (yyvsp[-1].expr_parse_info),
 					    NULL,
 					    NULL);
-			    ;}
+			    }
+#line 3623 "aemilia_parser.tab.c"
     break;
 
   case 105:
 #line 1408 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr_parse_info) = NULL;
-			    ;}
+			    }
+#line 3631 "aemilia_parser.tab.c"
     break;
 
   case 106:
 #line 1412 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(3) - (3)].expr_parse_info) != NULL) &&
-				  ((yyvsp[(3) - (3)].expr_parse_info)->expr->info.expr->data_type != NULL) &&
-				  ((yyvsp[(3) - (3)].expr_parse_info)->expr->info.expr->data_type->data_type_lexeme[0] != 'b'))
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  ((yyvsp[0].expr_parse_info)->expr->info.expr->data_type != NULL) &&
+				  ((yyvsp[0].expr_parse_info)->expr->info.expr->data_type->data_type_lexeme[0] != 'b'))
 			      {
 				signal_error(ILL_TYPED_EXPR,
 					     NULL,
 					     NULL);
-				(yyvsp[(3) - (3)].expr_parse_info) = NULL;
+				(yyvsp[0].expr_parse_info) = NULL;
 			      }
-			    ;}
+			    }
+#line 3647 "aemilia_parser.tab.c"
     break;
 
   case 107:
 #line 1424 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (6)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-3].expr_parse_info);
+			    }
+#line 3655 "aemilia_parser.tab.c"
     break;
 
   case 108:
 #line 1431 "aemilia_parser.y"
-    {
-			      (yyval.term_parse_info) = (yyvsp[(1) - (1)].term_parse_info);
-			    ;}
+                            {
+			      (yyval.term_parse_info) = (yyvsp[0].term_parse_info);
+			    }
+#line 3663 "aemilia_parser.tab.c"
     break;
 
   case 109:
 #line 1435 "aemilia_parser.y"
-    {
+                            {
 			      handle_term(&(yyval.term_parse_info),
 					  ALT_COMP_OP,
-					  (yyvsp[(1) - (2)].term_parse_info),
-					  (yyvsp[(2) - (2)].term_parse_info),
+					  (yyvsp[-1].term_parse_info),
+					  (yyvsp[0].term_parse_info),
 					  NULL,
 					  NULL,
 					  NULL,
 					  NULL);
-			    ;}
+			    }
+#line 3678 "aemilia_parser.tab.c"
     break;
 
   case 110:
 #line 1449 "aemilia_parser.y"
-    {
-			      (yyval.term_parse_info) = (yyvsp[(2) - (2)].term_parse_info);
-			    ;}
+                            {
+			      (yyval.term_parse_info) = (yyvsp[0].term_parse_info);
+			    }
+#line 3686 "aemilia_parser.tab.c"
     break;
 
   case 111:
 #line 1456 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(aet,
-						&(yyvsp[(2) - (2)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(ACT_TYPE_ID_USE,
-				       &(yyvsp[(2) - (2)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      if (((yyvsp[(2) - (2)].st_bucket) != NULL) &&
-				  !check_list_membership((yyvsp[(2) - (2)].st_bucket),
+			      if (((yyvsp[0].st_bucket) != NULL) &&
+				  !check_list_membership((yyvsp[0].st_bucket),
 							 act_type_list,
 							 FALSE))
-				act_type_list = alloc_st_bucket_cell((yyvsp[(2) - (2)].st_bucket),
+				act_type_list = alloc_st_bucket_cell((yyvsp[0].st_bucket),
 								     act_type_list);
 			      local_var_actual_par_list = NULL;
-			    ;}
+			    }
+#line 3705 "aemilia_parser.tab.c"
     break;
 
   case 112:
 #line 1471 "aemilia_parser.y"
-    {
-			      if ((yyvsp[(2) - (4)].st_bucket) != NULL)
+                            {
+			      if ((yyvsp[-2].st_bucket) != NULL)
 			      {
-				if ((yyvsp[(2) - (4)].st_bucket)->info.act_type == NULL)
-				  (yyvsp[(2) - (4)].st_bucket)->info.act_type = alloc_act_type(action_index,
-							             (yyvsp[(4) - (4)].st_bucket_cell),
+				if ((yyvsp[-2].st_bucket)->info.act_type == NULL)
+				  (yyvsp[-2].st_bucket)->info.act_type = alloc_act_type(action_index,
+							             (yyvsp[0].st_bucket_cell),
 							             NULL);
 				else
-				  if (action_index != (yyvsp[(2) - (4)].st_bucket)->info.act_type->act_type_index)
+				  if (action_index != (yyvsp[-2].st_bucket)->info.act_type->act_type_index)
 				  {
 				    signal_error(INCONSISTENT_USE_ACT_TYPE,
 						 NULL,
 						 NULL);
-				    (yyvsp[(2) - (4)].st_bucket) = NULL;
+				    (yyvsp[-2].st_bucket) = NULL;
 				  }
 				  else
-				    if (!check_expr_list_types((yyvsp[(2) - (4)].st_bucket)->info.act_type->par_list,
-							       (yyvsp[(4) - (4)].st_bucket_cell),
+				    if (!check_expr_list_types((yyvsp[-2].st_bucket)->info.act_type->par_list,
+							       (yyvsp[0].st_bucket_cell),
 							       TRUE))
-				      (yyvsp[(2) - (4)].st_bucket) = NULL;
+				      (yyvsp[-2].st_bucket) = NULL;
 			      }
 			      rate_index = NO_RATE;
 			      priority = rate = NULL;
-			    ;}
+			    }
+#line 3734 "aemilia_parser.tab.c"
     break;
 
   case 113:
 #line 1496 "aemilia_parser.y"
-    {
-			      if ((yyvsp[(2) - (7)].st_bucket) != NULL)
+                            {
+			      if ((yyvsp[-5].st_bucket) != NULL)
 			      {
-			        if (((yyvsp[(2) - (7)].st_bucket)->info.act_type->rate_index == NO_RATE) &&
+			        if (((yyvsp[-5].st_bucket)->info.act_type->rate_index == NO_RATE) &&
 				    (rate_index != NO_RATE) &&
 				    (priority != NULL))
 			        {
-				  (yyvsp[(2) - (7)].st_bucket)->info.act_type->rate_index = rate_index;
-				  (yyvsp[(2) - (7)].st_bucket)->info.act_type->priority = priority;
+				  (yyvsp[-5].st_bucket)->info.act_type->rate_index = rate_index;
+				  (yyvsp[-5].st_bucket)->info.act_type->priority = priority;
 			        }
 			        if ((rate_index != NO_RATE) &&
 				    (priority != NULL) &&
-				    (((yyvsp[(2) - (7)].st_bucket)->info.act_type->rate_index != rate_index) ||
-				     (((yyvsp[(2) - (7)].st_bucket)->info.act_type->priority->symbol_index == NUMBER) &&
-				      ((yyvsp[(2) - (7)].st_bucket)->info.act_type->priority->info.expr->value !=
+				    (((yyvsp[-5].st_bucket)->info.act_type->rate_index != rate_index) ||
+				     (((yyvsp[-5].st_bucket)->info.act_type->priority->symbol_index == NUMBER) &&
+				      ((yyvsp[-5].st_bucket)->info.act_type->priority->info.expr->value !=
 					 priority->info.expr->value)) ||
-				     (((yyvsp[(2) - (7)].st_bucket)->info.act_type->priority->symbol_index != NUMBER) &&
-				      ((yyvsp[(2) - (7)].st_bucket)->info.act_type->priority != priority))))
+				     (((yyvsp[-5].st_bucket)->info.act_type->priority->symbol_index != NUMBER) &&
+				      ((yyvsp[-5].st_bucket)->info.act_type->priority != priority))))
 			        {
 				  signal_error(INCONSISTENT_USE_ACT_TYPE,
 					       NULL,
 					       NULL);
-				  (yyvsp[(2) - (7)].st_bucket) = NULL;
+				  (yyvsp[-5].st_bucket) = NULL;
 			        }
 			      }
 			      if ((action_index == INPUT) &&
@@ -3923,117 +3769,128 @@ yyreduce:
 					     NULL);
 				rate_index = NO_RATE;
 			      }
-			    ;}
+			    }
+#line 3774 "aemilia_parser.tab.c"
     break;
 
   case 114:
 #line 1532 "aemilia_parser.y"
-    {
-			      (yyval.action_parse_info) = alloc_action_parse_info((((yyvsp[(2) - (9)].st_bucket) == NULL) ||
+                            {
+			      (yyval.action_parse_info) = alloc_action_parse_info((((yyvsp[-7].st_bucket) == NULL) ||
 							    (rate_index == NO_RATE) ||
 							    (priority == NULL) ||
 							    (rate == NULL))?
 							     NULL:
-							     set_action_bucket((yyvsp[(2) - (9)].st_bucket),
+							     set_action_bucket((yyvsp[-7].st_bucket),
 									       action_index,
-									       (yyvsp[(4) - (9)].st_bucket_cell),
+									       (yyvsp[-5].st_bucket_cell),
 									       rate_index,
 									       priority,
 									       rate),
 							   local_var_actual_par_list);
-			    ;}
+			    }
+#line 3793 "aemilia_parser.tab.c"
     break;
 
   case 115:
 #line 1550 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
 			      action_index = UNSTRUCTURED;
-			    ;}
+			    }
+#line 3802 "aemilia_parser.tab.c"
     break;
 
   case 116:
 #line 1555 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(3) - (4)].st_bucket_cell);
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[-1].st_bucket_cell);
 			      action_index = INPUT;
-			    ;}
+			    }
+#line 3811 "aemilia_parser.tab.c"
     break;
 
   case 117:
 #line 1560 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(3) - (4)].st_bucket_cell);
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[-1].st_bucket_cell);
 			      action_index = OUTPUT;
-			    ;}
+			    }
+#line 3820 "aemilia_parser.tab.c"
     break;
 
   case 118:
 #line 1568 "aemilia_parser.y"
-    {
-			      handle_input_act_type_par(&(yyvsp[(1) - (1)].st_bucket),
+                            {
+			      handle_input_act_type_par(&(yyvsp[0].st_bucket),
 							&local_var_actual_par_list);
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 3833 "aemilia_parser.tab.c"
     break;
 
   case 119:
 #line 1577 "aemilia_parser.y"
-    {
-			      handle_input_act_type_par(&(yyvsp[(1) - (1)].st_bucket),
+                            {
+			      handle_input_act_type_par(&(yyvsp[0].st_bucket),
 							&local_var_actual_par_list);
-			    ;}
+			    }
+#line 3842 "aemilia_parser.tab.c"
     break;
 
   case 120:
 #line 1582 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (4)].st_bucket) == NULL)?
-				     (yyvsp[(4) - (4)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (4)].st_bucket),
-					                  (yyvsp[(4) - (4)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-3].st_bucket) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-3].st_bucket),
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 3853 "aemilia_parser.tab.c"
     break;
 
   case 121:
 #line 1592 "aemilia_parser.y"
-    {
-			      handle_output_act_type_par((yyvsp[(1) - (1)].expr_parse_info),
+                            {
+			      handle_output_act_type_par((yyvsp[0].expr_parse_info),
 							 &local_var_actual_par_list);
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].expr_parse_info) == NULL)?
+			      (yyval.st_bucket_cell) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].expr_parse_info)->expr,
+				     alloc_st_bucket_cell((yyvsp[0].expr_parse_info)->expr,
 					                  NULL);
-			    ;}
+			    }
+#line 3866 "aemilia_parser.tab.c"
     break;
 
   case 122:
 #line 1601 "aemilia_parser.y"
-    {
-			      handle_output_act_type_par((yyvsp[(1) - (1)].expr_parse_info),
+                            {
+			      handle_output_act_type_par((yyvsp[0].expr_parse_info),
 							 &local_var_actual_par_list);
-			    ;}
+			    }
+#line 3875 "aemilia_parser.tab.c"
     break;
 
   case 123:
 #line 1606 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (4)].expr_parse_info) == NULL)?
-				     (yyvsp[(4) - (4)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (4)].expr_parse_info)->expr,
-					                  (yyvsp[(4) - (4)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-3].expr_parse_info) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-3].expr_parse_info)->expr,
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 3886 "aemilia_parser.tab.c"
     break;
 
   case 124:
 #line 1616 "aemilia_parser.y"
-    {
+                            {
 			      rate_index = EXP_TIMED;
-			      if (((yyvsp[(3) - (3)].expr_parse_info) != NULL) &&
-				  check_expr_all((yyvsp[(3) - (3)].expr_parse_info)->expr,
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  check_expr_all((yyvsp[0].expr_parse_info)->expr,
                                                  NULL,
                                                  NULL,
                                                  (ST_BUCKET *)search_lexeme_table("rate",
@@ -4042,52 +3899,57 @@ yyreduce:
                                                  EXP_RATE_NOT_RANDOMNESS_FREE,
                                                  ILL_TYPED_EXP_RATE))
 			      {
-			        if (((yyvsp[(3) - (3)].expr_parse_info)->expr->symbol_index == NUMBER) &&
-				    ((yyvsp[(3) - (3)].expr_parse_info)->expr->info.expr->value <= 0.0L))
+			        if (((yyvsp[0].expr_parse_info)->expr->symbol_index == NUMBER) &&
+				    ((yyvsp[0].expr_parse_info)->expr->info.expr->value <= 0.0L))
 				  signal_error(EXP_RATE_LE_ZERO,
 					       NULL,
 					       NULL);
 			        else
 				{
 				  priority = set_number_bucket("0");
-				  rate = (yyvsp[(3) - (3)].expr_parse_info)->expr;
+				  rate = (yyvsp[0].expr_parse_info)->expr;
 				}
 			      }
-			    ;}
+			    }
+#line 3915 "aemilia_parser.tab.c"
     break;
 
   case 125:
 #line 1641 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 3922 "aemilia_parser.tab.c"
     break;
 
   case 126:
 #line 1644 "aemilia_parser.y"
-    {
+                            {
 			      rate_index = IMMEDIATE;
-			    ;}
+			    }
+#line 3930 "aemilia_parser.tab.c"
     break;
 
   case 127:
 #line 1648 "aemilia_parser.y"
-    {
+                            {
 			      rate_index = PASSIVE;
-			    ;}
+			    }
+#line 3938 "aemilia_parser.tab.c"
     break;
 
   case 128:
 #line 1655 "aemilia_parser.y"
-    {
+                            {
 			      priority = rate = set_number_bucket("1");
-			    ;}
+			    }
+#line 3946 "aemilia_parser.tab.c"
     break;
 
   case 129:
 #line 1659 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(2) - (2)].expr_parse_info) != NULL) &&
-				  check_expr_all((yyvsp[(2) - (2)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  check_expr_all((yyvsp[0].expr_parse_info)->expr,
                                                  NULL,
                                                  NULL,
                                                  (ST_BUCKET *)search_lexeme_table("prio",
@@ -4096,22 +3958,23 @@ yyreduce:
                                                  PRIORITY_NOT_RANDOMNESS_FREE,
                                                  ILL_TYPED_PRIORITY))
 			      {
-			        if (((yyvsp[(2) - (2)].expr_parse_info)->expr->symbol_index == NUMBER) &&
-				    ((yyvsp[(2) - (2)].expr_parse_info)->expr->info.expr->value <= 0.0L))
+			        if (((yyvsp[0].expr_parse_info)->expr->symbol_index == NUMBER) &&
+				    ((yyvsp[0].expr_parse_info)->expr->info.expr->value <= 0.0L))
 				  signal_error(PRIORITY_LE_ZERO,
 					       NULL,
 					       NULL);
 			        else
-				  priority = (yyvsp[(2) - (2)].expr_parse_info)->expr;
+				  priority = (yyvsp[0].expr_parse_info)->expr;
 			      }
-			    ;}
+			    }
+#line 3971 "aemilia_parser.tab.c"
     break;
 
   case 130:
 #line 1680 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(5) - (5)].expr_parse_info) != NULL) &&
-				  check_expr_all((yyvsp[(5) - (5)].expr_parse_info)->expr,
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  check_expr_all((yyvsp[0].expr_parse_info)->expr,
                                                  NULL,
                                                  NULL,
                                                  (ST_BUCKET *)search_lexeme_table("weight",
@@ -4120,1388 +3983,1535 @@ yyreduce:
                                                  WEIGHT_NOT_RANDOMNESS_FREE,
                                                  ILL_TYPED_WEIGHT))
 			      {
-			        if (((yyvsp[(5) - (5)].expr_parse_info)->expr->symbol_index == NUMBER) &&
-				    ((yyvsp[(5) - (5)].expr_parse_info)->expr->info.expr->value <= 0.0L))
+			        if (((yyvsp[0].expr_parse_info)->expr->symbol_index == NUMBER) &&
+				    ((yyvsp[0].expr_parse_info)->expr->info.expr->value <= 0.0L))
 				  signal_error(WEIGHT_LE_ZERO,
 					       NULL,
 					       NULL);
 			        else
-				  rate = (yyvsp[(5) - (5)].expr_parse_info)->expr;
+				  rate = (yyvsp[0].expr_parse_info)->expr;
 			      }
-			    ;}
+			    }
+#line 3996 "aemilia_parser.tab.c"
     break;
 
   case 132:
 #line 1705 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 4004 "aemilia_parser.tab.c"
     break;
 
   case 133:
 #line 1709 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4012 "aemilia_parser.tab.c"
     break;
 
   case 134:
 #line 1716 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].expr_parse_info)->expr,
+				     alloc_st_bucket_cell((yyvsp[0].expr_parse_info)->expr,
 					                  NULL);
-			    ;}
+			    }
+#line 4023 "aemilia_parser.tab.c"
     break;
 
   case 135:
 #line 1723 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (3)].expr_parse_info) == NULL)?
-				     (yyvsp[(3) - (3)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (3)].expr_parse_info)->expr,
-					                  (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-2].expr_parse_info) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-2].expr_parse_info)->expr,
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 4034 "aemilia_parser.tab.c"
     break;
 
   case 136:
 #line 1733 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4041 "aemilia_parser.tab.c"
     break;
 
   case 137:
 #line 1736 "aemilia_parser.y"
-    {
+                            {
 			      if (no_declarations)
 				signal_error(NO_DECLARED_INTERACTIONS,
 					     NULL,
 					     NULL);
-			    ;}
+			    }
+#line 4052 "aemilia_parser.tab.c"
     break;
 
   case 138:
 #line 1746 "aemilia_parser.y"
-    {
+                            {
 			      interaction_index = (interaction_index == INPUT_UNI)?
 						    INPUT_AND:
 						    OUTPUT_AND;
-			    ;}
+			    }
+#line 4062 "aemilia_parser.tab.c"
     break;
 
   case 139:
 #line 1752 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
 			      interaction_index = (interaction_index == INPUT_UNI)?
 						    INPUT_AND:
 						    OUTPUT_AND;
-			    ;}
+			    }
+#line 4073 "aemilia_parser.tab.c"
     break;
 
   case 140:
 #line 1762 "aemilia_parser.y"
-    {
+                            {
 			      interaction_index = (interaction_index == INPUT_AND)?
 						    INPUT_OR:
 						    OUTPUT_OR;
-	      		    ;}
+	      		    }
+#line 4083 "aemilia_parser.tab.c"
     break;
 
   case 141:
 #line 1768 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
 			      interaction_index = (interaction_index == INPUT_AND)?
 						    INPUT_OR:
 						    OUTPUT_OR;
-			    ;}
+			    }
+#line 4094 "aemilia_parser.tab.c"
     break;
 
   case 142:
 #line 1778 "aemilia_parser.y"
-    {
+                            {
 			      if (interaction_index == INPUT_OR)
 				interaction_index = OUTPUT_UNI;
-	      		    ;}
+	      		    }
+#line 4103 "aemilia_parser.tab.c"
     break;
 
   case 143:
 #line 1783 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
 			      if (interaction_index == INPUT_OR)
 				interaction_index = OUTPUT_UNI;
-			    ;}
+			    }
+#line 4113 "aemilia_parser.tab.c"
     break;
 
   case 144:
 #line 1792 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(aet,
-						&(yyvsp[(1) - (1)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(ACT_TYPE_ID_USE,
-				       &(yyvsp[(1) - (1)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      handle_interaction_decl((yyvsp[(1) - (1)].st_bucket),
+			      handle_interaction_decl((yyvsp[0].st_bucket),
 						      interaction_index);
-			    ;}
+			    }
+#line 4127 "aemilia_parser.tab.c"
     break;
 
   case 145:
 #line 1802 "aemilia_parser.y"
-    {
+                            {
 			      build_prefixed_id(aet,
-						&(yyvsp[(1) - (1)].st_bucket));
+						&(yyvsp[0].st_bucket));
 			      check_id(ACT_TYPE_ID_USE,
-				       &(yyvsp[(1) - (1)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			      handle_interaction_decl((yyvsp[(1) - (1)].st_bucket),
+			      handle_interaction_decl((yyvsp[0].st_bucket),
 						      interaction_index);
-			    ;}
+			    }
+#line 4141 "aemilia_parser.tab.c"
     break;
 
   case 146:
 #line 1812 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4148 "aemilia_parser.tab.c"
     break;
 
   case 147:
 #line 1815 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4157 "aemilia_parser.tab.c"
     break;
 
   case 148:
 #line 1820 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4164 "aemilia_parser.tab.c"
     break;
 
   case 149:
 #line 1826 "aemilia_parser.y"
-    {
-	       		    ;}
+                            {
+	       		    }
+#line 4171 "aemilia_parser.tab.c"
     break;
 
   case 150:
 #line 1832 "aemilia_parser.y"
-    {
-			      archi_type[spec_no]->info.archi_type->aei_list = (yyvsp[(2) - (2)].st_bucket_cell);
-			      if ((yyvsp[(2) - (2)].st_bucket_cell) == NULL)
+                            {
+			      archi_type[spec_no]->info.archi_type->aei_list = (yyvsp[0].st_bucket_cell);
+			      if ((yyvsp[0].st_bucket_cell) == NULL)
 				signal_error(NO_DECLARED_AEIS,
 					     NULL,
 					     NULL);
-			    ;}
+			    }
+#line 4183 "aemilia_parser.tab.c"
     break;
 
   case 151:
 #line 1843 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4191 "aemilia_parser.tab.c"
     break;
 
   case 152:
 #line 1847 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = append_list((yyvsp[(1) - (3)].st_bucket_cell),
-					       (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = append_list((yyvsp[-2].st_bucket_cell),
+					       (yyvsp[0].st_bucket_cell));
+			    }
+#line 4200 "aemilia_parser.tab.c"
     break;
 
   case 153:
 #line 1852 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4209 "aemilia_parser.tab.c"
     break;
 
   case 154:
 #line 1857 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(4) - (4)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4217 "aemilia_parser.tab.c"
     break;
 
   case 155:
 #line 1861 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (3)].st_bucket_cell);
-			    ;}
+			      (yyval.st_bucket_cell) = (yyvsp[-2].st_bucket_cell);
+			    }
+#line 4227 "aemilia_parser.tab.c"
     break;
 
   case 156:
 #line 1867 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 4237 "aemilia_parser.tab.c"
     break;
 
   case 157:
 #line 1876 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 4248 "aemilia_parser.tab.c"
     break;
 
   case 158:
 #line 1883 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      (yyval.st_bucket_cell) = (((yyvsp[(1) - (2)].st_bucket) == NULL) ||
-				    ((yyvsp[(2) - (2)].st_bucket) == NULL))?
+			      (yyval.st_bucket_cell) = (((yyvsp[-1].st_bucket) == NULL) ||
+				    ((yyvsp[0].st_bucket) == NULL))?
 				     NULL:
-				     expand_iterative_aei_decl((yyvsp[(2) - (2)].st_bucket));
+				     expand_iterative_aei_decl((yyvsp[0].st_bucket));
 			      selector[0] = NULL;
-			    ;}
+			    }
+#line 4261 "aemilia_parser.tab.c"
     break;
 
   case 159:
 #line 1895 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(1) - (2)].st_bucket),
-							    (yyvsp[(2) - (2)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    TRUE,
 							    FALSE);
-			    ;}
+			    }
+#line 4273 "aemilia_parser.tab.c"
     break;
 
   case 160:
 #line 1903 "aemilia_parser.y"
-    {
+                            {
 			      check_id(AET_ID_USE,
-				       &(yyvsp[(5) - (5)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
 			      id_prefix_in_expr = NULL;
-			    ;}
+			    }
+#line 4284 "aemilia_parser.tab.c"
     break;
 
   case 161:
 #line 1910 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(1) - (9)].st_bucket) != NULL) &&
-				  ((yyvsp[(5) - (9)].st_bucket) != NULL) &&
-				  ((yyvsp[(5) - (9)].st_bucket)->info.aet != NULL))
+                            {
+			      if (((yyvsp[-8].st_bucket) != NULL) &&
+				  ((yyvsp[-4].st_bucket) != NULL) &&
+				  ((yyvsp[-4].st_bucket)->info.aet != NULL))
 			      {
-				handle_aei_decl((yyvsp[(1) - (9)].st_bucket),
-					        (yyvsp[(5) - (9)].st_bucket),
-					        (yyvsp[(8) - (9)].st_bucket_cell));
-			        (yyval.st_bucket) = (yyvsp[(1) - (9)].st_bucket);
+				handle_aei_decl((yyvsp[-8].st_bucket),
+					        (yyvsp[-4].st_bucket),
+					        (yyvsp[-1].st_bucket_cell));
+			        (yyval.st_bucket) = (yyvsp[-8].st_bucket);
 			      }
 			      else
 			        (yyval.st_bucket) = NULL;
-			    ;}
+			    }
+#line 4302 "aemilia_parser.tab.c"
     break;
 
   case 162:
 #line 1927 "aemilia_parser.y"
-    {
-			      handle_symbolically_indexed_aei(&(yyvsp[(1) - (2)].st_bucket),
-							      (yyvsp[(2) - (2)].expr_parse_info),
+                            {
+			      handle_symbolically_indexed_aei(&(yyvsp[-1].st_bucket),
+							      (yyvsp[0].expr_parse_info),
 							      0,
 							      TRUE);
-			    ;}
+			    }
+#line 4313 "aemilia_parser.tab.c"
     break;
 
   case 163:
 #line 1934 "aemilia_parser.y"
-    {
+                            {
 			      check_id(AET_ID_USE,
-				       &(yyvsp[(5) - (5)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       TRUE);
-			    ;}
+			    }
+#line 4323 "aemilia_parser.tab.c"
     break;
 
   case 164:
 #line 1940 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(1) - (9)].st_bucket) != NULL) &&
-				  ((yyvsp[(5) - (9)].st_bucket) != NULL) &&
-				  ((yyvsp[(5) - (9)].st_bucket)->info.aet != NULL))
+                            {
+			      if (((yyvsp[-8].st_bucket) != NULL) &&
+				  ((yyvsp[-4].st_bucket) != NULL) &&
+				  ((yyvsp[-4].st_bucket)->info.aet != NULL))
 			      {
-			        (yyvsp[(1) - (9)].st_bucket)->used = (char)TRUE;
-			        (yyvsp[(1) - (9)].st_bucket)->info.aei = alloc_aei((yyvsp[(5) - (9)].st_bucket),
-						         (yyvsp[(5) - (9)].st_bucket)->info.aet->formal_const_par_list,
-						         (yyvsp[(5) - (9)].st_bucket)->info.aet->behavior_list,
-						         (yyvsp[(5) - (9)].st_bucket)->info.aet->act_type_list,
+			        (yyvsp[-8].st_bucket)->used = (char)TRUE;
+			        (yyvsp[-8].st_bucket)->info.aei = alloc_aei((yyvsp[-4].st_bucket),
+						         (yyvsp[-4].st_bucket)->info.aet->formal_const_par_list,
+						         (yyvsp[-4].st_bucket)->info.aet->behavior_list,
+						         (yyvsp[-4].st_bucket)->info.aet->act_type_list,
 						         TRUE);
-			        (yyvsp[(1) - (9)].st_bucket)->info.aei->init_state_var_assign_list = (yyvsp[(8) - (9)].st_bucket_cell);
-			        (yyval.st_bucket) = (yyvsp[(1) - (9)].st_bucket);
+			        (yyvsp[-8].st_bucket)->info.aei->init_state_var_assign_list = (yyvsp[-1].st_bucket_cell);
+			        (yyval.st_bucket) = (yyvsp[-8].st_bucket);
 			      }
 			      else
 			        (yyval.st_bucket) = NULL;
-			    ;}
+			    }
+#line 4345 "aemilia_parser.tab.c"
     break;
 
   case 165:
 #line 1961 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 4353 "aemilia_parser.tab.c"
     break;
 
   case 166:
 #line 1965 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4361 "aemilia_parser.tab.c"
     break;
 
   case 167:
 #line 1972 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(1) - (1)].expr_parse_info) != NULL) &&
-				  !check_expr_randomness_free((yyvsp[(1) - (1)].expr_parse_info)->expr))
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  !check_expr_randomness_free((yyvsp[0].expr_parse_info)->expr))
 				signal_error(ACTUAL_CONST_PAR_NOT_RANDOMNESS_FREE,
 					     NULL,
 					     NULL);
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].expr_parse_info) == NULL)?
+			      (yyval.st_bucket_cell) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].expr_parse_info)->expr,
+				     alloc_st_bucket_cell((yyvsp[0].expr_parse_info)->expr,
 					                  NULL);
-			    ;}
+			    }
+#line 4377 "aemilia_parser.tab.c"
     break;
 
   case 168:
 #line 1984 "aemilia_parser.y"
-    {
-			      if (((yyvsp[(1) - (1)].expr_parse_info) != NULL) &&
-				  !check_expr_randomness_free((yyvsp[(1) - (1)].expr_parse_info)->expr))
+                            {
+			      if (((yyvsp[0].expr_parse_info) != NULL) &&
+				  !check_expr_randomness_free((yyvsp[0].expr_parse_info)->expr))
 				signal_error(ACTUAL_CONST_PAR_NOT_RANDOMNESS_FREE,
 					     NULL,
 					     NULL);
-			    ;}
+			    }
+#line 4389 "aemilia_parser.tab.c"
     break;
 
   case 169:
 #line 1992 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (4)].expr_parse_info) == NULL)?
-				     (yyvsp[(4) - (4)].st_bucket_cell):
-				     alloc_st_bucket_cell((yyvsp[(1) - (4)].expr_parse_info)->expr,
-					                  (yyvsp[(4) - (4)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[-3].expr_parse_info) == NULL)?
+				     (yyvsp[0].st_bucket_cell):
+				     alloc_st_bucket_cell((yyvsp[-3].expr_parse_info)->expr,
+					                  (yyvsp[0].st_bucket_cell));
+			    }
+#line 4400 "aemilia_parser.tab.c"
     break;
 
   case 170:
 #line 2002 "aemilia_parser.y"
-    {
-			      archi_type[spec_no]->info.archi_type->ai_list = (yyvsp[(2) - (2)].st_bucket_cell);
-			    ;}
+                            {
+			      archi_type[spec_no]->info.archi_type->ai_list = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4408 "aemilia_parser.tab.c"
     break;
 
   case 171:
 #line 2009 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket_cell) = NULL;
-	      		    ;}
+	      		    }
+#line 4416 "aemilia_parser.tab.c"
     break;
 
   case 172:
 #line 2013 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-	      		    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+	      		    }
+#line 4424 "aemilia_parser.tab.c"
     break;
 
   case 173:
 #line 2020 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (1)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4432 "aemilia_parser.tab.c"
     break;
 
   case 174:
 #line 2024 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = append_list((yyvsp[(1) - (3)].st_bucket_cell),
-					       (yyvsp[(3) - (3)].st_bucket_cell));
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = append_list((yyvsp[-2].st_bucket_cell),
+					       (yyvsp[0].st_bucket_cell));
+			    }
+#line 4441 "aemilia_parser.tab.c"
     break;
 
   case 175:
 #line 2029 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4450 "aemilia_parser.tab.c"
     break;
 
   case 176:
 #line 2034 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = (yyvsp[(4) - (4)].st_bucket_cell);
-			    ;}
+                            {
+			      (yyval.st_bucket_cell) = (yyvsp[0].st_bucket_cell);
+			    }
+#line 4458 "aemilia_parser.tab.c"
     break;
 
   case 177:
 #line 2038 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			      (yyval.st_bucket_cell) = (yyvsp[(1) - (3)].st_bucket_cell);
-			    ;}
+			      (yyval.st_bucket_cell) = (yyvsp[-2].st_bucket_cell);
+			    }
+#line 4468 "aemilia_parser.tab.c"
     break;
 
   case 178:
 #line 2044 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
 			      (yyval.st_bucket_cell) = NULL;
-			    ;}
+			    }
+#line 4478 "aemilia_parser.tab.c"
     break;
 
   case 179:
 #line 2053 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket_cell) = ((yyvsp[(1) - (1)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket_cell) = ((yyvsp[0].st_bucket) == NULL)?
 				     NULL:
-				     alloc_st_bucket_cell((yyvsp[(1) - (1)].st_bucket),
+				     alloc_st_bucket_cell((yyvsp[0].st_bucket),
 							  NULL);
-			    ;}
+			    }
+#line 4489 "aemilia_parser.tab.c"
     break;
 
   case 180:
 #line 2060 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      (yyval.st_bucket_cell) = (((yyvsp[(1) - (2)].st_bucket) == NULL) ||
-				    ((yyvsp[(2) - (2)].st_bucket) == NULL))?
+			      (yyval.st_bucket_cell) = (((yyvsp[-1].st_bucket) == NULL) ||
+				    ((yyvsp[0].st_bucket) == NULL))?
 				     NULL:
 				     expand_iterative_ai_decl();
 			      selector[0] = NULL;
-			    ;}
+			    }
+#line 4502 "aemilia_parser.tab.c"
     break;
 
   case 181:
 #line 2072 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(1) - (2)].st_bucket),
-							    (yyvsp[(2) - (2)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    FALSE);
-			    ;}
+			    }
+#line 4514 "aemilia_parser.tab.c"
     break;
 
   case 182:
 #line 2080 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(1) - (5)].st_bucket),
-						         &(yyvsp[(5) - (5)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         FALSE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if ((yyvsp[(5) - (5)].st_bucket) != NULL)
-				handle_architectural_interaction(&(yyvsp[(5) - (5)].st_bucket),
+			      if ((yyvsp[0].st_bucket) != NULL)
+				handle_architectural_interaction(&(yyvsp[0].st_bucket),
 								 FALSE);
-			      (yyval.st_bucket) = (yyvsp[(5) - (5)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 4531 "aemilia_parser.tab.c"
     break;
 
   case 183:
 #line 2096 "aemilia_parser.y"
-    {
-			      handle_symbolically_indexed_aei(&(yyvsp[(1) - (2)].st_bucket),
-							      (yyvsp[(2) - (2)].expr_parse_info),
+                            {
+			      handle_symbolically_indexed_aei(&(yyvsp[-1].st_bucket),
+							      (yyvsp[0].expr_parse_info),
 							      0,
 							      FALSE);
-			    ;}
+			    }
+#line 4542 "aemilia_parser.tab.c"
     break;
 
   case 184:
 #line 2103 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(1) - (5)].st_bucket),
-						         &(yyvsp[(5) - (5)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         TRUE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      (yyval.st_bucket) = (yyvsp[(5) - (5)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 4556 "aemilia_parser.tab.c"
     break;
 
   case 185:
 #line 2116 "aemilia_parser.y"
-    {
+                            {
 			      create_sync_act_types();
-			    ;}
+			    }
+#line 4564 "aemilia_parser.tab.c"
     break;
 
   case 186:
 #line 2123 "aemilia_parser.y"
-    {
-	      		    ;}
+                            {
+	      		    }
+#line 4571 "aemilia_parser.tab.c"
     break;
 
   case 187:
 #line 2126 "aemilia_parser.y"
-    {
-	      		    ;}
+                            {
+	      		    }
+#line 4578 "aemilia_parser.tab.c"
     break;
 
   case 188:
 #line 2132 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4585 "aemilia_parser.tab.c"
     break;
 
   case 189:
 #line 2135 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4592 "aemilia_parser.tab.c"
     break;
 
   case 190:
 #line 2138 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4601 "aemilia_parser.tab.c"
     break;
 
   case 191:
 #line 2143 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4608 "aemilia_parser.tab.c"
     break;
 
   case 192:
 #line 2146 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4617 "aemilia_parser.tab.c"
     break;
 
   case 193:
 #line 2151 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4626 "aemilia_parser.tab.c"
     break;
 
   case 194:
 #line 2156 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4635 "aemilia_parser.tab.c"
     break;
 
   case 195:
 #line 2161 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4644 "aemilia_parser.tab.c"
     break;
 
   case 196:
 #line 2169 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4651 "aemilia_parser.tab.c"
     break;
 
   case 197:
 #line 2172 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = selector_enabled[1] = FALSE;
-			      if (((yyvsp[(1) - (3)].st_bucket) != NULL) &&
+			      if (((yyvsp[-2].st_bucket) != NULL) &&
 				  ((selector_index == 0) ||
-				   ((yyvsp[(2) - (3)].st_bucket) != NULL)) &&
-				  ((yyvsp[(3) - (3)].st_bucket2_cell) != NULL))
-				expand_iterative_attachment_decl((yyvsp[(3) - (3)].st_bucket2_cell)->st_bucket1,
-								 (yyvsp[(3) - (3)].st_bucket2_cell)->st_bucket2);
+				   ((yyvsp[-1].st_bucket) != NULL)) &&
+				  ((yyvsp[0].st_bucket2_cell) != NULL))
+				expand_iterative_attachment_decl((yyvsp[0].st_bucket2_cell)->st_bucket1,
+								 (yyvsp[0].st_bucket2_cell)->st_bucket2);
 			      selector[0] = selector[1] = NULL;
 			      selector_index = 0;
-			    ;}
+			    }
+#line 4667 "aemilia_parser.tab.c"
     break;
 
   case 198:
 #line 2187 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							    (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    FALSE);
-			    ;}
+			    }
+#line 4679 "aemilia_parser.tab.c"
     break;
 
   case 199:
 #line 2195 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(2) - (6)].st_bucket),
-						         &(yyvsp[(6) - (6)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         FALSE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if ((yyvsp[(6) - (6)].st_bucket) != NULL)
-			        check_output_interaction(&(yyvsp[(6) - (6)].st_bucket),
+			      if ((yyvsp[0].st_bucket) != NULL)
+			        check_output_interaction(&(yyvsp[0].st_bucket),
 							 FALSE);
-			    ;}
+			    }
+#line 4695 "aemilia_parser.tab.c"
     break;
 
   case 200:
 #line 2207 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(9) - (10)].st_bucket),
-							    (yyvsp[(10) - (10)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    1,
 							    FALSE,
 							    FALSE);
-			      if (((yyvsp[(9) - (10)].st_bucket) != NULL) &&
-				  ((yyvsp[(9) - (10)].st_bucket) == (yyvsp[(2) - (10)].st_bucket)))
+			      if (((yyvsp[-1].st_bucket) != NULL) &&
+				  ((yyvsp[-1].st_bucket) == (yyvsp[-8].st_bucket)))
 			      {
 				signal_error(AUTO_ATTACHMENT,
 					     NULL,
 					     NULL);
-				(yyvsp[(9) - (10)].st_bucket) = NULL;
+				(yyvsp[-1].st_bucket) = NULL;
 			      }
-			    ;}
+			    }
+#line 4715 "aemilia_parser.tab.c"
     break;
 
   case 201:
 #line 2223 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(9) - (13)].st_bucket),
-						         &(yyvsp[(13) - (13)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         1,
 						         FALSE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if ((yyvsp[(13) - (13)].st_bucket) != NULL)
-			        check_input_interaction(&(yyvsp[(13) - (13)].st_bucket),
+			      if ((yyvsp[0].st_bucket) != NULL)
+			        check_input_interaction(&(yyvsp[0].st_bucket),
 							FALSE);
-			      if (((yyvsp[(6) - (13)].st_bucket) != NULL) &&
-				  ((yyvsp[(13) - (13)].st_bucket) != NULL))
-			        attach_interactions((yyvsp[(6) - (13)].st_bucket),
-						    (yyvsp[(13) - (13)].st_bucket),
+			      if (((yyvsp[-7].st_bucket) != NULL) &&
+				  ((yyvsp[0].st_bucket) != NULL))
+			        attach_interactions((yyvsp[-7].st_bucket),
+						    (yyvsp[0].st_bucket),
 						    FALSE);
-			    ;}
+			    }
+#line 4736 "aemilia_parser.tab.c"
     break;
 
   case 202:
 #line 2243 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							    (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    TRUE);
-			    ;}
+			    }
+#line 4748 "aemilia_parser.tab.c"
     break;
 
   case 203:
 #line 2251 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(2) - (6)].st_bucket),
-						         &(yyvsp[(6) - (6)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         (index_expr[0] != NULL),
 						         TRUE,
 						         ACT_TYPE_ID_USE);
 			      if ((index_expr[0] == NULL) &&
-				  ((yyvsp[(6) - (6)].st_bucket) != NULL))
-			        check_output_interaction(&(yyvsp[(6) - (6)].st_bucket),
+				  ((yyvsp[0].st_bucket) != NULL))
+			        check_output_interaction(&(yyvsp[0].st_bucket),
 							 FALSE);
-			    ;}
+			    }
+#line 4765 "aemilia_parser.tab.c"
     break;
 
   case 204:
 #line 2264 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(9) - (10)].st_bucket),
-							    (yyvsp[(10) - (10)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    1,
 							    FALSE,
 							    TRUE);
 			      if ((index_expr[0] == NULL) &&
 				  (index_expr[1] == NULL) &&
-			          ((yyvsp[(9) - (10)].st_bucket) != NULL) &&
-				  ((yyvsp[(9) - (10)].st_bucket) == (yyvsp[(2) - (10)].st_bucket)))
+			          ((yyvsp[-1].st_bucket) != NULL) &&
+				  ((yyvsp[-1].st_bucket) == (yyvsp[-8].st_bucket)))
 			      {
 				signal_error(AUTO_ATTACHMENT,
 					     NULL,
 					     NULL);
-				(yyvsp[(9) - (10)].st_bucket) = NULL;
+				(yyvsp[-1].st_bucket) = NULL;
 			      }
 			      if ((index_expr[0] == NULL) &&
 				  (index_expr[1] == NULL))
 				signal_error(NO_AEI_INDEXING_USED_IN_ATTACHMENT,
 					     NULL,
 					     NULL);
-			    ;}
+			    }
+#line 4792 "aemilia_parser.tab.c"
     break;
 
   case 205:
 #line 2287 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(9) - (13)].st_bucket),
-						         &(yyvsp[(13) - (13)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         1,
 						         (index_expr[1] != NULL),
 						         TRUE,
 						         ACT_TYPE_ID_USE);
 			      if ((index_expr[1] == NULL) &&
-				  ((yyvsp[(13) - (13)].st_bucket) != NULL))
-			        check_input_interaction(&(yyvsp[(13) - (13)].st_bucket),
+				  ((yyvsp[0].st_bucket) != NULL))
+			        check_input_interaction(&(yyvsp[0].st_bucket),
 							FALSE);
-			      if (((yyvsp[(6) - (13)].st_bucket) != NULL) &&
-				  ((yyvsp[(13) - (13)].st_bucket) != NULL))
+			      if (((yyvsp[-7].st_bucket) != NULL) &&
+				  ((yyvsp[0].st_bucket) != NULL))
 			      {
 			        if ((index_expr[0] == NULL) &&
 				    (index_expr[1] == NULL))
 				{
-			          attach_interactions((yyvsp[(6) - (13)].st_bucket),
-						      (yyvsp[(13) - (13)].st_bucket),
+			          attach_interactions((yyvsp[-7].st_bucket),
+						      (yyvsp[0].st_bucket),
 						      FALSE);
 				  (yyval.st_bucket2_cell) = NULL;
 				}
 				else
-				  (yyval.st_bucket2_cell) = alloc_st_bucket2_cell((yyvsp[(6) - (13)].st_bucket),
-							     (yyvsp[(13) - (13)].st_bucket),
+				  (yyval.st_bucket2_cell) = alloc_st_bucket2_cell((yyvsp[-7].st_bucket),
+							     (yyvsp[0].st_bucket),
 							     NULL);
 			      }
 			      else
 				(yyval.st_bucket2_cell) = NULL;
-			    ;}
+			    }
+#line 4827 "aemilia_parser.tab.c"
     break;
 
   case 206:
 #line 2321 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4834 "aemilia_parser.tab.c"
     break;
 
   case 207:
 #line 2324 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = TRUE;
-			    ;}
+			    }
+#line 4842 "aemilia_parser.tab.c"
     break;
 
   case 208:
 #line 2328 "aemilia_parser.y"
-    {
+                            {
 			      if (no_declarations)
 				signal_error(NO_DECLARED_BEHAV_VARIATIONS,
 					     NULL,
 					     NULL);
-			    ;}
+			    }
+#line 4853 "aemilia_parser.tab.c"
     break;
 
   case 209:
 #line 2338 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4860 "aemilia_parser.tab.c"
     break;
 
   case 210:
 #line 2341 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
-			    ;}
+			    }
+#line 4868 "aemilia_parser.tab.c"
     break;
 
   case 211:
 #line 2348 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4875 "aemilia_parser.tab.c"
     break;
 
   case 212:
 #line 2351 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4882 "aemilia_parser.tab.c"
     break;
 
   case 213:
 #line 2354 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4891 "aemilia_parser.tab.c"
     break;
 
   case 214:
 #line 2359 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4898 "aemilia_parser.tab.c"
     break;
 
   case 215:
 #line 2362 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4907 "aemilia_parser.tab.c"
     break;
 
   case 216:
 #line 2367 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4916 "aemilia_parser.tab.c"
     break;
 
   case 217:
 #line 2372 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4925 "aemilia_parser.tab.c"
     break;
 
   case 218:
 #line 2377 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4934 "aemilia_parser.tab.c"
     break;
 
   case 219:
 #line 2382 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4943 "aemilia_parser.tab.c"
     break;
 
   case 220:
 #line 2387 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 4952 "aemilia_parser.tab.c"
     break;
 
   case 221:
 #line 2395 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4959 "aemilia_parser.tab.c"
     break;
 
   case 222:
 #line 2398 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      if (((yyvsp[(1) - (2)].st_bucket) != NULL) &&
-				  ((yyvsp[(2) - (2)].st_bucket) != NULL))
-				expand_iterative_hiding_decl((yyvsp[(2) - (2)].st_bucket));
+			      if (((yyvsp[-1].st_bucket) != NULL) &&
+				  ((yyvsp[0].st_bucket) != NULL))
+				expand_iterative_hiding_decl((yyvsp[0].st_bucket));
 			      selector[0] = NULL;
-			    ;}
+			    }
+#line 4971 "aemilia_parser.tab.c"
     break;
 
   case 223:
 #line 2409 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							    (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    FALSE);
-			      aei = (yyvsp[(2) - (3)].st_bucket);
-			    ;}
+			      aei = (yyvsp[-1].st_bucket);
+			    }
+#line 4984 "aemilia_parser.tab.c"
     break;
 
   case 224:
 #line 2418 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 4991 "aemilia_parser.tab.c"
     break;
 
   case 225:
 #line 2421 "aemilia_parser.y"
-    {
+                            {
 			      hide_internals();
-			    ;}
+			    }
+#line 4999 "aemilia_parser.tab.c"
     break;
 
   case 226:
 #line 2425 "aemilia_parser.y"
-    {
+                            {
 			      hide_interactions();
-			    ;}
+			    }
+#line 5007 "aemilia_parser.tab.c"
     break;
 
   case 227:
 #line 2429 "aemilia_parser.y"
-    {
+                            {
 			      hide_all();
-			    ;}
+			    }
+#line 5015 "aemilia_parser.tab.c"
     break;
 
   case 228:
 #line 2436 "aemilia_parser.y"
-    {
-			      handle_symbolically_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							      (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_symbolically_indexed_aei(&(yyvsp[-1].st_bucket),
+							      (yyvsp[0].expr_parse_info),
 							      0,
 							      FALSE);
-			      aei = (yyvsp[(2) - (3)].st_bucket);
-			    ;}
+			      aei = (yyvsp[-1].st_bucket);
+			    }
+#line 5027 "aemilia_parser.tab.c"
     break;
 
   case 229:
 #line 2444 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket) = ((yyvsp[(2) - (6)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket) = ((yyvsp[-4].st_bucket) == NULL)?
 				     NULL:
-				     (yyvsp[(6) - (6)].st_bucket);
-			    ;}
+				     (yyvsp[0].st_bucket);
+			    }
+#line 5037 "aemilia_parser.tab.c"
     break;
 
   case 230:
 #line 2453 "aemilia_parser.y"
-    {
+                            {
 			      handle_prefixed_indexed_id(aei,
-						         &(yyvsp[(1) - (1)].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         selector_enabled[0],
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if (((yyvsp[(1) - (1)].st_bucket) != NULL) &&
+			      if (((yyvsp[0].st_bucket) != NULL) &&
 				  !selector_enabled[0])
-			        handle_hiding((yyvsp[(1) - (1)].st_bucket),
+			        handle_hiding((yyvsp[0].st_bucket),
 					      FALSE);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5055 "aemilia_parser.tab.c"
     break;
 
   case 231:
 #line 2467 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        hide_aei_internals(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5066 "aemilia_parser.tab.c"
     break;
 
   case 232:
 #line 2474 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        hide_aei_interactions(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5077 "aemilia_parser.tab.c"
     break;
 
   case 233:
 #line 2481 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        hide_aei_all(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5088 "aemilia_parser.tab.c"
     break;
 
   case 234:
 #line 2491 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5095 "aemilia_parser.tab.c"
     break;
 
   case 235:
 #line 2494 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
-			    ;}
+			    }
+#line 5103 "aemilia_parser.tab.c"
     break;
 
   case 236:
 #line 2501 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5110 "aemilia_parser.tab.c"
     break;
 
   case 237:
 #line 2504 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5117 "aemilia_parser.tab.c"
     break;
 
   case 238:
 #line 2507 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5126 "aemilia_parser.tab.c"
     break;
 
   case 239:
 #line 2512 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5133 "aemilia_parser.tab.c"
     break;
 
   case 240:
 #line 2515 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5142 "aemilia_parser.tab.c"
     break;
 
   case 241:
 #line 2520 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5151 "aemilia_parser.tab.c"
     break;
 
   case 242:
 #line 2525 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5160 "aemilia_parser.tab.c"
     break;
 
   case 243:
 #line 2530 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5169 "aemilia_parser.tab.c"
     break;
 
   case 244:
 #line 2538 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5176 "aemilia_parser.tab.c"
     break;
 
   case 245:
 #line 2541 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      if (((yyvsp[(1) - (2)].st_bucket) != NULL) &&
-				  ((yyvsp[(2) - (2)].st_bucket) != NULL))
-				expand_iterative_restriction_decl((yyvsp[(2) - (2)].st_bucket));
+			      if (((yyvsp[-1].st_bucket) != NULL) &&
+				  ((yyvsp[0].st_bucket) != NULL))
+				expand_iterative_restriction_decl((yyvsp[0].st_bucket));
 			      selector[0] = NULL;
-			    ;}
+			    }
+#line 5188 "aemilia_parser.tab.c"
     break;
 
   case 246:
 #line 2552 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							    (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    FALSE);
-			      aei = (yyvsp[(2) - (3)].st_bucket);
-			    ;}
+			      aei = (yyvsp[-1].st_bucket);
+			    }
+#line 5201 "aemilia_parser.tab.c"
     break;
 
   case 247:
 #line 2561 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5208 "aemilia_parser.tab.c"
     break;
 
   case 248:
 #line 2564 "aemilia_parser.y"
-    {
+                            {
 			      restrict_obs_internals();
-			    ;}
+			    }
+#line 5216 "aemilia_parser.tab.c"
     break;
 
   case 249:
 #line 2568 "aemilia_parser.y"
-    {
+                            {
 			      restrict_obs_interactions();
-			    ;}
+			    }
+#line 5224 "aemilia_parser.tab.c"
     break;
 
   case 250:
 #line 2572 "aemilia_parser.y"
-    {
+                            {
 			      restrict_all_observables();
-			    ;}
+			    }
+#line 5232 "aemilia_parser.tab.c"
     break;
 
   case 251:
 #line 2579 "aemilia_parser.y"
-    {
-			      handle_symbolically_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							      (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_symbolically_indexed_aei(&(yyvsp[-1].st_bucket),
+							      (yyvsp[0].expr_parse_info),
 							      0,
 							      FALSE);
-			      aei = (yyvsp[(2) - (3)].st_bucket);
-			    ;}
+			      aei = (yyvsp[-1].st_bucket);
+			    }
+#line 5244 "aemilia_parser.tab.c"
     break;
 
   case 252:
 #line 2587 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket) = ((yyvsp[(2) - (6)].st_bucket) == NULL)?
+                            {
+			      (yyval.st_bucket) = ((yyvsp[-4].st_bucket) == NULL)?
 				     NULL:
-				     (yyvsp[(6) - (6)].st_bucket);
-			    ;}
+				     (yyvsp[0].st_bucket);
+			    }
+#line 5254 "aemilia_parser.tab.c"
     break;
 
   case 253:
 #line 2596 "aemilia_parser.y"
-    {
+                            {
 			      handle_prefixed_indexed_id(aei,
-						         &(yyvsp[(1) - (1)].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         selector_enabled[0],
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if (((yyvsp[(1) - (1)].st_bucket) != NULL) &&
+			      if (((yyvsp[0].st_bucket) != NULL) &&
 				  !selector_enabled[0])
-			        handle_restriction((yyvsp[(1) - (1)].st_bucket),
+			        handle_restriction((yyvsp[0].st_bucket),
 						   FALSE);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5272 "aemilia_parser.tab.c"
     break;
 
   case 254:
 #line 2610 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        restrict_aei_obs_internals(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5283 "aemilia_parser.tab.c"
     break;
 
   case 255:
 #line 2617 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        restrict_aei_obs_interactions(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5294 "aemilia_parser.tab.c"
     break;
 
   case 256:
 #line 2624 "aemilia_parser.y"
-    {
+                            {
 			      if ((aei != NULL) &&
 				  !selector_enabled[0])
 			        restrict_aei_all_observables(aei);
-			      (yyval.st_bucket) = (yyvsp[(1) - (1)].st_bucket);
-			    ;}
+			      (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5305 "aemilia_parser.tab.c"
     break;
 
   case 257:
 #line 2634 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5312 "aemilia_parser.tab.c"
     break;
 
   case 258:
 #line 2637 "aemilia_parser.y"
-    {
+                            {
 			      no_declarations = FALSE;
-			    ;}
+			    }
+#line 5320 "aemilia_parser.tab.c"
     break;
 
   case 259:
 #line 2644 "aemilia_parser.y"
-    {
-	      		    ;}
+                            {
+	      		    }
+#line 5327 "aemilia_parser.tab.c"
     break;
 
   case 260:
 #line 2647 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5334 "aemilia_parser.tab.c"
     break;
 
   case 261:
 #line 2650 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5343 "aemilia_parser.tab.c"
     break;
 
   case 262:
 #line 2655 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5350 "aemilia_parser.tab.c"
     break;
 
   case 263:
 #line 2658 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5359 "aemilia_parser.tab.c"
     break;
 
   case 264:
 #line 2663 "aemilia_parser.y"
-    {
+                            {
 			      handle_sync_aemilia();
 			      yyerrok;
-			    ;}
+			    }
+#line 5368 "aemilia_parser.tab.c"
     break;
 
   case 265:
 #line 2671 "aemilia_parser.y"
-    {
-			    ;}
+                            {
+			    }
+#line 5375 "aemilia_parser.tab.c"
     break;
 
   case 266:
 #line 2674 "aemilia_parser.y"
-    {
+                            {
 			      selector_enabled[0] = FALSE;
-			      if (((yyvsp[(1) - (2)].st_bucket) != NULL) &&
-				  (yyvsp[(2) - (2)].boolean))
+			      if (((yyvsp[-1].st_bucket) != NULL) &&
+				  (yyvsp[0].boolean))
 				expand_iterative_renaming_decl();
 			      selector[0] = NULL;
-			    ;}
+			    }
+#line 5387 "aemilia_parser.tab.c"
     break;
 
   case 267:
 #line 2685 "aemilia_parser.y"
-    {
-			      handle_concretely_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							    (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_concretely_indexed_aei(&(yyvsp[-1].st_bucket),
+							    (yyvsp[0].expr_parse_info),
 							    0,
 							    FALSE,
 							    FALSE);
-			    ;}
+			    }
+#line 5399 "aemilia_parser.tab.c"
     break;
 
   case 268:
 #line 2693 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(2) - (6)].st_bucket),
-						         &(yyvsp[(6) - (6)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         FALSE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			      if ((yyvsp[(6) - (6)].st_bucket) != NULL)
-			        handle_renaming_old(&(yyvsp[(6) - (6)].st_bucket),
+			      if ((yyvsp[0].st_bucket) != NULL)
+			        handle_renaming_old(&(yyvsp[0].st_bucket),
 						    FALSE);
-			    ;}
+			    }
+#line 5415 "aemilia_parser.tab.c"
     break;
 
   case 269:
 #line 2705 "aemilia_parser.y"
-    {
-			      handle_unprefixed_concretely_indexed_id(&(yyvsp[(9) - (10)].st_bucket),
-						                      (yyvsp[(10) - (10)].expr_parse_info),
+                            {
+			      handle_unprefixed_concretely_indexed_id(&(yyvsp[-1].st_bucket),
+						                      (yyvsp[0].expr_parse_info),
 								      ACT_TYPE_ID_USE);
-			      if (((yyvsp[(6) - (10)].st_bucket) != NULL) &&
-			          ((yyvsp[(9) - (10)].st_bucket) != NULL))
-			        handle_renaming_new((yyvsp[(6) - (10)].st_bucket),
-					            (yyvsp[(9) - (10)].st_bucket),
+			      if (((yyvsp[-4].st_bucket) != NULL) &&
+			          ((yyvsp[-1].st_bucket) != NULL))
+			        handle_renaming_new((yyvsp[-4].st_bucket),
+					            (yyvsp[-1].st_bucket),
 						    FALSE);
-			    ;}
+			    }
+#line 5430 "aemilia_parser.tab.c"
     break;
 
   case 270:
 #line 2719 "aemilia_parser.y"
-    {
-			      handle_symbolically_indexed_aei(&(yyvsp[(2) - (3)].st_bucket),
-							      (yyvsp[(3) - (3)].expr_parse_info),
+                            {
+			      handle_symbolically_indexed_aei(&(yyvsp[-1].st_bucket),
+							      (yyvsp[0].expr_parse_info),
 							      0,
 							      FALSE);
-			    ;}
+			    }
+#line 5441 "aemilia_parser.tab.c"
     break;
 
   case 271:
 #line 2726 "aemilia_parser.y"
-    {
-			      handle_prefixed_indexed_id((yyvsp[(2) - (6)].st_bucket),
-						         &(yyvsp[(6) - (6)].st_bucket),
+                            {
+			      handle_prefixed_indexed_id((yyvsp[-4].st_bucket),
+						         &(yyvsp[0].st_bucket),
 						         0,
 						         TRUE,
 						         FALSE,
 						         ACT_TYPE_ID_USE);
-			    ;}
+			    }
+#line 5454 "aemilia_parser.tab.c"
     break;
 
   case 272:
 #line 2735 "aemilia_parser.y"
-    {
-			      handle_unprefixed_symbolically_indexed_id(&(yyvsp[(9) - (10)].st_bucket),
-						                        (yyvsp[(10) - (10)].expr_parse_info),
+                            {
+			      handle_unprefixed_symbolically_indexed_id(&(yyvsp[-1].st_bucket),
+						                        (yyvsp[0].expr_parse_info),
 						                        1,
 								        ACT_TYPE_ID_USE);
-			      (yyval.boolean) = (((yyvsp[(2) - (10)].st_bucket) != NULL) &&
-				    ((yyvsp[(6) - (10)].st_bucket) != NULL) &&
-				    ((yyvsp[(9) - (10)].st_bucket) != NULL));
-			    ;}
+			      (yyval.boolean) = (((yyvsp[-8].st_bucket) != NULL) &&
+				    ((yyvsp[-4].st_bucket) != NULL) &&
+				    ((yyvsp[-1].st_bucket) != NULL));
+			    }
+#line 5468 "aemilia_parser.tab.c"
     break;
 
   case 273:
 #line 2748 "aemilia_parser.y"
-    {
-			      handle_iteration_1(&(yyvsp[(2) - (2)].st_bucket));
-			    ;}
+                            {
+			      handle_iteration_1(&(yyvsp[0].st_bucket));
+			    }
+#line 5476 "aemilia_parser.tab.c"
     break;
 
   case 274:
 #line 2752 "aemilia_parser.y"
-    {
-			      handle_iteration_2(&(yyvsp[(5) - (5)].expr_parse_info));
-			    ;}
+                            {
+			      handle_iteration_2(&(yyvsp[0].expr_parse_info));
+			    }
+#line 5484 "aemilia_parser.tab.c"
     break;
 
   case 275:
 #line 2756 "aemilia_parser.y"
-    {
-			      (yyval.st_bucket) = handle_iteration_3((yyvsp[(2) - (8)].st_bucket),
-						      (yyvsp[(5) - (8)].expr_parse_info),
-						      (yyvsp[(8) - (8)].expr_parse_info));
-			    ;}
+                            {
+			      (yyval.st_bucket) = handle_iteration_3((yyvsp[-6].st_bucket),
+						      (yyvsp[-3].expr_parse_info),
+						      (yyvsp[0].expr_parse_info));
+			    }
+#line 5494 "aemilia_parser.tab.c"
     break;
 
   case 276:
 #line 2765 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.st_bucket) = NULL;
-			    ;}
+			    }
+#line 5502 "aemilia_parser.tab.c"
     break;
 
   case 277:
 #line 2769 "aemilia_parser.y"
-    {
+                            {
 			      selector_index = 1;
-			    ;}
+			    }
+#line 5510 "aemilia_parser.tab.c"
     break;
 
   case 278:
 #line 2773 "aemilia_parser.y"
-    {
+                            {
 			      if (selector[1] == selector[0])
 			      {
 				signal_error(SAME_AEI_INDEX,
@@ -5510,31 +5520,34 @@ yyreduce:
 			        (yyval.st_bucket) = NULL;
 			      }
 			      else
-			        (yyval.st_bucket) = (yyvsp[(3) - (3)].st_bucket);
-			    ;}
+			        (yyval.st_bucket) = (yyvsp[0].st_bucket);
+			    }
+#line 5526 "aemilia_parser.tab.c"
     break;
 
   case 279:
 #line 2788 "aemilia_parser.y"
-    {
+                            {
 			      poss_aei_index_parsed = FALSE;
 			      (yyval.expr_parse_info) = NULL;
-			    ;}
+			    }
+#line 5535 "aemilia_parser.tab.c"
     break;
 
   case 280:
 #line 2793 "aemilia_parser.y"
-    {
+                            {
 			      poss_aei_index_parsed = TRUE;
-			      (yyval.expr_parse_info) = (yyvsp[(1) - (1)].expr_parse_info);
-			    ;}
+			      (yyval.expr_parse_info) = (yyvsp[0].expr_parse_info);
+			    }
+#line 5544 "aemilia_parser.tab.c"
     break;
 
   case 281:
 #line 2801 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (((yyvsp[(2) - (3)].expr_parse_info) != NULL) &&
-				    !check_expr_all((yyvsp[(2) - (3)].expr_parse_info)->expr,
+                            {
+			      (yyval.expr_parse_info) = (((yyvsp[-1].expr_parse_info) != NULL) &&
+				    !check_expr_all((yyvsp[-1].expr_parse_info)->expr,
 						    selector[0],
 						    selector[1],
 						    (ST_BUCKET *)search_lexeme_table("integer",
@@ -5543,1005 +5556,1068 @@ yyreduce:
 						    AEI_INDEX_EXPR_NOT_RANDOMNESS_FREE,
 						    ILL_TYPED_AEI_INDEX))?
 				     NULL:
-				     (yyvsp[(2) - (3)].expr_parse_info);
-			    ;}
+				     (yyvsp[-1].expr_parse_info);
+			    }
+#line 5562 "aemilia_parser.tab.c"
     break;
 
   case 282:
 #line 2818 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = handle_id_in_expr(&(yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = handle_id_in_expr(&(yyvsp[0].st_bucket),
 						     aet,
 						     &local_var_actual_par_list,
 						     parsing_behavior_term,
 						     FALSE);
-			    ;}
+			    }
+#line 5574 "aemilia_parser.tab.c"
     break;
 
   case 283:
 #line 2826 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 5583 "aemilia_parser.tab.c"
     break;
 
   case 284:
 #line 2831 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PLUS_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 5602 "aemilia_parser.tab.c"
     break;
 
   case 285:
 #line 2846 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MINUS_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 5621 "aemilia_parser.tab.c"
     break;
 
   case 286:
 #line 2861 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(TIMES_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 5640 "aemilia_parser.tab.c"
     break;
 
   case 287:
 #line 2876 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(DIV_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 5659 "aemilia_parser.tab.c"
     break;
 
   case 288:
 #line 2891 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MOD_OP,
-                                                                          (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                          (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                          (yyvsp[-3].expr_parse_info)->expr,
+                                                                          (yyvsp[-1].expr_parse_info)->expr,
                                                                           NULL,
                                                                           0.0,
                                                                           NULL,
                                                                           FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5678 "aemilia_parser.tab.c"
     break;
 
   case 289:
 #line 2906 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ABS_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5695 "aemilia_parser.tab.c"
     break;
 
   case 290:
 #line 2919 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(CEIL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5712 "aemilia_parser.tab.c"
     break;
 
   case 291:
 #line 2932 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(FLOOR_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5729 "aemilia_parser.tab.c"
     break;
 
   case 292:
 #line 2945 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MIN_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5748 "aemilia_parser.tab.c"
     break;
 
   case 293:
 #line 2960 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(MAX_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5767 "aemilia_parser.tab.c"
     break;
 
   case 294:
 #line 2975 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(POWER_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5786 "aemilia_parser.tab.c"
     break;
 
   case 295:
 #line 2990 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EPOWER_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5803 "aemilia_parser.tab.c"
     break;
 
   case 296:
 #line 3003 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LOGE_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5820 "aemilia_parser.tab.c"
     break;
 
   case 297:
 #line 3016 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LOG10_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5837 "aemilia_parser.tab.c"
     break;
 
   case 298:
 #line 3029 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(SQRT_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5854 "aemilia_parser.tab.c"
     break;
 
   case 299:
 #line 3042 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(SIN_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5871 "aemilia_parser.tab.c"
     break;
 
   case 300:
 #line 3055 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(COS_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5888 "aemilia_parser.tab.c"
     break;
 
   case 301:
 #line 3068 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(C_UNIFORM_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5907 "aemilia_parser.tab.c"
     break;
 
   case 302:
 #line 3083 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ERLANG_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5926 "aemilia_parser.tab.c"
     break;
 
   case 303:
 #line 3098 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GAMMA_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5945 "aemilia_parser.tab.c"
     break;
 
   case 304:
 #line 3113 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EXPONENTIAL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 5962 "aemilia_parser.tab.c"
     break;
 
   case 305:
 #line 3126 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(WEIBULL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 5981 "aemilia_parser.tab.c"
     break;
 
   case 306:
 #line 3141 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BETA_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6000 "aemilia_parser.tab.c"
     break;
 
   case 307:
 #line 3156 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NORMAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6019 "aemilia_parser.tab.c"
     break;
 
   case 308:
 #line 3171 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PARETO_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6036 "aemilia_parser.tab.c"
     break;
 
   case 309:
 #line 3184 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(B_PARETO_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (8)].expr_parse_info)->local_var_list,
+                                                           concat_lists_no_dupls((yyvsp[-5].expr_parse_info)->local_var_list,
 								                 concat_lists_no_dupls(
-										   (yyvsp[(5) - (8)].expr_parse_info)->local_var_list,
-									           (yyvsp[(7) - (8)].expr_parse_info)->local_var_list)));
-			    ;}
+										   (yyvsp[-3].expr_parse_info)->local_var_list,
+									           (yyvsp[-1].expr_parse_info)->local_var_list)));
+			    }
+#line 6058 "aemilia_parser.tab.c"
     break;
 
   case 310:
 #line 3202 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(D_UNIFORM_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6077 "aemilia_parser.tab.c"
     break;
 
   case 311:
 #line 3217 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BERNOULLI_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (8)].expr_parse_info)->local_var_list,
+                                                           concat_lists_no_dupls((yyvsp[-5].expr_parse_info)->local_var_list,
 								                 concat_lists_no_dupls(
-										   (yyvsp[(5) - (8)].expr_parse_info)->local_var_list,
-									           (yyvsp[(7) - (8)].expr_parse_info)->local_var_list)));
-			    ;}
+										   (yyvsp[-3].expr_parse_info)->local_var_list,
+									           (yyvsp[-1].expr_parse_info)->local_var_list)));
+			    }
+#line 6099 "aemilia_parser.tab.c"
     break;
 
   case 312:
 #line 3235 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(BINOMIAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6118 "aemilia_parser.tab.c"
     break;
 
   case 313:
 #line 3250 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(POISSON_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6135 "aemilia_parser.tab.c"
     break;
 
   case 314:
 #line 3263 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NEG_BINOMIAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6154 "aemilia_parser.tab.c"
     break;
 
   case 315:
 #line 3278 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GEOMETRIC_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6171 "aemilia_parser.tab.c"
     break;
 
   case 316:
 #line 3291 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PASCAL_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6190 "aemilia_parser.tab.c"
     break;
 
   case 317:
 #line 3306 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 6199 "aemilia_parser.tab.c"
     break;
 
   case 318:
 #line 3311 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[(1) - (1)].st_bucket),
+                            {
+			      (yyval.expr_parse_info) = alloc_expr_parse_info((yyvsp[0].st_bucket),
 							 NULL);
-			    ;}
+			    }
+#line 6208 "aemilia_parser.tab.c"
     break;
 
   case 319:
 #line 3316 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(AND_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6227 "aemilia_parser.tab.c"
     break;
 
   case 320:
 #line 3331 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(OR_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6246 "aemilia_parser.tab.c"
     break;
 
   case 321:
 #line 3346 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(2) - (2)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NOT_OP,
-                                                                           (yyvsp[(2) - (2)].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(2) - (2)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[0].expr_parse_info)->local_var_list);
+			    }
+#line 6263 "aemilia_parser.tab.c"
     break;
 
   case 322:
 #line 3359 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(EQ_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6282 "aemilia_parser.tab.c"
     break;
 
   case 323:
 #line 3374 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(NE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6301 "aemilia_parser.tab.c"
     break;
 
   case 324:
 #line 3389 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LT_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6320 "aemilia_parser.tab.c"
     break;
 
   case 325:
 #line 3404 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6339 "aemilia_parser.tab.c"
     break;
 
   case 326:
 #line 3419 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GT_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6358 "aemilia_parser.tab.c"
     break;
 
   case 327:
 #line 3434 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GE_OP,
-                                                                           (yyvsp[(1) - (3)].expr_parse_info)->expr,
-                                                                           (yyvsp[(3) - (3)].expr_parse_info)->expr,
+                                                                           (yyvsp[-2].expr_parse_info)->expr,
+                                                                           (yyvsp[0].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(3) - (3)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                 (yyvsp[0].expr_parse_info)->local_var_list));
+			    }
+#line 6377 "aemilia_parser.tab.c"
     break;
 
   case 328:
 #line 3449 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 6385 "aemilia_parser.tab.c"
     break;
 
   case 329:
 #line 3453 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(FIRST_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6402 "aemilia_parser.tab.c"
     break;
 
   case 330:
 #line 3466 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(TAIL_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6419 "aemilia_parser.tab.c"
     break;
 
   case 331:
 #line 3479 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(CONCAT_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6438 "aemilia_parser.tab.c"
     break;
 
   case 332:
 #line 3494 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(INSERT_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6457 "aemilia_parser.tab.c"
     break;
 
   case 333:
 #line 3509 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(REMOVE_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6476 "aemilia_parser.tab.c"
     break;
 
   case 334:
 #line 3524 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = ((yyvsp[(3) - (4)].expr_parse_info) == NULL)?
+                            {
+        		      (yyval.expr_parse_info) = ((yyvsp[-1].expr_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LENGTH_OP,
-                                                                           (yyvsp[(3) - (4)].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(3) - (4)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6493 "aemilia_parser.tab.c"
     break;
 
   case 335:
 #line 3537 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 6501 "aemilia_parser.tab.c"
     break;
 
   case 336:
 #line 3541 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (6)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (6)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(READ_OP,
-                                                                           (yyvsp[(3) - (6)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (6)].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (6)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(5) - (6)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6520 "aemilia_parser.tab.c"
     break;
 
   case 337:
 #line 3556 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(5) - (8)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(7) - (8)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-5].expr_parse_info) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(WRITE_OP,
-                                                                           (yyvsp[(3) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(5) - (8)].expr_parse_info)->expr,
-                                                                           (yyvsp[(7) - (8)].expr_parse_info)->expr,
+                                                                           (yyvsp[-5].expr_parse_info)->expr,
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(3) - (8)].expr_parse_info)->local_var_list,
+                                                           concat_lists_no_dupls((yyvsp[-5].expr_parse_info)->local_var_list,
 								                 concat_lists_no_dupls(
-										   (yyvsp[(5) - (8)].expr_parse_info)->local_var_list,
-									           (yyvsp[(7) - (8)].expr_parse_info)->local_var_list)));
-			    ;}
+										   (yyvsp[-3].expr_parse_info)->local_var_list,
+									           (yyvsp[-1].expr_parse_info)->local_var_list)));
+			    }
+#line 6542 "aemilia_parser.tab.c"
     break;
 
   case 338:
 #line 3574 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(3) - (4)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 6550 "aemilia_parser.tab.c"
     break;
 
   case 339:
 #line 3578 "aemilia_parser.y"
-    {
+                            {
 			      check_id(REC_FIELD_ID_USE,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			    ;}
+			    }
+#line 6560 "aemilia_parser.tab.c"
     break;
 
   case 340:
 #line 3584 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (7)].st_bucket) == NULL) ||
-				    ((yyvsp[(6) - (7)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-4].st_bucket) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(GET_OP,
-                                                                           (yyvsp[(3) - (7)].st_bucket),
-                                                                           (yyvsp[(6) - (7)].expr_parse_info)->expr,
+                                                                           (yyvsp[-4].st_bucket),
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            NULL,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-							   (yyvsp[(6) - (7)].expr_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[-1].expr_parse_info)->local_var_list);
+			    }
+#line 6578 "aemilia_parser.tab.c"
     break;
 
   case 341:
 #line 3598 "aemilia_parser.y"
-    {
+                            {
 			      check_id(REC_FIELD_ID_USE,
-				       &(yyvsp[(3) - (3)].st_bucket),
+				       &(yyvsp[0].st_bucket),
 				       FALSE);
-			    ;}
+			    }
+#line 6588 "aemilia_parser.tab.c"
     break;
 
   case 342:
 #line 3604 "aemilia_parser.y"
-    {
-        		      (yyval.expr_parse_info) = (((yyvsp[(3) - (9)].st_bucket) == NULL) ||
-				    ((yyvsp[(6) - (9)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(8) - (9)].expr_parse_info) == NULL))?
+                            {
+        		      (yyval.expr_parse_info) = (((yyvsp[-6].st_bucket) == NULL) ||
+				    ((yyvsp[-3].expr_parse_info) == NULL) ||
+				    ((yyvsp[-1].expr_parse_info) == NULL))?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(PUT_OP,
-                                                                           (yyvsp[(3) - (9)].st_bucket),
-                                                                           (yyvsp[(6) - (9)].expr_parse_info)->expr,
-                                                                           (yyvsp[(8) - (9)].expr_parse_info)->expr,
+                                                                           (yyvsp[-6].st_bucket),
+                                                                           (yyvsp[-3].expr_parse_info)->expr,
+                                                                           (yyvsp[-1].expr_parse_info)->expr,
                                                                            0.0,
                                                                            NULL,
                                                                            FALSE),
-                                                           concat_lists_no_dupls((yyvsp[(6) - (9)].expr_parse_info)->local_var_list,
-								                 (yyvsp[(8) - (9)].expr_parse_info)->local_var_list));
-			    ;}
+                                                           concat_lists_no_dupls((yyvsp[-3].expr_parse_info)->local_var_list,
+								                 (yyvsp[-1].expr_parse_info)->local_var_list));
+			    }
+#line 6608 "aemilia_parser.tab.c"
     break;
 
   case 343:
 #line 3620 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = (yyvsp[(2) - (3)].expr_parse_info);
-			    ;}
+                            {
+			      (yyval.expr_parse_info) = (yyvsp[-1].expr_parse_info);
+			    }
+#line 6616 "aemilia_parser.tab.c"
     break;
 
   case 344:
 #line 3627 "aemilia_parser.y"
-    {
+                            {
 			      (yyval.expr_parse_info) = alloc_expr_parse_info(set_expr_bucket(LIST_CONS_OP,
 						     			 NULL,
 									 NULL,
@@ -6553,94 +6629,111 @@ yyreduce:
 											  NULL),
 									 FALSE),
 							 NULL);
-			    ;}
+			    }
+#line 6634 "aemilia_parser.tab.c"
     break;
 
   case 345:
 #line 3641 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(LIST_CONS_OP,
 						     			   NULL,
 									   NULL,
 									   NULL,
 									   0.0L,
-						     			   (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
+						     			   (yyvsp[0].lar_parse_info)->struct_value,
 									   FALSE),
-							   (yyvsp[(1) - (1)].lar_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[0].lar_parse_info)->local_var_list);
+			    }
+#line 6651 "aemilia_parser.tab.c"
     break;
 
   case 346:
 #line 3657 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(ARRAY_CONS_OP,
 								           NULL,
 								           NULL,
 								           NULL,
-								           (yyvsp[(1) - (1)].lar_parse_info)->value_num,
+								           (yyvsp[0].lar_parse_info)->value_num,
 								           transform_list_into_array(
-									     (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
-									     (yyvsp[(1) - (1)].lar_parse_info)->value_num),
+									     (yyvsp[0].lar_parse_info)->struct_value,
+									     (yyvsp[0].lar_parse_info)->value_num),
 								           FALSE),
-						           (yyvsp[(1) - (1)].lar_parse_info)->local_var_list);
-			    ;}
+						           (yyvsp[0].lar_parse_info)->local_var_list);
+			    }
+#line 6670 "aemilia_parser.tab.c"
     break;
 
   case 347:
 #line 3675 "aemilia_parser.y"
-    {
-			      (yyval.expr_parse_info) = ((yyvsp[(1) - (1)].lar_parse_info) == NULL)?
+                            {
+			      (yyval.expr_parse_info) = ((yyvsp[0].lar_parse_info) == NULL)?
 				     NULL:
 				     alloc_expr_parse_info(set_expr_bucket(RECORD_CONS_OP,
 						     			   NULL,
 									   NULL,
 									   NULL,
 									   0.0L,
-						     			   (yyvsp[(1) - (1)].lar_parse_info)->struct_value,
+						     			   (yyvsp[0].lar_parse_info)->struct_value,
 									   FALSE),
-							   (yyvsp[(1) - (1)].lar_parse_info)->local_var_list);
-			    ;}
+							   (yyvsp[0].lar_parse_info)->local_var_list);
+			    }
+#line 6687 "aemilia_parser.tab.c"
     break;
 
   case 348:
 #line 3691 "aemilia_parser.y"
-    {
-			      (yyval.lar_parse_info) = ((yyvsp[(1) - (1)].expr_parse_info) == NULL)?
+                            {
+			      (yyval.lar_parse_info) = ((yyvsp[0].expr_parse_info) == NULL)?
 				     NULL:
-				     alloc_lar_parse_info(alloc_value_cell((yyvsp[(1) - (1)].expr_parse_info)->expr,
+				     alloc_lar_parse_info(alloc_value_cell((yyvsp[0].expr_parse_info)->expr,
 						      			   0.0L,
 						      			   NULL,
 						      			   NULL),
 						          1,
-						          (yyvsp[(1) - (1)].expr_parse_info)->local_var_list);
-			    ;}
+						          (yyvsp[0].expr_parse_info)->local_var_list);
+			    }
+#line 6702 "aemilia_parser.tab.c"
     break;
 
   case 349:
 #line 3702 "aemilia_parser.y"
-    {
-			      (yyval.lar_parse_info) = (((yyvsp[(1) - (3)].expr_parse_info) == NULL) ||
-				    ((yyvsp[(3) - (3)].lar_parse_info) == NULL))?
+                            {
+			      (yyval.lar_parse_info) = (((yyvsp[-2].expr_parse_info) == NULL) ||
+				    ((yyvsp[0].lar_parse_info) == NULL))?
 				     NULL:
-				     alloc_lar_parse_info(alloc_value_cell((yyvsp[(1) - (3)].expr_parse_info)->expr,
+				     alloc_lar_parse_info(alloc_value_cell((yyvsp[-2].expr_parse_info)->expr,
 						      			   0.0L,
 						      			   NULL,
-						      			   (yyvsp[(3) - (3)].lar_parse_info)->struct_value),
-						          (yyvsp[(3) - (3)].lar_parse_info)->value_num + 1,
-						          concat_lists_no_dupls((yyvsp[(1) - (3)].expr_parse_info)->local_var_list,
-								                (yyvsp[(3) - (3)].lar_parse_info)->local_var_list));
-			    ;}
+						      			   (yyvsp[0].lar_parse_info)->struct_value),
+						          (yyvsp[0].lar_parse_info)->value_num + 1,
+						          concat_lists_no_dupls((yyvsp[-2].expr_parse_info)->local_var_list,
+								                (yyvsp[0].lar_parse_info)->local_var_list));
+			    }
+#line 6719 "aemilia_parser.tab.c"
     break;
 
 
-/* Line 1267 of yacc.c.  */
-#line 6642 "aemilia_parser.tab.c"
+#line 6723 "aemilia_parser.tab.c"
+
       default: break;
     }
+  /* User semantic actions sometimes alter yychar, and that requires
+     that yytoken be updated with the new translation.  We take the
+     approach of translating immediately before every use of yytoken.
+     One alternative is translating here after every semantic action,
+     but that translation would be missed if the semantic action invokes
+     YYABORT, YYACCEPT, or YYERROR immediately after altering yychar or
+     if it invokes YYBACKUP.  In the case of YYABORT or YYACCEPT, an
+     incorrect destructor might then be invoked immediately.  In the
+     case of YYERROR or YYBACKUP, subsequent parser actions might lead
+     to an incorrect destructor call or verbose syntax error message
+     before the lookahead is translated.  */
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
 
   YYPOPSTACK (yylen);
@@ -6649,26 +6742,28 @@ yyreduce:
 
   *++yyvsp = yyval;
 
-
-  /* Now `shift' the result of the reduction.  Determine what state
+  /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
-
-  yyn = yyr1[yyn];
-
-  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
-  if (0 <= yystate && yystate <= YYLAST && yycheck[yystate] == *yyssp)
-    yystate = yytable[yystate];
-  else
-    yystate = yydefgoto[yyn - YYNTOKENS];
+  {
+    const int yylhs = yyr1[yyn] - YYNTOKENS;
+    const int yyi = yypgoto[yylhs] + *yyssp;
+    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
+               ? yytable[yyi]
+               : yydefgoto[yylhs]);
+  }
 
   goto yynewstate;
 
 
-/*------------------------------------.
-| yyerrlab -- here on detecting error |
-`------------------------------------*/
+/*--------------------------------------.
+| yyerrlab -- here on detecting error.  |
+`--------------------------------------*/
 yyerrlab:
+  /* Make sure we have latest lookahead translation.  See comments at
+     user semantic actions for why this is necessary.  */
+  yytoken = yychar == YYEMPTY ? YYEMPTY : YYTRANSLATE (yychar);
+
   /* If not already recovering from an error, report this error.  */
   if (!yyerrstatus)
     {
@@ -6676,37 +6771,36 @@ yyerrlab:
 #if ! YYERROR_VERBOSE
       yyerror (YY_("syntax error"));
 #else
+# define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
+                                        yyssp, yytoken)
       {
-	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
-	if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
-	  {
-	    YYSIZE_T yyalloc = 2 * yysize;
-	    if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
-	      yyalloc = YYSTACK_ALLOC_MAXIMUM;
-	    if (yymsg != yymsgbuf)
-	      YYSTACK_FREE (yymsg);
-	    yymsg = (char *) YYSTACK_ALLOC (yyalloc);
-	    if (yymsg)
-	      yymsg_alloc = yyalloc;
-	    else
-	      {
-		yymsg = yymsgbuf;
-		yymsg_alloc = sizeof yymsgbuf;
-	      }
-	  }
-
-	if (0 < yysize && yysize <= yymsg_alloc)
-	  {
-	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (yymsg);
-	  }
-	else
-	  {
-	    yyerror (YY_("syntax error"));
-	    if (yysize != 0)
-	      goto yyexhaustedlab;
-	  }
+        char const *yymsgp = YY_("syntax error");
+        int yysyntax_error_status;
+        yysyntax_error_status = YYSYNTAX_ERROR;
+        if (yysyntax_error_status == 0)
+          yymsgp = yymsg;
+        else if (yysyntax_error_status == 1)
+          {
+            if (yymsg != yymsgbuf)
+              YYSTACK_FREE (yymsg);
+            yymsg = YY_CAST (char *, YYSTACK_ALLOC (YY_CAST (YYSIZE_T, yymsg_alloc)));
+            if (!yymsg)
+              {
+                yymsg = yymsgbuf;
+                yymsg_alloc = sizeof yymsgbuf;
+                yysyntax_error_status = 2;
+              }
+            else
+              {
+                yysyntax_error_status = YYSYNTAX_ERROR;
+                yymsgp = yymsg;
+              }
+          }
+        yyerror (yymsgp);
+        if (yysyntax_error_status == 2)
+          goto yyexhaustedlab;
       }
+# undef YYSYNTAX_ERROR
 #endif
     }
 
@@ -6714,24 +6808,24 @@ yyerrlab:
 
   if (yyerrstatus == 3)
     {
-      /* If just tried and failed to reuse look-ahead token after an
-	 error, discard it.  */
+      /* If just tried and failed to reuse lookahead token after an
+         error, discard it.  */
 
       if (yychar <= YYEOF)
-	{
-	  /* Return failure if at end of input.  */
-	  if (yychar == YYEOF)
-	    YYABORT;
-	}
+        {
+          /* Return failure if at end of input.  */
+          if (yychar == YYEOF)
+            YYABORT;
+        }
       else
-	{
-	  yydestruct ("Error: discarding",
-		      yytoken, &yylval);
-	  yychar = YYEMPTY;
-	}
+        {
+          yydestruct ("Error: discarding",
+                      yytoken, &yylval);
+          yychar = YYEMPTY;
+        }
     }
 
-  /* Else will try to reuse look-ahead token after shifting the error
+  /* Else will try to reuse lookahead token after shifting the error
      token.  */
   goto yyerrlab1;
 
@@ -6740,14 +6834,12 @@ yyerrlab:
 | yyerrorlab -- error raised explicitly by YYERROR.  |
 `---------------------------------------------------*/
 yyerrorlab:
+  /* Pacify compilers when the user code never invokes YYERROR and the
+     label yyerrorlab therefore never appears in user code.  */
+  if (0)
+    YYERROR;
 
-  /* Pacify compilers like GCC when the user code never invokes
-     YYERROR and the label yyerrorlab therefore never appears in user
-     code.  */
-  if (/*CONSTCOND*/ 0)
-     goto yyerrorlab;
-
-  /* Do not reclaim the symbols of the rule which action triggered
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
   yylen = 0;
@@ -6760,38 +6852,37 @@ yyerrorlab:
 | yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
-  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
+  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
-      if (yyn != YYPACT_NINF)
-	{
-	  yyn += YYTERROR;
-	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-	    {
-	      yyn = yytable[yyn];
-	      if (0 < yyn)
-		break;
-	    }
-	}
+      if (!yypact_value_is_default (yyn))
+        {
+          yyn += YYTERROR;
+          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+            {
+              yyn = yytable[yyn];
+              if (0 < yyn)
+                break;
+            }
+        }
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-	YYABORT;
+        YYABORT;
 
 
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp);
+                  yystos[yystate], yyvsp);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
     }
 
-  if (yyn == YYFINAL)
-    YYACCEPT;
-
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
 
   /* Shift the error token.  */
@@ -6808,6 +6899,7 @@ yyacceptlab:
   yyresult = 0;
   goto yyreturn;
 
+
 /*-----------------------------------.
 | yyabortlab -- YYABORT comes here.  |
 `-----------------------------------*/
@@ -6815,7 +6907,8 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#ifndef yyoverflow
+
+#if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -6825,18 +6918,27 @@ yyexhaustedlab:
   /* Fall through.  */
 #endif
 
+
+/*-----------------------------------------------------.
+| yyreturn -- parsing is finished, return the result.  |
+`-----------------------------------------------------*/
 yyreturn:
-  if (yychar != YYEOF && yychar != YYEMPTY)
-     yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval);
-  /* Do not reclaim the symbols of the rule which action triggered
+  if (yychar != YYEMPTY)
+    {
+      /* Make sure we have latest lookahead translation.  See comments at
+         user semantic actions for why this is necessary.  */
+      yytoken = YYTRANSLATE (yychar);
+      yydestruct ("Cleanup: discarding lookahead",
+                  yytoken, &yylval);
+    }
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
   YY_STACK_PRINT (yyss, yyssp);
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp);
+                  yystos[+*yyssp], yyvsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -6847,11 +6949,8 @@ yyreturn:
   if (yymsg != yymsgbuf)
     YYSTACK_FREE (yymsg);
 #endif
-  /* Make sure YYID is used.  */
-  return YYID (yyresult);
+  return yyresult;
 }
-
-
 #line 3716 "aemilia_parser.y"
 
 
@@ -9485,4 +9584,3 @@ char		*find_aei_lexeme(int aei_no)
 	     aei_cell = aei_cell->next_st_bucket_cell);
 	return(aei_cell->st_bucket->symbol_lexeme);
 }
-

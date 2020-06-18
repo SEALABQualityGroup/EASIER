@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/LogicalSpecification/src" modelPluginID="LogicalSpecification"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="LogicalSpecification/src" modelPluginID="it.disim.univaq.sealab.logicalSpecificationMetamodel"
     modelName="LogicalSpecification" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>logicalSpecification.ecore</foreignModel>
   <genPackages prefix="LogicalSpecification" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#/">
@@ -13,14 +13,14 @@
       <genEnumLiterals ecoreEnumLiteral="logicalSpecification.ecore#//TypesEnum/REAL"/>
     </genEnums>
     <genDataTypes ecoreDataType="logicalSpecification.ecore#//model"/>
-    <genClasses ecoreClass="logicalSpecification.ecore#//NamedElement">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//NamedElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//NamedElement/name"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//Refactoring">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/actions"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/pre"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/post"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/lola4rapsRoot"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/pre"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/post"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Refactoring/lola4rapsRoot"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Refactoring/cost"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Refactoring/numOfChanges"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Refactoring/cloneRefactoring"/>
@@ -28,17 +28,16 @@
     <genClasses ecoreClass="logicalSpecification.ecore#//Action">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/numOfChanges"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/cost"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/refactoring"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/parameters"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/pre"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/post"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/refactoring"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/pre"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Action/post"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Action/model"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/execute"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/log"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/setParameters"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/createPreCondition"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Action/createPostCondition"/>
-      <genOperations ecoreOperation="logicalSpecification.ecore#//Action/cloneAction"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//SingleValuedParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//SingleValuedParameter/existsOperator"/>
@@ -47,51 +46,58 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//MultipleValuedParameter/forAllOperator"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//MultipleValuedParameter/existsOperator"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Parameter">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Parameter/type"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/action"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//Parameter/resolvingExpr"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/lhsRelationalOperator"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/rhsRelationalOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/antipattern"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Parameter/antipattern"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Condition">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Condition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Condition/conditionFormula"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//PreCondition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/action"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/refactoring"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PreCondition/refactoring"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//PostCondition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/action"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/refactoring"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//PostCondition/refactoring"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//FOLSpecification">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/condition"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/rootOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/rootOperator"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//FOLSpecification/antipattern"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//LogicalOperator"/>
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//LogicalOperator">
+      <genOperations ecoreOperation="logicalSpecification.ecore#//LogicalOperator/guarantees">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//LogicalOperator/guarantees/operator"/>
+      </genOperations>
+      <genOperations ecoreOperation="logicalSpecification.ecore#//LogicalOperator/evaluateOperator">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//LogicalOperator/evaluateOperator/operator"/>
+      </genOperations>
+    </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//VoidOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//ForAllOperator">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/collection"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ForAllOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//ExistsOperator">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/element"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/collection"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//ExistsOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//OrOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//OrOperator/arguments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//OrOperator/arguments"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//NotOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//NotOperator/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//NotOperator/argument"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//AndOperator">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//AndOperator/arguments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//AndOperator/arguments"/>
     </genClasses>
-    <genClasses ecoreClass="logicalSpecification.ecore#//RelationalOperator">
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//RelationalOperator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//RelationalOperator/factor"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//RelationalOperator/lhs"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//RelationalOperator/rhs"/>
@@ -101,17 +107,23 @@
     <genClasses ecoreClass="logicalSpecification.ecore#//GreaterEqualOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//LessEqualOperator"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//LessOperator"/>
-    <genClasses ecoreClass="logicalSpecification.ecore#//Operator">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/folspecification"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/forAlloperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/notOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/andOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/orOperator"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/existsOperator"/>
+    <genClasses image="false" ecoreClass="logicalSpecification.ecore#//Operator">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/folspecification"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/forAlloperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/notOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/andOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/orOperator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Operator/existsOperator"/>
+      <genOperations ecoreOperation="logicalSpecification.ecore#//Operator/evaluateOperator">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//Operator/evaluateOperator/contextualElement"/>
+      </genOperations>
+      <genOperations ecoreOperation="logicalSpecification.ecore#//Operator/guarantees">
+        <genParameters ecoreParameter="logicalSpecification.ecore#//Operator/guarantees/op"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//Antipattern">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/lola4rapsRoot"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/parameters"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/lola4rapsRoot"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//Antipattern/formula"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/setParametersForPartialDetection"/>
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/partialDetection"/>
@@ -121,17 +133,15 @@
       <genOperations ecoreOperation="logicalSpecification.ecore#//Antipattern/createFormula"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//LoLa4RAPSRoot">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/refactorings"/>
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/antipatterns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/refactorings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//LoLa4RAPSRoot/antipatterns"/>
     </genClasses>
     <genClasses ecoreClass="logicalSpecification.ecore#//AddAction"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//DeleteAction"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//MoveAction"/>
     <genClasses ecoreClass="logicalSpecification.ecore#//ChangeAction"/>
-    <nestedGenPackages prefix="Actions" basePackage="logicalSpecification" disposableProviderFactory="true"
-        ecorePackage="logicalSpecification.ecore#//actions">
-      <nestedGenPackages prefix="UML" basePackage="logicalSpecification.actions" disposableProviderFactory="true"
-          ecorePackage="logicalSpecification.ecore#//actions/UML">
+    <nestedGenPackages prefix="Actions" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//actions">
+      <nestedGenPackages prefix="UML" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//actions/UML">
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/UML/Component"/>
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/UML/Node"/>
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/UML/Package"/>
@@ -157,13 +167,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlNeighbors"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlCompsToDeploy"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/umlSourcePackage"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/addDeployedComps"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/addCommunicationPaths"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddNodeAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -179,14 +182,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlCompToAdd"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlSourcePackage"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/umlTargetNodes"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/deployOn">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/deployOn/targets"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -199,11 +194,6 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/targetCompOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/umlOpToAdd"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/umlTargetComp"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLAddOperationAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -211,11 +201,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/allNodesMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/umlNodeToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteNodeAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -223,11 +208,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/allCompsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/umlCompToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -235,11 +215,6 @@
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/allOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/umlOpToDel"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLDeleteOperationAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -259,13 +234,6 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlCompToMove"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlTargetNodes"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/umlArtifacts"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/moveDeployments"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/deployOn"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveComponentAction/createPostCondition"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -280,15 +248,9 @@
               ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/allTargetCompOpsMVP"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/umlOpToMove"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/umlTargetComp"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/setParameters"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/createPreCondition"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/UML/UMLMoveOperationAction/createPostCondition"/>
         </genClasses>
       </nestedGenPackages>
-      <nestedGenPackages prefix="AEmilia" basePackage="logicalSpecification.actions"
-          disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//actions/AEmilia">
+      <nestedGenPackages prefix="AEmilia" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//actions/AEmilia">
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/AEmilia/ElemType"/>
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/AEmilia/InputInteraction"/>
         <genDataTypes ecoreDataType="logicalSpecification.ecore#//actions/AEmilia/ArchiElemInstance"/>
@@ -299,51 +261,51 @@
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaAddAction"/>
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaDeleteAction"/>
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveAction"/>
-        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction">
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveInputInteractionAction/execute"/>
-        </genClasses>
-        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction">
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaMoveOutputInteractionAction/execute"/>
-        </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/sourceAEI"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/clonedAEI"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfInputInteractions"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfOutputInteractions"/>
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/aemiliaModel"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/listOfNewAttachments"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningInputInteractions"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningOutputInteractions"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/cloningArchitecturalInteraction"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/setSelector"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isClonable">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isClonable/aei"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getAttachmentsOfAEI">
-            <genParameters ecoreParameter="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getAttachmentsOfAEI/aei"/>
-          </genOperations>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/isApplicable"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/getListOfClonableInstances"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/aeiToCloneSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/clonedAeiSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOrInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allInLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOutLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allUniInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allAeisMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allInRemoteInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaCloneAEIAction/allOutRemoteInteractsMVP"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/sourceConstInit"/>
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/aemiliaModel"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/factorOfChange"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/execute"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/log"/>
-          <genOperations ecoreOperation="logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/getFactorOfChange_impl"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/sourceConstInitSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaConstChangesAction/allConstInitsMVP"/>
         </genClasses>
         <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaChangeAction"/>
+        <genClasses ecoreClass="logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/sourceAEI"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/clonedAEI"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfInputInteractions"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfOutputInteractions"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/listOfNewAttachments"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/aeiToCloneSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/clonedAeiSVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOrInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allInLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOutLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allUniInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allLocalInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allAeisMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allInRemoteInteractsMVP"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference logicalSpecification.ecore#//actions/AEmilia/AEmiliaRemoveClonedAEIAction/allOutRemoteInteractsMVP"/>
+        </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Antipatterns" basePackage="logicalSpecification" disposableProviderFactory="true"
-        ecorePackage="logicalSpecification.ecore#//antipatterns">
-      <nestedGenPackages prefix="Performance" basePackage="logicalSpecification.antipatterns"
-          disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//antipatterns/performance">
+    <nestedGenPackages prefix="Antipatterns" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//antipatterns">
+      <nestedGenPackages prefix="Performance" disposableProviderFactory="true" ecorePackage="logicalSpecification.ecore#//antipatterns/performance">
         <genClasses image="false" ecoreClass="logicalSpecification.ecore#//antipatterns/performance/PerformanceAntipattern"/>
         <genClasses ecoreClass="logicalSpecification.ecore#//antipatterns/performance/BlobPA">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"

@@ -4,15 +4,17 @@ import java.rmi.UnexpectedException;
 
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
-public class RMutation implements MutationOperator<RSolution> {
+public class RMutation<S extends RSolution> implements MutationOperator<S> {
 	private static final double DEFAULT_PROBABILITY = 0.01;
 	private static final double DEFAULT_DISTRIBUTION_INDEX = 20.0;
 	private double distributionIndex;
@@ -81,12 +83,11 @@ public class RMutation implements MutationOperator<RSolution> {
 	}
 
 	/** Perform the mutation operation */
-	protected void doMutation(double probability, RSolution solution, int allowed_failures) {
+	private void doMutation(double probability, RSolution solution, int allowed_failures) {
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			if (randomGenerator.nextDouble() <= probability) {
 				try {
-					assert(i==0);
 					boolean altered = false;
 					int num_failures = 0;
 					while(!altered){
@@ -104,7 +105,7 @@ public class RMutation implements MutationOperator<RSolution> {
 						EasierLogger.logger_.info("Mutation left solution unchanged");
 					else {
 						solution.setMutated(true);
-						RSolution.MutationCounter++;
+						//RSolution.MutationCounter++;
 						EasierLogger.logger_.info("Mutation is done");
 					}
 				} catch (UnexpectedException e) {

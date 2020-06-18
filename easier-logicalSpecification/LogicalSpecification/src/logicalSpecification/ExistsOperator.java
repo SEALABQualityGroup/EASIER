@@ -105,7 +105,5 @@ public interface ExistsOperator extends LogicalOperator {
 	 * @generated
 	 */
 	void setArgument(Operator value);
-	
-	boolean equals(ExistsOperator op2);
 
 } // ExistsOperator

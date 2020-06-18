@@ -1,9 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
-public class AemiliaRExperimentProblem<S extends Solution<?>> extends ExperimentProblem<Solution<?>> {
+public class AemiliaRExperimentProblem<S extends AemiliaRSolution> extends ExperimentProblem<S> {
 
 	private AemiliaRProblem<S> problem;
 	private String tag;

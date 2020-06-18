@@ -521,7 +521,7 @@ public class RefactoringImpl extends NamedElementImpl implements Refactoring {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (cost: ");
 		result.append(cost);
 		result.append(", numOfChanges: ");

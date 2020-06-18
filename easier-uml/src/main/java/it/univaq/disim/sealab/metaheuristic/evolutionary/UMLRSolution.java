@@ -91,8 +91,6 @@ public class UMLRSolution extends RSolution {
 	@Override
 	public void createNewModel(Path modelFilePath) {
 		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		assert (res.getContents().get(0).equals((AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION)));
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 	}
@@ -130,20 +128,16 @@ public class UMLRSolution extends RSolution {
 
 		UMLRSequence seq = new UMLRSequence(this);
 
-		assert (s1.getLength() == 4);
-		assert (s2.getLength() == 4);
 
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
 				// _new.setSolution(this);
-				assert (_new.equals(s1.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			for (int j = point; j < s2.getLength(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
 				// _new.setSolution(this);
-				assert (_new.equals(s2.getActionAt(j)));
 				seq.insert(j, _new);
 			}
 			return seq;
@@ -325,18 +319,12 @@ public class UMLRSolution extends RSolution {
 //		Refactoring ref = this.getVariableValue(0).getRefactoring();
 //
 //		for (RefactoringAction a : ref.getActions()) {
-//			assert (a.getModel() != null);
-//			assert (a.getModel().equals(this.getModel()));
 //
 //			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 //				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-//				assert (sourceCost != null);
 //				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
 //			}
 //			try {
-//				assert (this.getModel().equals(a.getModel()));
-//				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-//				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
 //				a.execute();
 //				this.setRefactored(true);
 //			} catch (UnsupportedOperationException e) {
@@ -353,18 +341,12 @@ public class UMLRSolution extends RSolution {
 //		Refactoring ref = this.getVariableValue(0).getRefactoring();
 //
 //		for (RefactoringAction a : ref.getActions()) {
-//			assert (a.getModel() != null);
-//			assert (a.getModel().equals(this.getModel()));
 //
 //			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 //				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-//				assert (sourceCost != null);
 //				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
 //			}
 //			try {
-//				assert (this.getModel().equals(a.getModel()));
-//				assert (this.getModel().equals(this.getVariableValue(0).getModel()));
-//				assert (this.getVariableValue(0).getModel().equals(a.getModel()));
 //				a.execute();
 //				this.setRefactored(true);
 //			} catch (UnsupportedOperationException e) {
