@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -215,7 +216,7 @@ public class AemiliaRSolution extends RSolution {
 			e.printStackTrace();
 		}
 
-		System.out.println("Problem's model copied!!!");
+		EasierLogger.logger_.info("Problem's model copied!!!");
 
 		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
 		createNewModel(mmaemiliaFilePath);
@@ -233,9 +234,18 @@ public class AemiliaRSolution extends RSolution {
 	}
 
 	public void createNewModel(Path modelFilePath) {
-		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+//		Resource res;
+		try {
+//			res = getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()), true);
+//			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
+//					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+			this.model = metamodelManager.getModel(modelFilePath);
+		} catch (Exception e) {
+			System.err.println("Error in creating the model for Solution #"+this.getName());
+			System.err.println(this.getVariableValue(0).toString());
+			e.printStackTrace();
+		}
+		
 	}
 
 	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException {
@@ -579,7 +589,8 @@ public class AemiliaRSolution extends RSolution {
 
 	public void refreshModel() {
 		getResourceSet().getResources().get(0).unload();
-		this.createNewModel(mmaemiliaFilePath);
+//		this.createNewModel(mmaemiliaFilePath);
+		this.model = metamodelManager.getModel(mmaemiliaFilePath);
 	}
 
 	public int getPAs() {
