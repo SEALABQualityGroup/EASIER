@@ -333,11 +333,12 @@ public class AemiliaController implements Controller {
 			// }
 			//
 
+			new GenerateLatexTablesWithComputingTime(experiment).run();
+
 			new RComputeQualityIndicators<>(experiment).run();
 			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 			new GenerateBoxplotsWithR<>(experiment).run();
 			new GenerateLatexTablesWithStatistics(experiment).run();
-			new GenerateLatexTablesWithComputingTime(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
