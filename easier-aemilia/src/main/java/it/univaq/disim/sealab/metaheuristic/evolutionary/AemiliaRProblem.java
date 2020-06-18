@@ -70,8 +70,8 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 			if (i == FIRST_OBJ) {
 				EasierLogger.logger_
 						.info("SOLUTION #" + solution.getName() + ": PerfQ --> " + solution.getPerfQ());
-				// if isWorsen perfQ does not be change, if not worsen must be multiply by -1 to
-				// maximize better perfQ
+				//if is worse perfQ must not be changed 
+				//if not it must be multiply by -1 to maximize the perfQ
 				float quality = (getController().getConfigurator().isWorsen()) ? solution.getPerfQ()
 						: (-1 * solution.getPerfQ());
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);

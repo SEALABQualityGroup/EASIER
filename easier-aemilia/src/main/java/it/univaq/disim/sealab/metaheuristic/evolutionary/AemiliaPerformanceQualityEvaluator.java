@@ -125,7 +125,7 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		if (sourceMes.getValue() == 0)
 			throw new Exception("There is a problem in the source val measure");
 		if (refMes.getValue() == 0) {
-			System.out.println("The refactored model has measure --> " + refMes.getMeasure() + " with 0 value!!!");
+//			System.out.println("The refactored model has measure --> " + refMes.getMeasure() + " with 0 value!!!");
 			quality = 0.0;
 		} else
 			quality = (refMes.getValue() - sourceMes.getValue()) / (refMes.getValue() + sourceMes.getValue());

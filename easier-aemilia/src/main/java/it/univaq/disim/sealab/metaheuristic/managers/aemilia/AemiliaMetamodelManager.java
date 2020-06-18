@@ -128,6 +128,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		} catch (Exception e) {
 			System.err.println(ExceptionUtils.getStackTrace(e));
 			System.err.println("Solution number: " + solution.getName());
+			e.printStackTrace();
 		}
 	}
 
@@ -782,8 +783,8 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	 * @param sourceModelPath
 	 */
 	public void refreshModel(final Path sourceModelPath) {
-		getResourceSet().getResources().get(0).unload();
-		Resource res = getResourceSet().getResource(Manager.string2Uri(sourceModelPath.toString()), true);
+		getResourceSet().getResources().forEach(resource -> resource.unload());
+		Resource res = getResourceSet().getResource(URI.createFileURI(sourceModelPath.toString()), true);
 
 		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);

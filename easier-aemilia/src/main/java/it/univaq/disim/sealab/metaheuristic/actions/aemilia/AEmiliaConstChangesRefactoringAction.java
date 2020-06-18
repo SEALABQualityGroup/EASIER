@@ -52,7 +52,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		// this.setSourceConstInit(getRandomRate(sol));
 		this.setSourceConstInit(getRandomConst(sol));
 		if (sourceConstInit.getName().contains("workload"))
-			System.out.println("There was an error in filtering workload");
+			System.err.println("There was an error in filtering workload");
 		this.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MetamodelManager.MAX_VALUE));
 
 		this.setSourceConstInitOldValue(
@@ -110,7 +110,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		ConstInit returnValue = listOfRandomRanges
 				.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(rangeMin, rangeMax));
 		if (returnValue.getName().contains("workload"))
-			System.out.println("There was an error in filtering random rate!!!");
+			System.err.println("There was an error in filtering random rate!!!");
 		return returnValue;
 	}
 
