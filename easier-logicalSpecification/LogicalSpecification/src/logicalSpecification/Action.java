@@ -194,7 +194,7 @@ public interface Action extends NamedElement {
 	 * @return the value of the '<em>Model</em>' attribute.
 	 * @see #setModel(Object)
 	 * @see logicalSpecification.LogicalSpecificationPackage#getAction_Model()
-	 * @model
+	 * @model dataType="logicalSpecification.model"
 	 * @generated
 	 */
 	Object getModel();

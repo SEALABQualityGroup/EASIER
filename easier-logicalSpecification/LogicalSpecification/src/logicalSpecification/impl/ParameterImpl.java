@@ -452,7 +452,7 @@ public abstract class ParameterImpl extends NamedElementImpl implements Paramete
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuilder result = new StringBuilder(super.toString());
+		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (type: ");
 		result.append(type);
 		result.append(", resolvingExpr: ");
@@ -460,5 +460,12 @@ public abstract class ParameterImpl extends NamedElementImpl implements Paramete
 		result.append(')');
 		return result.toString();
 	}
+	
+//	@Override
+//	public boolean equals(Parameter p2) {
+//		if(this.getResolvingExpr().equals(p2.getResolvingExpr()))
+//			return true;
+//		return false;
+//	}
 
 } //ParameterImpl

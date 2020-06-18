@@ -277,4 +277,60 @@ public interface UMLMoveComponentAction extends UMLMoveAction {
 	 */
 	EList<Artifact> getUmlArtifacts();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='Controller.logger_.info(umlCompToMove.toString());\n\t\tfor (Node target : umlTargetNodes) {\n\t\t\tfor (Deployment dep : target.getDeployments()) {\n\t\t\t\tController.logger_.info(dep.toString());\n\t\t\t}\n\t\t}\n\t\tfor (Artifact art : getUmlArtifacts()) {\n\t\t\tController.logger_.info(art.toString());\n\t\t\tController.logger_.info(Integer.toString(art.getManifestations().size()));\n\t\t}'"
+	 * @generated
+	 */
+	void log();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='moveDeployments();'"
+	 * @generated
+	 */
+	void execute();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Manifestation&gt; manifestations = new ArrayList&lt;Manifestation&gt;();\n\n\t\tmanifestations = ((UMLManager) Manager.getInstance(UMLManager.getInstance()).getMetamodelManager())\n\t\t\t\t.getAllManifestations();\n\n\t\tfor (Manifestation man : manifestations) {\n\t\t\tif (man.getUtilizedElement().getQualifiedName().equals(umlCompToMove.getQualifiedName())) {\n\t\t\t\tman.destroy();\n\t\t\t}\n\t\t}\n\n\t\tumlArtifacts = ((UMLManager) Manager.getInstance(UMLManager.getInstance()).getMetamodelManager())\n\t\t\t\t.getAllArtifacts();\n\n\t\tfor (Artifact art : umlArtifacts) {\n\t\t\tif (art.getManifestations().isEmpty()) {\n\t\t\t\tart.destroy();\n\t\t\t}\n\t\t}\n\n\t\tdeployOn();'"
+	 * @generated
+	 */
+	void moveDeployments();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='Artifact art;\n\t\tfor (Node target : umlTargetNodes) {\n\t\t\tart = UMLFactory.eINSTANCE.createArtifact();\n\t\t\tart.setName(umlCompToMove.getName() + \"_Artifact\");\n\t\t\tart.createManifestation(umlCompToMove.getName() + \"_Manifestation\", umlCompToMove);\n\t\t\tDeployment deploy = target.createDeployment(umlCompToMove.getName() + \"_Deployment\");\n\t\t\tdeploy.getDeployedArtifacts().add(art);\n\t\t\ttarget.getDeployments().add(deploy);\n\t\t}'"
+	 * @generated
+	 */
+	void deployOn();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; moveCompParams = new ArrayList&lt;&gt;();\n\n\t\tsetCompToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getComponentQuery(getUmlCompToMove())));\n\t\tmoveCompParams.add(getCompToMoveSVP());\n\n\t\tsetTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getNodesQuery(getUmlTargetNodes())));\n\t\tmoveCompParams.add(getTargetNodesMVP());\n\n\t\tsetAllArtifactsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllArtifactsQuery()));\n\t\tmoveCompParams.add(getAllArtifactsMVP());\n\n\t\tsetAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllComponentsQuery()));\n\t\tmoveCompParams.add(getAllCompsMVP());\n\n\t\tsetAllTargetsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getNodesQuery(getUmlTargetNodes())));\n\t\tmoveCompParams.add(getAllTargetsMVP());\n\n\t\tsetAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));\n\t\tmoveCompParams.add(getAllNodesMVP());\n\n\t\tsetAllDeployedElemsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllDeployedElementsQuery(getUmlTargetNodes())));\n\t\tmoveCompParams.add(getAllDeployedElemsMVP());\n\n\t\tgetParameters().addAll(moveCompParams);'"
+	 * @generated
+	 */
+	void setParameters();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();\n\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"MoveComponentPreCondition\");\n\n\t\tExistsOperator existsComponentInComponents = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getCompToMoveSVP(), getAllCompsMVP());\n\n\t\tForAllOperator forAllNode = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createForAllOperator(getTargetNodesMVP());\n\t\tExistsOperator existsTargetInNodes = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getAllNodesMVP());\n\t\tNotOperator componentNotOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();\n\n\t\t// TODO getAllDeployedElems \350 l\'insieme delle Component deployate sui target\n\t\t// Nodes. Non va bene: la condition dice che\n\t\t// su ogni target Node ci deve stare la Component spostata. Con l\'unione basta\n\t\t// che stia su uno dei target...\n\t\tExistsOperator componentExists = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getCompToMoveSVP(), getAllDeployedElemsMVP());\n\n\t\tcomponentNotOperator.setArgument(componentExists);\n\t\tAndOperator andOperator = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandOperator.getArguments().add(existsTargetInNodes);\n\t\tandOperator.getArguments().add(componentNotOperator);\n\t\tforAllNode.setArgument(andOperator);\n\n\t\tAndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandRoot.getArguments().add(existsComponentInComponents);\n\t\tandRoot.getArguments().add(forAllNode);\n\n\t\tspecification.setRootOperator(andRoot);\n\t\tpreCondition.setConditionFormula(specification);\n\t\tsetPre(preCondition);'"
+	 * @generated
+	 */
+	void createPreCondition();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();\n\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"MoveComponentPostCondition\");\n\n\t\tExistsOperator existsComponentInComponents = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getCompToMoveSVP(), getAllCompsMVP());\n\n\t\tForAllOperator forAllNode = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createForAllOperator(getTargetNodesMVP());\n\t\tExistsOperator existsTargetInNodes = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getAllNodesMVP());\n\t\tExistsOperator componentExists = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getCompToMoveSVP(), getAllDeployedElemsMVP());\n\t\tAndOperator andOperator = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandOperator.getArguments().add(existsTargetInNodes);\n\t\tandOperator.getArguments().add(componentExists);\n\t\tforAllNode.setArgument(andOperator);\n\n\t\tAndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandRoot.getArguments().add(existsComponentInComponents);\n\t\tandRoot.getArguments().add(forAllNode);\n\n\t\tspecification.setRootOperator(andRoot);\n\t\tpostCondition.setConditionFormula(specification);\n\t\tsetPost(postCondition);'"
+	 * @generated
+	 */
+	void createPostCondition();
+
 } // UMLMoveComponentAction

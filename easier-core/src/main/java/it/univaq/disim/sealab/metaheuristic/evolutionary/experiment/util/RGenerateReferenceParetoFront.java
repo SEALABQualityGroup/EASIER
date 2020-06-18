@@ -39,7 +39,6 @@ import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.util.PointSolution;
 import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 /**
@@ -75,11 +74,7 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 		File outputDirectory = createOutputDirectory(outputDirectoryName);
 
 		List<String> referenceFrontFileNames = new LinkedList<>();
-		if (!experiment.getProblemList().isEmpty())
-			RPointSolution.setWorsen(((RProblem<?>) experiment.getProblemList().get(0).getProblem()).getController()
-					.getConfigurator().isWorsen());
 		for (ExperimentProblem<?> problem : experiment.getProblemList()) {
-
 			NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
 			for (ExperimentAlgorithm<?, ?> algorithm : experiment.getAlgorithmList()) {

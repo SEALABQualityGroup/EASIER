@@ -56,53 +56,9 @@ public class PerformanceFactoryImpl extends EFactoryImpl implements PerformanceF
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case PerformancePackage.BLOB_PA: return createBlobPA();
-			case PerformancePackage.CPS_PA: return createCpsPA();
-			case PerformancePackage.PAF_PA: return createPafPA();
-			case PerformancePackage.EP_PA: return createEpPA();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public BlobPA createBlobPA() {
-		BlobPAImpl blobPA = new BlobPAImpl();
-		return blobPA;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public CpsPA createCpsPA() {
-		CpsPAImpl cpsPA = new CpsPAImpl();
-		return cpsPA;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PafPA createPafPA() {
-		PafPAImpl pafPA = new PafPAImpl();
-		return pafPA;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EpPA createEpPA() {
-		EpPAImpl epPA = new EpPAImpl();
-		return epPA;
 	}
 
 	/**

@@ -491,6 +491,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 	}
 
 	private int[] generateRandomInterval(int upperBound) {
+		assert (upperBound > 0);
 		int bounds[] = new int[2];
 		JMetalRandom.getInstance().setSeed(10L);
 		bounds[0] = JMetalRandom.getInstance().getRandomGenerator().nextInt(-1, upperBound - 1);
@@ -500,6 +501,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 			bounds[1] = bounds[0];
 			bounds[0] = aux;
 		}
+		assert (bounds[1] - bounds[0] < 0);
 		return bounds;
 	}
 
@@ -515,6 +517,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 			if (object instanceof Component)
 				list_of_components.add((Component) object);
 		}
+		assert (list_of_components.size() > 0);
 		int[] randomInterval = generateRandomInterval(list_of_components.size());
 		return list_of_components.get(randomInterval[0] - 1);
 	}

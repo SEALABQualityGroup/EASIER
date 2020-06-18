@@ -47,5 +47,7 @@ public interface NotOperator extends LogicalOperator {
 	 * @generated
 	 */
 	void setArgument(Operator value);
+	
+	boolean equals(NotOperator op2);
 
 } // NotOperator

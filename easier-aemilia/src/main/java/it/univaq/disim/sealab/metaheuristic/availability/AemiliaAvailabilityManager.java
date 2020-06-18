@@ -14,9 +14,8 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.epsilon.etl.trace.Transformation;
 
-import it.univaq.disim.sealab.epsilon.EpsilonHelper;
+import it.univaq.disim.sealab.aemiliaMod2text.main.Transformation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import metamodel.mmaemilia.AEmiliaSpecification;
@@ -84,11 +83,10 @@ public class AemiliaAvailabilityManager {
 						try {
 							targetResource.save(null);
 						} catch (IOException e) {
-							System.err.println("Error in saving the resource --> " + targetResource.toString());
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						EpsilonHelper.generateAemFile(modelFile.toPath(), solutionFolder.toPath());
-//						Transformation.GenerateAEMTransformation(modelFile.getPath(), solutionFolder.getPath());
+						Transformation.GenerateAEMTransformation(modelFile.getPath(), solutionFolder.getPath());
 					}
 				}
 			}
@@ -116,8 +114,7 @@ public class AemiliaAvailabilityManager {
 				e.printStackTrace();
 			}
 //			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
-//			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
-			EpsilonHelper.generateAemFile(modelFile.toPath(), modelFile.getParentFile().toPath());
+			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
 
 			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
 
@@ -151,8 +148,7 @@ public class AemiliaAvailabilityManager {
 				e.printStackTrace();
 			}
 //			Transformation.GenerateAEMTransformation(modelFile.getPath(), modelFile.getParentFile().getPath());
-//			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
-			EpsilonHelper.generateAemFile(modelFile.toPath(), modelFile.getParentFile().toPath());
+			Transformation.GenerateAEMTransformation(modelFile.toPath(), modelFile.getParentFile().toPath());
 
 			File oldAemFile = Paths.get(modelFile.getParent(), "fta_result.aem").toFile();
 

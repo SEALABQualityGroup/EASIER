@@ -101,10 +101,7 @@ public class RSolutionListOutput {
 				for (int i = 0; i < solutionList.size(); i++) {
 						bufferedWriter.write(solutionList.get(i).getID() + context.getSeparator());
 					for (int j = 0; j < numberOfObjectives; j++) {
-						if(j == 0 && !RPointSolution.isWorsen())
-							bufferedWriter.write((-1 * solutionList.get(i).getObjective(j)) + context.getSeparator());
-						else
-							bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
+						bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
 					}
 					bufferedWriter.newLine();
 				}
