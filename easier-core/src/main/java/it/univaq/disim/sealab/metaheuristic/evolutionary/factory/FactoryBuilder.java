@@ -57,6 +57,7 @@
 //		try {
 //			return (GenericIndicator<RSolution>) qualityIndicatorsMap.get(qI).newInstance();
 //		} catch (InstantiationException | IllegalAccessException e) {
+//			// TODO Auto-generated catch block
 //			System.out.println("[ERROR]");
 //			e.printStackTrace();
 //		}

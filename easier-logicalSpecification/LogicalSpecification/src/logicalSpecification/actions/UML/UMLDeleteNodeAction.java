@@ -104,4 +104,44 @@ public interface UMLDeleteNodeAction extends UMLDeleteAction {
 	 */
 	void setUmlNodeToDel(Node value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log(); \n\t\tController.logger_.info(getUmlNodeToDel().getName());'"
+	 * @generated
+	 */
+	void log();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='umlNodeToDel.destroy();'"
+	 * @generated
+	 */
+	void execute();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; delNodeParams = new ArrayList&lt;&gt;();\n\n\t\tsetNodeToDelSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getNodeQuery(getUmlNodeToDel())));\n\t\tdelNodeParams.add(getNodeToDelSVP());\n\n\t\tsetAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));\n\t\tdelNodeParams.add(getAllNodesMVP());\n\n\t\tgetParameters().addAll(delNodeParams);'"
+	 * @generated
+	 */
+	void setParameters();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();\n\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"DeleteNodePreCondition\");\n\n\t\tAndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\n\t\tExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getNodeToDelSVP(), getAllNodesMVP());\n\n\t\tpreAnd.getArguments().add(existsOperator);\n\n\t\tspecification.setRootOperator(preAnd);\n\t\tpreCondition.setConditionFormula(specification);\n\t\tsetPre(preCondition);'"
+	 * @generated
+	 */
+	void createPreCondition();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"DeleteNodePostCondition\");\n\n\t\tAndOperator preAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\n\t\tNotOperator notOperator = Manager.getInstance(UMLManager.getInstance()).createNotOperator();\n\t\tExistsOperator existsOperator = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getNodeToDelSVP(), getAllNodesMVP());\n\n\t\tnotOperator.setArgument(existsOperator);\n\t\tpreAnd.getArguments().add(notOperator);\n\n\t\tspecification.setRootOperator(preAnd);\n\t\tpostCondition.setConditionFormula(specification);\n\t\tsetPost(postCondition);'"
+	 * @generated
+	 */
+	void createPostCondition();
+
 } // UMLDeleteNodeAction

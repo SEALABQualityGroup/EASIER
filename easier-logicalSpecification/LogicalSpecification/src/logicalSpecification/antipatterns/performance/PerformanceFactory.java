@@ -22,42 +22,6 @@ public interface PerformanceFactory extends EFactory {
 	PerformanceFactory eINSTANCE = logicalSpecification.antipatterns.performance.impl.PerformanceFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Blob PA</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Blob PA</em>'.
-	 * @generated
-	 */
-	BlobPA createBlobPA();
-
-	/**
-	 * Returns a new object of class '<em>Cps PA</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cps PA</em>'.
-	 * @generated
-	 */
-	CpsPA createCpsPA();
-
-	/**
-	 * Returns a new object of class '<em>Paf PA</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Paf PA</em>'.
-	 * @generated
-	 */
-	PafPA createPafPA();
-
-	/**
-	 * Returns a new object of class '<em>Ep PA</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Ep PA</em>'.
-	 * @generated
-	 */
-	EpPA createEpPA();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

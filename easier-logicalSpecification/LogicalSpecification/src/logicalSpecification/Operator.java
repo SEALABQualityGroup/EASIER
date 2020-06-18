@@ -193,21 +193,7 @@ public interface Operator extends EObject {
 	 * @generated
 	 */
 	void setExistsOperator(ExistsOperator value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model required="true"
-	 * @generated
-	 */
-	boolean evaluateOperator(Object contextualElement);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model required="true" opRequired="true"
-	 * @generated
-	 */
-	boolean guarantees(Operator op);
+	
+	boolean guarantees(Operator op2);
 
 } // Operator

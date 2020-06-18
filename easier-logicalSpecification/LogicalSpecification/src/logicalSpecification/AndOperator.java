@@ -38,5 +38,7 @@ public interface AndOperator extends LogicalOperator {
 	 * @generated
 	 */
 	EList<Operator> getArguments();
+	
+	boolean equals(AndOperator op2);
 
 } // AndOperator

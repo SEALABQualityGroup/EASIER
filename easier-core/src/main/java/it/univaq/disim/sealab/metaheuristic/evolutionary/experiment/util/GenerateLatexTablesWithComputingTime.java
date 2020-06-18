@@ -56,8 +56,8 @@ public class GenerateLatexTablesWithComputingTime implements ExperimentComponent
 
 	private final RExperiment<?, ?> experiment;
 
-	public GenerateLatexTablesWithComputingTime(Experiment<?, ?> configuration) {
-		this.experiment = (RExperiment<?, ?>) configuration;
+	public GenerateLatexTablesWithComputingTime(RExperiment<?, ?> configuration) {
+		this.experiment = configuration;
 
 		// experiment.removeDuplicatedAlgorithms();
 	}

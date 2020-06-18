@@ -213,4 +213,44 @@ public interface UMLMoveOperationAction extends UMLMoveAction {
 	 */
 	void setUmlTargetComp(Component value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log();\n\t\tController.logger_.info(getUmlTargetComp().toString());\n\t\tfor (Operation op : getUmlTargetComp().getOperations()) {\n\t\t\tController.logger_.info(op.toString());\n\t\t}'"
+	 * @generated
+	 */
+	void log();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='getUmlOpToMove().setClass_(getUmlTargetComp());'"
+	 * @generated
+	 */
+	void execute();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; moveOpParams = new ArrayList&lt;&gt;();\n\n\t\tsetOpToMoveSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getOperationQuery(getUmlOpToMove())));\n\t\tmoveOpParams.add(getOpToMoveSVP());\n\n\t\tsetTargetCompSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getComponentQuery(getUmlTargetComp())));\n\t\tmoveOpParams.add(getTargetCompSVP());\n\n\t\tsetAllOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllOperationsQuery()));\n\t\tmoveOpParams.add(getAllOpsMVP());\n\n\t\tsetAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getAllComponentsQuery()));\n\t\tmoveOpParams.add(getAllCompsMVP());\n\n\t\tsetAllTargetCompOpsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(\n\t\t\t\t((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))\n\t\t\t\t\t\t.getOperationsOfQuery(getUmlTargetComp())));\n\t\tmoveOpParams.add(getAllTargetCompOpsMVP());\n\n\t\tgetParameters().addAll(moveOpParams);'"
+	 * @generated
+	 */
+	void setParameters();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PreCondition preCondition = Manager.getInstance(UMLManager.getInstance()).createPreCondition();\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"MoveOperationPreCondition\");\n\n\t\tExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());\n\t\tExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());\n\t\tExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());\n\t\tNotOperator notExistsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createNotOperator(existsOpInOpsOfTarget);\n\n\t\tAndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandRoot.getArguments().add(existsOpInOperations);\n\t\tandRoot.getArguments().add(existsTargetInComponents);\n\t\tandRoot.getArguments().add(notExistsOpInOpsOfTarget);\n\n\t\tspecification.setRootOperator(andRoot);\n\t\tpreCondition.setConditionFormula(specification);\n\t\tsetPre(preCondition);'"
+	 * @generated
+	 */
+	void createPreCondition();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='PostCondition postCondition = Manager.getInstance(UMLManager.getInstance()).createPostCondition();\n\t\tFOLSpecification specification = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createFOLSpectification(\"MoveOperationPostCondition\");\n\n\t\tExistsOperator existsOpInOperations = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getOpToMoveSVP(), getAllOpsMVP());\n\t\tExistsOperator existsTargetInComponents = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getTargetCompSVP(), getAllCompsMVP());\n\t\tExistsOperator existsOpInOpsOfTarget = Manager.getInstance(UMLManager.getInstance())\n\t\t\t\t.createExistsOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());\n\n\t\tAndOperator andRoot = Manager.getInstance(UMLManager.getInstance()).createAndOperator();\n\t\tandRoot.getArguments().add(existsOpInOperations);\n\t\tandRoot.getArguments().add(existsTargetInComponents);\n\t\tandRoot.getArguments().add(existsOpInOpsOfTarget);\n\n\t\tspecification.setRootOperator(andRoot);\n\t\tpostCondition.setConditionFormula(specification);\n\t\tsetPost(postCondition);'"
+	 * @generated
+	 */
+	void createPostCondition();
+
 } // UMLMoveOperationAction

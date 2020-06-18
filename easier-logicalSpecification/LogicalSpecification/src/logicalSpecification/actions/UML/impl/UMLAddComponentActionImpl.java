@@ -2,6 +2,8 @@
  */
 package logicalSpecification.actions.UML.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.Collection;
 
 import logicalSpecification.MultipleValuedParameter;
@@ -413,6 +415,168 @@ public class UMLAddComponentActionImpl extends UMLAddActionImpl implements UMLAd
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void log() {
+		super.log(); 
+//		if(getUmlCompToAdd() != null)
+//			Controller.logger_.info(getUmlCompToAdd().toString());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void execute() {
+//		setUmlCompToAdd(UMLFactory.eINSTANCE.createComponent());
+//				getUmlCompToAdd().setName("newComp" + Math.random());
+//				getUmlCompToAdd().setPackage(getUmlSourcePackage());
+//				setParameters();
+//				deployOn(getUmlTargetNodes());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void deployOn(final EList<Node> targets) {
+//		Artifact art;
+//				for (Node target : targets) {
+//					
+//					Package targetPackage = target.getPackage();
+//					
+//					art = UMLFactory.eINSTANCE.createArtifact();
+//					targetPackage.getPackagedElements().add(art);
+//					art.setName(getUmlCompToAdd().getName() + "_Artifact");
+//					art.createManifestation(getUmlCompToAdd().getName() + "_Manifestation", getUmlCompToAdd());
+//					art.setPackage(targetPackage);
+//					
+//					Deployment deploy = target.createDeployment(getUmlCompToAdd().getName() + "_Deployment");
+//					deploy.getDeployedArtifacts().add(art);
+//					target.getDeployments().add(deploy);
+//				}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setParameters() {
+//		// ACTION add PARAMETERS
+//				List<Parameter> addParams = new ArrayList<>();
+//				// FIXME le add non dovrebbero avere come attributo l'oggetto da creare
+//		
+//				// setCompToAddSVP(Manager.createSingleValueParameter("Component.allInstances()->select(c
+//				// | c.name = 'Pippo Node')"));
+//				// addParams.add(getCompToAddSVP());
+//		
+//				if (umlCompToAdd != null) {
+//					setComponentToAddSVP(Manager.getInstance(UMLManager.getInstance()).createSingleValueParameter(
+//							((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
+//									.getComponentQuery(umlCompToAdd)));
+//					addParams.add(getComponentToAddSVP());
+//				}
+//		
+//				setTargetNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
+//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
+//								.getNodesQuery(umlTargetNodes)));
+//				addParams.add(getTargetNodesMVP());
+//		
+//				// List<Component> list_of_random_components = new
+//				// ArrayList<Component>();
+//				// list_of_random_components = OclManager.getRandomComponents();
+//				// setDeployedCompsMVP(Manager.createMultipleValuedParameter(OclStringManager.getComponentsQuery(list_of_random_components)));
+//				// addParams.add(getDeployedCompsMVP());
+//		
+//				setDeployedCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
+//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
+//								.getAllDeployedElementsQuery(getUmlTargetNodes())));
+//				addParams.add(getDeployedCompsMVP());
+//		
+//				setAllNodesMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
+//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
+//				addParams.add(getAllNodesMVP());
+//		
+//				setAllCompsMVP(Manager.getInstance(UMLManager.getInstance()).createMultipleValuedParameter(
+//						((OclUMLStringManager) OclStringManager.getInstance(new OclUMLStringManager()))
+//								.getAllComponentsQuery()));
+//				addParams.add(getAllCompsMVP());
+//		
+//				getParameters().addAll(addParams);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void createPreCondition() {
+//			PreCondition preCondition = LogicalSpecificationFactory.eINSTANCE.createPreCondition();
+//		
+//				FOLSpecification addPreSpecification = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddComponentPreCondition");
+//		
+//				AndOperator addPreAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
+//		
+//				// NotOperator addPreAndNot = Manager.createNotOperator();
+//				// ExistsOperator addPreAndNotExists =
+//				// Manager.createExistsOperator(getCompToAddSVP(), getAllCompsMVP());
+//				//
+//				// addPreAndNot.setArgument(addPreAndNotExists);
+//				// addPreAnd.getArguments().add(addPreAndNot);
+//		
+//				ForAllOperator addPreAndForall = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());
+//				ExistsOperator addPreAndForallExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());
+//				addPreAndForall.setArgument(addPreAndForallExists);
+//				addPreAnd.getArguments().add(addPreAndForall);
+//		
+//				addPreSpecification.setRootOperator(addPreAnd);
+//				preCondition.setConditionFormula(addPreSpecification);
+//				setPre(preCondition);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void createPostCondition() {
+//		PostCondition addPost = LogicalSpecificationFactory.eINSTANCE.createPostCondition();
+//		
+//				FOLSpecification addPostSpec = Manager.getInstance(UMLManager.getInstance()).createFOLSpectification("AddNodePostcondition");
+//		
+//				AndOperator addPostAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
+//		
+//				ExistsOperator addPostAndExistsInC = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getComponentToAddSVP(), getAllCompsMVP());
+//		
+//				addPostAnd.getArguments().add(addPostAndExistsInC);
+//		
+//				ForAllOperator addPostAndForallTargets = Manager.getInstance(UMLManager.getInstance()).createForAllOperator(getTargetNodesMVP());
+//				AndOperator addPostAndForallTargetsAnd = Manager.getInstance(UMLManager.getInstance()).createAndOperator();
+//				ExistsOperator addPostAndForallTargetsExists = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getAllNodesMVP());
+//				addPostAndForallTargetsAnd.getArguments().add(addPostAndForallTargetsExists);
+//		
+//				// TODO getDeployedComps è l'insieme delle Component deployate sui
+//				// target Nodes. Non va bene: la condition dice che
+//				// su ogni target Node ci deve stare la Component aggiunta. Con l'unione
+//				// basta che stia su uno dei target...
+//				ExistsOperator addPostAndExistsInD = Manager.getInstance(UMLManager.getInstance()).createExistsOperator(getComponentToAddSVP(),
+//						getDeployedCompsMVP());
+//		
+//				addPostAndForallTargetsAnd.getArguments().add(addPostAndExistsInD);
+//				addPostAndForallTargets.setArgument(addPostAndForallTargetsAnd);
+//				addPostAnd.getArguments().add(addPostAndForallTargets);
+//		
+//				addPostSpec.setRootOperator(addPostAnd);
+//				addPost.setConditionFormula(addPostSpec);
+//				setPost(addPost);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -549,10 +713,41 @@ public class UMLAddComponentActionImpl extends UMLAddActionImpl implements UMLAd
 	 * @generated
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___LOG:
+				log();
+				return null;
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___EXECUTE:
+				execute();
+				return null;
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___DEPLOY_ON__ELIST:
+				deployOn((EList<Node>)arguments.get(0));
+				return null;
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___SET_PARAMETERS:
+				setParameters();
+				return null;
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___CREATE_PRE_CONDITION:
+				createPreCondition();
+				return null;
+			case UMLPackage.UML_ADD_COMPONENT_ACTION___CREATE_POST_CONDITION:
+				createPostCondition();
+				return null;
+		}
+		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuilder result = new StringBuilder(super.toString());
+		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (umlCompToAdd: ");
 		result.append(umlCompToAdd);
 		result.append(", umlSourcePackage: ");

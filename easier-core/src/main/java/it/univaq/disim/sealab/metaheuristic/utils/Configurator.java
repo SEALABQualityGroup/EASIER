@@ -72,8 +72,8 @@ public class Configurator {
 	@Parameter(names = { "-af", "--allowedFaiulures" }, description = "Set the maximunm number of failures")
 	private int aw = 1000;
 
-	@Parameter(names = { "-a", "--actions" }, description = "Set the number of available actions")
-	private int actions = 5; //clone, removeClone, const change, probability, size
+	@Parameter(names = { "-a", "--actions" }, description = "Set the number of failures")
+	private int actions = 5;
 
 	@Parameter(names = { "-tmpF", "--tempFolder" }, required = true, description = "It is the temporary file folder")
 	private String tmpF;
@@ -81,10 +81,6 @@ public class Configurator {
 	@Parameter(names = { "-oclTemplate",
 			"--oclTemplateFolder" }, required = true, description = "It is the ocl rule template file")
 	private String oclTemplate;
-	
-	@Parameter(names = { "-evlTemplate",
-	"--evlTemplateFolder" }, required = true, description = "It is the evl template file")
-	private String evlTemplate;
 
 	@Parameter(names = { "-ava",
 			"--availability" }, description = "Enables availability calculattion over pareto solutions")
@@ -104,16 +100,6 @@ public class Configurator {
 	
 	@Parameter(names = {"--genRF"}, description = "It allows the generation of reference front by tsv files")
 	private boolean generateRF = false;
-	
-	@Parameter(names= {"--worsen"}, description = "It enables the generation of worsen models")
-	private boolean worsen = false;
-	
-	@Parameter(names= {"-mmp", "--metamodel-path"}, description = "It points to the metamodel file")
-	private String metamodelPath;
-	
-	public Path getMetamodelPath() {
-		return Paths.get(metamodelPath);
-	}
 
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
@@ -121,10 +107,6 @@ public class Configurator {
 		for (String s : referenceFront)
 			paths.add(Paths.get(s));
 		return paths;
-	}
-	
-	public boolean isWorsen() {
-		return worsen;
 	}
 	
 	public boolean generateRF() {
@@ -149,10 +131,6 @@ public class Configurator {
 
 	public Path getOclTemplate() {
 		return Paths.get(oclTemplate);
-	}
-	
-	public Path getEVLTemplate() {
-		return Paths.get(evlTemplate);
 	}
 
 	public Path getTmpFolder() {

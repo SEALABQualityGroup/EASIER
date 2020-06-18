@@ -10,7 +10,7 @@ import org.eclipse.uml2.uml.Operation;
 
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 
-public class UMLOclStringManager implements OclStringManager{
+public class UMLOclStringManager extends OclStringManager{
 
 	private static class ManagerHolder {
 		private static final UMLOclStringManager INSTANCE = new UMLOclStringManager();
@@ -85,11 +85,13 @@ public class UMLOclStringManager implements OclStringManager{
 	}
 
 	public String getNodesQuery(List<Node> list_of_nodes) {
+		assert (list_of_nodes == null);
 		String query;
 		query = "Node.allInstances()->select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
 				+ "select(n | ";
 		Iterator<Node> iterator = list_of_nodes.iterator();
 		while (iterator.hasNext()) {
+			assert (iterator.next() == null);
 			query += "n.name = '" + iterator.next().getName() + "'";
 			if (iterator.hasNext())
 				query += " or ";

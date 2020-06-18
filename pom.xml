@@ -9,7 +9,7 @@
 	<description>A multi-objective optimization framework</description>
 	<packaging>pom</packaging>
 	<modules>
-		<!-- <module>easier-aemilia2text</module> -->
+		<module>easier-aemilia2text</module>
 		<module>easier-aemiliaMetamodel/metamodel</module>
 		<module>easier-aemiliaBridge</module>
 		<module>easier-availability</module>
@@ -17,10 +17,9 @@
 		<module>easier-logicalSpecification/LogicalSpecification</module>
 		<module>easier-measuresToIndices/MapMeasuresToIndices</module>
 		<module>easier-twoeaglesBridge</module>
-		<!--module>easier-helper</module -->
+		<module>easier-helper</module>
 		<module>easier-uml</module>
 		<module>easier-aemilia</module>
-		<module>easier-epsilon</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>
@@ -106,16 +105,11 @@
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>${emf.version}</version>
 		</dependency>
-
-		<!-- JUNIT -->
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13</version>
-			<scope>test</scope>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.5.0-M1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>

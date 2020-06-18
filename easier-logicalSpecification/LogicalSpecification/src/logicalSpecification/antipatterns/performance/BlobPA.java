@@ -4,6 +4,8 @@ package logicalSpecification.antipatterns.performance;
 
 import logicalSpecification.SingleValuedParameter;
 
+import org.eclipse.uml2.uml.Component;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Blob PA</b></em>'.
@@ -354,12 +356,12 @@ public interface BlobPA extends PerformanceAntipattern {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Contextual Element</em>' attribute.
-	 * @see #setContextualElement(Object)
+	 * @see #setContextualElement(Component)
 	 * @see logicalSpecification.antipatterns.performance.PerformancePackage#getBlobPA_ContextualElement()
-	 * @model required="true"
+	 * @model dataType="logicalSpecification.actions.UML.Component" required="true"
 	 * @generated
 	 */
-	Object getContextualElement();
+	Component getContextualElement();
 
 	/**
 	 * Sets the value of the '{@link logicalSpecification.antipatterns.performance.BlobPA#getContextualElement <em>Contextual Element</em>}' attribute.
@@ -369,12 +371,13 @@ public interface BlobPA extends PerformanceAntipattern {
 	 * @see #getContextualElement()
 	 * @generated
 	 */
-	void setContextualElement(Object value);
+	void setContextualElement(Component value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model T_maxClientConnectsRequired="true" T_maxSupplierConnectsRequired="true" T_maxSentMsgsRequired="true" T_maxReceivedMsgsRequired="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; blobParams = new ArrayList&lt;&gt;();\n\n\t\tsetF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\t(OclStringManager.getInstance(null)).getClientConnectsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numClientConnectsSVP());\n\n\t\tsetT_maxClientConnectsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));\n\t\tblobParams.add(getT_maxClientConnectsSVP());\n\n\t\tsetF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\t(OclStringManager.getInstance(null)).getSupplierConnectsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numSupplierConnectsSVP());\n\n\t\tsetT_maxSupplierConnectsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));\n\t\tblobParams.add(getT_maxSupplierConnectsSVP());\n\n\t\tsetF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\t(OclStringManager.getInstance(null)).getNumSentMsgsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numSentMsgsSVP());\n\n\t\tsetT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));\n\t\tblobParams.add(getT_maxSentMsgsSVP());\n\n\t\tsetF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\t(OclStringManager.getInstance(null)).getNumReceivedMsgsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numReceivedMsgsSVP());\n\n\t\tsetT_maxReceivedMsgsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));\n\t\tblobParams.add(getT_maxReceivedMsgsSVP());\n\n\t\tif (getF_hwUtilSVP() != null)\n\t\t\tif (getF_hwUtilSVP().getResolvingExpr() != null || !getF_hwUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetF_hwUtilSVP().setResolvingExpr(null);\n\n\t\tif (getT_maxHwUtilSVP() != null)\n\t\t\tif (getT_maxHwUtilSVP().getResolvingExpr() != null || !getT_maxHwUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetT_maxHwUtilSVP().setResolvingExpr(null);\n\n\t\tif (getF_netUtilSVP() != null)\n\t\t\tif (getF_netUtilSVP().getResolvingExpr() != null || !getF_netUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetF_netUtilSVP().setResolvingExpr(null);\n\n\t\tif (getT_minNetUtilSVP() != null)\n\t\t\tif (getT_minNetUtilSVP().getResolvingExpr() != null || !getT_minNetUtilSVP().getResolvingExpr().equals(\"\"))\n\t\t\t\tgetT_minNetUtilSVP().setResolvingExpr(null);\n\n\t\tgetParameters().addAll(blobParams);'"
 	 * @generated
 	 */
 	void setParametersForPartialDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs);
@@ -383,6 +386,7 @@ public interface BlobPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model T_maxClientConnectsRequired="true" T_maxSupplierConnectsRequired="true" T_maxSentMsgsRequired="true" T_maxReceivedMsgsRequired="true" T_maxHwUtilRequired="true" T_minNetUtilRequired="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='List&lt;Parameter&gt; blobParams = new ArrayList&lt;&gt;();\n\n\t\tsetF_numClientConnectsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getClientConnectsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numClientConnectsSVP());\n\n\t\tsetT_maxClientConnectsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxClientConnects)));\n\t\tblobParams.add(getT_maxClientConnectsSVP());\n\n\t\tsetF_numSupplierConnectsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getSupplierConnectsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numSupplierConnectsSVP());\n\n\t\tsetT_maxSupplierConnectsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSupplierConnects)));\n\t\tblobParams.add(getT_maxSupplierConnectsSVP());\n\n\t\tsetF_numSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getNumSentMsgsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numSentMsgsSVP());\n\n\t\tsetT_maxSentMsgsSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxSentMsgs)));\n\t\tblobParams.add(getT_maxSentMsgsSVP());\n\n\t\tsetF_numReceivedMsgsSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getNumReceivedMsgsQuery(getContextualElement())));\n\t\tblobParams.add(getF_numReceivedMsgsSVP());\n\n\t\tsetT_maxReceivedMsgsSVP(\n\t\t\t\tManager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxReceivedMsgs)));\n\t\tblobParams.add(getT_maxReceivedMsgsSVP());\n\n\t\tsetF_hwUtilSVP(Manager.getInstance(null)\n\t\t\t\t.createSingleValueParameter(OclStringManager.getInstance(null).getHwUtilQuery(getContextualElement())));\n\t\tblobParams.add(getF_hwUtilSVP());\n\n\t\tsetT_maxHwUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_maxHwUtil)));\n\t\tblobParams.add(getT_maxHwUtilSVP());\n\n\t\tsetF_netUtilSVP(Manager.getInstance(null).createSingleValueParameter(\n\t\t\t\tOclStringManager.getInstance(null).getNetUtilQuery(getContextualElement())));\n\t\tblobParams.add(getF_netUtilSVP());\n\n\t\tsetT_minNetUtilSVP(Manager.getInstance(null).createSingleValueParameter(String.valueOf(T_minNetUtil)));\n\t\tblobParams.add(getT_minNetUtilSVP());\n\n\t\tgetParameters().addAll(blobParams);'"
 	 * @generated
 	 */
 	void setParametersForFullDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs, double T_maxHwUtil, double T_minNetUtil);
@@ -390,7 +394,7 @@ public interface BlobPA extends PerformanceAntipattern {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='FOLSpecification blobCF = LogicalSpecificationFactory.eINSTANCE.createFOLSpecification();\n\t\tblobCF.setName(\"BlobFormula\");\n\n\t\tAndOperator blobCFAnd = LogicalSpecificationFactory.eINSTANCE.createAndOperator();\n\n\t\tOrOperator blobCFAndOr1 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();\n\t\tGreaterEqualOperator blobCFAndOr1Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tblobCFAndOr1Geq1.setLhs(getF_numClientConnectsSVP());\n\t\tblobCFAndOr1Geq1.setRhs(getT_maxClientConnectsSVP());\n\t\tGreaterEqualOperator blobCFAndOr1Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tblobCFAndOr1Geq2.setLhs(getF_numSupplierConnectsSVP());\n\t\tblobCFAndOr1Geq2.setRhs(getT_maxSupplierConnectsSVP());\n\t\tblobCFAndOr1.getArguments().add(blobCFAndOr1Geq1);\n\t\tblobCFAndOr1.getArguments().add(blobCFAndOr1Geq2);\n\n\t\tOrOperator blobCFAndOr2 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();\n\t\tGreaterEqualOperator blobCFAndOr2Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tblobCFAndOr2Geq1.setLhs(getF_numSentMsgsSVP());\n\t\tblobCFAndOr2Geq1.setRhs(getT_maxSentMsgsSVP());\n\t\tGreaterEqualOperator blobCFAndOr2Geq2 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tblobCFAndOr2Geq2.setLhs(getF_numReceivedMsgsSVP());\n\t\tblobCFAndOr2Geq2.setRhs(getT_maxReceivedMsgsSVP());\n\t\tblobCFAndOr2.getArguments().add(blobCFAndOr2Geq1);\n\t\tblobCFAndOr2.getArguments().add(blobCFAndOr2Geq2);\n\n\t\tOrOperator blobCFAndOr3 = LogicalSpecificationFactory.eINSTANCE.createOrOperator();\n\t\tGreaterEqualOperator blobCFAndOr3Geq1 = LogicalSpecificationFactory.eINSTANCE.createGreaterEqualOperator();\n\t\tblobCFAndOr3Geq1.setLhs(getF_hwUtilSVP());\n\t\tblobCFAndOr3Geq1.setRhs(getT_maxHwUtilSVP());\n\t\tLessEqualOperator blobCFAndOr3Geq2 = LogicalSpecificationFactory.eINSTANCE.createLessEqualOperator();\n\t\tblobCFAndOr3Geq2.setLhs(getF_netUtilSVP());\n\t\tblobCFAndOr3Geq2.setRhs(getT_minNetUtilSVP());\n\t\tblobCFAndOr3.getArguments().add(blobCFAndOr3Geq1);\n\t\tblobCFAndOr3.getArguments().add(blobCFAndOr3Geq2);\n\n\t\tblobCFAnd.getArguments().add(blobCFAndOr1);\n\t\tblobCFAnd.getArguments().add(blobCFAndOr2);\n\t\tblobCFAnd.getArguments().add(blobCFAndOr3);\n\t\tblobCF.setRootOperator(blobCFAnd);\n\t\tsetFormula(blobCF);'"
 	 * @generated
 	 */
 	void createFormula();
@@ -399,6 +403,7 @@ public interface BlobPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model required="true" T_maxClientConnectsRequired="true" T_maxSupplierConnectsRequired="true" T_maxSentMsgsRequired="true" T_maxReceivedMsgsRequired="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='int occurrences = 0;\n\t\tsetParametersForPartialDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs);\n\t\tcreateFormula();\n\t\tList&lt;Element&gt; components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())\n\t\t\t\t.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();\n\t\tfor (Element c : components) {\n\t\t\tif (c instanceof Component &amp;&amp; c.getAppliedStereotype(\"PaRunTInstance\") != null) {\n\t\t\t\ttry {\n\t\t\t\t\tboolean app = Manager.getInstance(null)\n\t\t\t\t\t\t\t.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);\n\t\t\t\t\tif (app)\n\t\t\t\t\t\toccurrences++;\n\t\t\t\t} catch (ParserException e) {\n\t\t\t\t\t// TODO Auto-generated catch block\n\t\t\t\t\te.printStackTrace();\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\treturn occurrences;'"
 	 * @generated
 	 */
 	int partialDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs);
@@ -407,6 +412,7 @@ public interface BlobPA extends PerformanceAntipattern {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model required="true" T_maxClientConnectsRequired="true" T_maxSupplierConnectsRequired="true" T_maxSentMsgsRequired="true" T_maxReceivedMsgsRequired="true" T_maxHwUtilRequired="true" T_minNetUtilRequired="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='int occurrences = 0;\n\t\tsetParametersForFullDetection(T_maxClientConnects, T_maxSupplierConnects, T_maxSentMsgs, T_maxReceivedMsgs,\n\t\t\t\tT_maxHwUtil, T_minNetUtil);\n\t\tcreateFormula();\n\t\tList&lt;Element&gt; components = ((Model) Manager.getInstance(UMLManager.getInstance()).getModel())\n\t\t\t\t.getNestedPackages().get(0).getNestedPackages().get(0).allOwnedElements();\n\t\tfor (Element c : components) {\n\t\t\tif (c instanceof Component &amp;&amp; c.getAppliedStereotype(\"PaRunTInstance\") != null) {\n\t\t\t\ttry {\n\t\t\t\t\tboolean app = Manager.getInstance(null)\n\t\t\t\t\t\t\t.evaluateOperator((AndOperator) getFormula().getRootOperator(), (Component) c);\n\t\t\t\t\tif (app)\n\t\t\t\t\t\toccurrences++;\n\t\t\t\t} catch (ParserException e) {\n\t\t\t\t\t// TODO Auto-generated catch block\n\t\t\t\t\te.printStackTrace();\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\treturn occurrences;'"
 	 * @generated
 	 */
 	int fullDetection(double T_maxClientConnects, double T_maxSupplierConnects, double T_maxSentMsgs, double T_maxReceivedMsgs, double T_maxHwUtil, double T_minNetUtil);
@@ -414,7 +420,7 @@ public interface BlobPA extends PerformanceAntipattern {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='super.log();'"
 	 * @generated
 	 */
 	void log();

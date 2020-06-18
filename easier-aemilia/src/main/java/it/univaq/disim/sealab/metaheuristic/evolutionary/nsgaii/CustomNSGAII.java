@@ -9,15 +9,16 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.ObjectiveComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 @SuppressWarnings("serial")
-public class CustomNSGAII<S extends RSolution> extends NSGAII<S>{
+public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S>{
 
 	private ProgressBar pbar;
 	private MutableInt done;
@@ -28,7 +29,7 @@ public class CustomNSGAII<S extends RSolution> extends NSGAII<S>{
 	/**
 	 * Constructor
 	 */
-	public CustomNSGAII(Problem<S> problem, int maxIterations, int populationSize,
+	public CustomNSGAII(Problem<AemiliaRSolution> problem, int maxIterations, int populationSize,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
 			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super((Problem<S>)problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,

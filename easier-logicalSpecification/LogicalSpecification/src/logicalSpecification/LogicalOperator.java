@@ -14,20 +14,4 @@ package logicalSpecification;
  * @generated
  */
 public interface LogicalOperator extends Operator {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	boolean guarantees(Operator operator);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	boolean evaluateOperator(Operator operator);
-
 } // LogicalOperator

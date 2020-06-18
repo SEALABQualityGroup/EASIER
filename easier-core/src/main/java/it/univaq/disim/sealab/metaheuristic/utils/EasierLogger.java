@@ -1,6 +1,5 @@
 package it.univaq.disim.sealab.metaheuristic.utils;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -11,4 +10,5 @@ public class EasierLogger {
 	public EasierLogger() {
 		// TODO Auto-generated constructor stub
 	}
+
 }

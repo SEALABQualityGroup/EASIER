@@ -76,5 +76,7 @@ public interface ForAllOperator extends LogicalOperator {
 	 * @generated
 	 */
 	void setArgument(Operator value);
+	
+	boolean equals(ForAllOperator op2);
 
 } // ForAllOperator

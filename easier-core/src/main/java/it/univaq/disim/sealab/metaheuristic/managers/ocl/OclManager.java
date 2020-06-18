@@ -36,7 +36,6 @@ public abstract class OclManager {
 		return (HashSet<?>) getQueryResult(query);
 	}
 
-	
 	public HashSet<?> evaluateQuery(final String query, EObject model) {
 		return (HashSet<?>) getQueryResult(query, model);
 	}
@@ -49,7 +48,7 @@ public abstract class OclManager {
 		return (HashSet<Object>) this.evaluateQuery(query);
 	}
 	
-	public abstract Object evaluateOCL(String query, Object contextualElement);//throws ParserException;
+	public abstract Object evaluateOCL(String query, Object contextualElement) throws ParserException;
 
 	public void inizialize(ResourceSet resourceSet) {
 		OCL.initialize(resourceSet);
@@ -96,8 +95,6 @@ public abstract class OclManager {
 
 	}
 
-	//It is not longer used, after the introduction of Epsilon
-	@Deprecated
 	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(Path filePath,
 			List<Object> contextualElements) {
 		// EPackage.Registry registry = new EPackageRegistryImpl();

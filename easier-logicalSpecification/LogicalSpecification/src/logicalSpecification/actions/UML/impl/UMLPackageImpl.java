@@ -31,6 +31,7 @@ import logicalSpecification.impl.LogicalSpecificationPackageImpl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -188,7 +189,7 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 *
+	 * 
 	 * <p>This method is used to initialize {@link UMLPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -202,18 +203,14 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		if (isInited) return (UMLPackage)EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
 
 		// Obtain or create and register package
-		Object registeredUMLPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		UMLPackageImpl theUMLPackage = registeredUMLPackage instanceof UMLPackageImpl ? (UMLPackageImpl)registeredUMLPackage : new UMLPackageImpl();
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof UMLPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new UMLPackageImpl());
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(registeredPackage instanceof LogicalSpecificationPackageImpl ? registeredPackage : LogicalSpecificationPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) instanceof LogicalSpecificationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI) : LogicalSpecificationPackage.eINSTANCE);
+		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) instanceof AEmiliaPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI) : AEmiliaPackage.eINSTANCE);
+		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) instanceof PerformancePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI) : PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theUMLPackage.createPackageContents();
@@ -230,6 +227,7 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		// Mark meta-data to indicate it can't be changed
 		theUMLPackage.freeze();
 
+  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, theUMLPackage);
 		return theUMLPackage;
@@ -366,6 +364,69 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getUMLAddNodeAction__Log() {
+		return umlAddNodeActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__Execute() {
+		return umlAddNodeActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__AddDeployedComps() {
+		return umlAddNodeActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__AddCommunicationPaths() {
+		return umlAddNodeActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__SetParameters() {
+		return umlAddNodeActionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__CreatePreCondition() {
+		return umlAddNodeActionEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddNodeAction__CreatePostCondition() {
+		return umlAddNodeActionEClass.getEOperations().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUMLAddComponentAction() {
 		return umlAddComponentActionEClass;
 	}
@@ -447,6 +508,60 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getUMLAddComponentAction__Log() {
+		return umlAddComponentActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddComponentAction__Execute() {
+		return umlAddComponentActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddComponentAction__DeployOn__EList() {
+		return umlAddComponentActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddComponentAction__SetParameters() {
+		return umlAddComponentActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddComponentAction__CreatePreCondition() {
+		return umlAddComponentActionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddComponentAction__CreatePostCondition() {
+		return umlAddComponentActionEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUMLAddOperationAction() {
 		return umlAddOperationActionEClass;
 	}
@@ -510,6 +625,51 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getUMLAddOperationAction__Log() {
+		return umlAddOperationActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddOperationAction__Execute() {
+		return umlAddOperationActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddOperationAction__SetParameters() {
+		return umlAddOperationActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddOperationAction__CreatePreCondition() {
+		return umlAddOperationActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLAddOperationAction__CreatePostCondition() {
+		return umlAddOperationActionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUMLDeleteNodeAction() {
 		return umlDeleteNodeActionEClass;
 	}
@@ -539,6 +699,51 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 */
 	public EAttribute getUMLDeleteNodeAction_UmlNodeToDel() {
 		return (EAttribute)umlDeleteNodeActionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteNodeAction__Log() {
+		return umlDeleteNodeActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteNodeAction__Execute() {
+		return umlDeleteNodeActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteNodeAction__SetParameters() {
+		return umlDeleteNodeActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteNodeAction__CreatePreCondition() {
+		return umlDeleteNodeActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteNodeAction__CreatePostCondition() {
+		return umlDeleteNodeActionEClass.getEOperations().get(4);
 	}
 
 	/**
@@ -582,6 +787,51 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getUMLDeleteComponentAction__Log() {
+		return umlDeleteComponentActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteComponentAction__Execute() {
+		return umlDeleteComponentActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteComponentAction__SetParameters() {
+		return umlDeleteComponentActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteComponentAction__CreatePreCondition() {
+		return umlDeleteComponentActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteComponentAction__CreatePostCondition() {
+		return umlDeleteComponentActionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUMLDeleteOperationAction() {
 		return umlDeleteOperationActionEClass;
 	}
@@ -611,6 +861,51 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 */
 	public EAttribute getUMLDeleteOperationAction_UmlOpToDel() {
 		return (EAttribute)umlDeleteOperationActionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteOperationAction__Log() {
+		return umlDeleteOperationActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteOperationAction__Execute() {
+		return umlDeleteOperationActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteOperationAction__SetParameters() {
+		return umlDeleteOperationActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteOperationAction__CreatePreCondition() {
+		return umlDeleteOperationActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLDeleteOperationAction__CreatePostCondition() {
+		return umlDeleteOperationActionEClass.getEOperations().get(4);
 	}
 
 	/**
@@ -717,6 +1012,69 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getUMLMoveComponentAction__Log() {
+		return umlMoveComponentActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__Execute() {
+		return umlMoveComponentActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__MoveDeployments() {
+		return umlMoveComponentActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__DeployOn() {
+		return umlMoveComponentActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__SetParameters() {
+		return umlMoveComponentActionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__CreatePreCondition() {
+		return umlMoveComponentActionEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveComponentAction__CreatePostCondition() {
+		return umlMoveComponentActionEClass.getEOperations().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUMLMoveOperationAction() {
 		return umlMoveOperationActionEClass;
 	}
@@ -782,6 +1140,51 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 	 */
 	public EAttribute getUMLMoveOperationAction_UmlTargetComp() {
 		return (EAttribute)umlMoveOperationActionEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveOperationAction__Log() {
+		return umlMoveOperationActionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveOperationAction__Execute() {
+		return umlMoveOperationActionEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveOperationAction__SetParameters() {
+		return umlMoveOperationActionEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveOperationAction__CreatePreCondition() {
+		return umlMoveOperationActionEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUMLMoveOperationAction__CreatePostCondition() {
+		return umlMoveOperationActionEClass.getEOperations().get(4);
 	}
 
 	/**
@@ -874,6 +1277,13 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		createEAttribute(umlAddNodeActionEClass, UML_ADD_NODE_ACTION__UML_NEIGHBORS);
 		createEAttribute(umlAddNodeActionEClass, UML_ADD_NODE_ACTION__UML_COMPS_TO_DEPLOY);
 		createEAttribute(umlAddNodeActionEClass, UML_ADD_NODE_ACTION__UML_SOURCE_PACKAGE);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___LOG);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___EXECUTE);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___ADD_DEPLOYED_COMPS);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___ADD_COMMUNICATION_PATHS);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___SET_PARAMETERS);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlAddNodeActionEClass, UML_ADD_NODE_ACTION___CREATE_POST_CONDITION);
 
 		umlAddComponentActionEClass = createEClass(UML_ADD_COMPONENT_ACTION);
 		createEReference(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION__COMPONENT_TO_ADD_SVP);
@@ -884,6 +1294,12 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		createEAttribute(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION__UML_COMP_TO_ADD);
 		createEAttribute(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION__UML_SOURCE_PACKAGE);
 		createEAttribute(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION__UML_TARGET_NODES);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___LOG);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___EXECUTE);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___DEPLOY_ON__ELIST);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___SET_PARAMETERS);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlAddComponentActionEClass, UML_ADD_COMPONENT_ACTION___CREATE_POST_CONDITION);
 
 		umlAddOperationActionEClass = createEClass(UML_ADD_OPERATION_ACTION);
 		createEReference(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION__OP_TO_ADD_SVP);
@@ -892,21 +1308,41 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		createEReference(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION__TARGET_COMP_OPS_MVP);
 		createEAttribute(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION__UML_OP_TO_ADD);
 		createEAttribute(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION__UML_TARGET_COMP);
+		createEOperation(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION___LOG);
+		createEOperation(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION___EXECUTE);
+		createEOperation(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION___SET_PARAMETERS);
+		createEOperation(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlAddOperationActionEClass, UML_ADD_OPERATION_ACTION___CREATE_POST_CONDITION);
 
 		umlDeleteNodeActionEClass = createEClass(UML_DELETE_NODE_ACTION);
 		createEReference(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION__NODE_TO_DEL_SVP);
 		createEReference(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION__ALL_NODES_MVP);
 		createEAttribute(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION__UML_NODE_TO_DEL);
+		createEOperation(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION___LOG);
+		createEOperation(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION___EXECUTE);
+		createEOperation(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION___SET_PARAMETERS);
+		createEOperation(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlDeleteNodeActionEClass, UML_DELETE_NODE_ACTION___CREATE_POST_CONDITION);
 
 		umlDeleteComponentActionEClass = createEClass(UML_DELETE_COMPONENT_ACTION);
 		createEReference(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION__COMP_TO_DEL_SVP);
 		createEReference(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION__ALL_COMPS_MVP);
 		createEAttribute(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION__UML_COMP_TO_DEL);
+		createEOperation(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION___LOG);
+		createEOperation(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION___EXECUTE);
+		createEOperation(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION___SET_PARAMETERS);
+		createEOperation(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlDeleteComponentActionEClass, UML_DELETE_COMPONENT_ACTION___CREATE_POST_CONDITION);
 
 		umlDeleteOperationActionEClass = createEClass(UML_DELETE_OPERATION_ACTION);
 		createEReference(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION__OP_TO_DEL_SVP);
 		createEReference(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION__ALL_OPS_MVP);
 		createEAttribute(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION__UML_OP_TO_DEL);
+		createEOperation(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION___LOG);
+		createEOperation(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION___EXECUTE);
+		createEOperation(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION___SET_PARAMETERS);
+		createEOperation(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlDeleteOperationActionEClass, UML_DELETE_OPERATION_ACTION___CREATE_POST_CONDITION);
 
 		umlMoveComponentActionEClass = createEClass(UML_MOVE_COMPONENT_ACTION);
 		createEReference(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION__COMP_TO_MOVE_SVP);
@@ -919,6 +1355,13 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		createEAttribute(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION__UML_COMP_TO_MOVE);
 		createEAttribute(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION__UML_TARGET_NODES);
 		createEAttribute(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION__UML_ARTIFACTS);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___LOG);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___EXECUTE);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___MOVE_DEPLOYMENTS);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___DEPLOY_ON);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___SET_PARAMETERS);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlMoveComponentActionEClass, UML_MOVE_COMPONENT_ACTION___CREATE_POST_CONDITION);
 
 		umlMoveOperationActionEClass = createEClass(UML_MOVE_OPERATION_ACTION);
 		createEReference(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION__OP_TO_MOVE_SVP);
@@ -928,6 +1371,11 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		createEReference(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION__ALL_TARGET_COMP_OPS_MVP);
 		createEAttribute(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION__UML_OP_TO_MOVE);
 		createEAttribute(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION__UML_TARGET_COMP);
+		createEOperation(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION___LOG);
+		createEOperation(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION___EXECUTE);
+		createEOperation(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION___SET_PARAMETERS);
+		createEOperation(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION___CREATE_PRE_CONDITION);
+		createEOperation(umlMoveOperationActionEClass, UML_MOVE_OPERATION_ACTION___CREATE_POST_CONDITION);
 
 		// Create data types
 		componentEDataType = createEDataType(COMPONENT);
@@ -999,6 +1447,20 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		initEAttribute(getUMLAddNodeAction_UmlCompsToDeploy(), this.getComponent(), "umlCompsToDeploy", null, 0, -1, UMLAddNodeAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLAddNodeAction_UmlSourcePackage(), this.getPackage(), "umlSourcePackage", null, 1, 1, UMLAddNodeAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getUMLAddNodeAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__AddDeployedComps(), null, "addDeployedComps", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__AddCommunicationPaths(), null, "addCommunicationPaths", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddNodeAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(umlAddComponentActionEClass, UMLAddComponentAction.class, "UMLAddComponentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLAddComponentAction_ComponentToAddSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "componentToAddSVP", null, 1, 1, UMLAddComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLAddComponentAction_TargetNodesMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "targetNodesMVP", null, 1, 1, UMLAddComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1009,6 +1471,19 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		initEAttribute(getUMLAddComponentAction_UmlSourcePackage(), this.getPackage(), "umlSourcePackage", null, 1, 1, UMLAddComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLAddComponentAction_UmlTargetNodes(), this.getNode(), "umlTargetNodes", null, 1, -1, UMLAddComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getUMLAddComponentAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddComponentAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		EOperation op = initEOperation(getUMLAddComponentAction__DeployOn__EList(), null, "deployOn", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getNode(), "targets", 0, -1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddComponentAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddComponentAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddComponentAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(umlAddOperationActionEClass, UMLAddOperationAction.class, "UMLAddOperationAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLAddOperationAction_OpToAddSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "opToAddSVP", null, 1, 1, UMLAddOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLAddOperationAction_TargetCompSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "targetCompSVP", null, 1, 1, UMLAddOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1017,20 +1492,60 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		initEAttribute(getUMLAddOperationAction_UmlOpToAdd(), this.getOperation(), "umlOpToAdd", null, 1, 1, UMLAddOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLAddOperationAction_UmlTargetComp(), this.getComponent(), "umlTargetComp", null, 1, 1, UMLAddOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getUMLAddOperationAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddOperationAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddOperationAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddOperationAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLAddOperationAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(umlDeleteNodeActionEClass, UMLDeleteNodeAction.class, "UMLDeleteNodeAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLDeleteNodeAction_NodeToDelSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "nodeToDelSVP", null, 1, 1, UMLDeleteNodeAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLDeleteNodeAction_AllNodesMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allNodesMVP", null, 1, 1, UMLDeleteNodeAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLDeleteNodeAction_UmlNodeToDel(), this.getNode(), "umlNodeToDel", null, 1, 1, UMLDeleteNodeAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getUMLDeleteNodeAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteNodeAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteNodeAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteNodeAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteNodeAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(umlDeleteComponentActionEClass, UMLDeleteComponentAction.class, "UMLDeleteComponentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLDeleteComponentAction_CompToDelSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "compToDelSVP", null, 1, 1, UMLDeleteComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLDeleteComponentAction_AllCompsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allCompsMVP", null, 1, 1, UMLDeleteComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLDeleteComponentAction_UmlCompToDel(), this.getComponent(), "umlCompToDel", null, 1, 1, UMLDeleteComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getUMLDeleteComponentAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteComponentAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteComponentAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteComponentAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteComponentAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(umlDeleteOperationActionEClass, UMLDeleteOperationAction.class, "UMLDeleteOperationAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLDeleteOperationAction_OpToDelSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "opToDelSVP", null, 1, 1, UMLDeleteOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLDeleteOperationAction_AllOpsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allOpsMVP", null, 1, 1, UMLDeleteOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLDeleteOperationAction_UmlOpToDel(), this.getOperation(), "umlOpToDel", null, 1, 1, UMLDeleteOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getUMLDeleteOperationAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteOperationAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteOperationAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteOperationAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLDeleteOperationAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(umlMoveComponentActionEClass, UMLMoveComponentAction.class, "UMLMoveComponentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLMoveComponentAction_CompToMoveSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "compToMoveSVP", null, 1, 1, UMLMoveComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1044,6 +1559,20 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		initEAttribute(getUMLMoveComponentAction_UmlTargetNodes(), this.getNode(), "umlTargetNodes", null, 1, -1, UMLMoveComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLMoveComponentAction_UmlArtifacts(), this.getArtifact(), "umlArtifacts", null, 0, -1, UMLMoveComponentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getUMLMoveComponentAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__MoveDeployments(), null, "moveDeployments", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__DeployOn(), null, "deployOn", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveComponentAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(umlMoveOperationActionEClass, UMLMoveOperationAction.class, "UMLMoveOperationAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUMLMoveOperationAction_OpToMoveSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "opToMoveSVP", null, 1, 1, UMLMoveOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUMLMoveOperationAction_TargetCompSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "targetCompSVP", null, 1, 1, UMLMoveOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1052,6 +1581,16 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		initEReference(getUMLMoveOperationAction_AllTargetCompOpsMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "allTargetCompOpsMVP", null, 1, 1, UMLMoveOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLMoveOperationAction_UmlOpToMove(), this.getOperation(), "umlOpToMove", null, 1, 1, UMLMoveOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUMLMoveOperationAction_UmlTargetComp(), this.getComponent(), "umlTargetComp", null, 1, 1, UMLMoveOperationAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getUMLMoveOperationAction__Log(), null, "log", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveOperationAction__Execute(), null, "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveOperationAction__SetParameters(), null, "setParameters", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveOperationAction__CreatePreCondition(), null, "createPreCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getUMLMoveOperationAction__CreatePostCondition(), null, "createPostCondition", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(componentEDataType, Component.class, "Component", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

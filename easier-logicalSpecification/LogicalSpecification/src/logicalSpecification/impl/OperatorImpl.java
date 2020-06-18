@@ -2,8 +2,6 @@
  */
 package logicalSpecification.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
@@ -15,8 +13,6 @@ import logicalSpecification.OrOperator;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -315,28 +311,6 @@ public abstract class OperatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean evaluateOperator(Object contextualElement) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean guarantees(Operator op) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -524,20 +498,12 @@ public abstract class OperatorImpl extends MinimalEObjectImpl.Container implemen
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case LogicalSpecificationPackage.OPERATOR___EVALUATE_OPERATOR__OBJECT:
-				return evaluateOperator(arguments.get(0));
-			case LogicalSpecificationPackage.OPERATOR___GUARANTEES__OPERATOR:
-				return guarantees((Operator)arguments.get(0));
-		}
-		return super.eInvoke(operationID, arguments);
+	public boolean guarantees(Operator op2) {
+		System.err.println("There was an error during guarantees method!!!");
+		return false;
 	}
 
+//	public boolean equals(Operator o2) {
+//		return false;
+//	}
 } //OperatorImpl
