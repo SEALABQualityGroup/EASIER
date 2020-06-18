@@ -115,10 +115,12 @@ public class OclAemiliaManager extends OclManager {
 
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		if (contextualElement instanceof AEmiliaSpecification)
+		/*if (contextualElement instanceof AEmiliaSpecification)
 			helper.setContext(mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 		else if (contextualElement instanceof ArchiElemInstance)
-			helper.setContext(mmaemiliaPackage.Literals.ARCHI_ELEM_INSTANCE);
+			helper.setContext(mmaemiliaPackage.Literals.ARCHI_ELEM_INSTANCE);*/
+		
+		helper.setContext(((EObject)contextualElement).eClass());
 
 		// helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_());
 		//TODO check when it throws a SemanticException
