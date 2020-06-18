@@ -5,6 +5,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.algorithm.Algorithm;
@@ -14,7 +15,9 @@ import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class RExecuteAlgorithms<S extends RSolution, Result> {
@@ -42,6 +45,8 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
 			final int id = i;
 
+			ProgressBar.showBar(id, experiment.getIndependentRuns());
+
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
 			computingTimes.addAll(experiment.getAlgorithmList().parallelStream()
@@ -52,7 +57,6 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		}
 		return this;
 	}
-	
 
 	private Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
 		long initTime = System.currentTimeMillis();
