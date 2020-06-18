@@ -134,11 +134,11 @@
 <!-- 			<version>1.1.0-v20130902-0826</version> -->
 <!-- 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.eclipse.ocl/org.eclipse.ocl.ecore -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.eclipse.acceleo</groupId> -->
-<!-- 			<artifactId>org.eclipse.ocl.ecore</artifactId> -->
-<!-- 			<version>3.3.100.v20140610-0641</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.eclipse.acceleo</groupId>
+			<artifactId>org.eclipse.ocl.ecore</artifactId>
+			<version>3.3.100.v20140610-0641</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
 		<!--dependency> <groupId>org.eclipse.acceleo</groupId> <artifactId>org.eclipse.emf.ecore</artifactId> 
 			<version>2.10.2.v20150123-0348</version> </dependency -->
