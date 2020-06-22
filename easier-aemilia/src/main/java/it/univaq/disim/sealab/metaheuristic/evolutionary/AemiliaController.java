@@ -181,7 +181,7 @@ public class AemiliaController implements Controller {
 
 			EpsilonHelper.generateAemFile(sourceModelPath, source);
 //			Transformation.GenerateAEMTransformation(sourceModelPath, source);
-			EasierLogger.logger_.info("generation of source files completed!");
+//			EasierLogger.logger_.info("generation of source files completed!");
 		}
 
 		// TODO Generates the REW file from the emf model
@@ -224,7 +224,7 @@ public class AemiliaController implements Controller {
 				ThresholdUtils.uptodateSingleValueThresholds(source, sourceModelPath, sourceValPath,
 						(AemiliaMetamodelManager) metamodelManager, this);
 
-				EasierLogger.logger_.info("The EVL Template File has been filled and copied");
+//				EasierLogger.logger_.info("The EVL Template File has been filled and copied");
 			} catch (IOException e) {
 				System.err.println("Error in copying the evl template file to the source folder.");
 				e.printStackTrace();
@@ -366,12 +366,12 @@ public class AemiliaController implements Controller {
 
 			NSGAIIBuilder<AemiliaRSolution> customNSGABuilder = new CustomNSGAIIBuilder<AemiliaRSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							.setMaxEvaluations(configurator.getMaxEvaluation())
+							.setMaxEvaluations(configurator.getMaxEvaluation() * configurator.getPopulationSize())
 							.setPopulationSize(configurator.getPopulationSize())
 							.setSolutionListEvaluator(solutionListEvaluator);
 
 			NSGAII<AemiliaRSolution> algorithm = customNSGABuilder.build();
-			((CustomNSGAII<AemiliaRSolution>) algorithm).setName("NSGA_II");
+//			((CustomNSGAII<AemiliaRSolution>) algorithm).setName("NSGA_II");
 
 			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
 					algorithm, algorithm.getName(), problemList.get(i).getTag());
@@ -383,12 +383,11 @@ public class AemiliaController implements Controller {
 			SPEA2Builder<AemiliaRSolution> spea2Builder = new CustomSPEA2Builder<AemiliaRSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
 							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-							.setMaxIterations(
-									Math.toIntExact(configurator.getMaxEvaluation() / configurator.getPopulationSize()))
+							.setMaxIterations(configurator.getMaxEvaluation())
 							.setPopulationSize(configurator.getPopulationSize());
 
 			SPEA2<AemiliaRSolution> algorithm = spea2Builder.build();
-			((CustomSPEA2<AemiliaRSolution>) algorithm).setName("SPEA2");
+//			((CustomSPEA2<AemiliaRSolution>) algorithm).setName("SPEA2");
 
 			ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>> exp = new ExperimentAlgorithm<AemiliaRSolution, List<AemiliaRSolution>>(
 					algorithm, algorithm.getName(), problemList.get(i).getTag());
@@ -582,9 +581,9 @@ public class AemiliaController implements Controller {
 			((AemiliaMetamodelManager) metamodelManager).aemiliaModelUpdate(sourceValPath, sourceRewPath,
 					sourceRewmappingPath, sourceModelPath, null);
 			((AemiliaMetamodelManager) metamodelManager).refreshModel(sourceModelPath);
-			EasierLogger.logger_.info("source model " + sourceModelPath + " updated!!");
+//			EasierLogger.logger_.info("source model " + sourceModelPath + " updated!!");
 		} else {
-			EasierLogger.logger_.info("source model " + sourceModelPath + " already updated!!");
+//			EasierLogger.logger_.info("source model " + sourceModelPath + " already updated!!");
 		}
 	}
 
