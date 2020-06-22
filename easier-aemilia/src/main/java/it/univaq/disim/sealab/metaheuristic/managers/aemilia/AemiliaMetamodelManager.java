@@ -210,7 +210,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 			// this.model = (AEmiliaSpecification)
 			// getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath),
 			// true);
-			EasierLogger.logger_.warning("AemiliaMetamodelManager's model has been set to sourceModel: " + aemiliaModelFilePath);
+//			EasierLogger.logger_.warning("AemiliaMetamodelManager's model has been set to sourceModel: " + aemiliaModelFilePath);
 		}
 		return model;
 	}
@@ -406,7 +406,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	public RefactoringAction getRandomCapacityChangeAction(AemiliaRSequence seq) {
 		ConstInit sourceConst = getRandomCapacity(seq);
 		if (sourceConst == null) {
-			System.out.println("Action is not applicable!!!!");
+//			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) seq.getSolution());
@@ -426,7 +426,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	private RefactoringAction getRandomRateChangeAction(AemiliaRSequence seq) {
 		ConstInit sourceConst = getRandomRate(seq);
 		if (sourceConst == null) {
-			System.out.println("Action is not applicable!!!!");
+//			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 
@@ -457,7 +457,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		}
 		ConstInit sourceConst = getRandomWorkload(seq);
 		if (sourceConst == null) {
-			System.out.println("Action is not applicable!!!!");
+//			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 
@@ -578,7 +578,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	private RefactoringAction getRandomWeightChangeAction(AemiliaRSequence seq) {
 		ConstInit sourceConst = getRandomWeight(seq);
 		if (sourceConst == null) {
-			System.out.println("Action is not applicable!!!!");
+//			System.out.println("Action is not applicable!!!!");
 			return null;
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) seq.getSolution());
@@ -615,7 +615,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 			}
 
 			if (listOfRandomCapacities.isEmpty()) {
-				System.out.println("Action is not applicable!!!!");
+//				System.out.println("Action is not applicable!!!!");
 				return null;
 			}
 
@@ -749,7 +749,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		super.save(solution);
 		packageRegistering();
 		AEmiliaSpecification savedModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResourceSet()
-				.getResource(Manager.string2Uri(solution.getMmaemiliaFilePath().toString()), true).getContents(),
+				.getResource(Manager.string2Uri(solution.getModelPath().toString()), true).getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 
 		try {

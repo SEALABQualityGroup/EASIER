@@ -45,15 +45,15 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
 			final int id = i;
 
-			ProgressBar.showBar(id, experiment.getIndependentRuns());
-
+			System.out.println("Indepentent Runs");
+			ProgressBar.showBar(i+1, experiment.getIndependentRuns());
+			
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
 			computingTimes.addAll(experiment.getAlgorithmList().parallelStream()
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
 			FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());
-
 		}
 		return this;
 	}

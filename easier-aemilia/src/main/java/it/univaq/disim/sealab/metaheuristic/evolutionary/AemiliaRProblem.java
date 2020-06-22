@@ -68,8 +68,8 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
 			// If worsen is enabled, perfQ should be the only objective
 			if (i == FIRST_OBJ) {
-				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": PerfQ --> " + solution.getPerfQ());
+//				EasierLogger.logger_
+//						.info("SOLUTION #" + solution.getName() + ": PerfQ --> " + solution.getPerfQ());
 				//if is worse perfQ must not be changed 
 				//if not it must be multiply by -1 to maximize the perfQ
 				float quality = (getController().getConfigurator().isWorsen()) ? solution.getPerfQ()
@@ -80,12 +80,12 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(solution.getNumOfChanges());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getRefactoring().getNumOfChanges());
 			} else if (i == THIRD_OBJ) {
-				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
+//				EasierLogger.logger_
+//						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + solution.getPAs());
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(solution.getPAs());
 				solution.setObjective(i, solution.getVariableValue(VARIABLE_INDEX).getNumOfPAs());
 			} else {
-				System.out.println("\n" + i);
+				System.err.println("\n" + i);
 				throw new RuntimeException("unexpected behaviour!!!");
 			}
 		}

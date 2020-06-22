@@ -101,13 +101,14 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 								break;
 						}
 					}
-					if(!altered)
-						EasierLogger.logger_.info("Mutation left solution unchanged");
-					else {
-						solution.setMutated(true);
-						//RSolution.MutationCounter++;
-						EasierLogger.logger_.info("Mutation is done");
-					}
+					solution.setMutated(altered);
+//					if(!altered)
+//						EasierLogger.logger_.info("Mutation left solution unchanged");
+//					else {
+//						solution.setMutated(true);
+//						//RSolution.MutationCounter++;
+//						EasierLogger.logger_.info("Mutation is done");
+//					}
 				} catch (UnexpectedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
