@@ -95,8 +95,8 @@ public class AemiliaRSequence extends RSequence {
 			}
 		}
 		if (maxCloning > solution.getProblem().getMaxCloning()) {
-			EasierLogger.logger_
-					.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
+//			EasierLogger.logger_
+//					.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
 
@@ -122,7 +122,7 @@ public class AemiliaRSequence extends RSequence {
 				}
 			}
 			if (counter > 1) {
-				EasierLogger.logger_.warning("Too much clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
+//				EasierLogger.logger_.warning("Too much clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
 				return false;
 			}
 		}
@@ -142,7 +142,7 @@ public class AemiliaRSequence extends RSequence {
 				}
 			}
 			if (counter > 1) {
-				EasierLogger.logger_.warning("Too much remove clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
+//				EasierLogger.logger_.warning("Too much remove clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
 				return false;
 			}
 		}
@@ -164,8 +164,8 @@ public class AemiliaRSequence extends RSequence {
 			}
 		}
 		if (found) {
-			EasierLogger.logger_.warning(
-					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
+//			EasierLogger.logger_.warning(
+//					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
 			return false;
 		}
 

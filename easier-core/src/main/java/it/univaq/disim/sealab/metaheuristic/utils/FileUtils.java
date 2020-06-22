@@ -253,13 +253,14 @@ public class FileUtils {
 		try {
 			org.apache.commons.io.FileUtils.copyDirectory(sourceFolder.toFile(), destFolder.toFile());
 		} catch (IOException e) {
-			EasierLogger.logger_.warning("[WARNING] Copy tmp folder failed!!!");
+			EasierLogger.logger_.warning("[WARNING] Copying tmp folder failed!!!");
 			e.printStackTrace();
 			return;
 		}
 		try {
 			org.apache.commons.io.FileUtils.cleanDirectory(sourceFolder.toFile());
 		} catch (IOException e) {
+			EasierLogger.logger_.warning("[WARNING] Cleaning tmp folder failed!!!");
 			e.printStackTrace();
 		}
 

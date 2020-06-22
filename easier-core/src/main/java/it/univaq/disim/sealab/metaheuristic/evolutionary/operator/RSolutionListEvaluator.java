@@ -63,6 +63,8 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		    
 		}
 
+		//TODO check whether the solutionList is empty
+		
 //		for (S sol : solutionList) {
 //			//Verify if it works
 //			if (sol.evaluatePerformance() == 0)

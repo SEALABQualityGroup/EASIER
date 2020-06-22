@@ -113,7 +113,7 @@ public class AemiliaFileUtils {
 	}
 
 	public static synchronized void writeSolutionSetToCSV(List<AemiliaRSolution> population) {
-		EasierLogger.logger_.info("Writing CSV");
+//		EasierLogger.logger_.info("Writing CSV");
 		for (AemiliaRSolution solution : population) {
 			try (FileWriter fw = new FileWriter(
 					Paths.get(solution.getController().getConfigurator().getOutputFolder().toString(),
@@ -136,7 +136,7 @@ public class AemiliaFileUtils {
 			writeSolutionToCSV(solution);
 			writeAnalyzableFile(solution);
 		}
-		EasierLogger.logger_.info("Writing CSV done");
+//		EasierLogger.logger_.info("Writing CSV done");
 	}
 
 	public static void writeSolutionToCSV(AemiliaRSolution solution) {
@@ -247,13 +247,14 @@ public class AemiliaFileUtils {
 		try {
 			org.apache.commons.io.FileUtils.copyDirectory(sourceFolder.toFile(), destFolder.toFile());
 		} catch (IOException e) {
-			EasierLogger.logger_.warning("[WARNING] Copy tmp folder failed!!!");
+			EasierLogger.logger_.warning("[WARNING] Copying tmp folder failed!!!");
 			e.printStackTrace();
 			return;
 		}
 		try {
 			org.apache.commons.io.FileUtils.cleanDirectory(sourceFolder.toFile());
 		} catch (IOException e) {
+			EasierLogger.logger_.warning("[WARNING] Cleaning tmp folder failed!!!");
 			e.printStackTrace();
 		}
 

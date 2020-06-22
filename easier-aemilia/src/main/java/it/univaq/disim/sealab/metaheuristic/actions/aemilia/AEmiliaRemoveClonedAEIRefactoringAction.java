@@ -45,7 +45,7 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		int randomInt = RandomUtils.nextInt(0, listOfRemovableClonedAEI.size());
 
 		if (listOfRemovableClonedAEI.isEmpty()) {
-			EasierLogger.logger_.warning("No removable cloned AEIs for Solution #" + solution.getName() + "!");
+//			EasierLogger.logger_.warning("No removable cloned AEIs for Solution #" + solution.getName() + "!");
 			this.sourceAEI = null;
 		} else {
 			// Remove the cloned
@@ -70,7 +70,7 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		int randomInt = RandomUtils.nextInt(0, listOfRemovableClonedAEI.size());
 
 		if (listOfRemovableClonedAEI.isEmpty()) {
-			EasierLogger.logger_.warning("No removable cloned AEIs for Solution #" + solution.getName() + "!");
+//			EasierLogger.logger_.warning("No removable cloned AEIs for Solution #" + solution.getName() + "!");
 			this.sourceAEI = null;
 		} else {
 			// Remove the cloned
@@ -252,7 +252,7 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 
 	@Override
 	public void log() {
-		EasierLogger.logger_.info("Removing Clone --> " + sourceAEI.getInstanceName());
+//		EasierLogger.logger_.info("Removing Clone --> " + sourceAEI.getInstanceName());
 	}
 
 	/**

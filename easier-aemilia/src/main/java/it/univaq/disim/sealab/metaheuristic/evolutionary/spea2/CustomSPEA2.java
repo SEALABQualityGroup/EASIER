@@ -10,10 +10,12 @@ import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
+
 @SuppressWarnings("serial")
 public class CustomSPEA2<S extends Solution<?>> extends SPEA2<S>{
 
-	private String name;
+//	private String name;
 
 	/**
 	 * Constructor
@@ -23,16 +25,23 @@ public class CustomSPEA2<S extends Solution<?>> extends SPEA2<S>{
 			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
-		this.name = "Custom_SPEA_2";
-	}
-
-	@Override
-	public String getName() {
-		return name;
+//		this.name = "Custom_SPEA_2";
 	}
 	
-	public void setName(String n) {
-		this.name = n;
+	@Override
+	protected boolean isStoppingConditionReached() {
+		System.out.println(getName());
+		ProgressBar.showBar(iterations, maxIterations);
+		return super.isStoppingConditionReached();
 	}
+
+//	@Override
+//	public String getName() {
+//		return name;
+//	}
+//	
+//	public void setName(String n) {
+//		this.name = n;
+//	}
 
 }

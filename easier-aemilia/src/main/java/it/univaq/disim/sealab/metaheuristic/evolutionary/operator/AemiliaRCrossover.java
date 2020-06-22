@@ -138,11 +138,11 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 			AemiliaRSolution.XOverCounter++;
 		}
 
-		if (!offspring.get(0).isCrossovered() && !offspring.get(1).isCrossovered())
-			EasierLogger.logger_.info("Crossover left solution unchanged");
-		else {
-			EasierLogger.logger_.info("Crossover is done");
-		}
+//		if (!offspring.get(0).isCrossovered() && !offspring.get(1).isCrossovered())
+//			EasierLogger.logger_.info("Crossover left solution unchanged");
+//		else {
+//			EasierLogger.logger_.info("Crossover is done");
+//		}
 
 		return (List<S>) offspring;
 	}

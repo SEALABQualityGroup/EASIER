@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.nio.file.Path;
 import java.rmi.UnexpectedException;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected Path modelPath;
 
 	protected RSolution(RProblem<?> problem) {
 		super(problem);
@@ -65,4 +68,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public abstract void invokeSolver();
 	
 	public abstract List<Resource> getResources();
+	
+	public Path getModelPath() {
+		return modelPath;
+	}
 }

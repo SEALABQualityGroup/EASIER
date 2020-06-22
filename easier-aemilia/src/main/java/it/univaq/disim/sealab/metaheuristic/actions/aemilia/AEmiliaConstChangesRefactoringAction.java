@@ -201,14 +201,14 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 	 * 
 	 */
 	public void log() {
-		if (sourceConstInit.getName().contains("workload"))
-			EasierLogger.logger_
-					.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
-							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
-		else
-			EasierLogger.logger_.info("CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
-					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "
-					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
+//		if (sourceConstInit.getName().contains("workload"))
+//			EasierLogger.logger_
+//					.info("CHANGING WORKLOAD " + sourceConstInit.getName() + " (" + getSourceConstInitOldValue()
+//							+ ") --> " + ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
+//		else
+//			EasierLogger.logger_.info("CHANGING RATE/WEIGHT/SIZE " + sourceConstInit.getName() + " ("
+//					+ getSourceConstInitOldValue() + ") * (" + getFactorOfChange() + ") --> "
+//					+ ((IdentExpr) sourceConstInit.getInitConstExpr()).getName());
 	}
 
 	public AemiliaRSolution getSolution() {

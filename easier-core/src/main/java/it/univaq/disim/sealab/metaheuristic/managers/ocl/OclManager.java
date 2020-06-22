@@ -96,7 +96,7 @@ public abstract class OclManager {
 
 	}
 
-	//It is not longer used, after the introduction of Epsilon
+	//It is no longer used, after the introduction of Epsilon
 	@Deprecated
 	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(Path filePath,
 			List<Object> contextualElements) {
@@ -134,7 +134,7 @@ public abstract class OclManager {
 					if (ocl.check(el, body)) {
 						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
 						apCounter++;
-						EasierLogger.logger_.warning(nextConstraint.getName() + " DETECTED!");
+						EasierLogger.logger_.info(nextConstraint.getName() + " DETECTED!");
 					}
 				}
 				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);
