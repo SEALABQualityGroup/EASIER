@@ -51,7 +51,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		EList<ArchiElemInstance> listOfClonableAEI = this.getListOfClonableInstances();
 		int randomInt = RandomUtils.nextInt(0, listOfClonableAEI.size());
 		if (listOfClonableAEI.isEmpty()) {
-			EasierLogger.logger_.warning("No clonable AEIs for Solution #" + solution.getName() + "!");
+//			EasierLogger.logger_.warning("No clonable AEIs for Solution #" + solution.getName() + "!");
 			this.sourceAEI = null;
 		} else {
 			this.sourceAEI = listOfClonableAEI.get(randomInt);
@@ -131,7 +131,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	}
 	
 	public void log() {
-		EasierLogger.logger_.info("CLONING " + sourceAEI.getInstanceName());
+//		EasierLogger.logger_.info("CLONING " + sourceAEI.getInstanceName());
 	}
 
 	/**

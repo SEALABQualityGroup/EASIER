@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -121,7 +122,7 @@ public abstract class MetamodelManager {
 				current.unload();
 				i.remove();
 			}
-			EasierLogger.logger_.info("unload Resources");
+//			EasierLogger.logger_.info("unload Resources");
 		}
 	}
 
@@ -131,7 +132,7 @@ public abstract class MetamodelManager {
 			current.unload();
 			i.remove();
 		}
-		EasierLogger.logger_.info("unload Resources");
+//		EasierLogger.logger_.info("unload Resources");
 	}
 
 	public boolean saveModel() {
@@ -162,7 +163,7 @@ public abstract class MetamodelManager {
 	 * @see http://download.eclipse.org/modeling/emf/emf/javadoc/2.6.0/org/eclipse/emf/ecore/util/EcoreUtil.Copier.html#EcoreUtil.Copier(boolean)
 	 */
 	public void save(String destionationPath) {
-		Resource res = getResourceSet().createResource(manager.string2FileUri(destionationPath));
+		Resource res = getResourceSet().createResource(URI.createFileURI(destionationPath));
 		res.getContents().add(EcoreUtil.copy(this.getModel()));
 		try {
 			res.save(null);
@@ -174,11 +175,12 @@ public abstract class MetamodelManager {
 
 	public void save(RSolution solution) {
 		try {
-			if (solution.getResources() == null) {
-				EasierLogger.logger_.warning("RSolution doesn't have resources");
-			}
-
-			solution.getResources().get(0).save(null);
+//			if (solution.getResources().isEmpty()) {
+//				EasierLogger.logger_.warning("RSolution doesn't have resources");
+//			}
+//		save(solution.getModelPath().toString());
+//			solution.getResources().get(0).save(null);
+			solution.getModel().eResource().save(null);
 
 		} catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
