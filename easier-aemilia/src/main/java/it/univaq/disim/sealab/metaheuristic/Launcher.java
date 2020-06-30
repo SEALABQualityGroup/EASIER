@@ -22,10 +22,12 @@ import com.beust.jcommander.JCommander;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaController;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.AemiliaRSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
-import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class Launcher {
 
@@ -37,32 +39,46 @@ public class Launcher {
 		jc.addObject(config);
 		jc.parse(args);
 
+		List<Path> referenceFront = new ArrayList<>();
+
 		AemiliaController ctr = new AemiliaController(config);
-		List<Path> referenceFront;
-		
 		if (config.getReferenceFront() != null)
 			referenceFront = config.getReferenceFront();
 		else {
-			ctr.setUp();
-			List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
-			List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
+			List<Path> modelsPath = new ArrayList<>();
 
-			FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
-			for (String qI : config.getQualityIndicators()) {
-				GenericIndicator<AemiliaRSolution> ind = factory.createQualityIndicators(qI);
-				if (ind != null)
-					qIndicators.add(ind);
+			if (config.getModelsPath().get(0).toFile().isFile()) {
+				// use the solution csv file to extract more models
+				modelsPath
+						.addAll(FileUtils.extractModelPaths(config.getModelsPath().get(0), config.getMaxWorseModels()));
+			} else {
+				modelsPath.addAll(config.getModelsPath());
 			}
+			int i = 1;
+			for (Path m : modelsPath) {
+				System.out.println("Number of source model");
+				ProgressBar.showBar(i, modelsPath.size());
+				ctr.setUp(m);
+				List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
+				List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
 
-			ctr.runExperiment(rProblems, qIndicators);
-			referenceFront = ctr.getReferenceFront();
-		}
+				FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
+				for (String qI : config.getQualityIndicators()) {
+					GenericIndicator<AemiliaRSolution> ind = factory.createQualityIndicators(qI);
+					if (ind != null)
+						qIndicators.add(ind);
+				}
 
-		// calculates the availability, if set in the config file
+				ctr.runExperiment(rProblems, qIndicators);
+				referenceFront = ctr.getReferenceFront();
+			}
+		} // calculates the availability, if set in the config file
+		
 		if (config.hasAvailability()) {
 			List<String> solIDs = AemiliaFileUtils.getParetoSolIDs(referenceFront);
 			ctr.generateAvailability(solIDs);
 		}
+
 	}
 
 	public static void generateReferenceParetoFront(final String rPFile, final String sPF) throws Exception {

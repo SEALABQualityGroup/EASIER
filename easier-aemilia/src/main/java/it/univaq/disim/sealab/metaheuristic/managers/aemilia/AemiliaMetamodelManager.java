@@ -231,7 +231,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		// METAMODEL_FILE_EXTENISON).toString());
 	}
 
-	private AEmiliaSpecification createModel(Path aemiliaModelFilePath) {
+	private synchronized AEmiliaSpecification createModel(Path aemiliaModelFilePath) {
 		return (AEmiliaSpecification) EcoreUtil.getObjectByType(
 				getResourceSet().getResource(Manager.string2Uri(aemiliaModelFilePath.toString()), true).getContents(),
 				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
@@ -745,7 +745,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		return false;
 	}
 
-	public void save(AemiliaRSolution solution) {
+	public synchronized void save(AemiliaRSolution solution) {
 		super.save(solution);
 		packageRegistering();
 		AEmiliaSpecification savedModel = (AEmiliaSpecification) EcoreUtil.getObjectByType(getResourceSet()

@@ -125,9 +125,18 @@ public class AemiliaController implements Controller {
 		solutionListEvaluator = new RSolutionListEvaluator<AemiliaRSolution>();
 	}
 
-	public AemiliaController setUp() {
-		// setting up the source models
-		for (Path path : configurator.getModelsPath()) {
+	public AemiliaController setUp(Path path) {
+//		List<Path> modelsPath = new ArrayList<>();
+//		if(configurator.getModelsPath().get(0).toFile().isFile()) {
+//			//use the solution csv file to extract more models 
+//			modelsPath.addAll(FileUtils.extractModelPaths(configurator.getModelsPath().get(0), configurator.getMaxWorseModels()));
+//		}
+//		else {
+//			modelsPath.addAll(configurator.getModelsPath());
+//		}
+//		
+//		// setting up the source models
+//		for (Path path : modelsPath) {
 			generateSourceFiles(path);
 			SourceModel model = new SourceModel(path);
 			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
@@ -142,7 +151,7 @@ public class AemiliaController implements Controller {
 
 			updateSourceModel(path);
 			sourceModels.add(model);
-		}
+//		}
 		metamodelManager.setSourceModels(sourceModels);
 		System.out.println("Setting up finished");
 		return this;

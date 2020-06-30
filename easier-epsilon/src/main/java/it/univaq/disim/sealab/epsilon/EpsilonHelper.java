@@ -16,7 +16,7 @@ public class EpsilonHelper {
 	 * @param destFilePath
 	 * @param ruleFilePath
 	 */
-	public static void generateAemFile(Path mmaemiliaFilePath, Path destFilePath) {
+	public static synchronized void generateAemFile(Path mmaemiliaFilePath, Path destFilePath) {
 
 		try {
 			// TODO NPE
