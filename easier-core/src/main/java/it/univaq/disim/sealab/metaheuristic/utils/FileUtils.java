@@ -34,13 +34,13 @@ import metamodel.mmaemilia.AEmiliaSpecification;
 
 public class FileUtils {
 
-	public FileUtils() {}
+	public FileUtils() {
+	}
 
 	/**
 	 * Recursively walk through sub-directories listing Aemilia files.
 	 * 
-	 * @param folder
-	 *            starting folder
+	 * @param folder starting folder
 	 * @return array of aemilia file paths
 	 */
 	public static Set<File> listFilesRecursively(final File folder) {
@@ -61,8 +61,7 @@ public class FileUtils {
 	/**
 	 * Recursively walk through sub-directories listing Aemilia files.
 	 * 
-	 * @param folder
-	 *            starting folder
+	 * @param folder starting folder
 	 * @return array of aemilia file paths
 	 */
 	public static Set<File> listFilesRecursively(final Path folder, String extension) {
@@ -79,12 +78,11 @@ public class FileUtils {
 		}
 		return files;
 	}
-	
+
 	/**
 	 * Recursively walk through subdirectories listing Aemilia files.
 	 * 
-	 * @param folder
-	 *            starting folder
+	 * @param folder starting folder
 	 * @return array of aemilia file paths
 	 */
 	@Deprecated
@@ -105,7 +103,7 @@ public class FileUtils {
 
 	public static void simpleSolutionWriterToCSV(RSolution rSolution) {
 		try (FileWriter fw = new FileWriter(
-				Paths.get(rSolution.getController().getConfigurator().getOutputFolder().toString(),  
+				Paths.get(rSolution.getController().getConfigurator().getOutputFolder().toString(),
 						rSolution.getProblem().getName() + "_solutions.csv").toFile(),
 				true)) {
 			List<String> line = new ArrayList<String>();
@@ -269,10 +267,10 @@ public class FileUtils {
 		}
 
 	}
-	
-	public static List<String> getParetoSolIDs(final List<Path> paretoReferenceFront){
+
+	public static List<String> getParetoSolIDs(final List<Path> paretoReferenceFront) {
 		List<String> solIDs = new ArrayList<>();
-		for(Path path : paretoReferenceFront) {
+		for (Path path : paretoReferenceFront) {
 			try (BufferedReader br = new BufferedReader(new FileReader(path.toFile()))) {
 				String sCurrentLine;
 				while ((sCurrentLine = br.readLine()) != null) {
@@ -281,12 +279,13 @@ public class FileUtils {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		return solIDs;
 	}
-	
-	public static void fillTemplateKeywords(final Path sourceFile, final Path destination, final Map<String, String> keywords) {
+
+	public static void fillTemplateKeywords(final Path sourceFile, final Path destination,
+			final Map<String, String> keywords) {
 		try {
 			String templateString = fileToString(sourceFile, Charset.defaultCharset());
 			StringSubstitutor sub = new StringSubstitutor(keywords);
@@ -305,7 +304,7 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String fileToString(Path path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(path);
 		return new String(encoded, encoding);
@@ -316,75 +315,79 @@ public class FileUtils {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
 	}
-	
-	
-	public static List<Path> extractModelPaths(Path csvWithSolutions, int worseSolutions){
+
+	public static List<Path> extractModelPaths(Path csvWithSolutions, int worseSolutions) {
 		Path repository = csvWithSolutions.getParent().resolve("tmp");
 		BufferedReader csvReader;
-		List<Path> modelPaths = new ArrayList<>(); 
+		List<Path> modelPaths = new ArrayList<>();
 		try {
 			csvReader = new BufferedReader(new FileReader(csvWithSolutions.toFile()));
 			csvReader.close();
-			
+
 			List<String> lines = Files.readAllLines(csvWithSolutions);
-			
+
 			List<Solution> sols = new ArrayList<>();
-			
-			//remove the header
+
+			// remove the header
 			lines.remove(0);
-			for(String line : lines) {
+			for (String line : lines) {
 				sols.add(new Solution(line));
 			}
 			Collections.sort(sols);
-			
-			Path defualtRew = Paths.get("/home/peo/git/sealab/easier/easier-aemilia/src/main/resources/models/FTA/workload_5/model.rew");
-			
-			for(int i = 0; i < worseSolutions; i++) {
+
+			Path defualtRew = Paths.get(
+					"/home/peo/git/sealab/easier/easier-aemilia/src/main/resources/models/FTA/workload_5/model.rew");
+
+			for (int i = 0; i < worseSolutions; i++) {
 				int id = sols.get(i).id;
-				
+
 				Path targetFolder = repository.resolve(String.valueOf(id / 100)).resolve(String.valueOf(id));
 				modelPaths.add(targetFolder);
-				
-				//copy the aem file
-				Files.copy(targetFolder.resolve(String.valueOf(id + ".aem")), targetFolder.resolve("model.aem"), StandardCopyOption.REPLACE_EXISTING);
-				//copy the rew file
+
+				// copy the aem file
+				Files.copy(targetFolder.resolve(String.valueOf(id + ".aem")), targetFolder.resolve("model.aem"),
+						StandardCopyOption.REPLACE_EXISTING);
+				// copy the rew file
 				Files.copy(defualtRew, targetFolder.resolve("model.rew"), StandardCopyOption.REPLACE_EXISTING);
-				//copy the val file
-				Files.copy(targetFolder.resolve(String.valueOf(id + ".aem.val")), targetFolder.resolve("model.val"), StandardCopyOption.REPLACE_EXISTING);
-				//copy the rewmapping file
-				Files.copy(targetFolder.resolve(String.valueOf(id + ".rewmapping")), targetFolder.resolve("model.rewmapping"), StandardCopyOption.REPLACE_EXISTING);
-				//copy the mmaemilia file
-				Files.copy(targetFolder.resolve(String.valueOf(id + ".mmaemilia")), targetFolder.resolve("model.mmaemilia"), StandardCopyOption.REPLACE_EXISTING);
+				// copy the val file
+				Files.copy(targetFolder.resolve(String.valueOf(id + ".aem.val")), targetFolder.resolve("model.val"),
+						StandardCopyOption.REPLACE_EXISTING);
+				// copy the rewmapping file
+				Files.copy(targetFolder.resolve(String.valueOf(id + ".rewmapping")),
+						targetFolder.resolve("model.rewmapping"), StandardCopyOption.REPLACE_EXISTING);
+				// copy the mmaemilia file
+				Files.copy(targetFolder.resolve(String.valueOf(id + ".mmaemilia")),
+						targetFolder.resolve("model.mmaemilia"), StandardCopyOption.REPLACE_EXISTING);
 			}
-			
+
 		} catch (IOException e) {
 			System.err.println("Error while extracting info from the pareto file");
 			e.printStackTrace();
 		}
-		
+
 		return modelPaths;
 	}
-	
-	//aimed at sorting solutions within csv file
-	//at 0 --> solution id
-	//at 1 --> perfQ
-	private static class Solution implements Comparable<Solution>{
-			
+
+	// aimed at sorting solutions within csv file
+	// at 0 --> solution id
+	// at 1 --> perfQ
+	private static class Solution implements Comparable<Solution> {
+
 		int id;
 		double perfQ;
-		
-		Solution (String line){
-			
+
+		Solution(String line) {
+
 			id = Integer.valueOf(line.split(";")[0]);
 			perfQ = Double.valueOf(line.split(";")[1]);
 		}
-		
+
 		@Override
 		public int compareTo(Solution s) {
 			return (s.perfQ < this.perfQ) ? 1 : -1;
-			
+
 		}
-		
+
 	}
-	
+
 }

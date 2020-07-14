@@ -126,6 +126,7 @@ public class AemiliaController implements Controller {
 	}
 
 	public AemiliaController setUp(Path path) {
+		sourceModels.clear();
 //		List<Path> modelsPath = new ArrayList<>();
 //		if(configurator.getModelsPath().get(0).toFile().isFile()) {
 //			//use the solution csv file to extract more models 
@@ -532,11 +533,12 @@ public class AemiliaController implements Controller {
 		this.problem = (AemiliaRProblem<AemiliaRSolution>) p;
 	}
 
-	public void checkTwoTowersOutput(Path valFilePath) {
+	//TODO change valFilePath to twotowers result file
+	public void checkTwoTowersOutput(Path ttResultFilePath) {
 		BufferedReader br = null;
 		FileReader fr = null;
 		try {
-			fr = new FileReader(valFilePath.toFile());
+			fr = new FileReader(ttResultFilePath.toFile());
 			br = new BufferedReader(fr);
 			String sCurrentLine = "";
 

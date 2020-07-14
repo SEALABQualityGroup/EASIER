@@ -50,7 +50,8 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
-			computingTimes.addAll(experiment.getAlgorithmList().parallelStream()
+			//TODO if parallelStream is set, it throws NPE after a while
+			computingTimes.addAll(experiment.getAlgorithmList().stream()
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
 			FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());

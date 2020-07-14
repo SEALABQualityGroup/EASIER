@@ -56,24 +56,27 @@ public class Launcher {
 			}
 			int i = 1;
 			for (Path m : modelsPath) {
-				System.out.println("Number of source model");
-				ProgressBar.showBar(i, modelsPath.size());
-				ctr.setUp(m);
-				List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
-				List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
+				if (m.getFileName().toString().contains("1481")) {
+					System.out.println("Number of source model");
+					ProgressBar.showBar(i, modelsPath.size());
+					ctr.setUp(m);
+					List<RProblem<AemiliaRSolution>> rProblems = ctr.createProblems();
+					List<GenericIndicator<AemiliaRSolution>> qIndicators = new ArrayList<>();
 
-				FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
-				for (String qI : config.getQualityIndicators()) {
-					GenericIndicator<AemiliaRSolution> ind = factory.createQualityIndicators(qI);
-					if (ind != null)
-						qIndicators.add(ind);
+					FactoryBuilder<AemiliaRSolution> factory = new FactoryBuilder<>();
+					for (String qI : config.getQualityIndicators()) {
+						GenericIndicator<AemiliaRSolution> ind = factory.createQualityIndicators(qI);
+						if (ind != null)
+							qIndicators.add(ind);
+					}
+
+					ctr.runExperiment(rProblems, qIndicators);
+					referenceFront = ctr.getReferenceFront();
 				}
-
-				ctr.runExperiment(rProblems, qIndicators);
-				referenceFront = ctr.getReferenceFront();
+				i++;
 			}
 		} // calculates the availability, if set in the config file
-		
+
 		if (config.hasAvailability()) {
 			List<String> solIDs = AemiliaFileUtils.getParetoSolIDs(referenceFront);
 			ctr.generateAvailability(solIDs);

@@ -138,7 +138,8 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		ExistsOperator existsClonedAei = manager.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
 		clonePostAnd.getArguments().add(existsClonedAei);
 
-		notOperator.setExistsOperator(existsClonedAei);
+		notOperator.setArgument(existsClonedAei);
+//		notOperator.setExistsOperator(existsClonedAei);
 
 		/*
 		 * ForAllOperator forallAttSrcAeiIsTo =

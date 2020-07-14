@@ -74,13 +74,13 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return modelPath;
 	}
 
-	@Override
-	public double getObjective(int j) {
-		return (j == 0 && !getController().getConfigurator().isWorsen()) ? (-1 * super.getObjective(j))
-				: super.getObjective(j);
-		/*
-		 * if(j == 0 && !getController().getConfigurator().isWorsen()) return (-1 *
-		 * super.getObjective(j)); return super.getObjective(j);
-		 */
-	}
+//	@Override
+//	public double getObjective(int j) {
+//		return (j == 0 && !getController().getConfigurator().isWorsen()) ? (-1 * super.getObjective(j))
+//				: super.getObjective(j);
+//		/*
+//		 * if(j == 0 && !getController().getConfigurator().isWorsen()) return (-1 *
+//		 * super.getObjective(j)); return super.getObjective(j);
+//		 */
+//	}
 }

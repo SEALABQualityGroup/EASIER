@@ -8,13 +8,19 @@
 		<version>0.6.3</version>
 	</parent>
 	<artifactId>easier-helper</artifactId>
-	
-	
+
+
 	<dependencies>
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>easier-aemilia</artifactId>
 			<version>0.6.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 </project>

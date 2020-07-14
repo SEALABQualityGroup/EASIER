@@ -71,7 +71,7 @@ public class AemiliaRSolution extends RSolution {
 	private boolean mutated;
 	private boolean refactored;
 
-	private static int SOLUTION_COUNTER = -1;
+	private static int SOLUTION_COUNTER = 1686826;
 
 	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
@@ -267,6 +267,7 @@ public class AemiliaRSolution extends RSolution {
 		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
+	
 	@Override
 	public String getVariableValueString(int index) {
 		String strValue = "Solution ID : " + this.getName() + " ( ";
@@ -484,7 +485,7 @@ public class AemiliaRSolution extends RSolution {
 		}
 	}
 
-	public synchronized float evaluatePerformance() {
+	public float evaluatePerformance() {
 		AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
 
 		// String valFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)
@@ -494,6 +495,9 @@ public class AemiliaRSolution extends RSolution {
 		// ".val";
 
 		perfQ = 0;
+		if(valFilePath == null) {
+			System.err.println("Val file path NPE");
+		}
 		if (!Files.exists(valFilePath)) {
 			EasierLogger.logger_.warning("ERROR while evaluating PerfQ of Solution #" + this.getName() + ": "
 					+ valFilePath + " doesn't exist.");
