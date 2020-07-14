@@ -132,7 +132,7 @@ public class OclAemiliaManager extends OclManager {
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			System.err.println("ContextualElement --> " + contextualElement.toString());
-			System.err.println("Query -->" + query);
+			System.err.println("Query --> " + query);
 			e.printStackTrace();
 		}
 		return null;

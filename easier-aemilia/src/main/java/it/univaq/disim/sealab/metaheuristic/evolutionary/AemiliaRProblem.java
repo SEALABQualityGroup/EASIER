@@ -2,6 +2,8 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
 
+import javax.annotation.Syntax;
+
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
@@ -45,7 +47,7 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 		return (S) sol;
 	}
 
-	public Path getSourceModelPath() {
+	public synchronized Path getSourceModelPath() {
 		return sourceFolderPath.resolve("model.mmaemilia");
 	}
 

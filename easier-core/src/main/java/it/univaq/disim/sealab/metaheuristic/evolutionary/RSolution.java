@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.io.ObjectInputStream.GetField;
 import java.nio.file.Path;
 import java.rmi.UnexpectedException;
 import java.util.List;
@@ -17,7 +18,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	protected Path modelPath;
 
 	protected RSolution(RProblem<?> problem) {
@@ -62,14 +63,24 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public abstract void applyTransformation();
 
 	public abstract boolean alter(int i) throws UnexpectedException, ParserException;
-	
+
 	public abstract Manager getManager();
-	
+
 	public abstract void invokeSolver();
-	
+
 	public abstract List<Resource> getResources();
-	
+
 	public Path getModelPath() {
 		return modelPath;
 	}
+
+//	@Override
+//	public double getObjective(int j) {
+//		return (j == 0 && !getController().getConfigurator().isWorsen()) ? (-1 * super.getObjective(j))
+//				: super.getObjective(j);
+//		/*
+//		 * if(j == 0 && !getController().getConfigurator().isWorsen()) return (-1 *
+//		 * super.getObjective(j)); return super.getObjective(j);
+//		 */
+//	}
 }

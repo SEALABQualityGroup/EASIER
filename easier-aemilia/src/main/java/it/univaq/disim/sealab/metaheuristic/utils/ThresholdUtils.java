@@ -22,7 +22,7 @@ import metamodel.mmaemilia.Headers.ConstInit;
 
 public class ThresholdUtils {
 
-	public static void uptodateSingleValueThresholds(Path detestinationFolder, Path mmaemiliaFilePath, Path valFilePath,
+	public static synchronized void uptodateSingleValueThresholds(Path detestinationFolder, Path mmaemiliaFilePath, Path valFilePath,
 			AemiliaMetamodelManager metamodelManager, Controller controller) {
 
 		// Controller controller = Manager.getInstance(null).getController();

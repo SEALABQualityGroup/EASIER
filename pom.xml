@@ -17,7 +17,7 @@
 		<module>easier-logicalSpecification/LogicalSpecification</module>
 		<module>easier-measuresToIndices/MapMeasuresToIndices</module>
 		<module>easier-twoeaglesBridge</module>
-		<!--module>easier-helper</module -->
+		<module>easier-helper</module >
 		<module>easier-uml</module>
 		<module>easier-aemilia</module>
 		<module>easier-epsilon</module>

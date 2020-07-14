@@ -1,5 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.actions.aemilia;
 
+import java.util.Iterator;
+
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -136,7 +138,8 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		ExistsOperator existsClonedAei = manager.createExistsInCollectionOperator(getAeiToCloneSVP(), getAllAeisMVP());
 		clonePostAnd.getArguments().add(existsClonedAei);
 
-		notOperator.setExistsOperator(existsClonedAei);
+		notOperator.setArgument(existsClonedAei);
+//		notOperator.setExistsOperator(existsClonedAei);
 
 		/*
 		 * ForAllOperator forallAttSrcAeiIsTo =
@@ -218,17 +221,27 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 
 		EList<ArchitecturalInteraction> listOfArchitecturalInteraction = ((AEmiliaSpecification) this.getModel())
 				.getArchiTypeDecl().getAtDeclaration().getAiDecl();
-
-		for (ArchitecturalInteraction architecturalInteraction : listOfArchitecturalInteraction) {
-			if (architecturalInteraction.getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
-				/*
-				 * ArchitecturalInteraction ai = EcoreUtil.copy(architecturalInteraction);
-				 * ai.setFromInstance(clonedAEI); listOfClonedArchitecturalInteraction.add(ai);
-				 */
-				((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAiDecl()
-						.remove(architecturalInteraction);
+		
+		Iterator<ArchitecturalInteraction> iterator = listOfArchitecturalInteraction.iterator();
+		
+		while(iterator.hasNext()) {
+			
+			if(iterator.next().getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
+				iterator.remove();
 			}
+			
 		}
+
+//		for (ArchitecturalInteraction architecturalInteraction : listOfArchitecturalInteraction) {
+//			if (architecturalInteraction.getFromInstance().getInstanceName().equals(sourceAEI.getInstanceName())) {
+//				/*
+//				 * ArchitecturalInteraction ai = EcoreUtil.copy(architecturalInteraction);
+//				 * ai.setFromInstance(clonedAEI); listOfClonedArchitecturalInteraction.add(ai);
+//				 */
+//				((AEmiliaSpecification) this.getModel()).getArchiTypeDecl().getAtDeclaration().getAiDecl()
+//						.remove(architecturalInteraction);
+//			}
+//		}
 	}
 
 	/**

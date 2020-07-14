@@ -122,7 +122,7 @@ public abstract class EpsilonStandalone {
 		return module.execute();
 	}
 
-	public EmfModel createEmfModel(String name, Path model, String metamodel, boolean readOnLoad,
+	public synchronized EmfModel createEmfModel(String name, Path model, String metamodel, boolean readOnLoad,
 			boolean storeOnDisposal) {
 		EmfModel emfModel = new EmfModel();
 		StringProperties properties = new StringProperties();

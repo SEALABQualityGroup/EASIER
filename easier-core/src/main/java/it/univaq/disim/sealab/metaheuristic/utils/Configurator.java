@@ -111,6 +111,18 @@ public class Configurator {
 	@Parameter(names= {"-mmp", "--metamodel-path"}, description = "It points to the metamodel file")
 	private String metamodelPath;
 	
+	@Parameter(names= {"--maxWorseModels", "-mwm"}, description ="It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
+	private String maxWorseModels;
+	
+	public int getMaxWorseModels() {
+		if(maxWorseModels == null) {
+			maxWorseModels = "5";
+			EasierLogger.logger_.warning("[WARNING] the max number of worse models has been set to default value --> 5");
+			
+		}
+		return Integer.valueOf(maxWorseModels);
+	}
+	
 	public Path getMetamodelPath() {
 		return Paths.get(metamodelPath);
 	}
@@ -151,7 +163,7 @@ public class Configurator {
 		return Paths.get(oclTemplate);
 	}
 	
-	public Path getEVLTemplate() {
+	public synchronized Path getEVLTemplate() {
 		return Paths.get(evlTemplate);
 	}
 
