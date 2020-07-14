@@ -35,55 +35,45 @@ import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import metamodel.mmaemilia.mmaemiliaPackage;
 
-public class UMLOclManager extends OclManager{
-	
+public class UMLOclManager extends OclManager {
+
 	public UMLOclManager(final MetamodelManager ma) {
-		this.MM_manager  = ma;
+		this.MM_manager = ma;
 	}
 
-	private HashSet<Object> getHashSet(String query, Resource resource) {
-		HashSet<Object> hashSetQuery = null;
-		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, MM_manager.getModel());
-		} catch (ParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return hashSetQuery;
-	}
+	/*
+	 * private HashSet<Object> getHashSet(String query, Resource resource) {
+	 * HashSet<Object> hashSetQuery = null; try { hashSetQuery = (HashSet<Object>)
+	 * evaluateOCL(query, MM_manager.getModel()); } catch (ParserException e) { //
+	 * TODO Auto-generated catch block e.printStackTrace(); } return hashSetQuery; }
+	 */
 
 	@SuppressWarnings({ "unchecked", "static-access" })
 	protected HashSet<Object> getQueryResult(final String query) {
 		Object queryResult = null;
 		HashSet<Object> hashSet = null;
-		try {
-			hashSet = new HashSet<Object>();
-			queryResult = evaluateOCL(query, MM_manager.getModel());
-			if (queryResult instanceof Integer) {
-				int intQueryResult = Integer.parseInt(queryResult.toString());
-				hashSet.add(intQueryResult);
-			} else if (queryResult instanceof Double) {
-				double doubleQueryResult = Double.parseDouble(queryResult.toString());
-				hashSet.add(doubleQueryResult);
-			} else if (queryResult instanceof Model)
-				hashSet.add((Model) queryResult);
-			else if (queryResult instanceof Package)
-				hashSet.add((Package) queryResult);
-			else if (queryResult instanceof Component)
-				hashSet.add((Component) queryResult);
-			else if (queryResult instanceof Operation)
-				hashSet.add((Operation) queryResult);
-			else if (queryResult instanceof Node)
-				hashSet.add((Node) queryResult);
-			else if (queryResult instanceof HashSet<?>)
-				hashSet = (HashSet<Object>) queryResult;
-			else if (queryResult instanceof ArrayList<?>)
-				hashSet.addAll((ArrayList<Object>) queryResult);
-
-		} catch (ParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		hashSet = new HashSet<Object>();
+		queryResult = evaluateOCL(query, MM_manager.getModel());
+		if (queryResult instanceof Integer) {
+			int intQueryResult = Integer.parseInt(queryResult.toString());
+			hashSet.add(intQueryResult);
+		} else if (queryResult instanceof Double) {
+			double doubleQueryResult = Double.parseDouble(queryResult.toString());
+			hashSet.add(doubleQueryResult);
+		} else if (queryResult instanceof Model)
+			hashSet.add((Model) queryResult);
+		else if (queryResult instanceof Package)
+			hashSet.add((Package) queryResult);
+		else if (queryResult instanceof Component)
+			hashSet.add((Component) queryResult);
+		else if (queryResult instanceof Operation)
+			hashSet.add((Operation) queryResult);
+		else if (queryResult instanceof Node)
+			hashSet.add((Node) queryResult);
+		else if (queryResult instanceof HashSet<?>)
+			hashSet = (HashSet<Object>) queryResult;
+		else if (queryResult instanceof ArrayList<?>)
+			hashSet.addAll((ArrayList<Object>) queryResult);
 		return hashSet;
 	}
 
@@ -117,9 +107,9 @@ public class UMLOclManager extends OclManager{
 	 * @see http://archive.eclipse.org/modeling/mdt/ocl/javadoc/3.0.0/org/eclipse/ocl/Environment.html
 	 * @see http://stackoverflow.com/questions/20774594/programmatically-execute-an-ocl-query-on-a-uml-model
 	 * 
-	 *      SONO PARTITO DALL'ULTIMO
 	 */
-	public Object evaluateOCL(String query, Object contextualElement) throws ParserException {
+	//TODO check if it can be moved to the super class
+	public Object evaluateOCL(String query, Object contextualElement) { // throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
 		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
@@ -128,7 +118,7 @@ public class UMLOclManager extends OclManager{
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 
 		// set the OCL context classifier
-		if (contextualElement instanceof Model)
+		/*if (contextualElement instanceof Model)
 			helper.setContext(UMLPackage.Literals.MODEL);
 		else if (contextualElement instanceof Package)
 			helper.setContext(UMLPackage.Literals.PACKAGE);
@@ -137,16 +127,26 @@ public class UMLOclManager extends OclManager{
 		else if (contextualElement instanceof Operation)
 			helper.setContext(UMLPackage.Literals.OPERATION);
 		else if (contextualElement instanceof Node)
-			helper.setContext(UMLPackage.Literals.NODE);
+			helper.setContext(UMLPackage.Literals.NODE);*/
+		
+		//TODO check
+		helper.setContext(((EObject)contextualElement).eClass());
 
 		// helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_());
-		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-		Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-		return oclQuery.evaluate(contextualElement);
+		OCLExpression<EClassifier> oclExpression;
+		try {
+			oclExpression = helper.createQuery(query);
+			Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
+			return oclQuery.evaluate(contextualElement);
+		} catch (ParserException e) {
+			System.err.println("ContextualElement --> " + contextualElement.toString());
+			System.err.println("Query --> " + query);
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
 
-
+	/*
 	public List<?> evaluateOCL(String query, List<Object> contextualElements) throws ParserException {
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
@@ -208,17 +208,12 @@ public class UMLOclManager extends OclManager{
 		Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
 		return oclQuery.check(contextualElements);
 	}
-
+*/
+	
 	@Override
-	protected HashSet<?> getQueryResult(String query, Object model) {
+	protected HashSet<?> getQueryResult(String query, EObject model) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-//	@Override
-//	protected HashSet<?> getQueryResult(String query, Object model) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 }

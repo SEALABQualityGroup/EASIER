@@ -70,8 +70,6 @@ public abstract class MetamodelManager {
 
 	public abstract OclStringManager getOclStringManager();
 
-	public abstract Action getRandomAction(int n) throws UnexpectedException;
-
 	public abstract RefactoringAction getRandomAction(int n, RSequence seq) throws UnexpectedException;
 
 	public abstract void packageRegistering();

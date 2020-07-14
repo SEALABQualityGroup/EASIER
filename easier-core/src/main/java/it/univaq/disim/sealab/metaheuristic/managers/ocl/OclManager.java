@@ -32,22 +32,23 @@ public abstract class OclManager {
 	protected MetamodelManager MM_manager;
 	protected Controller controller;
 
-	public HashSet<?> evaluateQuery(final String query) {
-		return (HashSet<?>) getQueryResult(query);
-	}
+//	public HashSet<?> evaluateQuery(final String query) {
+//		return (HashSet<?>) getQueryResult(query);
+//	}
 
 	
-	public HashSet<?> evaluateQuery(final String query, EObject model) {
-		return (HashSet<?>) getQueryResult(query, model);
-	}
+//	public HashSet<?> evaluateQuery(final String query, EObject model) {
+//		return (HashSet<?>) getQueryResult(query, model);
+//	}
 
-	protected abstract HashSet<?> getQueryResult(String query);
 
-	protected abstract HashSet<?> getQueryResult(String query, Object model);
+//	protected abstract HashSet<?> getQueryResult(String query);
 
-	public HashSet<Object> evaluateOCL(String query) {
-		return (HashSet<Object>) this.evaluateQuery(query);
-	}
+	protected abstract HashSet<?> getQueryResult(String query, EObject model);
+
+//	public HashSet<Object> evaluateOCL(String query) {
+//		return (HashSet<Object>) this.evaluateQuery(query);
+//	}
 	
 	public abstract Object evaluateOCL(String query, Object contextualElement);//throws ParserException;
 
@@ -97,50 +98,50 @@ public abstract class OclManager {
 	}
 
 	//It is no longer used, after the introduction of Epsilon
-	@Deprecated
-	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(Path filePath,
-			List<Object> contextualElements) {
-		// EPackage.Registry registry = new EPackageRegistryImpl();
-		// registry.put(mmaemiliaPackage.eNS_URI, mmaemiliaPackage.eINSTANCE);
-		// EcoreEnvironmentFactory environmentFactory = new
-		// EcoreEnvironmentFactory(registry);
-		// OCL ocl;
-
-		int apCounter = 0;
-
-		Map<String, Constraint> constraintMap = new HashMap<String, Constraint>();
-		Map<String, ExpressionInOCL> exprMap = new HashMap<String, ExpressionInOCL>();
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-
-		// get an OCL text file via some hypothetical API
-
-		FileInputStream in = openFile(filePath);
-		// parse the contents as an OCL document
-		List<Constraint> apRules = getOclRulesFromFile(in);
-
-		/* It stores PA name and a list of contextual model elements that generate the PA*/
-		Map<String, List<ArchitecturalInteraction>> mapOfPerformanceAntipattern = new HashMap<>();
-
-		for (Constraint nextConstraint : apRules) {
-			List<ArchitecturalInteraction> listOfPerformanceAntipattern = new ArrayList<>();
-			if (nextConstraint.getName() != null) {
-				constraintMap.put(nextConstraint.getName(), nextConstraint);
-				ExpressionInOCL expressionInOCL = (ExpressionInOCL) nextConstraint.getSpecification();
-				exprMap.put(nextConstraint.getName(), expressionInOCL);
-				OCLExpression<EClassifier> body = nextConstraint.getSpecification().getBodyExpression();
-
-				for (Object el : contextualElements) {
-//					Controller.logger_.info("\tCONTEXTUAL ELEMENT: " + ((ArchitecturalInteraction) el).getName());
-					if (ocl.check(el, body)) {
-						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
-						apCounter++;
-						EasierLogger.logger_.info(nextConstraint.getName() + " DETECTED!");
-					}
-				}
-				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);
-			}
-		}
-		closeFile(in);
-		return mapOfPerformanceAntipattern;
-	}
+//	@Deprecated
+//	public Map<String, List<ArchitecturalInteraction>> countPAsFromOCLFromFile(Path filePath,
+//			List<Object> contextualElements) {
+//		// EPackage.Registry registry = new EPackageRegistryImpl();
+//		// registry.put(mmaemiliaPackage.eNS_URI, mmaemiliaPackage.eINSTANCE);
+//		// EcoreEnvironmentFactory environmentFactory = new
+//		// EcoreEnvironmentFactory(registry);
+//		// OCL ocl;
+//
+//		int apCounter = 0;
+//
+//		Map<String, Constraint> constraintMap = new HashMap<String, Constraint>();
+//		Map<String, ExpressionInOCL> exprMap = new HashMap<String, ExpressionInOCL>();
+//		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+//
+//		// get an OCL text file via some hypothetical API
+//
+//		FileInputStream in = openFile(filePath);
+//		// parse the contents as an OCL document
+//		List<Constraint> apRules = getOclRulesFromFile(in);
+//
+//		/* It stores PA name and a list of contextual model elements that generate the PA*/
+//		Map<String, List<ArchitecturalInteraction>> mapOfPerformanceAntipattern = new HashMap<>();
+//
+//		for (Constraint nextConstraint : apRules) {
+//			List<ArchitecturalInteraction> listOfPerformanceAntipattern = new ArrayList<>();
+//			if (nextConstraint.getName() != null) {
+//				constraintMap.put(nextConstraint.getName(), nextConstraint);
+//				ExpressionInOCL expressionInOCL = (ExpressionInOCL) nextConstraint.getSpecification();
+//				exprMap.put(nextConstraint.getName(), expressionInOCL);
+//				OCLExpression<EClassifier> body = nextConstraint.getSpecification().getBodyExpression();
+//
+//				for (Object el : contextualElements) {
+////					Controller.logger_.info("\tCONTEXTUAL ELEMENT: " + ((ArchitecturalInteraction) el).getName());
+//					if (ocl.check(el, body)) {
+//						listOfPerformanceAntipattern.add((ArchitecturalInteraction) el);
+//						apCounter++;
+//						EasierLogger.logger_.info(nextConstraint.getName() + " DETECTED!");
+//					}
+//				}
+//				mapOfPerformanceAntipattern.put(nextConstraint.getName(), listOfPerformanceAntipattern);
+//			}
+//		}
+//		closeFile(in);
+//		return mapOfPerformanceAntipattern;
+//	}
 }

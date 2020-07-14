@@ -6,7 +6,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.Action;
+import logicalSpecification.FOLSpecification;
 
 public class UMLRSequence extends RSequence {
 
@@ -38,69 +41,71 @@ public class UMLRSequence extends RSequence {
 	}
 
 	@Override
-	protected boolean tryRandomPush(int n) throws UnexpectedException, ParserException {
-//		Refactoring temporary_ref = this.refactoring.clone(getSolution());
-//
-//
-//		RefactoringAction candidate;
-//		do {
-//			candidate = manager.getMetamodelManager().getRandomAction(n, this);
-//		} while (candidate == null);
-//
-//
-//		temporary_ref.getActions().add(candidate);
-//
-//		if (this.isFeasible(temporary_ref)) {
-//			// this.insert(candidate);
-//
-//			int i = 0;
-//			boolean found = false;
-//			while (i < temporary_ref.getActions().size() && !found) {
-//				RefactoringAction a = temporary_ref.getActions().get(i);
+	protected boolean tryRandomPush(int n) throws UnexpectedException {
+		Refactoring temporary_ref = this.refactoring.clone(getSolution());
+
+		RefactoringAction candidate;
+		do {
+			candidate = manager.getMetamodelManager().getRandomAction(n, this);
+		} while (candidate == null);
+
+		// candidate.setModel(this.getModel());
+
+		temporary_ref.getActions().add(candidate);
+
+		if (this.isFeasible(temporary_ref)) {
+			// this.insert(candidate);
+
+			int i = 0;
+			boolean found = false;
+			while (i < temporary_ref.getActions().size() && !found) {
+				RefactoringAction a = temporary_ref.getActions().get(i);
+				// TODO set new refactoring rules
 //				if (a instanceof AEmiliaCloneAEIRefactoringAction) {
 //					if (!metamodelManager.isApplicable(a, temporary_ref.getSolution().getVariableValue(0)))
 //						found = true;
 //				}
-//				i++;
-//			}
-//			temporary_ref = null;
-//			if (!found) {
-//				this.insert(candidate);
-//				// temporary_ref = null;
-//				return true;
-//			}
-//			return false;
-//
-//		} else {
-//			candidate = null;
-//			temporary_ref = null;
-//			return false;
-//		}
-		//TODO
-		return false;
+				i++;
+			}
+			temporary_ref = null;
+			if (!found) {
+				this.insert(candidate);
+				// temporary_ref = null;
+				return true;
+			}
+			return false;
+
+		} else {
+			candidate = null;
+			temporary_ref = null;
+			return false;
+		}
 	}
 
 	@Override
-	protected boolean isFeasible(Refactoring tr) throws ParserException {
+	protected boolean isFeasible(Refactoring tr) { // throws ParserException {
 		// Controller controller = Manager.getInstance(null).getController();
-//		int maxCloning = 0;
+		int maxCloning = 0;
+
+		// TODO set refactoring rules
 //		for (RefactoringAction a : tr.getActions()) {
 //			if (a instanceof AEmiliaCloneAEIRefactoringAction) {
 //				maxCloning++;
 //			}
 //		}
 //		if (maxCloning > solution.getProblem().getMaxCloning()) {
-//			EasierLogger.logger_
-//					.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
+////					EasierLogger.logger_
+////							.warning("Too much clone actions for Solution #" + this.getSolution().getName() + "!");
 //			return false;
 //		}
-//
-//		for (RefactoringAction action : tr.getActions()) {
-//			action.setParameters();
-//			action.createPreCondition();
-//			action.createPostCondition();
-//		}
-//
+
+		// can be removed it is done within the constructor
+		/*
+		 * for (RefactoringAction action : tr.getActions()) { action.setParameters();
+		 * action.createPreCondition(); action.createPostCondition(); }
+		 */
+
+		// TODO set refactoring rules
 //		for (RefactoringAction ac : tr.getActions()) {
 //			int counter = 0;
 //			if (ac instanceof AEmiliaCloneAEIRefactoringAction) {
@@ -116,12 +121,34 @@ public class UMLRSequence extends RSequence {
 //				}
 //			}
 //			if (counter > 1) {
-//				EasierLogger.logger_.warning("Too much clones in Solution #" + this.getSolution().getName() + "!");
+////						EasierLogger.logger_.warning("Too much clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
 //				return false;
 //			}
 //		}
-//
-//		boolean found = false;
+
+		// TODO set refactoring rules
+//		for (RefactoringAction ac : tr.getActions()) {
+//			int counter = 0;
+//			if (ac instanceof AEmiliaRemoveClonedAEIRefactoringAction) {
+//				int j = 0;
+//				while (j < tr.getActions().size()) {
+//					Action a2 = tr.getActions().get(j);
+//					if (a2 instanceof AEmiliaRemoveClonedAEIRefactoringAction) {
+//						if (((AEmiliaRemoveClonedAEIRefactoringAction) a2).getSourceAEI().getInstanceName().equals(
+//								((AEmiliaRemoveClonedAEIRefactoringAction) ac).getSourceAEI().getInstanceName()))
+//							counter++;
+//					}
+//					j++;
+//				}
+//			}
+//			if (counter > 1) {
+////						EasierLogger.logger_.warning("Too much remove clones of the same AEI in Solution #" + this.getSolution().getName() + "!");
+//				return false;
+//			}
+//		}
+
+		boolean found = false;
+		// TODO set refactoring rules
 //		for (RefactoringAction a : tr.getActions()) {
 //			if (a instanceof AEmiliaConstChangesRefactoringAction) {
 //				int j = 0;
@@ -137,22 +164,27 @@ public class UMLRSequence extends RSequence {
 //				}
 //			}
 //		}
-//		if (found) {
-//			EasierLogger.logger_.warning(
-//					"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
-//			return false;
-//		}
-//
-//		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
-//		boolean fol = manager.evaluateFOL(app, this.getSolution().getModel());
-//
-//		if (!fol) {
-//			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
-//		}
-//
-//		return fol;
-		//TODO
-		return false;
+		if (found) {
+//					EasierLogger.logger_.warning(
+//							"Multi-modification of the same constant for Solution #" + this.getSolution().getName() + "!");
+			return false;
+		}
+
+		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
+		boolean fol = false;
+		try {
+			fol = manager.evaluateFOL(app, this.getSolution().getModel());
+		} catch (ParserException e) {
+			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName()
+					+ " has generated a Parser Exception!");
+			e.printStackTrace();
+		}
+
+		if (!fol) {
+			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
+		}
+
+		return fol;
 	}
 
 	public UMLRSequence(UMLRSequence seq) {
@@ -174,74 +206,70 @@ public class UMLRSequence extends RSequence {
 //	}
 
 	public boolean alter(int position, int n) throws UnexpectedException, ParserException {
-//
-//		// Refactoring temporary_ref =
-//		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
-//		Refactoring temporary_ref = this.refactoring.clone(getSolution());
-//
-//		// Action candidate = Manager.getTautologyRandomAction(n, this);
-//
-//		RefactoringAction candidate;
-//		do {
-//			candidate = metamodelManager.getRandomAction(n, this);
-//		} while (candidate == null);
-//
-//		// Action candidate =
-//		// Manager.getInstance(null).getMetamodelManager().getRandomAction(n);
-//
-//		temporary_ref.getActions().set(position, candidate);
-//		if (this.isFeasible(temporary_ref)) {
-//			// if(Manager.evaluateFOL(Manager.calculatePreCondition(temporary_ref).getConditionFormula())){
-//			// this.replace(position, (Action) EcoreUtil.copy(candidate));
-//
-//			int i = 0;
-//			boolean found = false;
-//			while (i < temporary_ref.getActions().size() && !found) {
-//				RefactoringAction a = temporary_ref.getActions().get(i);
-//				if (a instanceof AEmiliaCloneAEIRefactoringAction) {
-//					// AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager)
-//					// Manager.getInstance(null).getMetamodelManager();
-//					// if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
-//					// temporary_ref.getSolution().getVariableValue(0)) ||
-//					// metamodelManager.isInExcluding(((AEmiliaCloneAEIRefactoringAction) a),
-//					// temporary_ref.getSolution().getVariableValue(0),
-//					// temporary_ref.getActions().indexOf(((AEmiliaCloneAEIRefactoringAction) a))))
-//					if (!((AemiliaMetamodelManager) metamodelManager).isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
-//							temporary_ref.getSolution().getVariableValue(0)))
-//						found = true;
-//				}
-//				/// MODIFIED WRT LAST COMMIT
-//				// if(a instanceof AEmiliaConstChangesRefactoringAction) {
-//				// AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager)
-//				// Manager.getInstance(null).getMetamodelManager();
-//				//// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction)
-//				// a), temporary_ref.getSolution().getVariableValue(0)) ||
-//				//// metamodelManager.isInExcluding(((AEmiliaConstChangesRefactoringAction) a),
-//				// temporary_ref.getSolution().getVariableValue(0),
-//				// temporary_ref.getActions().indexOf(((AEmiliaConstChangesRefactoringAction)
-//				// a))))
-//				// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a),
-//				// temporary_ref.getSolution().getVariableValue(0)))
-//				// found = true;
-//				// }
-//				/// END MODIFIED WRT LAST COMMIT
-//				i++;
-//			}
-//			temporary_ref = null;
-//			if (!found) {
-//				this.replace(position, candidate);
-//				// temporary_ref = null;
-//				return true;
-//			}
-//			return false;
-//		} else {
-//			candidate = null;
-//			temporary_ref = null;
-//			return false;
-//		}
-		//TODO
-		return false;
 
+		// Refactoring temporary_ref =
+		// LogicalSpecificationFactory.eINSTANCE.createRefactoring();
+		Refactoring temporary_ref = this.refactoring.clone(getSolution());
+
+		// Action candidate = Manager.getTautologyRandomAction(n, this);
+
+		RefactoringAction candidate;
+		do {
+			candidate = metamodelManager.getRandomAction(n, this);
+		} while (candidate == null);
+
+		// Action candidate =
+		// Manager.getInstance(null).getMetamodelManager().getRandomAction(n);
+
+		temporary_ref.getActions().set(position, candidate);
+		if (this.isFeasible(temporary_ref)) {
+			// if(Manager.evaluateFOL(Manager.calculatePreCondition(temporary_ref).getConditionFormula())){
+			// this.replace(position, (Action) EcoreUtil.copy(candidate));
+
+			int i = 0;
+			boolean found = false;
+			while (i < temporary_ref.getActions().size() && !found) {
+				RefactoringAction a = temporary_ref.getActions().get(i);
+				if (a instanceof RefactoringAction) {
+					// AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager)
+					// Manager.getInstance(null).getMetamodelManager();
+					// if(!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
+					// temporary_ref.getSolution().getVariableValue(0)) ||
+					// metamodelManager.isInExcluding(((AEmiliaCloneAEIRefactoringAction) a),
+					// temporary_ref.getSolution().getVariableValue(0),
+					// temporary_ref.getActions().indexOf(((AEmiliaCloneAEIRefactoringAction) a))))
+					if (!metamodelManager.isApplicable(
+							((RefactoringAction) a), temporary_ref.getSolution().getVariableValue(0)))
+						found = true;
+				}
+				/// MODIFIED WRT LAST COMMIT
+				// if(a instanceof AEmiliaConstChangesRefactoringAction) {
+				// AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager)
+				// Manager.getInstance(null).getMetamodelManager();
+				//// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction)
+				// a), temporary_ref.getSolution().getVariableValue(0)) ||
+				//// metamodelManager.isInExcluding(((AEmiliaConstChangesRefactoringAction) a),
+				// temporary_ref.getSolution().getVariableValue(0),
+				// temporary_ref.getActions().indexOf(((AEmiliaConstChangesRefactoringAction)
+				// a))))
+				// if(!metamodelManager.isApplicable(((AEmiliaConstChangesRefactoringAction) a),
+				// temporary_ref.getSolution().getVariableValue(0)))
+				// found = true;
+				// }
+				/// END MODIFIED WRT LAST COMMIT
+				i++;
+			}
+			temporary_ref = null;
+			if (!found) {
+				this.replace(position, candidate);
+				// temporary_ref = null;
+				return true;
+			}
+			return false;
+		}
+		candidate = null;
+		temporary_ref = null;
+		return false;
 	}
 
 	@Override

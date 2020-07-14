@@ -46,19 +46,14 @@ public class UMLManager extends Manager{
 
 	private String modelUri = null;
 
-	private OclManager oclManager;
-
-	private OclStringManager oclStringManager;
-
-	private Controller controller;
-
 	public static int REFACTORING_COUNTER = 0;
 
 	public UMLManager() {}
 
 	public UMLManager(UMLMetamodelManager mmManager) {
 		super(mmManager);
-		setOclStringManager(OclStringManager.getInstance(new UMLOclStringManager()));
+		
+		setOclStringManager(new UMLOclStringManager());
 	}
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {
@@ -148,7 +143,7 @@ public class UMLManager extends Manager{
 		return null;
 	}
 
-
+/*
 	public boolean evaluateFOL(FOLSpecification folSpec, EObject context) throws ParserException {
 		if (folSpec.getRootOperator() instanceof NotOperator)
 			return evaluateOperator((NotOperator) folSpec.getRootOperator(), context);
@@ -271,7 +266,7 @@ public class UMLManager extends Manager{
 		// System.out.print(")");
 		return app;
 	}
-
+*/
 //	public OclManager getOclManager() {
 //		return getMetamodelManager().getOclManager();
 //	}
@@ -279,7 +274,7 @@ public class UMLManager extends Manager{
 	public void setOclManager(OclManager oclMan) {
 		oclManager = oclMan;
 	}
-
+/*
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
 		if (getOclManager().evaluateOCL(operator.getCollection().getResolvingExpr(),
@@ -733,7 +728,9 @@ public class UMLManager extends Manager{
 		return true;
 	}
 
-	public PreCondition calculatePreCondition(Refactoring r) {
+*/
+	
+	/*public PreCondition calculatePreCondition(Refactoring r) {
 		PreCondition res = null;
 		if (r != null) {
 			if (r.getActions() != null) {
@@ -892,8 +889,8 @@ public class UMLManager extends Manager{
 			}
 		}
 		return res;
-	}
-
+	}*/
+/*
 	public SingleValuedParameter createSingleValueParameter(String expr) {
 		SingleValuedParameter singleValuedParameter = LogicalSpecificationFactory.eINSTANCE
 				.createSingleValuedParameter();
@@ -926,7 +923,7 @@ public class UMLManager extends Manager{
 		existsOperator.setCollection(collection);
 		return existsOperator;
 	}
-
+*/
 //	public ExistsOperator createExistsOperator(MultipleValuedParameter collection) {
 //		ExistsOperator existsOperator = LogicalSpecificationFactory.eINSTANCE.createExistsOperator();
 //		existsOperator.setCollection(collection);
@@ -964,7 +961,7 @@ public class UMLManager extends Manager{
 	public String getModelFileExtension() {
 		return metamodelManager.getModelFileExtension();
 	}
-
+/*
 	public Controller getController() {
 		return controller;
 	}
@@ -980,7 +977,7 @@ public class UMLManager extends Manager{
 	public void setOclStringManager(OclStringManager oclStringManager) {
 		this.oclStringManager = oclStringManager;
 	}
-
+*/
 	public static int getREFACTORING_COUNTER() {
 		return REFACTORING_COUNTER;
 	}

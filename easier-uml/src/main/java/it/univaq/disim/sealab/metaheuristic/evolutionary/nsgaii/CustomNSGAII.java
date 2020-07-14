@@ -9,86 +9,94 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.ObjectiveComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 @SuppressWarnings("serial")
-public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S>{
+public class CustomNSGAII<S extends RSolution> extends NSGAII<S>{
 
-	private ProgressBar pbar;
-	private MutableInt done;
-	private MutableInt total;
+//	private ProgressBar pbar;
+//	private MutableInt done;
+//	private MutableInt total;
 	
-	private String name;
+//	private String name;
 
 	/**
 	 * Constructor
 	 */
-	public CustomNSGAII(Problem<UMLRSolution> problem, int maxIterations, int populationSize,
+	public CustomNSGAII(Problem<S> problem, int maxIterations, int populationSize,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
 			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
 		super((Problem<S>)problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator,
 				evaluator);
-		this.name = "Custom_NSGA_II";
+//		this.name = "Custom_NSGA_II";
+	}
+	
+	@Override
+	protected boolean isStoppingConditionReached() {
+		System.out.println(this.getName());
+		ProgressBar.showBar((evaluations/getMaxPopulationSize()), (maxEvaluations/getMaxPopulationSize()));
+		return super.isStoppingConditionReached();
 	}
 
-	public void computeCrowdingDistances() {
-		List<S> solutionList = this.getPopulation();
-		int size = solutionList.size();
+	//It is no longer used
+//	public void computeCrowdingDistances() {
+//		List<S> solutionList = this.getPopulation();
+//		int size = solutionList.size();
+//
+//		if (size == 0) {
+//			return;
+//		}
+//
+//		if (size == 1) {
+//			this.getResult().get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
+//			return;
+//		}
+//
+//		if (size == 2) {
+//			solutionList.get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
+//			solutionList.get(1).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
+//
+//			return;
+//		}
+//
+//		for (int i = 0; i < size; i++) {
+//			solutionList.get(i).setAttribute(getAttributeIdentifier(), 0.0);
+//		}
+//
+//		double objetiveMaxn;
+//		double objetiveMinn;
+//		double distance;
+//
+//		int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
+//
+//		for (int i = 0; i < numberOfObjectives; i++) {
+//			// Sort the population by Obj n
+//			Collections.sort(solutionList, new ObjectiveComparator<S>(i));
+//			objetiveMinn = solutionList.get(0).getObjective(i);
+//			objetiveMaxn = solutionList.get(solutionList.size() - 1).getObjective(i);
+//
+//			// Set de crowding distance
+//			solutionList.get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
+//			solutionList.get(size - 1).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
+//
+//			for (int j = 1; j < size - 1; j++) {
+//				distance = solutionList.get(j + 1).getObjective(i) - solutionList.get(j - 1).getObjective(i);
+//				distance = distance / (objetiveMaxn - objetiveMinn);
+//				distance += (double) solutionList.get(j).getAttribute(getAttributeIdentifier());
+//				solutionList.get(j).setAttribute(getAttributeIdentifier(), distance);
+//			}
+//		}
+//	}
 
-		if (size == 0) {
-			return;
-		}
-
-		if (size == 1) {
-			this.getResult().get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
-			return;
-		}
-
-		if (size == 2) {
-			solutionList.get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
-			solutionList.get(1).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
-
-			return;
-		}
-
-		for (int i = 0; i < size; i++) {
-			solutionList.get(i).setAttribute(getAttributeIdentifier(), 0.0);
-		}
-
-		double objetiveMaxn;
-		double objetiveMinn;
-		double distance;
-
-		int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
-
-		for (int i = 0; i < numberOfObjectives; i++) {
-			// Sort the population by Obj n
-			Collections.sort(solutionList, new ObjectiveComparator<S>(i));
-			objetiveMinn = solutionList.get(0).getObjective(i);
-			objetiveMaxn = solutionList.get(solutionList.size() - 1).getObjective(i);
-
-			// Set de crowding distance
-			solutionList.get(0).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
-			solutionList.get(size - 1).setAttribute(getAttributeIdentifier(), Double.POSITIVE_INFINITY);
-
-			for (int j = 1; j < size - 1; j++) {
-				distance = solutionList.get(j + 1).getObjective(i) - solutionList.get(j - 1).getObjective(i);
-				distance = distance / (objetiveMaxn - objetiveMinn);
-				distance += (double) solutionList.get(j).getAttribute(getAttributeIdentifier());
-				solutionList.get(j).setAttribute(getAttributeIdentifier(), distance);
-			}
-		}
-	}
-
-	private Object getAttributeIdentifier() {
-		return CrowdingDistance.class;
-	}
+	//It is no longer used
+//	private Object getAttributeIdentifier() {
+//		return CrowdingDistance.class;
+//	}
 
 //	@Override
 //	protected List<S> createInitialPopulation() {
@@ -107,14 +115,14 @@ public class CustomNSGAII<S extends Solution<?>> extends NSGAII<S>{
 //		return population;
 //	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String n) {
-		this.name = n;
-	}
+//	@Override
+//	public String getName() {
+//		return name;
+//	}
+//	
+//	public void setName(String n) {
+//		this.name = n;
+//	}
 
 	@Override
 	public String getDescription() {

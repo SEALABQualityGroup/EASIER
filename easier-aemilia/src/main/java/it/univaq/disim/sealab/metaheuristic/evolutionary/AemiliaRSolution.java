@@ -71,7 +71,7 @@ public class AemiliaRSolution extends RSolution {
 	private boolean mutated;
 	private boolean refactored;
 
-	private static int SOLUTION_COUNTER = 1686826;
+	private static int SOLUTION_COUNTER = 0;
 
 	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
@@ -210,7 +210,7 @@ public class AemiliaRSolution extends RSolution {
 //			}
 			
 //			Files.copy(((AemiliaRProblem<?>) this.problem).getSourceModelPath(), modelPath, StandardCopyOption.REPLACE_EXISTING);
-			org.apache.commons.io.FileUtils.copyFile(((AemiliaRProblem<?>) this.problem).getSourceModelPath().toFile(),	modelPath.toFile());
+			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(),	modelPath.toFile());
 
 			// copy the EVL template into the solution folder
 //			Files.copy(controller.getConfigurator().getEVLTemplate(), Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"), StandardCopyOption.REPLACE_EXISTING);
@@ -225,7 +225,7 @@ public class AemiliaRSolution extends RSolution {
 //			EasierLogger.logger_.info("The EVL Template File has been filled and copied");
 
 		} catch (IOException e) {
-			System.out.println("[ERROR] Coping and Filling template files!!!");
+			System.out.println("[ERROR] Copying and Filling template files!!!");
 			e.printStackTrace();
 		}
 

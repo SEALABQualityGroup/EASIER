@@ -1,16 +1,16 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
@@ -21,16 +21,13 @@ import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
-import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
 import metamodel.mmaemilia.mmaemiliaPackage;
-import metamodel.mmaemilia.Headers.ConstInit;
 
 @SuppressWarnings("serial")
 public class UMLRSolution extends RSolution {
@@ -40,20 +37,125 @@ public class UMLRSolution extends RSolution {
 	private Map<String, List<ArchitecturalInteraction>> mapOfPAs;
 
 	private UMLMetamodelManager metamodelManager;
-	private Path mmaemiliaFilePath;
-	private Path valFilePath;
+	private Path modelPath;
+	
+	private boolean crossovered;
+	private boolean mutated;
+	private boolean refactored;
+	
+	private int name;
+	private static int SOLUTION_COUNTER = 0;
+	private UUID ID;
+	private final int VARIABLE_INDEX = 0;
+	
+	private Manager manager;
+	private Controller controller;
+	
+	private Path folderPath;
+	private ResourceSet resourceSet;
+	private EObject model;
+
+	private float perfQ;
+
+	private int numPAs;
+
+	private static int MutationCounter = 0;
+	private static int XOverCounter = 0;
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
 		super(p);
+		setName();
+		ID = UUID.randomUUID();
+		resetParents();
+		init(p.getController());
+		crossovered = false;
+		mutated = false;
+		refactored = false;
+
+		try {
+			this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
+		} catch (UnexpectedException e) {
+			System.err.println("Error in genereting a refactoring sequence of a new Solution with:");
+			System.err.println("lenght --> " + p.length_of_refactorings + "Number of action -->" + p.number_of_actions
+					+ "Allowed failures -->" + p.allowed_failures);
+			e.printStackTrace();
+		}
 	}
 
 	public UMLRSolution(UMLRSolution s) {
-		super(s);
+		super(s.getProblem());
+		setName();
+		ID = UUID.randomUUID();
+
+		resetParents();
+		init(s.problem.getController());
+
+		this.copyRefactoringVariable(s.getVariableValue(VARIABLE_INDEX), this);
+
+		for (int i = 0; i < s.problem.getNumberOfObjectives(); i++) {
+			this.setObjective(i, s.getObjective(i));
+		}
+		
+		this.attributes = s.attributes;
+		this.setAttribute(CrowdingDistance.class, s.getAttribute(CrowdingDistance.class));
+
+		crossovered = false;
+		mutated = false;
+		refactored = false;
 	}
 
 	public UMLRSolution(UMLRSolution s1, UMLRSolution s2, int point, boolean left) {
-		super(s1, s2, point, left);
+		super(s1.getProblem());
+		
+		setName();
+		ID = UUID.randomUUID();
+
+		init(s1.problem.getController());
+
+		for (int i = 0; i < s1.problem.getNumberOfVariables(); i++) {
+			if (i == VARIABLE_INDEX) {
+				if (left) {
+					this.setVariableValue(VARIABLE_INDEX, this.createChild(s1, s2, point));
+				} else {
+					this.setVariableValue(VARIABLE_INDEX, this.createChild(s2, s1, point));
+
+				}
+			} else {
+				try {
+					throw new UnexpectedException("Should not happen");
+				} catch (UnexpectedException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		for (int i = 0; i < s1.problem.getNumberOfObjectives(); i++) {
+			this.setObjective(i, s1.getObjective(i));
+		}
+
+		this.setAttribute(CrowdingDistance.class, 0.0);
+
+		crossovered = false;
+		mutated = false;
+		refactored = false;
 	}
+	
+	public static synchronized int getCounter() {
+		return SOLUTION_COUNTER ++;
+	}
+	
+	public void setName() {
+		this.name = getCounter();
+	}
+	
+	protected void resetParents() {
+		if (this.parents != null) {
+			this.parents[0] = null;
+			this.parents[1] = null;
+		}
+	}
+	
 
 	protected void init(Controller controller) {
 		this.controller = controller;
@@ -64,35 +166,44 @@ public class UMLRSolution extends RSolution {
 
 		manager.setMetamodelManager(new UMLMetamodelManager(controller));
 		manager.setOclManager(manager.getMetamodelManager().getOclManager());
-		manager.setOclStringManager(OclStringManager.getInstance(new UMLOclStringManager()));
+		manager.setOclStringManager(UMLOclStringManager.getInstance());
 
 		metamodelManager = (UMLMetamodelManager) manager.getMetamodelManager();
 		metamodelManager.setProblem(problem);
 
 		folderPath = Paths.get(controller.getConfigurator().getTmpFolder().toString(),
 				String.valueOf((getName() / 100)), String.valueOf(getName()));
-		mmaemiliaFilePath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
+		modelPath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
 
 		try {
-			org.apache.commons.io.FileUtils.copyFile(((UMLRProblem<?>) this.problem).getSourceModelPath().toFile(),
-					mmaemiliaFilePath.toFile());
+			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
 			// Files.copy(this.problem.getSourceModelPath(), target);
 		} catch (IOException e) {
 			System.out.println("[ERROR] The problem's model copy generated an error!!!");
 			e.printStackTrace();
 		}
 
-		System.out.println("Problem's model copied!!!");
 
 		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
-		createNewModel(mmaemiliaFilePath);
+		createNewModel(modelPath);
+	}
+	
+	public void setResourceSet(ResourceSet resourceSet) {
+		this.resourceSet = resourceSet;
 	}
 
-	@Override
+	
 	public void createNewModel(Path modelFilePath) {
-		Resource res = getResourceSet().getResource(Manager.string2Uri(modelFilePath.toString()), true);
-		this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-				mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+		try {
+//			res = getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()), true);
+//			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
+//					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
+			this.model = metamodelManager.getModel(modelFilePath);
+		} catch (Exception e) {
+			System.err.println("Error in creating the model for Solution #"+this.getName());
+			System.err.println(this.getVariableValue(0).toString());
+			e.printStackTrace();
+		}
 	}
 
 	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
@@ -109,8 +220,8 @@ public class UMLRSolution extends RSolution {
 		return strValue;
 	}
 
-	public RProblem getProblem() {
-		return this.problem;
+	public RProblem<UMLRSolution> getProblem() {
+		return (RProblem<UMLRSolution>) this.problem;
 	}
 
 	protected void copyRefactoringVariable(RSequence variableValue, RSolution sol) {
@@ -124,7 +235,7 @@ public class UMLRSolution extends RSolution {
 		return new UMLRSolution(this);
 	}
 
-	protected UMLRSequence createChild(RSolution s1, RSolution s2, int point) {
+	protected UMLRSequence createChild(UMLRSolution s1, UMLRSolution s2, int point) {
 
 		UMLRSequence seq = new UMLRSequence(this);
 
@@ -381,8 +492,14 @@ public class UMLRSolution extends RSolution {
 	}
 
 	public void refreshModel() {
-		getResourceSet().getResources().get(0).unload();
-		this.createNewModel(mmaemiliaFilePath);
+		getResourceSet().getResources().forEach(resource -> resource.unload());
+//		get(0).unload();
+//		this.createNewModel(mmaemiliaFilePath);
+		this.model = metamodelManager.getModel(modelPath);
+	}
+	
+	public ResourceSet getResourceSet() {
+		return resourceSet;
 	}
 
 	public int getPAs() {
@@ -399,24 +516,12 @@ public class UMLRSolution extends RSolution {
 	}
 
 	public double getNumOfChanges() {
-		changes = 0.0;
+		double changes = 0.0;
 		Refactoring r = this.getVariableValue(0).getRefactoring();
 		for (RefactoringAction action : r.getActions()) {
 			changes += action.getNumOfChanges();
 		}
 		return changes;
-	}
-
-	public String getMmaemiliaFolderPath() {
-		return mmaemiliaFolderStr;
-	}
-
-	public Path getMmaemiliaFilePath() {
-		return mmaemiliaFilePath;
-	}
-
-	public void setMmaemiliaFolderPath(String mmaemiliaFolderPath) {
-		this.mmaemiliaFolderStr = mmaemiliaFolderPath;
 	}
 
 	public Manager getManager() {
@@ -425,6 +530,49 @@ public class UMLRSolution extends RSolution {
 
 	public Controller getController() {
 		return this.controller;
+	}
+
+	@Override
+	public int getName() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setCrossovered(boolean xovered) {
+		this.crossovered = xovered;
+		XOverCounter++;
+		
+	}
+
+	@Override
+	public void setMutated(boolean mutated) {
+		this.mutated = mutated;
+		MutationCounter++;
+		
+	}
+
+	@Override
+	public boolean isCrossovered() {
+		return crossovered;
+	}
+
+	@Override
+	public EObject getModel() {
+		return model;
+	}
+
+	@Override
+	public void setParents(RSolution parent1, RSolution parent2) {
+		this.parents[0] = (UMLRSolution) parent1;
+		this.parents[1] = (UMLRSolution) parent2;
+		
+	}
+
+	@Override
+	public List<Resource> getResources() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

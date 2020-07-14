@@ -14,6 +14,9 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -22,12 +25,18 @@ import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.experiment.Experiment;
+import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
+import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
+import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
@@ -43,7 +52,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
-public class UMLController implements Controller{
+public class UMLController implements Controller {
 
 	public static boolean append = false;
 	public static Logger logger_ = Logger.getLogger(UMLController.class.getName());
@@ -51,22 +60,22 @@ public class UMLController implements Controller{
 
 	private MetamodelManager metamodelManager;
 	private Manager manager;
-	private RProblem problem;
+	private UMLRProblem<UMLRSolution> problem;
 	private boolean cleaningTmp = false;
 
 	/* Configurator class */
 	private Configurator configurator;
 
 	/* Evolutionary operators */
-	private CrossoverOperator<RSolution> crossoverOperator;
-	private MutationOperator<RSolution> mutationOperator;
-	private SelectionOperator<List<RSolution>, RSolution> selectionOpertor;
-	private SolutionListEvaluator<RSolution> solutionListEvaluator;
+	private CrossoverOperator<UMLRSolution> crossoverOperator;
+	private MutationOperator<UMLRSolution> mutationOperator;
+	private SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor;
+	private SolutionListEvaluator<UMLRSolution> solutionListEvaluator;
 
 	/* Source models */
 	// private List<Path> sourceModels = new ArrayList<>();
 	private List<SourceModel> sourceModels = new ArrayList<>();
-	private List<ExperimentProblem<RSolution>> problemList;
+	private List<ExperimentProblem<UMLRSolution>> problemList;
 
 	public UMLController() {
 		manager = new UMLManager(new UMLMetamodelManager(this));
@@ -84,8 +93,8 @@ public class UMLController implements Controller{
 		// Instantiates evolutionary operators
 		crossoverOperator = new UMLRCrossover(config.getXoverProbabiliy(), this);
 		mutationOperator = new RMutation(config.getMutationProbability(), config.getDistributionIndex());
-		selectionOpertor = new BinaryTournamentSelection<RSolution>(
-				new RankingAndCrowdingDistanceComparator<RSolution>());
+		selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
+				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
 		solutionListEvaluator = new RSolutionListEvaluator();
 	}
 
@@ -104,7 +113,7 @@ public class UMLController implements Controller{
 //		}
 //		metamodelManager.setSourceModels(sourceModels);
 //		System.out.println("Setting up finished");
-		//TODO
+		// TODO
 		return this;
 	}
 
@@ -116,11 +125,12 @@ public class UMLController implements Controller{
 		return mutationOperator;
 	}
 
-	private void generateSourceFiles(final Path source) {}
+	private void generateSourceFiles(final Path source) {
+	}
 
-	public List<RProblem> createProblems() {
+	public List<RProblem<UMLRSolution>> createProblems() {
 
-		List<RProblem> rProblems = new ArrayList<>();
+		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
 
 		for (SourceModel src : sourceModels) {
 			for (Integer l : configurator.getLength()) {
@@ -141,47 +151,51 @@ public class UMLController implements Controller{
 		return rProblems;
 	}
 
-	public void runExperiment(final List<RProblem> rProblems,
-			final List<GenericIndicator<RSolution>> qualityIndicators) {
+	public void runExperiment(final List<RProblem<UMLRSolution>> rProblems,
+			final List<GenericIndicator<UMLRSolution>> qualityIndicators) {
 		final int INDEPENDENT_RUNS = configurator.getIndependetRuns(); // should be 31 or 51
 		final int CORES = 1;
 
 		problemList = new ArrayList<>();
 
-		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<>(problem)));
+		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<UMLRSolution>(problem)));
 
-		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithmList = configureAlgorithmList(problemList);
+		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithmList = configureAlgorithmList(problemList);
 
 		Path referenceFrontDirectory = Paths.get(configurator.getOutputFolder().toString(), "referenceFront");
 
-		RExperiment<RSolution, List<RSolution>> experiment = new RExperimentBuilder<RSolution, List<RSolution>>("Exp")
-				.setAlgorithmList(algorithmList).setProblemList(problemList)
-				.setExperimentBaseDirectory(referenceFrontDirectory.toString())
-				.setReferenceFrontDirectory(referenceFrontDirectory.toString()).setOutputParetoFrontFileName("FUN")
-				.setOutputParetoSetFileName("VAR").setIndicatorList(qualityIndicators)
-				.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES).build();
+		Experiment<UMLRSolution, List<UMLRSolution>> experiment = new RExperimentBuilder<UMLRSolution, List<UMLRSolution>>(
+				"Exp").setAlgorithmList(algorithmList).setProblemList(problemList)
+						.setExperimentBaseDirectory(referenceFrontDirectory.toString())
+						.setReferenceFrontDirectory(referenceFrontDirectory.toString())
+						.setOutputParetoFrontFileName("FUN").setOutputParetoSetFileName("VAR")
+						.setIndicatorList(qualityIndicators).setIndependentRuns(INDEPENDENT_RUNS)
+						.setNumberOfCores(CORES).build();
 		try {
-			List<Entry<Algorithm<List<RSolution>>, Long>> computingTimes = new RExecuteAlgorithms<RSolution, List<RSolution>>(
-					experiment, this).run().getComputingTimes();
-			experiment.setComputingTime(computingTimes);
+			List<Entry<Algorithm<List<UMLRSolution>>, Long>> computingTimes = new RExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
+					(RExperiment<UMLRSolution, List<UMLRSolution>>) experiment, this).run().getComputingTimes();
 
-			// List<RSolution> pareto = new ArrayList<>();
+			((RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).setComputingTime(computingTimes);
+
+			// List<AemiliaRSolution> pareto = new ArrayList<>();
 
 			new RGenerateReferenceParetoFront(experiment).run();
 
-			// for(Entry<Algorithm<List<RSolution>>, Long> entry : computingTimes) {
+			// for(Entry<Algorithm<List<AemiliaRSolution>>, Long> entry : computingTimes) {
 			// saveParetoSolution(entry.getKey().getResult());
 			// }
 			//
 
-			// new ComputeQualityIndicators<>(experiment).run();
-			// new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			// new GenerateBoxplotsWithR<>(experiment).run();
-			// new GenerateLatexTablesWithStatistics(experiment).run();
-			// new GenerateLatexTablesWithComputingTime(experiment).run();
+			new GenerateLatexTablesWithComputingTime(experiment).run();
+
+			new RComputeQualityIndicators<>(experiment).run();
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	/**
@@ -197,41 +211,40 @@ public class UMLController implements Controller{
 	 * which form part of a {@link ExperimentAlgorithm}, which is a decorator for
 	 * class {@link Algorithm}.
 	 */
-	public List<ExperimentAlgorithm<RSolution, List<RSolution>>> configureAlgorithmList(
-			List<ExperimentProblem<RSolution>> problemList) {
+	public List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> configureAlgorithmList(
+			List<ExperimentProblem<UMLRSolution>> problemList) {
 
-		List<ExperimentAlgorithm<RSolution, List<RSolution>>> algorithms = new ArrayList<>();
+		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
 
 		for (int i = 0; i < problemList.size(); i++) {
 
-			CustomNSGAIIBuilder<RSolution> customNSGABuilder = new CustomNSGAIIBuilder<RSolution>(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator);
+			NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
+					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+							.setMaxEvaluations(configurator.getMaxEvaluation() * configurator.getPopulationSize())
+							.setPopulationSize(configurator.getPopulationSize())
+							.setSolutionListEvaluator(solutionListEvaluator);
 
-			customNSGABuilder.setMaxEvaluations(configurator.getMaxEvaluation());
-			customNSGABuilder.setPopulationSize(configurator.getPopulationSize());
-			customNSGABuilder.setSolutionListEvaluator(solutionListEvaluator);
+			NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
+//			((CustomNSGAII<AemiliaRSolution>) algorithm).setName("NSGA_II");
 
-			NSGAII<RSolution> algorithm = customNSGABuilder.build();
-			((CustomNSGAII<RSolution>) algorithm).setName("NSGA_II");
+			ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+					algorithm, algorithm.getName(), problemList.get(i).getTag());
 
-			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
 			algorithms.add(exp);
 		}
 
 		for (int i = 0; i < problemList.size(); i++) {
-			@SuppressWarnings("unchecked")
-			CustomSPEA2Builder<RSolution> spea2Builder = (CustomSPEA2Builder<RSolution>) new CustomSPEA2Builder(
+			SPEA2Builder<UMLRSolution> spea2Builder = new CustomSPEA2Builder<UMLRSolution>(
 					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
 							.setSelectionOperator(selectionOpertor).setSolutionListEvaluator(solutionListEvaluator)
-							.setMaxIterations(
-									Math.toIntExact(configurator.getMaxEvaluation() / configurator.getPopulationSize()))
+							.setMaxIterations(configurator.getMaxEvaluation())
 							.setPopulationSize(configurator.getPopulationSize());
 
-			CustomSPEA2<RSolution> algorithm = (CustomSPEA2<RSolution>) spea2Builder.build();
-			algorithm.setName("SPEA2");
-			ExperimentAlgorithm<RSolution, List<RSolution>> exp = new CustomExperimentAlgorithm<RSolution, List<RSolution>>(
-					algorithm, problemList.get(i).getTag(), i);
+			SPEA2<UMLRSolution> algorithm = spea2Builder.build();
+//			((CustomSPEA2<AemiliaRSolution>) algorithm).setName("SPEA2");
+
+			ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+					algorithm, algorithm.getName(), problemList.get(i).getTag());
 			algorithms.add(exp);
 		}
 		return algorithms;
@@ -240,7 +253,7 @@ public class UMLController implements Controller{
 	public List<Path> getReferenceFront() {
 
 		List<Path> refFront = new ArrayList<>();
-		for (ExperimentProblem<RSolution> problem : problemList) {
+		for (ExperimentProblem<UMLRSolution> problem : problemList) {
 			refFront.add(
 					Paths.get(configurator.getOutputFolder().toString(), "referenceFront", problem.getTag() + ".rf"));
 		}
@@ -256,7 +269,7 @@ public class UMLController implements Controller{
 	 */
 	public synchronized void generateAvailability(final Path targetFolder) {
 		// File availabilityDir = avaFolder;
-		
+
 	}
 
 	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
@@ -274,7 +287,7 @@ public class UMLController implements Controller{
 //				e.printStackTrace();
 //			}
 //		}
-		//TODO
+		// TODO
 	}
 
 	private void cleanTmpFiles() {
@@ -289,15 +302,15 @@ public class UMLController implements Controller{
 
 	public UMLPerformanceQualityEvaluator getPerfQuality() {
 //		return new UMLPerformanceQualityEvaluator(manager.getOclManager());
-		//TODO
+		// TODO
 		return null;
 	}
 
-	public RProblem getProblem() {
+	public RProblem<UMLRSolution> getProblem() {
 		return this.problem;
 	}
 
-	public void setProblem(RProblem p) {
+	public void setProblem(UMLRProblem<UMLRSolution> p) {
 		this.problem = p;
 	}
 
@@ -313,8 +326,8 @@ public class UMLController implements Controller{
 		this.manager = manager;
 	}
 
-	private void updateSourceModel(Path source) {}
-
+	private void updateSourceModel(Path source) {
+	}
 
 	private class FileTypesFilter implements FileFilter {
 		String[] types;
@@ -334,7 +347,8 @@ public class UMLController implements Controller{
 		}
 	}
 
-	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {}
+	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
+	}
 
 	public Path getPermanentTmpFolder() {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");

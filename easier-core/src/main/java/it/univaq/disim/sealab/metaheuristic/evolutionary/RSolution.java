@@ -18,7 +18,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	protected Path modelPath;
 
 	protected RSolution(RProblem<?> problem) {

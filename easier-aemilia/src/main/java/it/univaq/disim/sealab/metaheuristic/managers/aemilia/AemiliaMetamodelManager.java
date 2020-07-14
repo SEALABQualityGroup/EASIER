@@ -267,12 +267,6 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	}
 
 	@Override
-	public RefactoringAction getRandomAction(int length) throws UnexpectedException {
-		System.out.println("Se leggi questo c'è un erore in GetRandomAction");
-		return null;
-	}
-
-	@Override
 	public RefactoringAction getRandomAction(int length, RSequence seq) throws UnexpectedException {
 
 		int index = 0;

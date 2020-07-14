@@ -49,23 +49,23 @@ public class AemiliaPerformanceQualityEvaluator implements PerformanceQualityEva
 		return -1;
 	}
 
-	@Deprecated
-	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
-			Path ruleFilePath) {
-		int numOfPAs = 0;
-
-		List<Object> contextualArchiInteractions = new ArrayList<Object>();
-
-		TreeIterator<EObject> eAllContents = model.eAllContents();
-
-		while (eAllContents.hasNext()) {
-			EObject next = eAllContents.next();
-			if (next instanceof ArchitecturalInteraction) { // && next.eContainer() instanceof ElemType) {
-				contextualArchiInteractions.add(next);
-			}
-		}
-		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
-	}
+//	@Deprecated
+//	public Map<String, List<ArchitecturalInteraction>> performanceAntipatternEvaluator(EObject model,
+//			Path ruleFilePath) {
+//		int numOfPAs = 0;
+//
+//		List<Object> contextualArchiInteractions = new ArrayList<Object>();
+//
+//		TreeIterator<EObject> eAllContents = model.eAllContents();
+//
+//		while (eAllContents.hasNext()) {
+//			EObject next = eAllContents.next();
+//			if (next instanceof ArchitecturalInteraction) { // && next.eContainer() instanceof ElemType) {
+//				contextualArchiInteractions.add(next);
+//			}
+//		}
+//		return oclManager.countPAsFromOCLFromFile(ruleFilePath, contextualArchiInteractions);
+//	}
 
 	/**
 	 * Returns the PerfQ value calculated as refactoredValFile over sourceValFile.

@@ -3,12 +3,14 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 import java.util.List;
 
 import org.eclipse.ocl.ParserException;
+import org.uma.jmetal.util.JMetalException;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 
 @SuppressWarnings("serial")
-public class UMLRCrossover extends RCrossover {
+public class UMLRCrossover <S extends UMLRSolution> extends RCrossover<S> {
 
 	// private double crossoverProbability;
 	// private JMetalRandom randomGenerator;
@@ -18,7 +20,17 @@ public class UMLRCrossover extends RCrossover {
 	public UMLRCrossover(double crossoverProbability, Controller ctrl) {
 		super(crossoverProbability, ctrl);
 	}
+	
+	@Override
+	public List<S> execute(List<S> solutions) {
+		if (solutions == null) {
+			throw new JMetalException("Null parameter");
+		} else if (solutions.size() != 2) {
+			throw new JMetalException("There must be two parents instead of " + solutions.size());
+		}
 
+		return doCrossover(crossoverProbability, solutions.get(0), solutions.get(1));
+	}
 	/**
 	 * Perform the crossover operation.
 	 *
@@ -31,8 +43,7 @@ public class UMLRCrossover extends RCrossover {
 	 * @return An array containing the two offspring
 	 * @throws ParserException
 	 */
-	@Override
-	public List<RSolution> doCrossover(double probability, RSolution parent1, RSolution parent2) {
+	public List<S> doCrossover(double probability, UMLRSolution parent1, UMLRSolution parent2) {
 
 //		List<RSolution> offspring = new ArrayList<>(2);
 //		UMLRSolution parent1copy = (UMLRSolution) parent1.copy();
@@ -145,5 +156,6 @@ public class UMLRCrossover extends RCrossover {
 	public int getNumberOfParents() {
 		return 2;
 	}
+
 
 }

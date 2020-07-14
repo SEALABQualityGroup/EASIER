@@ -34,17 +34,18 @@ public class OclAemiliaManager extends OclManager {
 		// manager = controller.getManager();
 	}
 
-	private HashSet<Object> getHashSet(String query, EObject model) {
-		HashSet<Object> hashSetQuery = null;
-//		try {
-			hashSetQuery = (HashSet<Object>) evaluateOCL(query, model);
-//		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		return hashSetQuery;
-	}
+//	private HashSet<Object> getHashSet(String query, EObject model) {
+//		HashSet<Object> hashSetQuery = null;
+////		try {
+//			hashSetQuery = (HashSet<Object>) evaluateOCL(query, model);
+////		} catch (ParserException e) {
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+//		return hashSetQuery;
+//	}
 
+	@Override
 	protected HashSet<EObject> getQueryResult(String query, EObject model) {
 		Object queryResult = null;
 		HashSet<EObject> hashSet = null;
@@ -232,41 +233,42 @@ public class OclAemiliaManager extends OclManager {
 //		return hashSet;
 //	}
 
-	@Override
-	protected HashSet<?> getQueryResult(String query) {
-		Object queryResult = null;
-		HashSet<Object> hashSet = null;
-		hashSet = new HashSet<Object>();
-		queryResult = evaluateOCL(query);
-		
-		if (queryResult instanceof Integer) {
-			double intQueryResult = Integer.parseInt(queryResult.toString());
-			hashSet.add(intQueryResult);
-		} else if (queryResult instanceof Double) {
-			double doubleQueryResult = Double.parseDouble(queryResult.toString());
-			hashSet.add(doubleQueryResult);
-		} else if (queryResult instanceof Model)
-			hashSet.add((Model) queryResult);
-		else if (queryResult instanceof Package)
-			hashSet.add((Package) queryResult);
-		else if (queryResult instanceof Component)
-			hashSet.add((Component) queryResult);
-		else if (queryResult instanceof Operation)
-			hashSet.add((Operation) queryResult);
-		else if (queryResult instanceof Node)
-			hashSet.add((Node) queryResult);
-		
-		else if (queryResult instanceof HashSet<?>)
-			hashSet = (HashSet<Object>) queryResult;
-		else if (queryResult instanceof ArrayList<?>)
-			hashSet.addAll((ArrayList<Object>) queryResult);
-		return hashSet;
-	}
+	//TODO is no longer used
+//	@Override
+//	protected HashSet<?> getQueryResult(String query) {
+//		Object queryResult = null;
+//		HashSet<Object> hashSet = null;
+//		hashSet = new HashSet<Object>();
+//		queryResult = evaluateOCL(query);
+//		
+//		if (queryResult instanceof Integer) {
+//			double intQueryResult = Integer.parseInt(queryResult.toString());
+//			hashSet.add(intQueryResult);
+//		} else if (queryResult instanceof Double) {
+//			double doubleQueryResult = Double.parseDouble(queryResult.toString());
+//			hashSet.add(doubleQueryResult);
+//		} else if (queryResult instanceof Model)
+//			hashSet.add((Model) queryResult);
+//		else if (queryResult instanceof Package)
+//			hashSet.add((Package) queryResult);
+//		else if (queryResult instanceof Component)
+//			hashSet.add((Component) queryResult);
+//		else if (queryResult instanceof Operation)
+//			hashSet.add((Operation) queryResult);
+//		else if (queryResult instanceof Node)
+//			hashSet.add((Node) queryResult);
+//		
+//		else if (queryResult instanceof HashSet<?>)
+//			hashSet = (HashSet<Object>) queryResult;
+//		else if (queryResult instanceof ArrayList<?>)
+//			hashSet.addAll((ArrayList<Object>) queryResult);
+//		return hashSet;
+//	}
 
-	@Override
-	protected HashSet<?> getQueryResult(String query, Object model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	protected HashSet<?> getQueryResult(String query, Object model) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }

@@ -13,6 +13,7 @@ import org.eclipse.uml2.uml.UMLFactory;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
@@ -39,17 +40,18 @@ public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl 
 	private static Double MAX_VALUE = 100.0;
 
 	// PAKIMOR _FIXME
-	public UMLAddComponentRefactoringAction(List<Node> targets, UMLMetamodelManager umlManager) {
-		
+	public UMLAddComponentRefactoringAction(List<Node> targets, MetamodelManager mManager) {
+	
+		UMLMetamodelManager metamodelManager = (UMLMetamodelManager) mManager;
 		//It is a safety guard
 		if(targets == null)
-			targets = umlManager.getRandomNodes();
+			targets = metamodelManager.getRandomNodes();
 		
 		//set the target nodes on which the new component will be deployed
 		this.umlTargetNodes.addAll(targets);
 		
 		//retrieve the package named "Static View" from the model
-		this.umlSourcePackage = umlManager.getComponentPackage();
+		this.umlSourcePackage = metamodelManager.getComponentPackage();
 		
 		//Ignore these, they are just number for now.
 //		setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
