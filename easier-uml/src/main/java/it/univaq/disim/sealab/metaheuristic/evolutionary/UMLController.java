@@ -319,7 +319,7 @@ public class UMLController implements Controller {
 	}
 
 	public Configurator getConfigurator() {
-		return this.configurator;
+		return (this.configurator != null) ? this.configurator : new Configurator();
 	}
 
 	public void setManager(Manager manager) {

@@ -8,25 +8,24 @@ import org.uma.jmetal.solution.Solution;
 
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
-public class UMLRProblem<S extends Solution<?>> extends RProblem {
+public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 
-	private Path sourceValPath;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
 			Controller ctrl) {
-		super(srcFolderPath, srcFolderPath.resolve("model.mmaemilia"), desired_length, length, allowedFailures, populationSize, ctrl);
-		
-		this.sourceValPath = srcFolderPath.resolve("model.val");
-		this.sourceModelPath = srcFolderPath.resolve("model.mmaemilia");
+		super(srcFolderPath, srcFolderPath.resolve("model.uml"), desired_length, length, allowedFailures, populationSize, ctrl);
+		sourceFolderPath = srcFolderPath;
+	
 	}
-	
-	public Path getSourceValPath() { return sourceValPath; }
-	
 	@Override
-	public RSolution createSolution() {
+	public S createSolution() {
 
 		try {
-			return new UMLRSolution(this);
+			return (S) new UMLRSolution(this);
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,11 +38,9 @@ public class UMLRProblem<S extends Solution<?>> extends RProblem {
 	}
 
 	public Path getSourceModelPath() {
-		return sourceFolderPath.resolve("model.mmaemilia");
+		return sourceFolderPath.resolve("model.uml");
 	}
 	
-	public Path getSourceRewFilePath() { return sourceFolderPath.resolve("model.rew"); }
-
 	@Override
 	/**
 	 * The third objective is related to performance evaluation. In this case
@@ -52,7 +49,7 @@ public class UMLRProblem<S extends Solution<?>> extends RProblem {
 	 * objective for the fitness function.
 	 * 
 	 */
-	public void evaluate(Solution s) {
+	public void evaluate(S s) {
 		
 		UMLRSolution solution = (UMLRSolution)s;
 
@@ -75,4 +72,6 @@ public class UMLRProblem<S extends Solution<?>> extends RProblem {
 			}
 		}
 	}
+
+	
 }

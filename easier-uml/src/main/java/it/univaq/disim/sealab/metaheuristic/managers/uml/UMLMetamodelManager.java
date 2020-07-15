@@ -84,9 +84,9 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	private Map<URI, URI> uriMap;	
 	
-	private final static String DEPLOYMENT_VIEW = "Deployment View";
-	private final static String STATIC_VIEW = "Static View";
-	private final static String DYNAMIC_VIEW = "Dynamic View";
+	public final static String DEPLOYMENT_VIEW = "Deployment View";
+	public final static String STATIC_VIEW = "Static View";
+	public final static String DYNAMIC_VIEW = "Dynamic View";
 
 	public UMLMetamodelManager(Controller ctrl) {
 		super();
@@ -123,19 +123,19 @@ public class UMLMetamodelManager extends MetamodelManager {
 	}
 
 	private RefactoringAction getRandomDeleteNodeAction(RSequence seq) {
-		Node node = this.getRandomNode();
+//		Node node = this.getRandomNode();
 		// Action action = new UMLDeleteNodeRefactoringAction(node);
 
 //		UMLDeleteNodeAction action = UMLFactory.eINSTANCE.createUMLDeleteNodeAction();
-		UMLDeleteNodeRefactoringAction action = new UMLDeleteNodeRefactoringAction(node);
-		action.setUmlNodeToDel(node);
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		UMLDeleteNodeRefactoringAction action = new UMLDeleteNodeRefactoringAction(node);
+//		action.setUmlNodeToDel(node);
+//		action.setParameters();
+//		action.createPreCondition();
+//		action.createPostCondition();
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 
-		return action;
+		return new UMLDeleteNodeRefactoringAction(seq.getSolution());
 	}
 
 	private RefactoringAction getRandomAddNodeAction(RSequence seq) {
@@ -608,7 +608,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	@Override
 	public Model getModel(Path sourcePath) {
-		// this.packageRegistering();
+		 this.packageRegistering();
 
 		URI uri = Manager.string2Uri(sourcePath.toString());
 
@@ -639,7 +639,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 	private Model createModel(Path sourcePath) {
 
 		UMLResource umlResource = (UMLResource) getResourceSet()
-				.getResource(manager.string2FileUri(sourcePath.toString()), true);
+				.getResource(URI.createFileURI(sourcePath.toString()), true);
 		return (Model) EcoreUtil.getObjectByType(umlResource.getContents(), UMLPackage.Literals.MODEL);
 	}
 

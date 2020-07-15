@@ -10,14 +10,22 @@ import org.eclipse.uml2.uml.Deployment;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
+import it.univaq.disim.sealab.metaheuristic.managers.Manager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
+import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import logicalSpecification.AndOperator;
+import logicalSpecification.ExistsOperator;
+import logicalSpecification.FOLSpecification;
+import logicalSpecification.ForAllOperator;
+import logicalSpecification.LogicalSpecificationFactory;
 import logicalSpecification.MultipleValuedParameter;
+import logicalSpecification.NotOperator;
 import logicalSpecification.Parameter;
 import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
@@ -28,34 +36,35 @@ import logicalSpecification.actions.UML.impl.UMLAddComponentActionImpl;
 public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl implements UMLAddAction, RefactoringAction{
 
 	private List<Node> umlTargetNodes = new ArrayList<Node>();
-	private Package umlSourcePackage;
-	private Component umlCompToAdd;
+	private Package umlSourcePackage; // uml package
+	private Component umlCompToAdd; //component to add.
+	private String componentName;  // component (to add) name.
 
-	private SingleValuedParameter compToAddSVP;
-	private MultipleValuedParameter targetNodesMVP;
-	private MultipleValuedParameter deployedCompsMVP;
-	private MultipleValuedParameter allCompsMVP;
-	private MultipleValuedParameter allNodesMVP;
+	//private SingleValuedParameter compToAddSVP;
+	//private MultipleValuedParameter targetNodesMVP;
+	//private MultipleValuedParameter deployedCompsMVP;
+	//private MultipleValuedParameter allCompsMVP;
+	//private MultipleValuedParameter allNodesMVP;
 
-	private static Double MAX_VALUE = 100.0;
+	//private static Double MAX_VALUE = 100.0;
 
-	// PAKIMOR _FIXME
-	public UMLAddComponentRefactoringAction(List<Node> targets, MetamodelManager mManager) {
-	
-		UMLMetamodelManager metamodelManager = (UMLMetamodelManager) mManager;
-		//It is a safety guard
-		if(targets == null)
-			targets = metamodelManager.getRandomNodes();
+	public UMLAddComponentRefactoringAction(List<Node> targets, UMLManager umlManager) {
 		
+		//It is a safety guard
+		if(targets == null){
+			targets = umlManager.getRandomNodes();
+		}
+
 		//set the target nodes on which the new component will be deployed
 		this.umlTargetNodes.addAll(targets);
 		
-		//retrieve the package named "Static View" from the model
-		this.umlSourcePackage = metamodelManager.getComponentPackage();
+		//retrieve a package from the model.
+		this.umlSourcePackage = umlManager.getComponentPackage();
 		
 		//Ignore these, they are just number for now.
-//		setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		this.numOfChanges = 1; 
+		//setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+
+		this.numOfChanges = 1;
 		/*
 		setParameters();
 		createPreCondition();
@@ -63,17 +72,7 @@ public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl 
 		*/
 	}
 	
-	//Used to clone the Action
-	// TODO check if it works
-	private UMLAddComponentRefactoringAction(UMLAddComponentRefactoringAction umlAddComponentRefactoringAction, UMLMetamodelManager umlManager) {
-		setUmlTargetNodes(umlAddComponentRefactoringAction.getUmlTargetNodes());
-		this.umlSourcePackage = umlManager.getComponentPackage();
-		setCost(umlAddComponentRefactoringAction.getCost());
-		setNumOfChanges(umlAddComponentRefactoringAction.getNumOfChanges());
-		setParameters(umlAddComponentRefactoringAction.getParameters());
-		createPreCondition(umlAddComponentRefactoringAction.getPre());
-		createPostCondition(umlAddComponentRefactoringAction.getPost());
-	}
+
 
 	private void createPostCondition(PostCondition post) {
 		setPost(post);
@@ -87,51 +86,67 @@ public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl 
 		getParameters().addAll(parameters);
 	}
 
-//	public UMLAddComponentRefactoringAction cloneAction() {
-//		return new UMLAddComponentRefactoringAction(this);
-//	}
+
 
 	@Override
 	public void execute() {
+		// execute the action.
+
+		// set name.
+		this.componentName = "newComp" + Math.random();
+
+		// create new component.
 		this.umlCompToAdd = UMLFactory.eINSTANCE.createComponent();
-		this.umlCompToAdd.setName("newComp" + Math.random());
-		this.umlCompToAdd.setPackage(getUmlSourcePackage());
+		// set component name.
+		this.umlCompToAdd.setName(this.componentName);
+		// set package.
+		this.umlCompToAdd.setPackage(this.getUmlSourcePackage());
+		System.out.println("We want to add the component with name: " + umlCompToAdd.getName() + " in the package " + this.umlCompToAdd.getPackage().getName() +  ".");
+
+		// set parameters.
 		setParameters();
-		deployOn(this.umlTargetNodes);
+		// deploy it on target nodes.
+		this.deployOn(this.umlTargetNodes);
+	}
+
+	public Package getUmlSourcePackage() {
+		// return UML source package.
+		return umlSourcePackage;
 	}
 
 	private void deployOn(List<Node> targets) {
+		// deploy a component to some target nodes.
 		for (Node target : targets) {
+			// create new artifact
 			Artifact art = UMLFactory.eINSTANCE.createArtifact();
+			// set name.
 			art.setName(this.umlCompToAdd.getName() + "_Artifact");
-			art.createManifestation(this.umlCompToAdd.getName() + "_Manifestation", getUmlCompToAdd());
+			// Manifestation is an abstraction relationship which represents concrete physical rendering of one or more
+			// model elements by an artifact. An artifact manifests one or more model elements.
+			art.createManifestation(this.umlCompToAdd.getName() + "_Manifestation", this.getUmlCompToAdd());
 			art.setPackage(target.getPackage());
 			Deployment deploy = target.createDeployment(this.umlCompToAdd.getName() + "_Deployment");
+			deploy.setName(this.umlCompToAdd.getName() + "_Deployment");
 			deploy.getDeployedArtifacts().add(art);
 			target.getDeployments().add(deploy);
 		}
 	}
 
-	@Override
-	public void log() {
-		EasierLogger.logger_.info("UMLAddComponentRefactoringAction");
-		if (getUmlCompToAdd() != null)
-			EasierLogger.logger_.info(getUmlCompToAdd().toString());
-	}
 
 	public EList<Node> getUmlTargetNodes() {
+		// get the uml target nodes.
 		return (EList<Node>) umlTargetNodes;
 	}
 
 	public void setUmlTargetNodes(EList<Node> umlTargetNodes) {
+		// set the uml target nodes.
 		this.umlTargetNodes = umlTargetNodes;
 	}
 
-	public Package getUmlSourcePackage() {
-		return umlSourcePackage;
-	}
+
 
 	public void setUmlSourcePackage(Package sourcePackage) {
+		// set the uml  UmlSourcePackage.
 		this.umlSourcePackage = sourcePackage;
 	}
 
@@ -139,40 +154,42 @@ public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl 
 	}
 
 	@Override
-	public void setParameters() {
-////		 ACTION add PARAMETERS
+	public Component getUmlCompToAdd() {
+		// I modified this method to return ONLY the umlComponent to add.
+		// ACTION add PARAMETERS
 //		List<Parameter> addParams = new ArrayList<>();
-////		 PAKIMOR _FIXME le add non dovrebbero avere come attributo l'oggetto da creare
-//
+		// PAKIMOR _FIXME le add non dovrebbero avere come attributo l'oggetto da creare
+
 //		 setCompToAddSVP(manager.createSingleValueParameter("Component.allInstances()->select(c | c.name = 'Pippo Node')"));
 //		 addParams.add(getCompToAddSVP());
-//
+
 //		if (umlCompToAdd != null) {
 //			setCompToAddSVP(manager.createSingleValueParameter(
-//					((UMLOclStringManager) OclStringManger.getInstance(new UMLOclStringManager())).getComponentQuery(umlCompToAdd)));
+//					((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getComponentQuery(umlCompToAdd)));
 //			addParams.add(getCompToAddSVP());
 //		}
-//
+
 //		setTargetNodesMVP(manager.getInstance(null)
-//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManger.getInstance(new UMLOclStringManager())).getNodesQuery(umlTargetNodes)));
+//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getNodesQuery(umlTargetNodes)));
 //		addParams.add(getTargetNodesMVP());
 //
 //		 List<Component> list_of_random_components = new ArrayList<Component>();
 //		 list_of_random_components = Oclmanager.getRandomComponents();
 //		 setDeployedCompsMVP(manager.createMultipleValuedParameter(OclStringManger.getComponentsQuery(list_of_random_components)));
 //		 addParams.add(getDeployedCompsMVP());
-//
+
 //		setDeployedCompsMVP(manager
-//				.createMultipleValuedParameter(((UMLOclStringManager) OclStringManger.getInstance(new UMLOclStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
+//				.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllDeployedElementsQuery(getUmlTargetNodes())));
 //		addParams.add(getDeployedCompsMVP());
-//
-//		setAllNodesMVP(manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManger.getInstance(new UMLOclStringManager())).getAllNodesQuery()));
+
+//		setAllNodesMVP(manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllNodesQuery()));
 //		addParams.add(getAllNodesMVP());
 //
-//		setAllCompsMVP(manager.createMultipleValuedParameter(((UMLOclStringManager) OclStringManger.getInstance(new UMLOclStringManager())).getAllComponentsQuery()));
+//		setAllCompsMVP(manager.createMultipleValuedParameter(((OclUMLStringManager) OclStringManger.getInstance(new OclUMLStringManager())).getAllComponentsQuery()));
 //		addParams.add(getAllCompsMVP());
 //
 //		getParameters().addAll(addParams);
+		return this.umlCompToAdd;
 	}
 
 	@Override
@@ -235,6 +252,11 @@ public class UMLAddComponentRefactoringAction extends UMLAddComponentActionImpl 
 //		setPost(addPost);
 
 	}
+
+
+	//	public UMLAddComponentRefactoringAction cloneAction() {
+	//		return new UMLAddComponentRefactoringAction(this);
+	//	}
 
 	public void setPreCondition() {
 //		// creo la preCondition
