@@ -65,8 +65,8 @@ public class TestDeleteNodeAction {
 		action.setCost(3);
 		action.setNumOfChanges(1);
 		this.action.execute();
-		
-		assert(!getPackage().getOwnedElements().contains(action.getUmlNodeToDel()));
+
+		assert (!getPackage().getOwnedElements().contains(action.getUmlNodeToDel()));
 
 	}
 
@@ -97,7 +97,7 @@ public class TestDeleteNodeAction {
 			new Throwable("Please check your MODEL! It seems not ready to be used");
 		}
 
-		return finalListOfNodes.get(JMetalRandom.getInstance().nextInt(0, finalListOfNodes.size()-1));
+		return finalListOfNodes.get(JMetalRandom.getInstance().nextInt(0, finalListOfNodes.size() - 1));
 	}
 
 	public void packageRegistering() {
@@ -117,6 +117,7 @@ public class TestDeleteNodeAction {
 		 * Needed to link the MARTE jar plugin to the system. It is requested in case of
 		 * a standalone application
 		 */
+		//TODO check if needed
 		String marteJarString = "jar:" + getClass()
 				.getResource("/libs/org.eclipse.papyrus.marte.static.profile_1.2.0.201803031506.jar").toString() + "!/";
 
@@ -129,10 +130,6 @@ public class TestDeleteNodeAction {
 		 * added as follows
 		 */
 		String PROFILES_PATHMAP = "pathmap://Papyrus_PROFILES/"; //$NON-NLS-1$
-		// FROM model.uml #_4bV20APMEdyuUt-4qHuVvQ
-		// MARTE FROM MARTE.profile.uml #_zaC5cAPHEdyeNfbOYuD9pg
-		// GQAM FROM MARTE.profile.uml #_4bV20APMEdyuUt-4qHuVvQ
-		// MARTE_AnlysisModel FROM MARTE.profile.uml #_u8y4wAPMEdyuUt-4qHuVvQ
 		String MARTE_PROFILE_URI = PROFILES_PATHMAP + "MARTE.profile.uml#_u8y4wAPMEdyuUt-4qHuVvQ";
 		URI marteProfileURI = URI.createURI(MARTE_PROFILE_URI);
 		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI, marteProfileURI);
@@ -151,19 +148,6 @@ public class TestDeleteNodeAction {
 
 	public Model getModel(Path sourcePath) {
 		packageRegistering();
-
-//		URI uri = URI.createURI(sourcePath.toString());
-
-		// Load the requested resource
-//		Resource resource = resourceSet.getResource(uri, true);
-		// Get the first (should be only) package from it
-
-//		org.eclipse.uml2.uml.Package package_ = (org.eclipse.uml2.uml.Package) EcoreUtil
-//				.getObjectByType(resource.getContents(), UMLPackage.Literals.PACKAGE);
-
-//		UMLResource res = (UMLResource) resourceSet.getResource(URI.createURI(sourcePath.toString()), true);
-//
-//		res.getContents().get(0);
 
 		UMLResource umlResource = (UMLResource) resourceSet.getResource(URI.createFileURI(sourcePath.toString()), true);
 
