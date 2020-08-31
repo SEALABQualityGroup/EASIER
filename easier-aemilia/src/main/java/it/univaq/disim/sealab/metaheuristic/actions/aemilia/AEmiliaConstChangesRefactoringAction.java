@@ -264,6 +264,8 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		setPost(postCondition);
 	}
 
+	
+	//TODO remove it
 	public AEmiliaConstChangesRefactoringAction clone(AemiliaRSolution solution) {
 		AEmiliaConstChangesRefactoringAction newAction = new AEmiliaConstChangesRefactoringAction(solution);
 
@@ -276,7 +278,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		}
 
 		newAction.setFactorOfChange(this.getFactorOfChange());
-		newAction.setSolution(solution);
+//		newAction.setSolution(solution);
 		newAction.setNumOfChanges(this.getNumOfChanges());
 		newAction.setCost(this.getCost());
 		newAction.setName(this.getName());
@@ -312,7 +314,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 		}
 
 		newAction.setFactorOfChange(this.getFactorOfChange());
-		newAction.setSolution(solution);
+//		newAction.setSolution(solution);
 		newAction.setNumOfChanges(this.getNumOfChanges());
 		newAction.setCost(this.getCost());
 		newAction.setName(this.getName());
@@ -325,11 +327,4 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 		return newAction;
 	}
-
-	@Override
-	public void setSolution(RSolution sol) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

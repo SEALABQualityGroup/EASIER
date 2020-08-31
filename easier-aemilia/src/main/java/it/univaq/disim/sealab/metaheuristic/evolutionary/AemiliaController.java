@@ -139,7 +139,7 @@ public class AemiliaController implements Controller {
 //		// setting up the source models
 //		for (Path path : modelsPath) {
 			generateSourceFiles(path);
-			SourceModel model = new SourceModel(path);
+			AemiliaSourceModel model = new AemiliaSourceModel(path);
 			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
 					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),
 							Paths.get(path.toString(), "aemilia-pas-checker.evl")));
@@ -290,7 +290,7 @@ public class AemiliaController implements Controller {
 					for (int mc : configurator.getMaxCloning()) {
 						if (mc == -1)
 							mc = l; // whether mc is -1, mc will be the chromosome's length
-						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
+						String pName = src.getFolderName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
 						if (configurator.isWorsen())
 							pName += "_Worse_";

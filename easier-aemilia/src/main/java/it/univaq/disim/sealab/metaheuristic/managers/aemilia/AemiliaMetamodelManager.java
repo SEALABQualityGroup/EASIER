@@ -351,18 +351,18 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		EList<ArchiElemInstance> listOfNeighs = getNeighsOfAEI(action.getSourceAEI());
 
 		for (Action a : seq.getRefactoring().getActions()) {
-			boolean found = false;
-			int i = 0;
-			while (i < listOfNeighs.size() && !found) {
+//			boolean found = false;
+//			int i = 0;
+			for (int i=0; i < listOfNeighs.size(); i++) {// && !found) {
 				ArchiElemInstance neigh = listOfNeighs.get(i);
 				if (a instanceof AEmiliaCloneAEIRefactoringAction)
 					if (((AEmiliaCloneAEIRefactoringAction) a).getSourceAEI().getInstanceName()
 							.equals(neigh.getInstanceName()))
-						found = true;
-				i++;
+						return true;
+//				i++;
 			}
-			if (found)
-				return false;
+//			if (found)
+//				return false;
 		}
 		return true;
 	}
@@ -405,7 +405,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 		}
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) seq.getSolution());
 		action.setModel(seq.getModel());
-		action.setSolution(seq.getSolution());
+//		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesCapacityAction");
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
@@ -426,7 +426,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) seq.getSolution());
 		action.setModel(seq.getModel());
-		action.setSolution(seq.getSolution());
+//		action.setSolution(seq.getSolution());
 		action.setName("AEmiliaConstChangesRateAction");
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
@@ -457,7 +457,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 
 		AEmiliaConstChangesRefactoringAction action = new AEmiliaConstChangesRefactoringAction((AemiliaRSolution) seq.getSolution());
 		action.setModel(seq.getModel());
-		action.setSolution(seq.getSolution());
+//		action.setSolution(seq.getSolution());
 		// action.setSourceConstInit(sourceConst);
 		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 		action.setNumOfChanges(controller.getConfigurator().getConstChangesWeight());

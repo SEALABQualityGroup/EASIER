@@ -290,11 +290,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	}
 
 	@Override
-	public void setSolution(RSolution sol) {
-		this.solution = (AemiliaRSolution) sol;
-	}
-	
-	@Override
 	public AEmiliaRemoveClonedAEIRefactoringAction clone(RSolution sol) {
 		// long rand = ((AemiliaMetamodelManager)
 		// Manager.getInstance(null).getMetamodelManager()).getNextUniqueIndex();
