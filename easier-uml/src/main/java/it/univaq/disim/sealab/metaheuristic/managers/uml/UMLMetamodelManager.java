@@ -38,31 +38,16 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLAddComponentRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLAddNodeRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLAddOperationRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLDeleteComponentRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLDeleteNodeRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLDeleteOperationRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMoveComponentRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMoveOperationRefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.actions.uml.RefactoringActionFactory;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import logicalSpecification.Action;
-import logicalSpecification.actions.UML.UMLAddComponentAction;
-import logicalSpecification.actions.UML.UMLDeleteComponentAction;
-import logicalSpecification.actions.UML.UMLDeleteOperationAction;
-import logicalSpecification.actions.UML.UMLFactory;
-import logicalSpecification.actions.UML.UMLMoveComponentAction;
-import logicalSpecification.actions.UML.UMLMoveOperationAction;
 
 public class UMLMetamodelManager extends MetamodelManager {
 
@@ -82,8 +67,8 @@ public class UMLMetamodelManager extends MetamodelManager {
 	private UMLController controller;
 	private Manager manager;
 
-	private Map<URI, URI> uriMap;	
-	
+	private Map<URI, URI> uriMap;
+
 	public final static String DEPLOYMENT_VIEW = "Deployment View";
 	public final static String STATIC_VIEW = "Static View";
 	public final static String DYNAMIC_VIEW = "Dynamic View";
@@ -93,161 +78,158 @@ public class UMLMetamodelManager extends MetamodelManager {
 		controller = (UMLController) ctrl;
 		manager = controller.getManager();
 		uriMap = resourceSet.getURIConverter().getURIMap();
+		oclStringManager = UMLOclStringManager.getInstance();
 	}
 
 	@Override
-	public RefactoringAction getRandomAction(int length, RSequence seq) throws UnexpectedException {
-
-		int index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, length - 1);
-		switch (index) {
-
-		case 0:
-			return getRandomAddNodeAction(seq);
-		case 1:
-			return getRandomAddComponentAction(seq);
-		case 2:
-			return getRandomAddOperationAction(seq);
-		case 3:
-			return getRandomMoveOpertionAction(seq);
-		case 4:
-			return getRandomMoveComponentAction(seq);
-		case 5:
-			return getRandomDeleteOperationAction(seq);
-		case 6:
-			return getRandomDeleteComponentAction(seq);
-		case 7:
-			return getRandomDeleteNodeAction(seq);
-		default:
-			throw new UnexpectedException("");
-		}
+	public RefactoringAction getRandomAction(int length, RSequence seq) throws UnexpectedException {		
+		return RefactoringActionFactory.getRandomAction(seq.getSolution());
+		
+//		int index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, length - 1);
+//		switch (index) {
+//
+//		case 0:
+//			return getRandomAddNodeAction(seq);
+//		case 1:
+//			return getRandomAddComponentAction(seq);
+//		case 2:
+//			return getRandomAddOperationAction(seq);
+//		case 3:
+//			return getRandomMoveOpertionAction(seq);
+//		case 4:
+//			return getRandomMoveComponentAction(seq);
+//		case 5:
+//			return getRandomDeleteOperationAction(seq);
+//		case 6:
+//			return getRandomDeleteComponentAction(seq);
+//		case 7:
+//			return getRandomDeleteNodeAction(seq);
+//		default:
+//			throw new UnexpectedException("");
+//		}
 	}
 
-	private RefactoringAction getRandomDeleteNodeAction(RSequence seq) {
-//		Node node = this.getRandomNode();
-		// Action action = new UMLDeleteNodeRefactoringAction(node);
+//	private RefactoringAction getRandomDeleteNodeAction(RSequence seq) {
+////		Node node = this.getRandomNode();
+//		// Action action = new UMLDeleteNodeRefactoringAction(node);
+//
+////		UMLDeleteNodeAction action = UMLFactory.eINSTANCE.createUMLDeleteNodeAction();
+////		UMLDeleteNodeRefactoringAction action = new UMLDeleteNodeRefactoringAction(node);
+////		action.setUmlNodeToDel(node);
+////		action.setParameters();
+////		action.createPreCondition();
+////		action.createPostCondition();
+////		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+////		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//
+//		return new UMLDeleteNodeRefactoringAction(seq.getSolution());
+//	}
 
-//		UMLDeleteNodeAction action = UMLFactory.eINSTANCE.createUMLDeleteNodeAction();
-//		UMLDeleteNodeRefactoringAction action = new UMLDeleteNodeRefactoringAction(node);
-//		action.setUmlNodeToDel(node);
+//	private RefactoringAction getRandomAddNodeAction(RSequence seq) {
+//
+//		UMLAddNodeRefactoringAction action = new UMLAddNodeRefactoringAction((UMLRSolution) seq.getSolution());
+//
+//		List<Node> neighs = this.getRandomNodes();
+//		List<Component> deployedComps = this.getRandomComponents();
+////		UMLAddNodeRefactoringAction action = new UMLAddNodeRefactoringAction(this.)
+//		action.getUmlNeighbors().addAll(neighs);
+//		action.getUmlCompsToDeploy().addAll(deployedComps);
+//		action.setUmlSourcePackage(this.getNodePackage());
+//
+//		// Action action = new UMLAddNodeRefactoringAction(targets,
+//		// list_of_components);
+//		return action;
+//	}
+
+//	private RefactoringAction getRandomAddOperationAction(RSequence seq) {
+//		Component targetUMLComp = getRandomComponent();
+//		// Action action = new UMLAddOperationRefactoringAction(component);
+//		UMLAddOperationRefactoringAction action = new UMLAddOperationRefactoringAction(targetUMLComp);
+//		action.setUmlTargetComp(targetUMLComp);
 //		action.setParameters();
 //		action.createPreCondition();
 //		action.createPostCondition();
 //		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
 //		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//
+//		return action;
+//	}
 
-		return new UMLDeleteNodeRefactoringAction(seq.getSolution());
-	}
+//	private RefactoringAction getRandomDeleteComponentAction(RSequence seq) {
+//		Component component = getRandomComponent();
+//		// Action action = new UMLDeleteComponentRefactoringAction(component);
+//
+//		UMLDeleteComponentRefactoringAction action = new UMLDeleteComponentRefactoringAction(seq.getSolution());
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//
+//		return action;
+//	}
 
-	private RefactoringAction getRandomAddNodeAction(RSequence seq) {
-		
-		UMLAddNodeRefactoringAction action = new UMLAddNodeRefactoringAction((UMLRSolution) seq.getSolution());
-		
-		List<Node> neighs = this.getRandomNodes();
-		List<Component> deployedComps = this.getRandomComponents();
-//		UMLAddNodeRefactoringAction action = new UMLAddNodeRefactoringAction(this.)
-		action.getUmlNeighbors().addAll(neighs);
-		action.getUmlCompsToDeploy().addAll(deployedComps);
-		action.setUmlSourcePackage(this.getNodePackage());
+//	private RefactoringAction getRandomDeleteOperationAction(RSequence seq) {
+//		Operation operation = this.getRandomOperation();
+//		// Action action = new UMLDeleteOperationRefactoringAction(operation);
+//
+//		UMLDeleteOperationRefactoringAction action = new UMLDeleteOperationRefactoringAction(operation);
+//
+//		action.setUmlOpToDel(operation);
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setParameters();
+//		action.createPreCondition();
+//		action.createPostCondition();
+//
+//		return action;
+//	}
 
+//	private RefactoringAction getRandomMoveComponentAction(RSequence seq) {
+//		Component component = getRandomComponent();
+//		List<Node> targets = getRandomNodes();
+//		// Action action = new UMLMoveComponentRefactoringAction(component,
+//		// list_of_nodes);
+//
+//		UMLMoveComponentRefactoringAction action = new UMLMoveComponentRefactoringAction(component, targets);
+//		action.setUmlCompToMove(component);
+//		action.getUmlTargetNodes().addAll(targets);
+//		action.setParameters();
+//		action.createPreCondition();
+//		action.createPostCondition();
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		return action;
+//	}
 
-		// Action action = new UMLAddNodeRefactoringAction(targets,
-		// list_of_components);
-		return action;
-	}
+//	private RefactoringAction getRandomMoveOpertionAction(RSequence seq) {
+//		Operation context = getRandomOperation();
+//		Component target = getRandomComponent();
+//		// Action action = new UMLMoveOperationRefactoringAction(operation,
+//		// target);
+//		UMLMoveOperationRefactoringAction action = new UMLMoveOperationRefactoringAction(context, target);
+//		action.setUmlOpToMove(context);
+//		action.setUmlTargetComp(target);
+//		action.setParameters();
+//		action.createPreCondition();
+//		action.createPostCondition();
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//
+//		return action;
+//	}
 
-	private RefactoringAction getRandomAddOperationAction(RSequence seq) {
-		Component targetUMLComp = getRandomComponent();
-		// Action action = new UMLAddOperationRefactoringAction(component);
-		UMLAddOperationRefactoringAction action = new UMLAddOperationRefactoringAction(targetUMLComp);
-		action.setUmlTargetComp(targetUMLComp);
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-
-		return action;
-	}
-
-	private RefactoringAction getRandomDeleteComponentAction(RSequence seq) {
-		Component component = getRandomComponent();
-		// Action action = new UMLDeleteComponentRefactoringAction(component);
-
-		UMLDeleteComponentRefactoringAction action = new UMLDeleteComponentRefactoringAction(component);
-		action.setUmlCompToDel(component);
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-
-		return action;
-	}
-
-	private RefactoringAction getRandomDeleteOperationAction(RSequence seq) {
-		Operation operation = this.getRandomOperation();
-		// Action action = new UMLDeleteOperationRefactoringAction(operation);
-
-		UMLDeleteOperationRefactoringAction action = new UMLDeleteOperationRefactoringAction(operation);
-
-		action.setUmlOpToDel(operation);
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-
-		return action;
-	}
-
-	private RefactoringAction getRandomMoveComponentAction(RSequence seq) {
-		Component component = getRandomComponent();
-		List<Node> targets = getRandomNodes();
-		// Action action = new UMLMoveComponentRefactoringAction(component,
-		// list_of_nodes);
-
-		UMLMoveComponentRefactoringAction action = new UMLMoveComponentRefactoringAction(component, targets);
-		action.setUmlCompToMove(component);
-		action.getUmlTargetNodes().addAll(targets);
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		return action;
-	}
-
-	private RefactoringAction getRandomMoveOpertionAction(RSequence seq) {
-		Operation context = getRandomOperation();
-		Component target = getRandomComponent();
-		// Action action = new UMLMoveOperationRefactoringAction(operation,
-		// target);
-		UMLMoveOperationRefactoringAction action = new UMLMoveOperationRefactoringAction(context, target)
-				;
-		action.setUmlOpToMove(context);
-		action.setUmlTargetComp(target);
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-
-		return action;
-	}
-
-	private RefactoringAction getRandomAddComponentAction(RSequence seq) {
-		List<Node> targets = getRandomNodes();
-		UMLAddComponentRefactoringAction action = new UMLAddComponentRefactoringAction(targets, seq.getSolution().getManager().getMetamodelManager());
-		// Action action = new UMLAddComponentRefactoringAction(list_of_nodes);
-		action.getUmlTargetNodes().addAll(targets);
-		action.setUmlSourcePackage(getComponentPackage());
-		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
-		action.setParameters();
-		action.createPreCondition();
-		action.createPostCondition();
-		return action;
-	}
+//	private RefactoringAction getRandomAddComponentAction(RSequence seq) {
+//		List<Node> targets = getRandomNodes();
+//		UMLAddComponentRefactoringAction action = new UMLAddComponentRefactoringAction(targets,
+//				seq.getSolution().getManager().getMetamodelManager());
+//		// Action action = new UMLAddComponentRefactoringAction(list_of_nodes);
+//		action.getUmlTargetNodes().addAll(targets);
+//		action.setUmlSourcePackage(getComponentPackage());
+//		action.setCost(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setNumOfChanges(JMetalRandom.getInstance().getRandomGenerator().nextDouble(1, MAX_VALUE));
+//		action.setParameters();
+//		action.createPreCondition();
+//		action.createPostCondition();
+//		return action;
+//	}
 
 	@Override
 	public Model getModel() {
@@ -367,7 +349,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 		EList<Artifact> list_of_artifacts = new BasicEList<Artifact>();
 		String query = ((UMLOclStringManager) getOclStringManager()).getAllArtifactsQuery();
 		HashSet<Object> hashSetQuery = (HashSet<Object>) getOclManager().evaluateOCL(query, getModel());
-				
+
 		for (Object object : hashSetQuery) {
 			if (object instanceof Artifact)
 				list_of_artifacts.add((Artifact) object);
@@ -411,12 +393,13 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	public List<Component> getRandomComponents() {
 		int upperBound = (int) Double.parseDouble(((HashSet<Object>) getOclManager()
-				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countComponentsQuery(), getModel())).iterator().next()
-						.toString());
+				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countComponentsQuery(), getModel()))
+						.iterator().next().toString());
 		int[] bounds = generateRandomInterval(upperBound);
 		List<Component> list_of_components = new ArrayList<Component>();
 		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateOCL(
-				((UMLOclStringManager) getOclStringManager()).generateRandomComponentsQuery(bounds[0], bounds[1]), getModel());
+				((UMLOclStringManager) getOclStringManager()).generateRandomComponentsQuery(bounds[0], bounds[1]),
+				getModel());
 		for (Object object : hashSet) {
 			if (object instanceof Component)
 				list_of_components.add((Component) object);
@@ -435,9 +418,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 		return list_of_components;
 	}
 
-
-
-	private Package findPackage(String packageName) {
+	public Package findPackage(String packageName) {
 		for (Object pkg : EcoreUtil.getObjectsByType(model.getOwnedElements(), UMLPackage.Literals.PACKAGE)) {
 			if (((Package) pkg).getName().equals(packageName))
 				return (Package) pkg;
@@ -455,7 +436,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 			// take a raundom index between 0 to size
 			// of given List
-			int randomIndex = rand.nextInt(0, list.size()-1);
+			int randomIndex = rand.nextInt(0, list.size() - 1);
 
 			// add element in temporary list
 			newList.add(list.get(randomIndex));
@@ -481,12 +462,10 @@ public class UMLMetamodelManager extends MetamodelManager {
 		}
 
 //		int[] bounds = generateRandomInterval(finalListOfNodes.size());
-		
-		
-		
+
 		List<Node> list_of_nodes = new ArrayList<Node>();
 
-		for (int i=0; i<JMetalRandom.getInstance().nextInt(0, finalListOfNodes.size());i++) {
+		for (int i = 0; i < JMetalRandom.getInstance().nextInt(0, finalListOfNodes.size()); i++) {
 			list_of_nodes.add(finalListOfNodes.get(i));
 		}
 		return list_of_nodes;
@@ -503,7 +482,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 		JMetalRandom.getInstance().setSeed(10L);
 		bounds[0] = JMetalRandom.getInstance().getRandomGenerator().nextInt(-1, upperBound - 1);
 		bounds[1] = JMetalRandom.getInstance().getRandomGenerator().nextInt(bounds[0], upperBound);
-		if(bounds[0] > bounds[1]) {
+		if (bounds[0] > bounds[1]) {
 			int aux = bounds[1];
 			bounds[1] = bounds[0];
 			bounds[0] = aux;
@@ -513,12 +492,13 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	public Component getRandomComponent() {
 		int upperBound = (int) Double.parseDouble(((HashSet<Object>) getOclManager()
-				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countComponentsQuery(), getModel())).iterator().next()
-						.toString());
+				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countComponentsQuery(), getModel()))
+						.iterator().next().toString());
 		int[] bounds = generateRandomInterval(upperBound);
 		List<Component> list_of_components = new ArrayList<Component>();
 		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateOCL(
-				((UMLOclStringManager) getOclStringManager()).generateRandomComponentsQuery(bounds[0], bounds[1]), getModel());
+				((UMLOclStringManager) getOclStringManager()).generateRandomComponentsQuery(bounds[0], bounds[1]),
+				getModel());
 		for (Object object : hashSet) {
 			if (object instanceof Component)
 				list_of_components.add((Component) object);
@@ -529,12 +509,13 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	public Operation getRandomOperation() {
 		int upperBound = (int) Double.parseDouble(((HashSet<Object>) getOclManager()
-				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countOperationsQuery(), getModel())).iterator().next()
-						.toString());
+				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countOperationsQuery(), getModel()))
+						.iterator().next().toString());
 		int[] bounds = generateRandomInterval(upperBound);
 		List<Operation> list_of_operations = new ArrayList<Operation>();
 		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateOCL(
-				((UMLOclStringManager) getOclStringManager()).generateRandomOperationsQuery(bounds[0], bounds[1]), getModel());
+				((UMLOclStringManager) getOclStringManager()).generateRandomOperationsQuery(bounds[0], bounds[1]),
+				getModel());
 		for (Object object : hashSet) {
 			if (object instanceof Operation)
 				list_of_operations.add((Operation) object);
@@ -544,12 +525,13 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	public Node getRandomNode() {
 		int upperBound = (int) Double.parseDouble(((HashSet<Object>) getOclManager()
-				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countNodesQuery(), getModel())).iterator().next()
-						.toString());
+				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).countNodesQuery(), getModel())).iterator()
+						.next().toString());
 		int[] bounds = generateRandomInterval(upperBound);
 		List<Node> list_of_nodes = new ArrayList<Node>();
 		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateOCL(
-				((UMLOclStringManager) getOclStringManager()).generateRandomNodesQuery(bounds[0], bounds[1]), getModel());
+				((UMLOclStringManager) getOclStringManager()).generateRandomNodesQuery(bounds[0], bounds[1]),
+				getModel());
 		for (Object object : hashSet) {
 			if (object instanceof Node)
 				list_of_nodes.add((Node) object);
@@ -559,8 +541,8 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	public List<Component> getDeploymentsOf(List<Node> targets) {
 		List<Component> list_of_components = new ArrayList<Component>();
-		HashSet<Object> hashSet = (HashSet<Object>) getOclManager()
-				.evaluateOCL(((UMLOclStringManager) getOclStringManager()).getAllDeployedElementsQuery(targets), getModel());
+		HashSet<Object> hashSet = (HashSet<Object>) getOclManager().evaluateOCL(
+				((UMLOclStringManager) getOclStringManager()).getAllDeployedElementsQuery(targets), getModel());
 		for (Object object : hashSet) {
 			if (object instanceof Component)
 				list_of_components.add((Component) object);
@@ -604,11 +586,9 @@ public class UMLMetamodelManager extends MetamodelManager {
 		this.model = (Model) model;
 	}
 
-	
-
 	@Override
 	public Model getModel(Path sourcePath) {
-		 this.packageRegistering();
+		this.packageRegistering();
 
 		URI uri = Manager.string2Uri(sourcePath.toString());
 
@@ -638,15 +618,15 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 	private Model createModel(Path sourcePath) {
 
-		UMLResource umlResource = (UMLResource) getResourceSet()
-				.getResource(URI.createFileURI(sourcePath.toString()), true);
+		UMLResource umlResource = (UMLResource) getResourceSet().getResource(URI.createFileURI(sourcePath.toString()),
+				true);
 		return (Model) EcoreUtil.getObjectByType(umlResource.getContents(), UMLPackage.Literals.MODEL);
 	}
 
 	@Override
 	public void createNewResourceSet() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -654,7 +634,7 @@ public class UMLMetamodelManager extends MetamodelManager {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public boolean saveModel() {
 		try {
@@ -664,15 +644,17 @@ public class UMLMetamodelManager extends MetamodelManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		}		
+		}
 	}
 
 	@Override
 	public OclStringManager getOclStringManager() {
 		return this.oclStringManager;
-				
+
 	}
 
+	
+	//TODO set specific condition whether an action is applicable or not.
 	@Override
 	public boolean isApplicable(RefactoringAction act, RSequence sequence) {
 		// TODO Auto-generated method stub

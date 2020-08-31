@@ -117,17 +117,6 @@ public class UMLOclManager extends OclManager {
 		// create an OCL helper object
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 
-		// set the OCL context classifier
-		/*if (contextualElement instanceof Model)
-			helper.setContext(UMLPackage.Literals.MODEL);
-		else if (contextualElement instanceof Package)
-			helper.setContext(UMLPackage.Literals.PACKAGE);
-		else if (contextualElement instanceof Component)
-			helper.setContext(UMLPackage.Literals.COMPONENT);
-		else if (contextualElement instanceof Operation)
-			helper.setContext(UMLPackage.Literals.OPERATION);
-		else if (contextualElement instanceof Node)
-			helper.setContext(UMLPackage.Literals.NODE);*/
 		
 		//TODO check
 		helper.setContext(((EObject)contextualElement).eClass());

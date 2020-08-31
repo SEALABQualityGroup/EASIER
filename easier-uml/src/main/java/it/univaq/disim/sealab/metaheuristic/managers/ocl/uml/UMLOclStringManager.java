@@ -107,8 +107,9 @@ public class UMLOclStringManager implements OclStringManager{
 
 	public String getComponentQuery(Component newComp) {
 		String query;
-		query = "Component.allInstances()->select(comp | comp.getAppliedStereotypes()->exists(s | s.name = 'PaRunTInstance'))->"
-				+ "select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
+//		query = "Component.allInstances()->select(comp | comp.getAppliedStereotypes()->exists(s | s.name = 'PaRunTInstance'))->"
+//				+ "select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
+		query = "Component.allInstances()->select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
 		return query;
 	}
 

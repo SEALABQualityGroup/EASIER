@@ -59,8 +59,8 @@ public class UMLRSolution extends RSolution {
 
 	private int numPAs;
 
-	private static int MutationCounter = 0;
-	private static int XOverCounter = 0;
+	public static int MutationCounter = 0;
+	public static int XOverCounter = 0;
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
 		super(p);

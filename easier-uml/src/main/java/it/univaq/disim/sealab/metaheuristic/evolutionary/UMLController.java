@@ -98,25 +98,41 @@ public class UMLController implements Controller {
 		solutionListEvaluator = new RSolutionListEvaluator();
 	}
 
-	public UMLController setUp() {
-		// setting up the source models
-//		for (Path path : configurator.getModelsPath()) {
-//			SourceModel model = new SourceModel(path);
-//			model.setSourceModelPAs(getPerfQuality().performanceAntipatternEvaluator(
-//					metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
-//					Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
-//
-//			// generates every needed files and updates the source model
-//			generateSourceFiles(path);
-//			updateSourceModel(path);
-//			sourceModels.add(model);
+	public UMLController setUp(Path path) {
+		sourceModels.clear();
+//		List<Path> modelsPath = new ArrayList<>();
+//		if(configurator.getModelsPath().get(0).toFile().isFile()) {
+//			//use the solution csv file to extract more models 
+//			modelsPath.addAll(FileUtils.extractModelPaths(configurator.getModelsPath().get(0), configurator.getMaxWorseModels()));
 //		}
-//		metamodelManager.setSourceModels(sourceModels);
-//		System.out.println("Setting up finished");
-		// TODO
+//		else {
+//			modelsPath.addAll(configurator.getModelsPath());
+//		}
+//		
+//		// setting up the source models
+//		for (Path path : modelsPath) {
+//			generateSourceFiles(path);
+			SourceModel model = new UMLSourceModel(path);
+			model.setName("eshopper");
+			//TODO calc numb of perfAntipattern of the source model
+//			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
+//					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),
+//							Paths.get(path.toString(), "aemilia-pas-checker.evl")));
+//			model.setSourceModelPAs(
+//					((AemiliaPerformanceQualityEvaluator) getPerfQuality()).performanceAntipatternEvaluator(
+//							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
+//							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
+
+			// generates every needed files and updates the source model
+
+			updateSourceModel(path);
+			sourceModels.add(model);
+//		}
+		metamodelManager.setSourceModels(sourceModels);
+		System.out.println("Setting up finished");
 		return this;
 	}
-
+	
 	public CrossoverOperator<?> getXoverOperator() {
 		return crossoverOperator;
 	}
@@ -138,9 +154,10 @@ public class UMLController implements Controller {
 					for (Integer mc : configurator.getMaxCloning()) {
 						if (mc == -1)
 							mc = l; // whether mc is -1, mc will be the chromosome's length
-						String pName = src.getName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
+						String pName = src.getFolderName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
 								+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
-						RProblem p = new UMLRProblem(src.getSourceFolder(), l, configurator.getActions(),
+//						RProblem p = new UMLRProblem(src.getSourceFolder(), l, configurator.getActions(),
+						RProblem p = new UMLRProblem(src, l, configurator.getActions(),
 								configurator.getAllowedFailures(), configurator.getPopulationSize(), this);
 						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
 						rProblems.add(p);

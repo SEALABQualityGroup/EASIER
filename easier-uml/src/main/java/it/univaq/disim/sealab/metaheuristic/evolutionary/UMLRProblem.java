@@ -18,9 +18,14 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
 			Controller ctrl) {
 		super(srcFolderPath, srcFolderPath.resolve("model.uml"), desired_length, length, allowedFailures, populationSize, ctrl);
-		sourceFolderPath = srcFolderPath;
-	
+//		sourceFolderPath = srcFolderPath;
 	}
+	
+	public UMLRProblem(SourceModel srcModel,int desired_length, int length, int allowedFailures, int populationSize,
+			Controller ctrl) {
+		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize, ctrl);
+	}
+	
 	@Override
 	public S createSolution() {
 
@@ -38,7 +43,8 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	}
 
 	public Path getSourceModelPath() {
-		return sourceFolderPath.resolve("model.uml");
+		return sourceModelPath;
+//		return sourceFolderPath.resolve("model.uml");
 	}
 	
 	@Override
