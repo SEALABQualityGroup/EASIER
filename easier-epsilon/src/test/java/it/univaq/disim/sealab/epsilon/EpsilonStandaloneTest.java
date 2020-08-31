@@ -25,18 +25,12 @@ public class EpsilonStandaloneTest {
 	
 	@Test
 	public void createEmfModelTestMultiThread() throws Exception {
-		
 		Path destFilePath; 
-		
-		
 		for(int i = 0; i < MAX_THREADS ; i++) {
 			destFilePath = Files.createTempFile("thread-" + String.valueOf(i), "");
 			
-			new EGLStandalone().execute(mmaemiliaFilePath, destFilePath);
+			new EGLStandalone().setMetamodelPath(mmaemiliaFilePath).setModel(destFilePath).execute(destFilePath);
 		}
-		
-		
-				
 	}
 	
 }
