@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.solution.impl.AbstractGenericSolution;
 
+import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 
 public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem<?>> {
@@ -69,6 +70,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public abstract void invokeSolver();
 
 	public abstract List<Resource> getResources();
+	
+	public abstract RefactoringAction getActionAt(int index);
 
 	public Path getModelPath() {
 		return modelPath;

@@ -8,33 +8,21 @@ import java.util.Map;
 
 import metamodel.mmaemilia.ArchitecturalInteraction;
 
-public class SourceModel {
+public class AemiliaSourceModel extends SourceModel{
 
-	private final static String PREFIX = "model";
-
-	private int numPAs = -1;
-
-	private Path sourceFolder;
-	
-	
 	private Map<String, List<ArchitecturalInteraction>> sourceModelPAs = new HashMap<>();
 
-	public SourceModel(final Path srcF) {
-		this.sourceFolder = srcF;
+	public AemiliaSourceModel(final Path srcF) {
+		super(srcF);
+		this.extension = ".mmaemilia";
 	}
 	
-	public String getName() { return sourceFolder.getFileName().toString(); }
-
-	public Path getModel() {
-		return Paths.get(sourceFolder.toString(), PREFIX, ".mmaemilia");
-	}
-
 	public Path getAem() {
-		return Paths.get(sourceFolder.toString(), PREFIX, ".aem");
+		return Paths.get(sourceFolder.toString(), "model.aem");
 	}
 
 	public Path getRew() {
-		return Paths.get(sourceFolder.toString(), PREFIX, ".rew");
+		return Paths.get(sourceFolder.toString(), "model.rew");
 	}
 
 	public int getNumberOfPerfAp() {
@@ -59,6 +47,5 @@ public class SourceModel {
 		this.sourceModelPAs = sourceModelPAs;
 	}
 	
-	public Path getSourceFolder() { return sourceFolder; }
 
 }

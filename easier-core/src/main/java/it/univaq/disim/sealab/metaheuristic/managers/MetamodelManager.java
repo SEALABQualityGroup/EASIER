@@ -26,8 +26,6 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.SourceModel;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
-import logicalSpecification.Action;
 
 public abstract class MetamodelManager {
 
