@@ -1,6 +1,7 @@
 package it.univaq.disim.sealab.epsilon;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +26,11 @@ public class EpsilonHelper {
 //							"../../../easier-epsilon/target/classes/")
 //					.toString();
 
-			new EGLStandalone().execute(mmaemiliaFilePath, destFilePath);
+			EGLStandalone eglModule = new EGLStandalone();
+			eglModule.setMetamodelPath(Paths.get("/tmp/mmAemlia.ecore"));
+			eglModule.setModel(mmaemiliaFilePath);
+			eglModule.execute(destFilePath);
+			
 
 		} catch (Exception e) {
 			System.err.println("mmaemiliaFilePath  --> " + mmaemiliaFilePath);
@@ -43,7 +48,17 @@ public class EpsilonHelper {
 	 * @return
 	 */
 	public static int aemiliaPasChecker(Path mmaemiliaFilePath, Path ruleFilePath) {
-		return new EVLStandalone().getPAs(mmaemiliaFilePath, ruleFilePath);
+		 EVLStandalone module = new EVLStandalone();
+		 try {
+			module.setMetamodelPath(Paths.get("/tmp/mmAemilia.ecore"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 module.setModel(mmaemiliaFilePath);
+		 module.setSource(ruleFilePath);
+		 
+		 return module.getPAs(null, null);
 	}
 
 }
