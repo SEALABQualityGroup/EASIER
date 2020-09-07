@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.eol.IEolModule;
@@ -34,6 +35,8 @@ public class EVLStandalone extends EpsilonStandalone {
 			}
 		}
 		module = new EvlModule();
+		
+		model = new ArrayList<>();
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class EVLStandalone extends EpsilonStandalone {
 //	}
 
 	public EpsilonStandalone setModel(Path mmaemiliaFilePath) {
-		model = createEmfModel("aemilia", mmaemiliaFilePath, this.metamodelPath.toString(), true, true);
+		model.add(createEmfModel("aemilia", mmaemiliaFilePath, this.metamodelPath.toString(), true, true));
 		return this;
 	}
 
@@ -74,6 +77,12 @@ public class EVLStandalone extends EpsilonStandalone {
 
 	@Override
 	public void preProcess() {
+	}
+
+	@Override
+	public EpsilonStandalone setModel(IModel model) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

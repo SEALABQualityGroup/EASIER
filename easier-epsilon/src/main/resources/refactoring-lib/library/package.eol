@@ -12,7 +12,14 @@ operation Package getUsageRelations() : List(Usage){
 
 //aggiungo il componente al package
 operation Package addElement(element : Element){
-	self.packagedElement.add(element);
+	info("####");
+	info(self.getPackagedElements().asString());
+	
+	self.getPackagedElements().add(element);
+	
+	info("after");
+	info(self.getPackagedElements().asString());
+	
 }
 
 operation Package getManifestations() : Sequence(Manifestation){

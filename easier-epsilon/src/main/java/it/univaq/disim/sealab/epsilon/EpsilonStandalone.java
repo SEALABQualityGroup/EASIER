@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.xml.XmlModel;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -25,14 +26,14 @@ import org.eclipse.epsilon.eol.types.EolModelElementType;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import it.univaq.disim.sealab.epsilon.refactoring.UmlModel;
+import it.univaq.disim.sealab.epsilon.eol.UmlModel;
 import it.univaq.disim.sealab.epsilon.utility.Utility;
 
 public abstract class EpsilonStandalone {
 
 	protected IEolModule module;
 	protected List<Variable> parameters = new ArrayList<>();
-	protected IModel model;
+	protected List<IModel> model;
 
 	protected Path metamodelPath;
 
@@ -60,6 +61,7 @@ public abstract class EpsilonStandalone {
 	}
 	
 	public abstract EpsilonStandalone setModel(Path modelFilePath);
+	public abstract EpsilonStandalone setModel(IModel model);
 
 	public abstract void postProcess(Path destFilePath);
 
@@ -85,9 +87,12 @@ public abstract class EpsilonStandalone {
 
 		doExecute();
 
-		module.getContext().getModelRepository().dispose();
 	}
 
+	public void storedOnDispose() {
+		module.getContext().getModelRepository().dispose();
+	}
+	
 	public EpsilonStandalone setModule(IEolModule mod) {
 		module = mod;
 		return this;
@@ -97,11 +102,11 @@ public abstract class EpsilonStandalone {
 		return source;
 	}
 	
-	public IModel getModel() {
+	public List<IModel> getModel() {
 		return model;
 	}
 
-	private void doExecute() throws Exception {
+	protected void doExecute() throws Exception {
 		module.parse(getSource().toFile());
 
 		if (module.getParseProblems().size() > 0) {
@@ -111,7 +116,8 @@ public abstract class EpsilonStandalone {
 			}
 		}
 
-		module.getContext().getModelRepository().addModel(model);
+		model.forEach(m -> module.getContext().getModelRepository().addModel(m));
+//		module.getContext().getModelRepository().add(model);
 
 		for (Variable parameter : parameters) {
 			module.getContext().getFrameStack().put(parameter);
@@ -166,16 +172,14 @@ public abstract class EpsilonStandalone {
 		return emfModel;
 	}
 
-	public EmfModel createOutputEmfModel(String name, String model, String metamodel, boolean readOnLoad,
-			boolean storeOnDisposal) {
+	public EmfModel createOutputEmfModel(String name, Path model, String metamodel) {
 		EmfModel emfModel = new EmfModel();
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI,
-				Utility.getFileFromResource(metamodel).toURI().toString());
-		properties.put(EmfModel.PROPERTY_MODEL_URI, Utility.createFile(model).toURI().toString());
-		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
-		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
+		properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, metamodel);
+		properties.put(EmfModel.PROPERTY_MODEL_URI, model.toFile());
+		properties.put(EmfModel.PROPERTY_READONLOAD, false);
+		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
 		try {
 			emfModel.load(properties, (IRelativePathResolver) null);
 		} catch (EolModelLoadingException e) {
@@ -190,15 +194,15 @@ public abstract class EpsilonStandalone {
 	 * 
 	 * @param name            is the name in the Epsilon module
 	 * @param model
-	 * @param metamodel       is the metamodel nsURI
+	 * @param metamodelURI       is the metamodel nsURI
 	 * @param readOnLoad      if true the model is read from the file system
 	 * @param storeOnDisposal if true the mode is store in the file system
 	 * @return the loaded model
 	 * @throws EolModelLoadingException
 	 * @throws URISyntaxException
 	 */
-	public EmfModel createEmfModelByURI(String name, Path model, String metamodel, boolean readOnLoad,
-			boolean storeOnDisposal) throws EolModelLoadingException, URISyntaxException {
+	public static EmfModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
+			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
 		EmfModel emfModel = new UmlModel();
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -209,10 +213,43 @@ public abstract class EpsilonStandalone {
 		emfModel.setMetamodelUri(UMLPackage.eINSTANCE.getNsURI());
 		emfModel.setName(name);
 		emfModel.setModelFile(model.toString());
-
+		emfModel.setStoredOnDisposal(storedOnDisposal);
+		emfModel.setReadOnLoad(readOnLoad);
+		
 		emfModel.load();
 
 		return emfModel;
+	}
+	
+	public XmlModel createXMLModel(String name,  Path xmlFilePath) {
+		// Load the XML document
+		XmlModel xmlModel = new XmlModel();
+		String lqnXSD = Paths.get("/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn", "lqnxsd", "lqn.xsd").toString();
+		try {
+//			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
+			StringProperties properties = new StringProperties();
+			properties.put(XmlModel.PROPERTY_NAME, name);
+			properties.put(XmlModel.PROPERTY_XSD_URI, lqnXSD);
+			properties.put(EmfModel.PROPERTY_EXPAND, true);
+			properties.put(EmfModel.PROPERTY_READONLOAD, false);
+			properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
+			properties.put(XmlModel.PROPERTY_MODEL_URI, "/tmp/test.xml");
+			
+//			xmlModel.setName(name);
+//			xmlModel.setReadOnLoad(false);
+//			xmlModel.setStoredOnDisposal(true);
+			
+			xmlModel.load(properties, (IRelativePathResolver) null);
+			
+		} catch (EolModelLoadingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return xmlModel;
+	}
+	
+	public IEolModule getModule() {
+		return module;
 	}
 
 }

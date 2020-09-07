@@ -11,14 +11,56 @@
 	<name>Easier Epsilon Module</name>
 
 	<properties>
-		<epsilon.version>1.5.1</epsilon.version>
+		<epsilon.version>2.2.0-SNAPSHOT</epsilon.version>
+		<epsilon.scope>compile</epsilon.scope>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.epsilon</groupId> -->
+		<!-- <artifactId>epsilon-core</artifactId> -->
+		<!-- <version>${epsilon.version}</version> -->
+		<!-- </dependency> -->
+
 		<dependency>
 			<groupId>org.eclipse.epsilon</groupId>
-			<artifactId>epsilon-core</artifactId>
+			<artifactId>org.eclipse.epsilon.emc.emf</artifactId>
 			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.emc.uml</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.egl.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.evl.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.eol.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.etl.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
 		</dependency>
 
 		<dependency>
@@ -92,5 +134,18 @@
 			<version>1.1.0-v20130902-0826</version>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>

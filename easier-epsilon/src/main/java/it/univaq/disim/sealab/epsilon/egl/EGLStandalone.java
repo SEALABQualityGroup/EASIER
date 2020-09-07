@@ -1,15 +1,13 @@
 package it.univaq.disim.sealab.epsilon.egl;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.EglTemplateFactoryModuleAdapter;
-import org.eclipse.epsilon.egl.internal.EglModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
 
@@ -25,6 +23,7 @@ public class EGLStandalone extends EpsilonStandalone{
 	
 	public EGLStandalone() {
 		module = createModule();
+		model = new ArrayList<>();
 	}
 	
 	
@@ -46,7 +45,7 @@ public class EGLStandalone extends EpsilonStandalone{
 //	}
 	
 	public EpsilonStandalone setModel(Path modelPath) {
-		model = createEmfModel("aemilia", modelPath, this.metamodelPath.toString(), true, true);
+		model.add(createEmfModel("aemilia", modelPath, this.metamodelPath.toString(), true, true));
 		return this;
 	}
 
@@ -73,5 +72,12 @@ public class EGLStandalone extends EpsilonStandalone{
 	@Override
 	public void preProcess() {
 		// TODO Auto-generated method stub
+	}
+
+
+	@Override
+	public EpsilonStandalone setModel(IModel model) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

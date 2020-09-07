@@ -1,4 +1,5 @@
-//move_operation_to_new_component_deployed_on_new_node
+//Move an Operation to new Component that is deployed on a New Node
+
 //libraries
 
 import "library/artifact.eol";

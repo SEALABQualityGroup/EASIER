@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.epsilon.refactoring;
+package it.univaq.disim.sealab.epsilon.eol;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;

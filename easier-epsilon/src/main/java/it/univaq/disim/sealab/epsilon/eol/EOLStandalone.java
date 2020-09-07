@@ -1,7 +1,8 @@
-package it.univaq.disim.sealab.epsilon.refactoring;
+package it.univaq.disim.sealab.epsilon.eol;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
@@ -19,6 +20,7 @@ public class EOLStandalone extends EpsilonStandalone {
 
 	public EOLStandalone() {
 		module = createModule();
+		model = new ArrayList<>();
 	}
 
 	@Override
@@ -33,11 +35,20 @@ public class EOLStandalone extends EpsilonStandalone {
 
 	public EpsilonStandalone setModel(Path modelFilePath) {
 		try {
-			model = createEmfModelByURI("UML", modelFilePath, UMLPackage.eNS_URI, true, true);
+			model.add(createUmlModel("UML", modelFilePath, UMLPackage.eNS_URI, true, true));
 		} catch (EolModelLoadingException | URISyntaxException e) {
 			System.err.println("Error in setModel!!!");
 			e.printStackTrace();
 		}
+		return this;
+	}
+	
+	/**
+	 * @param m
+	 * @return
+	 */
+	public EpsilonStandalone setModel(IModel m) {
+		model.add(m);
 		return this;
 	}
 
@@ -56,30 +67,34 @@ public class EOLStandalone extends EpsilonStandalone {
 	}
 
 	public void execute() throws Exception {
-		doExecute();
+		super.doExecute();
 
+//		module.getContext().getModelRepository().dispose();
+	}
+	
+	public void disposeModelRepository() {
 		module.getContext().getModelRepository().dispose();
-		module.getContext().getFrameStack().getFrames();
 	}
 
-	private void doExecute() throws Exception {
-//		module = createModule();
-		module.parse(getSource().toFile());
-
-		if (module.getParseProblems().size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
-			}
-		}
-
-		module.getContext().getModelRepository().addModel(model);
-
-		for (Variable parameter : parameters) {
-			module.getContext().getFrameStack().put(parameter);
-		}
-
-		preProcess();
-		result = execute(module);
-	}
+//	private void doExecute() throws Exception {
+////		module = createModule();
+//		module.parse(getSource().toFile());
+//
+//		if (module.getParseProblems().size() > 0) {
+//			System.err.println("Parse errors occured...");
+//			for (ParseProblem problem : module.getParseProblems()) {
+//				System.err.println(problem.toString());
+//			}
+//		}
+//
+//		model.forEach(m -> module.getContext().getModelRepository().addModel(m));
+////		module.getContext().getModelRepository().addModel(model);
+//
+//		for (Variable parameter : parameters) {
+//			module.getContext().getFrameStack().put(parameter);
+//		}
+//
+//		preProcess();
+//		result = execute(module);
+//	}
 }

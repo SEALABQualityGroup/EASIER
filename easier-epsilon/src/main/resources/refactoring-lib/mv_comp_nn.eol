@@ -1,4 +1,4 @@
-//Redeploy a Component to a New Node
+//Deploy a Component to a New Node
 
 //libraries
 import "library/artifact.eol";
@@ -22,5 +22,5 @@ import "library/package.eol";
 import "library/HELPER.eol";
 
 ("moving --> " + self.getName()).println();
-self.deployOn(target : UML!Node);
+self.deployOn(target);
 "done".println();

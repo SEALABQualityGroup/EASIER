@@ -241,12 +241,13 @@ operation Component deployOnNewNodes(component : Component) {
 	else
 		newNode = self.getModel().createNewNode();
 	
-	("new node --> "+newNode.getName());
+	info("new node --> " + newNode.getName());
 	
-	for(node in listOfNode){
+	//Moved to deployOn(:Node)
+/*	for(node in listOfNode){
 		//node.clone(self);
 		newNode.clone(node);		
-	}
+	}*/
 	
 	self.deployOn(newNode);
 }
@@ -290,25 +291,47 @@ operation UML!Component deployOnNewNode() : UML!Node {
 	var newNode = listOfSelfNodes->first().createNewNode();
 	
 	self.deployOn(newNode);	
-	
-	
+
 	return newNode;
 	
 	//return true;	
 }
 
-operation UML!Component deployOn(node : Node){
+operation UML!Component deployOn(node : UML!Node){
+		
 	var newArtifact : Artifact = new Artifact;
 	var newManifestation; 
 	var newDeployment; 
 	
-	node.getNearestPackage().addElement(newArtifact); 
-	newArtifact.name = self.name; 
+	var listOfNodes : List(Node) = self.getNodes();
+	
+	listOfNodes.println();
+	
+	//@param node setting
+	for(n in listOfNodes){
+		//node.clone(self);
+		node.clone(n);		
+	}
+	
+	node.getAppliedStereotypes().println();
+	
+	node.getNearestPackage().addElement(newArtifact);
+	newArtifact.name = self.name+"_added-by-easier";
 	
 	newManifestation = newArtifact.createManifestation(self.name, self);
-	newManifestation.getClients().add(newArtifact); 
-	newDeployment = node.createDeployment(newArtifact.name); 
+	newManifestation.getClients().add(newArtifact);
+	 
+	newDeployment = node.createDeployment(newArtifact.name);
 	newDeployment.getDeployedArtifacts().add(newArtifact);
+	
+	//Debug messages
+	info("SOURCE NODE " + node.getName());
+	info(node.getNearestPackage().asString());
+	info("print the new artifact");
+	info(newArtifact.asString());
+	info("println newDeployment");
+	info(newDeployment.asString());
+	info(node.getDeployments().asString());
 }
 
 operation Component getNeighbours() : List(Node){
