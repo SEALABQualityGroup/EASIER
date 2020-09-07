@@ -1,46 +1,15 @@
 package it.univaq.disim.sealab.metaheuristic.managers.uml;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ocl.ParserException;
-import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSequence;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import logicalSpecification.Action;
-import logicalSpecification.AndOperator;
-import logicalSpecification.EqualOperator;
-import logicalSpecification.ExistsOperator;
-import logicalSpecification.FOLSpecification;
-import logicalSpecification.ForAllOperator;
-import logicalSpecification.GreaterEqualOperator;
-import logicalSpecification.GreaterOperator;
-import logicalSpecification.LessEqualOperator;
-import logicalSpecification.LessOperator;
-import logicalSpecification.LogicalSpecificationFactory;
-import logicalSpecification.MultipleValuedParameter;
-import logicalSpecification.NotOperator;
-import logicalSpecification.Operator;
-import logicalSpecification.OrOperator;
-import logicalSpecification.PostCondition;
-import logicalSpecification.PreCondition;
-import logicalSpecification.SingleValuedParameter;
-import metamodel.mmaemilia.ArchiElemInstance;
-import metamodel.mmaemilia.Attachment;
-import metamodel.mmaemilia.InputInteraction;
-import metamodel.mmaemilia.OutputInteraction;
 
 public class UMLManager extends Manager{
 

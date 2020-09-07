@@ -115,17 +115,17 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 
 		}
 
-		if (offspring.get(0).equals(parent1copy))
-			offspring.get(0).setCrossovered(false);
-		else {
-			offspring.get(0).setCrossovered(true);
+		if (!offspring.get(0).equals(parent1copy)) {
+//			offspring.get(0).setCrossovered(false);
+//		else {
+			offspring.get(0).setCrossovered();
 			UMLRSolution.XOverCounter++;
 		}
 
-		if (offspring.get(1).equals(parent2copy))
-			offspring.get(1).setCrossovered(false);
-		else {
-			offspring.get(1).setCrossovered(true);
+		if (!offspring.get(1).equals(parent2copy)) {
+//			offspring.get(1).setCrossovered(false);
+//		else {
+			offspring.get(1).setCrossovered();
 			UMLRSolution.XOverCounter++;
 		}
 
@@ -142,7 +142,7 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 	}
 	
 	
-	//TODO set specific condition to verify whether the refactoring sequence is applicable or not
+	//TODO set specific condition to verify whether the refactoring sequence is applicable or not after it has been crossoveredn
 	private boolean isApplicable(RSolution solution) {
 //		for (int i = 0; i < solution.getLength(); i++) {
 //			RefactoringAction a = solution.getActionAt(i);

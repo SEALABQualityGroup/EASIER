@@ -113,7 +113,7 @@ public class UMLController implements Controller {
 //		for (Path path : modelsPath) {
 //			generateSourceFiles(path);
 			SourceModel model = new UMLSourceModel(path);
-			model.setName("eshopper");
+			model.setName("automatedGuidedVehicle");
 			//TODO calc numb of perfAntipattern of the source model
 //			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
 //					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),

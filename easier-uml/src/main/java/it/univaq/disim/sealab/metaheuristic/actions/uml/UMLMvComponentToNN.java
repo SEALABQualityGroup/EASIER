@@ -8,21 +8,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import com.google.common.collect.Iterables;
-
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
-import it.univaq.disim.sealab.epsilon.refactoring.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.UmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
@@ -38,14 +41,14 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final static Path eolModulePath;
 
-	private final RSolution solution;
+	private final UMLRSolution solution;
 
 	private Component targetObject;
 	private Node targetNode;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-epsilon", "src", "main", "resources", "refactoring-lib", "mv_op_nc_nn.eol");
+				"easier-epsilon", "src", "main", "resources", "refactoring-lib", "mv_comp_nn.eol");
 	}
 
 	public static Path getEolModulePath() {
@@ -53,10 +56,10 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	}
 
 	public UMLMvComponentToNN(RSolution sol) {
-		this.solution = sol;
+		this.solution = (UMLRSolution) sol;
 
 		targetObject = getRandomComponent();
-		
+
 		targetNode = getRandomNode();
 
 		setParameters();
@@ -68,43 +71,61 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	// Creates a new random Node on which the component will be deployed on
 	private Node getRandomNode() {
 
+		org.eclipse.uml2.uml.Package deploymentView = null;
 		// Retrieves the deployment view package
-		org.eclipse.uml2.uml.Package deploymentView = EcoreUtil
-				.getObjectsByType(((Model) solution.getModel()).getOwnedElements(), UMLPackage.Literals.PACKAGE)
-				.stream().map(org.eclipse.uml2.uml.Package.class::cast)
-				.filter(pkg -> "deploymentView".equals(pkg.getName())).findAny().orElse(null);
-		
+		/*
+		 * EcoreUtil .getObjectsByType(solution.getIModel().allContents(),
+		 * UMLPackage.Literals.PACKAGE).stream()
+		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
+		 * "deployment_view".equals(pkg.getName())) .findAny().orElse(null);
+		 */
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package && "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
+				break;
+			}
+		}
+
 		Node target = UMLFactory.eINSTANCE.createNode();
-		target.setName("New-Node_");
-		deploymentView.getOwnedElements().add(target);
-		
-//		do {
-//
-//			target = Iterables
-//					.get(EcoreUtil.getObjectsByType(deploymentView.getOwnedElements(), UMLPackage.Literals.NODE),
-//							JMetalRandom.getInstance().nextInt(0, EcoreUtil
-//									.getObjectsByType(deploymentView.getOwnedElements(), UMLPackage.Literals.NODE)
-//									.size() - 1));
-//
-//		} while (target == null);
+		target.setName("New-Node_" + generateHash());
+		deploymentView.getPackagedElements().add(target);
 		return target;
+	}
+
+	private String generateHash() {
+		int leftLimit = 97; // letter 'a'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 10;
+//	    Random random = new Random();
+
+		return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
 	// retrieves a random Component from the source model
 	private Component getRandomComponent() {
 
+		org.eclipse.uml2.uml.Package staticView = null;
 		// Retrieves the static view package
-		org.eclipse.uml2.uml.Package staticView = EcoreUtil
-				.getObjectsByType(((Model) solution.getModel()).getOwnedElements(), UMLPackage.Literals.PACKAGE)
-				.stream().map(org.eclipse.uml2.uml.Package.class::cast)
-				.filter(pkg -> "staticView".equals(pkg.getName())).findAny().orElse(null);
+		/*
+		 * org.eclipse.uml2.uml.Package staticView = EcoreUtil
+		 * .getObjectsByType(solution.getIModel().allContents(),
+		 * UMLPackage.Literals.PACKAGE).stream()
+		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
+		 * "static_view".equals(pkg.getName())) .findAny().orElse(null);
+		 */
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package && "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+				staticView = (org.eclipse.uml2.uml.Package) pkg;
+				break;
+			}
+		}
+
 		Component cmp;
 		do {
-			cmp = Iterables
-					.get(EcoreUtil.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT),
-							JMetalRandom.getInstance().nextInt(0, EcoreUtil
-									.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT)
-									.size() - 1));
+			List<Component> comps = new ArrayList<>(
+					EcoreUtil.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT));
+			cmp = comps.get(JMetalRandom.getInstance().nextInt(0, comps.size() - 1));
 		} while (cmp == null);
 		return cmp;
 	}
@@ -112,20 +133,28 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	@Override
 	public void execute() {
 		EOLStandalone executor = new EOLStandalone();
-		executor.setModel(solution.getModelPath());
+
+		final IModel contextModel = solution.getIModel();
+		executor.setModel(contextModel);
 		executor.setSource(eolModulePath);
-		
-		//fills variable within the eol module
+
+		// fills variable within the eol module
 		executor.setParameter(targetObject, "UML!Component", "self");
 		executor.setParameter(targetNode, "UML!Node", "target");
+
+		try {
+			executor.execute();
+		} catch (Exception e) {
+			System.err.println("Error in execution the eolmodule " + eolModulePath);
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void createPreCondition() {
 		PreCondition preCondition = solution.getManager().createPreCondition();
 
-		FOLSpecification specification = solution.getManager()
-				.createFOLSpectification("MvComponentToNNPreCondition");
+		FOLSpecification specification = solution.getManager().createFOLSpectification("MvComponentToNNPreCondition");
 
 		ExistsOperator existsTargetInComponents = solution.getManager()
 				.createExistsInCollectionOperator(getCompToMoveSVP(), getAllCompsMVP());
@@ -141,16 +170,15 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	@Override
 	public void createPostCondition() {
 		PostCondition postCondition = solution.getManager().createPostCondition();
-		FOLSpecification specification = solution.getManager()
-				.createFOLSpectification("MvComponentToNNPostCondition");
+		FOLSpecification specification = solution.getManager().createFOLSpectification("MvComponentToNNPostCondition");
 
 		ExistsOperator existsTargetInComponents = solution.getManager()
 				.createExistsInCollectionOperator(getCompToMoveSVP(), getAllCompsMVP());
 
 		AndOperator andRoot = solution.getManager().createAndOperator();
 		andRoot.getArguments().add(existsTargetInComponents);
-		
-		//Verifies whether target nodes are created in the model
+
+		// Verifies whether target nodes are created in the model
 		ExistsOperator existsTargetNodes = solution.getManager().createExistsOperator(getTargetNodesMVP());
 		andRoot.getArguments().add(existsTargetNodes);
 
@@ -177,32 +205,32 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		setAllCompsMVP(solution.getManager().createMultipleValuedParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
 						.getAllComponentsQuery()));
-		
-		//Sets the target node
+
+		// Sets the target node
 		setTargetNodesMVP(solution.getManager().createMultipleValuedParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-				.getNodesQuery(Arrays.asList(targetNode))));
-		
+						.getNodesQuery(Arrays.asList(targetNode))));
+
 		params.add(getAllCompsMVP());
-	
+
 		getParameters().addAll(params);
 	}
 
 	@Override
 	public RefactoringAction clone(RSolution solution) {
-		
+
 		UMLMvComponentToNN cloned = new UMLMvComponentToNN(solution);
-		
+
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-		
+
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
 		cloned.post = this.getPost();
-		
+
 		return cloned;
-		
+
 	}
 
 }

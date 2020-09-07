@@ -8,14 +8,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Operation;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.epsilon.refactoring.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
@@ -29,9 +33,9 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	private final static Path eolModulePath;
 
-	private final RSolution solution;
+	private final UMLRSolution solution;
 
-	private Component targetObject;
+	private Operation targetObject;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -43,9 +47,9 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	}
 
 	public UMLMvOperationToNCToNN(RSolution sol) {
-		this.solution = sol;
+		this.solution = (UMLRSolution) sol;
 
-		targetObject = getRandomComponent();
+		targetObject = getRandomOperation();
 
 		setParameters();
 		createPreCondition();
@@ -54,16 +58,53 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	}
 
 	// retrieves a random operation from the source model
-	private Component getRandomComponent() {
+	private Operation getRandomOperation() {
 
-		org.eclipse.uml2.uml.Package staticView = (org.eclipse.uml2.uml.Package) EcoreUtil.getObjectsByType(((Model) solution.getModel()).getOwnedElements(),
-				UMLPackage.Literals.PACKAGE).stream().filter(pkg -> ((NamedElement) pkg).getName().equals("staticView"));
-		
-		
-		Collection<Object> set = EcoreUtil.getObjectsByType(((Model) solution.getModel()).getOwnedElements(),
-				UMLPackage.Literals.COMPONENT);
-		return (Component) set.stream().skip(new Random().nextInt(set.size())).findFirst().orElse(null);
+		/*
+		 * org.eclipse.uml2.uml.Package staticView = (org.eclipse.uml2.uml.Package)
+		 * EcoreUtil .getObjectsByType(((Model) solution.getModel()).getOwnedElements(),
+		 * UMLPackage.Literals.PACKAGE) .stream().filter(pkg -> ((NamedElement)
+		 * pkg).getName().equals("static_view"));
+		 */
 
+		org.eclipse.uml2.uml.Package staticView = null;
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+				staticView = (org.eclipse.uml2.uml.Package) pkg;
+				break;
+			}
+		}
+
+		//List of all components within the model
+		List<Object> set = new ArrayList<>(
+				EcoreUtil.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT));
+
+		//List of components whose getOperations is not empty
+		List<Component> cmps = new ArrayList<>();
+		for (Object cmp : set) {
+			if (!((Component) cmp).getAllOperations().isEmpty()) {
+				cmps.add((Component) cmp);
+			}
+		}
+
+		//TODO this safety check shall be moved to precondition of this action
+		if (cmps.isEmpty()) {
+			System.err.println("Any components has at least one operation");
+			return null;
+		}
+
+		Component cmp = null;
+		do {
+			cmp = (Component) cmps.get(JMetalRandom.getInstance().nextInt(0, cmps.size() - 1));
+			System.out.println(cmp.toString());
+		} while (cmp.getOperations().isEmpty());
+
+		EList<Operation> randomComponentOperations = ((Component) set
+				.get(JMetalRandom.getInstance().nextInt(0, set.size() - 1))).getOperations();
+
+		return randomComponentOperations
+				.get(JMetalRandom.getInstance().nextInt(0, randomComponentOperations.size() - 1));
 	}
 
 	@Override
@@ -71,15 +112,21 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		super.execute();
 
 		EOLStandalone executor = new EOLStandalone();
-		executor.setModel(solution.getModelPath());
+		executor.setModel(solution.getIModel());
 		executor.setSource(eolModulePath);
 		executor.setParameter(targetObject, "UML!Operation", "self");
+
+		try {
+			executor.execute();
+		} catch (Exception e) {
+			System.err.println("Error in execution the eolmodule " + eolModulePath);
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void createPostCondition() {
-		// TODO Auto-generated method stub
 		PostCondition postCondition = solution.getManager().createPostCondition();
 
 		FOLSpecification specification = solution.getManager()
@@ -162,15 +209,15 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	@Override
 	public RefactoringAction clone(RSolution solution) {
 		UMLMvOperationToNCToNN cloned = new UMLMvOperationToNCToNN(solution);
-		
+
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-		
+
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
 		cloned.post = this.getPost();
-		
+
 		return cloned;
 	}
 

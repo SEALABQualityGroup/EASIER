@@ -41,7 +41,9 @@ import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.uml.RefactoringActionFactory;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
@@ -244,6 +246,11 @@ public class UMLMetamodelManager extends MetamodelManager {
 
 		Resource resource = getResourceSet().getResource(manager.string2FileUri(getModelUri().toString()), true);
 		return resource;
+	}
+	
+	@Override
+	public void save(RSolution solution) {
+		((UMLRSolution)solution).getIModel().dispose();
 	}
 
 	public void saveRefactoredModel(String destinationPath) {

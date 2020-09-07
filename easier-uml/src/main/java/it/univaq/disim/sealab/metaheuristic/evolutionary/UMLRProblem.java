@@ -31,13 +31,14 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 
 		try {
 			return (S) new UMLRSolution(this);
-		} catch (ParserException e) {
+		} catch (ParserException | UnexpectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (UnexpectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
+//		catch (UnexpectedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return null;
 
 	}
