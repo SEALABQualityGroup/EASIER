@@ -2,10 +2,6 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
 
-import javax.annotation.Syntax;
-
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
-
 public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 
 	/**

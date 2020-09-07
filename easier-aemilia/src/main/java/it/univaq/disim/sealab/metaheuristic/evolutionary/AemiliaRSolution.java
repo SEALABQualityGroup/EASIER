@@ -1,11 +1,9 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.rmi.UnexpectedException;
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -15,8 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.sql.rowset.spi.SyncResolver;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -53,11 +49,11 @@ public class AemiliaRSolution extends RSolution {
 
 	private final int VARIABLE_INDEX = 0;
 	private UUID ID;
-	private EObject model;
+//	private EObject model;
 	// private String mmaemiliaFileStr;
 
-	public static int XOverCounter = 0;
-	public static int MutationCounter = 0;
+//	public static int XOverCounter = 0;
+//	public static int MutationCounter = 0;
 
 	private AemiliaRSolution[] parents = new AemiliaRSolution[2];
 
@@ -67,26 +63,26 @@ public class AemiliaRSolution extends RSolution {
 //	private Path mmaemiliaFilePath;
 	private Path valFilePath;
 
-	private boolean crossovered;
-	private boolean mutated;
-	private boolean refactored;
+//	private boolean crossovered;
+//	private boolean mutated;
+//	private boolean refactored;
 
-	private static int SOLUTION_COUNTER = 0;
+//	private static int SOLUTION_COUNTER = 0;
 
 	private static String EVL_MODULE = "aemilia-pas-checker.evl";
 
 	private int name;
-	private ResourceSet resourceSet;
+//	private ResourceSet resourceSet;
 	private String mmaemiliaFolderStr;
 
 	private Instant startingTime, endingTime;
-	private float perfQ;
-	private double changes;
+//	private float perfQ;
+//	private double changes;
 
-	private int numPAs = -1;
+//	private int numPAs = -1;
 
-	private Manager manager;
-	private Controller controller;
+//	private Manager manager;
+//	private Controller controller;
 
 	private Path folderPath;
 
@@ -94,11 +90,12 @@ public class AemiliaRSolution extends RSolution {
 		super(p);
 		setName();
 		ID = UUID.randomUUID();
+		parents = new AemiliaRSolution[2];
 		resetParents();
 		init(p.getController());
-		crossovered = false;
-		mutated = false;
-		refactored = false;
+//		crossovered = false;
+//		mutated = false;
+//		refactored = false;
 
 		try {
 			this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
@@ -130,7 +127,7 @@ public class AemiliaRSolution extends RSolution {
 
 		crossovered = false;
 		mutated = false;
-		refactored = false;
+//		refactored = false;
 	}
 
 	public AemiliaRSolution(AemiliaRSolution s1, AemiliaRSolution s2, int point, boolean left) {
@@ -170,17 +167,17 @@ public class AemiliaRSolution extends RSolution {
 		refactored = false;
 	}
 
-	public static synchronized int getCounter() {
-		return SOLUTION_COUNTER ++;
-	}
-	
-	public void setName() {
-		this.name = getCounter();
-	}
+//	public static synchronized int getCounter() {
+//		return SOLUTION_COUNTER++;
+//	}
+//
+//	public void setName() {
+//		this.name = getCounter();
+//	}
 
-	public EObject getModel() {
-		return model;
-	}
+//	public EObject getModel() {
+//		return model;
+//	}
 
 	protected synchronized void init(Controller controller) {
 		this.controller = controller;
@@ -201,20 +198,21 @@ public class AemiliaRSolution extends RSolution {
 		modelPath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
 
 		try {
-			
+
 //			folderPath.toFile().mkdirs();
-			
+
 //			//safety check
 //			while(!Files.isWritable(((AemiliaRProblem<?>) this.problem).getSourceModelPath())) {
 //				System.out.println(this.name);
 //			}
-			
+
 //			Files.copy(((AemiliaRProblem<?>) this.problem).getSourceModelPath(), modelPath, StandardCopyOption.REPLACE_EXISTING);
-			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(),	modelPath.toFile());
+			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
 
 			// copy the EVL template into the solution folder
 //			Files.copy(controller.getConfigurator().getEVLTemplate(), Paths.get(folderPath.toString(), "aemilia-pas-checker.evl"), StandardCopyOption.REPLACE_EXISTING);
-			org.apache.commons.io.FileUtils.copyFile(controller.getConfigurator().getEVLTemplate().toFile(),Paths.get(folderPath.toString(), "aemilia-pas-checker.evl").toFile());
+			org.apache.commons.io.FileUtils.copyFile(controller.getConfigurator().getEVLTemplate().toFile(),
+					Paths.get(folderPath.toString(), "aemilia-pas-checker.evl").toFile());
 
 			// fix paths in the copied EVL file
 			FileUtils.fillTemplateKeywords(controller.getConfigurator().getEVLTemplate(),
@@ -235,16 +233,16 @@ public class AemiliaRSolution extends RSolution {
 		createNewModel(modelPath);
 	}
 
-	protected void resetParents() {
-		if (this.parents != null) {
-			this.parents[0] = null;
-			this.parents[1] = null;
-		}
-	}
+//	protected void resetParents() {
+//		if (this.parents != null) {
+//			this.parents[0] = null;
+//			this.parents[1] = null;
+//		}
+//	}
 
-	public List<Resource> getResources() {
-		return this.getResourceSet().getResources();
-	}
+//	public List<Resource> getResources() {
+//		return this.getResourceSet().getResources();
+//	}
 
 	public void createNewModel(Path modelFilePath) {
 //		Resource res;
@@ -254,11 +252,11 @@ public class AemiliaRSolution extends RSolution {
 //					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
 			this.model = metamodelManager.getModel(modelFilePath);
 		} catch (Exception e) {
-			System.err.println("Error in creating the model for Solution #"+this.getName());
+			System.err.println("Error in creating the model for Solution #" + this.getName());
 			System.err.println(this.getVariableValue(0).toString());
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException {
@@ -267,7 +265,6 @@ public class AemiliaRSolution extends RSolution {
 		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
-	
 	@Override
 	public String getVariableValueString(int index) {
 		String strValue = "Solution ID : " + this.getName() + " ( ";
@@ -286,9 +283,9 @@ public class AemiliaRSolution extends RSolution {
 		return strValue;
 	}
 
-	public int getName() {
-		return name;
-	}
+//	public int getName() {
+//		return name;
+//	}
 
 	public RProblem<AemiliaRSolution> getProblem() {
 		return (RProblem<AemiliaRSolution>) this.problem;
@@ -359,68 +356,65 @@ public class AemiliaRSolution extends RSolution {
 		return this.getVariableValue(VARIABLE_INDEX).alter(i, this.problem.number_of_actions);
 	}
 
-	public void resolve(AemiliaMetamodelManager metamodelManager) {
-//		EasierLogger.logger_.info("Solving Solution #" + getName());
-		startingTime = Instant.now();
-		executeRefactoring();
-
-		// applyTransformation();
-		invokeSolver();
-
-		// controller.awaitExecutor();
-		updateModel();
-
-		updateThresholds();
-
-		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
-		// controller.getRuleFilePath(), this.getValPath(),
-		// metamodelManager);
-		countingPAs();
-
-		perfQ = evaluatePerformance();
-		endingTime = Instant.now();
-
-		AemiliaFileUtils.simpleSolutionWriterToCSV(this);
-//		EasierLogger.logger_.info("Solution #" + getName() + " solved");
-	}
+//	@Deprecated
+//	public void resolve(AemiliaMetamodelManager metamodelManager) {
+////		EasierLogger.logger_.info("Solving Solution #" + getName());
+//		startingTime = Instant.now();
+//		executeRefactoring();
+//
+//		// applyTransformation();
+//		invokeSolver();
+//
+//		// controller.awaitExecutor();
+//		updateModel();
+//
+//		updateThresholds();
+//
+//		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
+//		// controller.getRuleFilePath(), this.getValPath(),
+//		// metamodelManager);
+//		countingPAs();
+//
+//		perfQ = evaluatePerformance();
+//		endingTime = Instant.now();
+//
+//		AemiliaFileUtils.simpleSolutionWriterToCSV(this);
+////	EasierLogger.logger_.info("Solution #" + getName() + " solved");
+//	}
 
 	public void updateThresholds() {
-		ThresholdUtils.uptodateSingleValueThresholds(folderPath, modelPath, valFilePath, metamodelManager,
-				controller);
+		ThresholdUtils.uptodateSingleValueThresholds(folderPath, modelPath, valFilePath, metamodelManager, controller);
 	}
 
-	public boolean isCrossovered() {
-		return crossovered;
-	}
+//	public boolean isCrossovered() {
+//		return crossovered;
+//	}
+//
+//	public void setCrossovered(boolean crossovered) {
+//		this.crossovered = crossovered;
+//	}
+//
+//	public boolean isMutated() {
+//		return mutated;
+//	}
+//
+//	public void setMutated(boolean mutated) {
+//		this.mutated = mutated;
+//		MutationCounter++;
+//	}
 
-	public void setCrossovered(boolean crossovered) {
-		this.crossovered = crossovered;
-	}
-
-	public boolean isMutated() {
-		return mutated;
-	}
-
-	public void setMutated(boolean mutated) {
-		this.mutated = mutated;
-		MutationCounter++;
-	}
-
-	public boolean isRefactored() {
-		return refactored;
-	}
-
-	public void updateModel(MetamodelManager metamodelManager) {
-
-		Path rewFilePath = ((AemiliaRProblem<?>) problem).getSourceRewFilePath();
-
-		Path rewMappingFilePath = Paths.get(folderPath.toString(),
-				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
-						+ AemiliaMetamodelManager.getRewmappingFileExtension());
-
-		((AemiliaMetamodelManager) metamodelManager).aemiliaModelUpdate(valFilePath, rewFilePath, rewMappingFilePath,
-				this.modelPath, this);
-	}
+//	@Deprecated
+//	public void updateModel(MetamodelManager metamodelManager) {
+//
+//		Path rewFilePath = ((AemiliaRProblem<?>) problem).getSourceRewFilePath();
+//
+//		Path rewMappingFilePath = Paths.get(folderPath.toString(),
+//				((AEmiliaSpecification) getModel()).getArchiTypeDecl().getAtName() + "_result"
+//						+ AemiliaMetamodelManager.getRewmappingFileExtension());
+//
+//		((AemiliaMetamodelManager) metamodelManager).aemiliaModelUpdate(valFilePath, rewFilePath, rewMappingFilePath,
+//				this.modelPath, this);
+//	}
 
 	public void updateModel() {
 
@@ -486,7 +480,7 @@ public class AemiliaRSolution extends RSolution {
 	}
 
 	public float evaluatePerformance() {
-		AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
+//		AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
 
 		// String valFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)
 		// getModel()).getArchiTypeDecl().getAtName()
@@ -495,7 +489,7 @@ public class AemiliaRSolution extends RSolution {
 		// ".val";
 
 		perfQ = 0;
-		if(valFilePath == null) {
+		if (valFilePath == null) {
 			System.err.println("Val file path NPE");
 		}
 		if (!Files.exists(valFilePath)) {
@@ -534,33 +528,34 @@ public class AemiliaRSolution extends RSolution {
 		// this.folderPath);
 	}
 
-	/**
-	 * Starting from the solution family each refactoring action should be applied
-	 * in order to obtain a refactoring model on which a performance evaluation can
-	 * be executed
-	 * 
-	 * @param metamodelManager
-	 */
-	public synchronized void executeRefactoring(MetamodelManager metamodelManager) {
-		Refactoring ref = this.getVariableValue(0).getRefactoring();
-
-		for (RefactoringAction a : ref.getActions()) {
-
-			if (a instanceof AEmiliaConstChangesRefactoringAction) {
-				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
-				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
-			}
-			try {
-				a.execute();
-				this.setRefactored(true);
-			} catch (UnsupportedOperationException e) {
-				e.printStackTrace();// TODO: handle exception
-			}
-		}
-		metamodelManager.save(this.getModelPath().toString());
-		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
-		// SAVED!");
-	}
+//	@Deprecated
+//	/**
+//	 * Starting from the solution family each refactoring action should be applied
+//	 * in order to obtain a refactoring model on which a performance evaluation can
+//	 * be executed
+//	 * 
+//	 * @param metamodelManager
+//	 */
+//	public synchronized void executeRefactoring(MetamodelManager metamodelManager) {
+//		Refactoring ref = this.getVariableValue(0).getRefactoring();
+//
+//		for (RefactoringAction a : ref.getActions()) {
+//
+//			if (a instanceof AEmiliaConstChangesRefactoringAction) {
+//				ConstInit sourceCost = ((AEmiliaConstChangesRefactoringAction) a).getSourceConstInit();
+//				((AEmiliaConstChangesRefactoringAction) a).generateFactorOfChange();
+//			}
+//			try {
+//				a.execute();
+//				this.setRefactored();
+//			} catch (UnsupportedOperationException e) {
+//				e.printStackTrace();// TODO: handle exception
+//			}
+//		}
+//		metamodelManager.save(this.getModelPath().toString());
+//		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
+//		// SAVED!");
+//	}
 
 	public void executeRefactoring() {
 		Refactoring ref = this.getVariableValue(0).getRefactoring();
@@ -573,7 +568,7 @@ public class AemiliaRSolution extends RSolution {
 			}
 			try {
 				a.execute();
-				this.setRefactored(true);
+				this.setRefactored();
 			} catch (UnsupportedOperationException e) {
 				e.printStackTrace();// TODO: handle exception
 			}
@@ -591,10 +586,10 @@ public class AemiliaRSolution extends RSolution {
 		return parents;
 	}
 
-	public void setParents(RSolution parent1, RSolution parent2) {
-		this.parents[0] = (AemiliaRSolution) parent1;
-		this.parents[1] = (AemiliaRSolution) parent2;
-	}
+//	public void setParents(RSolution parent1, RSolution parent2) {
+//		this.parents[0] = (AemiliaRSolution) parent1;
+//		this.parents[1] = (AemiliaRSolution) parent2;
+//	}
 
 	public Map<String, List<ArchitecturalInteraction>> getMapOfPAs() {
 		return mapOfPAs;
@@ -611,30 +606,30 @@ public class AemiliaRSolution extends RSolution {
 		this.model = metamodelManager.getModel(modelPath);
 	}
 
-	public int getPAs() {
-		return numPAs;
-	}
+//	public int getPAs() {
+//		return numPAs;
+//	}
 
-	public float getPerfQ() {
-		return perfQ;
-	}
+//	public float getPerfQ() {
+//		return perfQ;
+//	}
 
-	public void setRefactored(boolean refactored) {
-		this.refactored = refactored;
-	}
+//	public void setRefactored(boolean refactored) {
+//		this.refactored = refactored;
+//	}
 
-	public void setPerfQ(float perfQ) {
-		this.perfQ = perfQ;
-	}
+//	public void setPerfQ(float perfQ) {
+//		this.perfQ = perfQ;
+//	}
 
-	public double getNumOfChanges() {
-		changes = 0.0;
-		Refactoring r = this.getVariableValue(0).getRefactoring();
-		for (RefactoringAction action : r.getActions()) {
-			changes += action.getNumOfChanges();
-		}
-		return changes;
-	}
+//	public double getNumOfChanges() {
+//		changes = 0.0;
+//		Refactoring r = this.getVariableValue(0).getRefactoring();
+//		for (RefactoringAction action : r.getActions()) {
+//			changes += action.getNumOfChanges();
+//		}
+//		return changes;
+//	}
 
 	public UUID getID() {
 		return ID;
@@ -644,30 +639,31 @@ public class AemiliaRSolution extends RSolution {
 		ID = iD;
 	}
 
-	public void resolve(MetamodelManager metamodelManager) {
-//		EasierLogger.logger_.info("Solving Solution #" + getName());
-		startingTime = Instant.now();
-		executeRefactoring();
-
-		// applyTransformation();
-		invokeSolver();
-
-		// controller.awaitExecutor();
-		updateModel();
-
-		updateThresholds();
-
-		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
-		// controller.getRuleFilePath(), this.getValPath(),
-		// metamodelManager);
-		countingPAs();
-
-		perfQ = evaluatePerformance();
-
-		FileUtils.simpleSolutionWriterToCSV(this);
-		endingTime = Instant.now();
-//		EasierLogger.logger_.info("Solution #" + getName() + " solved");
-	}
+//	@Deprecated
+//	public void resolve(Manager metamodelManager) {
+////		EasierLogger.logger_.info("Solving Solution #" + getName());
+//		startingTime = Instant.now();
+//		executeRefactoring();
+//
+//		// applyTransformation();
+//		invokeSolver();
+//
+//		// controller.awaitExecutor();
+//		updateModel();
+//
+//		updateThresholds();
+//
+//		// countingPAsOnAemiliaModel(controller.getPerfQuality(),
+//		// controller.getRuleFilePath(), this.getValPath(),
+//		// metamodelManager);
+//		countingPAs();
+//
+//		perfQ = evaluatePerformance();
+//
+//		FileUtils.simpleSolutionWriterToCSV(this);
+//		endingTime = Instant.now();
+////		EasierLogger.logger_.info("Solution #" + getName() + " solved");
+//	}
 
 	public Duration getElapsedTime() {
 		Duration elapsedTime = Duration.ZERO;
@@ -691,20 +687,20 @@ public class AemiliaRSolution extends RSolution {
 		this.mmaemiliaFolderStr = mmaemiliaFolderPath;
 	}
 
-	public Manager getManager() {
-		return this.manager;
-	}
+//	public Manager getManager() {
+//		return this.manager;
+//	}
+//
+//	public Controller getController() {
+//		return this.controller;
+//	}
+//
+//	public ResourceSet getResourceSet() {
+//		return resourceSet;
+//	}
+//
+//	public void setResourceSet(ResourceSet resourceSet) {
+//		this.resourceSet = resourceSet;
+//	}
 
-	public Controller getController() {
-		return this.controller;
-	}
-
-	public ResourceSet getResourceSet() {
-		return resourceSet;
-	}
-
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
-	
 }

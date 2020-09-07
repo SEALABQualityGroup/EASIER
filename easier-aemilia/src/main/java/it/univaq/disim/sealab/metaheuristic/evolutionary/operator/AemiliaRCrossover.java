@@ -124,17 +124,17 @@ public class AemiliaRCrossover<S extends AemiliaRSolution> extends RCrossover<S>
 			}
 		}
 
-		if (offspring.get(0).equals(parent1copy))
-			offspring.get(0).setCrossovered(false);
-		else {
-			offspring.get(0).setCrossovered(true);
+		if (!offspring.get(0).equals(parent1copy)) {
+//			offspring.get(0).setCrossovered(false);
+//		else {
+			offspring.get(0).setCrossovered();
 			AemiliaRSolution.XOverCounter++;
 		}
 
-		if (offspring.get(1).equals(parent2copy))
-			offspring.get(1).setCrossovered(false);
-		else {
-			offspring.get(1).setCrossovered(true);
+		if (!offspring.get(1).equals(parent2copy)) {
+//			offspring.get(1).setCrossovered();
+//		else {
+			offspring.get(1).setCrossovered();
 			AemiliaRSolution.XOverCounter++;
 		}
 
