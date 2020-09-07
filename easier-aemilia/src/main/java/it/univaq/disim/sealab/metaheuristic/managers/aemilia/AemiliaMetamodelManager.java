@@ -690,7 +690,7 @@ public class AemiliaMetamodelManager extends MetamodelManager {
 	public TwoEaglesBridge getTwoEaglesBridge() {
 		if (twoEaglesBridge == null) {
 			twoEaglesBridge = new TwoEaglesBridge();
-			Path twoTowersKernelPath = controller.getConfigurator().getTTKernel();
+			Path twoTowersKernelPath = controller.getConfigurator().getSolver();
 			twoEaglesBridge.setTwoTowersKernelPath(twoTowersKernelPath);
 			twoEaglesBridge.setResourceSet(this.getResourceSet());
 			// twoEaglesBridge.setAemiliaSpecification(getModel());

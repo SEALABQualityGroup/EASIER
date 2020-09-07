@@ -25,8 +25,8 @@ public class Configurator {
 	@Parameter(names = { "-m", "--models" }, required = true, description = "List of models")
 	private List<String> modelsPath = new ArrayList<>();
 
-	@Parameter(names = { "-tk", "--ttKernel" }, description = "Set the TTKernel solver path")
-	private String ttKernel;
+	@Parameter(names = {"--ttKernel" }, description = "Set the solver {TTKernel, LQN} path")
+	private String solver;
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
 	private String paretoFront;
@@ -233,8 +233,8 @@ public class Configurator {
 		return paths;
 	}
 
-	public Path getTTKernel() {
-		return Paths.get(ttKernel);
+	public Path getSolver() {
+		return Paths.get(solver);
 	}
 
 	public double getDistributionIndex() {

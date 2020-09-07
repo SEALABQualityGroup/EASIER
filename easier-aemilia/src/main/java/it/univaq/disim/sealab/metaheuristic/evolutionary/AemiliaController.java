@@ -462,7 +462,7 @@ public class AemiliaController implements Controller {
 
 		final TwoEaglesBridge tt = new TwoEaglesBridge();
 
-		tt.setTwoTowersKernelPath(configurator.getTTKernel());
+		tt.setTwoTowersKernelPath(configurator.getSolver());
 
 		tt.sorSRBMC(aemFile.iterator().next().toPath(), Paths.get(avaFolder.toString(), "ava.rew"),
 				Paths.get(avaFolder.toString(), "result"));
