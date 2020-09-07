@@ -77,31 +77,26 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		}
 
 		//List of all components within the model
-		List<Object> set = new ArrayList<>(
+		List<Object> cmps = new ArrayList<>(
 				EcoreUtil.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT));
 
 		//List of components whose getOperations is not empty
-		List<Component> cmps = new ArrayList<>();
-		for (Object cmp : set) {
+		List<Component> cmpsWithOps = new ArrayList<>();
+		for (Object cmp : cmps) {
 			if (!((Component) cmp).getAllOperations().isEmpty()) {
-				cmps.add((Component) cmp);
+				cmpsWithOps.add((Component) cmp);
 			}
 		}
 
 		//TODO this safety check shall be moved to precondition of this action
-		if (cmps.isEmpty()) {
+		if (cmpsWithOps.isEmpty()) {
 			System.err.println("Any components has at least one operation");
 			return null;
 		}
 
-		Component cmp = null;
-		do {
-			cmp = (Component) cmps.get(JMetalRandom.getInstance().nextInt(0, cmps.size() - 1));
-			System.out.println(cmp.toString());
-		} while (cmp.getOperations().isEmpty());
+		Component cmp = (Component) cmpsWithOps.get(JMetalRandom.getInstance().nextInt(0, cmps.size() - 1));
 
-		EList<Operation> randomComponentOperations = ((Component) set
-				.get(JMetalRandom.getInstance().nextInt(0, set.size() - 1))).getOperations();
+		EList<Operation> randomComponentOperations = cmp.getOperations();
 
 		return randomComponentOperations
 				.get(JMetalRandom.getInstance().nextInt(0, randomComponentOperations.size() - 1));

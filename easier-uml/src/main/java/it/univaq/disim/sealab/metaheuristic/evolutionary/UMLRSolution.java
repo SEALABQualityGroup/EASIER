@@ -26,6 +26,10 @@ import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
+/**
+ * @author peo
+ *
+ */
 @SuppressWarnings("serial")
 public class UMLRSolution extends RSolution {
 
@@ -45,7 +49,7 @@ public class UMLRSolution extends RSolution {
 	private Path folderPath;
 //	private ResourceSet resourceSet;
 //	private EObject model;
-	
+
 	private IModel iModel;
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
@@ -155,16 +159,17 @@ public class UMLRSolution extends RSolution {
 		modelPath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
 
 		try {
-			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(), modelPath.getParent().toFile()); 
+			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(),
+					modelPath.getParent().toFile());
 			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
-			
+
 			try {
 				iModel = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, true);
 			} catch (EolModelLoadingException | URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			// Files.copy(this.problem.getSourceModelPath(), target);
 		} catch (IOException e) {
 			System.out.println("[ERROR] The problem's model copy generated an error!!!");
@@ -293,30 +298,56 @@ public class UMLRSolution extends RSolution {
 	}
 
 	/**
-	 * This method counts the number of Performance Antipatterns (PAs)
-	 * 
+	 * This method counts the number of Performance Antipatterns (PAs) Shall invoke
+	 * the PADRE perf-detection file
 	 */
 	public void countingPAs() {
 		// TODO invoke EVL module to calculate PAs
 	}
 
+	/*
+	 * From the ANT scripts target name="ChangeRoot" depends="LoadModels">
+	 * <epsilon.xml.loadModel name="PlainLQN" file="${output}/${name}.xml"
+	 * read="true" store="true"/> <epsilon.eol src="changeRoot.eol"> <model
+	 * ref="PlainLQN"/> </epsilon.eol>
+	 * 
+	 * <epsilon.storeModel model="PlainLQN"/> <!-- <eclipse.refreshLocal
+	 * resource="${output}/output.xml" depth="infinite"/> -->
+	 * 
+	 * </target>
+	 * 
+	 * <target name="Solver" depends="ChangeRoot"> <exec
+	 * executable="${executableAbsPath}"> <arg value="${output}/${name}.xml"/>
+	 * </exec> </target>
+	 */
 	public void invokeSolver() {
 		// TODO invoke LQN solver
+		System.out.println("LQN Solver has been invoked..... Remove comments for the real invocation");
+		/*Path lqnSolverPath = this.manager.getController().getConfigurator().getSolver();
+		Path lqnModelPath = this.folderPath.resolve("output.xml");
+		try {
+			Process process = new ProcessBuilder(lqnSolverPath.toString(), lqnModelPath.toString()).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	public float evaluatePerformance() {
 		// TODO decide how to calculate perfQ, if it needed
+		System.out.println("PerfQ is not yet decided... Please consider how to compute this objective");
 		return -1;
 	}
 
+	/**
+	 * Invokes the ETL engine in order to run the UML2LQN transformation.
+	 */
 	public void applyTransformation() {
-		// TODO Link to Vincenzo's engine
 		try {
 //			new ETLStandalone().setModel(this.getModelPath()).execute();
 			new ETLStandalone(this.modelPath.getParent()).setModel(this.iModel).execute();
-//			metamodelManager.save(this);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error in runnig the ETL transformation");
 			e.printStackTrace();
 		}
 	}
@@ -333,7 +364,6 @@ public class UMLRSolution extends RSolution {
 			}
 		}
 		this.setRefactored();
-//		metamodelManager.save(this);
 		// Controller.logger_.info("Model of Solution #" + this.getName() + " has been
 		// SAVED!");
 	}
@@ -381,13 +411,13 @@ public class UMLRSolution extends RSolution {
 //		return model;
 //	}
 
-	@Override
-	public void setParents(RSolution parent1, RSolution parent2) {
-		this.parents[0] = (UMLRSolution) parent1;
-		this.parents[1] = (UMLRSolution) parent2;
+//	@Override
+//	public void setParents(RSolution parent1, RSolution parent2) {
+//		this.parents[0] = parent1;
+//		this.parents[1] = parent2;
+//
+//	}
 
-	}
-	
 	public IModel getIModel() {
 		return iModel;
 	}
