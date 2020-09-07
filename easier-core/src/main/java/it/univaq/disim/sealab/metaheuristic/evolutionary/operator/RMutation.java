@@ -92,7 +92,8 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 					int num_failures = 0;
 					while(!altered){
 						if(solution.alter(randomGenerator.nextInt(0, solution.getVariableValue(0).getRefactoring().getActions().size()-1))){
-							altered = true;
+							solution.setMutated();
+							//altered = true;
 							break;
 						}
 						else{
@@ -101,7 +102,6 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 								break;
 						}
 					}
-					solution.setMutated(altered);
 //					if(!altered)
 //						EasierLogger.logger_.info("Mutation left solution unchanged");
 //					else {

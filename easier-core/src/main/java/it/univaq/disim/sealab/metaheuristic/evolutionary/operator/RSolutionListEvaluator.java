@@ -24,10 +24,13 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
 
 		for (S sol : solutionList) {
+			//TODO swith to use in-memory object
 			sol.executeRefactoring();
 			sol.applyTransformation();
+			sol.save();
 		}
 
+		//Invokes the performance solver
 		for (S refactoringSolution : solutionList) {
 			if (executor != null) {
 				Runnable worker = new InvokeSolverRunnable(refactoringSolution);
