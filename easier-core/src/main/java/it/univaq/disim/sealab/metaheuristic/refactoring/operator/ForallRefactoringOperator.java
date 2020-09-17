@@ -23,7 +23,7 @@ import metamodel.mmaemilia.Attachment;
 import metamodel.mmaemilia.InputInteraction;
 import metamodel.mmaemilia.OutputInteraction;
 
-public class ForallRefactoringOperator extends ForAllOperatorImpl {
+public class ForallRefactoringOperator extends ForAllOperatorImpl implements RefactoringOperator{
 
 	private OclManager oclManager;
 
@@ -110,6 +110,12 @@ public class ForallRefactoringOperator extends ForAllOperatorImpl {
 				return false;
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean evaluateOperator() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

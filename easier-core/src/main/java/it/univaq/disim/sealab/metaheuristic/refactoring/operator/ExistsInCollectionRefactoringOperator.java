@@ -9,7 +9,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.SingleValuedParameter;
 
-public class ExistsInCollectionRefactoringOperator extends ExistsRefactoringOperator {
+public class ExistsInCollectionRefactoringOperator extends ExistsRefactoringOperator implements RefactoringOperator {
 
 //	private OclManager oclManager;
 
@@ -26,10 +26,21 @@ public class ExistsInCollectionRefactoringOperator extends ExistsRefactoringOper
 		final Object el = oclManager.evaluateOCL(this.getElement().getResolvingExpr(), contextualElement);
 		if (el == null)
 			return false;
-		List<Object> coll = new ArrayList<Object>(
-				(HashSet<Object>) oclManager.evaluateOCL(this.getCollection().getResolvingExpr(), contextualElement));
 
-		// if (coll != null && contextualElement != null) {
+		List<Object> coll = null;
+		
+		try {
+//			coll = new ArrayList<Object>(
+//				(HashSet<Object>) oclManager.evaluateOCL(this.getCollection().getResolvingExpr(), contextualElement));
+			coll = (List<Object>) oclManager.evaluateOCL(this.getCollection().getResolvingExpr(), contextualElement);
+		} catch (ClassCastException e) {
+			System.err.println("Error in evaluating the ExistsInCollectionRefOper");
+			e.printStackTrace();
+		}
+		
+		return coll.contains(el);
+		
+		/*// if (coll != null && contextualElement != null) {
 		Iterator<Object> resIterator = coll.iterator();
 		while (resIterator.hasNext()) {
 			Object app = resIterator.next();
@@ -37,6 +48,6 @@ public class ExistsInCollectionRefactoringOperator extends ExistsRefactoringOper
 				return true;
 		}
 //		}
-		return false;
+		return false;*/
 	}
 }

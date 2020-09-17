@@ -10,7 +10,7 @@ import logicalSpecification.Operator;
 import logicalSpecification.SingleValuedParameter;
 import logicalSpecification.impl.ExistsOperatorImpl;
 
-public class ExistsRefactoringOperator extends ExistsOperatorImpl {
+public class ExistsRefactoringOperator extends ExistsOperatorImpl implements RefactoringOperator{
 	
 	protected OclManager oclManager;
 	
@@ -73,6 +73,12 @@ public class ExistsRefactoringOperator extends ExistsOperatorImpl {
 			}
 			return false;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean evaluateOperator() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

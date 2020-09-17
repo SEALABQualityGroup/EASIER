@@ -2,20 +2,11 @@ package it.univaq.disim.sealab.metaheuristic.refactoring.operator;
 
 import java.util.Iterator;
 
-import logicalSpecification.AndOperator;
-import logicalSpecification.EqualOperator;
-import logicalSpecification.ExistsOperator;
-import logicalSpecification.ForAllOperator;
-import logicalSpecification.GreaterEqualOperator;
-import logicalSpecification.GreaterOperator;
-import logicalSpecification.LessEqualOperator;
-import logicalSpecification.LessOperator;
-import logicalSpecification.NotOperator;
 import logicalSpecification.Operator;
 import logicalSpecification.OrOperator;
 import logicalSpecification.impl.OrOperatorImpl;
 
-public class OrRefactoringOperator extends OrOperatorImpl {
+public class OrRefactoringOperator extends OrOperatorImpl implements RefactoringOperator{
 
 	public boolean evaluateOperator(Object contextualElement) {//throws ParserException {
 		// System.out.print("OR(");
@@ -81,6 +72,12 @@ public class OrRefactoringOperator extends OrOperatorImpl {
 				}
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean evaluateOperator() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	
