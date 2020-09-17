@@ -27,7 +27,6 @@ public abstract class RSequence {
 	protected MetamodelManager metamodelManager;
 	protected Controller controller;
 
-
 	public RSequence(RSolution solution) {
 		this.solution = solution;
 		manager = this.solution.getManager();
@@ -52,7 +51,8 @@ public abstract class RSequence {
 		while (this.refactoring.getActions().size() < length) {
 			if (!this.tryRandomPush(number_of_actions))
 				num_failures++;
-
+			System.out.println("Actual number of failure ");
+			ProgressBar.showBar(num_failures, allowed_failures);
 			if (num_failures >= allowed_failures) {
 				// START OVER
 				num_failures = 0;
@@ -67,7 +67,8 @@ public abstract class RSequence {
 	}
 
 	protected abstract boolean tryRandomPush(int n) throws UnexpectedException;
-	protected abstract boolean isFeasible(Refactoring tr) throws ParserException;
+
+	protected abstract boolean isFeasible(Refactoring tr);
 
 	public RSequence(RSequence seq) {
 		this.refactoring = seq.getRefactoring().clone(getSolution());
@@ -116,15 +117,10 @@ public abstract class RSequence {
 	}
 
 	public boolean isFeasible() {
-		try {
-			return this.isFeasible(this.refactoring);
-		} catch (ParserException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return this.isFeasible(this.refactoring);
 	}
 
-	public abstract boolean alter(int position, int n) throws UnexpectedException, ParserException; 
+	public abstract boolean alter(int position, int n) throws UnexpectedException, ParserException;
 
 	@Override
 	public String toString() {

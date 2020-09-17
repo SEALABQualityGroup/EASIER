@@ -21,16 +21,20 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 
 	@Override
 	public List<S> evaluate(List<S> solutionList, Problem<S> problem) {
-		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
+//		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
+		ExecutorService executor = Executors.newFixedThreadPool(1);
 
 		for (S sol : solutionList) {
 			sol.executeRefactoring();
 			sol.applyTransformation();
-			sol.save();
+			//TODO shall be moved to the multithreaded version
+			sol.invokeSolver();
+//			sol.save();
 		}
 
 		//Invokes the performance solver
-		for (S refactoringSolution : solutionList) {
+		//TODO whene executed with more thread it generates an issues with the lqn model path.
+		/*for (S refactoringSolution : solutionList) {
 			if (executor != null) {
 				Runnable worker = new InvokeSolverRunnable(refactoringSolution);
 				executor.execute(worker);
@@ -46,7 +50,7 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		// Ignore solution with perfQ == 0
 		ListIterator<S> iter = solutionList.listIterator();
@@ -56,29 +60,14 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		        iter.remove();
 		    }
 		    else {
-				sol.updateModel();
-				sol.updateThresholds();
+				//sol.updateModel();
+				//sol.updateThresholds();
 				sol.countingPAs();
 				FileUtils.simpleSolutionWriterToCSV(sol);
 				problem.evaluate(sol);
 			}
 		    
 		}
-
-		//TODO check whether the solutionList is empty
-		
-//		for (S sol : solutionList) {
-//			//Verify if it works
-//			if (sol.evaluatePerformance() == 0)
-//				solutionList.remove(sol);
-//			else {
-//				sol.updateModel();
-//				sol.updateThresholds();
-//				sol.countingPAs();
-//				FileUtils.simpleSolutionWriterToCSV(sol);
-//				problem.evaluate(sol);
-//			}
-//		}
 		return solutionList;
 	}
 
