@@ -106,13 +106,13 @@ public class UMLOclStringManager implements OclStringManager{
 		return query;
 	}
 
-	public String getComponentQuery(Component newComp) {
-		String query;
-//		query = "Component.allInstances()->select(comp | comp.getAppliedStereotypes()->exists(s | s.name = 'PaRunTInstance'))->"
-//				+ "select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
-		query = "Component.allInstances()->selectOne(c | c.name = '" + newComp.getName() + "' )";
-		return query;
-	}
+		public String getComponentQuery(Component newComp) {
+			String query;
+	//		query = "Component.allInstances()->select(comp | comp.getAppliedStereotypes()->exists(s | s.name = 'PaRunTInstance'))->"
+	//				+ "select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
+			query = "Component.allInstances()->select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
+			return query;
+		}
 
 	public String getDeploymentsOf(Node node) {
 		String query;

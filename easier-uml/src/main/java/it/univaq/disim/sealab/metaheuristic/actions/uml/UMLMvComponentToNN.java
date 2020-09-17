@@ -7,20 +7,17 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
@@ -34,7 +31,6 @@ import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.actions.UML.UMLPackage;
 import logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl;
-import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 
 public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements RefactoringAction {
 
@@ -42,8 +38,6 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final UMLRSolution solution;
 
-	private Component targetObject;
-	private Node targetNode;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -56,10 +50,13 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	public UMLMvComponentToNN(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
+		
+		
 
-		targetObject = getRandomComponent();
-
-		targetNode = getRandomNode();
+		umlTargetNodes = new BasicEList<>();
+		
+		umlCompToMove = getRandomComponent();
+		umlTargetNodes.add(getRandomNode());
 
 		setParameters();
 		createPreCondition();
@@ -138,8 +135,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		executor.setSource(eolModulePath);
 
 		// fills variable within the eol module
-		executor.setParameter(targetObject, "UML!Component", "self");
-		executor.setParameter(targetNode, "UML!Node", "target");
+		executor.setParameter(umlCompToMove, "UML!Component", "self");
+		executor.setParameter(umlTargetNodes.get(0), "UML!Node", "target");
 
 		try {
 			executor.execute();
@@ -193,7 +190,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 		setCompToMoveSVP(solution.getManager().createSingleValueParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getComponentQuery(targetObject)));
+						.getComponentQuery(umlCompToMove)));
 		params.add(getCompToMoveSVP());
 
 //		setAllOpsMVP(solution.getManager().createMultipleValuedParameter(
@@ -208,7 +205,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		// Sets the target node
 		setTargetNodesMVP(solution.getManager().createMultipleValuedParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getNodesQuery(Arrays.asList(targetNode))));
+						.getNodesQuery(umlTargetNodes)));
 
 		params.add(getAllCompsMVP());
 
