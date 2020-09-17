@@ -73,11 +73,4 @@ public class EGLStandalone extends EpsilonStandalone{
 	public void preProcess() {
 		// TODO Auto-generated method stub
 	}
-
-
-	@Override
-	public EpsilonStandalone setModel(IModel model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

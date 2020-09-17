@@ -43,14 +43,6 @@ public class EOLStandalone extends EpsilonStandalone {
 		return this;
 	}
 	
-	/**
-	 * @param m
-	 * @return
-	 */
-	public EpsilonStandalone setModel(IModel m) {
-		model.add(m);
-		return this;
-	}
 
 	@Override
 	public void postProcess(Path destFilePath) {

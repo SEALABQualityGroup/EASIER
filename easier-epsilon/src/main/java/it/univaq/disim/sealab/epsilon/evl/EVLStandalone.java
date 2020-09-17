@@ -66,6 +66,10 @@ public class EVLStandalone extends EpsilonStandalone {
 	 * @return
 	 */
 	public int getPAs(Path mmaemiliaFilePath, Path rulePath) {
+		return getPAs();
+	}
+	
+	public int getPAs() {
 		try {
 			execute();
 		} catch (Exception e) {
@@ -77,12 +81,6 @@ public class EVLStandalone extends EpsilonStandalone {
 
 	@Override
 	public void preProcess() {
-	}
-
-	@Override
-	public EpsilonStandalone setModel(IModel model) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
