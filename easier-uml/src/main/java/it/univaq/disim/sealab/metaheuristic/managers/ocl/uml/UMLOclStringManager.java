@@ -36,11 +36,11 @@ public class UMLOclStringManager implements OclStringManager{
 	}
 
 	public String getAllNodesQuery() {
-		return "Node.allInstances()";
+		return "Node.allInstances()->asSequence()";
 	}
 
 	public String getAllComponentsQuery() {
-		return "Component.allInstances()";
+		return "Component.allInstances()->asSequence()";
 	}
 
 	public String generateRandomComponentsQuery(int start, int end) {
@@ -86,7 +86,8 @@ public class UMLOclStringManager implements OclStringManager{
 
 	public String getNodesQuery(List<Node> list_of_nodes) {
 		String query;
-		query = "Node.allInstances()->select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
+		query = "Node.allInstances()->"
+//				+ "select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
 				+ "select(n | ";
 		Iterator<Node> iterator = list_of_nodes.iterator();
 		while (iterator.hasNext()) {
@@ -109,7 +110,7 @@ public class UMLOclStringManager implements OclStringManager{
 		String query;
 //		query = "Component.allInstances()->select(comp | comp.getAppliedStereotypes()->exists(s | s.name = 'PaRunTInstance'))->"
 //				+ "select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
-		query = "Component.allInstances()->select(c | c.name = '" + newComp.getName() + "' )->asSequence()->first()";
+		query = "Component.allInstances()->selectOne(c | c.name = '" + newComp.getName() + "' )";
 		return query;
 	}
 
@@ -128,7 +129,8 @@ public class UMLOclStringManager implements OclStringManager{
 
 	public String getNodeQuery(Node newNode) {
 		String query;
-		query = "Node.allInstances()->select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
+		query = "Node.allInstances()->"
+//				+ "select(node | node.getAppliedStereotypes()->exists(s | s.name = 'GaExecHost'))->"
 				+ "select(c | c.name = '" + newNode.getName() + "' )->asSequence()->first()";
 		return query;
 	}
@@ -140,13 +142,15 @@ public class UMLOclStringManager implements OclStringManager{
 
 	public String getAllOperationsQuery() {
 		String query;
-		query = "Operation.allInstances()->select(operation | operation.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))";
+		query = "Operation.allInstances()->asSequence()";
+//		->select(operation | operation.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))";
 		return query;
 	}
 
 	public String getOperationQuery(Operation operation) {
 		String query;
-		query = "Operation.allInstances()->select(operation | operation.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))->"
+		query = "Operation.allInstances()->"
+//				+ "select(operation | operation.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))->"
 				+ "select(op | op.name = '" + operation.getName() + "' )->asSequence()->first()";
 		return query;
 	}
@@ -154,7 +158,8 @@ public class UMLOclStringManager implements OclStringManager{
 	public String getOperationsOfQuery(Component comp) {
 		String query;
 		query = "Component.allInstances()->select(n | n.name = '" + comp.getName()
-				+ "').getOperations()->select(o | o.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))";
+				+ "').getOperations()->asSequence()";
+//				+ "->select(o | o.getAppliedStereotypes()->exists(s | s.name = 'GaStep'))";
 		return query;
 	}
 
