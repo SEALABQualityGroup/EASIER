@@ -17,8 +17,11 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
+import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
+import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
@@ -302,7 +305,13 @@ public class UMLRSolution extends RSolution {
 	 * the PADRE perf-detection file
 	 */
 	public void countingPAs() {
-		// TODO invoke EVL module to calculate PAs
+
+		EVLStandalone pasCounter = new EVLStandalone();
+
+		pasCounter.setSource(controller.getConfigurator().getEVLTemplate());
+		pasCounter.setModel(iModel);
+
+		numPAs = pasCounter.getPAs();
 	}
 
 	/*
@@ -322,15 +331,39 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void invokeSolver() {
 		// TODO invoke LQN solver
-		System.out.println("LQN Solver has been invoked..... Remove comments for the real invocation");
-		/*Path lqnSolverPath = this.manager.getController().getConfigurator().getSolver();
+		System.out.println("Invoking LQN Solver .....");// Remove comments for the real invocation");
+
+		Path lqnSolverPath = this.manager.getController().getConfigurator().getSolver();
 		Path lqnModelPath = this.folderPath.resolve("output.xml");
+
+		XMLUtil.conformanceChecking(lqnModelPath);
+
 		try {
 			Process process = new ProcessBuilder(lqnSolverPath.toString(), lqnModelPath.toString()).start();
 			process.waitFor();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
-		}*/
+		}
+		System.out.println("..... done");
+
+		System.out.println("Invoking the back annotator...");
+		backAnnotation();
+		System.out.println("... done");
+	}
+
+	private void backAnnotation() {
+		System.out.println("WARNING the back annotator is not invoked yet... please remove the following comments");
+
+		/*
+		 * EOLStandalone bckAnn = new EOLStandalone(); bckAnn.setModel(iModel);
+		 * 
+		 * bckAnn.setSource(controller.getConfigurator().getUml2Lqn().resolve(
+		 * "org.univaq.uml2lqn").resolve("backAnnotation.eol"));
+		 * bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), null,
+		 * true, false, true);
+		 * 
+		 * try { bckAnn.execute(); } catch (Exception e) { e.printStackTrace(); }
+		 */
 	}
 
 	public float evaluatePerformance() {
@@ -343,13 +376,20 @@ public class UMLRSolution extends RSolution {
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */
 	public void applyTransformation() {
+		ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
+		executor.setModel(this.iModel);
+		executor.setModel(
+				executor.createXMLModel("LQN", this.modelPath.getParent().resolve("output.xml"),
+						org.eclipse.emf.common.util.URI.createFileURI(controller.getConfigurator().getUml2Lqn()
+								.resolve("org.univaq.uml2lqn").resolve("lqnxsd").resolve("lqn.xsd").toString()),
+						false, true));
 		try {
-//			new ETLStandalone().setModel(this.getModelPath()).execute();
-			new ETLStandalone(this.modelPath.getParent()).setModel(this.iModel).execute();
+			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in runnig the ETL transformation");
 			e.printStackTrace();
 		}
+		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
 	}
 
 	public void executeRefactoring() {
@@ -372,14 +412,10 @@ public class UMLRSolution extends RSolution {
 		this.model = model;
 	}
 
-//	public UMLRSolution[] getParents() {
-//		return parents;
-//	}
-
-//	public void setParents(UMLRSolution parent1, UMLRSolution parent2) {
-//		this.parents[0] = parent1;
-//		this.parents[1] = parent2;
-//	}
+	@Override
+	public EObject getModel() {
+		return (EObject) iModel.allContents().toArray()[0];
+	}
 
 	public void refreshModel() {
 		getResourceSet().getResources().forEach(resource -> resource.unload());
@@ -388,44 +424,8 @@ public class UMLRSolution extends RSolution {
 		this.model = metamodelManager.getModel(modelPath);
 	}
 
-//	public ResourceSet getResourceSet() {
-//		return resourceSet;
-//	}
-
-//	public Manager getManager() {
-//		return this.manager;
-//	}
-//
-//	public Controller getController() {
-//		return this.controller;
-//	}
-//
-//	@Override
-//	public int getName() {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-
-//	@Override
-//	public EObject getModel() {
-//		return model;
-//	}
-
-//	@Override
-//	public void setParents(RSolution parent1, RSolution parent2) {
-//		this.parents[0] = parent1;
-//		this.parents[1] = parent2;
-//
-//	}
-
 	public IModel getIModel() {
 		return iModel;
 	}
-
-//	@Override
-//	public List<Resource> getResources() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 }
