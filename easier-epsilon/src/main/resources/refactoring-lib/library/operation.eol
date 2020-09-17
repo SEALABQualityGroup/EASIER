@@ -300,7 +300,11 @@ operation Operation _redeployOnNearLessUsedNode() : Boolean{
  
  
 operation Operation dynamicFixing(component : Component) {
+
+	info("self interactions size -> " + self.getAllInteractions().size().asString());	
+
 	var interaction = self.getAllInteractions()->first(); //TODO controllare potrebbe lavorare su un interaction non corretto
+	
 	var sourceLifeline = component.getLifeline(interaction);
 	
 	if(sourceLifeline.isUndefined()){
@@ -324,12 +328,24 @@ operation Operation dynamicFixing(component : Component) {
 		var beses = sourceLifeline.getBESes();
 		
 		if(debug()){
-			("beses --> "+beses ).println();
+			("self name -> " + self.getName()).println();
+			("source beses").println();
+			for(bes in beses){
+				"".println();
+				"&&&&&&&&&&&".println();
+				("bes.getOwner() --> "+bes.getOwner()).println();
+				("bes.getStart() --> "+bes.getStart()).println();
+				("bes.getFinish() --> "+bes.getFinish()).println();
+				"&&&&&&&&&&&".println(); 
+				"".println();
+			}
+			("new lifeline -> " + lifeline.getName()).println();
 		}
 		
-		var bes = beses->selectOne(bes | bes.getStart().getMessage().getSignature() == self );
+		var bes = beses->selectOne(bes | bes.getStart().getMessage().getSignature() == self and bes.getFinish().isTypeOf(MessageOccurrenceSpecification));
+		
 		if(debug()){
-			("bes --> "+bes ).println();
+			("bes --> "+ bes.asString() ).println();
 			("indexOf bes of self --> "+ bes.getIndexOf()).println();
 			("self operation --> "+self.getName()).println();
 		}
@@ -338,13 +354,6 @@ operation Operation dynamicFixing(component : Component) {
 		//sposto dal MOS_receive dell'op fino all'EOS esclusi
 		
 		for(i in sourceLifeline.getCoveredBys()){
-			if(debug()){
-				"************************".println();
-				/*("i.getOwner() --> "+i.getOwner()).println();
-				("bes.getOwner() --> "+bes.getOwner()).println();
-				("bes.getStart() --> "+bes.getStart()).println();*/
-			}
-			
 			//var indexOf_i = i.getOwner().getIndexOf(i,0);
 			var indexOf_i = i.getIndexOf();
 			
@@ -360,6 +369,11 @@ operation Operation dynamicFixing(component : Component) {
 				sourceCoveredBys.add(i);
 			}
 			if(debug()){
+				"************************".println();
+				("i.getOwner() --> "+i.getOwner()).println();
+				("bes.getOwner() --> "+bes.getOwner()).println();
+				("bes.getStart() --> "+bes.getStart()).println();
+				("bes.getFinish() --> "+bes.getFinish()).println();
 				("indexOf_i --> "+indexOf_i).println();
 				"************************".println(); 
 				"".println();
@@ -376,7 +390,7 @@ operation Operation dynamicFixing(component : Component) {
 		for(i in sourceCoveredBys){
 			if(debug()){
 				"removing element i".println();
-				("i of sourceCoveredBys --> "+i).println();
+				("i of sourceCoveredBys --> " + i).println();
 				if(i.isTypeOf(MessageOccurrenceSpecification))
 					i.getMessage().println();
 			}
@@ -387,18 +401,38 @@ operation Operation dynamicFixing(component : Component) {
 			//sposto il MOS_r dell'op e il EOS
 			lifeline.getCoveredBys().add(bes.getStart());
 			lifeline.getCoveredBys().add(bes.getFinish());
+			lifeline.getCoveredBys().add(bes);
 		
 			sourceLifeline.removeInteractionFragment(bes.getStart());
 			sourceLifeline.removeInteractionFragment(bes.getFinish());
+			sourceLifeline.removeInteractionFragment(bes);
+		}
+		
+		if(debug()){
+		
+			"print bes information: getStart and getFinish getMessage getSignature".println();
+			bes.getStart().println();
+			bes.getFinish().println();
+			bes.getStart().getMessage().println();
+			bes.getStart().getMessage().getSignature().println();
+			
+	
+			("sourceLifeline -> " + sourceLifeline.getBESes().size()).println();
+			("lifeline -> "+ lifeline.getBESes().size()).println();
+			
+			("lifeline getCoveredBys() -> " + lifeline.getCoveredBys());
+			
+			"new lifeline getCoveredBys()".println(); 
+			
+			for(i in  lifeline.getCoveredBys){
+				if(i.isTypeOf(MessageOccurrenceSpecification))
+					i.getMessage().println();
+			}
+			("@@@@@@@@@@@@@ DEBUG dynamic Fixing @@@@@@@@@@@@").println();
+			"".println();
 		}
 	}
-	if(debug()){
-		for(i in  sourceLifeline.getCoveredBys){
-			if(i.isTypeOf(MessageOccurrenceSpecification))
-				i.getMessage().println();
-		}
-		("@@@@@@@@@@@@@ DEBUG dynamic Fixing @@@@@@@@@@@@").println();
-	}
+
 }
 
 /*operation Operation dynamicFixing(class : Class) {
@@ -536,16 +570,8 @@ operation Operation moveToNewComponentDeployedToNewDevice() : Boolean{
 	//var splittedComponent = sourceComponent.createNewComponent();
 	
 	var splittedComponent : Component = new Component(); //creo il componente splittato
-	var package = Package.all.select(p|p.name.isDefined() and p.name.contains('static')).first();
-	if(package.isDefined()) {
-		package.packagedElement.add(splittedComponent);
-	} else {
-		package = new Package();
-		package.name = "staticView";
-		package.packagedElement.add(splittedComponent);
-		self.packagedElement.add(package);
-	}
-	//criticalOpPackage.packagedElement.add(splittedComponent); //aggiungo il componente splittato al package del componente sorgente
+	
+	criticalOpPackage.packagedElement.add(splittedComponent); //aggiungo il componente splittato al package del componente sorgente
 
 	splittedComponent.name = sourceComponent.getName() + " Splitted";
 	splittedComponent.cloneAppliedStereotypesFrom(sourceComponent); //clono gli stessi stereotipi del componente sorgente
@@ -845,9 +871,13 @@ operation Operation moveToNewNode() : Boolean{
 
 operation UML!Operation moveToNewComponentDeployedToNewNode() : Boolean {	
 	
+	"moveToNewComponent".println();
+	
+	
 	if(self.notLegacy()){
 		//static
 		var sourceComponent : Component = self.getOwner();
+		
 		
 		var splittedComponent = self.splitComponent();
 		
@@ -858,6 +888,7 @@ operation UML!Operation moveToNewComponentDeployedToNewNode() : Boolean {
 		
 		//dynamic
 		self.dynamicFixing(sourceComponent);
+		
 		if(debug()){
 			("moved operation --> "+self.getName()).println();
 		}

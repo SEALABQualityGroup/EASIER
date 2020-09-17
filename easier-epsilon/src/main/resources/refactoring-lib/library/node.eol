@@ -80,29 +80,10 @@ operation Node cloneLink(listOfLinkedNode : List(Property), packageContainer : P
 	}
 }
 
-operation Model createNewNode() : Node{
-	var newNode : Node = new Node; //creo il nuovo nodo
-	var packageContainer : Package = self.getNearestPackage();  //recupero il package container
-	packageContainer.addElement(newNode);
-	var package = Package.all.select(p|p.name.isDefined() and p.name.contains('deploy')).first();
-	if(package.isDefined()) {
-		package.packagedElement.add(newNode);
-	} else {
-		package = new Package();
-		package.name = "deploymentView";
-		package.packagedElement.add(newNode);
-		self.packagedElement.add(package);
-	}
-	newNode.name = newNode.getRandomName();
-	newNode.setRandoms();
-	return newNode;
-}
-
 operation Node createNewNode() : Node{
 	var newNode : Node = new Node; //creo il nuovo nodo
 	var packageContainer : Package = self.getNearestPackage();  //recupero il package container
 	packageContainer.addElement(newNode);
-	newNode.setRandoms();
 	newNode.name = self.getName()+" Splitted";
 	
 	var listOfLinkedNode = self.getDirectlyLinkedNode();
@@ -111,53 +92,12 @@ operation Node createNewNode() : Node{
 	newNode.cloneLink(listOfLinkedNode, packageContainer);
 	newNode.cloneAppliedStereotypesFrom(self);
 	
-	self.resetUtilization();
-	newNode.resetUtilization();
+	//self.resetUtilization();
+	//newNode.resetUtilization();
 	
 	return newNode;
 }
 
-
-operation Node createNewDevice() : Device {
-	var newNode : Device = new Device; //creo il nuovo nodo
-	var packageContainer : Package = self.getNearestPackage();  //recupero il package container
-	packageContainer.addElement(newNode);
-	newNode.setRandoms();
-	newNode.name = self.getName()+" Splitted";
-	
-	var listOfLinkedNode = self.getDirectlyLinkedNode();
-	listOfLinkedNode.add(self);
-	
-	newNode.cloneLink(listOfLinkedNode, packageContainer);
-	newNode.cloneAppliedStereotypesFrom(self);
-	
-	self.resetUtilization();
-	newNode.resetUtilization();
-	
-	return newNode;
-}
-
-
-operation Node setRandoms() {
-
-	var gaExecHost : Stereotype = Stereotype.all.selectOne(s|s.name='GaExecHost');
-	
-	gaExecHost.println();
-	
-	if(not self.hasStereotype("GaExecHost"))
-		self.applyStereotype(gaExecHost);
-		
-	var enum = getRandomSchedPolicy();
-	self.setValue(gaExecHost, "schedPolicy", enum);
-	var sf : Real = getRandomPositiveReal();
-	self.setValue(gaExecHost, "speedFactor", sf.toString());
-	var rm : Integer = getRandomPositiveInt();
-	self.setValue(gaExecHost, "resMult", rm.toString());
-	if(self.name.isUndefined()) {
-		var rand = new Native("java.util.Random");
-		self.name = "GaExecHost" + rand.nextInt();
-	}
-}
 
 operation Node clone(component : Component) : Node{
 		var newNode = self.createNewNode();
@@ -174,14 +114,47 @@ operation Node clone(component : Component) : Node{
 		return newNode;
 }
 
+
+operation UML!Node cloneDeployedArtifactFrom(node : UML!Node){
+	
+	//clone gli artefatti dal nodo splittato al nuovo nodo
+	for(dep in node.getDeployments()){
+	
+		for(art in dep.getDeployedArtifacts()){
+			var newDeployment; //e' il deployment dell artefatto appena creato
+			var newArtifact : Artifact = new Artifact; //creo l'artefatto
+			
+			//adds the new artifact to the package
+			self.getNearestPackage().addElement(newArtifact); //aggiungo l'artefatto al package del nodo
+			newArtifact.name = art.name;
+			
+			//For each manifestation 
+			for(man in art.getManifestations()){
+				//creates and add a new manifestation to the artifact
+				var newManifestation = newArtifact.createManifestation(man.getUtilizedElement().name, man.getUtilizedElement());
+			} 
+			//creates and adds a new deployment to the node, with the artifact name
+			newDeployment = self.createDeployment(newArtifact.name);
+			
+			newDeployment.getDeployedArtifacts().add(newArtifact); //aggiungo al deploy l'artefatto
+		}
+	}
+}
+
+
 operation Node clone(node : Node) : Node{
-		//var newNode = self.createNewNode();
-		var listOfLinkedNode = node.getDirectlyLinkedNode();
+
+		//("source -->" + UML!Model.all().size()).println();
+
+		var listOfLinkedNode = node.getDirectlyLinkedNode();		
+		
 		var packageContainer : Package = node.getNearestPackage();
 		
 		self.cloneAppliedStereotypesFrom(node); //clono gli stereotipi del nodo sorgente
-		//self.cloneDeployedArtifactFrom(node, component); //clono gli artefatti del nodo sorgente
-		self.cloneLink(listOfLinkedNode, packageContainer);		
+		
+		self.cloneDeployedArtifactFrom(node); //clono gli artefatti del nodo sorgente
+		
+		self.cloneLink(listOfLinkedNode, packageContainer);
 }
 
 operation Node clone(class : Class) : Node{

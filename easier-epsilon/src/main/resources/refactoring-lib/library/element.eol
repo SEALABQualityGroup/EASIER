@@ -10,10 +10,39 @@ operation Element cloneAppliedStereotypesFrom(element : Element) {
 		showError("Method: cloneAppliedStereotypesFrom() in element.eol");
 	}else{
 		for(stereotype in element.getAppliedStereotypes()){
-			if(not self.hasStereotype(stereotype.getName()))
-				self.applyStereotype(stereotype);
-			if(stereotype.name <> "RtUnit" and stereotype.name <> "GaExecHost") 
+			self.getAppliedStereotypes().println();
+			element.getAppliedStereotypes().println();
+			
+			if(not self.hasStereotype(stereotype.getName())){
+			
+				stereotype.superClass.name.println("Stereotype Super Classes: ");
+				self.eClass.eAllSuperTypes.name.println("Element EClass Super Types: ");
+			
+				"[WARNING] The cloneAppliedStereotypesFrom(element) has been disabled due to internal issues!!!".println();	
+				//self.applyStereotype(stereotype);
+			
+			}
+			if(stereotype.name <> "RtUnit" and stereotype.name <> "GaExecHost"){ 
 				self.setAttributeValueFrom(stereotype, element);
+				("setAttributeValueFrom() -->" + UML!Model.all().size()).println();
+			}
+		}
+		
+		//Understand why a copy of the root model is created after applying this action. Just to go ahead the following shall remove that copy
+		/*if(UML!Model.all()->select(m | m.name == "Model").size() > 1){
+			"[WARNING] a critical change is going to be applied to the model!!! [TAKE CARE about THIS!!!]".println(); 
+			"applying fixing".println(); 
+			UML!Model.all()->select(m | m.name == "Model")->last().destroy();
+		}*/	
+		
+		if(debug()){
+			"{{{{{{{}}}}}}}}".println();
+			for(st in self.getAppliedStereotypes()){
+				st.println();
+				st.getName().println();
+				st.getOwner().getOwner().println();
+			}
+			"{{{{{{{}}}}}}}}".println();
 		}
 	}
 }

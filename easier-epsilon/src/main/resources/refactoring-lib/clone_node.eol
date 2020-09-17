@@ -1,7 +1,6 @@
-//Move an Operation to new Component that is deployed on a New Node
+//Deploy a Component to a New Node
 
 //libraries
-
 import "library/artifact.eol";
 import "library/association.eol";
 //import "library/class.eol";
@@ -19,12 +18,19 @@ import "library/message.eol";
 import "library/node.eol";
 import "library/operation.eol";
 import "library/package.eol";
-
-
 //HELPER
 import "library/HELPER.eol";
 
-("moving -->" + self.getName()).println();
-self.moveToNewComponentDeployedToNewNode();
-"done".println();
+("cloning --> " + target.getName()).println();
 
+var newNode : Node = new Node; //creo il nuovo nodo
+var packageContainer : Package = target.getNearestPackage();  //recupero il package container
+packageContainer.addElement(newNode);
+newNode.name = target.getName()+" Splitted";
+
+newNode.clone(target);
+
+//self.clone(target);
+
+
+"done".println();

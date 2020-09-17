@@ -1,6 +1,5 @@
 import "metric_functions.eol";
-//import "thresholds_eSsopper.eol";
-import "thresholds_trainticket.eol";
+import "thresholds.eol";
 
 //libraries
 import "library/artifact.eol";
@@ -25,7 +24,7 @@ import "library/package.eol";
 import "library/HELPER.eol";
 
 pre{
-	//showThresholds();
+	showThresholds();
 }
 
 
@@ -39,9 +38,8 @@ pre{
 context UML!Operation {
 	critique PaF {
 		check: 
-			self.test() 
-			/*not (self.F_probExec() and 	self.F_resDemand(th_maxResDemand()) and
-				(self.F_T(th_SthReq()) or self.F_maxHwUtil(th_maxHwUtil()->first()) ))*/ 
+			not (self.F_probExec() and 	self.F_resDemand(th_maxResDemand()) and
+				(self.F_T(th_SthReq()) or self.F_maxHwUtil(th_maxHwUtil()->first()) )) 
 		message : "PaF <Operation> " + self.name
 		fix {
 			title : "Move it to a New Component deployed to a New Node"

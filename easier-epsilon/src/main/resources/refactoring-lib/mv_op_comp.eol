@@ -24,7 +24,12 @@ import "library/package.eol";
 //HELPER
 import "library/HELPER.eol";
 
-("moving -->" + self.getName()).println();
-self.moveToNewComponentDeployedToNewNode();
+("cloninig -->" + self.getName()).println();
+
+var sourceComponent : Component = self.getOwner();
+targetComponent.deployOnNewNodes(sourceComponent);
+targetComponent.moveOperation(self); //sposta l'operazione sul componente appena creato
+self.dynamicFixing(sourceComponent);
+
 "done".println();
 
