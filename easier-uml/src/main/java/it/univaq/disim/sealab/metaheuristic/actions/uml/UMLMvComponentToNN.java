@@ -22,7 +22,6 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
-import it.univaq.disim.sealab.epsilon.eol.UmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -231,6 +230,15 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 		return cloned;
 
+	}
+	
+	
+	public boolean equals(Object op) {
+		if(op.getClass() != this.getClass())
+			return false;
+		if(!this.getUmlCompToMove().equals(((UMLMvComponentToNN)op).getUmlCompToMove()))
+			return false;
+		return true;
 	}
 
 }

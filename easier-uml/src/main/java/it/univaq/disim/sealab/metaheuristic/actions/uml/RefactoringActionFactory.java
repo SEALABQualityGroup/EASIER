@@ -11,7 +11,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 public class RefactoringActionFactory {
 
 	//TODO check if it can be improved
-	private static Class<?>[] supportedRefactoringActions = {UMLMvOperationToNCToNN.class};//, UMLMvComponentToNN.class};
+	private static Class<?>[] supportedRefactoringActions = {UMLCloneNode.class}; //,UMLMvOperationToComp.class, UMLMvOperationToNCToNN.class, UMLMvComponentToNN.class};
 
 	public static RefactoringAction getRandomAction(RSolution sol) {
 
