@@ -1,12 +1,12 @@
 package it.univaq.disim.sealab.epsilon;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.nio.file.Paths;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.uml.UmlModel;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
-import it.univaq.disim.sealab.epsilon.eol.UmlModel;
 
 public class EOLStandaloneTest {
 
