@@ -36,6 +36,14 @@
 			<version>${epsilon.version}</version>
 			<scope>${epsilon.scope}</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.emc.plainxml</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.epsilon</groupId>
 			<artifactId>org.eclipse.epsilon.egl.engine</artifactId>
@@ -48,14 +56,14 @@
 			<version>${epsilon.version}</version>
 			<scope>${epsilon.scope}</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.epsilon</groupId>
 			<artifactId>org.eclipse.epsilon.eol.engine</artifactId>
 			<version>${epsilon.version}</version>
 			<scope>${epsilon.scope}</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.epsilon</groupId>
 			<artifactId>org.eclipse.epsilon.etl.engine</artifactId>
