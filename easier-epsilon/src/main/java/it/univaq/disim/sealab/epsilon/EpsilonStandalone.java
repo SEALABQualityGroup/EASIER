@@ -237,7 +237,9 @@ public abstract class EpsilonStandalone {
 		properties.put(EmfModel.PROPERTY_NAME, name);
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
-		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
+		properties.put(EmfModel.PROPERTY_MODEL_URI, URI
+				.createFileURI("/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/test-dam.uml"));
+//		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
 		properties.put(EmfModel.PROPERTY_CACHED, true);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);

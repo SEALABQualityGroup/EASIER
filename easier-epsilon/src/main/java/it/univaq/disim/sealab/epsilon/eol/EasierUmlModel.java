@@ -10,24 +10,38 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.URIMappingRegistryImpl;
 import org.eclipse.emf.mapping.ecore2xml.Ecore2XMLPackage;
-import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.uml.UmlModel;
-import org.eclipse.papyrus.MARTE.MARTEPackage;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
-import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.PAM.PAMPackage;
-import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.SAM.SAMPackage;
+import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
-import org.eclipse.uml2.uml.resource.UMLResource;
-import org.eclipse.uml2.uml.util.UMLUtil;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 public class EasierUmlModel extends UmlModel {
+	
+	
+	private final ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
+	
+	private final URI ulNewModel = URI.createURI("NewModel.uml");
+	private final URI upNewModel = URI
+			.createFileURI("/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/test-dam.uml");
+	
+	private final URI ulProfile = URI.createURI("GQAM.profile.uml");
+	private final URI upProfile = URI.createFileURI(
+			"/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/MARTE.MARTE_AnalysisModel.GQAM.profile.uml");
+
 
 	@Override
 	protected ResourceSet createResourceSet() {
 		ResourceSet resourceSet = super.createResourceSet();
+		
+		UMLResourcesUtil.init(resourceSet);
+		converter.getURIMap().put(ulProfile, upProfile);
+		converter.getURIMap().put(ulNewModel, upNewModel);
+		
 //		UMLUtil.init(resourceSet);
 //		resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
 
@@ -49,6 +63,11 @@ public class EasierUmlModel extends UmlModel {
 //		registerMetaModels();
 
 		return resourceSet;
+	}
+	
+	public Profile getGQAM() {
+		 return (Profile) this.getResource().getResourceSet()
+			.getResource(converter.normalize(ulProfile), true).getContents().get(0);
 	}
 
 	public ResourceSet getResourceSet() {
