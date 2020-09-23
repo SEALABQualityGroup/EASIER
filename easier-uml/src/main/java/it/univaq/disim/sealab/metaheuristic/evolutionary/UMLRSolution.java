@@ -5,15 +5,18 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
+import java.util.Collection;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
@@ -351,19 +354,71 @@ public class UMLRSolution extends RSolution {
 		System.out.println("... done");
 	}
 
+	//Vincenzo's solution
+	/*
+	 * public static PlainXmlModel loadXMLModel(String name, String model, String
+	 * path) throws EolModelLoadingException {
+	 * 
+	 * PlainXmlModel resource = new PlainXmlModel();
+	 * ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap() .put("xml",
+	 * new GenericXMLResourceFactoryImpl());
+	 * 
+	 * StringProperties properties = new StringProperties();
+	 * properties.put(PlainXmlModel.PROPERTY_NAME, name);
+	 * properties.put(PlainXmlModel.PROPERTY_FILE, model);
+	 * properties.put(PlainXmlModel.PROPERTY_READONLOAD, true);
+	 * properties.put("type", "xml");
+	 * 
+	 * resource.load(properties); return resource; }
+	 * 
+	 * String xmlModel =
+	 * Paths.get(MinimalExample.class.getResource("/output/agv.xml") .toURI())
+	 * .toString();
+	 * 
+	 * String schema = Paths.get(MinimalExample.class.getResource("/lqnxsd/lqn.xsd")
+	 * .toURI()) .toString();
+	 * 
+	 * XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder(); Collection<EObject>
+	 * generatedPackages = xsdEcoreBuilder.generate(URI.createURI(schema));
+	 * 
+	 * // register the packages loaded from XSD for (EObject generatedEObject :
+	 * generatedPackages) { if (generatedEObject instanceof EPackage) { EPackage
+	 * generatedPackage = (EPackage) generatedEObject;
+	 * EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(),
+	 * generatedPackage); } }
+	 * 
+	 * PlainXmlModel resource = loadXMLModel("LQN", xmlModel, "/output/agv.xml");
+	 */
 	private void backAnnotation() {
-		System.out.println("WARNING the back annotator is not invoked yet... please remove the following comments");
+//		System.out.println("WARNING the back annotator is not yet invoked ... please remove the following comments");
 
-		/*
-		 * EOLStandalone bckAnn = new EOLStandalone(); bckAnn.setModel(iModel);
-		 * 
-		 * bckAnn.setSource(controller.getConfigurator().getUml2Lqn().resolve(
-		 * "org.univaq.uml2lqn").resolve("backAnnotation.eol"));
-		 * bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), null,
-		 * true, false, true);
-		 * 
-		 * try { bckAnn.execute(); } catch (Exception e) { e.printStackTrace(); }
-		 */
+		EOLStandalone bckAnn = new EOLStandalone();
+		bckAnn.setModel(iModel);
+
+		bckAnn.setSource(
+				controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("backAnnotation.eol"));
+
+		// Points to lqn schema file and stores pacakges into the global package registry
+		XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+		String schema = controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+				.resolve("lqn.xsd").toString();
+		Collection<EObject> generatedPackages = xsdEcoreBuilder
+				.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+		for (EObject generatedEObject : generatedPackages) {
+			if (generatedEObject instanceof EPackage) {
+				EPackage generatedPackage = (EPackage) generatedEObject;
+				EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+			}
+		}
+
+		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
+
+		try {
+			bckAnn.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public float evaluatePerformance() {
