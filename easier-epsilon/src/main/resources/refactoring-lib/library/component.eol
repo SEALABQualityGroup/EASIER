@@ -5,7 +5,15 @@ operation Component cloneOwnedOperationFrom(componentSource : Component){
 }
 
 operation Component moveOperation( op : Operation ) : Boolean{
-	if(self.ownedOperation.add(op)){
+
+	if(debug()){
+		self.getName().println("Component -> ");
+		op.getName().println("Operation -> ");
+
+		self.getOwnedOperations().println("Owned Operations -> ");
+	}
+
+	if(self.getOwnedOperations().add(op)){
 		return true;
 	}
 	return false;
@@ -239,7 +247,7 @@ operation Component deployOnNewNodes(component : Component) {
 	if(listOfNode.notEmpty())
 		newNode = listOfNode->first().createNewNode();
 	else
-		newNode = self.getModel().createNewNode();
+		newNode = Node.all()->first().createNewNode();
 	
 	info("new node --> " + newNode.getName());
 	

@@ -15,11 +15,12 @@ operation Element cloneAppliedStereotypesFrom(element : Element) {
 			
 			if(not self.hasStereotype(stereotype.getName())){
 			
-				stereotype.superClass.name.println("Stereotype Super Classes: ");
-				self.eClass.eAllSuperTypes.name.println("Element EClass Super Types: ");
+				//Kolovos's suggestion
+				//stereotype.superClass.name.println("Stereotype Super Classes: ");
+				//self.eClass.eAllSuperTypes.name.println("Element EClass Super Types: ");
 			
-				"[WARNING] The cloneAppliedStereotypesFrom(element) has been disabled due to internal issues!!!".println();	
-				//self.applyStereotype(stereotype);
+				//"[WARNING] The cloneAppliedStereotypesFrom(element) has been disabled due to internal issues!!!".println();	
+				self.applyStereotype(stereotype);
 			
 			}
 			if(stereotype.name <> "RtUnit" and stereotype.name <> "GaExecHost"){ 

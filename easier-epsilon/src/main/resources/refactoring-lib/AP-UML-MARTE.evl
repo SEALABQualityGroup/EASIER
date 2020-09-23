@@ -1,5 +1,7 @@
 import "metric_functions.eol";
-import "thresholds.eol";
+import "metric_functions_fuzzy.eol";
+//import "thresholds_eSsopper.eol";
+import "thresholds_trainticket.eol";
 
 //libraries
 import "library/artifact.eol";
@@ -24,7 +26,7 @@ import "library/package.eol";
 import "library/HELPER.eol";
 
 pre{
-	showThresholds();
+	//showThresholds();
 }
 
 
@@ -38,8 +40,8 @@ pre{
 context UML!Operation {
 	critique PaF {
 		check: 
-			not (self.F_probExec() and 	self.F_resDemand(th_maxResDemand()) and
-				(self.F_T(th_SthReq()) or self.F_maxHwUtil(th_maxHwUtil()->first()) )) 
+			(self.F_probExec_fuzzy() * self.F_resDemand_fuzzy() *
+				(self.F_T_fuzzy() + self.F_maxHwUtil_fuzzy() )) < 0.85 
 		message : "PaF <Operation> " + self.name
 		fix {
 			title : "Move it to a New Component deployed to a New Node"
@@ -112,12 +114,12 @@ context UML!Operation {
  *							MAX HW UTIL is in the first position							 *
  *					CPU max and min are in second and third position						 *	
  *					DISK max and min are in fourth and fifth position						 *
- *********************************************************************************************
+ *********************************************************************************************/
  
 context Node {
 	critique CPS {
 		check: 
-			not ( self.F_maxQL(th_maxQL()) and self.F_maxHwUtil(th_maxHwUtil()) )
+			( self.F_maxQL_fuzzy() * self.F_maxHwUtil_fuzzy() ) < 0.85
 		message : "CPS <" + self.type.name + "> " + self.name
 		fix {
 			title : "Move it to a new Component deployed to a new Node"
@@ -263,13 +265,14 @@ context Node {
  *	 								Extensive Processing  									 *
  *							Antipattern Detection and Validation							 *
  *										reviewed											 *
- *********************************************************************************************
+ *********************************************************************************************/
 
 context UML!Component {
  	critique ExtensiveProcessingAP{
  		check:
- 			not (self.F_resDemand(th_maxResDemand(), th_minResDemand()) and self.F_probExec() and 
- 						( self.F_maxHwUtil(th_maxHwUtil()->first()) or self.F_RT(th_SrtReq()) ))
+ 			not (self.F_resDemand_fuzzy() * 
+ 				( self.F_maxHwUtil_fuzzy() or self.F_RT_fuzzy() ) > 0.85 
+ 					and self.F_probExec_fuzzy())
  		message : "EP <" + self.type.name + "> " + self.name
  		fix {
 			title : "Move it to a new Component deployed to a new Node"
@@ -304,14 +307,14 @@ context UML!Component {
  *								Blob Controller & Container									 *
  *							Antipattern Detection and Validation							 *
  *										reviewed 											 *
- *********************************************************************************************
+ *********************************************************************************************/
 
 context UML!Component {
 	critique Blob_DataContainer{
 		check:
-			not((self.F_numSupplierConnects(th_maxSupplierConnects()) and self.F_numMsgsIn(th_numReceivedMsgs()) and 
-				(self.F_maxHwUtil(th_maxHwUtil()->first()) or self.F_maxNetUtil(th_maxNetUtil())) )
-			)
+			(self.F_numSupplierConnects_fuzzy() * self.F_numMsgsIn_fuzzy() * 
+				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.85
+			
 		message : "Blob Container <" + self.type.name + "> " + self.getName()
 		fix {
 			title : "Move its critical operation to a New Component deployed to a New Node"
@@ -386,8 +389,8 @@ context UML!Component {
 context Component {
 	critique Blob_DataController {
 		check:
-			not( self.F_numClientConnects(th_maxClientConnects()) and self.F_numMsgsOut(th_numSentMsgs()) and 
-				(self.F_maxHwUtil(th_maxHwUtil()->first()) or self.F_maxNetUtil(th_maxNetUtil())) )
+			( self.F_numClientConnects_fuzzy() * self.F_numMsgsOut_fuzzy() * 
+				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.85
 				
 		message : "Blob Container <" + self.type.name + "> " + self.getName()
 		fix {
@@ -436,17 +439,15 @@ context Component {
  *	 								Empty Semi Truck										 *
  *							Antipattern Detection and Validation							 *
  *										reviewed											 *
- *********************************************************************************************
+ *********************************************************************************************/
  
 
-context Component {
+context UML!Component {
  	critique EmptySemiTruck{
- 		check{
- 			if(self.F_numRemMsgs(th_maxRemMsgs()) and 
- 				(self.F_maxNetUtil(th_minNetUtil()) or self.F_numRemInst(th_maxRemInst())))
- 					return false;
- 			return true;
- 		}
+ 		check:
+ 			(self.F_numRemMsgs_fuzzy() * 
+ 				(self.F_maxNetUtil_fuzzy() + self.F_numRemInst_fuzzy())) < 0.85
+ 		
  		message : "EST <" + self.type.name + "> " + self.name
  		fix {
 			title : "Apply Session Facade Pattern"

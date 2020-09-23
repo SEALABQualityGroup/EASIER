@@ -182,6 +182,46 @@ operation log(string : String){
 	string.println();
 }
 
+operation utilizationThresholdMeanSTDdev() : Real{
+
+	var nodes = Node.all->select(n | n.hasStereotype("GaExecHost"));
+	
+	var utils : Sequence(Real);
+	
+	for(n in nodes){
+	
+		n.getStereotype("GaExecHost").println("Sterotype -> ");
+		n.getTag("GaExecHost", "utilization").println("utilization -> ");
+		utils.add(n.getTag("GaExecHost", "utilization")->first().asReal());
+	}
+	
+	utils.println("Sum of utils -> ");
+	utils.sum.println("Total UTILS -> ");
+	
+	var avg = utils.sum() / utils.size();
+	
+	var stddev : Real;
+	
+	for(x in utils){
+		var aux = 0.0;
+		aux = x - avg;
+		aux = aux * aux;
+				
+		stddev = stddev + aux;
+	}
+	
+	var mathTool = Native("java.lang.Math");
+	mathTool.class.println("MATH TOOL ->");
+	mathTool.sqrt(stddev/utils.size().asDouble()).println("MATH SQRT -> ");
+	
+	avg.println("Util avg -> ");
+	stddev.println("STDDEV -> ");
+	
+	return (avg + stddev); 
+
+}
+
+
 operation showThresholds() {
 	log("------ showThresholds ------");
 	log("th_maxMsgs --> " + th_maxMsgs().asString());

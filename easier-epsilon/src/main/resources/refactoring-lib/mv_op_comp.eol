@@ -24,7 +24,7 @@ import "library/package.eol";
 //HELPER
 import "library/HELPER.eol";
 
-("cloninig -->" + self.getName()).println();
+("cloninig -->" + self.getName() + "--> to " + targetComponent.getName()).println();
 
 var sourceComponent : Component = self.getOwner();
 targetComponent.deployOnNewNodes(sourceComponent);
