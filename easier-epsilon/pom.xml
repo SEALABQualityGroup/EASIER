@@ -76,6 +76,12 @@
 			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
 			<version>2.15.0.v20180706-1146</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>es.unizar.profiles</groupId>
+			<artifactId>com.masdes.dam.static.profile</artifactId>
+			<version>0.13.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- <dependency> -->
 		<!-- <groupId>it.univaq.disim.sealab.emf</groupId> -->

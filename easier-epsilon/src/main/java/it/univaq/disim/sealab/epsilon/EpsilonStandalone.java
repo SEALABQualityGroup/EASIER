@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
+import org.eclipse.emf.ecore.xmi.impl.GenericXMLResourceFactoryImpl;
 import org.eclipse.emf.mapping.ecore2xml.Ecore2XMLPackage;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
@@ -223,23 +225,26 @@ public abstract class EpsilonStandalone {
 			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
 		EmfModel emfModel = new EasierUmlModel();
 
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", UMLResourceFactoryImpl.INSTANCE);
-		
-		
-	/*	it seems no longer to be needed
-	 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI,
-				URI.createURI("/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.profile.uml"));
-
-		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GQAMPackage.eNS_URI, URI.createURI(
-				"/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.MARTE_AnalysisModel.GQAM.profile.uml"));*/
+		/*
+		 * it seems no longer to be needed
+		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI,
+		 * URI.createURI(
+		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.profile.uml")
+		 * );
+		 * 
+		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GQAMPackage.eNS_URI,
+		 * URI.createURI(
+		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.MARTE_AnalysisModel.GQAM.profile.uml"
+		 * ));
+		 */
 
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
-		properties.put(EmfModel.PROPERTY_MODEL_URI, URI
-				.createFileURI("/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/test-dam.uml"));
+		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
 //		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
+		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");//,http://com.masdes.dam/profiles/Core/1.0");
 		properties.put(EmfModel.PROPERTY_CACHED, true);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);
@@ -299,26 +304,33 @@ public abstract class EpsilonStandalone {
 	 * @param cached          true to improve the performance
 	 * @return
 	 */
-	public Model createPlainXMLModel(String name, Path xmlFilePath, String uri, boolean readOnLoad,
-			boolean storeOnDisposal, boolean cached) {
+	public PlainXmlModel createPlainXMLModel(String name, Path xmlFilePath, boolean readOnLoad, boolean storeOnDisposal,
+			boolean cached) {
 
 		// thanks to Epsilon source code see
 		// org.eclipse.epsilon.workflow/ant/org/eclipse/epsilon/workflow/tasks/xml/LoadXmlModel.java,
-		// for the orginal usage
+		// for the orginal version
 		PlainXmlModel model = new PlainXmlModel();
-		// Load the XML document
-		model.setName(name);
-		model.getAliases().add(name);
-		model.setReadOnLoad(readOnLoad);
-		model.setStoredOnDisposal(storeOnDisposal);
-		model.setCachingEnabled(cached);
-		model.setFile(xmlFilePath.toFile());
 
-		if (uri != null)
-			model.setUri(uri);
+		ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap().put("lqxo",
+				new GenericXMLResourceFactoryImpl());
+
+		// Load the XML document
+//		model.setName(name);
+//		model.setReadOnLoad(readOnLoad);
+//		model.setStoredOnDisposal(storeOnDisposal);
+//		model.setCachingEnabled(cached);
+//		model.setFile(xmlFilePath.toFile());
+
+		StringProperties properties = new StringProperties();
+		properties.put(PlainXmlModel.PROPERTY_NAME, name);
+		properties.put(PlainXmlModel.PROPERTY_FILE, xmlFilePath.toString());
+		properties.put(PlainXmlModel.PROPERTY_READONLOAD, true);
+		properties.put("type", "lqxo");
 
 		try {
-			model.load();
+			model.load(properties);
+//			model.load();
 		} catch (EolModelLoadingException ex) {
 			ex.printStackTrace();
 		}

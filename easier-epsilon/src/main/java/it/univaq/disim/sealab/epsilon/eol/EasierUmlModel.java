@@ -1,150 +1,166 @@
 package it.univaq.disim.sealab.epsilon.eol;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
+import java.nio.file.Path;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
-import org.eclipse.emf.ecore.resource.impl.URIMappingRegistryImpl;
-import org.eclipse.emf.mapping.ecore2xml.Ecore2XMLPackage;
 import org.eclipse.epsilon.emc.uml.UmlModel;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
+import org.eclipse.papyrus.MARTE.MARTE_Foundations.Alloc.AllocPackage;
+import org.eclipse.papyrus.MARTE.MARTE_Foundations.CoreElements.CoreElementsPackage;
+import org.eclipse.papyrus.MARTE.MARTE_Foundations.GRM.GRMPackage;
+import org.eclipse.papyrus.MARTE.MARTE_Foundations.NFPs.NFPsPackage;
+import org.eclipse.papyrus.MARTE.MARTE_Foundations.Time.TimePackage;
 import org.eclipse.uml2.uml.Profile;
-import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
+import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
+import com.masdes.dam.Core.CorePackage;
+import com.masdes.dam.DAM.DAMPackage;
+import com.masdes.dam.Maintenance.MaintenancePackage;
+import com.masdes.dam.Threats.ThreatsPackage;
+
 public class EasierUmlModel extends UmlModel {
-	
-	
-	private final ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
-	
-	private final URI ulNewModel = URI.createURI("NewModel.uml");
-	private final URI upNewModel = URI
-			.createFileURI("/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/test-dam.uml");
-	
-	private final URI ulProfile = URI.createURI("GQAM.profile.uml");
-	private final URI upProfile = URI.createFileURI(
-			"/home/peo/git/sealab/easier/easier-uml/src/test/resources/models/test_dam/MARTE.MARTE_AnalysisModel.GQAM.profile.uml");
 
-
+	/**
+	 * It has been inspired by the solution proposed in this post
+	 * 
+	 * @url https://www.eclipse.org/forums/index.php/m/1701551/?srch=standalone#msg_1701551
+	 * 
+	 *      We are using MARTE and DAM profiles versions: MARTE :
+	 *      org.eclipse.papyrus.marte.static.profile_1.2.0.201606080903, download
+	 *      from @url
+	 *      http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/neon
+	 *      DAM : com.masdes.dam.static.profile_0.13.1.201801221725.jar, downloaded
+	 *      from @url https://github.com/dice-project/DICE-Profiles
+	 * 
+	 *      TAKE If the version of that plugin changes, this link must change as
+	 *      well.
+	 *
+	 */
 	@Override
 	protected ResourceSet createResourceSet() {
 		ResourceSet resourceSet = super.createResourceSet();
-		
-		UMLResourcesUtil.init(resourceSet);
-		converter.getURIMap().put(ulProfile, upProfile);
-		converter.getURIMap().put(ulNewModel, upNewModel);
-		
-//		UMLUtil.init(resourceSet);
-//		resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
 
-//		resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(Ecore2XMLPackage.eINSTANCE.getNsURI(), Ecore2XMLPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(MARTEPackage.eINSTANCE.getNsURI(), MARTEPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(GQAMPackage.eINSTANCE.getNsURI(), GQAMPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(SAMPackage.eINSTANCE.getNsURI(), SAMPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put(PAMPackage.eINSTANCE.getNsURI(), PAMPackage.eINSTANCE);
+		resourceSet = UMLResourcesUtil.init(resourceSet);
 
-//		resourceSet.getPackageRegistry().put("http:///schemas/GQAM/_GBjG0G-CEeqmpuYYGHlOBw/0", GQAMPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put("http:///schemas/DataTypes/_GBQy8W-CEeqmpuYYGHlOBw/0", DataTypesPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put("http:///schemas/NFPs/_GBMhgG-CEeqmpuYYGHlOBw/0", NFPsPackage.eINSTANCE);
-//		resourceSet.getPackageRegistry().put("http:///schemas/Time/_GBdnQG-CEeqmpuYYGHlOBw/0", TimePackage.eINSTANCE);
-//		
+		// stores UML model and UML profile extensions to the ExtensionToFactoryMap
+		// {@see
+		// org.eclipse.emf.ecore.resource.Resource.Factory.Registry.getExtensionToFactoryMap()}
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.PROFILE_FILE_EXTENSION,
+				UMLResource.Factory.INSTANCE);
 
-		//TODO whene executed it arises this error ```java.net.MalformedURLException: unknown protocol: pathmap```
-//		registerMetaModels();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+				UMLResource.Factory.INSTANCE);
+
+		resourceSet = setMarte(resourceSet);
+		resourceSet = setDAM(resourceSet);
 
 		return resourceSet;
 	}
-	
-	public Profile getGQAM() {
-		 return (Profile) this.getResource().getResourceSet()
-			.getResource(converter.normalize(ulProfile), true).getContents().get(0);
+
+	/**
+	 * @param resourceSet
+	 * @return
+	 * 
+	 *         Maps physical resource and the pathmap schema. Stores every needed
+	 *         package used in the model
+	 * 
+	 */
+	private ResourceSet setMarte(ResourceSet resourceSet) {
+		// points the profile JAR file
+		String marteJarString = "jar:" + getClass()
+				.getResource("/libs/org.eclipse.papyrus.marte.static.profile_1.2.0.201606080903.jar").toString() + "!/";
+		// generates the URI for the JAR file
+		URI marteJarURI = URI.createURI(marteJarString);
+		String MARTE_PROFILES_PATHMAP = "pathmap://Papyrus_PROFILES/";
+		// creates the map between the pathmap and the jar file
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://Papyrus_PROFILES/"),
+				marteJarURI.appendSegment("resources").appendSegment(""));
+		// The uri fragments refer to the IDs within the profile.uml
+		// mapping between profiles and packages are as follows.
+		MARTE_PROFILES_PATHMAP += "MARTE.profile.uml#";
+		// NFP _U_GAoAPMEdyuUt-4qHuVvQ
+		URI NFPURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_U_GAoAPMEdyuUt-4qHuVvQ");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(NFPsPackage.eNS_URI, NFPURI);
+		resourceSet.getPackageRegistry().put(NFPsPackage.eNS_URI, NFPsPackage.eINSTANCE);
+		// TIME _WStkoAPMEdyuUt-4qHuVvQ
+		URI TIMEURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_WStkoAPMEdyuUt-4qHuVvQ");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(TimePackage.eNS_URI, TIMEURI);
+		resourceSet.getPackageRegistry().put(TimePackage.eNS_URI, TimePackage.eINSTANCE);
+		// GRM _XVWGUAPMEdyuUt-4qHuVvQ
+		URI GRMURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_XVWGUAPMEdyuUt-4qHuVv");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GRMPackage.eNS_URI, GRMURI);
+		resourceSet.getPackageRegistry().put(GRMPackage.eNS_URI, GRMPackage.eINSTANCE);
+		// Alloc _ar8OsAPMEdyuUt-4qHuVvQ
+		URI AllocURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_ar8OsAPMEdyuUt-4qHuVvQ");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(AllocPackage.eNS_URI, AllocURI);
+		resourceSet.getPackageRegistry().put(AllocPackage.eNS_URI, AllocPackage.eINSTANCE);
+		// Core_Elements _-wEewECLEd6UTJZnztgOLw
+		URI CoreElementsURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_-wEewECLEd6UTJZnztgOLw");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(CoreElementsPackage.eNS_URI, CoreElementsURI);
+		resourceSet.getPackageRegistry().put(CoreElementsPackage.eNS_URI, CoreElementsPackage.eINSTANCE);
+		// GQAM _4bV20APMEdyuUt-4qHuVvQ
+		URI GQAMProfileURI = URI.createURI(MARTE_PROFILES_PATHMAP + "_4bV20APMEdyuUt-4qHuVvQ");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GQAMPackage.eNS_URI, GQAMProfileURI);
+		resourceSet.getPackageRegistry().put(GQAMPackage.eNS_URI, GQAMPackage.eINSTANCE);
+
+		return resourceSet;
 	}
+
+	/**
+	 * @param resourceSet
+	 * @return
+	 * 
+	 *         Maps physical resource and the pathmap schema. Stores every needed
+	 *         package used in the model
+	 */
+	private ResourceSet setDAM(ResourceSet resourceSet) {
+
+		// points the profile JAR file
+		String damJarString = "jar:"
+				+ getClass().getResource("/libs/com.masdes.dam.static.profile_0.13.1.201801221725.jar").toString()
+				+ "!/";
+		// generates the URI for the JAR file
+		URI damJarURI = URI.createURI(damJarString);
+		String DAM_PROFILES_PATHMAP = "pathmap://DAM_PROFILES/";
+		// creates the map between the pathmap and the jar file
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI(DAM_PROFILES_PATHMAP),
+				damJarURI.appendSegment("resources").appendSegment(""));
+		// The uri fragments refer to the IDs within the profile.uml
+		// mapping between profiles and packages are as follows.
+		DAM_PROFILES_PATHMAP += "DAM.profile.uml#";
+		// DAM_PRofile _dYZGQOI-EeKRk-i8_Z91aQ
+		URI DAM_PRofile = URI.createURI(DAM_PROFILES_PATHMAP + "_dYZGQOI-EeKRk-i8_Z91aQ");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(DAMPackage.eNS_URI, DAM_PRofile);
+		resourceSet.getPackageRegistry().put(DAMPackage.eNS_URI, DAMPackage.eINSTANCE);
+		// CORE _DchGAOSiEeKuSu-I2xDxSA
+		URI CoreProfileURI = URI.createURI(DAM_PROFILES_PATHMAP + "_DchGAOSiEeKuSu-I2xDxSA");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(CorePackage.eNS_URI, CoreProfileURI);
+		resourceSet.getPackageRegistry().put(CorePackage.eNS_URI, CorePackage.eINSTANCE);
+		// Threats _G1-xoOShEeKuSu-I2xDxSA
+		URI ThreatsProfileURI = URI.createURI(DAM_PROFILES_PATHMAP + "_G1-xoOShEeKuSu-I2xDxSA");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(ThreatsPackage.eNS_URI, ThreatsProfileURI);
+		resourceSet.getPackageRegistry().put(ThreatsPackage.eNS_URI, ThreatsPackage.eINSTANCE);
+		// Maintenance _rsXqkOShEeKuSu-I2xDxSA
+		URI MaintenenaceProfileURI = URI.createURI(DAM_PROFILES_PATHMAP + "_rsXqkOShEeKuSu-I2xDxSA");
+		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MaintenancePackage.eNS_URI, MaintenenaceProfileURI);
+		resourceSet.getPackageRegistry().put(MaintenancePackage.eNS_URI, MaintenancePackage.eINSTANCE);
+
+		return resourceSet;
+	}
+
+//	public Profile getGQAM() {
+//		return (Profile) this.getResource().getResourceSet()
+//				.getResource(this.getResource().getResourceSet().getURIConverter().normalize(GQAMProfile), true)
+//				.getContents().get(0);
+//	}
 
 	public ResourceSet getResourceSet() {
-		return createResourceSet();
+		return this.getResource().getResourceSet();
 	}
-
-	public void registerMetaModels() {
-//		super.registerMetaModels();
-		Map<URI, URI> uriMap = new HashMap<URI, URI>();
-		uriMap = org.eclipse.uml2.uml.resources.util.UMLResourcesUtil.initURIConverterURIMap(uriMap);
-
-		// load profile from papyrus-rt jar file, the jar file should be set in
-		// classpath
-
-//		String UMLRealTimeSMProfilePath = this.getClass().getClassLoader()
-//				.getResource("umlProfile/UMLRealTimeSM-addendum.profile.uml").toString();
-//		uriMap.put(URI.createURI("pathmap://UML_RT_PROFILE/UMLRealTimeSM-addendum.profile.uml"),
-//				URI.createURI(UMLRealTimeSMProfilePath));
-//		String RTCppPropertiesProfilePath = this.getClass().getClassLoader()
-//		.getResource("profiles/RTCppProperties.profile.uml").toString();
-//		uriMap.put(URI.createURI("pathmap://UMLRT_CPP/RTCppProperties.profile.uml"),
-//		URI.createURI(RTCppPropertiesProfilePath));
-//		String UMLRTProfilePath = this.getClass().getClassLoader().getResource("umlProfile/uml-rt.profile.uml")
-//		.toString();
-//		uriMap.put(URI.createURI("pathmap://UML_RT_PROFILE/uml-rt.profile.uml"), URI.createURI(UMLRTProfilePath));
-		//register packages for UMLRT packages
-//		URIMappingRegistryImpl.INSTANCE.putAll(uriMap);
-//
-
-		try {
-			URL gqamURL = new URL(
-					"file:/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.MARTE_AnalysisModel.GQAM.profile.uml");
-			uriMap.put(URI.createURI("http:///schemas/GQAM/_ilfkcMA_Eeq4s5ZiqWeHpA/0"),
-					URI.createURI(gqamURL.toString()));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		URIMappingRegistryImpl.INSTANCE.putAll(uriMap);
-
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", new UMLResourceFactoryImpl());
-		//Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-			//	UMLResource.Factory.INSTANCE);
-		
-
-		initGlobalRegistry();
-
-//				UMLRealTimePackage.eNS_URI, UMLRealTimePackage.eINSTANCE);
-//		
-//		UMLRealTimePackage.class.getResource("");
-//		
-//		
-//		EPackage.Registry.INSTANCE.put(RTCppPropertiesPackage.eNS_URI, RTCppPropertiesPackage.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(UMLRTStateMachinesPackage.eNS_URI, UMLRTStateMachinesPackage.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(StandardPackage.eNS_URI, StandardPackage.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-//		System.out.println("Metamodels and profiles loaded successfully for UMLRT models");
-		// System.out.println("Size of URI convertor: "+URIConverter.URI_MAP.size());
-		/*
-		 * for (Entry<URI, URI> entry : URIConverter.URI_MAP.entrySet()) {
-		 * System.out.println(entry.getKey() + "/" + entry.getValue()); }
-		 */
-	}
-
-	private void initGlobalRegistry() {
-		EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(Ecore2XMLPackage.eNS_URI, Ecore2XMLPackage.eINSTANCE);
-
-		// MagicDraw dependencies
-		String gqamURI = "http:///schemas/GQAM/_ilfkcMA_Eeq4s5ZiqWeHpA/0";
-
-//		EPackage.Registry.INSTANCE.put(MARTEPackage.eNS_URI, MARTEPackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(gqamURI, GQAMPackage.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(SAMPackage.eNS_URI, SAMPackage.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(PAMPackage.eNS_URI, PAMPackage.eINSTANCE);
-	}
-
 }
