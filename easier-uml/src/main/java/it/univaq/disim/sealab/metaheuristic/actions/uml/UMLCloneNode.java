@@ -62,9 +62,9 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		createPostCondition();
 
 	}
-	
+
 	private Node createNewNode() {
-		
+
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		// Retrieves the deployment view package
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
@@ -74,20 +74,29 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 				break;
 			}
 		}
-		
+
 		Node node = UMLFactory.eINSTANCE.createNode();
-		node.setName(targetObject.getName()+"_addByEASIER");
-		
+		node.setName(targetObject.getName() + "_addByEASIER");
+
 		deploymentView.getPackagedElements().add(node);
-		
+
 		return node;
-		
+
 	}
 
 	// Returns a random Node to be cloned
 	private Node getRandomNode() {
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
+		org.eclipse.uml2.uml.Model rootPackage = null;
+
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Model) {
+				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
+				break;
+			}
+		}
+
 		// Retrieves the deployment view package
 		/*
 		 * EcoreUtil .getObjectsByType(solution.getIModel().allContents(),
@@ -95,7 +104,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
 		 * "deployment_view".equals(pkg.getName())) .findAny().orElse(null);
 		 */
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(rootPackage.getOwnedElements(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
 					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
@@ -151,7 +160,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 		ExistsOperator existsTargetInNodes = solution.getManager().createExistsInCollectionOperator(umlNodeToCloneSVP,
 				getAllNodesMVP());
-		
+
 		ExistsOperator existsClonedInNodes = solution.getManager().createExistsInCollectionOperator(umlClonedNodeSVP,
 				getAllNodesMVP());
 
@@ -173,11 +182,11 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		umlNodeToCloneSVP = solution.getManager().createSingleValueParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
 						.getNodeQuery(targetObject));
-		
+
 		umlClonedNodeSVP = solution.getManager().createSingleValueParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
 						.getNodeQuery(umlClonedNode));
-		
+
 		params.add(umlNodeToCloneSVP);
 		params.add(umlClonedNodeSVP);
 
@@ -217,7 +226,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 //			return false;
 		return true;
 	}
-	
+
 	public Node getUmlNodeToClone() {
 		return this.targetObject;
 	}

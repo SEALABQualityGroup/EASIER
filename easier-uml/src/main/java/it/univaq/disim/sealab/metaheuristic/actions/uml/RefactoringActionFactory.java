@@ -14,6 +14,7 @@ public class RefactoringActionFactory {
 	private static Class<?>[] supportedRefactoringActions = { UMLCloneNode.class, UMLMvOperationToComp.class,
 			UMLMvOperationToNCToNN.class, UMLMvComponentToNN.class };
 
+
 	public static RefactoringAction getRandomAction(RSolution sol) {
 
 		try {

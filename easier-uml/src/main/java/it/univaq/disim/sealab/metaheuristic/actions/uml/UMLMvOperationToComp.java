@@ -106,8 +106,17 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	 * @return
 	 */
 	private org.eclipse.uml2.uml.Package getPackage(final String pkgName) {
-		org.eclipse.uml2.uml.Package returnPackage = null;
+		
+		org.eclipse.uml2.uml.Model rootPackage = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Model) {
+				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
+				break;
+			}
+		}
+		
+		org.eclipse.uml2.uml.Package returnPackage = null;
+		for (Object pkg : EcoreUtil.getObjectsByType(rootPackage.getOwnedElements(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
 					&& pkgName.equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				returnPackage = (org.eclipse.uml2.uml.Package) pkg;
