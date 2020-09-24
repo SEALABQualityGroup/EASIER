@@ -14,7 +14,9 @@ import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.Message;
@@ -28,6 +30,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
+import logicalSpecification.NotOperator;
 import logicalSpecification.Parameter;
 import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
@@ -38,6 +41,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	private final static Path eolModulePath;
 
 	private final UMLRSolution solution;
+	
+	private Node umlTargetNode;
 
 //	private Operation targetObject;
 
@@ -54,7 +59,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		this.solution = (UMLRSolution) sol;
 
 		umlOpToMove = getRandomOperation();
-		umlTargetComp = (Component) umlOpToMove.getOwner(); //it shall be the new component. 
+		umlTargetComp = getNewComponent();
+		umlTargetNode = getNewNode();
 
 		setParameters();
 		createPreCondition();
@@ -62,16 +68,56 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	}
 
+	// creates a new Node within the model
+	private Node getNewNode() {
+
+		org.eclipse.uml2.uml.Package deploymentView = null;
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
+				break;
+			}
+		}
+
+		Node newNode = UMLFactory.eINSTANCE.createNode();
+		deploymentView.getPackagedElements().add(newNode);
+
+		newNode.setName("New-Node_" + generateHash());
+		return newNode;
+	}
+
+	// creates a new Component within the model
+	private Component getNewComponent() {
+
+		org.eclipse.uml2.uml.Package staticView = null;
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+				staticView = (org.eclipse.uml2.uml.Package) pkg;
+				break;
+			}
+		}
+
+		Component newComp = UMLFactory.eINSTANCE.createComponent();
+		staticView.getPackagedElements().add(newComp);
+
+		newComp.setName("New-Component_" + generateHash());
+		return newComp;
+	}
+
+	private String generateHash() {
+		int leftLimit = 97; // letter 'a'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 10;
+//	    Random random = new Random();
+
+		return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+	}
+
 	// retrieves a random operation from the source model
 	private Operation getRandomOperation() {
-
-		/*
-		 * org.eclipse.uml2.uml.Package staticView = (org.eclipse.uml2.uml.Package)
-		 * EcoreUtil .getObjectsByType(((Model) solution.getModel()).getOwnedElements(),
-		 * UMLPackage.Literals.PACKAGE) .stream().filter(pkg -> ((NamedElement)
-		 * pkg).getName().equals("static_view"));
-		 */
-
 		org.eclipse.uml2.uml.Package dynamicView = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
@@ -88,39 +134,14 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 		Message msg = null;
 
-		// returns a random message from a random interaction. Moreover, the message has not to be a "reply" message
+		// returns a random message from a random interaction. Moreover, the message has
+		// not to be a "reply" message
 		do {
 			msg = ((Interaction) uc.getOwnedBehaviors().get(0)).getMessages().get(JMetalRandom.getInstance().nextInt(0,
 					((Interaction) uc.getOwnedBehaviors().get(0)).getMessages().size() - 1));
 		} while (msg.getMessageSort().toString().equals("reply"));
 
 		return (Operation) msg.getSignature();
-
-//		return (Operation) interaction.getMessages().get(JMetalRandom.getInstance().nextInt(0, interaction.getMessages().size()-1)).getSignature();
-
-		/*
-		 * //List of all components within the model List<Object> cmps = new
-		 * ArrayList<>( EcoreUtil.getObjectsByType(staticView.getOwnedElements(),
-		 * UMLPackage.Literals.COMPONENT));
-		 * 
-		 * //List of components whose getOperations is not empty List<Component>
-		 * cmpsWithOps = new ArrayList<>(); for (Object cmp : cmps) { if (!((Component)
-		 * cmp).getAllOperations().isEmpty()) { cmpsWithOps.add((Component) cmp); } }
-		 * 
-		 * //TODO this safety check shall be moved to precondition of this action if
-		 * (cmpsWithOps.isEmpty()) {
-		 * System.err.println("Any components has at least one operation"); return null;
-		 * }
-		 * 
-		 * Component cmp = (Component)
-		 * cmpsWithOps.get(JMetalRandom.getInstance().nextInt(0, cmpsWithOps.size() -
-		 * 1));
-		 * 
-		 * EList<Operation> randomComponentOperations = cmp.getOperations();
-		 * 
-		 * return randomComponentOperations .get(JMetalRandom.getInstance().nextInt(0,
-		 * randomComponentOperations.size() - 1));
-		 */
 	}
 
 	@Override
@@ -131,6 +152,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		executor.setModel(solution.getIModel());
 		executor.setSource(eolModulePath);
 		executor.setParameter(umlOpToMove, "UML!Operation", "self");
+		executor.setParameter(umlTargetComp, "UML!Component", "targetComp");
+		executor.setParameter(umlTargetNode, "UML!Node", "targetNode");
 
 		try {
 			executor.execute();
@@ -156,10 +179,12 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		ExistsOperator existsOpInOpsOfTarget = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
 				getAllTargetCompOpsMVP());
 
+		NotOperator notExistsOpInOpsOfTarget = solution.getManager().createNotOperator(existsOpInOpsOfTarget);
+
 		AndOperator andRoot = solution.getManager().createAndOperator();
 		andRoot.getArguments().add(existsOpInOperations);
 		andRoot.getArguments().add(existsTargetInComponents);
-		andRoot.getArguments().add(existsOpInOpsOfTarget);
+		andRoot.getArguments().add(notExistsOpInOpsOfTarget);
 
 		specification.setRootOperator(andRoot);
 		preCondition.setConditionFormula(specification);
@@ -236,15 +261,14 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 		return cloned;
 	}
-	
+
 	public boolean equals(Object op) {
-		
-		if(op.getClass() != this.getClass())
+		if (op.getClass() != this.getClass())
 			return false;
-		if(!this.getUmlOpToMove().equals(((UMLMvOperationToNCToNN)op).getUmlOpToMove()))
+		if (!this.getUmlOpToMove().equals(((UMLMvOperationToNCToNN) op).getUmlOpToMove()))
 			return false;
+
 		return true;
-		
 	}
 
 //	public void setSolution(RSolution sol) {

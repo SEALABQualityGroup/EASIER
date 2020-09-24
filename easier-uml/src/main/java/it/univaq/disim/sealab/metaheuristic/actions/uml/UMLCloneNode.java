@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -62,6 +63,16 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		createPostCondition();
 
 	}
+	
+	private String generateHash() {
+		int leftLimit = 97; // letter 'a'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 10;
+//	    Random random = new Random();
+
+		return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+	}
 
 	private Node createNewNode() {
 
@@ -76,7 +87,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		}
 
 		Node node = UMLFactory.eINSTANCE.createNode();
-		node.setName(targetObject.getName() + "_addByEASIER");
+		node.setName(targetObject.getName() + "_" + generateHash());
 
 		deploymentView.getPackagedElements().add(node);
 
