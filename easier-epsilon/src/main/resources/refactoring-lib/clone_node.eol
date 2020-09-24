@@ -23,14 +23,6 @@ import "library/HELPER.eol";
 
 ("cloning --> " + target.getName()).println();
 
-var newNode : Node = new Node; //creo il nuovo nodo
-var packageContainer : Package = target.getNearestPackage();  //recupero il package container
-packageContainer.addElement(newNode);
-newNode.name = target.getName()+" Splitted";
-
-newNode.clone(target);
-
-//self.clone(target);
-
+self.clone(target);
 
 "done".println();

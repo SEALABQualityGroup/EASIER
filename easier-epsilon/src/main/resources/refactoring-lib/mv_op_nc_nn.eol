@@ -24,7 +24,23 @@ import "library/package.eol";
 //HELPER
 import "library/HELPER.eol";
 
-("moving -->" + self.getName()).println();
-self.moveToNewComponentDeployedToNewNode();
+("moving -->" + self.getName() + " to --> " + targetComp.getName() + " on -> " + targetNode.getName()).println();
+
+//static
+var sourceComponent : Component = self.getOwner();
+		
+targetComp.cloneAppliedStereotypesFrom(sourceComponent); //clono gli stessi stereotipi del componente sorgente	
+targetComp.moveInterfacesRealizationFrom(sourceComponent, self);
+	
+var listOfUsedProvidedInterfaces : List(Interface) = sourceComponent.getAllUsedIntefacesRequiredsBy(self);
+	
+//deploy
+targetComp.deployOn(targetNode);
+	
+targetComp.moveOperation(self); //sposta l'operazione sul componente appena creato
+	
+//dynamic
+self.dynamicFixing(sourceComponent);
+
 "done".println();
 
