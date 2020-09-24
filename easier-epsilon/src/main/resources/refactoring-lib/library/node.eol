@@ -114,8 +114,9 @@ operation Node clone(component : Component) : Node{
 		return newNode;
 }
 
-
 operation UML!Node cloneDeployedArtifactFrom(node : UML!Node){
+	
+	var hashCode = getHash(self);
 	
 	//clone gli artefatti dal nodo splittato al nuovo nodo
 	for(dep in node.getDeployments()){
@@ -126,12 +127,19 @@ operation UML!Node cloneDeployedArtifactFrom(node : UML!Node){
 			
 			//adds the new artifact to the package
 			self.getNearestPackage().addElement(newArtifact); //aggiungo l'artefatto al package del nodo
-			newArtifact.name = art.name;
+			newArtifact.name = art.name + hashCode;
 			
 			//For each manifestation 
 			for(man in art.getManifestations()){
 				//creates and add a new manifestation to the artifact
-				var newManifestation = newArtifact.createManifestation(man.getUtilizedElement().name, man.getUtilizedElement());
+				var newManifestation = newArtifact.createManifestation((man.getUtilizedElement().getName()+hashCode).asString(), man.getUtilizedElement());
+				newManifestation.println("NewManifestation -> ");
+				
+				newManifestation.getSources().println("man sources -> ");
+				
+				newManifestation.getSources().add(newArtifact);
+				
+				//newManifestation.getSources().println("source of ");
 			} 
 			//creates and adds a new deployment to the node, with the artifact name
 			newDeployment = self.createDeployment(newArtifact.name);
@@ -145,15 +153,18 @@ operation UML!Node cloneDeployedArtifactFrom(node : UML!Node){
 operation Node clone(node : Node) : Node{
 
 		//("source -->" + UML!Model.all().size()).println();
-
+		"getDirectlyLinkedNode".println();
 		var listOfLinkedNode = node.getDirectlyLinkedNode();		
 		
 		var packageContainer : Package = node.getNearestPackage();
 		
+		"cloneAppliedStereotypesFrom".println();
 		self.cloneAppliedStereotypesFrom(node); //clono gli stereotipi del nodo sorgente
 		
+		"cloneDeployedArtifactFrom".println();
 		self.cloneDeployedArtifactFrom(node); //clono gli artefatti del nodo sorgente
 		
+		"cloneLink".println();
 		self.cloneLink(listOfLinkedNode, packageContainer);
 }
 

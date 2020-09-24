@@ -311,22 +311,12 @@ operation UML!Component deployOn(node : UML!Node){
 	var newManifestation; 
 	var newDeployment; 
 	
-	var listOfNodes : List(Node) = self.getNodes();
-	
-	listOfNodes.println();
-	
-	//@param node setting
-	for(n in listOfNodes){
-		//node.clone(self);
-		node.clone(n);		
-	}
-	
-	node.getAppliedStereotypes().println();
+	var hashCode = getHash(node);
 	
 	node.getNearestPackage().addElement(newArtifact);
-	newArtifact.name = self.name+"_added-by-easier";
+	newArtifact.name = node.getName() + hashCode;
 	
-	newManifestation = newArtifact.createManifestation(self.name, self);
+	newManifestation = newArtifact.createManifestation((self.getName() + hashCode).asString(), self);
 	newManifestation.getClients().add(newArtifact);
 	 
 	newDeployment = node.createDeployment(newArtifact.name);

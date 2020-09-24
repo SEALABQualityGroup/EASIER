@@ -244,6 +244,10 @@ operation showThresholds() {
 	log("th_maxQL --> " + th_maxQL().asString());
 	log("th_probExecEp --> " + th_probExecEp().asString());
 	log("------------");
+}
 
+
+operation getHash(element : UML!Element) : String{
+	return ("_" + element.getName().split("_").get(1)).asString();
 
 }

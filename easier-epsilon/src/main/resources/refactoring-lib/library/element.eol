@@ -10,14 +10,12 @@ operation Element cloneAppliedStereotypesFrom(element : Element) {
 		showError("Method: cloneAppliedStereotypesFrom() in element.eol");
 	}else{
 		for(stereotype in element.getAppliedStereotypes()){
-			self.getAppliedStereotypes().println();
-			element.getAppliedStereotypes().println();
+			//self.getAppliedStereotypes().println("self stereotype -> ");
+			//element.getAppliedStereotypes().println("target element stereotype -> ");
+			
+			//stereotype.getQualifiedName().println("st qualified name -> ");
 			
 			if(not self.hasStereotype(stereotype.getName())){
-			
-				//Kolovos's suggestion
-				//stereotype.superClass.name.println("Stereotype Super Classes: ");
-				//self.eClass.eAllSuperTypes.name.println("Element EClass Super Types: ");
 			
 				//"[WARNING] The cloneAppliedStereotypesFrom(element) has been disabled due to internal issues!!!".println();	
 				self.applyStereotype(stereotype);
@@ -38,10 +36,9 @@ operation Element cloneAppliedStereotypesFrom(element : Element) {
 		
 		if(debug()){
 			"{{{{{{{}}}}}}}}".println();
+			self.getName().println("self element -> ");
 			for(st in self.getAppliedStereotypes()){
 				st.println();
-				st.getName().println();
-				st.getOwner().getOwner().println();
 			}
 			"{{{{{{{}}}}}}}}".println();
 		}
