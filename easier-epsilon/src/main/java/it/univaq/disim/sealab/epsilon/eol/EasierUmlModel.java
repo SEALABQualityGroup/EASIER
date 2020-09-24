@@ -1,11 +1,7 @@
 package it.univaq.disim.sealab.epsilon.eol;
 
-import java.nio.file.Path;
-import java.util.Map;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.epsilon.emc.uml.UmlModel;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.Alloc.AllocPackage;
@@ -13,12 +9,11 @@ import org.eclipse.papyrus.MARTE.MARTE_Foundations.CoreElements.CoreElementsPack
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.GRM.GRMPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.NFPs.NFPsPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.Time.TimePackage;
-import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.UMLPlugin;
-import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
+import com.masdes.dam.Complex_Data_Types.Complex_Data_TypesPackage;
 import com.masdes.dam.Core.CorePackage;
 import com.masdes.dam.DAM.DAMPackage;
 import com.masdes.dam.Maintenance.MaintenancePackage;
@@ -151,14 +146,10 @@ public class EasierUmlModel extends UmlModel {
 		UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MaintenancePackage.eNS_URI, MaintenenaceProfileURI);
 		resourceSet.getPackageRegistry().put(MaintenancePackage.eNS_URI, MaintenancePackage.eINSTANCE);
 
+		// Complex_Data_Types
+		resourceSet.getPackageRegistry().put(Complex_Data_TypesPackage.eNS_URI, Complex_Data_TypesPackage.eINSTANCE);
 		return resourceSet;
 	}
-
-//	public Profile getGQAM() {
-//		return (Profile) this.getResource().getResourceSet()
-//				.getResource(this.getResource().getResourceSet().getURIConverter().normalize(GQAMProfile), true)
-//				.getContents().get(0);
-//	}
 
 	public ResourceSet getResourceSet() {
 		return this.getResource().getResourceSet();

@@ -20,8 +20,7 @@ public class ETLStandalone extends EpsilonStandalone {
 	final static String lqnMetamodel = "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/lqnxsd/lqn_renamed.xsd.ecore";
 
 	public ETLStandalone() {
-		source = Paths.get("/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn", "uml2lqn2.etl");
-		;
+		source = Paths.get("/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn", "uml2lqn.etl");
 //		InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("evl/aemilia-pas-checker.evl");
 //		source = Paths.get("/tmp/aemilia-pas-checker.evl");
 //		try {
