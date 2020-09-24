@@ -347,6 +347,20 @@ public class UMLRSolution extends RSolution {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
+				System.err.println("Solution # " + this.name);
+				System.err.println(this.getVariableValue(0).toString());
+				this.iModel.dispose();
+
+				throw new Exception("[ERROR] the lqn solver has genered an error.");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
 		System.out.println("..... done");
 
 		System.out.println("Invoking the back annotator...");
@@ -354,7 +368,7 @@ public class UMLRSolution extends RSolution {
 		System.out.println("... done");
 	}
 
-	//Vincenzo's solution
+	// Vincenzo's solution
 	/*
 	 * public static PlainXmlModel loadXMLModel(String name, String model, String
 	 * path) throws EolModelLoadingException {
@@ -398,7 +412,8 @@ public class UMLRSolution extends RSolution {
 		bckAnn.setSource(
 				controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("backAnnotation.eol"));
 
-		// Points to lqn schema file and stores pacakges into the global package registry
+		// Points to lqn schema file and stores pacakges into the global package
+		// registry
 		XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
 		String schema = controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
 				.resolve("lqn.xsd").toString();
