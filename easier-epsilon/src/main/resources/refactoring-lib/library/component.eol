@@ -314,12 +314,12 @@ operation UML!Component deployOn(node : UML!Node){
 	var hashCode = getHash(node);
 	
 	node.getNearestPackage().addElement(newArtifact);
-	newArtifact.name = node.getName() + hashCode;
+	newArtifact.name = "New-Artifact" + hashCode;
 	
 	newManifestation = newArtifact.createManifestation((self.getName() + hashCode).asString(), self);
 	newManifestation.getClients().add(newArtifact);
 	 
-	newDeployment = node.createDeployment(newArtifact.name);
+	newDeployment = node.createDeployment("New-Deploy"+hashCode);
 	newDeployment.getDeployedArtifacts().add(newArtifact);
 	
 	//Debug messages

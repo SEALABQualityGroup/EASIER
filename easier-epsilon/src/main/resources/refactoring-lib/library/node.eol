@@ -117,35 +117,51 @@ operation Node clone(component : Component) : Node{
 operation UML!Node cloneDeployedArtifactFrom(node : UML!Node){
 	
 	var hashCode = getHash(self);
+	var newDeployment;
 	
 	//clone gli artefatti dal nodo splittato al nuovo nodo
 	for(dep in node.getDeployments()){
 	
+		//creates and adds a new deployment to the node, with the artifact name
+		newDeployment = self.createDeployment(dep.getName() + hashCode);
+		
+		newDeployment.getName().println("New Deployment --> ");
+	
 		for(art in dep.getDeployedArtifacts()){
-			var newDeployment; //e' il deployment dell artefatto appena creato
 			var newArtifact : Artifact = new Artifact; //creo l'artefatto
 			
 			//adds the new artifact to the package
 			self.getNearestPackage().addElement(newArtifact); //aggiungo l'artefatto al package del nodo
-			newArtifact.name = art.name + hashCode;
+			newArtifact.name = art.getName() + hashCode;
 			
 			//For each manifestation 
 			for(man in art.getManifestations()){
 				//creates and add a new manifestation to the artifact
-				var newManifestation = newArtifact.createManifestation((man.getUtilizedElement().getName()+hashCode).asString(), man.getUtilizedElement());
-				newManifestation.println("NewManifestation -> ");
+				var newManifestation = newArtifact.createManifestation((man.getUtilizedElement().getName() + hashCode).asString(), man.getUtilizedElement());
 				
-				newManifestation.getSources().println("man sources -> ");
+				//newManifestation.getSources().add(newArtifact);
 				
-				newManifestation.getSources().add(newArtifact);
-				
-				//newManifestation.getSources().println("source of ");
-			} 
-			//creates and adds a new deployment to the node, with the artifact name
-			newDeployment = self.createDeployment(newArtifact.name);
-			
-			newDeployment.getDeployedArtifacts().add(newArtifact); //aggiungo al deploy l'artefatto
+			}
+			if(newDeployment.isUndefined()){
+				"[ERROR] newDeployment is undefined in node.eol -> clonedDeployedArtifactFrom(Node)".println();
+			}			
+			newDeployment.getDeployedArtifacts().add(newArtifact); //aggiungo al deploy l'artefatto 
 		}
+	}
+}
+
+operation UML!Node reuseDeployedArtifactFrom(node : UML!Node){
+	
+	var hashCode = getHash(self);
+	var newDeployment;
+	
+	//clone gli artefatti dal nodo splittato al nuovo nodo
+	for(dep in node.getDeployments()){
+	
+		//creates and adds a new deployment to the node, with the artifact name
+		newDeployment = self.createDeployment(dep.getName() + hashCode);
+	
+		newDeployment.getDeployedArtifacts().addAll(dep.getDeployedArtifacts()); //aggiungo al deploy l'artefatto
 	}
 }
 

@@ -23,4 +23,7 @@ import "library/HELPER.eol";
 
 ("moving --> " + self.getName() + " to --> " + target.getName() ).println();
 self.deployOn(target);
+
+//target.clone(getNodes()->first());
+
 "done".println();

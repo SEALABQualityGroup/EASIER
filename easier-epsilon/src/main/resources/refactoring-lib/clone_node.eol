@@ -23,6 +23,21 @@ import "library/HELPER.eol";
 
 ("cloning --> " + target.getName()).println();
 
-self.clone(target);
+//self.clone(target);
+
+"getDirectlyLinkedNode".println();
+var listOfLinkedNode = target.getDirectlyLinkedNode();		
+
+var packageContainer : Package = target.getNearestPackage();
+
+"cloneAppliedStereotypesFrom".println();
+self.cloneAppliedStereotypesFrom(target); //clono gli stereotipi del nodo sorgente
+
+"cloneDeployedArtifactFrom".println();
+self.reuseDeployedArtifactFrom(target); //clono gli artefatti del nodo sorgente
+
+"cloneLink".println();
+self.cloneLink(listOfLinkedNode, packageContainer);
+
 
 "done".println();

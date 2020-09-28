@@ -36,6 +36,12 @@ var listOfUsedProvidedInterfaces : List(Interface) = sourceComponent.getAllUsedI
 	
 //deploy
 targetComp.deployOn(targetNode);
+
+if(sourceComponent.getNodes().isEmpty()){
+	sourceComponent.getName().println("[ERROR] The Component is not deployed !!!");
+}
+
+targetNode.clone(sourceComponent.getNodes()->first()); //shall resolve the missed stereotypes
 	
 targetComp.moveOperation(self); //sposta l'operazione sul componente appena creato
 	

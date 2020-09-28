@@ -246,7 +246,7 @@ operation UML!Component F_resDemand_fuzzy() : Real{
 		return 1;
 	}		
 	
-	var selfOperations = self.getOpearations();
+	var selfOperations = self.getOperations();
 	
 	var fValue : Real = 0.0;
 	
@@ -294,13 +294,15 @@ operation UML!Component F_maxHwUtil_fuzzy() : Real{
 
 	var selfNodes = self.getNodes();
 	
+	selfNodes = selfNodes->select(n | n.getTag('GaExecHost', 'utilization')->first().isDefined());
+	
 	if(selfNodes.isEmpty())
 		return 0;
 	
 	var fValue : Real = 0.0;
 	
 	for(n in selfNodes){
-		fValue = node.getTag('GaExecHost', 'utilization')->first().asReal();
+		fValue = n.getTag('GaExecHost', 'utilization')->first().asReal();
 	 	break;
 	}
 

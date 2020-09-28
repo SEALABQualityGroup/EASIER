@@ -116,7 +116,7 @@ context UML!Operation {
  *					DISK max and min are in fourth and fifth position						 *
  *********************************************************************************************/
  
-context Node {
+context UML!Node {
 	critique CPS {
 		check: 
 			( self.F_maxQL_fuzzy() * self.F_maxHwUtil_fuzzy() ) < 0.85
@@ -149,117 +149,6 @@ context Node {
 	}
 }
 
-/*
-context Node {
-	critique CPS {
-		check: 
-			not( (self.F_maxQL(th_maxQL()) and self.F_maxCpuUtil(th_maxHwUtil()->second()) and self.F_resDemandCpuGreaterOrEqualThan(th_maxResDemand()->first())) or
-				(self.F_maxQL(th_maxQL()) and self.F_maxDiskUtil(th_maxHwUtil()->fourth()))
-			)
-		message : "CPS <Node> " + self.getName()
-		fix {
-			title : "Move it to a New Component deployed to a New Node"
-			do {
-				log("--------------");
-				log("pattern CPS");
-				log("moveOpNCNN on");
-				log("self --> "+self.getName());
-				self.moveToNewComponentDeployedOnNewNode(); 
-				log("--------------");
-				log("");
-			}
-		}
-		fix{
-			title : "Move it to a New Component deployed to the Less Used neighbour Node"
-			do{
-				log("--------------");
-				log("pattern CPS");
-				log("moveOpNCLN on");
-				log("self --> "+self.getName());
-				self.moveToNewComponentDeployedOnNearLessUsedNode();
-				log("--------------");
-				log("");
-			}
-		}
-		fix{
-			title : "Redeploy its Component to the Less Used neighbour Node"
-			do{
-				log("--------------");
-				log("pattern CPS");
-				log("moveCompLN on");
-				log("self --> "+self.getName());
-				self.redeployOnNearLessUsedNode();
-				log("--------------");
-				log("");
-			}
-		}
-		fix{
-			title : "Change its Component to the one with the Lowest Demand"
-			do{
-				log("--------------");
-				log("pattern CPS");
-				log("moveOpLC on");
-				log("self --> "+self.getName());
-				self.moveToLessCriticalComponent();
-				log("--------------");
-				log("");
-			}
-		}
-		fix{
-			title : "Deploy its Component to New Node"
-			do{
-				log("--------------");
-				log("pattern CPS");
-				log("moveCompNN on");
-				log("self --> "+self.getName());
-				self.redeployOnNewNode();
-				log("--------------");
-				log("");
-			}
-		}
-	}
-}
-
-/*
-context Node {
-	critique CPS_DISK {
-		check: 
-			not ( self.F_maxQL(th_maxQL()) and self.F_maxDiskUtil(th_maxHwUtil()->fourth()) )
-		message : "CPS_DISK <Node> " + self.getName()
-		fix {
-			title : "Move its critical Operation to a New Component deployed to a New Node"
-			
-			do {
-				self.moveToNewComponentDeployedOnNewNode(); 
-			}
-		}
-		fix{
-			title : "Move its critical Operation to a New Component deployed to the Less Used Neighbour Node"
-			do{
-				self.moveToNewComponentDeployedOnNearLessUsedNode();
-			}
-		}
-		fix{
-			title : "Redeploy its Critical Component to the Less Used Neighbour Node"
-			do{
-				self.redeployOnNearLessUsedNode();
-			}
-		}
-		fix{
-			title : "Redeploy its Critical Component to New Node"
-			do{
-				self.redeployOnNewNode();
-			}
-		}
-		fix{
-			title : "Change its owning Component from "+self.name+" to the one with the lowest demand"
-			do{
-				self.moveToLessCriticalComponent();
-			}
-		}
-	}
-}*/
-
 /*********************************************************************************************
  *																							 *
  *	 								Extensive Processing  									 *
@@ -270,8 +159,8 @@ context Node {
 context UML!Component {
  	critique ExtensiveProcessingAP{
  		check:
- 			not (self.F_resDemand_fuzzy() * 
- 				( self.F_maxHwUtil_fuzzy() or self.F_RT_fuzzy() ) > 0.85 
+ 			(self.F_resDemand_fuzzy() * 
+ 				( self.F_maxHwUtil_fuzzy() + self.F_RT_fuzzy() ) < 0.85 
  					and self.F_probExec_fuzzy())
  		message : "EP <" + self.type.name + "> " + self.name
  		fix {
@@ -386,7 +275,7 @@ context UML!Component {
 }
 
 
-context Component {
+context UML!Component {
 	critique Blob_DataController {
 		check:
 			( self.F_numClientConnects_fuzzy() * self.F_numMsgsOut_fuzzy() * 
@@ -466,7 +355,7 @@ context UML!Component {
  *									reviewed												 *
  *********************************************************************************************
  
- context Component {
+ context UML!Component {
  	critique TowerOfBabel{
  		check{
  			if(self.F_numExF(th_maxExF()) and self.F_maxHwUtil(th_maxHwUtil()))
