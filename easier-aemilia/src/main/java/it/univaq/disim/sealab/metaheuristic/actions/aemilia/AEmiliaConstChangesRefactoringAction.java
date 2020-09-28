@@ -327,4 +327,10 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 		return newAction;
 	}
+
+	@Override
+	public boolean cleanUp() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

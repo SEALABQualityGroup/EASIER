@@ -330,4 +330,10 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 		return "REMOVE CLONE " + sourceAEI.getInstanceName();
 	}
 
+	@Override
+	public boolean cleanUp() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }
