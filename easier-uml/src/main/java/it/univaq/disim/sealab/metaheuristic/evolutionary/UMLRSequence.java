@@ -50,45 +50,25 @@ public class UMLRSequence extends RSequence {
 		Refactoring temporary_ref = this.refactoring.clone(getSolution());
 
 		RefactoringAction candidate;
-		int i = 0;
 		do {
 			candidate = manager.getMetamodelManager().getRandomAction(n, this);
-			if(i>10)
-				System.out.println("I'm stuck in the loop!");
-			i++;
 		} while (candidate == null);
-
-		// candidate.setModel(this.getModel());
 
 		temporary_ref.getActions().add(candidate);
 
 		if (this.isFeasible(temporary_ref)) {
-			// this.insert(candidate);
-
-			i = 0;
 			boolean found = false;
-//			while (i < temporary_ref.getActions().size() && !found) {
-//				RefactoringAction a = temporary_ref.getActions().get(i);
-//				// TODO set new refactoring rules
-////				if (a instanceof AEmiliaCloneAEIRefactoringAction) {
-////					if (!metamodelManager.isApplicable(a, temporary_ref.getSolution().getVariableValue(0)))
-////						found = true;
-////				}
-//				i++;
-//			}
 			temporary_ref = null;
 			if (!found) {
 				this.insert(candidate);
-				// temporary_ref = null;
 				return true;
 			}
-			return false;
-
 		} else {
+			candidate.cleanUp();
 			candidate = null;
 			temporary_ref = null;
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -101,9 +81,9 @@ public class UMLRSequence extends RSequence {
 			int j = 0;
 			while (j < tr.getActions().size() && !found) {
 				Action a2 = tr.getActions().get(j);
-				if (a.equals(a2) && j != tr.getActions().indexOf(a) ) {
-					EasierLogger.logger_.warning(
-							"Multi-modification of the same operation for Solution #" + this.getSolution().getName() + "!");
+				if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
+					EasierLogger.logger_.warning("Multi-modification of the same operation for Solution #"
+							+ this.getSolution().getName() + "!");
 					return false;
 				}
 				j++;
@@ -111,7 +91,7 @@ public class UMLRSequence extends RSequence {
 		}
 
 		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
-		System.out.println("Precondition of a Sol# "+ solution.name +" refactoring ");
+		System.out.println("Precondition of a Sol# " + solution.name + " refactoring ");
 		boolean fol = false;
 		try {
 			fol = manager.evaluateFOL(app, ((UMLRSolution) this.getSolution()).getModel());
@@ -122,9 +102,11 @@ public class UMLRSequence extends RSequence {
 		}
 
 		if (!fol) {
-			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName() + " is false!");
+			System.out.println("Refactoring sequence");
+			System.out.println(getRefactoring().toString());
 		}
-		System.out.println("Precondition of a Sol# "+ solution.name +" DONE -> " + fol);
+		System.out.println("Precondition of Solution # " + this.getSolution().getName() + " is " + fol);
+
 		return fol;
 	}
 

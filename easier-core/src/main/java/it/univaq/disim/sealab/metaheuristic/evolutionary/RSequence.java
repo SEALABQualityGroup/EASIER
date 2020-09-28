@@ -56,6 +56,9 @@ public abstract class RSequence {
 			if (num_failures >= allowed_failures) {
 				// START OVER
 				num_failures = 0;
+				for (RefactoringAction a : this.refactoring.getActions()) {
+					a.cleanUp();
+				}
 				this.refactoring = null;
 				this.refactoring = new Refactoring(solution);
 				this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));

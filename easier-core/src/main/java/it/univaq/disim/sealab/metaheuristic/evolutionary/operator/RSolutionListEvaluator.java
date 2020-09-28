@@ -25,10 +25,12 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		ExecutorService executor = Executors.newFixedThreadPool(1);
 
 		for (S sol : solutionList) {
+			System.out.println("Evaluationg solution #" + sol.getName());
 			sol.executeRefactoring();
 			sol.applyTransformation();
 			//TODO shall be moved to the multithreaded version
 			sol.invokeSolver();
+			System.out.println("Done!");
 //			sol.save();
 		}
 
