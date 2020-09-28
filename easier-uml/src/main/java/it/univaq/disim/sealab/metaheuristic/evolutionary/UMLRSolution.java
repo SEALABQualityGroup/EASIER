@@ -1,6 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -341,23 +343,26 @@ public class UMLRSolution extends RSolution {
 
 		XMLUtil.conformanceChecking(lqnModelPath);
 
+		Process process = null;
 		try {
-			Process process = new ProcessBuilder(lqnSolverPath.toString(), lqnModelPath.toString()).start();
+			process = new ProcessBuilder(lqnSolverPath.toString(), lqnModelPath.toString()).start();
 			process.waitFor();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 		
+//		process.getOutputStream();
+		
 		try {
 			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
 				System.err.println("Solution # " + this.name);
-				System.err.println(this.getVariableValue(0).toString());
+				((RSequence)this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
 				this.iModel.dispose();
 
 				throw new Exception("[ERROR] the lqn solver has genered an error.");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(System.out::println);
 			e.printStackTrace();
 		}
 		
@@ -428,12 +433,8 @@ public class UMLRSolution extends RSolution {
 
 		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
 
-		try {
-			bckAnn.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		bckAnn.execute();
+		
 	}
 
 	public float evaluatePerformance() {
