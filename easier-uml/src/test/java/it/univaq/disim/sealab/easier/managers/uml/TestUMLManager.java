@@ -77,19 +77,19 @@ public class TestUMLManager {
 
 //		Stereotype gaExecHost = myClass.getAppliedStereotypes().stream().filter(a -> "GaExecHost".equals(a.getName()))
 //				.findAny().orElse(null);
-		
+
 		Stereotype gaExecHost = myClass.getAppliedStereotype("MARTE::MARTE_AnalysisModel::GQAM::GaExecHost");
 
 		Stereotype daComponent = myClass.getAppliedStereotype("DAM::DAM_UML_Extensions::System::Core::DaComponent");
-		
-		((org.eclipse.emf.ecore.util.EObjectContainmentEList<?>)myClass.getValue(daComponent, "failure")).getEObject();
-		
-		((com.masdes.dam.Core.DaComponent) daComponent).getFailure().forEach(System.out::println);
 
+		com.masdes.dam.Core.DaComponent daComp = (com.masdes.dam.Core.DaComponent) ((org.eclipse.emf.ecore.util.EObjectContainmentEList<?>) myClass
+				.getValue(daComponent, "failure")).getEObject();
+
+		daComp.getFailure().forEach(System.out::println);
 
 		((com.masdes.dam.Core.DaComponent) ((org.eclipse.emf.ecore.util.EObjectContainmentEList<?>) myClass
-				.getValue(daComponent, "failure")).getEObject()).getFailure().get(0)
-						.getOccurrenceProb().forEach(System.out::println);
+				.getValue(daComponent, "failure")).getEObject()).getFailure().get(0).getOccurrenceProb()
+						.forEach(System.out::println);
 
 		// Loads the GQAM from the EmfModel
 //		Profile profile = (Profile) umlIModel.getGQAM().getPackagedElement("MARTE_AnalysisModel").getOwnedElements().get(0);
