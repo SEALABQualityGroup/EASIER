@@ -114,7 +114,7 @@ public abstract class EpsilonStandalone {
 		return this;
 	}
 
-	public Path getSource() throws Exception {
+	public Path getSource() {
 		return source;
 	}
 
@@ -122,8 +122,13 @@ public abstract class EpsilonStandalone {
 		return model;
 	}
 
-	protected void doExecute() throws Exception {
-		module.parse(getSource().toFile());
+	protected void doExecute() {
+		try {
+			module.parse(getSource().toFile());
+		} catch (Exception e) {
+			System.err.println("[ERROR] File not found! " + getSource().toString());
+			e.printStackTrace();
+		}
 
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -140,7 +145,12 @@ public abstract class EpsilonStandalone {
 		}
 
 		preProcess();
-		result = execute(module);
+		try {
+			result = execute(module);
+		} catch (EolRuntimeException e) {
+			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
+			e.printStackTrace();
+		}
 	}
 
 	public Path getMetamodelPath() {

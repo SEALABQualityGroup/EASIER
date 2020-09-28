@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.epsilon.egl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,14 +51,19 @@ public class EGLStandalone extends EpsilonStandalone{
 	}
 
 	@Override
-	public Path getSource() throws Exception {
+	public Path getSource() {
 		if(Files.exists(Paths.get("/tmp/rule_egl")))
 			source = Paths.get("/tmp/rule_egl");
 		if (source == null) {
 			InputStream ruleIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("egl/mmaemilia2aem.egl");
 //			rulePath = Files.createTempFile("", "");
 			source = Paths.get("/tmp/rule_egl");
-			Files.copy(ruleIn, source);
+			try {
+				Files.copy(ruleIn, source);
+			} catch (IOException e) {
+				System.err.println("[ERROR] the getSource of the EGL engine has thrown an IOExection while copy files!");
+				e.printStackTrace();
+			}
 		}
 		return source;
 //		return "egl/mmaemilia2aem.egl";

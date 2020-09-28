@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -29,7 +30,7 @@ public class EOLStandalone extends EpsilonStandalone {
 	}
 
 	@Override
-	public Path getSource() throws Exception {
+	public Path getSource() {
 		return source;
 	}
 
@@ -58,7 +59,7 @@ public class EOLStandalone extends EpsilonStandalone {
 	public void preProcess() {
 	}
 
-	public void execute() throws Exception {
+	public void execute() {
 		super.doExecute();
 
 //		module.getContext().getModelRepository().dispose();
