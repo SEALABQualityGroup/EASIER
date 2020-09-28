@@ -53,6 +53,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	private final static Path eolModulePath;
 
+	private final static double VALUE_COST = 1.23;
+
 	private final UMLRSolution solution;
 
 //	private Operation targetObject;
@@ -72,10 +74,18 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		umlOpToMove = getRandomOperation();
 		umlTargetComp = getRandomComponent();
 
+		cost = calculateCost();
+
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
+	}
+
+	private double calculateCost() {
+		long msgs = this.solution.getIModel().allContents().stream().filter(Message.class::isInstance)
+				.map(Message.class::cast).filter(m -> umlOpToMove.equals(m.getSignature())).count();
+		return msgs * VALUE_COST;
 	}
 
 	// retrieves a random operation from the source model
@@ -106,7 +116,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	 * @return
 	 */
 	private org.eclipse.uml2.uml.Package getPackage(final String pkgName) {
-		
+
 		org.eclipse.uml2.uml.Model rootPackage = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
@@ -114,7 +124,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 				break;
 			}
 		}
-		
+
 		org.eclipse.uml2.uml.Package returnPackage = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(rootPackage.getOwnedElements(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
@@ -251,7 +261,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-		
+
 		cloned.umlOpToMove = this.umlOpToMove;
 		cloned.umlTargetComp = this.umlTargetComp;
 
@@ -261,19 +271,24 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 		return cloned;
 	}
-	
+
 	public boolean equals(Object op) {
-		
-		if(op.getClass() != this.getClass())
+
+		if (op.getClass() != this.getClass())
 			return false;
-		if(!this.getUmlOpToMove().equals(((UMLMvOperationToComp)op).getUmlOpToMove()))
+		if (!this.getUmlOpToMove().equals(((UMLMvOperationToComp) op).getUmlOpToMove()))
 			return false;
 		return true;
-		
+
 	}
 
-//	public void setSolution(RSolution sol) {
-//		this.solution = sol;
-//	}
+	public boolean cleanUp() {
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Move Operation --> " + umlOpToMove.getName() + " to Component -->  " + umlTargetComp.getName();
+	}
 
 }

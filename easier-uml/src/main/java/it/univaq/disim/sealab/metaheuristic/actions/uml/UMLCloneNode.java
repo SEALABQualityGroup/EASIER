@@ -7,11 +7,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.uml2.uml.DeployedArtifact;
+import org.eclipse.uml2.uml.Deployment;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
@@ -34,6 +37,8 @@ import logicalSpecification.actions.UML.impl.UMLAddNodeActionImpl;
 public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
+	
+	private final static double VALUE_COST = 1.23;
 
 	private final UMLRSolution solution;
 
@@ -57,11 +62,25 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		targetObject = getRandomNode();
 
 		umlClonedNode = createNewNode();
+		
+		cost = calculateCost();
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
+	}
+	
+	private double calculateCost() {
+		
+		int cpSize = targetObject.getCommunicationPaths().size();
+		
+		int artSize = 0;
+		
+		targetObject.getDeployments().stream().flatMap(d -> d.getDeployedArtifacts().stream()).count();
+			
+		return (cpSize + artSize) * VALUE_COST;
+		
 	}
 	
 	private String generateHash() {
@@ -240,6 +259,16 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	public Node getUmlNodeToClone() {
 		return this.targetObject;
+	}
+	
+	public boolean cleanUp() {
+		Collection<?> allContents = this.solution.getIModel().allContents();
+		return allContents.remove(umlClonedNode);
+	}
+	
+	@Override
+	public String toString() {
+		return "Cloning --> " + targetObject.getName() + " with -->  " + umlClonedNode.getName();
 	}
 
 }

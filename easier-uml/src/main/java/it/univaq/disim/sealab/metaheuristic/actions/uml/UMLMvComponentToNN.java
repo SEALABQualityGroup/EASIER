@@ -7,6 +7,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +36,8 @@ import logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl;
 public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
+	
+	private final static double VALUE_COST = 1.23;
 
 	private final UMLRSolution solution;
 
@@ -50,18 +53,27 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	public UMLMvComponentToNN(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
-		
-		
 
 		umlTargetNodes = new BasicEList<>();
 		
 		umlCompToMove = getRandomComponent();
 		umlTargetNodes.add(getRandomNode());
+		
+		cost = calculateCost();
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
+	}
+	
+	private double calculateCost() {
+		
+		int intUsage = umlCompToMove.getUsedInterfaces().size();
+		int intReal = umlCompToMove.getInterfaceRealizations().size();
+		int ops = umlCompToMove.getOperations().size();
+		
+		return (intUsage + intReal + ops) * VALUE_COST;
 	}
 
 	// Creates a new random Node on which the component will be deployed on
@@ -236,6 +248,19 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		if(!this.getUmlCompToMove().equals(((UMLMvComponentToNN)op).getUmlCompToMove()))
 			return false;
 		return true;
+	}
+	
+	public boolean cleanUp() {
+		Collection<?> allContents = this.solution.getIModel().allContents();
+		return allContents.removeAll(umlTargetNodes);
+	}
+	
+	@Override
+	public String toString() {
+		String nodes = "";
+		for(Node n : umlTargetNodes)
+			nodes += " " + n.getName(); 
+		return "Moving --> " + umlCompToMove.getName() + " to --> " + nodes;
 	}
 
 }

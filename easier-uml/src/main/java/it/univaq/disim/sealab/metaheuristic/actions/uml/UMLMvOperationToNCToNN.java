@@ -39,9 +39,11 @@ import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
+	
+	private final static double VALUE_COST = 1.23;
 
 	private final UMLRSolution solution;
-	
+
 	private Node umlTargetNode;
 
 //	private Operation targetObject;
@@ -271,8 +273,17 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		return true;
 	}
 
-//	public void setSolution(RSolution sol) {
-//		this.solution = sol;
-//	}
+	public boolean cleanUp() {
+		Collection<?> allContents = this.solution.getIModel().allContents();
+		boolean resp = allContents.remove(umlTargetNode);
+		resp &= allContents.remove(umlTargetComp);
+		
+		return resp;
+	}
+
+	public String toString() {
+		return "Move Operation --> " + umlOpToMove.getName() + " to New Component --> " + umlTargetComp.getName()
+				+ " deployed to a New Node -->" + umlTargetNode.getName();
+	}
 
 }
