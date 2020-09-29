@@ -357,12 +357,12 @@ public class UMLRSolution extends RSolution {
 			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
 				System.err.println("Solution # " + this.name);
 				((RSequence)this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
-				this.iModel.dispose();
 
 				throw new Exception("[ERROR] the lqn solver has genered an error.");
 			}
 		} catch (Exception e) {
 			new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(System.out::println);
+			this.iModel.dispose();
 			e.printStackTrace();
 		}
 		
