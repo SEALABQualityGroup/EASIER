@@ -1,0 +1,3 @@
+[submodule "easier-refactoringLibrary"]
+	path = easier-refactoringLibrary
+	url = git@github.com:SEALABQualityGroup/padre-perf_detection.git
