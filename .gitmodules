@@ -1,3 +1,6 @@
 [submodule "easier-refactoringLibrary"]
 	path = easier-refactoringLibrary
 	url = git@github.com:SEALABQualityGroup/padre-perf_detection.git
+[submodule "easier-uml2lqn"]
+	path = easier-uml2lqn
+	url = git@github.com:SEALABQualityGroup/uml2lqn.git
