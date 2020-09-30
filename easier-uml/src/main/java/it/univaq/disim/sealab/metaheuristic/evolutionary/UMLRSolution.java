@@ -4,27 +4,40 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.ocl.ParserException;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.internal.impl.NodeImpl;
+import org.eclipse.uml2.uml.internal.impl.UseCaseImpl;
 import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
 import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
-import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
@@ -59,6 +72,15 @@ public class UMLRSolution extends RSolution {
 //	private EObject model;
 
 	private IModel iModel;
+
+	private final static Path refactoringLibraryModule, uml2lqnModule;
+
+	static {
+		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+				"easier-refactoringLibrary", "evl", "AP-UML-MARTE.evl");
+		uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+				"easier-uml2lqn", "org.univaq.uml2lqn");
+	}
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
 		super(p);
@@ -313,7 +335,7 @@ public class UMLRSolution extends RSolution {
 
 		EVLStandalone pasCounter = new EVLStandalone();
 
-		pasCounter.setSource(controller.getConfigurator().getEVLTemplate());
+		pasCounter.setSource(refactoringLibraryModule);
 		pasCounter.setModel(iModel);
 
 		numPAs = pasCounter.getPAs();
@@ -350,22 +372,23 @@ public class UMLRSolution extends RSolution {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 //		process.getOutputStream();
-		
+
 		try {
 			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
-				System.err.println("Solution # " + this.name);
-				((RSequence)this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
 
 				throw new Exception("[ERROR] the lqn solver has genered an error.");
 			}
 		} catch (Exception e) {
 			new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(System.out::println);
+			System.err.println("Solution # " + this.name);
+			((RSequence) this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
 			this.iModel.dispose();
+			// TODO write a report
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("..... done");
 
 		System.out.println("Invoking the back annotator...");
@@ -434,25 +457,151 @@ public class UMLRSolution extends RSolution {
 		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
 
 		bckAnn.execute();
-		
+
 	}
 
 	public float evaluatePerformance() {
 		// TODO decide how to calculate perfQ, if it needed
 		System.out.println("PerfQ is not yet decided... Please consider how to compute this objective");
-		return -1;
+		return perfQ = perfQ();
 	}
 
+	/**
+	 *
+	 * @param source
+	 * @param refactored
+	 * @return
+	 * @throws EolModelElementTypeNotFoundException
+	 */
+	private float perfQ() {
+		/*
+		 * The updated model can have more nodes than the source node since original
+		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
+		 * the performance model. For this reason, the perfQ analyzes only the
+		 * performance metrics of the nodes common among the models
+		 */
+
+		EasierUmlModel source = ((UMLRProblem<?>)getProblem()).getSourceModel();
+		
+		
+		// The lists used to store the elements of both models
+		List<EObject> sourceElements = new ArrayList<EObject>();
+		List<EObject> refactoredElements = new ArrayList<EObject>();
+
+		// The elements of the source model;
+		List<EObject> nodes = null;
+		List<EObject> scenarios = null;
+		try {
+			nodes = (List<EObject>) source.getAllOfType("Node");
+			scenarios = (List<EObject>) source.getAllOfType("UseCase");
+		} catch (EolModelElementTypeNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Variable representing the perfQ value
+		float value = 0f;
+
+		// The function considers only the elements having the stereotypes GaExecHosta
+		// and GaScenario
+		nodes = filterByStereotype(nodes, "GQAM::GaExecHost");
+		scenarios = filterByStereotype(scenarios, "GQAM::GaScenario");
+
+		sourceElements.addAll(scenarios);
+		sourceElements.addAll(nodes);
+
+		// Lists needed to store the values of the performance metrics
+		ArrayList<Double> sourceMetrics = new ArrayList<Double>();
+		ArrayList<Double> refactoredMetrics = new ArrayList<Double>();
+
+		// for each elements of the source model, it is picked the element with the same
+		// id in the refactored one
+		for (EObject element : sourceElements) {
+			String id = getXmiId(source, element);
+
+			EObject correspondingElement = (EObject) iModel.getElementById(id);
+			refactoredElements.add(correspondingElement);
+
+			// for each model element, it is collected the performance metric and added to
+			// the vector
+			sourceMetrics.addAll(getMetrics(element));
+			refactoredMetrics.addAll(getMetrics(correspondingElement));
+		}
+
+		// This loop calculates the perfQ value
+		Iterator<Double> it1 = sourceMetrics.iterator();
+		Iterator<Double> it2 = refactoredMetrics.iterator();
+
+		while (it1.hasNext() && it2.hasNext()) {
+
+			Double sourceValue = it1.next();
+			Double refactoredValue = it2.next();
+
+			value += (sourceValue - refactoredValue) / (sourceValue + refactoredValue);
+		}
+
+		return value / sourceMetrics.size();
+
+	}
+
+	public static ArrayList<Double> getMetrics(EObject element) {
+
+		ArrayList<Double> metrics = new ArrayList<Double>();
+
+		if (element instanceof UseCaseImpl) {
+
+			UseCaseImpl scenario = (UseCaseImpl) element;
+			Stereotype stereotype = scenario.getAppliedStereotype("GQAM::GaScenario");
+
+			EList<?> throughput = (EList<?>) scenario.getValue(stereotype, "throughput");
+			EList<?> respT = (EList<?>) scenario.getValue(stereotype, "respT");
+
+			if (throughput.isEmpty())
+				throw new java.lang.RuntimeException("Throughput not found for the UseCase: " + scenario.getName());
+
+			if (respT.isEmpty())
+				throw new java.lang.RuntimeException("ResponseTime not found for the UseCase: " + scenario.getName());
+
+			metrics.add((Double.parseDouble(throughput.get(0).toString())));
+			metrics.add(-1 * (Double.parseDouble(respT.get(0).toString())));
+
+		} else if (element instanceof NodeImpl) {
+
+			NodeImpl node = (NodeImpl) element;
+			Stereotype stereotype = node.getAppliedStereotype("GQAM::GaExecHost");
+			EList<?> value = ((EList<?>) node.getValue(stereotype, "utilization"));
+
+			if (value.isEmpty())
+				throw new java.lang.RuntimeException("Utilization not found for the Node: " + node.getName());
+
+			metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
+		}
+
+		return metrics;
+
+	}
+
+	public static List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
+		return elements.stream().filter(e -> ((Element) e).getAppliedStereotype(stereotypeNamespace) != null)
+				.collect(Collectors.toList());
+	}
+
+	public static String getXmiId(EmfModel model, EObject element) {
+		return ((XMLResource) model.getResource()).getID(element);
+	}
+	
+	
 	/**
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */
 	public void applyTransformation() {
 		ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
+		executor.setSource(uml2lqnModule.resolve("uml2lqn.etl"));
 		executor.setModel(this.iModel);
 		executor.setModel(
-				executor.createXMLModel("LQN", this.modelPath.getParent().resolve("output.xml"),
-						org.eclipse.emf.common.util.URI.createFileURI(controller.getConfigurator().getUml2Lqn()
-								.resolve("org.univaq.uml2lqn").resolve("lqnxsd").resolve("lqn.xsd").toString()),
+				executor.createXMLModel(
+						"LQN", this.modelPath.getParent().resolve("output.xml"), org.eclipse.emf.common.util.URI
+								.createFileURI(uml2lqnModule.resolve("lqnxsd").resolve("lqn.xsd").toString()),
 						false, true));
 		try {
 			executor.execute();

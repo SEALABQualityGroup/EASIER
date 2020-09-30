@@ -4,3 +4,6 @@
 [submodule "easier-uml2lqn"]
 	path = easier-uml2lqn
 	url = git@github.com:SEALABQualityGroup/uml2lqn.git
+[submodule "easier-uml2lqnCaseStudy"]
+	path = easier-uml2lqnCaseStudy
+	url = git@github.com:SEALABQualityGroup/uml2lqn-casestudies.git
