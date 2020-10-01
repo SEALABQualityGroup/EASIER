@@ -33,4 +33,8 @@ public class SourceModel {
 		return sourceFolder.getFileName().toString();
 	}
 	
+	public void setExtension(String ext) {
+		extension = ext;
+	}
+	
 }

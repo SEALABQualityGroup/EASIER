@@ -1,6 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
@@ -42,6 +44,7 @@ import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
@@ -189,8 +192,8 @@ public class UMLRSolution extends RSolution {
 		modelPath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
 
 		try {
-			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(),
-					modelPath.getParent().toFile());
+//			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(),
+//					modelPath.getParent().toFile());
 			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
 
 			try {
@@ -381,11 +384,27 @@ public class UMLRSolution extends RSolution {
 				throw new Exception("[ERROR] the lqn solver has genered an error.");
 			}
 		} catch (Exception e) {
-			new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(System.out::println);
+			String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
+					.map(act -> act.toString()).collect(Collectors.joining(","));
 			System.err.println("Solution # " + this.name);
+			System.err.println(lqnError);
 			((RSequence) this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
 			this.iModel.dispose();
 			// TODO write a report
+			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
+				String line = String.valueOf(this.name) + ";";
+
+				line += lqnError;
+				line += ";";
+				line += ((RSequence) this.getVariableValue(0)).getRefactoring().getActions().stream()
+						.map(act -> act.toString()).collect(Collectors.joining(","));
+				line += "\n";
+				bw.append(line);
+//				bw.close();
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
 			e.printStackTrace();
 		}
 
@@ -481,9 +500,8 @@ public class UMLRSolution extends RSolution {
 		 * performance metrics of the nodes common among the models
 		 */
 
-		EasierUmlModel source = ((UMLRProblem<?>)getProblem()).getSourceModel();
-		
-		
+		EasierUmlModel source = ((UMLRProblem<?>) getProblem()).getSourceModel();
+
 		// The lists used to store the elements of both models
 		List<EObject> sourceElements = new ArrayList<EObject>();
 		List<EObject> refactoredElements = new ArrayList<EObject>();
@@ -495,7 +513,6 @@ public class UMLRSolution extends RSolution {
 			nodes = (List<EObject>) source.getAllOfType("Node");
 			scenarios = (List<EObject>) source.getAllOfType("UseCase");
 		} catch (EolModelElementTypeNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -589,8 +606,7 @@ public class UMLRSolution extends RSolution {
 	public static String getXmiId(EmfModel model, EObject element) {
 		return ((XMLResource) model.getResource()).getID(element);
 	}
-	
-	
+
 	/**
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */

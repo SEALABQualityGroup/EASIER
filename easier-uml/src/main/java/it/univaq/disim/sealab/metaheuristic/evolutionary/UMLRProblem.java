@@ -25,7 +25,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 			Controller ctrl) {
 		super(srcFolderPath, srcFolderPath.resolve("model.uml"), desired_length, length, allowedFailures, populationSize, ctrl);
 		
-		sourceIModel = setSourceModel(srcFolderPath);
+		sourceIModel = setSourceModel(srcFolderPath.resolve("automatedGuidedVehicle.uml"));
 		
 //		sourceFolderPath = srcFolderPath;
 	}
@@ -46,7 +46,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 			Controller ctrl) {
 		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize, ctrl);
 		
-		sourceIModel = setSourceModel(srcModel.getSourceFolder());
+		sourceIModel = setSourceModel(srcModel.getModel());
 	}
 	
 	public EasierUmlModel getSourceModel() {
@@ -106,6 +106,4 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 			}
 		}
 	}
-
-	
 }

@@ -1,6 +1,10 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,13 +97,30 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		if (experimentDirectory.exists()) {
 			experimentDirectory.delete();
 		}
+		
 
 		boolean result;
 		result = new File(experiment.getExperimentBaseDirectory()).mkdirs();
+		setReportFilePath();
 		if (!result) {
 			throw new JMetalException(
 					"Error creating experiment directory: " + experiment.getExperimentBaseDirectory());
 		}
+	}
+	
+	private Path setReportFilePath() {
+
+		Path tmp = controller.getConfigurator().getOutputFolder().resolve(controller.getReportFileName());
+
+		final String header = "solID;lqn_solver_message;actions\n";
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(tmp.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return tmp;
 	}
 
 	public List<Map.Entry<Algorithm<Result>, Long>> getComputingTimes() {
