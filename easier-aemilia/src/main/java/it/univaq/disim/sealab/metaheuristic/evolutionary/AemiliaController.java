@@ -642,6 +642,11 @@ public class AemiliaController implements Controller {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
 	}
 
+	@Override
+	public String getReportFileName() {
+		return "";
+	}
+
 //	public void generateWorseModels() {
 //		List<RProblem<AemiliaRSolution>> problems = createProblems();
 //
