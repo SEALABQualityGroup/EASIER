@@ -7,3 +7,6 @@
 [submodule "easier-uml2lqnCaseStudy"]
 	path = easier-uml2lqnCaseStudy
 	url = git@github.com:SEALABQualityGroup/uml2lqn-casestudies.git
+[submodule "easier-reliability"]
+	path = easier-reliability
+	url = git@github.com:SEALABQualityGroup/uml-reliability.git
