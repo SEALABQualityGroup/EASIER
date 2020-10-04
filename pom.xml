@@ -24,6 +24,7 @@
 		<module>easier-uml2lqn</module>
 		<module>easier-refactoringLibrary</module>
 		<module>easier-uml2lqnCaseStudy</module>
+		<module>easier-reliability</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>
