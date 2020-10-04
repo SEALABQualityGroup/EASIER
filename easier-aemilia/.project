@@ -9,7 +9,6 @@
     <project>twoeaglesBridge</project>
     <project>aemiliaToQn_bridge</project>
     <project>measuresToIndices</project>
-    <project>aemilia2text</project>
     <project>easier-epsilon</project>
   </projects>
   <buildSpec>

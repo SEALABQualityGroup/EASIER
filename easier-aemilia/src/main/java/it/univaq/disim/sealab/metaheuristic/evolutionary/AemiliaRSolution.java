@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.solution.Solution;
@@ -27,18 +25,13 @@ import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.aemilia.AEmiliaConstChangesRefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
-import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaManager;
 import it.univaq.disim.sealab.metaheuristic.managers.aemilia.AemiliaMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.aemilia.OclAemiliaStringManager;
-import it.univaq.disim.sealab.metaheuristic.utils.AemiliaFileUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.disim.sealab.metaheuristic.utils.ThresholdUtils;
-import metamodel.mmaemilia.AEmiliaSpecification;
 import metamodel.mmaemilia.ArchitecturalInteraction;
-import metamodel.mmaemilia.Headers.ConstInit;
 
 public class AemiliaRSolution extends RSolution {
 
@@ -685,6 +678,11 @@ public class AemiliaRSolution extends RSolution {
 
 	public void setMmaemiliaFolderPath(String mmaemiliaFolderPath) {
 		this.mmaemiliaFolderStr = mmaemiliaFolderPath;
+	}
+
+	@Override
+	public void computeReliability() {
+		// TODO Auto-generated method stub
 	}
 
 //	public Manager getManager() {

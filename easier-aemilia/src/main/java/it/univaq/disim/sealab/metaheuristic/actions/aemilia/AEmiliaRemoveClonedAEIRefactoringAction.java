@@ -331,9 +331,6 @@ public class AEmiliaRemoveClonedAEIRefactoringAction extends AEmiliaRemoveCloned
 	}
 
 	@Override
-	public boolean cleanUp() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+	public void cleanUp() {	}
 
 }

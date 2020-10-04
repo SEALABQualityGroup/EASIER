@@ -473,10 +473,7 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 	}
 
 	@Override
-	public boolean cleanUp() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+	public void cleanUp() {}
 
 
 }
