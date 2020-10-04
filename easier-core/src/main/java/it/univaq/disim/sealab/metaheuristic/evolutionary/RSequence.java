@@ -22,6 +22,7 @@ public abstract class RSequence {
 	protected int numOfPAs;
 	protected double numOfChanges;
 	protected float perfQuality;
+	protected double reliability;
 
 	protected Manager manager;
 	protected MetamodelManager metamodelManager;
@@ -51,8 +52,8 @@ public abstract class RSequence {
 		while (this.refactoring.getActions().size() < length) {
 			if (!this.tryRandomPush(number_of_actions))
 				num_failures++;
-			System.out.println("Actual number of failure ");
-			ProgressBar.showBar(num_failures, allowed_failures);
+			//System.out.println("Actual number of failure ");
+			//ProgressBar.showBar(num_failures, allowed_failures);
 			if (num_failures >= allowed_failures) {
 				// START OVER
 				num_failures = 0;
@@ -172,7 +173,11 @@ public abstract class RSequence {
 		return numOfChanges;
 	}
 
-	public void setNumOfChanges(double d) {
+	public void setNumOfChanges(final double d) {
 		this.numOfChanges = d;
+	}
+	
+	public void setReliability(final double r) {
+		reliability = r;
 	}
 }

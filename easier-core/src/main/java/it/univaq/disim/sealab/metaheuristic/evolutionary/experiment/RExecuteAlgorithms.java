@@ -111,10 +111,19 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 	private Path setReportFilePath() {
 
 		Path tmp = controller.getConfigurator().getOutputFolder().resolve(controller.getReportFileName());
+		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
 
-		final String header = "solID;lqn_solver_message;actions\n";
+		String header = "solID;lqn_solver_message;actions\n";
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(tmp.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		header = "solID;message;actions\n";
+		
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(etlErrorLog.toFile(), true))) {
 			bw.append(header);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

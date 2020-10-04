@@ -40,6 +40,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	
 	protected float perfQ;
 	protected int numPAs;
+	protected double reliability;
 	
 	protected RSolution[] parents;
 	
@@ -74,6 +75,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public abstract void executeRefactoring();
 
 	public abstract void applyTransformation();
+	public abstract void computeReliability();
 
 	public abstract boolean alter(int i) throws UnexpectedException, ParserException;
 
@@ -87,6 +89,10 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 
 	public Path getModelPath() {
 		return modelPath;
+	}
+	
+	public double getReliability() {
+		return reliability;
 	}
 	
 	public void setRefactored() {
@@ -191,6 +197,17 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public void setParents(RSolution parent1, RSolution parent2) {
 		this.parents[0] = parent1;
 		this.parents[1] = parent2;
+	}
+	
+	public boolean equals(Object sol) {
+		
+		if(this.getName() == (((RSolution)sol).getName()))
+			return true;
+		
+		if(this.getVariableValue(0).getRefactoring().equals(((RSolution)sol).getVariableValue(0).getRefactoring()))
+			return true;
+		
+		return false;
 	}
 	
 //	@Override

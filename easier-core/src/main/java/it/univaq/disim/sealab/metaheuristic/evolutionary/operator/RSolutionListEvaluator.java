@@ -53,7 +53,7 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 		}*/
 		
 		// Ignore solution with perfQ == 0
-		ListIterator<S> iter = solutionList.listIterator();
+		/*ListIterator<S> iter = solutionList.listIterator();
 		while(iter.hasNext()){
 			S sol = iter.next();
 		    if(sol.evaluatePerformance() == 0){
@@ -67,7 +67,11 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 				problem.evaluate(sol);
 			}
 		    
+		}*/
+		for (S sol : solutionList) {
+			sol.computeReliability();
 		}
+		
 		return solutionList;
 	}
 

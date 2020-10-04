@@ -39,8 +39,7 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 	}
 
 	/** Constructor */
-	public RMutation(double mutationProbability, double distributionIndex,
-			RepairRSolution solutionRepair) {
+	public RMutation(double mutationProbability, double distributionIndex, RepairRSolution solutionRepair) {
 		if (mutationProbability < 0) {
 			throw new JMetalException("Mutation probability is negative: " + mutationProbability);
 		} else if (distributionIndex < 0) {
@@ -90,29 +89,19 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 				try {
 					boolean altered = false;
 					int num_failures = 0;
-					while(!altered){
-						if(solution.alter(randomGenerator.nextInt(0, solution.getVariableValue(0).getRefactoring().getActions().size()-1))){
+					while (!altered) {
+						if (solution.alter(randomGenerator.nextInt(0,
+								solution.getVariableValue(0).getRefactoring().getActions().size() - 1))) {
 							solution.setMutated();
-							//altered = true;
+							// altered = true;
 							break;
-						}
-						else{
+						} else {
 							num_failures++;
 							if (num_failures >= allowed_failures)
 								break;
 						}
 					}
-//					if(!altered)
-//						EasierLogger.logger_.info("Mutation left solution unchanged");
-//					else {
-//						solution.setMutated(true);
-//						//RSolution.MutationCounter++;
-//						EasierLogger.logger_.info("Mutation is done");
-//					}
-				} catch (UnexpectedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParserException e) {
+				} catch (UnexpectedException | ParserException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
