@@ -59,7 +59,7 @@ public class EOLStandalone extends EpsilonStandalone {
 	public void preProcess() {
 	}
 
-	public void execute() {
+	public void execute() throws EolRuntimeException {
 		super.doExecute();
 
 //		module.getContext().getModelRepository().dispose();

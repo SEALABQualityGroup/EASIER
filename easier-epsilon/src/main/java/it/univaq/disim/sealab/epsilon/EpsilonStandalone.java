@@ -11,15 +11,12 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.xmi.impl.GenericXMLResourceFactoryImpl;
-import org.eclipse.emf.mapping.ecore2xml.Ecore2XMLPackage;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.EmfModelFactory;
 import org.eclipse.epsilon.emc.emf.xml.XmlModel;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
 import org.eclipse.epsilon.eol.IEolModule;
@@ -28,15 +25,7 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
-import org.eclipse.epsilon.eol.models.Model;
 import org.eclipse.epsilon.eol.types.EolModelElementType;
-import org.eclipse.papyrus.MARTE.MARTEPackage;
-import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
-import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.PAM.PAMPackage;
-import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.SAM.SAMPackage;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.UMLPlugin;
-import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 
@@ -60,7 +49,7 @@ public abstract class EpsilonStandalone {
 	 * @param type specifies the obj type
 	 * @return
 	 */
-	public EpsilonStandalone setParameter(EObject targetObject, String type, String variableName) {
+	public EpsilonStandalone setParameter(Object targetObject, String type, String variableName) {
 		EolModelElementType modelType = new EolModelElementType(type);
 		Variable var = new Variable(variableName, targetObject, modelType);
 		parameters.add(var);
@@ -122,7 +111,7 @@ public abstract class EpsilonStandalone {
 		return model;
 	}
 
-	protected void doExecute() {
+	protected void doExecute() throws EolRuntimeException{
 		try {
 			module.parse(getSource().toFile());
 		} catch (Exception e) {
@@ -145,12 +134,12 @@ public abstract class EpsilonStandalone {
 		}
 
 		preProcess();
-		try {
+//		try {
 			result = execute(module);
-		} catch (EolRuntimeException e) {
-			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
-			e.printStackTrace();
-		}
+//		} catch (EolRuntimeException e) {
+//			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
+//			e.printStackTrace();
+//		}
 	}
 
 	public Path getMetamodelPath() {
@@ -231,9 +220,9 @@ public abstract class EpsilonStandalone {
 	 * @throws EolModelLoadingException
 	 * @throws URISyntaxException
 	 */
-	public static EmfModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
+	public static EasierUmlModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
 			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
-		EmfModel emfModel = new EasierUmlModel();
+		EasierUmlModel emfModel = new EasierUmlModel();
 
 		/*
 		 * it seems no longer to be needed
@@ -255,7 +244,7 @@ public abstract class EpsilonStandalone {
 		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
 //		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
 		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");//,http://com.masdes.dam/profiles/Core/1.0");
-		properties.put(EmfModel.PROPERTY_CACHED, true);
+		properties.put(EmfModel.PROPERTY_CACHED, false);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);
 		// by debugging an EOL run through a canonical execution (i.e., EOL running
@@ -264,6 +253,7 @@ public abstract class EpsilonStandalone {
 
 		// reading the epsilon source code
 		emfModel.load(properties, (IRelativePathResolver) null);
+		
 
 		return emfModel;
 	}
