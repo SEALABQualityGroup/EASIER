@@ -84,35 +84,20 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 
 			if (offspring1.getVariableValue(0).isFeasible() && offspring2.getVariableValue(0).isFeasible()) {
 				if (isApplicable(offspring1)) {
+					offspring.get(0).getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
 					offspring.set(0, (S) offspring1);
+				}else {
+					offspring1.getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
+					offspring1 = null;
 				}
-
 				if (isApplicable(offspring2)) {
+					offspring.get(1).getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
 					offspring.set(1, (S) offspring1);
+				}else {
+					offspring2.getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
+					offspring2 = null;
 				}
 			}
-
-			/*
-			 * if (offspring1.getVariableValue(0).isFeasible()) { int i = 0; boolean found =
-			 * false; while (i < offspring1.getLength() && !found) { RefactoringAction a =
-			 * offspring1.getActionAt(i); if (a instanceof AEmiliaCloneAEIRefactoringAction)
-			 * { MetamodelManager metamodelManager =
-			 * controller.getManager().getMetamodelManager(); if
-			 * (!metamodelManager.isApplicable(((AEmiliaCloneAEIRefactoringAction) a),
-			 * offspring1.getVariableValue(0))) found = true; } i++; } if (!found)
-			 * offspring.set(0, (S) offspring1); }
-			 * 
-			 * if (offspring2.getVariableValue(0).isFeasible()) { int i = 0; boolean found =
-			 * false; while (i < offspring2.getLength() && !found) { RefactoringAction a =
-			 * offspring2.getActionAt(i); if (a instanceof AEmiliaCloneAEIRefactoringAction)
-			 * { UMLMetamodelManager metamodelManager = (UMLMetamodelManager)
-			 * controller.getManager() .getMetamodelManager(); if
-			 * (!metamodelManager.isApplicable(((RefactoringAction) a),
-			 * offspring2.getVariableValue(0))) found = true; }
-			 * 
-			 * i++; } if (!found) offspring.set(1, (S) offspring2); }
-			 */
-
 		}
 
 		if (!offspring.get(0).equals(parent1copy)) {
