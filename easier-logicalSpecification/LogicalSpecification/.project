@@ -3,14 +3,7 @@
   <name>logicalSpecification</name>
   <comment>A multi-objective optimization framework. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
   <projects>
-    <project>easier-core</project>
-    <project>logicalSpecification</project>
     <project>aemiliaMetamodel</project>
-    <project>twoeaglesBridge</project>
-    <project>aemiliaToQn_bridge</project>
-    <project>measuresToIndices</project>
-    <project>aemilia2text</project>
-    <project>easier-epsilon</project>
   </projects>
   <buildSpec>
     <buildCommand>

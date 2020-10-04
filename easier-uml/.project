@@ -6,6 +6,8 @@
     <project>logicalSpecification</project>
     <project>aemiliaMetamodel</project>
     <project>easier-core</project>
+    <project>easier-epsilon</project>
+    <project>it.univaq.sealab.umlreliability</project>
   </projects>
   <buildSpec>
     <buildCommand>
