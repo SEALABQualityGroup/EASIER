@@ -8,10 +8,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.DeployedArtifact;
 import org.eclipse.uml2.uml.Deployment;
@@ -49,7 +51,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-epsilon", "src", "main", "resources", "refactoring-lib", "clone_node.eol");
+				"easier-refactoringLibrary", "easier-ref-operations", "clone_node.eol");
 	}
 
 	public static Path getEolModulePath() {
@@ -97,7 +99,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		// Retrieves the deployment view package
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
 					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
@@ -120,20 +122,13 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		org.eclipse.uml2.uml.Model rootPackage = null;
 
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
 				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
 				break;
 			}
 		}
 
-		// Retrieves the deployment view package
-		/*
-		 * EcoreUtil .getObjectsByType(solution.getIModel().allContents(),
-		 * UMLPackage.Literals.PACKAGE).stream()
-		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
-		 * "deployment_view".equals(pkg.getName())) .findAny().orElse(null);
-		 */
 		for (Object pkg : EcoreUtil.getObjectsByType(rootPackage.getOwnedElements(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
 					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
@@ -150,13 +145,18 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	public void execute() {
 		EOLStandalone executor = new EOLStandalone();
 
-		final IModel contextModel = solution.getIModel();
+		final IModel contextModel = solution.getIModel(); //M0
+		
 		executor.setModel(contextModel);
 		executor.setSource(eolModulePath);
 
 		// fills variable within the eol module
-		executor.setParameter(umlClonedNode, "UML!Node", "self");
-		executor.setParameter(targetObject, "UML!Node", "target");
+		
+		executor.setParameter(targetObject.getName(), "String", "targetNodeName");
+		executor.setParameter(umlClonedNode.getName(), "String", "clonedNodeName");
+				
+//		executor.setParameter(umlClonedNode, "UML!Node", "clonedNode"); // vedere come passare la stringa
+//		executor.setParameter(targetObject, "UML!Node", "targetNode");
 
 		try {
 			executor.execute();
@@ -236,7 +236,11 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-
+		
+		cloned.cleanUp();
+		cloned.setTargetObject(this.targetObject);
+		cloned.setUmlClonedNode(this.umlClonedNode);
+		
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
 		cloned.post = this.getPost();
@@ -249,21 +253,34 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		if (op.getClass() != this.getClass())
 			return false;
 
-		if (!this.targetObject.equals(((UMLCloneNode) op).getUmlNodeToClone()))
+		if (!this.targetObject.equals(((UMLCloneNode) op).getTargetObject()))
 			return false;
 //		
 //		if(!this.targetObject.getName().contains("addByEASIER_addByEASIER")) //it is a safety check. 
 //			return false;
 		return true;
 	}
+	
 
-	public Node getUmlNodeToClone() {
+	public Node getTargetObject() {
 		return this.targetObject;
 	}
 	
-	public boolean cleanUp() {
-		Collection<?> allContents = this.solution.getIModel().allContents();
-		return allContents.remove(umlClonedNode);
+	public void setUmlClonedNode(Node n) {
+		this.umlClonedNode = n;
+	}
+	
+	public void setTargetObject(Node n) {
+		this.targetObject = n;
+	}
+	
+	public void cleanUp() {
+		try {
+			this.solution.getDirtyIModel().deleteElement(umlClonedNode);
+		} catch (EolRuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 	
 	@Override

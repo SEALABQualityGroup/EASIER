@@ -37,18 +37,7 @@ import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 
-/**
- * @author peo
- *
- */
-/**
- * @author peo
- *
- */
-/**
- * @author peo
- *
- */
+
 public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
@@ -61,7 +50,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-epsilon", "src", "main", "resources", "refactoring-lib", "mv_op_comp.eol");
+				"easier-refactoringLibrary", "easier-ref-operations", "mv_op_comp.eol");
 	}
 
 	public static Path getEolModulePath() {
@@ -83,7 +72,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	}
 
 	private double calculateCost() {
-		long msgs = this.solution.getIModel().allContents().stream().filter(Message.class::isInstance)
+		long msgs = this.solution.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
 				.map(Message.class::cast).filter(m -> umlOpToMove.equals(m.getSignature())).count();
 		return msgs * VALUE_COST;
 	}
@@ -118,7 +107,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	private org.eclipse.uml2.uml.Package getPackage(final String pkgName) {
 
 		org.eclipse.uml2.uml.Model rootPackage = null;
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
 				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
 				break;
@@ -153,13 +142,12 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	@Override
 	public void execute() {
-//		super.execute();
 
 		EOLStandalone executor = new EOLStandalone();
 		executor.setModel(solution.getIModel());
 		executor.setSource(eolModulePath);
-		executor.setParameter(umlOpToMove, "UML!Operation", "self").setParameter(umlTargetComp, "UML!Component",
-				"targetComponent");
+		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName").setParameter(umlTargetComp.getName(), "String",
+				"targetComponentName");
 
 		try {
 			executor.execute();
@@ -262,6 +250,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
 
+		
+		cloned.cleanUp();
 		cloned.umlOpToMove = this.umlOpToMove;
 		cloned.umlTargetComp = this.umlTargetComp;
 
@@ -282,9 +272,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	}
 
-	public boolean cleanUp() {
-		return true;
-	}
+	//the action doesn't create new element in the model
+	public void cleanUp() {}
 
 	@Override
 	public String toString() {

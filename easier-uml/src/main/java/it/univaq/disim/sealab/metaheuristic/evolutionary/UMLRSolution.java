@@ -2,6 +2,7 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +24,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -49,6 +52,12 @@ import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.sealab.umlreliability.Component;
+import it.univaq.sealab.umlreliability.Link;
+import it.univaq.sealab.umlreliability.Reliability;
+import it.univaq.sealab.umlreliability.Scenario;
+import it.univaq.sealab.umlreliability.UMLModelPapyrus;
+import it.univaq.sealab.umlreliability.UMLReliability;
 
 /**
  * @author peo
@@ -74,7 +83,7 @@ public class UMLRSolution extends RSolution {
 //	private ResourceSet resourceSet;
 //	private EObject model;
 
-	private IModel iModel;
+	private EasierUmlModel iModel, dirtyIModel;
 
 	private final static Path refactoringLibraryModule, uml2lqnModule;
 
@@ -197,7 +206,14 @@ public class UMLRSolution extends RSolution {
 			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
 
 			try {
+
+				// it is a temp models employed to identify refactoring actions
+				dirtyIModel = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, true);
+				// shall clear the cache, it also removes loaded profiles... HANDLE WITH CARE
+				CachedResourceSet.getCache().clear();
+				// it is the real model on which refactoring action will be applied
 				iModel = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, true);
+
 			} catch (EolModelLoadingException | URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -294,33 +310,6 @@ public class UMLRSolution extends RSolution {
 		return this.getVariableValue(VARIABLE_INDEX).alter(i, this.problem.number_of_actions);
 	}
 
-//	@Deprecated
-//	public void resolve(UMLMetamodelManager metamodelManager) {
-//		EasierLogger.logger_.info("Solving Solution #" + getName());
-//		startingTime = Instant.now();
-//		executeRefactoring();
-//
-//		// applyTransformation();
-//		invokeSolver();
-//
-//		// controller.awaitExecutor();
-//		updateModel();
-//
-//		updateThresholds();
-//
-//		// countingPAsOnUMLModel(controller.getPerfQuality(),
-//		// controller.getRuleFilePath(), this.getValPath(),
-//		// metamodelManager);
-//		countingPAs();
-//
-//		perfQ = evaluatePerformance();
-//
-//		UMLFileUtils.simpleSolutionWriterToCSV(this);
-//		endingTime = Instant.now();
-//		EasierLogger.logger_.info("Solution #" + getName() + " solved");
-//		// TODO
-//	}
-
 	@Deprecated
 	public void updateThresholds() {
 		// TODO thersholds will be automatically calculate by the EVL engine.
@@ -368,28 +357,28 @@ public class UMLRSolution extends RSolution {
 
 		XMLUtil.conformanceChecking(lqnModelPath);
 
+		// to allow cycles in the lqn model
+		final String params = "-P cycles=yes";
+
 		Process process = null;
 		try {
-			process = new ProcessBuilder(lqnSolverPath.toString(), lqnModelPath.toString()).start();
+			process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
 			process.waitFor();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 
-//		process.getOutputStream();
-
 		try {
 			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
-
 				throw new Exception("[ERROR] the lqn solver has genered an error.");
 			}
 		} catch (Exception e) {
-			String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
+			final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
 					.map(act -> act.toString()).collect(Collectors.joining(","));
 			System.err.println("Solution # " + this.name);
 			System.err.println(lqnError);
 			((RSequence) this.getVariableValue(0)).getRefactoring().getActions().forEach(System.out::println);
-			this.iModel.dispose();
+			// this.iModel.dispose();
 			// TODO write a report
 			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
@@ -401,7 +390,6 @@ public class UMLRSolution extends RSolution {
 						.map(act -> act.toString()).collect(Collectors.joining(","));
 				line += "\n";
 				bw.append(line);
-//				bw.close();
 			} catch (IOException e1) {
 				System.out.println(e1.getMessage());
 			}
@@ -475,7 +463,12 @@ public class UMLRSolution extends RSolution {
 
 		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
 
-		bckAnn.execute();
+		try {
+			bckAnn.execute();
+		} catch (EolRuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -623,6 +616,24 @@ public class UMLRSolution extends RSolution {
 			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in runnig the ETL transformation");
+
+			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
+			try (BufferedWriter bw = new BufferedWriter(
+					new FileWriter(reportFilePath.getParent().resolve("etlErrorLog.csv").toFile(), true))) {
+				String line = String.valueOf(this.name) + ";";
+
+				line += ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
+				line += ";";
+				line += ((RSequence) this.getVariableValue(0)).getRefactoring().getActions().stream()
+						.map(act -> act.toString()).collect(Collectors.joining(","));
+				line += "\n";
+				bw.append(line);
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
+
+//			System.err.println("iModel stored!");
+
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
@@ -653,6 +664,10 @@ public class UMLRSolution extends RSolution {
 		return (EObject) iModel.allContents().toArray()[0];
 	}
 
+	public EObject getDirtyModel() {
+		return (EObject) dirtyIModel.allContents().toArray()[0];
+	}
+
 	public void refreshModel() {
 		getResourceSet().getResources().forEach(resource -> resource.unload());
 //		get(0).unload();
@@ -660,8 +675,49 @@ public class UMLRSolution extends RSolution {
 		this.model = metamodelManager.getModel(modelPath);
 	}
 
-	public IModel getIModel() {
+	public EasierUmlModel getIModel() {
 		return iModel;
+	}
+
+	public EasierUmlModel getDirtyIModel() {
+		return dirtyIModel;
+	}
+
+	@Override
+	public void save() {
+		iModel.dispose();
+		try {
+			iModel = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, true);
+		} catch (EolModelLoadingException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void computeReliability() {
+
+		// stores the in memory model to a file
+		if (iModel.isLoaded()) {
+			iModel.dispose();
+		}
+
+		final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+		final List<Scenario> scenarios = uml.getScenarios();
+		final List<Component> components = uml.getComponents();
+		final List<Link> links = uml.getLinks();
+
+		reliability = new Reliability(scenarios, components, links).compute();
+
+		// reloads the stored model
+		// TODO verify is it is needed
+		try {
+			iModel.load();
+		} catch (EolModelLoadingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
