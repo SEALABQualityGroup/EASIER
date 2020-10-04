@@ -14,29 +14,29 @@ public class Refactoring {
 
 	private List<RefactoringAction> actions;
 	private logicalSpecification.Refactoring _refactoring;
-	
+
 	private RSolution solution;
-	
+
 	public Refactoring(RSolution solution) {
 		setRefactoring(LogicalSpecificationFactory.eINSTANCE.createRefactoring());
 		this.setSolution(solution);
 		actions = new ArrayList<>();
 //		actions = solution.getVariableValue(0).getRefactoring().getActions();
 	}
-	
+
 	public Refactoring clone(RSolution sol) {
 		Refactoring newRefactoring = new Refactoring(sol);
-		
+
 		newRefactoring.setCost(this.getCost());
 //		newRefactoring.setNumOfChanges(this.getNumOfChanges());
 		newRefactoring.setName(this.getName());
 		newRefactoring.setPost(this.getPost());
 		newRefactoring.setPre(this.getPre());
-		
-		for(RefactoringAction a : this.getActions()) {
+
+		for (RefactoringAction a : this.getActions()) {
 			newRefactoring.getActions().add(a.clone(sol));
 		}
-		
+
 		return newRefactoring;
 	}
 
@@ -99,14 +99,31 @@ public class Refactoring {
 	public void setNumOfChanges(double calculateNumOfChanges) {
 		this.getRefactoring().setNumOfChanges(calculateNumOfChanges);
 	}
-	
+
 	public Double getNumOfChanges() {
 		double numOfChanges = 0.0;
-		for(RefactoringAction a : solution.getVariableValue(0).getRefactoring().getActions()) {
+		for (RefactoringAction a : solution.getVariableValue(0).getRefactoring().getActions()) {
 			numOfChanges += a.getNumOfChanges();
 		}
 		setNumOfChanges(numOfChanges);
 		return numOfChanges;
 	}
-	
+
+	public boolean equals(Object obj) {
+		Refactoring ref = (Refactoring) obj;
+
+		for (RefactoringAction act : ref.getActions()) {
+			for (RefactoringAction tAct : this.getActions()) {
+				if (!tAct.equals(act)) {
+					return false;
+				}	
+			}
+		}
+		return true;
+	}
+
+	public void cleanUp() {
+		actions.stream().forEach(a -> a.cleanUp());
+	}
+
 }
