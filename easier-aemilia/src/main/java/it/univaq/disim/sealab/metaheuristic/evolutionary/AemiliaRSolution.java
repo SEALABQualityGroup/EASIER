@@ -472,7 +472,7 @@ public class AemiliaRSolution extends RSolution {
 		}
 	}
 
-	public float evaluatePerformance() {
+	public double evaluatePerformance() {
 //		AemiliaMetamodelManager metamodelManager = (AemiliaMetamodelManager) manager.getMetamodelManager();
 
 		// String valFilePath = mmaemiliaFolderStr + ((AEmiliaSpecification)

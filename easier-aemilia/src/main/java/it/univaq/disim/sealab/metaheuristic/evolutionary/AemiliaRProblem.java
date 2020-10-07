@@ -70,7 +70,7 @@ public class AemiliaRProblem<S extends AemiliaRSolution> extends RProblem<S> {
 //						.info("SOLUTION #" + solution.getName() + ": PerfQ --> " + solution.getPerfQ());
 				//if is worse perfQ must not be changed 
 				//if not it must be multiply by -1 to maximize the perfQ
-				float quality = (getController().getConfigurator().isWorsen()) ? solution.getPerfQ()
+				double quality = (getController().getConfigurator().isWorsen()) ? solution.getPerfQ()
 						: (-1 * solution.getPerfQ());
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);
 				solution.setObjective(i, quality);
