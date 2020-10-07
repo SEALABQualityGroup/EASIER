@@ -128,7 +128,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 		}
 	}
 
-	private String removeSolID(String frontFileName) {
+	public String removeSolID(String frontFileName) {
 
 		File tmpFile;
 		String tmpFileName = null;
@@ -144,9 +144,13 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 		try (BufferedReader reader = new BufferedReader(new FileReader(frontFileName));
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile))) {
 			while ((readLine = reader.readLine()) != null) {
-				String line = readLine.split(" ", 2)[1];
-				writer.write(line);
-				writer.newLine();
+				if (readLine.contains("perfQ")) {
+
+				} else {
+					String line = readLine.split(" ", 2)[1];
+					writer.write(line);
+					writer.newLine();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -266,7 +270,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 						Files.copy(Paths.get(medianFunFile), Paths.get(medianFunFileName), REPLACE_EXISTING);
 						Files.copy(Paths.get(medianVarFile), Paths.get(medianVarFileName), REPLACE_EXISTING);
 					}
-				} 
+				}
 			}
 		}
 	}

@@ -59,6 +59,12 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 public class RGenerateReferenceParetoFront implements ExperimentComponent {
 	private final Experiment<?, ?> experiment;
 
+	
+	public  RGenerateReferenceParetoFront() {
+		experiment = null;
+	}
+	
+	
 	public RGenerateReferenceParetoFront(Experiment<?, ?> experimentConfiguration) {
 		this.experiment = experimentConfiguration;
 		experiment.removeDuplicatedAlgorithms();
@@ -124,35 +130,21 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 		experiment.setReferenceFrontFileNames(referenceFrontFileNames);
 	}
 
-	private List<RPointSolution> generateRPointSolutionList(String varFileName) {
+	public List<RPointSolution> generateRPointSolutionList(String varFileName) {
 
 		List<RPointSolution> ptList = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(varFileName))) {
 
 			String sCurrentLine;
-			final String strID = ":";
-			final String strObjStart = "(";
-			final String strObjEnd = ")";
-			final String separator = ",";
 			while ((sCurrentLine = br.readLine()) != null) {
 
-				if (sCurrentLine.contains(strID)) {
-					ptList.add(
-							new RPointSolution()
-									.setID(Integer
-											.parseInt(
-													sCurrentLine.substring(sCurrentLine.indexOf(strID) + 2,
-															sCurrentLine.indexOf(strObjStart) - 1)))
-									.setPointSolution(
-											Arrays.asList(
-													sCurrentLine
-															.substring(sCurrentLine.indexOf(strObjStart) + 1,
-																	sCurrentLine.indexOf(strObjEnd))
-															.split(separator))));
-				}
+				String[] split = sCurrentLine.split(";");
+
+				ptList.add(new RPointSolution().setID(Integer.parseInt(split[0]))
+						.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, 5)))));
 			}
-		} catch (IOException e) {
+		} catch (IOException  | NumberFormatException e) {
 			e.printStackTrace();
 		}
 		return ptList;
