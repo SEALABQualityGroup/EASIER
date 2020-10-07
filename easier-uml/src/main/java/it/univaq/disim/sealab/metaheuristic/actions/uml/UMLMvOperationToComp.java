@@ -37,7 +37,6 @@ import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 
-
 public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
@@ -64,7 +63,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		umlTargetComp = getRandomComponent();
 
 		cost = calculateCost();
-
+		numOfChanges = cost;
+			
 		setParameters();
 		createPreCondition();
 		createPostCondition();
@@ -107,7 +107,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	private org.eclipse.uml2.uml.Package getPackage(final String pkgName) {
 
 		org.eclipse.uml2.uml.Model rootPackage = null;
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
 				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
 				break;
@@ -146,8 +147,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		EOLStandalone executor = new EOLStandalone();
 		executor.setModel(solution.getIModel());
 		executor.setSource(eolModulePath);
-		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName").setParameter(umlTargetComp.getName(), "String",
-				"targetComponentName");
+		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName")
+				.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
 
 		try {
 			executor.execute();
@@ -250,7 +251,6 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
 
-		
 		cloned.cleanUp();
 		cloned.umlOpToMove = this.umlOpToMove;
 		cloned.umlTargetComp = this.umlTargetComp;
@@ -266,14 +266,18 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 		if (op.getClass() != this.getClass())
 			return false;
-		if (!this.getUmlOpToMove().equals(((UMLMvOperationToComp) op).getUmlOpToMove()))
+
+		final UMLMvOperationToComp act = (UMLMvOperationToComp) op;
+
+		if (!this.getUmlOpToMove().getName().equals(act.getUmlOpToMove().getName())
+				|| !this.getUmlTargetComp().getName().equals(act.getUmlTargetComp().getName()))
 			return false;
 		return true;
-
 	}
 
-	//the action doesn't create new element in the model
-	public void cleanUp() {}
+	// the action doesn't create new element in the model
+	public void cleanUp() {
+	}
 
 	@Override
 	public String toString() {

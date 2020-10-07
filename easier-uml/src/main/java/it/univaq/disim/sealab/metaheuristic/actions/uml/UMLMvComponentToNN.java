@@ -37,11 +37,10 @@ import logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl;
 public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
-	
+
 	private final static double VALUE_COST = 1.23;
 
 	private final UMLRSolution solution;
-
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -56,24 +55,25 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		this.solution = (UMLRSolution) sol;
 
 		umlTargetNodes = new BasicEList<>();
-		
+
 		umlCompToMove = getRandomComponent();
 		umlTargetNodes.add(createNewNode());
-		
+
 		cost = calculateCost();
+		numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
-	
+
 	private double calculateCost() {
-		
+
 		int intUsage = umlCompToMove.getUsedInterfaces().size();
 		int intReal = umlCompToMove.getInterfaceRealizations().size();
 		int ops = umlCompToMove.getOperations().size();
-		
+
 		return (intUsage + intReal + ops) * VALUE_COST;
 	}
 
@@ -81,8 +81,10 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	private Node createNewNode() {
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
-			if (pkg instanceof org.eclipse.uml2.uml.Package && "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
 				break;
 			}
@@ -108,8 +110,10 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	private Component getRandomComponent() {
 
 		org.eclipse.uml2.uml.Package staticView = null;
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
-			if (pkg instanceof org.eclipse.uml2.uml.Package && "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				staticView = (org.eclipse.uml2.uml.Package) pkg;
 				break;
 			}
@@ -135,7 +139,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		// fills variable within the eol module
 		executor.setParameter(umlCompToMove.getName(), "String", "targetComponentName");
 		executor.setParameter(umlTargetNodes.get(0).getName(), "String", "newNodeName");
-		
+
 //		executor.setParameter(umlCompToMove, "UML!Component", "targetComponent");
 //		executor.setParameter(umlTargetNodes.get(0), "UML!Node", "targetNode");
 
@@ -221,11 +225,10 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-		
+
 		cloned.cleanUp();
 		cloned.setUmlCompToMove(this.umlCompToMove);
 		cloned.setUmlTargetNodes(this.umlTargetNodes);
-		
 
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
@@ -234,39 +237,41 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		return cloned;
 
 	}
-	
+
 	public void setUmlCompToMove(Component c) {
 		this.umlCompToMove = c;
 	}
-	
+
 	public void setUmlTargetNodes(List<Node> n) {
 		umlTargetNodes.clear();
 		umlTargetNodes.addAll(n);
 	}
-	
-	
+
 	public boolean equals(Object op) {
-		if(op.getClass() != this.getClass())
+		if (op.getClass() != this.getClass())
 			return false;
-		if(!this.getUmlCompToMove().equals(((UMLMvComponentToNN)op).getUmlCompToMove()))
+		final UMLMvComponentToNN act = (UMLMvComponentToNN) op;
+		if (!this.getUmlCompToMove().getName().equals(act.getUmlCompToMove().getName())
+				|| !this.umlTargetNodes.get(0).getName().equals(act.getUmlTargetNodes().get(0).getName()))
 			return false;
 		return true;
 	}
-	
+
 	public void cleanUp() {
 		try {
 			this.solution.getDirtyIModel().deleteElement(umlTargetNodes.get(0));
 		} catch (EolRuntimeException e) {
-			System.err.println("[ERROR] the cleanUp method has generated an error, while removing the node --> " + umlTargetNodes.get(0).getName());
+			System.err.println("[ERROR] the cleanUp method has generated an error, while removing the node --> "
+					+ umlTargetNodes.get(0).getName());
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String nodes = "";
-		for(Node n : umlTargetNodes)
-			nodes += " " + n.getName(); 
+		for (Node n : umlTargetNodes)
+			nodes += " " + n.getName();
 		return "Moving --> " + umlCompToMove.getName() + " to --> " + nodes;
 	}
 

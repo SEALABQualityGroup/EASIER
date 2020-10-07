@@ -39,7 +39,7 @@ import logicalSpecification.actions.UML.impl.UMLAddNodeActionImpl;
 public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
-	
+
 	private final static double VALUE_COST = 1.23;
 
 	private final UMLRSolution solution;
@@ -64,27 +64,28 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		targetObject = getRandomNode();
 
 		umlClonedNode = createNewNode();
-		
+
 		cost = calculateCost();
+		numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
-	
+
 	private double calculateCost() {
-		
+
 		int cpSize = targetObject.getCommunicationPaths().size();
-		
+
 		int artSize = 0;
-		
+
 		targetObject.getDeployments().stream().flatMap(d -> d.getDeployedArtifacts().stream()).count();
-			
+
 		return (cpSize + artSize) * VALUE_COST;
-		
+
 	}
-	
+
 	private String generateHash() {
 		int leftLimit = 97; // letter 'a'
 		int rightLimit = 122; // letter 'z'
@@ -99,7 +100,8 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		// Retrieves the deployment view package
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Package
 					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
@@ -122,7 +124,8 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		org.eclipse.uml2.uml.Model rootPackage = null;
 
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
 				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
 				break;
@@ -145,16 +148,16 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	public void execute() {
 		EOLStandalone executor = new EOLStandalone();
 
-		final IModel contextModel = solution.getIModel(); //M0
-		
+		final IModel contextModel = solution.getIModel(); // M0
+
 		executor.setModel(contextModel);
 		executor.setSource(eolModulePath);
 
 		// fills variable within the eol module
-		
+
 		executor.setParameter(targetObject.getName(), "String", "targetNodeName");
 		executor.setParameter(umlClonedNode.getName(), "String", "clonedNodeName");
-				
+
 //		executor.setParameter(umlClonedNode, "UML!Node", "clonedNode"); // vedere come passare la stringa
 //		executor.setParameter(targetObject, "UML!Node", "targetNode");
 
@@ -236,11 +239,11 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-		
+
 		cloned.cleanUp();
 		cloned.setTargetObject(this.targetObject);
 		cloned.setUmlClonedNode(this.umlClonedNode);
-		
+
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
 		cloned.post = this.getPost();
@@ -253,36 +256,44 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		if (op.getClass() != this.getClass())
 			return false;
 
-		if (!this.targetObject.equals(((UMLCloneNode) op).getTargetObject()))
+		final UMLCloneNode act = (UMLCloneNode) op;
+//		if (!this.targetObject.equals(act.getTargetObject()))
+//			return false;
+
+		if (!this.targetObject.getName().equals(act.getTargetObject().getName())
+				|| this.umlClonedNode.getName().equals(act.getClonedNode().getName()))
 			return false;
 //		
 //		if(!this.targetObject.getName().contains("addByEASIER_addByEASIER")) //it is a safety check. 
 //			return false;
-		return true;
+			return true;
 	}
-	
 
 	public Node getTargetObject() {
 		return this.targetObject;
 	}
-	
+
+	public Node getClonedNode() {
+		return this.umlClonedNode;
+	}
+
 	public void setUmlClonedNode(Node n) {
 		this.umlClonedNode = n;
 	}
-	
+
 	public void setTargetObject(Node n) {
 		this.targetObject = n;
 	}
-	
+
 	public void cleanUp() {
 		try {
 			this.solution.getDirtyIModel().deleteElement(umlClonedNode);
 		} catch (EolRuntimeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Cloning --> " + targetObject.getName() + " with -->  " + umlClonedNode.getName();

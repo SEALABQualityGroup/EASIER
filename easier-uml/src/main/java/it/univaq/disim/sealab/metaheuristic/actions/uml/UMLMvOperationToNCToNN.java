@@ -62,10 +62,11 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		this.solution = (UMLRSolution) sol;
 
 		umlOpToMove = getRandomOperation();
-		umlTargetComp = getNewComponent();
-		umlTargetNode = getNewNode();
+		umlTargetComp = createNewComponent();
+		umlTargetNode = createNewNode();
 
 		cost = calculateCost();
+		numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
@@ -80,7 +81,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	}
 
 	// creates a new Node within the model
-	private Node getNewNode() {
+	private Node createNewNode() {
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
@@ -100,7 +101,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	}
 
 	// creates a new Component within the model
-	private Component getNewComponent() {
+	private Component createNewComponent() {
 
 		org.eclipse.uml2.uml.Package staticView = null;
 		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
@@ -285,10 +286,19 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	public boolean equals(Object op) {
 		if (op.getClass() != this.getClass())
 			return false;
-		if (!this.getUmlOpToMove().equals(((UMLMvOperationToNCToNN) op).getUmlOpToMove()))
+
+		final UMLMvOperationToNCToNN act = (UMLMvOperationToNCToNN) op;
+
+		if (!this.getUmlOpToMove().getName().equals(act.getUmlOpToMove().getName())
+				|| !this.umlTargetComp.getName().equals(act.getUmlTargetComp().getName())
+				|| !this.umlTargetNode.getName().equals(act.getUmlTargetNode().getName()))
 			return false;
 
 		return true;
+	}
+
+	public Node getUmlTargetNode() {
+		return umlTargetNode;
 	}
 
 	public void cleanUp() {
