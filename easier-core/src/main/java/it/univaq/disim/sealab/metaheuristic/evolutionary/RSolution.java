@@ -38,7 +38,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	
 	protected int name;
 	
-	protected float perfQ;
+	protected double perfQ;
 	protected int numPAs;
 	protected double reliability;
 	
@@ -70,7 +70,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 
 	public abstract void countingPAs();
 
-	public abstract float evaluatePerformance();
+	public abstract double evaluatePerformance();
 
 	public abstract void executeRefactoring();
 
@@ -121,7 +121,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return crossovered;
 	}
 	
-	public float getPerfQ() {
+	public double getPerfQ() {
 		// perfQ = evaluatePerformance();
 		return perfQ;
 	}

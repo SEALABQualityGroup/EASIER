@@ -21,7 +21,7 @@ public abstract class RSequence {
 
 	protected int numOfPAs;
 	protected double numOfChanges;
-	protected float perfQuality;
+	protected double perfQuality;
 	protected double reliability;
 
 	protected Manager manager;
@@ -153,11 +153,11 @@ public abstract class RSequence {
 		return this.solution.getModel();
 	}
 
-	public float getPerfQuality() {
+	public double getPerfQuality() {
 		return perfQuality;
 	}
 
-	public void setPerfQuality(float perfQuality) {
+	public void setPerfQuality(double perfQuality) {
 		this.perfQuality = perfQuality;
 	}
 
