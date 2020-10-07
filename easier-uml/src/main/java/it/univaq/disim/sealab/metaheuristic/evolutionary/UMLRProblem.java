@@ -91,7 +91,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
 			if (i == FIRST_OBJ) {
-				final float quality = solution.getPerfQ();
+				final double quality = solution.getPerfQ();
 				solution.getVariableValue(VARIABLE_INDEX).setPerfQuality(quality);
 				solution.setObjective(i, quality);
 			} else if (i == SECOND_OBJ) {
@@ -99,11 +99,11 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 				solution.getVariableValue(VARIABLE_INDEX).setNumOfChanges(numOfChanges);
 				solution.setObjective(i, numOfChanges);
 			} else if (i == THIRD_OBJ) {
-				final int pAs = solution.getPAs();
+				final int pas = solution.getPAs();
 				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pAs);
-				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(pAs);
-				solution.setObjective(i, pAs);
+						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
+				solution.getVariableValue(VARIABLE_INDEX).setNumOfPAs(pas);
+				solution.setObjective(i, pas);
 			} else if (i == FOURTH_OBJ) {
 				final double reliability = solution.getReliability();
 				EasierLogger.logger_

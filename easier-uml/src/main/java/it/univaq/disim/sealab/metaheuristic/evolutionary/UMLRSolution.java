@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
@@ -40,6 +41,10 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
+import com.masdes.dam.Complex_Data_Types.DaFailure;
+import com.masdes.dam.Complex_Data_Types.impl.DaFailureImpl;
+import com.masdes.dam.DAM.impl.DAMFactoryImpl;
+
 import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
@@ -52,12 +57,13 @@ import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
 import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
-import it.univaq.sealab.umlreliability.Component;
-import it.univaq.sealab.umlreliability.Link;
+import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
-import it.univaq.sealab.umlreliability.Scenario;
-import it.univaq.sealab.umlreliability.UMLModelPapyrus;
 import it.univaq.sealab.umlreliability.UMLReliability;
+import it.univaq.sealab.umlreliability.elements.Component;
+import it.univaq.sealab.umlreliability.elements.Link;
+import it.univaq.sealab.umlreliability.elements.Scenario;
+import it.univaq.sealab.umlreliability.model.UMLModelPapyrus;
 
 /**
  * @author peo
@@ -86,12 +92,15 @@ public class UMLRSolution extends RSolution {
 	private EasierUmlModel iModel, dirtyIModel;
 
 	private final static Path refactoringLibraryModule, uml2lqnModule;
+	private final static String GQAM_NAMESPACE;
 
 	static {
 		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
 				"easier-refactoringLibrary", "evl", "AP-UML-MARTE.evl");
 		uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
 				"easier-uml2lqn", "org.univaq.uml2lqn");
+
+		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
 	}
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
@@ -252,11 +261,23 @@ public class UMLRSolution extends RSolution {
 		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
+	/**
+	 * Prints a VAR file
+	 */
 	@Override
 	public String getVariableValueString(int index) {
-		String strValue = "Solution ID : " + this.getName() + " ( " + getObjective(0) + ", " + getObjective(1) + ", "
-				+ getObjective(2) + " )" + "\n\t";
-		strValue += getVariableValue(index).toString();
+		String strValue = this.getName() + ";";
+		
+		List<Double> objs = new ArrayList<>();
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			objs.add(getObjective(i));
+		}
+
+		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
+		strValue += ";";
+		strValue += ((RSequence) this.getVariableValue(0)).getRefactoring().getActions().stream()
+				.map(act -> act.toString()).collect(Collectors.joining(","));
+//		strValue += "\n";
 		return strValue;
 	}
 
@@ -444,8 +465,7 @@ public class UMLRSolution extends RSolution {
 		EOLStandalone bckAnn = new EOLStandalone();
 		bckAnn.setModel(iModel);
 
-		bckAnn.setSource(
-				controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("backAnnotation.eol"));
+		bckAnn.setSource(uml2lqnModule.resolve("backAnnotation.eol"));
 
 		// Points to lqn schema file and stores pacakges into the global package
 		// registry
@@ -466,15 +486,29 @@ public class UMLRSolution extends RSolution {
 		try {
 			bckAnn.execute();
 		} catch (EolRuntimeException e) {
-			// TODO Auto-generated catch block
+			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
+			try (BufferedWriter bw = new BufferedWriter(
+					new FileWriter(reportFilePath.getParent().resolve("backAnnErrorLog.csv").toFile(), true))) {
+				String line = String.valueOf(this.name) + ";";
+
+				line += e.getMessage();
+				line += ";";
+				line += ((RSequence) this.getVariableValue(0)).getRefactoring().getActions().stream()
+						.map(act -> act.toString()).collect(Collectors.joining(","));
+				line += "\n";
+				bw.append(line);
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
 			e.printStackTrace();
 		}
 
 	}
 
-	public float evaluatePerformance() {
+	public double evaluatePerformance() {
 		// TODO decide how to calculate perfQ, if it needed
-		System.out.println("PerfQ is not yet decided... Please consider how to compute this objective");
+		// System.out.println("PerfQ is not yet decided... Please consider how to
+		// compute this objective");
 		return perfQ = perfQ();
 	}
 
@@ -485,7 +519,7 @@ public class UMLRSolution extends RSolution {
 	 * @return
 	 * @throws EolModelElementTypeNotFoundException
 	 */
-	private float perfQ() {
+	private double perfQ() {
 		/*
 		 * The updated model can have more nodes than the source node since original
 		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
@@ -510,12 +544,12 @@ public class UMLRSolution extends RSolution {
 		}
 
 		// Variable representing the perfQ value
-		float value = 0f;
+		double value = 0d;
 
 		// The function considers only the elements having the stereotypes GaExecHosta
 		// and GaScenario
-		nodes = filterByStereotype(nodes, "GQAM::GaExecHost");
-		scenarios = filterByStereotype(scenarios, "GQAM::GaScenario");
+		nodes = filterByStereotype(nodes, GQAM_NAMESPACE + "GaExecHost");
+		scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
 
 		sourceElements.addAll(scenarios);
 		sourceElements.addAll(nodes);
@@ -534,8 +568,15 @@ public class UMLRSolution extends RSolution {
 
 			// for each model element, it is collected the performance metric and added to
 			// the vector
-			sourceMetrics.addAll(getMetrics(element));
-			refactoredMetrics.addAll(getMetrics(correspondingElement));
+			try {
+				sourceMetrics.addAll(getMetrics(element));
+				refactoredMetrics.addAll(getMetrics(correspondingElement));
+			} catch (Exception e) {
+				System.err.println(
+						String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
+				e.printStackTrace();
+			}
+
 		}
 
 		// This loop calculates the perfQ value
@@ -547,30 +588,33 @@ public class UMLRSolution extends RSolution {
 			Double sourceValue = it1.next();
 			Double refactoredValue = it2.next();
 
-			value += (sourceValue - refactoredValue) / (sourceValue + refactoredValue);
+			if ((sourceValue + refactoredValue) == 0)
+				value += 0d;
+			else
+				value += (sourceValue - refactoredValue) / (sourceValue + refactoredValue);
 		}
 
 		return value / sourceMetrics.size();
 
 	}
 
-	public static ArrayList<Double> getMetrics(EObject element) {
+	public ArrayList<Double> getMetrics(EObject element) throws Exception {
 
 		ArrayList<Double> metrics = new ArrayList<Double>();
 
 		if (element instanceof UseCaseImpl) {
 
 			UseCaseImpl scenario = (UseCaseImpl) element;
-			Stereotype stereotype = scenario.getAppliedStereotype("GQAM::GaScenario");
+			Stereotype stereotype = scenario.getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
 
 			EList<?> throughput = (EList<?>) scenario.getValue(stereotype, "throughput");
 			EList<?> respT = (EList<?>) scenario.getValue(stereotype, "respT");
 
 			if (throughput.isEmpty())
-				throw new java.lang.RuntimeException("Throughput not found for the UseCase: " + scenario.getName());
+				throw new java.lang.Exception("Throughput not found for the UseCase: " + scenario.getName());
 
 			if (respT.isEmpty())
-				throw new java.lang.RuntimeException("ResponseTime not found for the UseCase: " + scenario.getName());
+				throw new java.lang.Exception("ResponseTime not found for the UseCase: " + scenario.getName());
 
 			metrics.add((Double.parseDouble(throughput.get(0).toString())));
 			metrics.add(-1 * (Double.parseDouble(respT.get(0).toString())));
@@ -578,25 +622,28 @@ public class UMLRSolution extends RSolution {
 		} else if (element instanceof NodeImpl) {
 
 			NodeImpl node = (NodeImpl) element;
-			Stereotype stereotype = node.getAppliedStereotype("GQAM::GaExecHost");
+			Stereotype stereotype = node.getAppliedStereotype(GQAM_NAMESPACE + "GaExecHost");
 			EList<?> value = ((EList<?>) node.getValue(stereotype, "utilization"));
 
-			if (value.isEmpty())
-				throw new java.lang.RuntimeException("Utilization not found for the Node: " + node.getName());
-
-			metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
+			if (value.isEmpty()) {
+				metrics.add(0d); // TODO TBC after fixing the backAnnotation
+				// throw new java.lang.Exception("Utilization not found for the Node: " +
+				// node.getName());
+			} else {
+				metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
+			}
 		}
 
 		return metrics;
 
 	}
 
-	public static List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
+	private List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
 		return elements.stream().filter(e -> ((Element) e).getAppliedStereotype(stereotypeNamespace) != null)
 				.collect(Collectors.toList());
 	}
 
-	public static String getXmiId(EmfModel model, EObject element) {
+	private String getXmiId(EmfModel model, EObject element) {
 		return ((XMLResource) model.getResource()).getID(element);
 	}
 
@@ -703,11 +750,29 @@ public class UMLRSolution extends RSolution {
 		}
 
 		final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
-		final List<Scenario> scenarios = uml.getScenarios();
-		final List<Component> components = uml.getComponents();
-		final List<Link> links = uml.getLinks();
+		try {
+			final List<Scenario> scenarios = uml.getScenarios();
+			final List<Component> components = uml.getComponents();
+			final List<Link> links = uml.getLinks();
 
-		reliability = new Reliability(scenarios, components, links).compute();
+			reliability = new Reliability(scenarios, components, links).compute();
+		} catch (MissingTagException e) {
+			System.err.println("Error in computing the reliability");
+
+			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
+			try (BufferedWriter bw = new BufferedWriter(
+					new FileWriter(reportFilePath.getParent().resolve("relErrorLog.csv").toFile(), true))) {
+				String line = String.valueOf(this.name) + ";";
+				line += e.getMessage() + ";";
+				line += ((RSequence) this.getVariableValue(0)).getRefactoring().getActions().stream()
+						.map(act -> act.toString()).collect(Collectors.joining(","));
+				line += "\n";
+				bw.append(line);
+
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
+		}
 
 		// reloads the stored model
 		// TODO verify is it is needed
