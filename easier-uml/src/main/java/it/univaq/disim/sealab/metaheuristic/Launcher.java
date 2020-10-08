@@ -57,19 +57,20 @@ public class Launcher {
 					GenericIndicator<UMLRSolution> ind = factory.createQualityIndicators(qI);
 					if (ind != null)
 						qIndicators.add(ind);
-					ctr.runExperiment(rProblems, qIndicators);
-					referenceFront = ctr.getReferenceFront();
 				}
-				i++;
+				ctr.runExperiment(rProblems, qIndicators);
+				referenceFront = ctr.getReferenceFront();
 			}
-		} // calculates the availability, if set in the config file
+			i++;
+		}
+	} // calculates the availability, if set in the config file
 
 //		if (config.hasAvailability()) {
 //			List<String> solIDs = UMLFileUtils.getParetoSolIDs(referenceFront);
 //			ctr.generateAvailability(solIDs);
 //		}
 
-	}
+//	}
 
 //	public static void generateReferenceParetoFront(final String rPFile, final String sPF) throws Exception {
 //
