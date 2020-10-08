@@ -316,7 +316,7 @@ public class AemiliaRSequence extends RSequence {
 	// this.model = model;
 	// }
 
-	public float getPerfQuality() {
+	public double getPerfQuality() {
 		return perfQuality;
 	}
 

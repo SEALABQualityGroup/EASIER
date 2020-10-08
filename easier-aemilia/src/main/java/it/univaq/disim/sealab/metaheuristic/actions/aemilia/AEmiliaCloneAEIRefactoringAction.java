@@ -472,5 +472,8 @@ public class AEmiliaCloneAEIRefactoringAction extends AEmiliaCloneAEIActionImpl
 		return "CLONING " + sourceAEI.getInstanceName();
 	}
 
+	@Override
+	public void cleanUp() {}
+
 
 }

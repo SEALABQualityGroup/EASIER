@@ -21,12 +21,12 @@ public abstract class RSequence {
 
 	protected int numOfPAs;
 	protected double numOfChanges;
-	protected float perfQuality;
+	protected double perfQuality;
+	protected double reliability;
 
 	protected Manager manager;
 	protected MetamodelManager metamodelManager;
 	protected Controller controller;
-
 
 	public RSequence(RSolution solution) {
 		this.solution = solution;
@@ -52,10 +52,14 @@ public abstract class RSequence {
 		while (this.refactoring.getActions().size() < length) {
 			if (!this.tryRandomPush(number_of_actions))
 				num_failures++;
-
+			//System.out.println("Actual number of failure ");
+			//ProgressBar.showBar(num_failures, allowed_failures);
 			if (num_failures >= allowed_failures) {
 				// START OVER
 				num_failures = 0;
+				for (RefactoringAction a : this.refactoring.getActions()) {
+					a.cleanUp();
+				}
 				this.refactoring = null;
 				this.refactoring = new Refactoring(solution);
 				this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
@@ -67,7 +71,8 @@ public abstract class RSequence {
 	}
 
 	protected abstract boolean tryRandomPush(int n) throws UnexpectedException;
-	protected abstract boolean isFeasible(Refactoring tr) throws ParserException;
+
+	protected abstract boolean isFeasible(Refactoring tr);
 
 	public RSequence(RSequence seq) {
 		this.refactoring = seq.getRefactoring().clone(getSolution());
@@ -116,15 +121,10 @@ public abstract class RSequence {
 	}
 
 	public boolean isFeasible() {
-		try {
-			return this.isFeasible(this.refactoring);
-		} catch (ParserException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return this.isFeasible(this.refactoring);
 	}
 
-	public abstract boolean alter(int position, int n) throws UnexpectedException, ParserException; 
+	public abstract boolean alter(int position, int n) throws UnexpectedException, ParserException;
 
 	@Override
 	public String toString() {
@@ -153,11 +153,11 @@ public abstract class RSequence {
 		return this.solution.getModel();
 	}
 
-	public float getPerfQuality() {
+	public double getPerfQuality() {
 		return perfQuality;
 	}
 
-	public void setPerfQuality(float perfQuality) {
+	public void setPerfQuality(double perfQuality) {
 		this.perfQuality = perfQuality;
 	}
 
@@ -173,7 +173,11 @@ public abstract class RSequence {
 		return numOfChanges;
 	}
 
-	public void setNumOfChanges(double d) {
+	public void setNumOfChanges(final double d) {
 		this.numOfChanges = d;
+	}
+	
+	public void setReliability(final double r) {
+		reliability = r;
 	}
 }

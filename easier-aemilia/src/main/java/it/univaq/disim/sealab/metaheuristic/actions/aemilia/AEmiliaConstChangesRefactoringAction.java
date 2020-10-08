@@ -327,4 +327,7 @@ public class AEmiliaConstChangesRefactoringAction extends AEmiliaConstChangesAct
 
 		return newAction;
 	}
+
+	@Override
+	public void cleanUp() {	}
 }

@@ -3,7 +3,7 @@ package it.univaq.disim.sealab.metaheuristic.refactoring.operator;
 import logicalSpecification.Operator;
 import logicalSpecification.impl.NotOperatorImpl;
 
-public class NotRefactoringOperator extends NotOperatorImpl {
+public class NotRefactoringOperator extends NotOperatorImpl implements RefactoringOperator {
 
 	public NotRefactoringOperator(Operator operator) {
 		super();
@@ -16,8 +16,7 @@ public class NotRefactoringOperator extends NotOperatorImpl {
 
 	public boolean evaluateOperator(Object contextualElement) {// throws ParserException {
 		// System.out.print("NOT(");
-		boolean app = true;
-		app = !this.getArgument().evaluateOperator(contextualElement);
+		return !this.getArgument().evaluateOperator(contextualElement);
 		/*
 		 * if (operator.getArgument() instanceof NotOperator) app =
 		 * !evaluateOperator((NotOperator) operator.getArgument(), contextualElement);
@@ -42,9 +41,8 @@ public class NotRefactoringOperator extends NotOperatorImpl {
 		 * !evaluateOperator((EqualOperator) operator.getArgument(), contextualElement);
 		 */
 		// System.out.print(")");
-		return app;
 	}
-	
+
 	public boolean equals(NotRefactoringOperator op2) {
 		if (op2 != null)
 			return this.getArgument().equals(op2.getArgument());
@@ -57,6 +55,12 @@ public class NotRefactoringOperator extends NotOperatorImpl {
 				return this.getArgument().guarantees(op2);
 			return true;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean evaluateOperator() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

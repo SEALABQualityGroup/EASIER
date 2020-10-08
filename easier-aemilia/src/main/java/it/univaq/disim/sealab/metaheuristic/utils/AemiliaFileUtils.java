@@ -159,7 +159,7 @@ public class AemiliaFileUtils {
 			line.add(Boolean.toString(solution.isRefactored()));
 			line.add(Boolean.toString(solution.isCrossovered()));
 			line.add(Boolean.toString(solution.isMutated()));
-			line.add(Float.toString(solution.getVariableValue(0).getPerfQuality()));
+			line.add(Double.toString(solution.getVariableValue(0).getPerfQuality()));
 			line.add(Double.toString(solution.getVariableValue(0).getNumOfChanges()));
 			line.add(Integer.toString(solution.getVariableValue(0).getNumOfPAs()));
 			CSVUtils.writeLine(fw, line);

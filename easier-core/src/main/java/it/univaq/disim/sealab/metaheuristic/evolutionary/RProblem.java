@@ -16,12 +16,14 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	protected int number_of_actions;
 	protected int allowed_failures;
 	protected final int NUM_VAR = 1;
-	protected final int NUM_OBJ = 3;
+	protected final int NUM_OBJ = 4;
 	protected final int VARIABLE_INDEX = 0;
 	protected final int NUM_CON = 0;
+	
 	protected final int FIRST_OBJ = 0;
 	protected final int SECOND_OBJ = 1;
 	protected final int THIRD_OBJ = 2;
+	protected final int FOURTH_OBJ = 3;
 	
 	private Manager manager;
 	private Controller controller;
@@ -49,8 +51,9 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		
 		this.sourceFolderPath = srcFolderPath;
 		this.sourceModelPath = srcModelPath;
-		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
+		// no longer used
+		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
 		this.length_of_refactorings = desired_length;
 		this.allowed_failures = allowedFailures;

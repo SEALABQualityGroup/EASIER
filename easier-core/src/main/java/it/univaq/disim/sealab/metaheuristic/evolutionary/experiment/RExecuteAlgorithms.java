@@ -1,6 +1,10 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +50,11 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			final int id = i;
 
 			System.out.println("Indepentent Runs");
-			ProgressBar.showBar(i+1, experiment.getIndependentRuns());
-			
+			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
+
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
-			//TODO if parallelStream is set, it throws NPE after a while
+			// TODO if parallelStream is set, it throws NPE after a while
 			computingTimes.addAll(experiment.getAlgorithmList().stream()
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
@@ -96,10 +100,51 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 		boolean result;
 		result = new File(experiment.getExperimentBaseDirectory()).mkdirs();
+		setReportFilePath();
 		if (!result) {
 			throw new JMetalException(
 					"Error creating experiment directory: " + experiment.getExperimentBaseDirectory());
 		}
+	}
+
+	private Path setReportFilePath() {
+
+		Path tmp = controller.getConfigurator().getOutputFolder().resolve(controller.getReportFileName());
+		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
+		Path relErrorLog = tmp.getParent().resolve("relErrorLog.csv");
+		Path backErrorLog = tmp.getParent().resolve("backAnnErrorLog.csv");
+
+		String header = "solID;lqn_solver_message;actions\n";
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(tmp.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		header = "solID;message;actions\n";
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(etlErrorLog.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		header = "solID;message;actions\n";
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(relErrorLog.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(backErrorLog.toFile(), true))) {
+			bw.append(header);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return tmp;
 	}
 
 	public List<Map.Entry<Algorithm<Result>, Long>> getComputingTimes() {

@@ -1,13 +1,17 @@
 package it.univaq.disim.sealab.metaheuristic.refactoring.operator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import logicalSpecification.AndOperator;
 import logicalSpecification.LogicalSpecificationFactory;
 import logicalSpecification.Operator;
 import logicalSpecification.impl.AndOperatorImpl;
 
-public class AndRefactoringOperator extends AndOperatorImpl {
+public class AndRefactoringOperator extends AndOperatorImpl implements RefactoringOperator{
+	
+	private List<RefactoringOperator> listRefactoringOperators = new ArrayList<>();
 
 	public boolean equals(AndOperator op2) {
 		if (op2 != null) {
@@ -89,5 +93,19 @@ public class AndRefactoringOperator extends AndOperatorImpl {
 		}
 		// System.out.print(")");
 		return app;
+	}
+	
+	public List<RefactoringOperator> getListOfOperators(){
+		return listRefactoringOperators;
+	}
+
+	@Override
+	public boolean evaluateOperator() {
+		// TODO Auto-generated method stub
+		for(RefactoringOperator op : listRefactoringOperators) {
+			if(!op.evaluateOperator())
+				return false;
+		}
+		return true;
 	}
 }

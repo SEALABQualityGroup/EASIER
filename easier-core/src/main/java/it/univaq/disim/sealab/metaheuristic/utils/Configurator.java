@@ -25,7 +25,7 @@ public class Configurator {
 	@Parameter(names = { "-m", "--models" }, required = true, description = "List of models")
 	private List<String> modelsPath = new ArrayList<>();
 
-	@Parameter(names = {"--ttKernel" }, description = "Set the solver {TTKernel, LQN} path")
+	@Parameter(names = {"--solver" }, description = "Set the solver {TTKernel, LQN} path")
 	private String solver;
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
@@ -113,6 +113,12 @@ public class Configurator {
 	
 	@Parameter(names= {"--maxWorseModels", "-mwm"}, description ="It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
+	@Parameter(names= {"--uml2lqn"}, description ="It points to the folder of the UML-2-LQN project")
+	private String uml2lqn;
+	
+	public Path getUml2Lqn() {
+		return Paths.get(uml2lqn);
+	}
 	
 	public int getMaxWorseModels() {
 		if(maxWorseModels == null) {

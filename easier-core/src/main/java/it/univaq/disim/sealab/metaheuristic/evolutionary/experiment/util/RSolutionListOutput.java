@@ -75,6 +75,11 @@ public class RSolutionListOutput {
 		BufferedWriter bufferedWriter = context.getFileWriter();
 
 		try {
+			// prints the header of the file
+			bufferedWriter.write("solID" + context.getSeparator() + "perfQ" + context.getSeparator() + "#changes"
+					+ context.getSeparator() + "pas" + context.getSeparator() + "reliability" + context.getSeparator()
+					+ "actions" + context.getSeparator());
+			bufferedWriter.newLine();
 			if (solutionList.size() > 0) {
 				int numberOfVariables = solutionList.get(0).getNumberOfVariables();
 				for (int i = 0; i < solutionList.size(); i++) {
@@ -96,12 +101,16 @@ public class RSolutionListOutput {
 		BufferedWriter bufferedWriter = context.getFileWriter();
 
 		try {
+			// prints the header of the file
+			bufferedWriter.write("solID" + context.getSeparator() + "perfQ" + context.getSeparator() + "#changes"
+					+ context.getSeparator() + "pas" + context.getSeparator() + "reliability" + context.getSeparator());
+			bufferedWriter.newLine();
 			if (solutionList.size() > 0) {
 				int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
 				for (int i = 0; i < solutionList.size(); i++) {
-						bufferedWriter.write(solutionList.get(i).getID() + context.getSeparator());
+					bufferedWriter.write(solutionList.get(i).getID() + context.getSeparator());
 					for (int j = 0; j < numberOfObjectives; j++) {
-						if(j == 0 && !RPointSolution.isWorsen())
+						if (j == 0 && !RPointSolution.isWorsen())
 							bufferedWriter.write((-1 * solutionList.get(i).getObjective(j)) + context.getSeparator());
 						else
 							bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());

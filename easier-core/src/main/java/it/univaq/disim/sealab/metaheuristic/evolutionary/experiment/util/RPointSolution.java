@@ -20,7 +20,7 @@ public class RPointSolution extends PointSolution {
 	}
 
 	public RPointSolution() {
-		super(3);
+		super(4);
 	}
 
 	public RPointSolution setID(int id) {

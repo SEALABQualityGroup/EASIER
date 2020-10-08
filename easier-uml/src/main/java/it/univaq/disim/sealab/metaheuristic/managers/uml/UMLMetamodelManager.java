@@ -665,7 +665,8 @@ public class UMLMetamodelManager extends MetamodelManager {
 	@Override
 	public boolean isApplicable(RefactoringAction act, RSequence sequence) {
 		// TODO Auto-generated method stub
-		return false;
+		System.out.println("WARNING Any applicability rules have been set yet!!!");
+		return true;
 	}
 
 }

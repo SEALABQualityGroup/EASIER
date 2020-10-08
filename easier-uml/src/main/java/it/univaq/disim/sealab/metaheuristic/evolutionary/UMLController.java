@@ -1,7 +1,9 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -77,6 +79,8 @@ public class UMLController implements Controller {
 	private List<SourceModel> sourceModels = new ArrayList<>();
 	private List<ExperimentProblem<UMLRSolution>> problemList;
 
+	private final String reportFilePath = "reportFailedSolution.csv";
+
 	public UMLController() {
 		manager = new UMLManager(new UMLMetamodelManager(this));
 		manager.setController(this);
@@ -112,9 +116,10 @@ public class UMLController implements Controller {
 //		// setting up the source models
 //		for (Path path : modelsPath) {
 //			generateSourceFiles(path);
-			SourceModel model = new UMLSourceModel(path);
-			model.setName("automatedGuidedVehicle");
-			//TODO calc numb of perfAntipattern of the source model
+		SourceModel model = new UMLSourceModel(path);
+		model.setName("automatedGuidedVehicle");
+		model.setExtension(".uml");
+		// TODO calc numb of perfAntipattern of the source model
 //			model.setNumberOfPerfAp(((AemiliaPerformanceQualityEvaluator) getPerfQuality())
 //					.performanceAntipatternEvaluatorEpsilon(Paths.get(path.toString(), "model.mmaemilia"),
 //							Paths.get(path.toString(), "aemilia-pas-checker.evl")));
@@ -123,16 +128,20 @@ public class UMLController implements Controller {
 //							metamodelManager.getModel(Paths.get(path.toString(), "model.mmaemilia")),
 //							Paths.get(path.toString(), "ocl", "detectionSingleValuePA.ocl")));
 
-			// generates every needed files and updates the source model
+		// generates every needed files and updates the source model
 
-			updateSourceModel(path);
-			sourceModels.add(model);
+		updateSourceModel(path);
+		sourceModels.add(model);
 //		}
 		metamodelManager.setSourceModels(sourceModels);
 		System.out.println("Setting up finished");
 		return this;
 	}
 	
+	public String getReportFileName() {
+		return reportFilePath;
+	}
+
 	public CrossoverOperator<?> getXoverOperator() {
 		return crossoverOperator;
 	}
@@ -369,5 +378,9 @@ public class UMLController implements Controller {
 
 	public Path getPermanentTmpFolder() {
 		return Paths.get(configurator.getOutputFolder().toString(), "tmp");
+	}
+
+	public Path getReportFilePath() {
+		return configurator.getOutputFolder().resolve(reportFilePath);
 	}
 }

@@ -7,22 +7,20 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
-import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
-import it.univaq.disim.sealab.epsilon.eol.UmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -35,20 +33,18 @@ import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.actions.UML.UMLPackage;
 import logicalSpecification.actions.UML.impl.UMLMoveComponentActionImpl;
-import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 
 public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements RefactoringAction {
 
 	private final static Path eolModulePath;
 
-	private final UMLRSolution solution;
+	private final static double VALUE_COST = 1.23;
 
-	private Component targetObject;
-	private Node targetNode;
+	private final UMLRSolution solution;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-epsilon", "src", "main", "resources", "refactoring-lib", "mv_comp_nn.eol");
+				"easier-refactoringLibrary", "easier-ref-operations", "mv_comp_nn.eol");
 	}
 
 	public static Path getEolModulePath() {
@@ -58,9 +54,13 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	public UMLMvComponentToNN(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
 
-		targetObject = getRandomComponent();
+		umlTargetNodes = new BasicEList<>();
 
-		targetNode = getRandomNode();
+		umlCompToMove = getRandomComponent();
+		umlTargetNodes.add(createNewNode());
+
+		cost = calculateCost();
+		numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
@@ -68,19 +68,23 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	}
 
+	private double calculateCost() {
+
+		int intUsage = umlCompToMove.getUsedInterfaces().size();
+		int intReal = umlCompToMove.getInterfaceRealizations().size();
+		int ops = umlCompToMove.getOperations().size();
+
+		return (intUsage + intReal + ops) * VALUE_COST;
+	}
+
 	// Creates a new random Node on which the component will be deployed on
-	private Node getRandomNode() {
+	private Node createNewNode() {
 
 		org.eclipse.uml2.uml.Package deploymentView = null;
-		// Retrieves the deployment view package
-		/*
-		 * EcoreUtil .getObjectsByType(solution.getIModel().allContents(),
-		 * UMLPackage.Literals.PACKAGE).stream()
-		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
-		 * "deployment_view".equals(pkg.getName())) .findAny().orElse(null);
-		 */
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
-			if (pkg instanceof org.eclipse.uml2.uml.Package && "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "deployment_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				deploymentView = (org.eclipse.uml2.uml.Package) pkg;
 				break;
 			}
@@ -106,16 +110,10 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	private Component getRandomComponent() {
 
 		org.eclipse.uml2.uml.Package staticView = null;
-		// Retrieves the static view package
-		/*
-		 * org.eclipse.uml2.uml.Package staticView = EcoreUtil
-		 * .getObjectsByType(solution.getIModel().allContents(),
-		 * UMLPackage.Literals.PACKAGE).stream()
-		 * .map(org.eclipse.uml2.uml.Package.class::cast).filter(pkg ->
-		 * "static_view".equals(pkg.getName())) .findAny().orElse(null);
-		 */
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
-			if (pkg instanceof org.eclipse.uml2.uml.Package && "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
+		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
+				UMLPackage.Literals.PACKAGE)) {
+			if (pkg instanceof org.eclipse.uml2.uml.Package
+					&& "static_view".equals(((org.eclipse.uml2.uml.Package) pkg).getName())) {
 				staticView = (org.eclipse.uml2.uml.Package) pkg;
 				break;
 			}
@@ -139,8 +137,11 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		executor.setSource(eolModulePath);
 
 		// fills variable within the eol module
-		executor.setParameter(targetObject, "UML!Component", "self");
-		executor.setParameter(targetNode, "UML!Node", "target");
+		executor.setParameter(umlCompToMove.getName(), "String", "targetComponentName");
+		executor.setParameter(umlTargetNodes.get(0).getName(), "String", "newNodeName");
+
+//		executor.setParameter(umlCompToMove, "UML!Component", "targetComponent");
+//		executor.setParameter(umlTargetNodes.get(0), "UML!Node", "targetNode");
 
 		try {
 			executor.execute();
@@ -194,7 +195,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 		setCompToMoveSVP(solution.getManager().createSingleValueParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getComponentQuery(targetObject)));
+						.getComponentQuery(umlCompToMove)));
 		params.add(getCompToMoveSVP());
 
 //		setAllOpsMVP(solution.getManager().createMultipleValuedParameter(
@@ -209,7 +210,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		// Sets the target node
 		setTargetNodesMVP(solution.getManager().createMultipleValuedParameter(
 				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getNodesQuery(Arrays.asList(targetNode))));
+						.getNodesQuery(umlTargetNodes)));
 
 		params.add(getAllCompsMVP());
 
@@ -225,12 +226,53 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
 
+		cloned.cleanUp();
+		cloned.setUmlCompToMove(this.umlCompToMove);
+		cloned.setUmlTargetNodes(this.umlTargetNodes);
+
 		cloned.parameters = this.getParameters();
 		cloned.pre = this.getPre();
 		cloned.post = this.getPost();
 
 		return cloned;
 
+	}
+
+	public void setUmlCompToMove(Component c) {
+		this.umlCompToMove = c;
+	}
+
+	public void setUmlTargetNodes(List<Node> n) {
+		umlTargetNodes.clear();
+		umlTargetNodes.addAll(n);
+	}
+
+	public boolean equals(Object op) {
+		if (op.getClass() != this.getClass())
+			return false;
+		final UMLMvComponentToNN act = (UMLMvComponentToNN) op;
+		if (!this.getUmlCompToMove().getName().equals(act.getUmlCompToMove().getName())
+				|| !this.umlTargetNodes.get(0).getName().equals(act.getUmlTargetNodes().get(0).getName()))
+			return false;
+		return true;
+	}
+
+	public void cleanUp() {
+		try {
+			this.solution.getDirtyIModel().deleteElement(umlTargetNodes.get(0));
+		} catch (EolRuntimeException e) {
+			System.err.println("[ERROR] the cleanUp method has generated an error, while removing the node --> "
+					+ umlTargetNodes.get(0).getName());
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String toString() {
+		String nodes = "";
+		for (Node n : umlTargetNodes)
+			nodes += " " + n.getName();
+		return "Moving --> " + umlCompToMove.getName() + " to --> " + nodes;
 	}
 
 }

@@ -11,4 +11,5 @@ public interface Controller {
 	public Configurator getConfigurator();
 	public Path getPermanentTmpFolder();
 	public PerformanceQualityEvaluator getPerfQuality();
+	public String getReportFileName();
 }

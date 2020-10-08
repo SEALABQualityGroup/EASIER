@@ -24,6 +24,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
+import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Node;
@@ -125,8 +126,14 @@ public class UMLOclManager extends OclManager {
 		OCLExpression<EClassifier> oclExpression;
 		try {
 			oclExpression = helper.createQuery(query);
+//			System.out.println("Evaluating: " + query);
 			Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-			return oclQuery.evaluate(contextualElement);
+			Object result = oclQuery.evaluate(contextualElement);
+			if(result instanceof OCLStandardLibrary<?>) {
+				System.err.println("EEROR invalid query");
+			}
+//			System.out.println("DONE");
+			return result;
 		} catch (ParserException e) {
 			System.err.println("ContextualElement --> " + contextualElement.toString());
 			System.err.println("Query --> " + query);
@@ -135,70 +142,6 @@ public class UMLOclManager extends OclManager {
 		return null;
 	}
 
-	/*
-	public List<?> evaluateOCL(String query, List<Object> contextualElements) throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		// set the OCL context classifier
-		if (contextualElements.get(0) instanceof Package)
-			helper.setContext(UMLPackage.Literals.PACKAGE);
-		else if (contextualElements.get(0) instanceof Component)
-			helper.setContext(UMLPackage.Literals.COMPONENT);
-		else if (contextualElements.get(0) instanceof Operation)
-			helper.setContext(UMLPackage.Literals.OPERATION);
-		else if (contextualElements.get(0) instanceof Node)
-			helper.setContext(UMLPackage.Literals.NODE);
-		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-		Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-		return oclQuery.evaluate(contextualElements);
-	}
-
-	public boolean checkOCL(String query, Object contextualElement) throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		// set the OCL context classifier
-		if (contextualElement instanceof Model)
-			helper.setContext(UMLPackage.Literals.MODEL);
-		else if (contextualElement instanceof Package)
-			helper.setContext(UMLPackage.Literals.PACKAGE);
-		else if (contextualElement instanceof Component)
-			helper.setContext(UMLPackage.Literals.COMPONENT);
-		else if (contextualElement instanceof Operation)
-			helper.setContext(UMLPackage.Literals.OPERATION);
-		else if (contextualElement instanceof Node)
-			helper.setContext(UMLPackage.Literals.NODE);
-		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-		Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-		return oclQuery.check(contextualElement);
-	}
-
-	public boolean checkOCL(String query, List<Object> contextualElements) throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		// set the OCL context classifier
-		if (contextualElements.get(0) instanceof Package)
-			helper.setContext(UMLPackage.Literals.PACKAGE);
-		else if (contextualElements.get(0) instanceof Component)
-			helper.setContext(UMLPackage.Literals.COMPONENT);
-		else if (contextualElements.get(0) instanceof Operation)
-			helper.setContext(UMLPackage.Literals.OPERATION);
-		else if (contextualElements.get(0) instanceof Node)
-			helper.setContext(UMLPackage.Literals.NODE);
-		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-		Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-		return oclQuery.check(contextualElements);
-	}
-*/
-	
 	@Override
 	protected HashSet<?> getQueryResult(String query, EObject model) {
 		// TODO Auto-generated method stub
