@@ -11,6 +11,7 @@ import java.util.Random;
 import org.apache.commons.math3.exception.NotPositiveException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Model;
@@ -155,8 +156,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		executor.clearMemory();
 		executor = null;
-
 	}
 
 	@Override

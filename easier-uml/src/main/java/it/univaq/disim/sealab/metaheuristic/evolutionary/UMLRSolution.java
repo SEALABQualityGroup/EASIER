@@ -20,14 +20,15 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.etl.EtlModule;
+import org.eclipse.epsilon.evl.EvlModule;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Stereotype;
@@ -45,9 +46,6 @@ import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
@@ -68,6 +66,7 @@ public class UMLRSolution extends RSolution {
 
 //	private UMLMetamodelManager metamodelManager;
 	private static List<Integer> cleanedSolutionsIntegers;
+
 //	private Path modelPath;
 
 //	private int name;
@@ -348,6 +347,8 @@ public class UMLRSolution extends RSolution {
 		pasCounter.setModel(iModel);
 
 		numPAs = pasCounter.getPAs();
+	
+		pasCounter.clearMemory();
 		pasCounter = null;
 		System.out.println("done");
 	}
@@ -503,6 +504,7 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		
+		bckAnn.clearMemory();
 		bckAnn = null;
 
 	}
@@ -656,6 +658,9 @@ public class UMLRSolution extends RSolution {
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */
 	public void applyTransformation() {
+		
+		System.out.print("Applying transformation ... ");
+		
 		ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
 		executor.setSource(uml2lqnModule.resolve("uml2lqn.etl"));
 		executor.setModel(this.iModel);
@@ -689,7 +694,10 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
+		executor.getModule().getContext().getFrameStack().dispose();
 		executor = null;
+		
+		System.out.println("done");
 	}
 
 	public void executeRefactoring() {
@@ -749,7 +757,8 @@ public class UMLRSolution extends RSolution {
 
 	@Override
 	public void computeReliability() {
-
+		
+		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
 		if (iModel.isLoaded()) {
 			iModel.dispose();
@@ -788,6 +797,8 @@ public class UMLRSolution extends RSolution {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("done");
 
 	}
 	

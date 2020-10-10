@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
@@ -177,8 +178,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		executor.clearMemory();
 		executor = null;
-
 	}
 
 	@Override

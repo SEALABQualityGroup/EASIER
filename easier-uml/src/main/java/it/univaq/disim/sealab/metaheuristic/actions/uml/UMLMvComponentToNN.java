@@ -13,6 +13,7 @@ import java.util.Random;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.Component;
@@ -149,7 +150,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
-
+		executor.clearMemory();
 		executor = null;
 	}
 

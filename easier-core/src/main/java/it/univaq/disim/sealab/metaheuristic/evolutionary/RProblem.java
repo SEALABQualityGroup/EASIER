@@ -27,7 +27,6 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	protected final int THIRD_OBJ = 2;
 	protected final int FOURTH_OBJ = 3;
 	
-	protected List<RSolution> solutions = new ArrayList<>();
 //	private Manager manager;
 	private Controller controller;
 	
@@ -93,10 +92,6 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 
 	public Controller getController() {
 		return controller;
-	}
-	
-	public List<RSolution> getSolutions(){
-		return solutions;
 	}
 	
 	public RProblem setSourceModelFolderPath(Path sourceModelPath) {this.sourceFolderPath = sourceModelPath; return this;}

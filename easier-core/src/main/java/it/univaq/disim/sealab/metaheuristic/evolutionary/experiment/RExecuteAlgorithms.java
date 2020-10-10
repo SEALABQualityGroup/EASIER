@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import org.eclipse.uml2.uml.resource.UMLResource;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.impl.AbstractEvolutionaryAlgorithm;
 import org.uma.jmetal.solution.Solution;
@@ -65,12 +66,10 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			
 			for(ExperimentAlgorithm<S, Result> alg: experiment.getAlgorithmList()) {
 				RProblem<?> p =(RProblem<?>) ((AbstractEvolutionaryAlgorithm<Solution<S>, Result>)alg.getAlgorithm()).getProblem();
-				p.getSolutions().forEach(sol -> sol.freeMemory());
+				RSolution.generatedSolutions.forEach(sol -> sol.freeMemory());
+				RSolution.generatedSolutions.clear();
 				//Shall remove old solutions
 				((List<S>)alg.getAlgorithm().getResult()).clear();
-				p.getSolutions().clear();
-				System.gc();
-				EasierLogger.logger_.info(String.format("GarbageCollector has been invoked for '%s'!", alg.getAlgorithmTag()));
 			}
 			EasierLogger.logger_.info("No longer used Solutions have been removed!");
 		}

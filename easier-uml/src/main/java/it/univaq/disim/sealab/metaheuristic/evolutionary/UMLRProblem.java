@@ -19,6 +19,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	//TODO understand if it can be removed
 	private final EasierUmlModel sourceIModel;
 
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
@@ -59,9 +60,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	public S createSolution() {
 
 		try {
-			UMLRSolution sol = new UMLRSolution(this);
-			solutions.add(sol);
-			return (S) sol;
+			return (S) new UMLRSolution(this);
 		} catch (ParserException | UnexpectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

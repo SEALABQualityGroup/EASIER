@@ -3,10 +3,12 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import java.io.ObjectInputStream.GetField;
 import java.nio.file.Path;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.genetics.GeneticAlgorithm;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -23,6 +25,9 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	
+	public static List<RSolution> generatedSolutions;
 	
 	protected Path modelPath;
 	
@@ -48,12 +53,18 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	
 	public static int MutationCounter = 0;
 	public static int XOverCounter = 0;
+	
+	
+	static {
+		generatedSolutions = new ArrayList<>();
+	}
 
 	protected RSolution(RProblem<?> problem) {
 		super(problem);
 		crossovered = false;
 		mutated = false;
 		refactored = false;
+		generatedSolutions.add(this);
 	}
 
 //	public abstract Controller getController();

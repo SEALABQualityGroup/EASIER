@@ -26,6 +26,7 @@ import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.eol.types.EolModelElementType;
+import org.eclipse.epsilon.evl.EvlModule;
 
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 
@@ -340,5 +341,12 @@ public abstract class EpsilonStandalone {
 	public IEolModule getModule() {
 		return module;
 	}
+	
+	public void clearMemory() {
+		this.getModule().getContext().dispose();
+		this.getModule().getImports().clear();
+		this.getModule().getComments().clear();
+	}
+	
 
 }
