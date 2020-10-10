@@ -763,14 +763,11 @@ public class UMLRSolution extends RSolution {
 		if (iModel.isLoaded()) {
 			iModel.dispose();
 		}
-
-		final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+		final UMLReliability uml;
+        
 		try {
-			final List<Scenario> scenarios = uml.getScenarios();
-			final List<Component> components = uml.getComponents();
-			final List<Link> links = uml.getLinks();
-
-			reliability = new Reliability(scenarios, components, links).compute();
+			uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+			reliability = new Reliability(uml.getScenarios()).compute();
 		} catch (MissingTagException e) {
 			System.err.println("Error in computing the reliability");
 
@@ -788,7 +785,6 @@ public class UMLRSolution extends RSolution {
 				System.out.println(e1.getMessage());
 			}
 		}
-
 		// reloads the stored model
 		// TODO verify is it is needed
 		try {
