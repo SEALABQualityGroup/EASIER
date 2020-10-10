@@ -177,6 +177,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		executor = null;
 
 	}
 
@@ -310,6 +311,13 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 					+ umlTargetNode.getName() + " and Component " + umlTargetComp.getName());
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void freeMemory() {
+		parameters.clear();
+		pre = null;
+		post = null;
 	}
 
 	public String toString() {

@@ -75,6 +75,7 @@ public class UMLRSolution extends RSolution {
 //	private UMLRSolution[] parents = new UMLRSolution[2];
 
 	private UMLMetamodelManager metamodelManager;
+	private static List<Integer> cleanedSolutionsIntegers;
 //	private Path modelPath;
 
 //	private int name;
@@ -101,6 +102,7 @@ public class UMLRSolution extends RSolution {
 				"easier-uml2lqn", "org.univaq.uml2lqn");
 
 		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
+		cleanedSolutionsIntegers = new ArrayList<>();
 	}
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
@@ -346,12 +348,15 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void countingPAs() {
 
+		System.out.print("Counting PAs (it may make a while) ... ");
 		EVLStandalone pasCounter = new EVLStandalone();
 
 		pasCounter.setSource(refactoringLibraryModule);
 		pasCounter.setModel(iModel);
 
 		numPAs = pasCounter.getPAs();
+		pasCounter = null;
+		System.out.println("done");
 	}
 
 	/*
@@ -371,7 +376,7 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void invokeSolver() {
 		// TODO invoke LQN solver
-		System.out.println("Invoking LQN Solver .....");// Remove comments for the real invocation");
+		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
 		Path lqnSolverPath = this.manager.getController().getConfigurator().getSolver();
 		Path lqnModelPath = this.folderPath.resolve("output.xml");
@@ -416,12 +421,14 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
+		
+		process = null;
 
-		System.out.println("..... done");
+		System.out.println("done");
 
-		System.out.println("Invoking the back annotator...");
+		System.out.print("Invoking the back annotator... ");
 		backAnnotation();
-		System.out.println("... done");
+		System.out.println("done");
 	}
 
 	// Vincenzo's solution
@@ -502,6 +509,8 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
+		
+		bckAnn = null;
 
 	}
 
@@ -509,7 +518,10 @@ public class UMLRSolution extends RSolution {
 		// TODO decide how to calculate perfQ, if it needed
 		// System.out.println("PerfQ is not yet decided... Please consider how to
 		// compute this objective");
-		return perfQ = perfQ();
+		System.out.print("Counting perfQ ... ");
+		perfQ = perfQ();
+		System.out.println("done");
+		return perfQ;
 	}
 
 	/**
@@ -684,6 +696,7 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
+		executor = null;
 	}
 
 	public void executeRefactoring() {
@@ -783,6 +796,26 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Override
+	public void freeMemory() {
+		try {
+			if(dirtyIModel != null) {
+				dirtyIModel.clearCache();
+				dirtyIModel = null;
+			}
+			if(iModel != null) {
+				iModel.clearCache();
+				iModel = null;
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		this.getVariableValue(0).getRefactoring().getActions().forEach(a -> a.freeMemory());
+		System.out.println(String.format("Solution '%s' cleaned", this.name));
+		cleanedSolutionsIntegers.add(this.name);
 	}
 
 }

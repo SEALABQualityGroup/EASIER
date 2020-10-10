@@ -135,7 +135,6 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		Component cmp = null;
 		do {
 			cmp = (Component) cmps.get(JMetalRandom.getInstance().nextInt(0, cmps.size() - 1));
-			System.out.println(cmp.toString());
 		} while (cmp.getOperations().contains(umlOpToMove));
 
 		return cmp;
@@ -156,6 +155,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		executor = null;
 
 	}
 
@@ -277,6 +277,13 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	// the action doesn't create new element in the model
 	public void cleanUp() {
+	}
+	
+	@Override
+	public void freeMemory() {
+		parameters.clear();
+		pre = null;
+		post = null;
 	}
 
 	@Override

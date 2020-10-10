@@ -133,6 +133,10 @@ public class UMLOclManager extends OclManager {
 				System.err.println("EEROR invalid query");
 			}
 //			System.out.println("DONE");
+			oclQuery = null;
+			oclExpression = null;
+			helper = null;
+			ocl = null;
 			return result;
 		} catch (ParserException e) {
 			System.err.println("ContextualElement --> " + contextualElement.toString());

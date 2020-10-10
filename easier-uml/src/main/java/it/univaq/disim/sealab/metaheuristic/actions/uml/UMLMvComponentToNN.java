@@ -149,6 +149,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		
+		executor = null;
 	}
 
 	@Override
@@ -265,6 +267,13 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 					+ umlTargetNodes.get(0).getName());
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void freeMemory() {
+		parameters.clear();
+		pre = null;
+		post = null;
 	}
 
 	@Override

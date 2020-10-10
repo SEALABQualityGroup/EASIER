@@ -59,7 +59,9 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	public S createSolution() {
 
 		try {
-			return (S) new UMLRSolution(this);
+			UMLRSolution sol = new UMLRSolution(this);
+			solutions.add(sol);
+			return (S) sol;
 		} catch (ParserException | UnexpectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

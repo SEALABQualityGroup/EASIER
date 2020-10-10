@@ -3,7 +3,9 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import java.io.ObjectInputStream.GetField;
 import java.nio.file.Path;
 import java.rmi.UnexpectedException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -82,6 +84,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 //	public abstract Manager getManager();
 
 	public abstract void invokeSolver();
+	
+	public abstract void freeMemory();
 
 //	public abstract List<Resource> getResources();
 	

@@ -167,6 +167,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
+		 executor = null;
 	}
 
 	@Override
@@ -292,6 +293,13 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void freeMemory() {
+		parameters.clear();
+		pre = null;
+		post = null;
 	}
 
 	@Override

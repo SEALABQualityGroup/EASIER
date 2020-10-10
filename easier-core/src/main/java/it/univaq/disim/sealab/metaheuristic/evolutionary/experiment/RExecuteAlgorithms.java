@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.impl.AbstractEvolutionaryAlgorithm;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
@@ -20,6 +22,7 @@ import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
@@ -59,6 +62,17 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
 			FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());
+			
+			for(ExperimentAlgorithm<S, Result> alg: experiment.getAlgorithmList()) {
+				RProblem<?> p =(RProblem<?>) ((AbstractEvolutionaryAlgorithm<Solution<S>, Result>)alg.getAlgorithm()).getProblem();
+				p.getSolutions().forEach(sol -> sol.freeMemory());
+				//Shall remove old solutions
+				((List<S>)alg.getAlgorithm().getResult()).clear();
+				p.getSolutions().clear();
+				System.gc();
+				EasierLogger.logger_.info(String.format("GarbageCollector has been invoked for '%s'!", alg.getAlgorithmTag()));
+			}
+			EasierLogger.logger_.info("No longer used Solutions have been removed!");
 		}
 		return this;
 	}

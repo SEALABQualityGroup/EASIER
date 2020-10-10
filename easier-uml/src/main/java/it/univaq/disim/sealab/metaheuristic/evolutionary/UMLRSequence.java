@@ -88,7 +88,7 @@ public class UMLRSequence extends RSequence {
 		}
 
 		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
-		System.out.println("Precondition of a Sol# " + solution.name + " refactoring ");
+		//System.out.println("Precondition of a Sol# " + solution.name + " refactoring ");
 		boolean fol = false;
 		try {
 			fol = manager.evaluateFOL(app, ((UMLRSolution) this.getSolution()).getDirtyModel());
@@ -99,10 +99,10 @@ public class UMLRSequence extends RSequence {
 		}
 
 		if (!fol) {
-			System.out.println("Refactoring sequence");
-			System.out.println(getRefactoring().toString());
+			//System.out.println("Refactoring sequence");
+			//System.out.println(getRefactoring().toString());
 		}
-		System.out.println("Precondition of Solution # " + this.getSolution().getName() + " is " + fol);
+		//System.out.println("Precondition of Solution # " + this.getSolution().getName() + " is " + fol);
 
 		return fol;
 	}
