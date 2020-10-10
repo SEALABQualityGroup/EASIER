@@ -3,8 +3,12 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import java.io.ObjectInputStream.GetField;
 import java.nio.file.Path;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.math3.genetics.GeneticAlgorithm;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -22,14 +26,17 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	public static List<RSolution> generatedSolutions;
+	
 	protected Path modelPath;
 	
 	protected boolean refactored;
 	protected boolean crossovered;
 	protected boolean mutated;
 	
-	protected ResourceSet resourceSet;
-	protected Manager manager;
+//	protected ResourceSet resourceSet;
+//	protected Manager manager;
 	protected Controller controller;
 	
 	protected EObject model;
@@ -46,12 +53,18 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	
 	public static int MutationCounter = 0;
 	public static int XOverCounter = 0;
+	
+	
+	static {
+		generatedSolutions = new ArrayList<>();
+	}
 
 	protected RSolution(RProblem<?> problem) {
 		super(problem);
 		crossovered = false;
 		mutated = false;
 		refactored = false;
+		generatedSolutions.add(this);
 	}
 
 //	public abstract Controller getController();
@@ -82,6 +95,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 //	public abstract Manager getManager();
 
 	public abstract void invokeSolver();
+	
+	public abstract void freeMemory();
 
 //	public abstract List<Resource> getResources();
 	
@@ -147,21 +162,20 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return name;
 	}
 
-	public Manager getManager() {
-		return this.manager;
-	}
+//	public Manager getManager() {
+//		return this.manager;
+//	}
 
 	public Controller getController() {
 		return this.controller;
 	}
 
-	public ResourceSet getResourceSet() {
-		return resourceSet;
-	}
-
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
+	/*
+	 * public ResourceSet getResourceSet() { return resourceSet; }
+	 * 
+	 * public void setResourceSet(ResourceSet resourceSet) { this.resourceSet =
+	 * resourceSet; }
+	 */
 	
 	public static synchronized int getCounter() {
 		return SOLUTION_COUNTER++;
@@ -175,13 +189,15 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return model;
 	}
 	
-	public List<Resource> getResources() {
-		return this.getResourceSet().getResources();
-	}
+	/*
+	 * public List<Resource> getResources() { return
+	 * this.getResourceSet().getResources(); }
+	 */
 	
-	public void save() {
-		manager.getMetamodelManager().save(this);
-	}
+	/*
+	 * public void save() { manager.getMetamodelManager().save(this); }
+	 */
+	public abstract void save(); 
 	
 	protected void resetParents() {
 		if (this.parents != null) {

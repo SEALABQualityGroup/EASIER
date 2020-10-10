@@ -57,10 +57,4 @@ public class NotRefactoringOperator extends NotOperatorImpl implements Refactori
 		}
 		return false;
 	}
-
-	@Override
-	public boolean evaluateOperator() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

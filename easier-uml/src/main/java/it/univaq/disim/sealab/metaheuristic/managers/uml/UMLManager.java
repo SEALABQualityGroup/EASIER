@@ -13,17 +13,17 @@ import logicalSpecification.Action;
 
 public class UMLManager extends Manager{
 
-	private String modelUri = null;
+//	private String modelUri = null;
 
 	public static int REFACTORING_COUNTER = 0;
 
 	public UMLManager() {}
 
-	public UMLManager(UMLMetamodelManager mmManager) {
-		super(mmManager);
-		
-		setOclStringManager(new UMLOclStringManager());
-	}
+	/*
+	 * public UMLManager(UMLMetamodelManager mmManager) { super(mmManager);
+	 * 
+	 * // setOclStringManager(new UMLOclStringManager()); }
+	 */
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {
 		URI uri = URI.createURI(stringToConvert);
@@ -35,13 +35,13 @@ public class UMLManager extends Manager{
 		return fileUri;
 	}
 
-	public Object getModel() {
-		return metamodelManager.getModel();
-	}
+//	public Object getModel() {
+//		return metamodelManager.getModel();
+//	}
 
-	public void setModel(EObject model) {
-		metamodelManager.setModel(model);
-	}
+//	public void setModel(EObject model) {
+//		metamodelManager.setModel(model);
+//	}
 
 	public static double calculateCost(Refactoring r) {
 		double sum = 0.0;
@@ -240,9 +240,9 @@ public class UMLManager extends Manager{
 //		return getMetamodelManager().getOclManager();
 //	}
 
-	public void setOclManager(OclManager oclMan) {
-		oclManager = oclMan;
-	}
+//	public void setOclManager(OclManager oclMan) {
+//		oclManager = oclMan;
+//	}
 /*
 	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
@@ -927,9 +927,9 @@ public class UMLManager extends Manager{
 //		return LogicalSpecificationFactory.eINSTANCE.createPostCondition();
 //	}
 
-	public String getModelFileExtension() {
-		return metamodelManager.getModelFileExtension();
-	}
+//	public String getModelFileExtension() {
+//		return metamodelManager.getModelFileExtension();
+//	}
 /*
 	public Controller getController() {
 		return controller;

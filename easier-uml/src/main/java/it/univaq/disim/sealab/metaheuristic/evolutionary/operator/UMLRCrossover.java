@@ -92,7 +92,7 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 				}
 				if (isApplicable(offspring2)) {
 					offspring.get(1).getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
-					offspring.set(1, (S) offspring1);
+					offspring.set(1, (S) offspring2);
 				}else {
 					offspring2.getVariableValue(0).getRefactoring().getActions().forEach(RefactoringAction::cleanUp);
 					offspring2 = null;

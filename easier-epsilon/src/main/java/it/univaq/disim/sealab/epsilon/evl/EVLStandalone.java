@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.EvlModule;
@@ -22,18 +23,18 @@ public class EVLStandalone extends EpsilonStandalone {
 	 * folder
 	 */
 	public EVLStandalone() {
-		if (Files.exists(Paths.get("/tmp/aemilia-pas-checker.evl"))) {
-			source = Paths.get("/tmp/aemilia-pas-checker.evl");
-		} else {
-			InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("evl/aemilia-pas-checker.evl");
-			source = Paths.get("/tmp/aemilia-pas-checker.evl");
-			try {
-				Files.copy(mmIn, source);
-			} catch (IOException e) {
-				System.err.println("Error in copying the EVL file to " + source);
-				e.printStackTrace();
-			}
-		}
+//		if (Files.exists(Paths.get("/tmp/aemilia-pas-checker.evl"))) {
+//			source = Paths.get("/tmp/aemilia-pas-checker.evl");
+//		} else {
+//			InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("evl/aemilia-pas-checker.evl");
+//			source = Paths.get("/tmp/aemilia-pas-checker.evl");
+//			try {
+//				Files.copy(mmIn, source);
+//			} catch (IOException e) {
+//				System.err.println("Error in copying the EVL file to " + source);
+//				e.printStackTrace();
+//			}
+//		}
 		module = new EvlModule();
 		
 		model = new ArrayList<>();
@@ -76,11 +77,20 @@ public class EVLStandalone extends EpsilonStandalone {
 			System.err.println("Error in Performance antipattern detection using the file " + model.toString());
 			e.printStackTrace();
 		}
-		return ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
+		int pas = ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
+		((EvlModule) this.module).getContext().getUnsatisfiedConstraints().clear();
+		return pas;
 	}
 
 	@Override
 	public void preProcess() {
 	}
+	
+	@Override
+	public void clearMemory() {
+		super.clearMemory();
+		((EvlModule) this.getModule()).clearCache();
+	}
+	
 
 }

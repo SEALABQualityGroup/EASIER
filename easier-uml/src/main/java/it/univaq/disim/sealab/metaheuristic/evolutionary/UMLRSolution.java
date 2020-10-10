@@ -2,7 +2,6 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,16 +20,15 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.etl.EtlModule;
+import org.eclipse.epsilon.evl.EvlModule;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Stereotype;
@@ -41,10 +39,6 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
-import com.masdes.dam.Complex_Data_Types.DaFailure;
-import com.masdes.dam.Complex_Data_Types.impl.DaFailureImpl;
-import com.masdes.dam.DAM.impl.DAMFactoryImpl;
-
 import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
@@ -52,10 +46,6 @@ import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLManager;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
@@ -74,7 +64,9 @@ public class UMLRSolution extends RSolution {
 
 //	private UMLRSolution[] parents = new UMLRSolution[2];
 
-	private UMLMetamodelManager metamodelManager;
+//	private UMLMetamodelManager metamodelManager;
+	private static List<Integer> cleanedSolutionsIntegers;
+
 //	private Path modelPath;
 
 //	private int name;
@@ -101,6 +93,7 @@ public class UMLRSolution extends RSolution {
 				"easier-uml2lqn", "org.univaq.uml2lqn");
 
 		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
+		cleanedSolutionsIntegers = new ArrayList<>();
 	}
 
 	protected UMLRSolution(UMLRProblem<?> p) throws ParserException, UnexpectedException {
@@ -191,23 +184,23 @@ public class UMLRSolution extends RSolution {
 
 	protected void init(Controller controller) {
 		this.controller = controller;
-		manager = new UMLManager();
-		manager.setController(controller);
+//		manager = new UMLManager();
+//		manager.setController(controller);
 
 		parents = new UMLRSolution[2];
 
-		setResourceSet(new ResourceSetImpl());
+//		setResourceSet(new ResourceSetImpl());
 
-		manager.setMetamodelManager(new UMLMetamodelManager(controller));
-		manager.setOclManager(manager.getMetamodelManager().getOclManager());
-		manager.setOclStringManager(UMLOclStringManager.getInstance());
+//		manager.setMetamodelManager(new UMLMetamodelManager(controller));
+//		manager.setOclManager(manager.getMetamodelManager().getOclManager());
+//		manager.setOclStringManager(UMLOclStringManager.getInstance());
 
-		metamodelManager = (UMLMetamodelManager) manager.getMetamodelManager();
-		metamodelManager.setProblem(problem);
+//		metamodelManager = (UMLMetamodelManager) manager.getMetamodelManager();
+//		metamodelManager.setProblem(problem);
 
 		folderPath = Paths.get(controller.getConfigurator().getTmpFolder().toString(),
 				String.valueOf((getName() / 100)), String.valueOf(getName()));
-		modelPath = Paths.get(folderPath.toString(), getName() + metamodelManager.getMetamodelFileExtension());
+		modelPath = folderPath.resolve(getName() + ".uml" );
 
 		try {
 //			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(),
@@ -235,14 +228,15 @@ public class UMLRSolution extends RSolution {
 		}
 
 		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
-		createNewModel(modelPath);
+	//	createNewModel(modelPath);
 	}
 
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
+	/*
+	 * public void setResourceSet(ResourceSet resourceSet) { this.resourceSet =
+	 * resourceSet; }
+	 */
 
-	public void createNewModel(Path modelFilePath) {
+	/*public void createNewModel(Path modelFilePath) {
 		try {
 //			res = getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()), true);
 //			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
@@ -253,7 +247,7 @@ public class UMLRSolution extends RSolution {
 			System.err.println(this.getVariableValue(0).toString());
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
 		UMLRSequence seq = new UMLRSequence(l, n, a, this);
@@ -346,12 +340,17 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void countingPAs() {
 
+		System.out.print("Counting PAs (it may take a while) ... ");
 		EVLStandalone pasCounter = new EVLStandalone();
 
 		pasCounter.setSource(refactoringLibraryModule);
 		pasCounter.setModel(iModel);
 
 		numPAs = pasCounter.getPAs();
+	
+		pasCounter.clearMemory();
+		pasCounter = null;
+		System.out.println("done");
 	}
 
 	/*
@@ -371,9 +370,9 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void invokeSolver() {
 		// TODO invoke LQN solver
-		System.out.println("Invoking LQN Solver .....");// Remove comments for the real invocation");
+		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
-		Path lqnSolverPath = this.manager.getController().getConfigurator().getSolver();
+		Path lqnSolverPath = this.controller.getConfigurator().getSolver();
 		Path lqnModelPath = this.folderPath.resolve("output.xml");
 
 		XMLUtil.conformanceChecking(lqnModelPath);
@@ -416,12 +415,14 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
+		
+		process = null;
 
-		System.out.println("..... done");
+		System.out.println("done");
 
-		System.out.println("Invoking the back annotator...");
+		System.out.print("Invoking the back annotator... ");
 		backAnnotation();
-		System.out.println("... done");
+		System.out.println("done");
 	}
 
 	// Vincenzo's solution
@@ -502,6 +503,9 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
+		
+		bckAnn.clearMemory();
+		bckAnn = null;
 
 	}
 
@@ -509,7 +513,10 @@ public class UMLRSolution extends RSolution {
 		// TODO decide how to calculate perfQ, if it needed
 		// System.out.println("PerfQ is not yet decided... Please consider how to
 		// compute this objective");
-		return perfQ = perfQ();
+		System.out.print("Counting perfQ ... ");
+		perfQ = perfQ();
+		System.out.println("done");
+		return perfQ;
 	}
 
 	/**
@@ -651,6 +658,9 @@ public class UMLRSolution extends RSolution {
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */
 	public void applyTransformation() {
+		
+		System.out.print("Applying transformation ... ");
+		
 		ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
 		executor.setSource(uml2lqnModule.resolve("uml2lqn.etl"));
 		executor.setModel(this.iModel);
@@ -684,6 +694,10 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
+		executor.getModule().getContext().getFrameStack().dispose();
+		executor = null;
+		
+		System.out.println("done");
 	}
 
 	public void executeRefactoring() {
@@ -715,12 +729,12 @@ public class UMLRSolution extends RSolution {
 		return (EObject) dirtyIModel.allContents().toArray()[0];
 	}
 
-	public void refreshModel() {
-		getResourceSet().getResources().forEach(resource -> resource.unload());
-//		get(0).unload();
-//		this.createNewModel(mmaemiliaFilePath);
-		this.model = metamodelManager.getModel(modelPath);
-	}
+//	public void refreshModel() {
+//		getResourceSet().getResources().forEach(resource -> resource.unload());
+////		get(0).unload();
+////		this.createNewModel(mmaemiliaFilePath);
+//		this.model = metamodelManager.getModel(modelPath);
+//	}
 
 	public EasierUmlModel getIModel() {
 		return iModel;
@@ -743,7 +757,8 @@ public class UMLRSolution extends RSolution {
 
 	@Override
 	public void computeReliability() {
-
+		
+		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
 		if (iModel.isLoaded()) {
 			iModel.dispose();
@@ -782,7 +797,29 @@ public class UMLRSolution extends RSolution {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("done");
 
+	}
+	
+	@Override
+	public void freeMemory() {
+		try {
+			if(dirtyIModel != null) {
+				dirtyIModel.clearCache();
+				dirtyIModel = null;
+			}
+			if(iModel != null) {
+				iModel.clearCache();
+				iModel = null;
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		this.getVariableValue(0).getRefactoring().getActions().forEach(a -> a.freeMemory());
+		System.out.println(String.format("Solution '%s' cleaned", this.name));
+		cleanedSolutionsIntegers.add(this.name);
 	}
 
 }

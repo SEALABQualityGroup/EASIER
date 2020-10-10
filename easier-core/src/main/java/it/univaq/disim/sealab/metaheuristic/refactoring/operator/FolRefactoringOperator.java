@@ -10,14 +10,14 @@ public class FolRefactoringOperator extends FOLSpecificationImpl implements Refa
 	
 	private List<RefactoringOperator> listRefactoringOperators = new ArrayList<>();
 
-	@Override
-	public boolean evaluateOperator() {
-		for(RefactoringOperator op : listRefactoringOperators) {
-			if(!op.evaluateOperator())
-				return false; //returns false when the first false is found
-		}
-		return true;
-	}
+//	@Override
+//	public boolean evaluateOperator(Object o) {
+////		for(RefactoringOperator op : listRefactoringOperators) {
+////			if(!op.evaluateOperator())
+////				return false; //returns false when the first false is found
+////		}
+//		return true;
+//	}
 	
 	public void addOperator(RefactoringOperator op) {
 		listRefactoringOperators.add(op);

@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
@@ -177,27 +178,29 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
-
+		executor.clearMemory();
+		executor = null;
 	}
 
 	@Override
 	public void createPreCondition() {
-		PreCondition preCondition = solution.getManager().createPreCondition();
+		PreCondition preCondition = solution.getController().getManager().createPreCondition();
 
-		FOLSpecification specification = solution.getManager()
+		FOLSpecification specification = solution.getController().getManager()
 				.createFOLSpectification("MvOperationToNCToNNPreCondition");
 
-		ExistsOperator existsOpInOperations = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
-				getAllOpsMVP());
+		ExistsOperator existsOpInOperations = solution.getController().getManager()
+				.createExistsInCollectionOperator(getOpToMoveSVP(), getAllOpsMVP());
 
-		ExistsOperator existsTargetInComponents = solution.getManager()
+		ExistsOperator existsTargetInComponents = solution.getController().getManager()
 				.createExistsInCollectionOperator(getTargetCompSVP(), getAllCompsMVP());
-		ExistsOperator existsOpInOpsOfTarget = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
-				getAllTargetCompOpsMVP());
+		ExistsOperator existsOpInOpsOfTarget = solution.getController().getManager()
+				.createExistsInCollectionOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());
 
-		NotOperator notExistsOpInOpsOfTarget = solution.getManager().createNotOperator(existsOpInOpsOfTarget);
+		NotOperator notExistsOpInOpsOfTarget = solution.getController().getManager()
+				.createNotOperator(existsOpInOpsOfTarget);
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 		andRoot.getArguments().add(existsOpInOperations);
 		andRoot.getArguments().add(existsTargetInComponents);
 		andRoot.getArguments().add(notExistsOpInOpsOfTarget);
@@ -209,18 +212,18 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	@Override
 	public void createPostCondition() {
-		PostCondition postCondition = solution.getManager().createPostCondition();
-		FOLSpecification specification = solution.getManager()
+		PostCondition postCondition = solution.getController().getManager().createPostCondition();
+		FOLSpecification specification = solution.getController().getManager()
 				.createFOLSpectification("MvOperationToNCToNNPostCondition");
 
-//		ExistsOperator existsCompInComponents = solution.getManager().createExistsInCollectionOperator(getTargetCompSVP(),
+//		ExistsOperator existsCompInComponents = solution.getController().getManager().createExistsInCollectionOperator(getTargetCompSVP(),
 //				getAllOpsMVP());
-		ExistsOperator existsTargetInComponents = solution.getManager()
+		ExistsOperator existsTargetInComponents = solution.getController().getManager()
 				.createExistsInCollectionOperator(getTargetCompSVP(), getAllCompsMVP());
-		ExistsOperator existsOpInOpsOfTarget = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
-				getAllTargetCompOpsMVP());
+		ExistsOperator existsOpInOpsOfTarget = solution.getController().getManager()
+				.createExistsInCollectionOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 //		andRoot.getArguments().add(existsOpInOperations);
 		andRoot.getArguments().add(existsTargetInComponents);
 		andRoot.getArguments().add(existsOpInOpsOfTarget);
@@ -235,29 +238,24 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	public void setParameters() {
 		List<Parameter> moveOpParams = new ArrayList<>();
 
-		setOpToMoveSVP(solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getOperationQuery(getUmlOpToMove())));
+		setOpToMoveSVP(solution.getController().getManager()
+				.createSingleValueParameter(UMLOclStringManager.getInstance().getOperationQuery(getUmlOpToMove())));
 		moveOpParams.add(getOpToMoveSVP());
 
-		setTargetCompSVP(solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getComponentQuery(getUmlTargetComp())));
+		setTargetCompSVP(solution.getController().getManager()
+				.createSingleValueParameter(UMLOclStringManager.getInstance().getComponentQuery(getUmlTargetComp())));
 		moveOpParams.add(getTargetCompSVP());
 
-		setAllOpsMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllOperationsQuery()));
+		setAllOpsMVP(solution.getController().getManager()
+				.createMultipleValuedParameter(UMLOclStringManager.getInstance().getAllOperationsQuery()));
 		moveOpParams.add(getAllOpsMVP());
 
-		setAllCompsMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllComponentsQuery()));
+		setAllCompsMVP(solution.getController().getManager()
+				.createMultipleValuedParameter(UMLOclStringManager.getInstance().getAllComponentsQuery()));
 		moveOpParams.add(getAllCompsMVP());
 
-		setAllTargetCompOpsMVP(solution.getManager().createMultipleValuedParameter(
-				(((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getOperationsOfQuery(getUmlTargetComp()))));
+		setAllTargetCompOpsMVP(solution.getController().getManager().createMultipleValuedParameter(
+				UMLOclStringManager.getInstance().getOperationsOfQuery(getUmlTargetComp())));
 		moveOpParams.add(getAllTargetCompOpsMVP());
 
 		getParameters().addAll(moveOpParams);
@@ -310,6 +308,13 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 					+ umlTargetNode.getName() + " and Component " + umlTargetComp.getName());
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void freeMemory() {
+		parameters.clear();
+		pre = null;
+		post = null;
 	}
 
 	public String toString() {

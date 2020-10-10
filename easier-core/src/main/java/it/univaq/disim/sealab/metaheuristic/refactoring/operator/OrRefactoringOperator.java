@@ -74,11 +74,4 @@ public class OrRefactoringOperator extends OrOperatorImpl implements Refactoring
 		}
 		return false;
 	}
-
-	@Override
-	public boolean evaluateOperator() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }

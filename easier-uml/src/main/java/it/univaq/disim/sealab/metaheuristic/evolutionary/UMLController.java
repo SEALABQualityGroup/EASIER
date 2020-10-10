@@ -1,10 +1,5 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.FileUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
@@ -40,13 +34,10 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentB
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAII;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.MetamodelManager;
@@ -82,10 +73,11 @@ public class UMLController implements Controller {
 	private final String reportFilePath = "reportFailedSolution.csv";
 
 	public UMLController() {
-		manager = new UMLManager(new UMLMetamodelManager(this));
-		manager.setController(this);
+		metamodelManager = new UMLMetamodelManager();
+		manager = new UMLManager();
+//		manager.setController(this);
 		// perfQuality = new PerformanceQualityEvaluator(manager.getOclManager());
-		metamodelManager = manager.getMetamodelManager();
+//		metamodelManager = manager.getMetamodelManager();
 	}
 
 	public UMLController(final Configurator config) {
@@ -298,33 +290,23 @@ public class UMLController implements Controller {
 
 	}
 
-	private synchronized void saveParetoSolution(List<RSolution> paretoPop) {
-//		it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(paretoPop);
-//		for (RSolution solution : paretoPop) {
-//			final File srcDir = new File(solution.getMmaemiliaFolderPath());
-//
-//			final File destDir = Paths
-//					.get(configurator.getOutputFolder().toString(), "pareto", String.valueOf(solution.getName()))
-//					.toFile();
-//			// File destDir = new File(getParetoFolder() + solution.getName());
-//			try {
-//				FileUtils.copyDirectory(srcDir, destDir);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-		// TODO
-	}
+	/*
+	 * private synchronized void saveParetoSolution(List<RSolution> paretoPop) { //
+	 * it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(
+	 * paretoPop); // for (RSolution solution : paretoPop) { // final File srcDir =
+	 * new File(solution.getMmaemiliaFolderPath()); // // final File destDir = Paths
+	 * // .get(configurator.getOutputFolder().toString(), "pareto",
+	 * String.valueOf(solution.getName())) // .toFile(); // // File destDir = new
+	 * File(getParetoFolder() + solution.getName()); // try { //
+	 * FileUtils.copyDirectory(srcDir, destDir); // } catch (IOException e) { //
+	 * e.printStackTrace(); // } // } // TODO }
+	 */
 
-	private void cleanTmpFiles() {
-		if (cleaningTmp) {
-			try {
-				FileUtils.cleanDirectory(configurator.getTmpFolder().toFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	/*
+	 * private void cleanTmpFiles() { if (cleaningTmp) { try {
+	 * FileUtils.cleanDirectory(configurator.getTmpFolder().toFile()); } catch
+	 * (IOException e) { e.printStackTrace(); } } }
+	 */
 
 	public UMLPerformanceQualityEvaluator getPerfQuality() {
 //		return new UMLPerformanceQualityEvaluator(manager.getOclManager());
@@ -355,23 +337,15 @@ public class UMLController implements Controller {
 	private void updateSourceModel(Path source) {
 	}
 
-	private class FileTypesFilter implements FileFilter {
-		String[] types;
-
-		FileTypesFilter(String[] types) {
-			this.types = types;
-		}
-
-		public boolean accept(File f) {
-			if (f.isDirectory())
-				return true;
-			for (String type : types) {
-				if (f.getName().endsWith(type))
-					return true;
-			}
-			return false;
-		}
-	}
+	/*
+	 * private class FileTypesFilter implements FileFilter { String[] types;
+	 * 
+	 * FileTypesFilter(String[] types) { this.types = types; }
+	 * 
+	 * public boolean accept(File f) { if (f.isDirectory()) return true; for (String
+	 * type : types) { if (f.getName().endsWith(type)) return true; } return false;
+	 * } }
+	 */
 
 	public void setFailureRatesPropertiesFile(String failureRatesPropertiesFile) {
 	}

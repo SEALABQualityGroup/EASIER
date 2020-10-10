@@ -47,29 +47,29 @@ import metamodel.mmaemilia.OutputInteraction;
 
 public abstract class Manager {
 
-	protected String modelUri = null;
+//	protected String modelUri = null;
 
-	protected MetamodelManager metamodelManager;
+//	protected MetamodelManager metamodelManager;
 
-	protected OclManager oclManager;
+//	protected OclManager oclManager;
 
-	protected OclStringManager oclStringManager;
+//	protected OclStringManager oclStringManager;
 
-	protected Controller controller;
+//	protected Controller controller;
 
 	public static int REFACTORING_COUNTER = 0;
 
-	public void init(Path modelUri) {
-		metamodelManager.init(modelUri);
-	}
+//	public void init(Path modelUri) {
+//		metamodelManager.init(modelUri);
+//	}
 
 	public Manager() {
 	}
 
-	public Manager(MetamodelManager mmManager) {
-		setMetamodelManager(mmManager);
-		setOclManager(getMetamodelManager().getOclManager());
-	}
+//	public Manager(MetamodelManager mmManager) {
+////		setMetamodelManager(mmManager);
+////		setOclManager(getMetamodelManager().getOclManager());
+//	}
 
 	public static org.eclipse.emf.common.util.URI string2Uri(String stringToConvert) {
 		URI uri = URI.createURI(stringToConvert);
@@ -81,13 +81,13 @@ public abstract class Manager {
 		return fileUri;
 	}
 
-	public Object getModel() {
-		return metamodelManager.getModel();
-	}
-
-	public void setModel(EObject model) {
-		metamodelManager.setModel(model);
-	}
+//	public Object getModel() {
+//		return metamodelManager.getModel();
+//	}
+//
+//	public void setModel(EObject model) {
+//		metamodelManager.setModel(model);
+//	}
 
 	public static double calculateCost(Refactoring r) {
 		double sum = 0.0;
@@ -220,14 +220,14 @@ public abstract class Manager {
 //		return app;
 //	}
 
-	public OclManager getOclManager() {
-//		return oclManager;
-		return getMetamodelManager().getOclManager();
-	}
+	/*
+	 * public OclManager getOclManager() { // return oclManager; return
+	 * getMetamodelManager().getOclManager(); }
+	 */
 
-	public void setOclManager(OclManager oclMan) {
-		oclManager = oclMan;
-	}
+//	public void setOclManager(OclManager oclMan) {
+//		oclManager = oclMan;
+//	}
 
 //	public boolean evaluateOperator(ForAllOperator operator, Object contextualElement) throws ParserException {
 //		List<Object> coll = new ArrayList<Object>();
@@ -898,7 +898,7 @@ public abstract class Manager {
 	public ForAllOperator createForAllOperator(MultipleValuedParameter collection) {
 //		ForAllOperator forAll = LogicalSpecificationFactory.eINSTANCE.createForAllOperator();
 //		forAll.setCollection(collection);
-		return new ForallRefactoringOperator(collection, getOclManager());
+		return new ForallRefactoringOperator(collection);
 //		return forAll;
 	}
 
@@ -906,14 +906,14 @@ public abstract class Manager {
 //		ExistsOperator existsOperator = LogicalSpecificationFactory.eINSTANCE.createExistsOperator();
 //		existsOperator.setElement(parameter);
 //		existsOperator.setCollection(collection);
-		return new ExistsInCollectionRefactoringOperator(parameter, collection, getOclManager());
+		return new ExistsInCollectionRefactoringOperator(parameter, collection);
 //		return existsOperator;
 	}
 
 	public ExistsOperator createExistsOperator(MultipleValuedParameter collection) {
 //		ExistsOperator existsOperator = LogicalSpecificationFactory.eINSTANCE.createExistsOperator();
 //		existsOperator.setCollection(collection);
-		return new ExistsRefactoringOperator(collection, getOclManager());
+		return new ExistsRefactoringOperator(collection);
 //		return existsOperator;
 	}
 
@@ -948,33 +948,31 @@ public abstract class Manager {
 		return LogicalSpecificationFactory.eINSTANCE.createPostCondition();
 	}
 
-	public MetamodelManager getMetamodelManager() {
-		return metamodelManager;
-	}
+	/*
+	 * public MetamodelManager getMetamodelManager() { return metamodelManager; }
+	 * 
+	 * public void setMetamodelManager(MetamodelManager mmManager) {
+	 * metamodelManager = mmManager; }
+	 */
 
-	public void setMetamodelManager(MetamodelManager mmManager) {
-		metamodelManager = mmManager;
-	}
+	/*
+	 * public String getModelFileExtension() { return
+	 * metamodelManager.getModelFileExtension(); }
+	 */
 
-	public String getModelFileExtension() {
-		return metamodelManager.getModelFileExtension();
-	}
-
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller controller) {
-		this.controller = controller;
-	}
-
-	public OclStringManager getOclStringManager() {
-		return oclStringManager;
-	}
-
-	public void setOclStringManager(OclStringManager oclStringManager) {
-		this.oclStringManager = oclStringManager;
-	}
+	/*
+	 * public Controller getController() { return controller; }
+	 * 
+	 * public void setController(Controller controller) { this.controller =
+	 * controller; }
+	 */
+//	public OclStringManager getOclStringManager() {
+//		return oclStringManager;
+//	}
+//
+//	public void setOclStringManager(OclStringManager oclStringManager) {
+//		this.oclStringManager = oclStringManager;
+//	}
 
 	public static int getREFACTORING_COUNTER() {
 		return REFACTORING_COUNTER;

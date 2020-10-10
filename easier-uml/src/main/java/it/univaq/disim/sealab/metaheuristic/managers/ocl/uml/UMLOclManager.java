@@ -39,7 +39,7 @@ import metamodel.mmaemilia.mmaemiliaPackage;
 public class UMLOclManager extends OclManager {
 
 	public UMLOclManager(final MetamodelManager ma) {
-		this.MM_manager = ma;
+//		this.MM_manager = ma;
 	}
 
 	/*
@@ -49,46 +49,46 @@ public class UMLOclManager extends OclManager {
 	 * TODO Auto-generated catch block e.printStackTrace(); } return hashSetQuery; }
 	 */
 
-	@SuppressWarnings({ "unchecked", "static-access" })
-	protected HashSet<Object> getQueryResult(final String query) {
-		Object queryResult = null;
-		HashSet<Object> hashSet = null;
-		hashSet = new HashSet<Object>();
-		queryResult = evaluateOCL(query, MM_manager.getModel());
-		if (queryResult instanceof Integer) {
-			int intQueryResult = Integer.parseInt(queryResult.toString());
-			hashSet.add(intQueryResult);
-		} else if (queryResult instanceof Double) {
-			double doubleQueryResult = Double.parseDouble(queryResult.toString());
-			hashSet.add(doubleQueryResult);
-		} else if (queryResult instanceof Model)
-			hashSet.add((Model) queryResult);
-		else if (queryResult instanceof Package)
-			hashSet.add((Package) queryResult);
-		else if (queryResult instanceof Component)
-			hashSet.add((Component) queryResult);
-		else if (queryResult instanceof Operation)
-			hashSet.add((Operation) queryResult);
-		else if (queryResult instanceof Node)
-			hashSet.add((Node) queryResult);
-		else if (queryResult instanceof HashSet<?>)
-			hashSet = (HashSet<Object>) queryResult;
-		else if (queryResult instanceof ArrayList<?>)
-			hashSet.addAll((ArrayList<Object>) queryResult);
-		return hashSet;
-	}
+//	@SuppressWarnings({ "unchecked", "static-access" })
+//	protected HashSet<Object> getQueryResult(final String query) {
+//		Object queryResult = null;
+//		HashSet<Object> hashSet = null;
+//		hashSet = new HashSet<Object>();
+//		queryResult = evaluateOCL(query, MM_manager.getModel());
+//		if (queryResult instanceof Integer) {
+//			int intQueryResult = Integer.parseInt(queryResult.toString());
+//			hashSet.add(intQueryResult);
+//		} else if (queryResult instanceof Double) {
+//			double doubleQueryResult = Double.parseDouble(queryResult.toString());
+//			hashSet.add(doubleQueryResult);
+//		} else if (queryResult instanceof Model)
+//			hashSet.add((Model) queryResult);
+//		else if (queryResult instanceof Package)
+//			hashSet.add((Package) queryResult);
+//		else if (queryResult instanceof Component)
+//			hashSet.add((Component) queryResult);
+//		else if (queryResult instanceof Operation)
+//			hashSet.add((Operation) queryResult);
+//		else if (queryResult instanceof Node)
+//			hashSet.add((Node) queryResult);
+//		else if (queryResult instanceof HashSet<?>)
+//			hashSet = (HashSet<Object>) queryResult;
+//		else if (queryResult instanceof ArrayList<?>)
+//			hashSet.addAll((ArrayList<Object>) queryResult);
+//		return hashSet;
+//	}
 
-	public static OCLExpression<EClassifier> getOCLExpression(String query) throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, EParameter, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		// set the OCL context classifier
-		helper.setContext(UMLPackage.Literals.MODEL);
-		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
-		return oclExpression;
-	}
+//	public static OCLExpression<EClassifier> getOCLExpression(String query) throws ParserException {
+//		// create an OCL instance for Ecore
+//		OCL<?, EClassifier, ?, ?, ?, EParameter, ?, ?, ?, Constraint, EClass, EObject> ocl;
+//		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+//		// create an OCL helper object
+//		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
+//		// set the OCL context classifier
+//		helper.setContext(UMLPackage.Literals.MODEL);
+//		OCLExpression<EClassifier> oclExpression = helper.createQuery(query);
+//		return oclExpression;
+//	}
 
 	public static Query<EClassifier, EClass, EObject> getOCLQuery(String query) throws ParserException {
 		// create an OCL instance for Ecore
@@ -109,43 +109,47 @@ public class UMLOclManager extends OclManager {
 	 * @see http://stackoverflow.com/questions/20774594/programmatically-execute-an-ocl-query-on-a-uml-model
 	 * 
 	 */
-	//TODO check if it can be moved to the super class
-	public Object evaluateOCL(String query, Object contextualElement) { // throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, MM_manager.getResource());
+//	//TODO check if it can be moved to the super class
+//	public Object evaluateOCL(String query, EObject contextualElement) { // throws ParserException {
+//		// create an OCL instance for Ecore
+//		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
+//		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, contextualElement.eResource());
+//
+//		// create an OCL helper object
+//		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
+//
+//		
+//		//TODO check
+//		helper.setContext(contextualElement.eClass());
+//
+//		// helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_());
+//		OCLExpression<EClassifier> oclExpression;
+//		try {
+//			oclExpression = helper.createQuery(query);
+////			System.out.println("Evaluating: " + query);
+//			Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
+//			Object result = oclQuery.evaluate(contextualElement);
+//			if(result instanceof OCLStandardLibrary<?>) {
+//				System.err.println("EEROR invalid query");
+//			}
+////			System.out.println("DONE");
+//			oclQuery = null;
+//			oclExpression = null;
+//			helper = null;
+//			ocl = null;
+//			return result;
+//		} catch (ParserException e) {
+//			System.err.println("ContextualElement --> " + contextualElement.toString());
+//			System.err.println("Query --> " + query);
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-
-		
-		//TODO check
-		helper.setContext(((EObject)contextualElement).eClass());
-
-		// helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_());
-		OCLExpression<EClassifier> oclExpression;
-		try {
-			oclExpression = helper.createQuery(query);
-//			System.out.println("Evaluating: " + query);
-			Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-			Object result = oclQuery.evaluate(contextualElement);
-			if(result instanceof OCLStandardLibrary<?>) {
-				System.err.println("EEROR invalid query");
-			}
-//			System.out.println("DONE");
-			return result;
-		} catch (ParserException e) {
-			System.err.println("ContextualElement --> " + contextualElement.toString());
-			System.err.println("Query --> " + query);
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	protected HashSet<?> getQueryResult(String query, EObject model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	protected HashSet<?> getQueryResult(String query, EObject model) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }

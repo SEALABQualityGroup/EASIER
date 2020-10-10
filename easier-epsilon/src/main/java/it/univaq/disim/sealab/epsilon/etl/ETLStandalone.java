@@ -86,6 +86,12 @@ public class ETLStandalone extends EpsilonStandalone {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void clearMemory() {
+		super.clearMemory();
+		((EtlModule)this.module).getTransformationRules().clear();
+	}
 
 
 }
