@@ -24,15 +24,15 @@ public abstract class RSequence {
 	protected double perfQuality;
 	protected double reliability;
 
-	protected Manager manager;
-	protected MetamodelManager metamodelManager;
+//	protected Manager manager;
+//	protected MetamodelManager metamodelManager;
 	protected Controller controller;
 
 	public RSequence(RSolution solution) {
 		this.solution = solution;
-		manager = this.solution.getManager();
+//		manager = this.solution.getManager();
 		controller = this.solution.getController();
-		metamodelManager = manager.getMetamodelManager();
+//		metamodelManager = manager.getMetamodelManager();
 		this.refactoring = new Refactoring(getSolution());
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
 	}
@@ -43,9 +43,9 @@ public abstract class RSequence {
 		this.refactoring = new Refactoring(solution);
 		this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
 
-		this.manager = solution.getManager();
+//		this.manager = solution.getManager();
 		this.controller = solution.getController();
-		this.metamodelManager = manager.getMetamodelManager();
+//		this.metamodelManager = manager.getMetamodelManager();
 
 		int num_failures = 0;
 
@@ -84,9 +84,9 @@ public abstract class RSequence {
 		this.solution = solution;
 		this.refactoring = seq.getRefactoring().clone(solution);
 
-		manager = this.solution.getManager();
+//		manager = this.solution.getManager();
 		controller = this.solution.getController();
-		metamodelManager = manager.getMetamodelManager();
+//		metamodelManager = manager.getMetamodelManager();
 
 	}
 

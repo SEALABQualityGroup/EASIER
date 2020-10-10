@@ -149,20 +149,21 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
-		
+
 		executor = null;
 	}
 
 	@Override
 	public void createPreCondition() {
-		PreCondition preCondition = solution.getManager().createPreCondition();
+		PreCondition preCondition = solution.getController().getManager().createPreCondition();
 
-		FOLSpecification specification = solution.getManager().createFOLSpectification("MvComponentToNNPreCondition");
+		FOLSpecification specification = solution.getController().getManager()
+				.createFOLSpectification("MvComponentToNNPreCondition");
 
-		ExistsOperator existsTargetInComponents = solution.getManager()
+		ExistsOperator existsTargetInComponents = solution.getController().getManager()
 				.createExistsInCollectionOperator(getCompToMoveSVP(), getAllCompsMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 		andRoot.getArguments().add(existsTargetInComponents);
 
 		specification.setRootOperator(andRoot);
@@ -172,17 +173,19 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	@Override
 	public void createPostCondition() {
-		PostCondition postCondition = solution.getManager().createPostCondition();
-		FOLSpecification specification = solution.getManager().createFOLSpectification("MvComponentToNNPostCondition");
+		PostCondition postCondition = solution.getController().getManager().createPostCondition();
+		FOLSpecification specification = solution.getController().getManager()
+				.createFOLSpectification("MvComponentToNNPostCondition");
 
-		ExistsOperator existsTargetInComponents = solution.getManager()
+		ExistsOperator existsTargetInComponents = solution.getController().getManager()
 				.createExistsInCollectionOperator(getCompToMoveSVP(), getAllCompsMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 		andRoot.getArguments().add(existsTargetInComponents);
 
 		// Verifies whether target nodes are created in the model
-		ExistsOperator existsTargetNodes = solution.getManager().createExistsOperator(getTargetNodesMVP());
+		ExistsOperator existsTargetNodes = solution.getController().getManager()
+				.createExistsOperator(getTargetNodesMVP());
 		andRoot.getArguments().add(existsTargetNodes);
 
 		specification.setRootOperator(andRoot);
@@ -195,9 +198,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	public void setParameters() {
 		List<Parameter> params = new ArrayList<>();
 
-		setCompToMoveSVP(solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getComponentQuery(umlCompToMove)));
+		setCompToMoveSVP(solution.getController().getManager()
+				.createSingleValueParameter(UMLOclStringManager.getInstance().getComponentQuery(umlCompToMove)));
 		params.add(getCompToMoveSVP());
 
 //		setAllOpsMVP(solution.getManager().createMultipleValuedParameter(
@@ -205,14 +207,12 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 //						.getAllOperationsQuery()));
 //		params.add(getAllOpsMVP());
 
-		setAllCompsMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllComponentsQuery()));
+		setAllCompsMVP(solution.getController().getManager()
+				.createMultipleValuedParameter(UMLOclStringManager.getInstance().getAllComponentsQuery()));
 
 		// Sets the target node
-		setTargetNodesMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getNodesQuery(umlTargetNodes)));
+		setTargetNodesMVP(solution.getController().getManager()
+				.createMultipleValuedParameter(UMLOclStringManager.getInstance().getNodesQuery(umlTargetNodes)));
 
 		params.add(getAllCompsMVP());
 
@@ -268,7 +268,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void freeMemory() {
 		parameters.clear();

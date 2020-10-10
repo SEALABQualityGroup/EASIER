@@ -13,7 +13,7 @@ import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 @SuppressWarnings("serial")
 public abstract class RProblem<S extends RSolution> extends AbstractGenericProblem<S> {
 
-	protected final EObject model;
+//	protected final EObject model;
 	protected int length_of_refactorings;
 	protected int number_of_actions;
 	protected int allowed_failures;
@@ -28,7 +28,7 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	protected final int FOURTH_OBJ = 3;
 	
 	protected List<RSolution> solutions = new ArrayList<>();
-	private Manager manager;
+//	private Manager manager;
 	private Controller controller;
 	
 	protected Path sourceFolderPath; 
@@ -50,13 +50,13 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 
-		this.manager = controller.getManager();
+//		this.manager = controller.getManager();
 		
 		this.sourceFolderPath = srcFolderPath;
 		this.sourceModelPath = srcModelPath;
 		
 		// no longer used
-		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
+//		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
 		this.length_of_refactorings = desired_length;
 		this.allowed_failures = allowedFailures;
@@ -64,9 +64,9 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	
 	}
 
-	public EObject getModel() {
-		return model;
-	}
+//	public EObject getModel() {
+//		return model;
+//	}
 	
 	public abstract Path getSourceModelPath();
 
@@ -83,13 +83,13 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		super.setName(n);
 	}
 
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
+//	public Manager getManager() {
+//		return manager;
+//	}
+//
+//	public void setManager(Manager manager) {
+//		this.manager = manager;
+//	}
 
 	public Controller getController() {
 		return controller;

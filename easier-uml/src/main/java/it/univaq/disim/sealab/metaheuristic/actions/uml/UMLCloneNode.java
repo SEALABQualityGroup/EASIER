@@ -167,19 +167,20 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
-		 executor = null;
+		executor = null;
 	}
 
 	@Override
 	public void createPreCondition() {
-		PreCondition preCondition = solution.getManager().createPreCondition();
+		PreCondition preCondition = solution.getController().getManager().createPreCondition();
 
-		FOLSpecification specification = solution.getManager().createFOLSpectification("CloneNodePreCondition");
+		FOLSpecification specification = solution.getController().getManager()
+				.createFOLSpectification("CloneNodePreCondition");
 
-		ExistsOperator existsTargetInNodes = solution.getManager().createExistsInCollectionOperator(umlNodeToCloneSVP,
-				getAllNodesMVP());
+		ExistsOperator existsTargetInNodes = solution.getController().getManager()
+				.createExistsInCollectionOperator(umlNodeToCloneSVP, getAllNodesMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 		andRoot.getArguments().add(existsTargetInNodes);
 
 		specification.setRootOperator(andRoot);
@@ -189,16 +190,17 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	@Override
 	public void createPostCondition() {
-		PostCondition postCondition = solution.getManager().createPostCondition();
-		FOLSpecification specification = solution.getManager().createFOLSpectification("CloneNodePostCondition");
+		PostCondition postCondition = solution.getController().getManager().createPostCondition();
+		FOLSpecification specification = solution.getController().getManager()
+				.createFOLSpectification("CloneNodePostCondition");
 
-		ExistsOperator existsTargetInNodes = solution.getManager().createExistsInCollectionOperator(umlNodeToCloneSVP,
-				getAllNodesMVP());
+		ExistsOperator existsTargetInNodes = solution.getController().getManager()
+				.createExistsInCollectionOperator(umlNodeToCloneSVP, getAllNodesMVP());
 
-		ExistsOperator existsClonedInNodes = solution.getManager().createExistsInCollectionOperator(umlClonedNodeSVP,
-				getAllNodesMVP());
+		ExistsOperator existsClonedInNodes = solution.getController().getManager()
+				.createExistsInCollectionOperator(umlClonedNodeSVP, getAllNodesMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = solution.getController().getManager().createAndOperator();
 		andRoot.getArguments().add(existsTargetInNodes);
 		andRoot.getArguments().add(existsClonedInNodes);
 
@@ -213,20 +215,17 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		List<Parameter> params = new ArrayList<>();
 
 		// checks wheter the random node exists within the model
-		umlNodeToCloneSVP = solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getNodeQuery(targetObject));
+		umlNodeToCloneSVP = solution.getController().getManager()
+				.createSingleValueParameter(UMLOclStringManager.getInstance().getNodeQuery(targetObject));
 
-		umlClonedNodeSVP = solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getNodeQuery(umlClonedNode));
+		umlClonedNodeSVP = solution.getController().getManager()
+				.createSingleValueParameter(UMLOclStringManager.getInstance().getNodeQuery(umlClonedNode));
 
 		params.add(umlNodeToCloneSVP);
 		params.add(umlClonedNodeSVP);
 
-		setAllNodesMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllNodesQuery()));
+		setAllNodesMVP(solution.getController().getManager()
+				.createMultipleValuedParameter(UMLOclStringManager.getInstance().getAllNodesQuery()));
 
 		params.add(getAllNodesMVP());
 		getParameters().addAll(params);
@@ -267,7 +266,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 //		
 //		if(!this.targetObject.getName().contains("addByEASIER_addByEASIER")) //it is a safety check. 
 //			return false;
-			return true;
+		return true;
 	}
 
 	public Node getTargetObject() {
@@ -294,7 +293,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void freeMemory() {
 		parameters.clear();

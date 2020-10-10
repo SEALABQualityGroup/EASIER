@@ -12,6 +12,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMvComponentToNN;
 import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMvOperationToComp;
 import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMvOperationToNCToNN;
+import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.Action;
 import logicalSpecification.FOLSpecification;
@@ -51,7 +52,7 @@ public class UMLRSequence extends RSequence {
 
 		RefactoringAction candidate;
 		do {
-			candidate = manager.getMetamodelManager().getRandomAction(n, this);
+			candidate = UMLMetamodelManager.getRandomAction(n, this);
 		} while (candidate == null);
 
 		temporary_ref.getActions().add(candidate);
@@ -87,11 +88,11 @@ public class UMLRSequence extends RSequence {
 			}
 		}
 
-		FOLSpecification app = manager.calculatePreCondition(tr).getConditionFormula();
+		FOLSpecification app = controller.getManager().calculatePreCondition(tr).getConditionFormula();
 		//System.out.println("Precondition of a Sol# " + solution.name + " refactoring ");
 		boolean fol = false;
 		try {
-			fol = manager.evaluateFOL(app, ((UMLRSolution) this.getSolution()).getDirtyModel());
+			fol = controller.getManager().evaluateFOL(app, ((UMLRSolution) this.getSolution()).getDirtyModel());
 		} catch (ParserException e) {
 			EasierLogger.logger_.info("Precondition of Solution # " + this.getSolution().getName()
 					+ " has generated a Parser Exception!");
@@ -131,7 +132,7 @@ public class UMLRSequence extends RSequence {
 
 		RefactoringAction candidate;
 		do {
-			candidate = metamodelManager.getRandomAction(n, this);
+			candidate = UMLMetamodelManager.getRandomAction(n, this);
 		} while (candidate == null);
 
 		temporary_ref.getActions().set(position, candidate);

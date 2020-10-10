@@ -30,7 +30,7 @@ import metamodel.mmaemilia.mmaemiliaPackage;
 public class OclAemiliaManager extends OclManager {
 
 	public OclAemiliaManager(AemiliaController ctrl) {
-		controller = ctrl;
+//		controller = ctrl;
 		// manager = controller.getManager();
 	}
 
@@ -45,36 +45,36 @@ public class OclAemiliaManager extends OclManager {
 //		return hashSetQuery;
 //	}
 
-	@Override
-	protected HashSet<EObject> getQueryResult(String query, EObject model) {
-		Object queryResult = null;
-		HashSet<EObject> hashSet = null;
-//		try {
-			hashSet = new HashSet<EObject>();
-			queryResult = evaluateOCL(query, model);
-			if (queryResult instanceof HashSet && !((HashSet<EObject>) queryResult).isEmpty()) {
-				Iterator<EObject> iterator = ((HashSet<EObject>) queryResult).iterator();
-				// check values
-				while (iterator.hasNext()) {
-					EObject res = iterator.next();
-					if (res instanceof ArchiElemInstance) {
-						hashSet.add((ArchiElemInstance) res);
-					}
-				}
-			} else if (queryResult instanceof ArrayList) {
-				hashSet.addAll((Collection<? extends EObject>) queryResult);
-			} else if (queryResult instanceof ArchiElemInstance) {
-				hashSet.add((ArchiElemInstance) queryResult);
-			}
-//		} catch (ParserException e) {
-//			// TODO Auto-generated catch block
-//			System.err.println("Query -->" + query);
-//			e.printStackTrace();
+//	@Override
+//	protected HashSet<EObject> getQueryResult(String query, EObject model) {
+//		Object queryResult = null;
+//		HashSet<EObject> hashSet = null;
+////		try {
+//		hashSet = new HashSet<EObject>();
+//		queryResult = evaluateOCL(query, model);
+//		if (queryResult instanceof HashSet && !((HashSet<EObject>) queryResult).isEmpty()) {
+//			Iterator<EObject> iterator = ((HashSet<EObject>) queryResult).iterator();
+//			// check values
+//			while (iterator.hasNext()) {
+//				EObject res = iterator.next();
+//				if (res instanceof ArchiElemInstance) {
+//					hashSet.add((ArchiElemInstance) res);
+//				}
+//			}
+//		} else if (queryResult instanceof ArrayList) {
+//			hashSet.addAll((Collection<? extends EObject>) queryResult);
+//		} else if (queryResult instanceof ArchiElemInstance) {
+//			hashSet.add((ArchiElemInstance) queryResult);
 //		}
-		return hashSet;
-	}
+////		} catch (ParserException e) {
+////			// TODO Auto-generated catch block
+////			System.err.println("Query -->" + query);
+////			e.printStackTrace();
+////		}
+//		return hashSet;
+//	}
 
-	//TODO it is no longer used
+	// TODO it is no longer used
 //	@Deprecated
 //	public static OCLExpression<EClassifier> getOCLExpression(String query) throws ParserException {
 //		// create an OCL instance for Ecore
@@ -88,7 +88,7 @@ public class OclAemiliaManager extends OclManager {
 //		return oclExpression;
 //	}
 
-	//TODO it is no longer used.
+	// TODO it is no longer used.
 //	@Deprecated
 //	public static Query<EClassifier, EClass, EObject> getOCLQuery(String query) throws ParserException {
 //		// create an OCL instance for Ecore
@@ -109,37 +109,32 @@ public class OclAemiliaManager extends OclManager {
 	 * @see http://stackoverflow.com/questions/20774594/programmatically-execute-an-ocl-query-on-a-uml-model
 	 * 
 	 */
-	public Object evaluateOCL(String query, Object contextualElement) {//throws ParserException {
-		// create an OCL instance for Ecore
-		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
-		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+	/*
+	 * public Object evaluateOCL(String query, Object contextualElement) {//throws
+	 * ParserException { // create an OCL instance for Ecore OCL<?, EClassifier, ?,
+	 * ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl; ocl =
+	 * OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+	 * 
+	 * // create an OCL helper object OCLHelper<EClassifier, ?, ?, Constraint>
+	 * helper = ocl.createOCLHelper(); if (contextualElement instanceof
+	 * AEmiliaSpecification)
+	 * helper.setContext(mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION); else if
+	 * (contextualElement instanceof ArchiElemInstance)
+	 * helper.setContext(mmaemiliaPackage.Literals.ARCHI_ELEM_INSTANCE);
+	 * 
+	 * helper.setContext(((EObject)contextualElement).eClass());
+	 * 
+	 * // helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_()); //TODO check
+	 * when it throws a SemanticException OCLExpression<EClassifier> oclExpression;
+	 * try { oclExpression = helper.createQuery(query); Query<EClassifier, EClass,
+	 * EObject> oclQuery = ocl.createQuery(oclExpression); return
+	 * oclQuery.evaluate(contextualElement); } catch (ParserException e) { // TODO
+	 * Auto-generated catch block System.err.println("ContextualElement --> " +
+	 * contextualElement.toString()); System.err.println("Query --> " + query);
+	 * e.printStackTrace(); } return null; }
+	 */
 
-		// create an OCL helper object
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-		/*if (contextualElement instanceof AEmiliaSpecification)
-			helper.setContext(mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-		else if (contextualElement instanceof ArchiElemInstance)
-			helper.setContext(mmaemiliaPackage.Literals.ARCHI_ELEM_INSTANCE);*/
-		
-		helper.setContext(((EObject)contextualElement).eClass());
-
-		// helper.setInstanceContext(UMLPackage.eINSTANCE.getClass_());
-		//TODO check when it throws a SemanticException
-		OCLExpression<EClassifier> oclExpression;
-		try {
-			oclExpression = helper.createQuery(query);
-			Query<EClassifier, EClass, EObject> oclQuery = ocl.createQuery(oclExpression);
-			return oclQuery.evaluate(contextualElement);
-		} catch (ParserException e) {
-			// TODO Auto-generated catch block
-			System.err.println("ContextualElement --> " + contextualElement.toString());
-			System.err.println("Query --> " + query);
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	//TODO it is no longer used
+	// TODO it is no longer used
 //	@Deprecated
 //	public static List<?> evaluateOCL(String query, List<EObject> contextualElements) throws ParserException {
 //		// create an OCL instance for Ecore
@@ -157,7 +152,7 @@ public class OclAemiliaManager extends OclManager {
 //		return oclQuery.evaluate(contextualElements);
 //	}
 
-	//TODO it is no longer used
+	// TODO it is no longer used
 //	@Deprecated
 //	public static boolean checkOCL(String query, EObject contextualElement) throws ParserException {
 //		// create an OCL instance for Ecore
@@ -175,7 +170,7 @@ public class OclAemiliaManager extends OclManager {
 //		return oclQuery.check(contextualElement);
 //	}
 
-	//TODO it is no longer used
+	// TODO it is no longer used
 //	@Deprecated
 //	public static boolean checkOCL(String query, List<Object> contextualElements) throws ParserException {
 //		// create an OCL instance for Ecore
@@ -197,7 +192,7 @@ public class OclAemiliaManager extends OclManager {
 //		return oclQuery.check(contextualElements);
 //	}
 
-	//TODO is is no longer used
+	// TODO is is no longer used
 //	@Deprecated
 //	protected HashSet<Object> getQueryResult(String query, List<Object> contextualElements) {
 //		Object queryResult = null;
@@ -233,7 +228,7 @@ public class OclAemiliaManager extends OclManager {
 //		return hashSet;
 //	}
 
-	//TODO is no longer used
+	// TODO is no longer used
 //	@Override
 //	protected HashSet<?> getQueryResult(String query) {
 //		Object queryResult = null;

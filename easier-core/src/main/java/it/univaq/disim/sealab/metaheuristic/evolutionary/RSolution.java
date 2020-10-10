@@ -30,8 +30,8 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	protected boolean crossovered;
 	protected boolean mutated;
 	
-	protected ResourceSet resourceSet;
-	protected Manager manager;
+//	protected ResourceSet resourceSet;
+//	protected Manager manager;
 	protected Controller controller;
 	
 	protected EObject model;
@@ -151,21 +151,20 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return name;
 	}
 
-	public Manager getManager() {
-		return this.manager;
-	}
+//	public Manager getManager() {
+//		return this.manager;
+//	}
 
 	public Controller getController() {
 		return this.controller;
 	}
 
-	public ResourceSet getResourceSet() {
-		return resourceSet;
-	}
-
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
+	/*
+	 * public ResourceSet getResourceSet() { return resourceSet; }
+	 * 
+	 * public void setResourceSet(ResourceSet resourceSet) { this.resourceSet =
+	 * resourceSet; }
+	 */
 	
 	public static synchronized int getCounter() {
 		return SOLUTION_COUNTER++;
@@ -179,13 +178,15 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		return model;
 	}
 	
-	public List<Resource> getResources() {
-		return this.getResourceSet().getResources();
-	}
+	/*
+	 * public List<Resource> getResources() { return
+	 * this.getResourceSet().getResources(); }
+	 */
 	
-	public void save() {
-		manager.getMetamodelManager().save(this);
-	}
+	/*
+	 * public void save() { manager.getMetamodelManager().save(this); }
+	 */
+	public abstract void save(); 
 	
 	protected void resetParents() {
 		if (this.parents != null) {
