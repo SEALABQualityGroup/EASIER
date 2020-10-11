@@ -12,6 +12,7 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.EvlModule;
+import org.eclipse.epsilon.evl.execute.context.EvlContext;
 
 import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
@@ -90,6 +91,7 @@ public class EVLStandalone extends EpsilonStandalone {
 	public void clearMemory() {
 		super.clearMemory();
 		((EvlModule) this.getModule()).clearCache();
+		((EvlContext)this.getModule().getContext()).dispose();
 	}
 	
 

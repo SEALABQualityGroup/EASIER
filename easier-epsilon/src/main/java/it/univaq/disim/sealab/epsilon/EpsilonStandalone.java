@@ -240,7 +240,7 @@ public abstract class EpsilonStandalone {
 
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
+		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storedOnDisposal);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
 		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
 //		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());

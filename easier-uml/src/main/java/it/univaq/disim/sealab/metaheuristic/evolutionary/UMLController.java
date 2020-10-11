@@ -1,13 +1,22 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
@@ -28,6 +37,10 @@ import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
+import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
+import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
@@ -122,14 +135,14 @@ public class UMLController implements Controller {
 
 		// generates every needed files and updates the source model
 
-		updateSourceModel(path);
+		updateSourceModel(model.getModel());
 		sourceModels.add(model);
 //		}
 		metamodelManager.setSourceModels(sourceModels);
 		System.out.println("Setting up finished");
 		return this;
 	}
-	
+
 	public String getReportFileName() {
 		return reportFilePath;
 	}
@@ -290,6 +303,10 @@ public class UMLController implements Controller {
 
 	}
 
+	public Path getSourceModelAt(int i) {
+		return sourceModels.get(i).getModel();
+	}
+
 	/*
 	 * private synchronized void saveParetoSolution(List<RSolution> paretoPop) { //
 	 * it.univaq.disim.sealab.metaheuristic.utils.FileUtils.writeSolutionSetToCSV(
@@ -334,7 +351,84 @@ public class UMLController implements Controller {
 		this.manager = manager;
 	}
 
-	private void updateSourceModel(Path source) {
+	private void updateSourceModel(Path modelPath) {
+
+		final Path folderPath = modelPath.getParent();
+//		if (!folderPath.resolve("output.xml").toFile().exists()
+//				|| !folderPath.resolve("output.xml").toFile().exists()) {
+			try {
+				Path uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+						"easier-uml2lqn", "org.univaq.uml2lqn");
+				EasierUmlModel model = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, false);
+				// uml2lqn
+				ETLStandalone etlExecutor = new ETLStandalone(modelPath.getParent());
+				etlExecutor.setSource(uml2lqnModule.resolve("uml2lqn.etl"));
+				etlExecutor.setModel(model);
+				etlExecutor.setModel(etlExecutor.createXMLModel(
+						"LQN", modelPath.getParent().resolve("output.xml"), org.eclipse.emf.common.util.URI
+								.createFileURI(uml2lqnModule.resolve("lqnxsd").resolve("lqn.xsd").toString()),
+						false, true));
+
+				etlExecutor.execute();
+				etlExecutor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
+
+				// invoke solver
+				Path lqnSolverPath = this.getConfigurator().getSolver();
+				Path lqnModelPath = modelPath.getParent().resolve("output.xml");
+
+				XMLUtil.conformanceChecking(lqnModelPath);
+
+				// to allow cycles in the lqn model
+				final String params = "-P cycles=yes";
+
+				Process process = null;
+				try {
+					process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
+					process.waitFor();
+				} catch (IOException | InterruptedException e) {
+					e.printStackTrace();
+				}
+				process.destroy();
+				process = null;
+
+				// backannotation
+				EOLStandalone bckAnn = new EOLStandalone();
+				bckAnn.setModel(model);
+
+				bckAnn.setSource(uml2lqnModule.resolve("backAnnotation.eol"));
+
+				// Points to lqn schema file and stores pacakges into the global package
+				// registry
+				XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+				String schema = this.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+						.resolve("lqn.xsd").toString();
+				Collection<EObject> generatedPackages = xsdEcoreBuilder
+						.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+				for (EObject generatedEObject : generatedPackages) {
+					if (generatedEObject instanceof EPackage) {
+						EPackage generatedPackage = (EPackage) generatedEObject;
+						EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+					}
+				}
+
+				bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", modelPath.getParent().resolve("output.lqxo"), true,
+						false, true));
+				bckAnn.execute();
+
+				// dispose
+				model.dispose();
+				etlExecutor.clearMemory();
+				bckAnn.clearMemory();
+				model.clearCache();
+
+			} catch (EolModelLoadingException | URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//		}
 	}
 
 	/*

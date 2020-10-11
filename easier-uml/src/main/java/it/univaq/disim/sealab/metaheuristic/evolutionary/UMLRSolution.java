@@ -40,6 +40,7 @@ import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
 import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
@@ -200,7 +201,7 @@ public class UMLRSolution extends RSolution {
 
 		folderPath = Paths.get(controller.getConfigurator().getTmpFolder().toString(),
 				String.valueOf((getName() / 100)), String.valueOf(getName()));
-		modelPath = folderPath.resolve(getName() + ".uml" );
+		modelPath = folderPath.resolve(getName() + ".uml");
 
 		try {
 //			org.apache.commons.io.FileUtils.copyDirectory(this.problem.getSourceModelPath().getParent().toFile(),
@@ -228,7 +229,7 @@ public class UMLRSolution extends RSolution {
 		}
 
 		// copyModel(this.problem.getSourceModelPath(), mmaemiliaFilePath);
-	//	createNewModel(modelPath);
+		// createNewModel(modelPath);
 	}
 
 	/*
@@ -236,18 +237,17 @@ public class UMLRSolution extends RSolution {
 	 * resourceSet; }
 	 */
 
-	/*public void createNewModel(Path modelFilePath) {
-		try {
-//			res = getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()), true);
-//			this.model = (AEmiliaSpecification) EcoreUtil.getObjectByType(res.getContents(),
-//					mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION);
-			this.model = metamodelManager.getModel(modelFilePath);
-		} catch (Exception e) {
-			System.err.println("Error in creating the model for Solution #" + this.getName());
-			System.err.println(this.getVariableValue(0).toString());
-			e.printStackTrace();
-		}
-	}*/
+	/*
+	 * public void createNewModel(Path modelFilePath) { try { // res =
+	 * getResourceSet().getResource(URI.createFileURI(modelFilePath.toString()),
+	 * true); // this.model = (AEmiliaSpecification)
+	 * EcoreUtil.getObjectByType(res.getContents(), //
+	 * mmaemiliaPackage.Literals.AEMILIA_SPECIFICATION); this.model =
+	 * metamodelManager.getModel(modelFilePath); } catch (Exception e) {
+	 * System.err.println("Error in creating the model for Solution #" +
+	 * this.getName()); System.err.println(this.getVariableValue(0).toString());
+	 * e.printStackTrace(); } }
+	 */
 
 	protected void createRandomRefactoring(int l, int n, int a) throws UnexpectedException, ParserException {
 		UMLRSequence seq = new UMLRSequence(l, n, a, this);
@@ -261,7 +261,7 @@ public class UMLRSolution extends RSolution {
 	@Override
 	public String getVariableValueString(int index) {
 		String strValue = this.getName() + ";";
-		
+
 		List<Double> objs = new ArrayList<>();
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
 			objs.add(getObjective(i));
@@ -347,7 +347,7 @@ public class UMLRSolution extends RSolution {
 		pasCounter.setModel(iModel);
 
 		numPAs = pasCounter.getPAs();
-	
+
 		pasCounter.clearMemory();
 		pasCounter = null;
 		System.out.println("done");
@@ -415,7 +415,7 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
-		
+
 		process = null;
 
 		System.out.println("done");
@@ -503,7 +503,7 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
-		
+
 		bckAnn.clearMemory();
 		bckAnn = null;
 
@@ -534,7 +534,9 @@ public class UMLRSolution extends RSolution {
 		 * performance metrics of the nodes common among the models
 		 */
 
-		EasierUmlModel source = ((UMLRProblem<?>) getProblem()).getSourceModel();
+		EasierUmlModel source = null;
+
+//		EasierUmlModel source = ((UMLRProblem<?>) getProblem()).getSourceModel();
 
 		// The lists used to store the elements of both models
 		List<EObject> sourceElements = new ArrayList<EObject>();
@@ -544,9 +546,11 @@ public class UMLRSolution extends RSolution {
 		List<EObject> nodes = null;
 		List<EObject> scenarios = null;
 		try {
+			source = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML",
+					((UMLController) controller).getSourceModelAt(0), null, true, false);
 			nodes = (List<EObject>) source.getAllOfType("Node");
 			scenarios = (List<EObject>) source.getAllOfType("UseCase");
-		} catch (EolModelElementTypeNotFoundException e) {
+		} catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -585,6 +589,9 @@ public class UMLRSolution extends RSolution {
 			}
 
 		}
+
+		source.clearCache();
+		source.dispose();
 
 		// This loop calculates the perfQ value
 		Iterator<Double> it1 = sourceMetrics.iterator();
@@ -625,6 +632,12 @@ public class UMLRSolution extends RSolution {
 
 			metrics.add((Double.parseDouble(throughput.get(0).toString())));
 			metrics.add(-1 * (Double.parseDouble(respT.get(0).toString())));
+			
+			
+			scenario = null;
+			stereotype = null;
+			throughput.clear();
+			respT.clear();
 
 		} else if (element instanceof NodeImpl) {
 
@@ -639,7 +652,12 @@ public class UMLRSolution extends RSolution {
 			} else {
 				metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
 			}
+			
+			node = null;
+			stereotype = null;
+			value.clear();
 		}
+		
 
 		return metrics;
 
@@ -658,9 +676,9 @@ public class UMLRSolution extends RSolution {
 	 * Invokes the ETL engine in order to run the UML2LQN transformation.
 	 */
 	public void applyTransformation() {
-		
+
 		System.out.print("Applying transformation ... ");
-		
+
 		ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
 		executor.setSource(uml2lqnModule.resolve("uml2lqn.etl"));
 		executor.setModel(this.iModel);
@@ -694,9 +712,10 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
-		executor.getModule().getContext().getFrameStack().dispose();
-		executor = null;
 		
+		executor.clearMemory();
+		executor = null;
+
 		System.out.println("done");
 	}
 
@@ -764,14 +783,12 @@ public class UMLRSolution extends RSolution {
 			iModel.dispose();
 		}
 
-		final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
 		try {
-			final List<Scenario> scenarios = uml.getScenarios();
-			final List<Component> components = uml.getComponents();
-			final List<Link> links = uml.getLinks();
-
-			reliability = new Reliability(scenarios, components, links).compute();
-		} catch (MissingTagException e) {
+			final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+	        reliability = new Reliability(uml.getScenarios()).compute();
+	        uml.getModel().destroy();
+//	        uml.getModel().eResource().getResourceSet().getResources().clear();
+	    } catch (MissingTagException e) {
 			System.err.println("Error in computing the reliability");
 
 			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
@@ -788,6 +805,7 @@ public class UMLRSolution extends RSolution {
 				System.out.println(e1.getMessage());
 			}
 		}
+		
 
 		// reloads the stored model
 		// TODO verify is it is needed
@@ -801,24 +819,25 @@ public class UMLRSolution extends RSolution {
 		System.out.println("done");
 
 	}
-	
+
 	@Override
 	public void freeMemory() {
 		try {
-			if(dirtyIModel != null) {
+			if (dirtyIModel != null) {
 				dirtyIModel.clearCache();
 				dirtyIModel = null;
 			}
-			if(iModel != null) {
+			if (iModel != null) {
 				iModel.clearCache();
 				iModel = null;
 			}
-		}catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.getVariableValue(0).getRefactoring().getActions().forEach(a -> a.freeMemory());
 		System.out.println(String.format("Solution '%s' cleaned", this.name));
+		CachedResourceSet.getCache().clear();
 		cleanedSolutionsIntegers.add(this.name);
 	}
 

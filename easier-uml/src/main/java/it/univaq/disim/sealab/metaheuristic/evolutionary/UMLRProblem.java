@@ -20,41 +20,39 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	private static final long serialVersionUID = 1L;
 
 	//TODO understand if it can be removed
-	private final EasierUmlModel sourceIModel;
+//	private final EasierUmlModel sourceIModel;
 
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize,
 			Controller ctrl) {
-		super(srcFolderPath, srcFolderPath.resolve("model.uml"), desired_length, length, allowedFailures,
+		super(srcFolderPath, srcFolderPath.resolve("automatedGuidedVehicle.uml"), desired_length, length, allowedFailures,
 				populationSize, ctrl);
 
-		sourceIModel = setSourceModel(srcFolderPath.resolve("automatedGuidedVehicle.uml"));
+//		sourceIModel = setSourceModel(srcFolderPath.resolve("automatedGuidedVehicle.uml"));
 
 //		sourceFolderPath = srcFolderPath;
 	}
 
-	private EasierUmlModel setSourceModel(Path sourceModelPath) {
-		EasierUmlModel tmpModel = null;
-
-		try {
-			tmpModel = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, false);
-		} catch (EolModelLoadingException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return tmpModel;
-	}
+	/*
+	 * private EasierUmlModel setSourceModel(Path sourceModelPath) { EasierUmlModel
+	 * tmpModel = null;
+	 * 
+	 * try { tmpModel = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML",
+	 * sourceModelPath, null, true, false); } catch (EolModelLoadingException |
+	 * URISyntaxException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } return tmpModel; }
+	 */
 
 	public UMLRProblem(SourceModel srcModel, int desired_length, int length, int allowedFailures, int populationSize,
 			Controller ctrl) {
 		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize,
 				ctrl);
 
-		sourceIModel = setSourceModel(srcModel.getModel());
+//		sourceIModel = setSourceModel(srcModel.getModel());
 	}
 
-	public EasierUmlModel getSourceModel() {
-		return sourceIModel;
-	}
+	/*
+	 * public EasierUmlModel getSourceModel() { return sourceIModel; }
+	 */
 
 	@Override
 	public S createSolution() {
