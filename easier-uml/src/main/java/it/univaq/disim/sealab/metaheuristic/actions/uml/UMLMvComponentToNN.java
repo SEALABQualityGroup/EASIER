@@ -21,7 +21,9 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -43,6 +45,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final UMLRSolution solution;
 
+	private final Path sourceModelPath;
+
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
 				"easier-refactoringLibrary", "easier-ref-operations", "mv_comp_nn.eol");
@@ -54,6 +58,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	public UMLMvComponentToNN(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
+
+		sourceModelPath = sol.getModelPath();
 
 		umlTargetNodes = new BasicEList<>();
 
@@ -133,18 +139,21 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	public void execute() {
 		EOLStandalone executor = new EOLStandalone();
 
-		final IModel contextModel = solution.getIModel();
-		executor.setModel(contextModel);
-		executor.setSource(eolModulePath);
+//		final IModel contextModel = solution.getIModel();
 
-		// fills variable within the eol module
-		executor.setParameter(umlCompToMove.getName(), "String", "targetComponentName");
-		executor.setParameter(umlTargetNodes.get(0).getName(), "String", "newNodeName");
+		EasierUmlModel contextModel;
+		try {
+			contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
+			executor.setModel(contextModel);
+			executor.setSource(eolModulePath);
+
+			// fills variable within the eol module
+			executor.setParameter(umlCompToMove.getName(), "String", "targetComponentName");
+			executor.setParameter(umlTargetNodes.get(0).getName(), "String", "newNodeName");
 
 //		executor.setParameter(umlCompToMove, "UML!Component", "targetComponent");
 //		executor.setParameter(umlTargetNodes.get(0), "UML!Node", "targetNode");
 
-		try {
 			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);

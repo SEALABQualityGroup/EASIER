@@ -3,6 +3,7 @@
  */
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,7 @@ import java.util.Random;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.uml2.uml.DeployedArtifact;
 import org.eclipse.uml2.uml.Deployment;
@@ -22,7 +24,9 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -45,6 +49,8 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	private final UMLRSolution solution;
 
+	private final Path sourceModelPath;
+
 	private Node targetObject, umlClonedNode;
 
 	private SingleValuedParameter umlNodeToCloneSVP, umlClonedNodeSVP;
@@ -61,6 +67,8 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	public UMLCloneNode(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
+
+		sourceModelPath = sol.getModelPath();
 
 		targetObject = getRandomNode();
 
@@ -149,26 +157,29 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	public void execute() {
 		EOLStandalone executor = new EOLStandalone();
 
-		final IModel contextModel = solution.getIModel(); // M0
+//		final IModel contextModel = solution.getIModel(); // M0
 
-		executor.setModel(contextModel);
-		executor.setSource(eolModulePath);
+		EasierUmlModel contextModel;
+		try {
+			contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
 
-		// fills variable within the eol module
+			executor.setModel(contextModel);
+			executor.setSource(eolModulePath);
 
-		executor.setParameter(targetObject.getName(), "String", "targetNodeName");
-		executor.setParameter(umlClonedNode.getName(), "String", "clonedNodeName");
+			// fills variable within the eol module
+
+			executor.setParameter(targetObject.getName(), "String", "targetNodeName");
+			executor.setParameter(umlClonedNode.getName(), "String", "clonedNodeName");
 
 //		executor.setParameter(umlClonedNode, "UML!Node", "clonedNode"); // vedere come passare la stringa
 //		executor.setParameter(targetObject, "UML!Node", "targetNode");
 
-		try {
 			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
 			e.printStackTrace();
 		}
-		
+
 		executor.clearMemory();
 		executor = null;
 	}

@@ -23,7 +23,9 @@ import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.Message;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -46,6 +48,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	private final UMLRSolution solution;
 
+	private final Path sourceModelPath;
+
 //	private Operation targetObject;
 
 	static {
@@ -59,6 +63,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	public UMLMvOperationToComp(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
+
+		sourceModelPath = sol.getModelPath();
 
 		umlOpToMove = getRandomOperation();
 		umlTargetComp = getRandomComponent();
@@ -145,12 +151,15 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	public void execute() {
 
 		EOLStandalone executor = new EOLStandalone();
-		executor.setModel(solution.getIModel());
-		executor.setSource(eolModulePath);
-		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName")
-				.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
 
 		try {
+			EasierUmlModel contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
+
+			executor.setModel(contextModel);
+			executor.setSource(eolModulePath);
+			executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName")
+					.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
+
 			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);

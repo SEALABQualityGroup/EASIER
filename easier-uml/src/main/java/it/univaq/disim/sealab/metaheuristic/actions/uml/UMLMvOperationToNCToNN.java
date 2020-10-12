@@ -24,7 +24,9 @@ import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.Message;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
@@ -46,6 +48,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	private final UMLRSolution solution;
 
+	private final Path sourceModelPath;
+
 	private Node umlTargetNode;
 
 //	private Operation targetObject;
@@ -61,6 +65,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	public UMLMvOperationToNCToNN(RSolution sol) {
 		this.solution = (UMLRSolution) sol;
+
+		sourceModelPath = sol.getModelPath();
 
 		umlOpToMove = getRandomOperation();
 		umlTargetComp = createNewComponent();
@@ -165,14 +171,17 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 //		super.execute();
 
 		EOLStandalone executor = new EOLStandalone();
-		executor.setModel(solution.getIModel());
-		executor.setSource(eolModulePath);
-
-		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName");
-		executor.setParameter(umlTargetComp.getName(), "String", "newComponentName");
-		executor.setParameter(umlTargetNode.getName(), "String", "newNodeName");
 
 		try {
+			EasierUmlModel contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
+
+			executor.setModel(contextModel);
+			executor.setSource(eolModulePath);
+
+			executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName");
+			executor.setParameter(umlTargetComp.getName(), "String", "newComponentName");
+			executor.setParameter(umlTargetNode.getName(), "String", "newNodeName");
+
 			executor.execute();
 		} catch (Exception e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
