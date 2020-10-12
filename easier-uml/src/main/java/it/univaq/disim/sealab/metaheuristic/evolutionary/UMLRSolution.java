@@ -344,9 +344,17 @@ public class UMLRSolution extends RSolution {
 		EVLStandalone pasCounter = new EVLStandalone();
 
 		pasCounter.setSource(refactoringLibraryModule);
-		pasCounter.setModel(iModel);
 
-		numPAs = pasCounter.getPAs();
+		try {
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
+			pasCounter.setModel(uml);
+
+			numPAs = pasCounter.getPAs();
+
+		} catch (EolModelLoadingException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		pasCounter.clearMemory();
 		pasCounter = null;
@@ -464,27 +472,30 @@ public class UMLRSolution extends RSolution {
 //		System.out.println("WARNING the back annotator is not yet invoked ... please remove the following comments");
 
 		EOLStandalone bckAnn = new EOLStandalone();
-		bckAnn.setModel(iModel);
-
-		bckAnn.setSource(uml2lqnModule.resolve("backAnnotation.eol"));
-
-		// Points to lqn schema file and stores pacakges into the global package
-		// registry
-		XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
-		String schema = controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
-				.resolve("lqn.xsd").toString();
-		Collection<EObject> generatedPackages = xsdEcoreBuilder
-				.generate(org.eclipse.emf.common.util.URI.createURI(schema));
-		for (EObject generatedEObject : generatedPackages) {
-			if (generatedEObject instanceof EPackage) {
-				EPackage generatedPackage = (EPackage) generatedEObject;
-				EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
-			}
-		}
-
-		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
 
 		try {
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
+
+			bckAnn.setModel(uml);
+
+			bckAnn.setSource(uml2lqnModule.resolve("backAnnotation.eol"));
+
+			// Points to lqn schema file and stores pacakges into the global package
+			// registry
+			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+			String schema = controller.getConfigurator().getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+					.resolve("lqn.xsd").toString();
+			Collection<EObject> generatedPackages = xsdEcoreBuilder
+					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+			for (EObject generatedEObject : generatedPackages) {
+				if (generatedEObject instanceof EPackage) {
+					EPackage generatedPackage = (EPackage) generatedEObject;
+					EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+				}
+			}
+
+			bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
+
 			bckAnn.execute();
 		} catch (EolRuntimeException e) {
 			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
@@ -501,6 +512,9 @@ public class UMLRSolution extends RSolution {
 			} catch (IOException e1) {
 				System.out.println(e1.getMessage());
 			}
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -569,25 +583,27 @@ public class UMLRSolution extends RSolution {
 		ArrayList<Double> sourceMetrics = new ArrayList<Double>();
 		ArrayList<Double> refactoredMetrics = new ArrayList<Double>();
 
-		// for each elements of the source model, it is picked the element with the same
-		// id in the refactored one
-		for (EObject element : sourceElements) {
-			String id = getXmiId(source, element);
+		try {
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
 
-			EObject correspondingElement = (EObject) iModel.getElementById(id);
-			refactoredElements.add(correspondingElement);
+			// for each elements of the source model, it is picked the element with the same
+			// id in the refactored one
+			for (EObject element : sourceElements) {
+				String id = getXmiId(source, element);
 
-			// for each model element, it is collected the performance metric and added to
-			// the vector
-			try {
+				EObject correspondingElement = (EObject) uml.getElementById(id);
+				refactoredElements.add(correspondingElement);
+
+				// for each model element, it is collected the performance metric and added to
+				// the vector
+
 				sourceMetrics.addAll(getMetrics(element));
 				refactoredMetrics.addAll(getMetrics(correspondingElement));
-			} catch (Exception e) {
-				System.err.println(
-						String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
-				e.printStackTrace();
-			}
 
+			}
+		} catch (Exception e) {
+			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
+			e.printStackTrace();
 		}
 
 		source.clearCache();
@@ -632,8 +648,7 @@ public class UMLRSolution extends RSolution {
 
 			metrics.add((Double.parseDouble(throughput.get(0).toString())));
 			metrics.add(-1 * (Double.parseDouble(respT.get(0).toString())));
-			
-			
+
 			scenario = null;
 			stereotype = null;
 			throughput.clear();
@@ -652,12 +667,11 @@ public class UMLRSolution extends RSolution {
 			} else {
 				metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
 			}
-			
+
 			node = null;
 			stereotype = null;
 			value.clear();
 		}
-		
 
 		return metrics;
 
@@ -712,7 +726,7 @@ public class UMLRSolution extends RSolution {
 			e.printStackTrace();
 		}
 		executor.getModel().stream().filter(m -> "LQN".equals(m.getName())).findAny().orElse(null).dispose();
-		
+
 		executor.clearMemory();
 		executor = null;
 
@@ -776,7 +790,7 @@ public class UMLRSolution extends RSolution {
 
 	@Override
 	public void computeReliability() {
-		
+
 		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
 		if (iModel.isLoaded()) {
@@ -785,10 +799,10 @@ public class UMLRSolution extends RSolution {
 
 		try {
 			final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
-	        reliability = new Reliability(uml.getScenarios()).compute();
-	        uml.getModel().destroy();
+			reliability = new Reliability(uml.getScenarios()).compute();
+			uml.getModel().destroy();
 //	        uml.getModel().eResource().getResourceSet().getResources().clear();
-	    } catch (MissingTagException e) {
+		} catch (MissingTagException e) {
 			System.err.println("Error in computing the reliability");
 
 			final Path reportFilePath = ((UMLController) this.controller).getReportFilePath();
@@ -805,7 +819,6 @@ public class UMLRSolution extends RSolution {
 				System.out.println(e1.getMessage());
 			}
 		}
-		
 
 		// reloads the stored model
 		// TODO verify is it is needed
@@ -815,7 +828,7 @@ public class UMLRSolution extends RSolution {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("done");
 
 	}
