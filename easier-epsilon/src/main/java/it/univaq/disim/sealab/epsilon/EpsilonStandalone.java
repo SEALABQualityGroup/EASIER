@@ -19,6 +19,7 @@ import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.EmfModelFactory;
 import org.eclipse.epsilon.emc.emf.xml.XmlModel;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -99,7 +100,7 @@ public abstract class EpsilonStandalone {
 		module.getContext().getModelRepository().dispose();
 	}
 
-	public EpsilonStandalone setModule(IEolModule mod) {
+	public EpsilonStandalone setModule(EolModule mod) {
 		module = mod;
 		return this;
 	}
@@ -346,6 +347,7 @@ public abstract class EpsilonStandalone {
 		this.getModule().getContext().dispose();
 		this.getModule().getImports().clear();
 		this.getModule().getComments().clear();
+		this.getModule().getContext().getModelRepository().dispose();
 	}
 	
 
