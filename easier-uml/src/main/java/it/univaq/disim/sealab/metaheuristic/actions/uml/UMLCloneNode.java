@@ -18,6 +18,7 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.uml2.common.util.CacheAdapter;
 import org.eclipse.uml2.uml.DeployedArtifact;
 import org.eclipse.uml2.uml.Deployment;
 import org.eclipse.uml2.uml.Node;
@@ -47,7 +48,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	private final static double VALUE_COST = 1.23;
 
-	private final UMLRSolution solution;
+	private UMLRSolution solution;
 
 	private final Path sourceModelPath;
 
@@ -310,9 +311,14 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	@Override
 	public void freeMemory() {
+		CacheAdapter.getInstance().clear(targetObject.eResource());
+		CacheAdapter.getInstance().clear(umlClonedNode.eResource());
+		targetObject = null;
+		umlClonedNode = null;
 		parameters.clear();
 		pre = null;
 		post = null;
+		this.solution = null;
 	}
 
 	@Override

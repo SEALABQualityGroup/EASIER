@@ -69,6 +69,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 				RSolution.generatedSolutions.forEach(sol -> sol.freeMemory());
 				RSolution.generatedSolutions.clear();
 				
+				
 				//Shall remove old solutions
 				((List<S>)alg.getAlgorithm().getResult()).clear();
 			}

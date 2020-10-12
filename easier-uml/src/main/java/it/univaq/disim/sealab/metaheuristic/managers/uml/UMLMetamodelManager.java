@@ -84,8 +84,8 @@ public class UMLMetamodelManager extends MetamodelManager {
 	}
 
 //	@Override
-	public static RefactoringAction getRandomAction(int length, RSequence seq) throws UnexpectedException {
-		return RefactoringActionFactory.getRandomAction(seq.getSolution());
+	public static RefactoringAction getRandomAction(int length, RSolution sol) throws UnexpectedException {
+		return RefactoringActionFactory.getRandomAction(sol);
 
 //		int index = JMetalRandom.getInstance().getRandomGenerator().nextInt(0, length - 1);
 //		switch (index) {

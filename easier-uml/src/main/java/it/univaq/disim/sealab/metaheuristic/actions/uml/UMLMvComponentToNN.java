@@ -43,7 +43,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final static double VALUE_COST = 1.23;
 
-	private final UMLRSolution solution;
+	private UMLRSolution solution;
 
 	private final Path sourceModelPath;
 
@@ -281,9 +281,13 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	@Override
 	public void freeMemory() {
+		
+		this.umlTargetNodes.clear();
+		this.umlCompToMove = null;
 		parameters.clear();
 		pre = null;
 		post = null;
+		this.solution = null;
 	}
 
 	@Override

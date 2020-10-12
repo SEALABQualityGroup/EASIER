@@ -348,6 +348,7 @@ public abstract class EpsilonStandalone {
 		this.getModule().getImports().clear();
 		this.getModule().getComments().clear();
 		this.getModule().getContext().getModelRepository().dispose();
+		this.getModule().getContext().getFrameStack().dispose();
 	}
 	
 

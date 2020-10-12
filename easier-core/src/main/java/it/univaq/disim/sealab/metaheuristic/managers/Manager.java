@@ -664,7 +664,7 @@ public abstract class Manager {
 //		return true;
 //	}
 
-	public PreCondition calculatePreCondition(Refactoring r) {
+	public static PreCondition calculatePreCondition(Refactoring r) {
 		PreCondition res = null;
 		if (r != null) {
 			if (r.getActions() != null) {
@@ -686,7 +686,7 @@ public abstract class Manager {
 		return res;
 	}
 
-	public PreCondition calculatePreCondition(PreCondition pre1, PreCondition pre2, PostCondition post1) {
+	public static PreCondition calculatePreCondition(PreCondition pre1, PreCondition pre2, PostCondition post1) {
 		PreCondition res = null;
 //		if (pre1 == null || pre2 == null || post1 == null) {
 		if (pre1 == null)
@@ -705,7 +705,7 @@ public abstract class Manager {
 		return res;
 	}
 
-	public PreCondition reducePreCondition(PreCondition pre, PostCondition post) {
+	public static PreCondition reducePreCondition(PreCondition pre, PostCondition post) {
 		PreCondition res = pre;
 		if (res != null && post != null) {
 			AndOperator resRootOp = (AndRefactoringOperator) res.getConditionFormula().getRootOperator();
@@ -899,7 +899,7 @@ public abstract class Manager {
 //		return existsOperator;
 	}
 
-	public AndOperator createAndOperator() {
+	public static AndOperator createAndOperator() {
 		return new AndRefactoringOperator();
 //		return LogicalSpecificationFactory.eINSTANCE.createAndOperator();
 	}

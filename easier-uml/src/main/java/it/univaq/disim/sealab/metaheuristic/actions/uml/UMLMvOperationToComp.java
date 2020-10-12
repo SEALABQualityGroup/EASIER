@@ -46,7 +46,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	private final static double VALUE_COST = 1.23;
 
-	private final UMLRSolution solution;
+	private UMLRSolution solution;
 
 	private final Path sourceModelPath;
 
@@ -287,9 +287,12 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	@Override
 	public void freeMemory() {
+		this.umlTargetComp = null;
+		this.umlOpToMove = null;
 		parameters.clear();
 		pre = null;
 		post = null;
+		this.solution = null;
 	}
 
 	@Override

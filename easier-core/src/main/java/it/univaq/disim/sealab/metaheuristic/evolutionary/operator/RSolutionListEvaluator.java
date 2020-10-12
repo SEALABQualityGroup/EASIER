@@ -27,7 +27,10 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 			sol.applyTransformation();
 			//TODO shall be moved to a multithreaded version
 			sol.invokeSolver();
-//			sol.save();
+			sol.countingPAs();
+			sol.evaluatePerformance();
+			sol.computeReliability();
+			problem.evaluate(sol);
 		}
 
 		//Invokes the performance solver
@@ -66,15 +69,12 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 			}
 		    
 		}*/
-		for (S sol : solutionList) {
-			sol.countingPAs();
-			sol.evaluatePerformance();
-			sol.computeReliability();
-		}
 		
-		for (S sol : solutionList) {
-			problem.evaluate(sol);
-		}
+		/*
+		 * for (S sol : solutionList) {
+		 * 
+		 * }
+		 */
 		
 		return solutionList;
 	}

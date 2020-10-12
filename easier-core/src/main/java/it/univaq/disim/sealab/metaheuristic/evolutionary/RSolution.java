@@ -19,7 +19,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 
-public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem<?>> {
+public abstract class RSolution extends AbstractGenericSolution<Refactoring, RProblem<?>> {
 
 	/**
 	 * 
@@ -147,7 +147,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 
 	public double getNumOfChanges() {
 		double changes = 0.0;
-		Refactoring r = this.getVariableValue(0).getRefactoring();
+		Refactoring r = this.getVariableValue(0);
 		for (RefactoringAction action : r.getActions()) {
 			changes += action.getNumOfChanges();
 		}

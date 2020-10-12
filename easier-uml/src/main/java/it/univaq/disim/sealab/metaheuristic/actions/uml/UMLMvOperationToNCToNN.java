@@ -46,7 +46,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	private final static double VALUE_COST = 1.80;
 
-	private final UMLRSolution solution;
+	private UMLRSolution solution;
 
 	private final Path sourceModelPath;
 
@@ -321,9 +321,13 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	@Override
 	public void freeMemory() {
+		this.umlOpToMove = null;
+		this.umlTargetComp = null;
+		this.umlTargetNode = null;
 		parameters.clear();
 		pre = null;
 		post = null;
+		this.solution = null;
 	}
 
 	public String toString() {
