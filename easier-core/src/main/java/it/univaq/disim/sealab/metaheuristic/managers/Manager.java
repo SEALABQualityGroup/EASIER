@@ -1,22 +1,14 @@
 package it.univaq.disim.sealab.metaheuristic.managers;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
-import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
-import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclStringManager;
 import it.univaq.disim.sealab.metaheuristic.refactoring.operator.AndRefactoringOperator;
 import it.univaq.disim.sealab.metaheuristic.refactoring.operator.ExistsInCollectionRefactoringOperator;
 import it.univaq.disim.sealab.metaheuristic.refactoring.operator.ExistsRefactoringOperator;
@@ -24,26 +16,16 @@ import it.univaq.disim.sealab.metaheuristic.refactoring.operator.ForallRefactori
 import it.univaq.disim.sealab.metaheuristic.refactoring.operator.NotRefactoringOperator;
 import logicalSpecification.Action;
 import logicalSpecification.AndOperator;
-import logicalSpecification.EqualOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
 import logicalSpecification.ForAllOperator;
-import logicalSpecification.GreaterEqualOperator;
-import logicalSpecification.GreaterOperator;
-import logicalSpecification.LessEqualOperator;
-import logicalSpecification.LessOperator;
 import logicalSpecification.LogicalSpecificationFactory;
 import logicalSpecification.MultipleValuedParameter;
 import logicalSpecification.NotOperator;
 import logicalSpecification.Operator;
-import logicalSpecification.OrOperator;
 import logicalSpecification.PostCondition;
 import logicalSpecification.PreCondition;
 import logicalSpecification.SingleValuedParameter;
-import metamodel.mmaemilia.ArchiElemInstance;
-import metamodel.mmaemilia.Attachment;
-import metamodel.mmaemilia.InputInteraction;
-import metamodel.mmaemilia.OutputInteraction;
 
 public abstract class Manager {
 
@@ -838,7 +820,7 @@ public abstract class Manager {
 		 */
 	}
 
-	public static PostCondition calculatePostCondition(PostCondition post1, PostCondition post2) {
+	public PostCondition calculatePostCondition(PostCondition post1, PostCondition post2) {
 		PostCondition res = null;
 //		if (post1 == null || post2 == null) {
 		if (post1 == null)
