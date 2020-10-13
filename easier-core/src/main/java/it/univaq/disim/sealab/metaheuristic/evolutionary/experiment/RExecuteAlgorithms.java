@@ -5,11 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -21,24 +21,21 @@ import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 	private Experiment<S, Result> experiment;
-	private final Controller controller;
 	private List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
 
 	/** Constructor */
-	public RExecuteAlgorithms(RExperiment<S, Result> exp, final Controller ctr) {
-		// super(configuration);
+	public RExecuteAlgorithms(RExperiment<S, Result> exp) {
 		this.experiment = exp;
-		this.controller = ctr;
 	}
 
 	public RExecuteAlgorithms<S, Result> run() {
@@ -62,15 +59,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			computingTimes.addAll(experiment.getAlgorithmList().stream()
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
-			FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());
-			
-			for(ExperimentAlgorithm<S, Result> alg: experiment.getAlgorithmList()) {
-				RProblem<?> p =(RProblem<?>) ((AbstractEvolutionaryAlgorithm<Solution<S>, Result>)alg.getAlgorithm()).getProblem();
-				RSolution.generatedSolutions.forEach(sol -> sol.freeMemory());
-				RSolution.generatedSolutions.clear();
-				//Shall remove old solutions
-				((List<S>)alg.getAlgorithm().getResult()).clear();
-			}
+			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
 			EasierLogger.logger_.info("No longer used Solutions have been removed!");
 		}
 		return this;
@@ -122,7 +111,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 	private Path setReportFilePath() {
 
-		Path tmp = controller.getConfigurator().getOutputFolder().resolve(controller.getReportFileName());
+		Path tmp = Configurator.eINSTANCE.getOutputFolder().resolve(Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv"));
 		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
 		Path relErrorLog = tmp.getParent().resolve("relErrorLog.csv");
 		Path backErrorLog = tmp.getParent().resolve("backAnnErrorLog.csv");

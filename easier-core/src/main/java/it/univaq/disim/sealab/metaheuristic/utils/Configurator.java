@@ -9,6 +9,8 @@ import java.util.List;
 import com.beust.jcommander.Parameter;
 
 public class Configurator {
+	
+	public static Configurator eINSTANCE = new Configurator();
 
 	@Parameter
 	private List<String> parameters = new ArrayList<>();
