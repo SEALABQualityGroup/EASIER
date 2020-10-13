@@ -11,12 +11,15 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.xmi.impl.GenericXMLResourceFactoryImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
+import org.eclipse.epsilon.emc.emf.AbstractEmfModel;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.emc.emf.EmfModelFactory;
 import org.eclipse.epsilon.emc.emf.xml.XmlModel;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
 import org.eclipse.epsilon.eol.EolModule;
@@ -27,7 +30,7 @@ import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.eol.types.EolModelElementType;
-import org.eclipse.epsilon.evl.EvlModule;
+import org.eclipse.uml2.common.util.CacheAdapter;
 
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 
@@ -113,7 +116,7 @@ public abstract class EpsilonStandalone {
 		return model;
 	}
 
-	protected void doExecute() throws EolRuntimeException{
+	protected void doExecute() throws EolRuntimeException {
 		try {
 			module.parse(getSource().toFile());
 		} catch (Exception e) {
@@ -137,7 +140,7 @@ public abstract class EpsilonStandalone {
 
 		preProcess();
 //		try {
-			result = execute(module);
+		result = execute(module);
 //		} catch (EolRuntimeException e) {
 //			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
 //			e.printStackTrace();
@@ -224,28 +227,16 @@ public abstract class EpsilonStandalone {
 	 */
 	public static EasierUmlModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
 			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
-		EasierUmlModel emfModel = new EasierUmlModel();
+		CachedResourceSet.getCache().clear();
 
-		/*
-		 * it seems no longer to be needed
-		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI,
-		 * URI.createURI(
-		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.profile.uml")
-		 * );
-		 * 
-		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GQAMPackage.eNS_URI,
-		 * URI.createURI(
-		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.MARTE_AnalysisModel.GQAM.profile.uml"
-		 * ));
-		 */
+		EasierUmlModel emfModel = new EasierUmlModel();
 
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storedOnDisposal);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
 		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
-//		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
-		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");//,http://com.masdes.dam/profiles/Core/1.0");
+		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");// ,http://com.masdes.dam/profiles/Core/1.0");
 		properties.put(EmfModel.PROPERTY_CACHED, false);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);
@@ -255,7 +246,6 @@ public abstract class EpsilonStandalone {
 
 		// reading the epsilon source code
 		emfModel.load(properties, (IRelativePathResolver) null);
-		
 
 		return emfModel;
 	}
@@ -266,7 +256,6 @@ public abstract class EpsilonStandalone {
 		XmlModel xmlModel = new XmlModel();
 
 		try {
-//			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
 			StringProperties properties = new StringProperties();
 			properties.put(XmlModel.PROPERTY_NAME, name);
 			properties.put(XmlModel.PROPERTY_XSD_URI, xsdURI);
@@ -277,15 +266,6 @@ public abstract class EpsilonStandalone {
 
 			properties.put(XmlModel.PROPERTY_MODEL_URI,
 					org.eclipse.emf.common.util.URI.createFileURI(xmlFilePath.toString()));
-
-//			xmlModel.setName(name);
-//			xmlModel.setReadOnLoad(false);
-//			xmlModel.setStoredOnDisposal(true);
-//			xmlModel.setModelFile(xmlFilePath.toString());
-//			xmlModel.setExpand(true);
-//			xmlModel.setMetamodelFile(lqnXSD);
-
-//			xmlModel.load();
 
 			xmlModel.load(properties, (IRelativePathResolver) null);
 
@@ -317,13 +297,6 @@ public abstract class EpsilonStandalone {
 		ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap().put("lqxo",
 				new GenericXMLResourceFactoryImpl());
 
-		// Load the XML document
-//		model.setName(name);
-//		model.setReadOnLoad(readOnLoad);
-//		model.setStoredOnDisposal(storeOnDisposal);
-//		model.setCachingEnabled(cached);
-//		model.setFile(xmlFilePath.toFile());
-
 		StringProperties properties = new StringProperties();
 		properties.put(PlainXmlModel.PROPERTY_NAME, name);
 		properties.put(PlainXmlModel.PROPERTY_FILE, xmlFilePath.toString());
@@ -332,7 +305,6 @@ public abstract class EpsilonStandalone {
 
 		try {
 			model.load(properties);
-//			model.load();
 		} catch (EolModelLoadingException ex) {
 			ex.printStackTrace();
 		}
@@ -342,14 +314,27 @@ public abstract class EpsilonStandalone {
 	public IEolModule getModule() {
 		return module;
 	}
-	
+
 	public void clearMemory() {
 		this.getModule().getContext().dispose();
 		this.getModule().getImports().clear();
 		this.getModule().getComments().clear();
 		this.getModule().getContext().getModelRepository().dispose();
 		this.getModule().getContext().getFrameStack().dispose();
+
+		for (IModel m : model) {
+			if (m instanceof EasierUmlModel) {
+				ResourceSet rs = ((EasierUmlModel) m).getResourceSet();
+				
+				while (rs.getResources().size() > 0) {
+					Resource res = rs.getResources().get(0);
+					res.eAdapters().clear();
+					res.unload();
+					rs.getResources().remove(res);
+				}
+			}
+		}
+		CacheAdapter.getInstance().clear();
 	}
-	
 
 }

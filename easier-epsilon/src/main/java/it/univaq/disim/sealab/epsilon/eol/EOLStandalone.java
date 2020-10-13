@@ -61,33 +61,10 @@ public class EOLStandalone extends EpsilonStandalone {
 
 	public void execute() throws EolRuntimeException {
 		super.doExecute();
-
-//		module.getContext().getModelRepository().dispose();
 	}
 	
 	public void disposeModelRepository() {
 		module.getContext().getModelRepository().dispose();
 	}
 
-//	private void doExecute() throws Exception {
-////		module = createModule();
-//		module.parse(getSource().toFile());
-//
-//		if (module.getParseProblems().size() > 0) {
-//			System.err.println("Parse errors occured...");
-//			for (ParseProblem problem : module.getParseProblems()) {
-//				System.err.println(problem.toString());
-//			}
-//		}
-//
-//		model.forEach(m -> module.getContext().getModelRepository().addModel(m));
-////		module.getContext().getModelRepository().addModel(model);
-//
-//		for (Variable parameter : parameters) {
-//			module.getContext().getFrameStack().put(parameter);
-//		}
-//
-//		preProcess();
-//		result = execute(module);
-//	}
 }

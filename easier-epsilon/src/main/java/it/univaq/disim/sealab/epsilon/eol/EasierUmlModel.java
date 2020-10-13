@@ -1,9 +1,5 @@
 package it.univaq.disim.sealab.epsilon.eol;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.emc.uml.UmlModel;
@@ -17,7 +13,6 @@ import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import com.masdes.dam.Complex_Data_Types.Complex_Data_TypesPackage;
 import com.masdes.dam.Core.CorePackage;
 import com.masdes.dam.DAM.DAMPackage;
 import com.masdes.dam.Maintenance.MaintenancePackage;
@@ -169,13 +164,30 @@ public class EasierUmlModel extends UmlModel {
 	public ResourceSet getResourceSet() {
 		return this.resourceSet;
 	}
-	
+
 	@Override
-	public void dispose() {
-		super.dispose();
-		this.resourceSet.getResources().forEach(rs -> org.eclipse.uml2.common.util.CacheAdapter.getInstance().clear(rs));
-		this.resourceSet.getResources().clear();
-		//this.resourceSet = null;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((resourceSet == null) ? 0 : resourceSet.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EasierUmlModel other = (EasierUmlModel) obj;
+		if (resourceSet == null) {
+			if (other.resourceSet != null)
+				return false;
+		} else if (!resourceSet.equals(other.resourceSet))
+			return false;
+		return true;
 	}
 	
 }

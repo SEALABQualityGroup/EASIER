@@ -91,7 +91,6 @@ public class ETLStandalone extends EpsilonStandalone {
 	public void clearMemory() {
 		super.clearMemory();
 		((EtlModule)this.module).getTransformationRules().clear();
-		((EtlModule)this.module).getContext().getFrameStack().dispose();
 	}
 
 

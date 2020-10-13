@@ -16,7 +16,6 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,15 +31,9 @@ import org.uma.jmetal.util.experiment.ExperimentComponent;
 import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
-import org.uma.jmetal.util.fileoutput.SolutionListOutput;
-import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.imp.ArrayFront;
-import org.uma.jmetal.util.front.util.FrontUtils;
-import org.uma.jmetal.util.point.util.PointSolution;
 import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 /**
  * This class computes a reference Pareto front from a set of files. Once the
@@ -82,8 +75,7 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 
 		List<String> referenceFrontFileNames = new LinkedList<>();
 		if (!experiment.getProblemList().isEmpty())
-			RPointSolution.setWorsen(((RProblem<?>) experiment.getProblemList().get(0).getProblem()).getController()
-					.getConfigurator().isWorsen());
+			RPointSolution.setWorsen(Configurator.eINSTANCE.isWorsen());
 		for (ExperimentProblem<?> problem : experiment.getProblemList()) {
 
 			NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
@@ -93,9 +85,6 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 						+ algorithm.getAlgorithmTag() + "/" + problem.getTag();
 
 				for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-
-					String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + i
-							+ ".tsv";
 
 					String varFileName = problemDirectory + "/" + experiment.getOutputParetoSetFileName() + i + ".tsv";
 
@@ -148,18 +137,6 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 			e.printStackTrace();
 		}
 		return ptList;
-	}
-
-	private List<PointSolution> generateSolutionList(String frontFileName, String varFileName) {
-		Front front;
-		try {
-			front = new ArrayFront(frontFileName);
-			List<PointSolution> solutionList = FrontUtils.convertFrontToSolutionList(front);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private File createOutputDirectory(String outputDirectoryName) {

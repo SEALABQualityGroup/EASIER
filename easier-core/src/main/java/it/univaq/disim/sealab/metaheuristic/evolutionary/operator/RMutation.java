@@ -4,14 +4,11 @@ import java.rmi.UnexpectedException;
 
 import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.operator.MutationOperator;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RSequence;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 @SuppressWarnings("serial")
 public class RMutation<S extends RSolution> implements MutationOperator<S> {
@@ -29,7 +26,7 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 	}
 
 	/** Constructor */
-	public RMutation(RProblem problem, double distributionIndex) {
+	public RMutation(RProblem<S> problem, double distributionIndex) {
 		this(1.0 / problem.getNumberOfVariables(), distributionIndex);
 	}
 
@@ -86,24 +83,18 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			if (randomGenerator.nextDouble() <= probability) {
-				try {
-					boolean altered = false;
-					int num_failures = 0;
-					while (!altered) {
-						if (solution.alter(randomGenerator.nextInt(0,
-								solution.getVariableValue(0).getRefactoring().getActions().size() - 1))) {
-							solution.setMutated();
-							// altered = true;
+				boolean altered = false;
+				int num_failures = 0;
+				while (!altered) {
+					if (solution.alter(randomGenerator.nextInt(0,
+							solution.getVariableValue(0).getActions().size() - 1))) {
+						solution.setMutated();
+						break;
+					} else {
+						num_failures++;
+						if (num_failures >= allowed_failures)
 							break;
-						} else {
-							num_failures++;
-							if (num_failures >= allowed_failures)
-								break;
-						}
 					}
-				} catch (UnexpectedException | ParserException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}
