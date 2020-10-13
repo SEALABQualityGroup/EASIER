@@ -249,12 +249,6 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		umlTargetNodes.addAll(n);
 	}
 
-	@Override
-	public void freeMemory() {
-		parameters.clear();
-		pre = null;
-		post = null;
-	}
 
 	@Override
 	public String toString() {

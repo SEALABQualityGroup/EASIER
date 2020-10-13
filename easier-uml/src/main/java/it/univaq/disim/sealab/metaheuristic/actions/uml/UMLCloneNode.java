@@ -263,13 +263,6 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	}
 
 	@Override
-	public void freeMemory() {
-		parameters.clear();
-		pre = null;
-		post = null;
-	}
-
-	@Override
 	public String toString() {
 		return "Cloning --> " + targetObject.getName() + " with -->  " + umlClonedNode.getName();
 	}

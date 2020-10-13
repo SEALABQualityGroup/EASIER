@@ -19,8 +19,6 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	private static final long serialVersionUID = 1L;
 	
 	
-	public static List<RSolution> generatedSolutions;
-	
 	protected Path modelPath;
 	
 	protected boolean refactored;
@@ -51,7 +49,6 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 		crossovered = false;
 		mutated = false;
 		refactored = false;
-		generatedSolutions.add(this);
 	}
 
 	public RProblem<?> getProblem(){

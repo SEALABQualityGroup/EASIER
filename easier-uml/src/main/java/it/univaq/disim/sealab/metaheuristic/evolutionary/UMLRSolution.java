@@ -82,7 +82,6 @@ public class UMLRSolution extends RSolution {
 				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
 
 		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
-		cleanedSolutionsIntegers = new ArrayList<>();
 	}
 
 	protected UMLRSolution(UMLRProblem<?> p) {
@@ -487,10 +486,6 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
-		
-		bckAnn.clearMemory();
-		bckAnn = null;
-
 	}
 
 	public double evaluatePerformance() {
@@ -807,24 +802,5 @@ public class UMLRSolution extends RSolution {
 		return true;
 	}
 	
-	@Override
-	public void freeMemory() {
-		try {
-			if(dirtyIModel != null) {
-				dirtyIModel.clearCache();
-				dirtyIModel = null;
-			}
-			if(iModel != null) {
-				iModel.clearCache();
-				iModel = null;
-			}
-		}catch(NullPointerException e) {
-			e.printStackTrace();
-		}
-		
-		this.getVariableValue(0).getRefactoring().getActions().forEach(a -> a.freeMemory());
-		System.out.println(String.format("Solution '%s' cleaned", this.name));
-		cleanedSolutionsIntegers.add(this.name);
-	}
 
 }

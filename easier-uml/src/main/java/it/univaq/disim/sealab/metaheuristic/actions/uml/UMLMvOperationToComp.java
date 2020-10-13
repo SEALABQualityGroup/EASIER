@@ -156,26 +156,6 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	@Override
 	public void createPreCondition() {
-<<<<<<< HEAD
-		PreCondition preCondition = solution.getController().getManager().createPreCondition();
-
-		FOLSpecification specification = solution.getController().getManager()
-				.createFOLSpectification("MvOperationToComponentPreCondition");
-
-		ExistsOperator existsOpInOperations = solution.getController().getManager()
-				.createExistsInCollectionOperator(getOpToMoveSVP(), getAllOpsMVP());
-
-		ExistsOperator existsTargetInComponents = solution.getController().getManager()
-				.createExistsInCollectionOperator(getTargetCompSVP(), getAllCompsMVP());
-
-		ExistsOperator existsOpInOpsOfTarget = solution.getController().getManager()
-				.createExistsInCollectionOperator(getOpToMoveSVP(), getAllTargetCompOpsMVP());
-
-		NotOperator notExistsOpInOpsOfTarget = solution.getController().getManager()
-				.createNotOperator(existsOpInOpsOfTarget);
-
-		AndOperator andRoot = solution.getController().getManager().createAndOperator();
-=======
 		PreCondition preCondition = Manager.createPreCondition();
 
 		FOLSpecification specification = Manager.createFOLSpectification("MvOperationToComponentPreCondition");
@@ -192,7 +172,6 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		NotOperator notExistsOpInOpsOfTarget = Manager.createNotOperator(existsOpInOpsOfTarget);
 
 		AndOperator andRoot = Manager.createAndOperator();
->>>>>>> easier-2
 		andRoot.getArguments().add(existsOpInOperations);
 		andRoot.getArguments().add(existsTargetInComponents);
 		andRoot.getArguments().add(notExistsOpInOpsOfTarget);
