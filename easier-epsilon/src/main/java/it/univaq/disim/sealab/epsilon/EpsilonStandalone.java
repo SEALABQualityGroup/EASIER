@@ -10,13 +10,10 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.xmi.impl.GenericXMLResourceFactoryImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
-import org.eclipse.epsilon.emc.emf.AbstractEmfModel;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.xml.XmlModel;
@@ -64,8 +61,6 @@ public abstract class EpsilonStandalone {
 		setParameter(targetObj, type, "self");
 		return this;
 	}
-
-	public abstract EpsilonStandalone setModel(Path modelFilePath);
 
 	public EpsilonStandalone setModel(IModel m) {
 		model.add(m);
@@ -131,19 +126,13 @@ public abstract class EpsilonStandalone {
 		}
 
 		model.forEach(m -> module.getContext().getModelRepository().addModel(m));
-//		module.getContext().getModelRepository().add(model);
 
 		for (Variable parameter : parameters) {
 			module.getContext().getFrameStack().put(parameter);
 		}
 
 		preProcess();
-//		try {
 		result = execute(module);
-//		} catch (EolRuntimeException e) {
-//			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
-//			e.printStackTrace();
-//		}
 	}
 
 	public Path getMetamodelPath() {
@@ -224,18 +213,17 @@ public abstract class EpsilonStandalone {
 	 * @throws EolModelLoadingException
 	 * @throws URISyntaxException
 	 */
-	public static EasierUmlModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
-			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
+	public static EasierUmlModel createUmlModel(String model) throws EolModelLoadingException, URISyntaxException {
 		CachedResourceSet.getCache().clear();
 
 		EasierUmlModel emfModel = new EasierUmlModel();
 
 		StringProperties properties = new StringProperties();
-		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storedOnDisposal);
+		properties.put(EmfModel.PROPERTY_NAME, "UML");
+		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, false);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
-		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
-		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");// ,http://com.masdes.dam/profiles/Core/1.0");
+		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model));
+		properties.put(EmfModel.PROPERTY_METAMODEL_URI, null);// ,http://com.masdes.dam/profiles/Core/1.0");
 		properties.put(EmfModel.PROPERTY_CACHED, false);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);
@@ -313,26 +301,18 @@ public abstract class EpsilonStandalone {
 	public IEolModule getModule() {
 		return module;
 	}
-	
+
 	public void clearMemory() {
-		this.getModule().getContext().dispose();
+		
 		this.getModule().getImports().clear();
 		this.getModule().getComments().clear();
+		this.module.getOperations().clear();
+		this.module.getChildren().clear();
+		
+		this.getModule().getContext().dispose();
 		this.getModule().getContext().getModelRepository().dispose();
 		this.getModule().getContext().getFrameStack().dispose();
 
-		for (IModel m : model) {
-			if (m instanceof EasierUmlModel) {
-				ResourceSet rs = ((EasierUmlModel) m).getResourceSet();
-				
-				while (rs.getResources().size() > 0) {
-					Resource res = rs.getResources().get(0);
-					res.eAdapters().clear();
-					res.unload();
-					rs.getResources().remove(res);
-				}
-			}
-		}
 		CacheAdapter.getInstance().clear();
 	}
 

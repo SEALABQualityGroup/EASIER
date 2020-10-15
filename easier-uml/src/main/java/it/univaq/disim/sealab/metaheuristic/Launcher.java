@@ -34,6 +34,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.UMLRExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
@@ -57,7 +58,6 @@ public class Launcher {
 
 		List<Path> referenceFront = new ArrayList<>();
 
-
 		if (Configurator.eINSTANCE.getReferenceFront() != null)
 			referenceFront = Configurator.eINSTANCE.getReferenceFront();
 
@@ -75,7 +75,7 @@ public class Launcher {
 			for (Path m : modelsPath) {
 				System.out.println("Number of source model");
 				ProgressBar.showBar(i, modelsPath.size());
-				List<RProblem<UMLRSolution>> rProblems = createProblems(modelsPath);
+				List<RProblem<UMLRSolution>> rProblems = createProblems(m);
 				List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
 
 				FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
@@ -113,7 +113,7 @@ public class Launcher {
 						.setIndicatorList(qualityIndicators).setIndependentRuns(INDEPENDENT_RUNS)
 						.setNumberOfCores(CORES).build();
 		try {
-			List<Entry<Algorithm<List<UMLRSolution>>, Long>> computingTimes = new RExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
+			List<Entry<Algorithm<List<UMLRSolution>>, Long>> computingTimes = new UMLRExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
 					(RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).run().getComputingTimes();
 
 			((RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).setComputingTime(computingTimes);
@@ -181,27 +181,26 @@ public class Launcher {
 		return algorithms;
 	}
 
-	public static List<RProblem<UMLRSolution>> createProblems(List<Path> modelsPath) {
+	public static List<RProblem<UMLRSolution>> createProblems(Path modelPath) {
 
 		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
 
-		for (Path src : modelsPath) {
-			for (Integer l : Configurator.eINSTANCE.getLength()) {
-				for (Double w : Configurator.eINSTANCE.getCloningWeight()) {
-					for (Integer mc : Configurator.eINSTANCE.getMaxCloning()) {
-						if (mc == -1)
-							mc = l; // whether mc is -1, mc will be the chromosome's length
-						String pName = src + "_Length_" + String.valueOf(l) + "_CloningWeight_" + String.valueOf(w)
-								+ "_MaxCloning_" + String.valueOf(mc);
-						UMLRProblem<UMLRSolution> p = new UMLRProblem<>(src, l, Configurator.eINSTANCE.getActions(),
-								Configurator.eINSTANCE.getAllowedFailures(),
-								Configurator.eINSTANCE.getPopulationSize());
-						p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
-						rProblems.add(p);
-					}
+//		for (Path src : modelsPath) {
+		for (Integer l : Configurator.eINSTANCE.getLength()) {
+			for (Double w : Configurator.eINSTANCE.getCloningWeight()) {
+				for (Integer mc : Configurator.eINSTANCE.getMaxCloning()) {
+					if (mc == -1)
+						mc = l; // whether mc is -1, mc will be the chromosome's length
+					String pName = modelPath.getFileName() + "_Length_" + String.valueOf(l) + "_CloningWeight_"
+							+ String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+					UMLRProblem<UMLRSolution> p = new UMLRProblem<>(modelPath, l, Configurator.eINSTANCE.getActions(),
+							Configurator.eINSTANCE.getAllowedFailures(), Configurator.eINSTANCE.getPopulationSize());
+					p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
+					rProblems.add(p);
 				}
 			}
 		}
+//		}
 		return rProblems;
 	}
 

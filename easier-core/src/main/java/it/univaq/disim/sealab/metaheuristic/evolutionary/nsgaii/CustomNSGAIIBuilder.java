@@ -18,6 +18,7 @@ public class CustomNSGAIIBuilder<S extends RSolution> extends NSGAIIBuilder<S>{
 	public NSGAII<S> build() {
 		NSGAII<S> algorithm = new CustomNSGAII<S>(this.getProblem(), this.getMaxIterations(), this.getPopulationSize(),
 				this.getCrossoverOperator(), this.getMutationOperator(), this.getSelectionOperator(), this.getSolutionListEvaluator());
+		
 	    return algorithm ;
 	  }
 

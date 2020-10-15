@@ -1,7 +1,10 @@
 package it.univaq.disim.sealab.epsilon.eol;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet.Cache;
 import org.eclipse.epsilon.emc.uml.UmlModel;
 import org.eclipse.papyrus.MARTE.MARTE_AnalysisModel.GQAM.GQAMPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.Alloc.AllocPackage;
@@ -9,6 +12,7 @@ import org.eclipse.papyrus.MARTE.MARTE_Foundations.CoreElements.CoreElementsPack
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.GRM.GRMPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.NFPs.NFPsPackage;
 import org.eclipse.papyrus.MARTE.MARTE_Foundations.Time.TimePackage;
+import org.eclipse.uml2.common.util.CacheAdapter;
 import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
@@ -188,6 +192,23 @@ public class EasierUmlModel extends UmlModel {
 		} else if (!resourceSet.equals(other.resourceSet))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public void disposeModel() {
+		super.disposeModel();
+		
+		CacheAdapter cAdapter = CacheAdapter.getInstance();
+		
+		while (resourceSet.getResources().size() > 0) {
+			Resource res = resourceSet.getResources().get(0);
+			
+			cAdapter.clear(res);
+			
+			resourceSet.getResources().remove(res);
+		}
+		resourceSet = null;
+		
 	}
 	
 }

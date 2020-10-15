@@ -42,8 +42,7 @@ public class TestUMLManager {
 		pathToModel = Paths
 				.get("/home/peo/git/sealab/easier/easier-uml/src/main/resources/models/agv/automatedGuidedVehicle.uml");
 
-		umlIModel = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML", pathToModel, UMLPackage.eNS_URI, true,
-				false);
+		umlIModel = (EasierUmlModel) EpsilonStandalone.createUmlModel(pathToModel.toString());
 
 		resourceSet = umlIModel.getResource().getResourceSet();
 	}

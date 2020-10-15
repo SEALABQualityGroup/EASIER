@@ -58,4 +58,11 @@ public class EVLStandalone extends EpsilonStandalone {
 	public void preProcess() {
 	}
 	
+//	@Override
+//	public void clearMemory() {
+//		super.clearMemory();
+//		((EvlModule)this.module).getPre().clear();
+//		((EvlModule)this.module).getContext().dispose();
+//	}
+	
 }

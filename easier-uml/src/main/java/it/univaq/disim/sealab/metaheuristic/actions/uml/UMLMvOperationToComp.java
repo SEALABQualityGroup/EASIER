@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Message;
@@ -40,7 +43,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	private final static double VALUE_COST = 1.23;
 
-	private final Path sourceModelPath;
+	private final String sourceModelPath;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -49,7 +52,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	public UMLMvOperationToComp(UMLRSolution sol) {
 
-		sourceModelPath = sol.getModelPath();
+		sourceModelPath = sol.getModelPath().toString();
 
 		umlOpToMove = getRandomOperation(sol);
 		umlTargetComp = getRandomComponent(sol);
@@ -138,7 +141,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		EOLStandalone executor = new EOLStandalone();
 
 		try {
-			EasierUmlModel contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
+			EasierUmlModel contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
+			contextModel.setStoredOnDisposal(true);
 
 			executor.setModel(contextModel);
 			executor.setSource(Paths.get(eolModulePath));
@@ -146,9 +150,11 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 					.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
 
 			executor.execute();
-		} catch (Exception e) {
+		} catch (EolRuntimeException e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
-			e.printStackTrace();
+//			e.printStackTrace();
+		}catch(URISyntaxException e2) {
+			e2.printStackTrace();
 		}
 		executor.clearMemory();
 		executor = null;

@@ -157,7 +157,7 @@ public class UMLRSolution extends RSolution {
 			org.apache.commons.io.FileUtils.copyFile(this.problem.getSourceModelPath().toFile(), modelPath.toFile());
 
 			try {
-				dirtyIModel = EOLStandalone.createUmlModel("UML", modelPath, UMLPackage.eNS_URI, true, false);
+				dirtyIModel = EOLStandalone.createUmlModel(modelPath.toString());
 			} catch (EolModelLoadingException | URISyntaxException e) {
 				e.printStackTrace();
 			}
@@ -316,8 +316,9 @@ public class UMLRSolution extends RSolution {
 
 		System.out.print("Counting PAs (it may take a while) ... ");
 		EVLStandalone pasCounter = new EVLStandalone();
+		EasierUmlModel uml = null;
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
+			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 			pasCounter.setModel(uml);
 			pasCounter.setSource(Paths.get(refactoringLibraryModule));
 
@@ -327,6 +328,7 @@ public class UMLRSolution extends RSolution {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			uml = null;
 			pasCounter.clearMemory();
 			pasCounter = null;
 		}
@@ -443,7 +445,7 @@ public class UMLRSolution extends RSolution {
 		EOLStandalone bckAnn = new EOLStandalone();
 
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
 			bckAnn.setModel(uml);
 
@@ -520,8 +522,7 @@ public class UMLRSolution extends RSolution {
 		List<EObject> nodes = null;
 		List<EObject> scenarios = null;
 		try {
-			source = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML", problem.sourceModelPath, null, true,
-					false);
+			source = (EasierUmlModel) EpsilonStandalone.createUmlModel(problem.sourceModelPath.toString());
 			nodes = (List<EObject>) source.getAllOfType("Node");
 			scenarios = (List<EObject>) source.getAllOfType("UseCase");
 		} catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
@@ -544,7 +545,7 @@ public class UMLRSolution extends RSolution {
 		ArrayList<Double> refactoredMetrics = new ArrayList<Double>();
 
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", modelPath, null, true, false);
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
 			// for each elements of the source model, it is picked the element with the same
 			// id in the refactored one
@@ -651,7 +652,7 @@ public class UMLRSolution extends RSolution {
 		System.out.print("Applying transformation ... ");
 
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel("UML", this.modelPath, null, true, false);
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel(this.modelPath.toString());
 
 			ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
 			executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
@@ -748,13 +749,9 @@ public class UMLRSolution extends RSolution {
 
 	@Override
 	public void freeMemory() {
-		try {
 			if (dirtyIModel != null) {
 				dirtyIModel.dispose();
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
 		System.out.println(String.format("Solution '%s' cleaned", this.name));
 	}
 

@@ -3,6 +3,7 @@
  */
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +28,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
@@ -42,7 +44,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final static double VALUE_COST = 1.23;
 
-	private final Path sourceModelPath;
+	private final String sourceModelPath;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -55,7 +57,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	public UMLMvComponentToNN(UMLRSolution sol) {
 
-		sourceModelPath = sol.getModelPath();
+		sourceModelPath = sol.getModelPath().toString();
 
 		umlTargetNodes = new BasicEList<>();
 
@@ -136,7 +138,9 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 		EasierUmlModel contextModel;
 		try {
-			contextModel = EpsilonStandalone.createUmlModel("UML", sourceModelPath, null, true, true);
+			contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
+			contextModel.setStoredOnDisposal(true);
+			
 			executor.setModel(contextModel);
 			executor.setSource(eolModulePath);
 
@@ -146,10 +150,14 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 
 			executor.execute();
-		} catch (Exception e) {
+		} catch (EolRuntimeException e) {
 			System.err.println("Error in execution the eolmodule " + eolModulePath);
-			e.printStackTrace();
+//			e.printStackTrace();
+		}catch (URISyntaxException e) {
+			EasierLogger.logger_.severe(String.format("ERROR while reading the model", sourceModelPath));
 		}
+
+		
 		executor.clearMemory();
 		executor = null;
 	}

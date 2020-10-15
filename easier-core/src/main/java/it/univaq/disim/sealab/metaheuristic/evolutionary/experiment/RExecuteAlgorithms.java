@@ -21,6 +21,7 @@ import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
@@ -30,8 +31,8 @@ import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class RExecuteAlgorithms<S extends RSolution, Result> {
 
-	private Experiment<S, Result> experiment;
-	private List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
+	protected Experiment<S, Result> experiment;
+	protected List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
 
 	/** Constructor */
 	public RExecuteAlgorithms(RExperiment<S, Result> exp) {
@@ -60,19 +61,27 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
 
 			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
-			EasierLogger.logger_.info("No longer used Solutions have been removed!");
+			
+			// removes old solutions
+			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
+				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
+			}
+			
 		}
+		
+		
+		
 		return this;
 	}
 
-	private Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+	protected Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
 		long initTime = System.currentTimeMillis();
 		algorithm.runAlgorithm(id, this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
 		return new AbstractMap.SimpleEntry<Algorithm<Result>, Long>(algorithm.getAlgorithm(), computingTime);// new
 	}
 
-	private void prepareOutputDirectory() {
+	protected void prepareOutputDirectory() {
 		if (experimentDirectoryDoesNotExist()) {
 			createExperimentDirectory();
 		}

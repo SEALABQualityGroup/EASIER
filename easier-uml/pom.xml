@@ -61,18 +61,9 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>it.univaq.disim.sealab.metaheuristic.Launcher</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin-->
+			<!-- plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+				<configuration> <archive> <manifest> <addClasspath>true</addClasspath> <mainClass>it.univaq.disim.sealab.metaheuristic.Launcher</mainClass> 
+				</manifest> </archive> </configuration> </plugin -->
 		</plugins>
 	</build>
 
@@ -154,21 +145,12 @@
 			<version>1.2.0.201803031506</version>
 		</dependency>
 
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.standard</artifactId>
-			<version>1.0.0.v20150202-0947</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l3</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l2</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.standard</artifactId> 
+			<version>1.0.0.v20150202-0947</version> </dependency -->
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.l3</artifactId> 
+			<version>1.1.0-v20130902-0826</version> </dependency -->
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.l2</artifactId> 
+			<version>1.1.0-v20130902-0826</version> </dependency -->
 
 		<!-- Dependency to ECLIPSE -->
 		<!-- <dependency> -->

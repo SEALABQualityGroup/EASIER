@@ -132,21 +132,21 @@
 			<version>1.2.0.201803031506</version>
 		</dependency>
 
-		<dependency>
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.standard</artifactId>
 			<version>1.0.0.v20150202-0947</version>
-		</dependency>
-		<dependency>
+		</dependency-->
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l3</artifactId>
 			<version>1.1.0-v20130902-0826</version>
-		</dependency>
-		<dependency>
+		</dependency-->
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l2</artifactId>
 			<version>1.1.0-v20130902-0826</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 
 	<repositories>
