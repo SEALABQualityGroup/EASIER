@@ -12,8 +12,8 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	private static final long serialVersionUID = 1L;
 
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize) {
-		super(srcFolderPath, srcFolderPath.resolve("automatedGuidedVehicle.uml"), desired_length, length, allowedFailures,
-				populationSize);
+		super(srcFolderPath, srcFolderPath.resolve("automatedGuidedVehicle.uml"), desired_length, length,
+				allowedFailures, populationSize);
 	}
 
 	public UMLRProblem(SourceModel srcModel, int desired_length, int length, int allowedFailures, int populationSize) {
@@ -45,24 +45,21 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
 			if (i == FIRST_OBJ) {
 				final double quality = solution.getPerfQ();
-				EasierLogger.logger_
-				.info("SOLUTION #" + solution.getName() + ": Total number of perfQ --> " + quality);
-				solution.setObjective(i, quality);
+				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of perfQ --> " + quality);
+				solution.setObjective(i, (-1 * quality)); //to be maximized
 			} else if (i == SECOND_OBJ) {
 				final double numOfChanges = solution.getNumOfChanges();
 				EasierLogger.logger_
-				.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
+						.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
 				solution.setObjective(i, numOfChanges);
 			} else if (i == THIRD_OBJ) {
 				final int pas = solution.getPAs();
-				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
+				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
 				solution.setObjective(i, pas);
 			} else if (i == FOURTH_OBJ) {
 				final double reliability = solution.getReliability();
-				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
-				solution.setObjective(i, reliability);
+				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
+				solution.setObjective(i, (-1 * reliability));//to be maximized
 			} else {
 				System.out.println("\n" + i);
 				throw new RuntimeException("unexpected behaviour!!!");

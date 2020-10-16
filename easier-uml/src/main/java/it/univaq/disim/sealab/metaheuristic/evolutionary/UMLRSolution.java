@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,17 +23,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.uml2.common.util.CacheAdapter;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Stereotype;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.internal.impl.NodeImpl;
-import org.eclipse.uml2.uml.internal.impl.UseCaseImpl;
+import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
@@ -73,7 +70,6 @@ public class UMLRSolution extends RSolution {
 
 	private final static String refactoringLibraryModule, uml2lqnModule;
 	private final static String GQAM_NAMESPACE;
-
 
 	static {
 		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -147,7 +143,7 @@ public class UMLRSolution extends RSolution {
 
 		parents = new UMLRSolution[2];
 
-		this.setVariableValue(0,new Refactoring());
+		this.setVariableValue(0, new Refactoring());
 
 		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
 				String.valueOf(getName()));
@@ -170,8 +166,7 @@ public class UMLRSolution extends RSolution {
 	}
 
 	protected void createRandomRefactoring(int l, int n, int a) {
-		
-		
+
 		do {
 			try {
 				tryRandomPush(n);
@@ -395,7 +390,7 @@ public class UMLRSolution extends RSolution {
 			}
 			e.printStackTrace();
 		}
-		
+
 		process = null;
 
 		System.out.println("done");
@@ -511,12 +506,10 @@ public class UMLRSolution extends RSolution {
 		 * the performance model. For this reason, the perfQ analyzes only the
 		 * performance metrics of the nodes common among the models
 		 */
-
 		EasierUmlModel source = null;
 
 		// The lists used to store the elements of both models
 		List<EObject> sourceElements = new ArrayList<EObject>();
-		List<EObject> refactoredElements = new ArrayList<EObject>();
 
 		// The elements of the source model;
 		List<EObject> nodes = null;
@@ -540,99 +533,56 @@ public class UMLRSolution extends RSolution {
 		sourceElements.addAll(scenarios);
 		sourceElements.addAll(nodes);
 
-		// Lists needed to store the values of the performance metrics
-		ArrayList<Double> sourceMetrics = new ArrayList<Double>();
-		ArrayList<Double> refactoredMetrics = new ArrayList<Double>();
-
+		int numberOfMetrics = 0;
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+			final EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
 			// for each elements of the source model, it is picked the element with the same
 			// id in the refactored one
+
 			for (EObject element : sourceElements) {
 				String id = getXmiId(source, element);
-
 				EObject correspondingElement = (EObject) uml.getElementById(id);
-				refactoredElements.add(correspondingElement);
 
-				// for each model element, it is collected the performance metric and added to
-				// the vector
-
-				sourceMetrics.addAll(getMetrics(element));
-				refactoredMetrics.addAll(getMetrics(correspondingElement));
-
+				if (element instanceof UseCase) {
+					value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
+							"respT");
+					value += computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
+							"throughput");
+					numberOfMetrics += 2;
+				} else if (element instanceof Node) {
+					value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaExecHost",
+							"utilization");
+					numberOfMetrics++;
+				}
 			}
 		} catch (Exception e) {
 			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
 			e.printStackTrace();
 		}
 
-		// This loop calculates the perfQ value
-		Iterator<Double> it1 = sourceMetrics.iterator();
-		Iterator<Double> it2 = refactoredMetrics.iterator();
-
-		while (it1.hasNext() && it2.hasNext()) {
-
-			Double sourceValue = it1.next();
-			Double refactoredValue = it2.next();
-
-			if ((sourceValue + refactoredValue) == 0)
-				value += 0d;
-			else
-				value += (sourceValue - refactoredValue) / (sourceValue + refactoredValue);
-		}
-
-		return value / sourceMetrics.size();
+		return value / numberOfMetrics;
 
 	}
 
-	public ArrayList<Double> getMetrics(EObject element) throws Exception {
+	private double computePerfQValue(final Element source, final Element ref, final String stereotypeName,
+			final String tag) {
 
-		ArrayList<Double> metrics = new ArrayList<Double>();
+		Stereotype stereotype = source.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
+		EList<?> values = (EList<?>) source.getValue(stereotype, tag);
 
-		if (element instanceof UseCaseImpl) {
+		double sourceValue = 0d;
+		if (!values.isEmpty())
+			sourceValue = Double.parseDouble(values.get(0).toString());
 
-			UseCaseImpl scenario = (UseCaseImpl) element;
-			Stereotype stereotype = scenario.getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
+		stereotype = ref.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
+		values = (EList<?>) ref.getValue(stereotype, tag);
 
-			EList<?> throughput = (EList<?>) scenario.getValue(stereotype, "throughput");
-			EList<?> respT = (EList<?>) scenario.getValue(stereotype, "respT");
+		double refValue = 0d;
+		if (!values.isEmpty())
+			refValue = Double.parseDouble(values.get(0).toString());
 
-			if (throughput.isEmpty())
-				throw new java.lang.Exception("Throughput not found for the UseCase: " + scenario.getName());
-
-			if (respT.isEmpty())
-				throw new java.lang.Exception("ResponseTime not found for the UseCase: " + scenario.getName());
-
-			metrics.add((Double.parseDouble(throughput.get(0).toString())));
-			metrics.add(-1 * (Double.parseDouble(respT.get(0).toString())));
-
-			scenario = null;
-			stereotype = null;
-			throughput.clear();
-			respT.clear();
-
-		} else if (element instanceof NodeImpl) {
-
-			NodeImpl node = (NodeImpl) element;
-			Stereotype stereotype = node.getAppliedStereotype(GQAM_NAMESPACE + "GaExecHost");
-			EList<?> value = ((EList<?>) node.getValue(stereotype, "utilization"));
-
-			if (value.isEmpty()) {
-				metrics.add(0d); // TODO TBC after fixing the backAnnotation
-				// throw new java.lang.Exception("Utilization not found for the Node: " +
-				// node.getName());
-			} else {
-				metrics.add(-1 * Double.parseDouble(value.get(0).toString()));
-			}
-
-			node = null;
-			stereotype = null;
-			value.clear();
-		}
-
-		return metrics;
-
+		return (refValue + sourceValue) == 0 ? 0d : (refValue - sourceValue) / (refValue + sourceValue);
 	}
 
 	private List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
@@ -715,7 +665,7 @@ public class UMLRSolution extends RSolution {
 		try {
 			final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
 			reliability = new Reliability(uml.getScenarios()).compute();
-			
+
 			ResourceSet rs = uml.getModel().eResource().getResourceSet();
 			while (rs.getResources().size() > 0) {
 				Resource res = rs.getResources().get(0);
@@ -724,7 +674,7 @@ public class UMLRSolution extends RSolution {
 				rs.getResources().remove(res);
 			}
 			CacheAdapter.getInstance().clear();
-			
+
 		} catch (MissingTagException e) {
 			System.err.println("Error in computing the reliability");
 
@@ -749,9 +699,9 @@ public class UMLRSolution extends RSolution {
 
 	@Override
 	public void freeMemory() {
-			if (dirtyIModel != null) {
-				dirtyIModel.dispose();
-			}
+		if (dirtyIModel != null) {
+			dirtyIModel.dispose();
+		}
 		System.out.println(String.format("Solution '%s' cleaned", this.name));
 	}
 
@@ -763,7 +713,8 @@ public class UMLRSolution extends RSolution {
 		result = prime * result + VARIABLE_INDEX;
 		result = prime * result + ((dirtyIModel == null) ? 0 : dirtyIModel.hashCode());
 		result = prime * result + ((folderPath == null) ? 0 : folderPath.hashCode());
-		result = prime * result + ((getVariableValue(VARIABLE_INDEX) == null) ? 0 : getVariableValue(VARIABLE_INDEX).hashCode());
+		result = prime * result
+				+ ((getVariableValue(VARIABLE_INDEX) == null) ? 0 : getVariableValue(VARIABLE_INDEX).hashCode());
 		return result;
 	}
 
@@ -798,6 +749,5 @@ public class UMLRSolution extends RSolution {
 			return false;
 		return true;
 	}
-	
 
 }
