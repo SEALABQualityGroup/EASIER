@@ -36,6 +36,7 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
+import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
@@ -325,6 +326,7 @@ public class UMLRSolution extends RSolution {
 		} finally {
 			uml = null;
 			pasCounter.clearMemory();
+			UMLMemoryOptimizer.cleanup();
 			pasCounter = null;
 		}
 		System.out.println("done");
@@ -463,8 +465,7 @@ public class UMLRSolution extends RSolution {
 
 			bckAnn.execute();
 
-			bckAnn.clearMemory();
-			bckAnn = null;
+			
 
 		} catch (URISyntaxException | EolRuntimeException e) {
 			final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
@@ -482,6 +483,10 @@ public class UMLRSolution extends RSolution {
 				System.out.println(e1.getMessage());
 			}
 			e.printStackTrace();
+		}finally {
+			bckAnn.clearMemory();
+			UMLMemoryOptimizer.cleanup();
+			bckAnn = null;
 		}
 	}
 
@@ -534,8 +539,9 @@ public class UMLRSolution extends RSolution {
 		sourceElements.addAll(nodes);
 
 		int numberOfMetrics = 0;
+		EasierUmlModel uml = null;
 		try {
-			final EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
 			// for each elements of the source model, it is picked the element with the same
 			// id in the refactored one
@@ -559,6 +565,10 @@ public class UMLRSolution extends RSolution {
 		} catch (Exception e) {
 			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
 			e.printStackTrace();
+		}finally {
+			uml.dispose();
+			UMLMemoryOptimizer.cleanup();
+			uml = null;
 		}
 
 		return value / numberOfMetrics;
@@ -600,11 +610,12 @@ public class UMLRSolution extends RSolution {
 	public void applyTransformation() {
 
 		System.out.print("Applying transformation ... ");
-
+		EasierUmlModel uml = null;
+		ETLStandalone executor = null;
 		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel(this.modelPath.toString());
+			uml = EpsilonStandalone.createUmlModel(this.modelPath.toString());
 
-			ETLStandalone executor = new ETLStandalone(this.modelPath.getParent());
+			executor = new ETLStandalone(this.modelPath.getParent());
 			executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
 			executor.setModel(uml);
 			executor.setModel(
@@ -615,6 +626,7 @@ public class UMLRSolution extends RSolution {
 
 			executor.execute();
 			executor.clearMemory();
+
 
 		} catch (Exception e) {
 			System.err.println("Error in runnig the ETL transformation");
@@ -634,6 +646,10 @@ public class UMLRSolution extends RSolution {
 				System.out.println(e1.getMessage());
 			}
 			e.printStackTrace();
+		}finally {
+			UMLMemoryOptimizer.cleanup();
+			uml = null;
+			executor = null;
 		}
 		System.out.println("done");
 	}
@@ -650,6 +666,8 @@ public class UMLRSolution extends RSolution {
 			}
 		}
 		this.setRefactored();
+		
+		UMLMemoryOptimizer.cleanup();
 
 	}
 
@@ -662,8 +680,9 @@ public class UMLRSolution extends RSolution {
 
 		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
+		UMLReliability uml = null;
 		try {
-			final UMLReliability uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+			uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
 			reliability = new Reliability(uml.getScenarios()).compute();
 
 			ResourceSet rs = uml.getModel().eResource().getResourceSet();
@@ -673,8 +692,6 @@ public class UMLRSolution extends RSolution {
 				res.unload();
 				rs.getResources().remove(res);
 			}
-			CacheAdapter.getInstance().clear();
-
 		} catch (MissingTagException e) {
 			System.err.println("Error in computing the reliability");
 
@@ -691,6 +708,9 @@ public class UMLRSolution extends RSolution {
 			} catch (IOException e1) {
 				System.out.println(e1.getMessage());
 			}
+		}finally {
+			UMLMemoryOptimizer.cleanup();
+			uml = null;
 		}
 
 		System.out.println("done");

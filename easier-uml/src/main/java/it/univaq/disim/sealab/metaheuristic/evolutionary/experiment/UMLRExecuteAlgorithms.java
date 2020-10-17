@@ -5,12 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.eclipse.uml2.common.util.CacheAdapter;
+import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
+import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
@@ -49,36 +53,25 @@ public class UMLRExecuteAlgorithms<S extends RSolution, Result> extends RExecute
 					Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
 
 			// removes old solutions
-			for (ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
-				((EasierAlgorithm) expAlg.getAlgorithm()).clear();
-			}
+//			for (ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
+//				((EasierAlgorithm) expAlg.getAlgorithm()).clear();
+//			}
 
-			cleanup();
+//			cleanup();
 
 		}
 
 		return this;
 	}
 	
-	private void cleanup() {
-		org.eclipse.uml2.common.util.CacheAdapter ca = org.eclipse.uml2.common.util.CacheAdapter.getInstance();
-		ca.clear();
-		String field = System.getProperty("org.eclipse.uml2.common.util.CacheAdapter.ThreadLocal") == null ? "INSTANCE" : "THREAD_LOCAL";
-		
-		try {
-			java.lang.reflect.Field instance = ca.getClass().getDeclaredField(field);
-			instance.setAccessible(true);
-			instance.set(ca, null);
-			
-			System.gc();
-			Method createCache = CacheAdapter.class.getDeclaredMethod("createCacheAdapter");
-			createCache.setAccessible(true);
-			instance.set(ca, createCache.invoke(ca));
-			
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-				| NoSuchMethodException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+	@Override
+	protected Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+		Entry<Algorithm<Result>, Long> computingTime = super.getComputingTime(algorithm, id);
+		UMLMemoryOptimizer.cleanup();
+		System.gc();
+		return computingTime;
 	}
+	
+	
 
 }

@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.eclipse.uml2.uml.resource.UMLResource;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.impl.AbstractEvolutionaryAlgorithm;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
@@ -23,10 +20,8 @@ import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class RExecuteAlgorithms<S extends RSolution, Result> {
@@ -63,9 +58,9 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
 			
 			// removes old solutions
-			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
-				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
-			}
+//			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
+//				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
+//			}
 			
 		}
 		
@@ -78,6 +73,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		long initTime = System.currentTimeMillis();
 		algorithm.runAlgorithm(id, this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
+		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
 		return new AbstractMap.SimpleEntry<Algorithm<Result>, Long>(algorithm.getAlgorithm(), computingTime);// new
 	}
 

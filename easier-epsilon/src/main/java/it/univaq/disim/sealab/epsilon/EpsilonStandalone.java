@@ -313,7 +313,7 @@ public abstract class EpsilonStandalone {
 		this.getModule().getContext().getModelRepository().dispose();
 		this.getModule().getContext().getFrameStack().dispose();
 
-		CacheAdapter.getInstance().clear();
+		
 	}
 
 }
