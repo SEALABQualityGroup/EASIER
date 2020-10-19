@@ -1,11 +1,23 @@
 package it.univaq.disim.sealab.metaheuristic;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
@@ -27,6 +39,12 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import com.beust.jcommander.JCommander;
 
+import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
+import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
+import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
@@ -76,22 +94,129 @@ public class Launcher {
 				System.out.println("Number of source model");
 				ProgressBar.showBar(i, modelsPath.size());
 				List<RProblem<UMLRSolution>> rProblems = createProblems(m);
+				
+				if(!m.resolve("output.xml").toFile().exists()) {
+					Path sourceModelPath = m.resolve("train-ticket.uml");
+					applyTransformation(sourceModelPath);
+					invokeSolver(sourceModelPath);
+				}
 				List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
-
 				FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
 				for (String qI : Configurator.eINSTANCE.getQualityIndicators()) {
 					GenericIndicator<UMLRSolution> ind = factory.createQualityIndicators(qI);
 					if (ind != null)
 						qIndicators.add(ind);
 				}
-
 				referenceFront = runExperiment(rProblems, qIndicators);
-
 			}
 			i++;
 		}
 	}
+	
+	
+	private static void applyTransformation(Path sourceModelPath) {
 
+		System.out.print("Applying transformation ... ");
+		EasierUmlModel uml = null;
+		ETLStandalone executor = null;
+		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+		try {
+			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+
+			executor = new ETLStandalone(sourceModelPath.getParent());
+			executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
+			executor.setModel(uml);
+			executor.setModel(
+					executor.createXMLModel(
+							"LQN", sourceModelPath.getParent().resolve("output.xml"), org.eclipse.emf.common.util.URI
+									.createFileURI(Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString()),
+							false, true));
+
+			executor.execute();
+			executor.clearMemory();
+
+
+		} catch (Exception e) {
+			System.err.println("Error in runnig the ETL transformation");
+			e.printStackTrace();
+		}finally {
+			UMLMemoryOptimizer.cleanup();
+			uml = null;
+			executor = null;
+		}
+		System.out.println("done");
+	}
+	
+	private static void invokeSolver(Path sourceModelPath) {
+		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
+
+		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
+		Path lqnModelPath = sourceModelPath.getParent().resolve("output.xml");
+
+		XMLUtil.conformanceChecking(lqnModelPath);
+
+		// to allow cycles in the lqn model
+		final String params = "-P cycles=yes";
+
+		Process process = null;
+		try {
+			process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+
+		process = null;
+
+		System.out.println("done");
+
+		System.out.print("Invoking the back annotator... ");
+		backAnnotation(sourceModelPath);
+		System.out.println("done");
+	}
+	
+	
+	private static void backAnnotation(Path sourceModelPath) {
+
+		EOLStandalone bckAnn = new EOLStandalone();
+
+		try {
+			EasierUmlModel uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+
+			bckAnn.setModel(uml);
+
+			String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+					"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+			
+			bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
+
+			// Points to lqn schema file and stores pacakges into the global package
+			// registry
+			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+					.resolve("lqn.xsd").toString();
+			Collection<EObject> generatedPackages = xsdEcoreBuilder
+					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+			for (EObject generatedEObject : generatedPackages) {
+				if (generatedEObject instanceof EPackage) {
+					EPackage generatedPackage = (EPackage) generatedEObject;
+					EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+				}
+			}
+			bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", sourceModelPath.getParent().resolve("output.lqxo"), true, false, true));
+			bckAnn.execute();
+
+		} catch (URISyntaxException | EolRuntimeException e) {
+			e.printStackTrace();
+		}finally {
+			bckAnn.clearMemory();
+			UMLMemoryOptimizer.cleanup();
+			bckAnn = null;
+		}
+	}
+	
 	public static List<Path> runExperiment(final List<RProblem<UMLRSolution>> rProblems,
 			final List<GenericIndicator<UMLRSolution>> qualityIndicators) {
 		final int INDEPENDENT_RUNS = Configurator.eINSTANCE.getIndependetRuns(); // should be 31 or 51
