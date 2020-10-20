@@ -40,7 +40,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism",
 				"" + this.experiment.getNumberOfCores());
-
+		
 		computingTimes = new ArrayList<>();
 
 		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
@@ -82,7 +82,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 			createExperimentDirectory();
 		}
 	}
-
+	
 	private boolean experimentDirectoryDoesNotExist() {
 		boolean result;
 		File experimentDirectory;

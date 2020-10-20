@@ -72,7 +72,7 @@ public class Configurator {
 	private List<Integer> length = Arrays.asList(4);
 
 	@Parameter(names = { "-af", "--allowedFaiulures" }, description = "Set the maximunm number of failures")
-	private int aw = 1000;
+	private int aw = 100;
 
 	@Parameter(names = { "-a", "--actions" }, description = "Set the number of available actions")
 	private int actions = 5; //clone, removeClone, const change, probability, size

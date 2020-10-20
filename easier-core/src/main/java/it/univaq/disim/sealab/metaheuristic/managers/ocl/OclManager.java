@@ -12,9 +12,12 @@ import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 import org.eclipse.ocl.types.OCLStandardLibrary;
 
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+
 public abstract class OclManager {
 
 	public static Object evaluateOCL(String query, EObject contextualElement) {
+		
 		// create an OCL instance for Ecore
 		OCL<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, Constraint, EClass, EObject> ocl;
 		ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE, contextualElement.eResource());

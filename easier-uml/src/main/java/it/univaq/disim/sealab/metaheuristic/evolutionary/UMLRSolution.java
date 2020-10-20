@@ -166,11 +166,33 @@ public class UMLRSolution extends RSolution {
 
 	}
 
+//	while (this.refactoring.getActions().size() < length) {
+//		if (!this.tryRandomPush(number_of_actions))
+//			num_failures++;
+//
+//		if (num_failures >= allowed_failures) {
+//			// START OVER
+//			num_failures = 0;
+//			this.refactoring = null;
+//			this.refactoring = new Refactoring(solution);
+//			this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
+//		}
+//	}
+	
 	protected void createRandomRefactoring(int l, int n, int a) {
 
+		int num_failures = 0;
+		
 		do {
 			try {
-				tryRandomPush(n);
+				if(!tryRandomPush(n))
+					num_failures++;
+				if (num_failures >= problem.allowed_failures) {
+					// START OVER
+					num_failures = 0;
+					this.setVariableValue(VARIABLE_INDEX, new Refactoring());
+					EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached... Created an empty refactoring!", problem.allowed_failures));
+				}
 			} catch (UnexpectedException | EolRuntimeException e) {
 				e.printStackTrace();
 			}
@@ -178,7 +200,7 @@ public class UMLRSolution extends RSolution {
 		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
-	protected void tryRandomPush(int n) throws UnexpectedException, EolRuntimeException {
+	protected boolean tryRandomPush(int n) throws UnexpectedException, EolRuntimeException {
 		Refactoring temporary_ref = getVariableValue(VARIABLE_INDEX).clone(this);
 
 		RefactoringAction candidate;
@@ -187,11 +209,13 @@ public class UMLRSolution extends RSolution {
 		} while (candidate == null);
 
 		temporary_ref.getActions().add(candidate);
-
+		
 		if (this.isFeasible(temporary_ref)) {
 			getVariableValue(VARIABLE_INDEX).getActions().add(candidate);
+			return true;
 		} else {
 			dirtyIModel.deleteElement(candidate);
+			return false;
 		}
 	}
 
@@ -209,6 +233,7 @@ public class UMLRSolution extends RSolution {
 				if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
 					EasierLogger.logger_
 							.warning("Multi-modification of the same operation for Solution #" + this.getName() + "!");
+					EasierLogger.logger_.warning(String.format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));
 					return false;
 				}
 				j++;
@@ -769,5 +794,6 @@ public class UMLRSolution extends RSolution {
 			return false;
 		return true;
 	}
+	
 
 }

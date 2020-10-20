@@ -20,7 +20,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize);
 
 	}
-
+	
 	@Override
 	public S createSolution() {
 		return (S) new UMLRSolution(this);
