@@ -52,11 +52,13 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 				EasierLogger.logger_
 						.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
 				solution.setObjective(i, numOfChanges);
-			} else if (i == THIRD_OBJ) {
-				final int pas = solution.getPAs();
-				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
-				solution.setObjective(i, pas);
-			} else if (i == FOURTH_OBJ) {
+			} 
+//			else if (i == THIRD_OBJ) {
+//				final int pas = solution.getPAs();
+//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
+//				solution.setObjective(i, pas);
+//			} 
+			else if (i == THIRD_OBJ) {
 				final double reliability = solution.getReliability();
 				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
 				solution.setObjective(i, (-1 * reliability));//to be maximized

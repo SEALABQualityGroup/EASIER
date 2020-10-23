@@ -27,7 +27,7 @@ public class RSolutionListEvaluator<S extends RSolution> implements SolutionList
 			sol.applyTransformation();
 			//TODO shall be moved to a multithreaded version
 			sol.invokeSolver();
-			sol.countingPAs();
+//			sol.countingPAs();
 			sol.evaluatePerformance();
 			sol.computeReliability();
 			problem.evaluate(sol);
