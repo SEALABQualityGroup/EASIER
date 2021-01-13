@@ -27,7 +27,6 @@ import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.ocl.ParserException;
-import org.eclipse.uml2.common.util.CacheAdapter;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Stereotype;
@@ -87,7 +86,7 @@ public class UMLRSolution extends RSolution {
 		ID = UUID.randomUUID();
 		resetParents();
 		init();
-		this.createRandomRefactoring(p.length_of_refactorings, p.number_of_actions, p.allowed_failures);
+		this.createRandomRefactoring();
 	}
 
 	public UMLRSolution(UMLRSolution s) {
@@ -166,41 +165,29 @@ public class UMLRSolution extends RSolution {
 
 	}
 
-//	while (this.refactoring.getActions().size() < length) {
-//		if (!this.tryRandomPush(number_of_actions))
-//			num_failures++;
-//
-//		if (num_failures >= allowed_failures) {
-//			// START OVER
-//			num_failures = 0;
-//			this.refactoring = null;
-//			this.refactoring = new Refactoring(solution);
-//			this.refactoring.setName(Integer.toString(Manager.REFACTORING_COUNTER++));
-//		}
-//	}
-	
-	protected void createRandomRefactoring(int l, int n, int a) {
+	protected void createRandomRefactoring() {
 
 		int num_failures = 0;
 		
 		do {
 			try {
-				if(!tryRandomPush(n))
+				if(!tryRandomPush())
 					num_failures++;
 				if (num_failures >= problem.allowed_failures) {
 					// START OVER
 					num_failures = 0;
 					this.setVariableValue(VARIABLE_INDEX, new Refactoring());
-					EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached... Created an empty refactoring!", problem.allowed_failures));
+					//EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached... Created an empty refactoring!", problem.allowed_failures));
 				}
 			} catch (UnexpectedException | EolRuntimeException e) {
 				e.printStackTrace();
 			}
-		} while (getVariableValue(VARIABLE_INDEX).getActions().size() < l);
+		} while (getVariableValue(VARIABLE_INDEX).getActions().size() < problem.length_of_refactorings);
 		this.setAttribute(CrowdingDistance.class, 0.0);
 	}
 
-	protected boolean tryRandomPush(int n) throws UnexpectedException, EolRuntimeException {
+	protected boolean tryRandomPush() throws UnexpectedException, EolRuntimeException {
+		
 		Refactoring temporary_ref = getVariableValue(VARIABLE_INDEX).clone(this);
 
 		RefactoringAction candidate;
@@ -215,8 +202,9 @@ public class UMLRSolution extends RSolution {
 			return true;
 		} else {
 			dirtyIModel.deleteElement(candidate);
-			return false;
 		}
+		return false;
+		
 	}
 
 	public boolean isFeasible() {
@@ -231,9 +219,9 @@ public class UMLRSolution extends RSolution {
 			while (j < tr.getActions().size()) {
 				Action a2 = tr.getActions().get(j);
 				if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
-					EasierLogger.logger_
+					/*EasierLogger.logger_
 							.warning("Multi-modification of the same operation for Solution #" + this.getName() + "!");
-					EasierLogger.logger_.warning(String.format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));
+					EasierLogger.logger_.warning(String.format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));*/
 					return false;
 				}
 				j++;
@@ -336,6 +324,7 @@ public class UMLRSolution extends RSolution {
 	public void countingPAs() {
 
 		System.out.print("Counting PAs (it may take a while) ... ");
+		long startTime = System.currentTimeMillis();
 		EVLStandalone pasCounter = new EVLStandalone();
 		EasierUmlModel uml = null;
 		try {
@@ -354,6 +343,10 @@ public class UMLRSolution extends RSolution {
 			UMLMemoryOptimizer.cleanup();
 			pasCounter = null;
 		}
+		
+		long duration = System.currentTimeMillis() - startTime;
+		System.out.println(String.format("countingPAs execution time: %s", duration));
+		
 		System.out.println("done");
 	}
 
@@ -375,6 +368,8 @@ public class UMLRSolution extends RSolution {
 	public void invokeSolver() {
 		// TODO invoke LQN solver
 		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
+		
+		long startTime = System.currentTimeMillis();
 
 		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
 		Path lqnModelPath = this.folderPath.resolve("output.xml");
@@ -420,10 +415,15 @@ public class UMLRSolution extends RSolution {
 
 		process = null;
 
+		long duration = System.currentTimeMillis() - startTime;
+		System.out.println(String.format("invokeSolver execution time: %s", duration));
 		System.out.println("done");
 
 		System.out.print("Invoking the back annotator... ");
+		startTime = System.currentTimeMillis();
 		backAnnotation();
+		duration = System.currentTimeMillis() - startTime;
+		System.out.println(String.format("backAnnotation execution time: %s", duration));
 		System.out.println("done");
 	}
 
@@ -530,6 +530,7 @@ public class UMLRSolution extends RSolution {
 	 * @throws EolModelElementTypeNotFoundException
 	 */
 	private double perfQ() {
+		
 		/*
 		 * The updated model can have more nodes than the source node since original
 		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
@@ -595,9 +596,8 @@ public class UMLRSolution extends RSolution {
 			UMLMemoryOptimizer.cleanup();
 			uml = null;
 		}
-
+		
 		return value / numberOfMetrics;
-
 	}
 
 	private double computePerfQValue(final Element source, final Element ref, final String stereotypeName,
@@ -634,7 +634,8 @@ public class UMLRSolution extends RSolution {
 	 */
 	public void applyTransformation() {
 
-		System.out.print("Applying transformation ... ");
+		System.out.print("Applying transformation in ... ");
+		long startTime = System.currentTimeMillis();
 		EasierUmlModel uml = null;
 		ETLStandalone executor = null;
 		try {
@@ -676,7 +677,9 @@ public class UMLRSolution extends RSolution {
 			uml = null;
 			executor = null;
 		}
-		System.out.println("done");
+		
+		long duration = System.currentTimeMillis() - startTime;
+		System.out.println(String.format("%s done", duration));
 	}
 
 	public void executeRefactoring() {
@@ -737,7 +740,6 @@ public class UMLRSolution extends RSolution {
 			UMLMemoryOptimizer.cleanup();
 			uml = null;
 		}
-
 		System.out.println("done");
 
 	}
