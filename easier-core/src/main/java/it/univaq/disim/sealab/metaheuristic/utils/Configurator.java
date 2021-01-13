@@ -9,7 +9,7 @@ import java.util.List;
 import com.beust.jcommander.Parameter;
 
 public class Configurator {
-	
+
 	public static Configurator eINSTANCE = new Configurator();
 
 	@Parameter
@@ -27,7 +27,7 @@ public class Configurator {
 	@Parameter(names = { "-m", "--models" }, required = true, description = "List of models")
 	private List<String> modelsPath = new ArrayList<>();
 
-	@Parameter(names = {"--solver" }, description = "Set the solver {TTKernel, LQN} path")
+	@Parameter(names = { "--solver" }, description = "Set the solver {TTKernel, LQN} path")
 	private String solver;
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
@@ -75,17 +75,17 @@ public class Configurator {
 	private int aw = 100;
 
 	@Parameter(names = { "-a", "--actions" }, description = "Set the number of available actions")
-	private int actions = 5; //clone, removeClone, const change, probability, size
+	private int actions = 5; // clone, removeClone, const change, probability, size
 
 	@Parameter(names = { "-tmpF", "--tempFolder" }, required = true, description = "It is the temporary file folder")
-	private String tmpF;
+	private String tmpF = "/tmp/easier-test";
 
 	@Parameter(names = { "-oclTemplate",
 			"--oclTemplateFolder" }, required = true, description = "It is the ocl rule template file")
 	private String oclTemplate;
-	
+
 	@Parameter(names = { "-evlTemplate",
-	"--evlTemplateFolder" }, required = true, description = "It is the evl template file")
+			"--evlTemplateFolder" }, required = true, description = "It is the evl template file")
 	private String evlTemplate;
 
 	@Parameter(names = { "-ava",
@@ -101,52 +101,55 @@ public class Configurator {
 	@Parameter(names = { "-qI", "--qualityIndicator" }, required = true, description = "List of quality indicators")
 	private List<String> qI = new ArrayList<>();
 
-	@Parameter(names = {"-rf", "--refereceFront"}, description = "The absolut path to the reference front file (.rf)")
+	@Parameter(names = { "-rf", "--refereceFront" }, description = "The absolut path to the reference front file (.rf)")
 	private List<String> referenceFront;
-	
-	@Parameter(names = {"--genRF"}, description = "It allows the generation of reference front by tsv files")
+
+	@Parameter(names = { "--genRF" }, description = "It allows the generation of reference front by tsv files")
 	private boolean generateRF = false;
-	
-	@Parameter(names= {"--worsen"}, description = "It enables the generation of worsen models")
+
+	@Parameter(names = { "--worsen" }, description = "It enables the generation of worsen models")
 	private boolean worsen = false;
-	
-	@Parameter(names= {"-mmp", "--metamodel-path"}, description = "It points to the metamodel file")
+
+	@Parameter(names = { "-mmp", "--metamodel-path" }, description = "It points to the metamodel file")
 	private String metamodelPath;
-	
-	@Parameter(names= {"--maxWorseModels", "-mwm"}, description ="It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
+
+	@Parameter(names = { "--maxWorseModels",
+			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
-	@Parameter(names= {"--uml2lqn"}, description ="It points to the folder of the UML-2-LQN project")
+	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
 	private String uml2lqn;
-	
+
 	public Path getUml2Lqn() {
 		return Paths.get(uml2lqn);
 	}
-	
+
 	public int getMaxWorseModels() {
-		if(maxWorseModels == null) {
+		if (maxWorseModels == null) {
 			maxWorseModels = "5";
-			EasierLogger.logger_.warning("[WARNING] the max number of worse models has been set to default value --> 5");
-			
+			EasierLogger.logger_
+					.warning("[WARNING] the max number of worse models has been set to default value --> 5");
+
 		}
 		return Integer.valueOf(maxWorseModels);
 	}
-	
+
 	public Path getMetamodelPath() {
 		return Paths.get(metamodelPath);
 	}
 
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
-		if (referenceFront == null) return null;
+		if (referenceFront == null)
+			return null;
 		for (String s : referenceFront)
 			paths.add(Paths.get(s));
 		return paths;
 	}
-	
+
 	public boolean isWorsen() {
 		return worsen;
 	}
-	
+
 	public boolean generateRF() {
 		return generateRF;
 	}
@@ -170,7 +173,7 @@ public class Configurator {
 	public Path getOclTemplate() {
 		return Paths.get(oclTemplate);
 	}
-	
+
 	public synchronized Path getEVLTemplate() {
 		return Paths.get(evlTemplate);
 	}
