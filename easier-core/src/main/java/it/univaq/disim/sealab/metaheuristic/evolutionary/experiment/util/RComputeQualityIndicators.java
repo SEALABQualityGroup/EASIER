@@ -16,7 +16,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //it under the terms of the GNU Lesser General Public License as published by
 //the Free Software Foundation, either version 3 of the License, or
@@ -48,6 +50,8 @@ import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.util.PointSolution;
 
+import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+
 /**
  * This class computes the {@link QualityIndicator}s of an experiment. Once the
  * algorithms of an experiment have been executed through running an instance of
@@ -63,6 +67,9 @@ import org.uma.jmetal.util.point.util.PointSolution;
 public class RComputeQualityIndicators<S extends Solution<?>, Result> implements ExperimentComponent {
 
 	private final Experiment<S, Result> experiment;
+	private Map<String, List<Double>> qualityIndicatorsMap;
+
+	String qualityIndicatorFile;
 
 	public RComputeQualityIndicators(Experiment<S, Result> experiment) {
 		this.experiment = experiment;
@@ -70,7 +77,9 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 
 	@Override
 	public void run() throws IOException {
+		qualityIndicatorsMap = new HashMap<String, List<Double>>();
 		for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
+			qualityIndicatorsMap.put(indicator.getName(), new ArrayList<Double>());
 			JMetalLogger.logger.info("Computing indicator: " + indicator.getName());
 
 			for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
@@ -91,11 +100,10 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 
+					qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
+					resetFile(qualityIndicatorFile);
 					try {
 						Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
-
-						String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
-						resetFile(qualityIndicatorFile);
 
 						indicator.setReferenceParetoFront(normalizedReferenceFront);
 						for (int i = 0; i < experiment.getIndependentRuns(); i++) {
@@ -109,13 +117,19 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 								Front normalizedFront = frontNormalizer.normalize(front);
 								List<PointSolution> normalizedPopulation = FrontUtils
 										.convertFrontToSolutionList(normalizedFront);
-								Double indicatorValue = (Double) indicator.evaluate((List<S>) normalizedPopulation);
+								double indicatorValue = ((Double) indicator.evaluate((List<S>) normalizedPopulation));								
+								qualityIndicatorsMap.get("IGD+").add(indicatorValue);
+								writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
 								JMetalLogger.logger.info(indicator.getName() + ": " + indicatorValue);
 
-								writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
 							}
 						}
 					} catch (JMetalException e) {
+						writeQualityIndicatorValueToFile(Double.MAX_VALUE, qualityIndicatorFile);
+						qualityIndicatorsMap.get("IGD+").add(Double.MAX_VALUE);
+						EasierLogger.logger_
+								.warning(String.format("Maximum and Minimum are the same. Indicator %s is set to: %f",
+										indicator.getName(), Double.MAX_VALUE));
 						e.printStackTrace();
 					}
 				}
@@ -126,6 +140,10 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 		} catch (JMetalException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Map<String, List<Double>> getIndicatorsMap() {
+		return qualityIndicatorsMap;
 	}
 
 	public String removeSolID(String frontFileName) {

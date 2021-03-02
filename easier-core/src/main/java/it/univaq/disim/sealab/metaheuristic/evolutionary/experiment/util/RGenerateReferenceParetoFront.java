@@ -52,12 +52,10 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 public class RGenerateReferenceParetoFront implements ExperimentComponent {
 	private final Experiment<?, ?> experiment;
 
-	
-	public  RGenerateReferenceParetoFront() {
+	public RGenerateReferenceParetoFront() {
 		experiment = null;
 	}
-	
-	
+
 	public RGenerateReferenceParetoFront(Experiment<?, ?> experimentConfiguration) {
 		this.experiment = experimentConfiguration;
 		experiment.removeDuplicatedAlgorithms();
@@ -126,14 +124,15 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 		try (BufferedReader br = new BufferedReader(new FileReader(varFileName))) {
 
 			String sCurrentLine;
+			final int numObjs = Configurator.eINSTANCE.getObjectives();
 			while ((sCurrentLine = br.readLine()) != null) {
 
 				String[] split = sCurrentLine.split(";");
 
-				ptList.add(new RPointSolution().setID(Integer.parseInt(split[0]))
-						.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, 5)))));
+				ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0])).setPointSolution(
+						Arrays.asList((Arrays.copyOfRange(split, 1, numObjs)))));
 			}
-		} catch (IOException  | NumberFormatException e) {
+		} catch (IOException | NumberFormatException e) {
 			e.printStackTrace();
 		}
 		return ptList;

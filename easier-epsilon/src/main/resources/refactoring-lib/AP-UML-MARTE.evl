@@ -41,7 +41,7 @@ context UML!Operation {
 	critique PaF {
 		check: 
 			(self.F_probExec_fuzzy() * self.F_resDemand_fuzzy() *
-				(self.F_T_fuzzy() + self.F_maxHwUtil_fuzzy() )) < 0.85 
+				(self.F_T_fuzzy() + self.F_maxHwUtil_fuzzy() )) < 0.55 
 		message : "PaF <Operation> " + self.name
 		fix {
 			title : "Move it to a New Component deployed to a New Node"
@@ -119,7 +119,7 @@ context UML!Operation {
 context UML!Node {
 	critique CPS {
 		check: 
-			( self.F_maxQL_fuzzy() * self.F_maxHwUtil_fuzzy() ) < 0.85
+			( self.F_maxQL_fuzzy() * self.F_maxHwUtil_fuzzy() ) < 0.55
 		message : "CPS <" + self.type.name + "> " + self.name
 		fix {
 			title : "Move it to a new Component deployed to a new Node"
@@ -160,7 +160,7 @@ context UML!Component {
  	critique ExtensiveProcessingAP{
  		check:
  			(self.F_resDemand_fuzzy() * 
- 				( self.F_maxHwUtil_fuzzy() + self.F_RT_fuzzy() ) < 0.85 
+ 				( self.F_maxHwUtil_fuzzy() + self.F_RT_fuzzy() ) < 0.55 
  					and self.F_probExec_fuzzy())
  		message : "EP <" + self.type.name + "> " + self.name
  		fix {
@@ -202,7 +202,7 @@ context UML!Component {
 	critique Blob_DataContainer{
 		check:
 			(self.F_numSupplierConnects_fuzzy() * self.F_numMsgsIn_fuzzy() * 
-				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.85
+				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.55
 			
 		message : "Blob Container <" + self.type.name + "> " + self.getName()
 		fix {
@@ -279,7 +279,7 @@ context UML!Component {
 	critique Blob_DataController {
 		check:
 			( self.F_numClientConnects_fuzzy() * self.F_numMsgsOut_fuzzy() * 
-				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.85
+				(self.F_maxHwUtil_fuzzy() + self.F_maxNetUtil_fuzzy()) ) < 0.55
 				
 		message : "Blob Container <" + self.type.name + "> " + self.getName()
 		fix {
@@ -335,7 +335,7 @@ context UML!Component {
  	critique EmptySemiTruck{
  		check:
  			(self.F_numRemMsgs_fuzzy() * 
- 				(self.F_maxNetUtil_fuzzy() + self.F_numRemInst_fuzzy())) < 0.85
+ 				(self.F_maxNetUtil_fuzzy() + self.F_numRemInst_fuzzy())) < 0.55
  		
  		message : "EST <" + self.type.name + "> " + self.name
  		fix {

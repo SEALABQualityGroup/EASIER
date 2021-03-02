@@ -53,7 +53,7 @@ public class Configurator {
 	private String outputFolder;
 
 	@Parameter(names = { "-maxEval", "--maxEvaluation" }, required = true, description = "Set the maximum evaluations")
-	private int maxEval;
+	private List<Integer> maxEval;
 
 	@Parameter(names = { "-popSize", "--populationSize" }, required = true, description = "Set the population size")
 	private int popSize;
@@ -116,8 +116,16 @@ public class Configurator {
 	@Parameter(names = { "--maxWorseModels",
 			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
+	
 	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
 	private String uml2lqn;
+	
+	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
+	private int objectives = 4;
+	
+	public int getObjectives() {
+		return objectives;
+	}
 
 	public Path getUml2Lqn() {
 		return Paths.get(uml2lqn);
@@ -206,7 +214,7 @@ public class Configurator {
 		return popSize;
 	}
 
-	public int getMaxEvaluation() {
+	public List<Integer> getMaxEvaluation() {
 		return maxEval;
 	}
 

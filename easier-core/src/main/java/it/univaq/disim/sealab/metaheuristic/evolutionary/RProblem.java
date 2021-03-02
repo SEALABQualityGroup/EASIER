@@ -15,7 +15,7 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	protected int number_of_actions;
 	protected int allowed_failures;
 	protected final int NUM_VAR = 1;
-	protected final int NUM_OBJ = 3;
+	//protected final int NUM_OBJ = 3;
 	protected final int VARIABLE_INDEX = 0;
 	protected final int NUM_CON = 0;
 	
@@ -36,7 +36,7 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		if(Configurator.eINSTANCE.isWorsen())
 			this.setNumberOfObjectives(1);
 		else
-			this.setNumberOfObjectives(NUM_OBJ);
+			this.setNumberOfObjectives(Configurator.eINSTANCE.getObjectives());
 		
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
