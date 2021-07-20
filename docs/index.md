@@ -57,7 +57,14 @@ If you are using EASIER or you have though EASIER is related to your research, p
    
    * [SEAA 2021]()
 ```latex
-TBA
+@misc{cortellessa2021impact,
+      title={On the impact of Performance Antipatterns in multi-objective software model refactoring optimization}, 
+      author={Vittorio Cortellessa and Daniele Di Pompeo and Vincenzo Stoico and Michele Tucci},
+      year={2021},
+      eprint={2107.06127},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE}
+}
 ```
 [download the bib from dblp](), [pdf](), [preprint version](https://arxiv.org/abs/2107.06127)
    
