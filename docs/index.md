@@ -55,6 +55,12 @@ Finally, each generated architectural alternative undergoes a Performance Analys
 
 If you are using EASIER or you have though EASIER is related to your research, please consider to cite it as follows:
    
+   * [SEAA 2021]()
+```latex
+TBA
+```
+[download the bib from dblp](), [pdf](), [preprint version](https://arxiv.org/abs/2107.06127)
+   
    * [INFSOF 2021](https://doi.org/10.1016/j.infsof.2021.106568)
 ```latex
 @article{DBLP:journals/infsof/CortellessaP21,
