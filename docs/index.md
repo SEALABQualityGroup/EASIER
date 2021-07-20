@@ -54,6 +54,26 @@ Finally, each generated architectural alternative undergoes a Performance Analys
 ## Related Publications
 
 If you are using EASIER or you have though EASIER is related to your research, please consider to cite it as follows:
+   
+   * [INFSOF 2021](https://doi.org/10.1016/j.infsof.2021.106568)
+```latex
+@article{DBLP:journals/infsof/CortellessaP21,
+  author    = {Vittorio Cortellessa and
+               Daniele Di Pompeo},
+  title     = {Analyzing the sensitivity of multi-objective software architecture
+               refactoring to configuration characteristics},
+  journal   = {Inf. Softw. Technol.},
+  volume    = {135},
+  pages     = {106568},
+  year      = {2021},
+  url       = {https://doi.org/10.1016/j.infsof.2021.106568},
+  doi       = {10.1016/j.infsof.2021.106568},
+  timestamp = {Sun, 16 May 2021 00:12:15 +0200},
+  biburl    = {https://dblp.org/rec/journals/infsof/CortellessaP21.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+[download the bib from dblp](https://dblp.uni-trier.de/rec/journals/infsof/CortellessaP21.bib?param=1), [pdf](https://doi.org/10.1016/j.infsof.2021.106568)
 
    * [ICSA 2018](http://icsa-conferences.org/2018/)
 
