@@ -40,29 +40,6 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class RGenerateReferenceParetoTest {
 
-	private List<ExperimentProblem<UMLRSolution>> problemList;
-	private List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithmList;
-	private List<GenericIndicator<UMLRSolution>> qualityIndicators;
-	private List<String> tags;
-	Experiment<UMLRSolution, List<UMLRSolution>> experiment;
-
-	@Before
-	public void init() {
-
-		problemList = createProblem();
-		algorithmList = configureAlgorithmList(problemList);
-		qualityIndicators = configureIndicators();
-
-		tags = new ArrayList<>();
-		problemList.forEach(p -> tags.add(p.getTag() + ".rf"));
-
-		experiment = new RExperimentBuilder<UMLRSolution, List<UMLRSolution>>("Exp").setAlgorithmList(algorithmList)
-				.setProblemList(problemList).setExperimentBaseDirectory("/tmp/solution_no_pas_avg_igd")
-				.setReferenceFrontDirectory("/tmp/solution_no_pas_avg_igd").setReferenceFrontFileNames(tags)
-				.setOutputParetoFrontFileName("FUN").setOutputParetoSetFileName("VAR")
-				.setIndicatorList(qualityIndicators).setIndependentRuns(3).setNumberOfCores(1).build();
-	}
-
 	@Test
 	public void generateSuperReferenceParetoTest() throws IOException {
 
@@ -72,9 +49,10 @@ public class RGenerateReferenceParetoTest {
 		List<String> referenceFronts;
 		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
-		String problemName = "solution_with_pas_rel"; //"solution_no_pas_avg_igd"
+		String problemName = "solution_with_pas_rel_095";
+		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/tuning";
 		try (Stream<Path> walk = Files.walk(Paths.get(
-				String.format("/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront", problemName)))) {
+				String.format("%s/%s/referenceFront", problemFolderName, problemName)))) {
 			referenceFronts = walk.filter(p -> !Files.isDirectory(p)) // not a directory
 					.map(p -> p.toString())// .toLowerCase()) // convert path to string
 					.filter(f -> f.endsWith("rf") && !f.contains("NSGAII")) // check end with
@@ -110,8 +88,9 @@ public class RGenerateReferenceParetoTest {
 			nonDominatedSolutionArchive.add(solution);
 		}
 
-		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(
-				String.format("/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/super-reference-pareto.rf", problemName));
+		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String.format(
+				"/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/super-reference-pareto.rf",
+				problemName));
 
 	}
 
@@ -120,41 +99,46 @@ public class RGenerateReferenceParetoTest {
 
 		List<String> varSolutions;
 
-		String problemName = "solution_with_pas_rel"; //"solution_no_pas_avg_igd"
-		String problemFolder = String.format(
-				"/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/Exp/data/NSGAII/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_",
-				problemName);
+		String[] problemName = { "solution_with_pas_rel_095" };
+		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/tuning";
 
-		// int[] evals = { 12, 22, 32, 42, 52, 62, 72 };
-		int maxEvols = 112; //142
+		int[] evals = { 72, 82, 102 };
 
-		for (int i = 12; i <= maxEvols; i += 10) {
+		for (int j = 0; j < problemName.length; j++) {
 
-			String solutionFolder = problemFolder + i;
-			NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+			for (int i = 0; i < evals.length; i++) {
 
-			try (Stream<Path> walk = Files.walk(Paths.get(solutionFolder))) {
-				varSolutions = walk.filter(p -> !Files.isDirectory(p)) // not a directory
-						.map(p -> p.toString())// .toLowerCase()) // convert path to string
-						.filter(f -> f.endsWith("tsv") && f.contains("VAR") && !f.contains("IGD+")) // check end with
-						.collect(Collectors.toList()); // collect all matched to a List
-			}
+				String solutionFolder = String.format(
+						"%s/%s/referenceFront/Exp/data/NSGAII/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d",
+						problemFolderName, problemName[j], evals[i]);
 
-			for (String varFileName : varSolutions) {
+				NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
-				List<RPointSolution> ptSolutionList = generateRPointSolutionList(varFileName);
-				GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
-
-				for (RPointSolution solution : ptSolutionList) {
-					solutionAttribute.setAttribute(solution, "NSGAII");
-					nonDominatedSolutionArchive.add(solution);
+				try (Stream<Path> walk = Files.walk(Paths.get(solutionFolder))) {
+					varSolutions = walk.filter(p -> !Files.isDirectory(p)) // not a directory
+							.map(p -> p.toString())// .toLowerCase()) // convert path to string
+							.filter(f -> f.endsWith("tsv") && f.contains("VAR") && !f.contains("IGD+")) // check end
+																										// with
+							.collect(Collectors.toList()); // collect all matched to a List
 				}
-			}
 
-			new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String.format(
-					"/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d.rf",
-					problemName, i));
+				for (String varFileName : varSolutions) {
+
+					List<RPointSolution> ptSolutionList = generateRPointSolutionList(varFileName);
+					GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
+
+					for (RPointSolution solution : ptSolutionList) {
+						solutionAttribute.setAttribute(solution, "NSGAII");
+						nonDominatedSolutionArchive.add(solution);
+					}
+				}
+
+				new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String
+						.format("%s/%s/referenceFront/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d.rf",
+								problemFolderName, problemName[j], evals[i]));
+			}
 		}
+//		}
 	}
 
 	public List<RPointSolution> generateRPointSolutionList(String varFileName) {
@@ -176,59 +160,6 @@ public class RGenerateReferenceParetoTest {
 			e.printStackTrace();
 		}
 		return ptList;
-	}
-
-	private List<GenericIndicator<UMLRSolution>> configureIndicators() {
-		List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
-		FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
-		GenericIndicator<UMLRSolution> ind = factory.createQualityIndicators("IGD+");
-		if (ind != null)
-			qIndicators.add(ind);
-		return qIndicators;
-	}
-
-	private List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> configureAlgorithmList(
-			List<ExperimentProblem<UMLRSolution>> problemList) {
-
-		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
-		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(0.8);
-		final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(0.2, 0);
-		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
-
-		for (int i = 0, eval = 12; i < problemList.size(); i++, eval += 10) {
-			NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator).setMaxEvaluations(eval * 16)
-							.setPopulationSize(16).setSolutionListEvaluator(solutionListEvaluator);
-
-			NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
-			ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-					algorithm, algorithm.getName(), problemList.get(i).getTag());
-
-			algorithms.add(exp);
-		}
-
-		return algorithms;
-	}
-
-	private List<ExperimentProblem<UMLRSolution>> createProblem() {
-
-		List<ExperimentProblem<UMLRSolution>> problems = new ArrayList<>();
-
-		String mPath = "/home/peo/git/sealab/easier/easier-uml2lqnCaseStudy/train-ticket/train-ticket.uml";
-
-		int nProblem = 14;
-
-		for (int eval = 12, i = 0; i < nProblem; eval += 10, i++) {
-
-			String pName = String.format("%s_Length_%d_CloningWeight_%.1f_MaxCloning_%d_MaxEval_%d", "train-ticket", 4,
-					1.5, 3, eval);
-
-			UMLRProblem<UMLRSolution> p = new UMLRProblem<>(Paths.get(mPath), 4, 5, 100, 16);
-			p.setCloningWeight(1.5).setMaxCloning(3).setName(pName);
-			problems.add(new ExperimentProblem<UMLRSolution>(p));
-		}
-
-		return problems;
 	}
 
 }
