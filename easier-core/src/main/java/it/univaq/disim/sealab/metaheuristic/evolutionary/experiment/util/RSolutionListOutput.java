@@ -10,6 +10,8 @@ import org.uma.jmetal.util.fileoutput.FileOutputContext;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+
 public class RSolutionListOutput {
 
 	private FileOutputContext varFileContext;
@@ -102,8 +104,21 @@ public class RSolutionListOutput {
 
 		try {
 			// prints the header of the file
-			bufferedWriter.write("solID" + context.getSeparator() + "perfQ" + context.getSeparator() + "#changes"
-					+ context.getSeparator() + "pas" + context.getSeparator() + "reliability" + context.getSeparator());
+			/*
+			 * with PAs String header =
+			 * String.format("solID%sperfQ%s#changes%spas%sreliability%s",
+			 * context.getSeparator(), context.getSeparator(), context.getSeparator(),
+			 * context.getSeparator(), context.getSeparator());
+			 */
+			String header;
+			// without PAs
+			if(Configurator.eINSTANCE.getObjectives() == 4)
+				header = String.format("solID%sperfQ%s#changes%spas%sreliability%s", context.getSeparator(),
+					context.getSeparator(), context.getSeparator(), context.getSeparator(),context.getSeparator());
+			else
+				header = String.format("solID%sperfQ%s#changes%sreliability%s", context.getSeparator(),
+						context.getSeparator(), context.getSeparator(), context.getSeparator()); 
+			bufferedWriter.write(header);
 			bufferedWriter.newLine();
 			if (solutionList.size() > 0) {
 				int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
@@ -113,7 +128,7 @@ public class RSolutionListOutput {
 //						if (j == 0 && !RPointSolution.isWorsen())
 //							bufferedWriter.write((-1 * solutionList.get(i).getObjective(j)) + context.getSeparator());
 //						else
-							bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
+						bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
 					}
 					bufferedWriter.newLine();
 				}

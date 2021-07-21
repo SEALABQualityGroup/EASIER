@@ -122,10 +122,10 @@ public class FileUtils {
 				true)) {
 
 			List<String> line = new ArrayList<String>();
-			String solID = "( "
+			/*String solID = "( "
 					+ Configurator.eINSTANCE.getMaxEvaluation() / Configurator.eINSTANCE.getPopulationSize()
-					+ "-" + Configurator.eINSTANCE.getPopulationSize() + " ) " + ":" + solution.getName();
-			line.add(solID);
+					+ "-" + Configurator.eINSTANCE.getPopulationSize() + " ) " + ":" + solution.getName();*/
+			line.add(String.valueOf(solution.getName()));
 			line.add(String.valueOf(solution.getPerfQ()));
 			line.add(String.valueOf(solution.getNumOfChanges()));
 			line.add(String.valueOf(solution.getPAs()));

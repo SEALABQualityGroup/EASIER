@@ -87,7 +87,7 @@ public abstract class EpsilonStandalone {
 		module.getContext().getModelRepository().dispose();
 	}
 
-	public void execute() throws Exception {
+	public void execute() throws EolRuntimeException {
 
 		doExecute();
 
@@ -302,7 +302,7 @@ public abstract class EpsilonStandalone {
 		return module;
 	}
 
-	public void clearMemory() {
+	public synchronized void clearMemory() {
 		
 		this.getModule().getImports().clear();
 		this.getModule().getComments().clear();

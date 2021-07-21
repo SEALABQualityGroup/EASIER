@@ -67,7 +67,7 @@ public class UMLRExecuteAlgorithms<S extends RSolution, Result> extends RExecute
 	@Override
 	protected Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
 		Entry<Algorithm<Result>, Long> computingTime = super.getComputingTime(algorithm, id);
-		UMLMemoryOptimizer.cleanup();
+		//UMLMemoryOptimizer.cleanup();
 		System.gc();
 		return computingTime;
 	}
