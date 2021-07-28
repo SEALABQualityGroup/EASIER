@@ -10,16 +10,16 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 public class RExperiment<S extends RSolution, Result> extends Experiment<S, Result> {
 
-	private List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
+	private List<Map.Entry<Algorithm<Result>, long[]>> computingTimes;
 	
 	public RExperiment(RExperimentBuilder<S, Result> builder) {
 		super(builder);
 		computingTimes = null;
 	}
 	
-	public void setComputingTime(final List<Map.Entry<Algorithm<Result>, Long>> ct) {
+	public void setComputingTime(final List<Map.Entry<Algorithm<Result>, long[]>> ct) {
 		computingTimes = ct;
 	}
 	
-	public List<Map.Entry<Algorithm<Result>, Long>> getComputingTimes() { return computingTimes; }
+	public List<Map.Entry<Algorithm<Result>, long[]>> getComputingTimes() { return computingTimes; }
 }

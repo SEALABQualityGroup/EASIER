@@ -27,46 +27,9 @@ public class UMLRExecuteAlgorithms<S extends RSolution, Result> extends RExecute
 		super(exp);
 	}
 
-//	@Override
-//	public RExecuteAlgorithms<S, Result> run() {
-//		JMetalLogger.logger.info("ExecuteAlgorithms: Preparing output directory");
-//		prepareOutputDirectory();
-//
-//		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism",
-//				"" + this.experiment.getNumberOfCores());
-//
-//		computingTimes = new ArrayList<>();
-//
-//		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-//			final int id = i;
-//
-//			System.out.println("Indepentent Runs");
-//			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
-//
-//			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
-//			// algorithm.runAlgorithm(id, experiment));
-//			// TODO if parallelStream is set, it throws NPE after a while
-//			computingTimes.addAll(experiment.getAlgorithmList().stream()
-//					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
-//
-//			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(),
-//					Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
-//
-//			// removes old solutions
-////			for (ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
-////				((EasierAlgorithm) expAlg.getAlgorithm()).clear();
-////			}
-//
-////			cleanup();
-//
-//		}
-//
-//		return this;
-//	}
-	
 	@Override
-	protected Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
-		Entry<Algorithm<Result>, Long> computingTime = super.getComputingTime(algorithm, id);
+	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+		Entry<Algorithm<Result>, long[]> computingTime = super.getComputingTime(algorithm, id);
 		//UMLMemoryOptimizer.cleanup();
 		System.gc();
 		return computingTime;

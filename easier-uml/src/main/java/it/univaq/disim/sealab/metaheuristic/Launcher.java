@@ -1,8 +1,11 @@
 package it.univaq.disim.sealab.metaheuristic;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -95,11 +98,11 @@ public class Launcher {
 			 */
 			modelsPath.addAll(Configurator.eINSTANCE.getModelsPath());
 			int i = 1;
-//			int eval = Configurator.eINSTANCE.getMaxEvaluation().get(0);
-			int[] eval = { 72, 82, 102 };
+			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
+
+
 			for (Path m : modelsPath) {
 				for (int j = 0; j < eval.length; j++) {
-//				do {
 					System.out.println("Number of source model");
 					ProgressBar.showBar(i, modelsPath.size());
 					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
@@ -118,10 +121,7 @@ public class Launcher {
 					}
 					referenceFront = runExperiment(rProblems, qIndicators, eval[j]);
 					i++;
-//					eval += 10;
 
-//				} while (qualityIndicatorsMap.get("IGD+").stream()
-//						.collect(Collectors.summarizingDouble(Double::doubleValue)).getAverage() > qThreshold);
 				}
 			}
 		}
@@ -275,7 +275,7 @@ public class Launcher {
 						.setIndicatorList(qualityIndicators).setIndependentRuns(INDEPENDENT_RUNS)
 						.setNumberOfCores(CORES).build();
 		try {
-			List<Entry<Algorithm<List<UMLRSolution>>, Long>> computingTimes = new UMLRExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
+			List<Entry<Algorithm<List<UMLRSolution>>, long[]>> computingTimes = new UMLRExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
 					(RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).run().getComputingTimes();
 
 			((RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).setComputingTime(computingTimes);

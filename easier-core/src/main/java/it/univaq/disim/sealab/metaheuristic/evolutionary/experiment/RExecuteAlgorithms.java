@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
@@ -27,7 +28,7 @@ import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 	protected Experiment<S, Result> experiment;
-	protected List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
+	protected List<Map.Entry<Algorithm<Result>, long[]>> computingTimes;
 
 	/** Constructor */
 	public RExecuteAlgorithms(RExperiment<S, Result> exp) {
@@ -69,12 +70,41 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		return this;
 	}
 
-	protected Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+	/**
+	 * It returns an Algorithm and its computational time along with total and free memory stats
+	 * It flushes experiment data to "algo-perf-stats.csv" file within the output folder
+	 * @param algorithm
+	 * @param id
+	 * @return
+	 */
+	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+		long total = Runtime.getRuntime().totalMemory();
 		long initTime = System.currentTimeMillis();
+	
 		algorithm.runAlgorithm(id, this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
-		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
-		return new AbstractMap.SimpleEntry<Algorithm<Result>, Long>(algorithm.getAlgorithm(), computingTime);// new
+		long free = Runtime.getRuntime().freeMemory();
+	
+//		if(!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
+//			
+//			try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
+//		    	writer.write("algorithm,problem_tag,execution_time(ms),total_memory(B),free_memory(B)");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		String line = String.format("%s,%s,%s,%s,%s\n", algorithm.getAlgorithmTag(), algorithm.getProblemTag(), computingTime, total, free);
+//		
+//	    try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
+//	    	writer.append(line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+				
+		
+//		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
+		return new AbstractMap.SimpleEntry<Algorithm<Result>, long[]>(algorithm.getAlgorithm(), new long[]{computingTime, total, free});// new
 	}
 
 	protected void prepareOutputDirectory() {
@@ -154,7 +184,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		return tmp;
 	}
 
-	public List<Map.Entry<Algorithm<Result>, Long>> getComputingTimes() {
+	public List<Map.Entry<Algorithm<Result>, long[]>> getComputingTimes() {
 		return computingTimes;
 	}
 }
