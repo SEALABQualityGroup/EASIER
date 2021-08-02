@@ -127,5 +127,12 @@ public class Refactoring {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder strBuilder = new StringBuilder();
+		getActions().forEach(action -> strBuilder.append(action.toString()).append(","));
+		return strBuilder.toString();
+	}
 
 }

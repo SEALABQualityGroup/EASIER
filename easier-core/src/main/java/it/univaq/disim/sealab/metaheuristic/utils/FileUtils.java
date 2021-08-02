@@ -96,10 +96,10 @@ public class FileUtils {
 		return files;
 	}
 
-	public static void simpleSolutionWriterToCSV(RSolution rSolution) {
+	public static void simpleSolutionWriterToCSV(RSolution<?> rSolution) {
 		try (FileWriter fw = new FileWriter(
 				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(),
-						rSolution.getProblem().getName() + "_solutions.csv").toFile(),
+						rSolution.getProblemName() + "_solutions.csv").toFile(),
 				true)) {
 			List<String> line = new ArrayList<String>();
 			line.addAll(Arrays.asList("SolID", "PerfQ", "ArchDist", "PAs"));
@@ -118,7 +118,7 @@ public class FileUtils {
 	public static void writeAnalyzableFile(final RSolution solution) {
 		try (FileWriter analyzableCSV = new FileWriter(
 				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "pareto",
-						solution.getProblem().getName() + "_analyzableResults.csv").toFile(),
+						solution.getProblemName() + "_analyzableResults.csv").toFile(),
 				true)) {
 
 			List<String> line = new ArrayList<String>();
@@ -130,7 +130,7 @@ public class FileUtils {
 			line.add(String.valueOf(solution.getNumOfChanges()));
 			line.add(String.valueOf(solution.getPAs()));
 
-			final Refactoring ref = solution.getVariableValue(0);
+			final Refactoring ref = (Refactoring) solution.getVariable(0);
 
 			for (RefactoringAction action : ref.getActions()) {
 				if (action.getName() == null)
