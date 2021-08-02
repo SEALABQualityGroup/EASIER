@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
-public class UMLRProblem<S extends RSolution> extends RProblem<S> {
+public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class UMLRProblem<S extends RSolution> extends RProblem<S> {
 	
 	@Override
 	public S createSolution() {
-		return (S) new UMLRSolution(this);
+		return (S) new UMLRSolution(this.getNumberOfVariables(), this.getNumberOfObjectives(), this);
 	}
 
 	public Path getSourceModelPath() {

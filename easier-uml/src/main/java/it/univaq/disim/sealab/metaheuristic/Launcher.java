@@ -1,11 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -25,19 +20,20 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
-import org.uma.jmetal.operator.CrossoverOperator;
-import org.uma.jmetal.operator.MutationOperator;
-import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.ExperimentBuilder;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateLatexTablesWithStatistics;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateWilcoxonTestTablesWithR;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
+import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
+import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.mutation.MutationOperator;
+import org.uma.jmetal.operator.selection.SelectionOperator;
+import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.component.GenerateBoxplotsWithR;
-import org.uma.jmetal.util.experiment.component.GenerateLatexTablesWithStatistics;
-import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
-import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
-import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 import com.beust.jcommander.JCommander;
 
@@ -52,6 +48,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.UMLRExecuteAlgorithms;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
@@ -60,7 +57,6 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenera
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
@@ -99,7 +95,6 @@ public class Launcher {
 			modelsPath.addAll(Configurator.eINSTANCE.getModelsPath());
 			int i = 1;
 			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
-
 
 			for (Path m : modelsPath) {
 				for (int j = 0; j < eval.length; j++) {
@@ -267,18 +262,21 @@ public class Launcher {
 			refFront.add(Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "referenceFront", tag));
 		}
 
-		Experiment<UMLRSolution, List<UMLRSolution>> experiment = new RExperimentBuilder<UMLRSolution, List<UMLRSolution>>(
+		ExperimentBuilder<UMLRSolution, List<UMLRSolution>> experimentBuilder = new RExperimentBuilder<UMLRSolution, List<UMLRSolution>>(
 				"Exp").setAlgorithmList(algorithmList).setProblemList(problemList)
 						.setExperimentBaseDirectory(referenceFrontDirectory.toString())
-						.setReferenceFrontDirectory(referenceFrontDirectory.toString()).setReferenceFrontFileNames(tags)
+						.setReferenceFrontDirectory(referenceFrontDirectory.toString())
+						.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES)
 						.setOutputParetoFrontFileName("FUN").setOutputParetoSetFileName("VAR")
-						.setIndicatorList(qualityIndicators).setIndependentRuns(INDEPENDENT_RUNS)
-						.setNumberOfCores(CORES).build();
+						.setIndicatorList(qualityIndicators);
+
+		RExperiment<UMLRSolution, List<UMLRSolution>> experiment = ((RExperimentBuilder<UMLRSolution, List<UMLRSolution>>) experimentBuilder)
+				.setReferenceFrontFileNames(tags).build();
 		try {
 			List<Entry<Algorithm<List<UMLRSolution>>, long[]>> computingTimes = new UMLRExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
-					(RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).run().getComputingTimes();
+					experiment).run().getComputingTimes();
 
-			((RExperiment<UMLRSolution, List<UMLRSolution>>) experiment).setComputingTime(computingTimes);
+			experiment.setComputingTime(computingTimes);
 
 			if (Configurator.eINSTANCE.generateRF())
 				new RGenerateReferenceParetoFront(experiment).run();
@@ -314,19 +312,21 @@ public class Launcher {
 		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
 
 		for (int i = 0; i < problemList.size(); i++) {
-			// for (int j : Configurator.eINSTANCE.getMaxEvaluation()) {
-			NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
-					problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-							.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
-							.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
-							.setSolutionListEvaluator(solutionListEvaluator);
+//			for (int j : Configurator.eINSTANCE.getMaxEvaluation()) {
+			for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+				NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
+						problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
+						Configurator.eINSTANCE.getPopulationSize())
+								.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
+								.setSolutionListEvaluator(solutionListEvaluator);
 
-			NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
-			ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-					algorithm, algorithm.getName(), problemList.get(i).getTag());
+				NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
 
-			algorithms.add(exp);
-//			}
+				ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+						algorithm, algorithm.getName(), problemList.get(i), j);
+
+				algorithms.add(exp);
+			}
 		}
 
 		/*

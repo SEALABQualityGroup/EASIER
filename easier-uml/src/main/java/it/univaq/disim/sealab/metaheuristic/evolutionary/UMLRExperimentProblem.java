@@ -1,6 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import org.uma.jmetal.util.experiment.util.ExperimentProblem;
+import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 
 public class UMLRExperimentProblem<S extends UMLRSolution> extends ExperimentProblem<S> {
 

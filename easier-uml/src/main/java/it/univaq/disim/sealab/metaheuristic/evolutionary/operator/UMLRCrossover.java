@@ -7,15 +7,17 @@ import org.eclipse.ocl.ParserException;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 
-@SuppressWarnings("serial")
 public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 
-	// private double crossoverProbability;
-	// private JMetalRandom randomGenerator;
-	// private Controller controller;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** Constructor */
 	public UMLRCrossover(double crossoverProbability) {
@@ -53,7 +55,7 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 
 		if (JMetalRandom.getInstance().nextDouble() < probability) {
 			// 1. Get the total number of bits
-			int length = parent1.getVariableValue(RSolution.VARIABLE_INDEX).getActions().size();
+			int length = ((Refactoring) parent1.getVariable(RSolution.VARIABLE_INDEX)).getActions().size();
 
 			// 2. Calculate the point to make the crossover
 			int crossoverPoint;
@@ -97,18 +99,12 @@ public class UMLRCrossover<S extends UMLRSolution> extends RCrossover<S> {
 		return offspring;
 	}
 
-	/**
-	 * Two parents are required to apply this operator.
-	 * 
-	 * @return
-	 */
-	public int getNumberOfParents() {
-		return 2;
-	}
 	
 	//TODO set specific condition to verify whether the refactoring sequence is applicable or not after it has been crossoveredn
-	private boolean isApplicable(RSolution solution) {
+	private boolean isApplicable(RSolution<?> solution) {
 		return true;
 	}
+
+
 
 }

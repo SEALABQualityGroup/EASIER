@@ -57,7 +57,7 @@ public class UMLRSolutionTest {
 		int number_of_action = 5;
 		
 		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
-		UMLRProblem<RSolution> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 	}
 	
