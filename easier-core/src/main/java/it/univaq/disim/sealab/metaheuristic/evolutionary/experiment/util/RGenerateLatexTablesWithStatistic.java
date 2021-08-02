@@ -16,12 +16,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.component.ExperimentComponent;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.ExperimentComponent;
-import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
-public class RGenerateLatexTablesWithStatistic<Result> implements ExperimentComponent {
+public class RGenerateLatexTablesWithStatistic<Result extends List<?>> implements ExperimentComponent {
 	private static final String DEFAULT_LATEX_DIRECTORY = "latex";
 
 	private final Experiment<?, Result> experiment;

@@ -1,17 +1,19 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.operator;
 
-import java.rmi.UnexpectedException;
-
-import org.eclipse.ocl.ParserException;
-import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
-@SuppressWarnings("serial")
-public class RMutation<S extends RSolution> implements MutationOperator<S> {
+public class RMutation<S extends RSolution<?>> implements MutationOperator<S> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static final double DEFAULT_PROBABILITY = 0.01;
 	private static final double DEFAULT_DISTRIBUTION_INDEX = 20.0;
 	private double distributionIndex;
@@ -69,7 +71,7 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 
 	/** Execute() method */
 	@Override
-	public RSolution execute(RSolution solution) throws JMetalException {
+	public S execute(S solution) throws JMetalException {
 		if (null == solution) {
 			throw new JMetalException("Null parameter");
 		}
@@ -79,7 +81,7 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 	}
 
 	/** Perform the mutation operation */
-	private void doMutation(double probability, RSolution solution, int allowed_failures) {
+	private void doMutation(double probability, S solution, int allowed_failures) {
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			if (randomGenerator.nextDouble() <= probability) {
@@ -87,7 +89,7 @@ public class RMutation<S extends RSolution> implements MutationOperator<S> {
 				int num_failures = 0;
 				while (!altered) {
 					if (solution.alter(randomGenerator.nextInt(0,
-							solution.getVariableValue(0).getActions().size() - 1))) {
+							((Refactoring) solution.getVariable(0)).getActions().size() - 1))) {
 						solution.setMutated();
 						break;
 					} else {

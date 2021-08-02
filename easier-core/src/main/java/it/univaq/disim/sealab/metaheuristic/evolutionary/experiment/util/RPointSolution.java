@@ -2,7 +2,8 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util;
 
 import java.util.List;
 
-import org.uma.jmetal.util.point.util.PointSolution;
+import org.uma.jmetal.util.point.PointSolution;
+
 
 public class RPointSolution extends PointSolution {
 

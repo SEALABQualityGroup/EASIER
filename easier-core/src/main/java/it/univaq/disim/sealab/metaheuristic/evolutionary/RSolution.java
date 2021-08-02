@@ -4,14 +4,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
+import org.uma.jmetal.solution.AbstractSolution;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 
-public abstract class RSolution extends AbstractGenericSolution<Refactoring, RProblem<?>> {
+public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	private static final long serialVersionUID = 1L;
 	
 	
-	protected Path modelPath;
+	protected Path modelPath, sourceModelPath;
 	
 	protected boolean refactored;
 	protected boolean crossovered;
@@ -34,26 +34,49 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	protected double reliability;
 	public static final int VARIABLE_INDEX;
 	
-	protected RSolution[] parents;
+	protected RSolution<T>[] parents;
 	
 	public static int MutationCounter = 0;
 	public static int XOverCounter = 0;
+	
+	protected int allowed_failures, length_of_refactorings;
+	protected String problemName;
 	
 	
 	static {
 		VARIABLE_INDEX = 0;
 	}
-
-	protected RSolution(RProblem<?> problem) {
-		super(problem);
-		crossovered = false;
-		mutated = false;
-		refactored = false;
+	
+	protected RSolution(int numberOfVariables, int numberOfObjectives) {
+		super(numberOfVariables, numberOfObjectives);
+	}
+	
+	protected RSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
+		this(numberOfVariables, numberOfObjectives);
+		
+		allowed_failures = p.allowed_failures;
+		length_of_refactorings = p.length_of_refactorings;
+		sourceModelPath = p.getSourceModelPath();
+		problemName = p.getName();
+		
 	}
 
-	public RProblem<?> getProblem(){
-		return problem;
-	}
+	/** Constructor */
+	  protected RSolution(
+	      int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
+		  super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+		  
+	  }	
+	
+
+//	public RSolution(RProblem<T> p) {
+////		super(problem);
+//		problem = p;
+//		crossovered = false;
+//		mutated = false;
+//		refactored = false;
+//	}
+
 
 	public abstract void countingPAs();
 
@@ -72,7 +95,7 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	public abstract void freeMemory();
 
 	public RefactoringAction getActionAt(int index) {
-		return getVariableValue(VARIABLE_INDEX).getActions().get(index);
+		return ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().get(index);
 	}
 
 	public Path getModelPath() {
@@ -81,6 +104,10 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	
 	public double getReliability() {
 		return reliability;
+	}
+	
+	public Path getSourceModelPath() {
+		return sourceModelPath;
 	}
 	
 	public void setRefactored() {
@@ -119,7 +146,7 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 
 	public double getNumOfChanges() {
 		double changes = 0.0;
-		Refactoring r = this.getVariableValue(0);
+		Refactoring r = (Refactoring) this.getVariable(0);
 		for (RefactoringAction action : r.getActions()) {
 			changes += action.getNumOfChanges();
 		}
@@ -132,6 +159,10 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 	
 	public int getName() {
 		return name;
+	}
+	
+	public String getProblemName() {
+		return problemName;
 	}
 
 	public static synchronized int getCounter() {
@@ -157,6 +188,24 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 		this.parents[0] = parent1;
 		this.parents[1] = parent2;
 	}
+	
+	/**
+	 * Prints a VAR file
+	 */
+	public String getVariableString(int index) {
+		String strValue = this.getName() + ";";
+
+		List<Double> objs = new ArrayList<>();
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			objs.add(getObjective(i));
+		}
+
+		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
+		strValue += ";";
+		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toString())
+				.collect(Collectors.joining(","));
+		return strValue;
+	}
 
 	@Override
 	public int hashCode() {
@@ -172,7 +221,7 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 		temp = Double.doubleToLongBits(perfQ);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + (refactored ? 1231 : 1237);
-		result = prime * result + ((getVariableValue(VARIABLE_INDEX) == null) ? 0 : getVariableValue(VARIABLE_INDEX).hashCode());
+		result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
 		temp = Double.doubleToLongBits(reliability);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
@@ -206,10 +255,10 @@ public abstract class RSolution extends AbstractGenericSolution<Refactoring, RPr
 			return false;
 		if (refactored != other.refactored)
 			return false;
-		if (getVariableValue(VARIABLE_INDEX) == null) {
-			if (other.getVariableValue(VARIABLE_INDEX) != null)
+		if (getVariable(VARIABLE_INDEX) == null) {
+			if (other.getVariable(VARIABLE_INDEX) != null)
 				return false;
-		} else if (!getVariableValue(VARIABLE_INDEX).equals(other.getVariableValue(VARIABLE_INDEX)))
+		} else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
 			return false;
 		if (Double.doubleToLongBits(reliability) != Double.doubleToLongBits(other.reliability))
 			return false;

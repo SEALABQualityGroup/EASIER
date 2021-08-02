@@ -1,16 +1,21 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.uma.jmetal.problem.impl.AbstractGenericProblem;
+import org.uma.jmetal.problem.AbstractGenericProblem;
 
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
-@SuppressWarnings("serial")
-public abstract class RProblem<S extends RSolution> extends AbstractGenericProblem<S> {
 
+
+public abstract class RProblem<S> extends AbstractGenericProblem<S> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	protected int length_of_refactorings;
 	protected int number_of_actions;
 	protected int allowed_failures;
@@ -65,9 +70,9 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		super.setName(n);
 	}
 
-	public RProblem setSourceModelFolderPath(Path sourceModelPath) {this.sourceFolderPath = sourceModelPath; return this;}
-	public RProblem setMaxCloning(final int mc) { maxCloning=mc; return this;}
-	public RProblem setCloningWeight(final double cw) { cloningWeight=cw; return this;}
+	public RProblem<S> setSourceModelFolderPath(Path sourceModelPath) {this.sourceFolderPath = sourceModelPath; return this;}
+	public RProblem<S> setMaxCloning(final int mc) { maxCloning=mc; return this;}
+	public RProblem<S> setCloningWeight(final double cw) { cloningWeight=cw; return this;}
 	
 	public int getMaxCloning() { return maxCloning; }
 	public double getCloningWeight() { return cloningWeight; }

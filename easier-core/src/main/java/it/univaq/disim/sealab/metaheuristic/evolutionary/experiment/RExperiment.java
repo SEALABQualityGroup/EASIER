@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.util.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.Experiment;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
-public class RExperiment<S extends RSolution, Result> extends Experiment<S, Result> {
+public class RExperiment<S extends RSolution<?>, Result extends List<S>> extends Experiment<S, Result> {
 
 	private List<Map.Entry<Algorithm<Result>, long[]>> computingTimes;
 	

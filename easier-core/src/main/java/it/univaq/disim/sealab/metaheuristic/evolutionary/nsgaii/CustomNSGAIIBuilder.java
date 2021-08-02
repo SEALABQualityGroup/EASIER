@@ -2,17 +2,17 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii;
 
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
-import org.uma.jmetal.operator.CrossoverOperator;
-import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.problem.Problem;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
-public class CustomNSGAIIBuilder<S extends RSolution> extends NSGAIIBuilder<S>{
+public class CustomNSGAIIBuilder<S extends RSolution<?>> extends NSGAIIBuilder<S>{
 
 	public CustomNSGAIIBuilder(Problem<S> problem, CrossoverOperator<S> crossoverOperator,
-			MutationOperator<S> mutationOperator) {
-		super(problem, crossoverOperator, mutationOperator);
+			MutationOperator<S> mutationOperator, int popSize) {
+		super(problem, crossoverOperator, mutationOperator, popSize);
 	}
 
 	public NSGAII<S> build() {

@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util;
+package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,10 +7,9 @@ import java.util.List;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.fileoutput.FileOutputContext;
-import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
-import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
 public class RSolutionListOutput {
 
@@ -18,18 +17,13 @@ public class RSolutionListOutput {
 	private FileOutputContext funFileContext;
 	private String varFileName = "VAR";
 	private String funFileName = "FUN";
-	private String separator = "\t";
-	private List<RPointSolution> solutionList;
-	private boolean selectFeasibleSolutions;
+	private List<? extends RSolution<?>> solutionList;
 	private List<Boolean> isObjectiveToBeMinimized;
 
-	public RSolutionListOutput(List<RPointSolution> solutionList) {
+	public RSolutionListOutput(List<? extends RSolution<?>> solutionList) {
 		varFileContext = new DefaultFileOutputContext(varFileName);
 		funFileContext = new DefaultFileOutputContext(funFileName);
-		varFileContext.setSeparator(separator);
-		funFileContext.setSeparator(separator);
 		this.solutionList = solutionList;
-		selectFeasibleSolutions = false;
 		isObjectiveToBeMinimized = null;
 	}
 
@@ -51,19 +45,6 @@ public class RSolutionListOutput {
 		return this;
 	}
 
-	public RSolutionListOutput selectFeasibleSolutions() {
-		selectFeasibleSolutions = true;
-		return this;
-	}
-
-	public RSolutionListOutput setSeparator(String separator) {
-		this.separator = separator;
-		varFileContext.setSeparator(this.separator);
-		funFileContext.setSeparator(this.separator);
-
-		return this;
-	}
-
 	public void print() {
 		if (isObjectiveToBeMinimized == null) {
 			printObjectivesToFile(funFileContext, solutionList);
@@ -77,17 +58,14 @@ public class RSolutionListOutput {
 		BufferedWriter bufferedWriter = context.getFileWriter();
 
 		try {
-			// prints the header of the file
-			bufferedWriter.write("solID" + context.getSeparator() + "perfQ" + context.getSeparator() + "#changes"
-					+ context.getSeparator() + "pas" + context.getSeparator() + "reliability" + context.getSeparator()
-					+ "actions" + context.getSeparator());
-			bufferedWriter.newLine();
 			if (solutionList.size() > 0) {
 				int numberOfVariables = solutionList.get(0).getNumberOfVariables();
 				for (int i = 0; i < solutionList.size(); i++) {
-					for (int j = 0; j < numberOfVariables; j++) {
-						bufferedWriter.write(solutionList.get(i).getVariable(j) + context.getSeparator());
+					for (int j = 0; j < numberOfVariables - 1; j++) {
+						bufferedWriter.write("" + solutionList.get(i).getVariable(j) + context.getSeparator());
 					}
+					bufferedWriter.write("" + solutionList.get(i).getVariable(numberOfVariables - 1));
+
 					bufferedWriter.newLine();
 				}
 			}
@@ -96,47 +74,23 @@ public class RSolutionListOutput {
 		} catch (IOException e) {
 			throw new JMetalException("Error writing data ", e);
 		}
-
 	}
 
-	public void printObjectivesToFile(FileOutputContext context, List<RPointSolution> solutionList) {
-		BufferedWriter bufferedWriter = context.getFileWriter();
-
-		try {
-			// prints the header of the file
-			/*
-			 * with PAs String header =
-			 * String.format("solID%sperfQ%s#changes%spas%sreliability%s",
-			 * context.getSeparator(), context.getSeparator(), context.getSeparator(),
-			 * context.getSeparator(), context.getSeparator());
-			 */
-			String header;
-			// without PAs
-			if(Configurator.eINSTANCE.getObjectives() == 4)
-				header = String.format("solID%sperfQ%s#changes%spas%sreliability%s", context.getSeparator(),
-					context.getSeparator(), context.getSeparator(), context.getSeparator(),context.getSeparator());
-			else
-				header = String.format("solID%sperfQ%s#changes%sreliability%s", context.getSeparator(),
-						context.getSeparator(), context.getSeparator(), context.getSeparator()); 
-			bufferedWriter.write(header);
-			bufferedWriter.newLine();
+	public void printObjectivesToFile(FileOutputContext context, List<? extends RSolution<?>> solutionList) {
+		try (BufferedWriter bufferedWriter = context.getFileWriter()) {
 			if (solutionList.size() > 0) {
 				int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
 				for (int i = 0; i < solutionList.size(); i++) {
-					bufferedWriter.write(solutionList.get(i).getID() + context.getSeparator());
-					for (int j = 0; j < numberOfObjectives; j++) {
-//						if (j == 0 && !RPointSolution.isWorsen())
-//							bufferedWriter.write((-1 * solutionList.get(i).getObjective(j)) + context.getSeparator());
-//						else
+					bufferedWriter.write(solutionList.get(i).getName() + context.getSeparator());
+					for (int j = 0; j < numberOfObjectives - 1; j++) {
 						bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
 					}
+					bufferedWriter.write("" + solutionList.get(i).getObjective(numberOfObjectives - 1));
 					bufferedWriter.newLine();
 				}
 			}
-
-			bufferedWriter.close();
 		} catch (IOException e) {
-			throw new JMetalException("Error printing objecives to file: ", e);
+			throw new JMetalException("Error printing objectives to file: ", e);
 		}
 	}
 
@@ -152,13 +106,15 @@ public class RSolutionListOutput {
 							"The size of list minimizeObjective is not correct: " + minimizeObjective.size());
 				}
 				for (int i = 0; i < solutionList.size(); i++) {
-					for (int j = 0; j < numberOfObjectives; j++) {
+					for (int j = 0; j < numberOfObjectives - 1; j++) {
 						if (minimizeObjective.get(j)) {
 							bufferedWriter.write(solutionList.get(i).getObjective(j) + context.getSeparator());
 						} else {
 							bufferedWriter.write(-1.0 * solutionList.get(i).getObjective(j) + context.getSeparator());
 						}
 					}
+					bufferedWriter.write("" + -1.0 * solutionList.get(i).getObjective(numberOfObjectives - 1));
+
 					bufferedWriter.newLine();
 				}
 			}
@@ -172,16 +128,28 @@ public class RSolutionListOutput {
 	/*
 	 * Wrappers for printing with default configuration
 	 */
-	public void printObjectivesToFile(String fileName) throws IOException {
+	public void printObjectivesToFile(String fileName) {
 		printObjectivesToFile(new DefaultFileOutputContext(fileName), solutionList);
 	}
 
-	public void printObjectivesToFile(String fileName, List<Boolean> minimizeObjective) throws IOException {
+	public void printObjectivesToFile(String fileName, String separator) {
+		printObjectivesToFile(new DefaultFileOutputContext(fileName, separator), solutionList);
+	}
+
+	public void printObjectivesToFile(String fileName, List<Boolean> minimizeObjective) {
 		printObjectivesToFile(new DefaultFileOutputContext(fileName), solutionList, minimizeObjective);
 	}
 
-	public void printVariablesToFile(String fileName) throws IOException {
+	public void printObjectivesToFile(String fileName, List<Boolean> minimizeObjective, String separator) {
+		printObjectivesToFile(new DefaultFileOutputContext(fileName, separator), solutionList, minimizeObjective);
+	}
+
+	public void printVariablesToFile(String fileName) {
 		printVariablesToFile(new DefaultFileOutputContext(fileName), solutionList);
+	}
+
+	public void printVariablesToFile(String fileName, String separator) {
+		printVariablesToFile(new DefaultFileOutputContext(fileName, separator), solutionList);
 	}
 
 }

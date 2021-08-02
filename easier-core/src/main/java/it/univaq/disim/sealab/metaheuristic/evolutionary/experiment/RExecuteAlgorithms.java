@@ -14,20 +14,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
-public class RExecuteAlgorithms<S extends RSolution, Result> {
+public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> {
 
-	protected Experiment<S, Result> experiment;
+	protected RExperiment<S, Result> experiment;
 	protected List<Map.Entry<Algorithm<Result>, long[]>> computingTimes;
 
 	/** Constructor */
@@ -44,17 +43,18 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		
 		computingTimes = new ArrayList<>();
 
-		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-			final int id = i;
+//		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
+//			final int id = i;
 
-			System.out.println("Indepentent Runs");
-			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
+//			System.out.println("Indepentent Runs");
+//			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
 
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
 			// TODO if parallelStream is set, it throws NPE after a while
 			computingTimes.addAll(experiment.getAlgorithmList().stream()
-					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
+//					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm, id)).collect(Collectors.toList()));
+					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm)).collect(Collectors.toList()));
 
 			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
 			
@@ -63,7 +63,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 //				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
 //			}
 			
-		}
+//		}
 		
 		
 		
@@ -77,11 +77,13 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 	 * @param id
 	 * @return
 	 */
-	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(RExperimentAlgorithm<S, Result> algorithm) {
 		long total = Runtime.getRuntime().totalMemory();
 		long initTime = System.currentTimeMillis();
 	
-		algorithm.runAlgorithm(id, this.experiment);
+//		algorithm.runAlgorithm(id, this.experiment);
+//		algorithm.runAlgorithm(this.experiment, id);
+		algorithm.runAlgorithm(this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
 		long free = Runtime.getRuntime().freeMemory();
 	
@@ -134,7 +136,17 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		if (experimentDirectory.exists()) {
 			experimentDirectory.delete();
 		}
-
+		
+		if(Files.exists(Configurator.eINSTANCE.getTmpFolder()))
+			Configurator.eINSTANCE.getTmpFolder().toFile().delete();
+		
+		try {
+			Files.createDirectories(Configurator.eINSTANCE.getTmpFolder());
+		} catch (IOException e) {
+			System.err.println("Error while creating tmp folder");
+			e.printStackTrace();
+		}
+	
 		boolean result;
 		result = new File(experiment.getExperimentBaseDirectory()).mkdirs();
 		setReportFilePath();
