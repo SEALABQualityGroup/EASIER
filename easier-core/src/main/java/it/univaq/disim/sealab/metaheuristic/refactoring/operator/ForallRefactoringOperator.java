@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import logicalSpecification.AndOperator;
 import logicalSpecification.EqualOperator;
@@ -25,19 +27,19 @@ import metamodel.mmaemilia.OutputInteraction;
 
 public class ForallRefactoringOperator extends ForAllOperatorImpl implements RefactoringOperator{
 
-	private OclManager oclManager;
+//	private OclManager oclManager;
 
-	public ForallRefactoringOperator(MultipleValuedParameter collection, OclManager oclMgr) {
+	public ForallRefactoringOperator(MultipleValuedParameter collection) {
 		super();
 		this.collection = collection;
-		this.oclManager = oclMgr;
+//		this.oclManager = oclMgr;
 	}
 
 	public boolean evaluateOperator(Object contextualElement) {// throws ParserException {
 		List<Object> coll = new ArrayList<Object>();
-		if (oclManager.evaluateOCL(this.getCollection().getResolvingExpr(), contextualElement) instanceof HashSet<?>) {
-			HashSet<Object> hashSetRes = (HashSet<Object>) oclManager
-					.evaluateOCL(this.getCollection().getResolvingExpr(), contextualElement);
+		if (OclManager.evaluateOCL(this.getCollection().getResolvingExpr(), (EObject) contextualElement) instanceof HashSet<?>) {
+			HashSet<Object> hashSetRes = (HashSet<Object>) OclManager
+					.evaluateOCL(this.getCollection().getResolvingExpr(), (EObject) contextualElement);
 			for (Object object : hashSetRes) {
 				if (object instanceof ArchiElemInstance)
 					coll.add((ArchiElemInstance) object);
@@ -110,12 +112,6 @@ public class ForallRefactoringOperator extends ForAllOperatorImpl implements Ref
 				return false;
 			}
 		}
-		return false;
-	}
-
-	@Override
-	public boolean evaluateOperator() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

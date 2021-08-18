@@ -2,21 +2,25 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.uma.jmetal.problem.impl.AbstractGenericProblem;
+import org.uma.jmetal.problem.AbstractGenericProblem;
 
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
-@SuppressWarnings("serial")
-public abstract class RProblem<S extends RSolution> extends AbstractGenericProblem<S> {
 
-	protected final EObject model;
+
+public abstract class RProblem<S> extends AbstractGenericProblem<S> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	protected int length_of_refactorings;
 	protected int number_of_actions;
 	protected int allowed_failures;
 	protected final int NUM_VAR = 1;
-	protected final int NUM_OBJ = 4;
+	//protected final int NUM_OBJ = 3;
 	protected final int VARIABLE_INDEX = 0;
 	protected final int NUM_CON = 0;
 	
@@ -25,35 +29,25 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	protected final int THIRD_OBJ = 2;
 	protected final int FOURTH_OBJ = 3;
 	
-	private Manager manager;
-	private Controller controller;
-	
 	protected Path sourceFolderPath; 
 	protected Path sourceModelPath;
 	
 	private int maxCloning = 3;
 	private double cloningWeight = 1.5;
 
-	public RProblem(Path srcFolderPath, Path srcModelPath, int desired_length, int length, int allowedFailures, int populationSize, Controller ctrl) {
-
-		controller = ctrl;
+	public RProblem(Path srcFolderPath, Path srcModelPath, int desired_length, int length, int allowedFailures, int populationSize) {
 
 		//Enables the generation of worsen models
-		if(controller.getConfigurator().isWorsen())
+		if(Configurator.eINSTANCE.isWorsen())
 			this.setNumberOfObjectives(1);
 		else
-			this.setNumberOfObjectives(NUM_OBJ);
+			this.setNumberOfObjectives(Configurator.eINSTANCE.getObjectives());
 		
 		this.setNumberOfConstraints(NUM_CON);
 		this.setNumberOfVariables(NUM_VAR);
 
-		this.manager = controller.getManager();
-		
 		this.sourceFolderPath = srcFolderPath;
 		this.sourceModelPath = srcModelPath;
-		
-		// no longer used
-		this.model = EcoreUtil.copy(this.manager.getMetamodelManager().getModel(sourceModelPath));
 		
 		this.length_of_refactorings = desired_length;
 		this.allowed_failures = allowedFailures;
@@ -61,10 +55,6 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 	
 	}
 
-	public EObject getModel() {
-		return model;
-	}
-	
 	public abstract Path getSourceModelPath();
 
 	public int getLength_of_refactorings() {
@@ -80,21 +70,9 @@ public abstract class RProblem<S extends RSolution> extends AbstractGenericProbl
 		super.setName(n);
 	}
 
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
-
-	public Controller getController() {
-		return controller;
-	}
-	
-	public RProblem setSourceModelFolderPath(Path sourceModelPath) {this.sourceFolderPath = sourceModelPath; return this;}
-	public RProblem setMaxCloning(final int mc) { maxCloning=mc; return this;}
-	public RProblem setCloningWeight(final double cw) { cloningWeight=cw; return this;}
+	public RProblem<S> setSourceModelFolderPath(Path sourceModelPath) {this.sourceFolderPath = sourceModelPath; return this;}
+	public RProblem<S> setMaxCloning(final int mc) { maxCloning=mc; return this;}
+	public RProblem<S> setCloningWeight(final double cw) { cloningWeight=cw; return this;}
 	
 	public int getMaxCloning() { return maxCloning; }
 	public double getCloningWeight() { return cloningWeight; }

@@ -1,18 +1,11 @@
 package it.univaq.disim.sealab.epsilon.evl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.EvlModule;
 
-import it.univaq.disim.sealab.epsilon.EpsilonHelper;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 
 public class EVLStandalone extends EpsilonStandalone {
@@ -22,18 +15,6 @@ public class EVLStandalone extends EpsilonStandalone {
 	 * folder
 	 */
 	public EVLStandalone() {
-		if (Files.exists(Paths.get("/tmp/aemilia-pas-checker.evl"))) {
-			source = Paths.get("/tmp/aemilia-pas-checker.evl");
-		} else {
-			InputStream mmIn = EpsilonHelper.class.getClassLoader().getResourceAsStream("evl/aemilia-pas-checker.evl");
-			source = Paths.get("/tmp/aemilia-pas-checker.evl");
-			try {
-				Files.copy(mmIn, source);
-			} catch (IOException e) {
-				System.err.println("Error in copying the EVL file to " + source);
-				e.printStackTrace();
-			}
-		}
 		module = new EvlModule();
 		
 		model = new ArrayList<>();
@@ -43,13 +24,6 @@ public class EVLStandalone extends EpsilonStandalone {
 	public IEolModule createModule() {
 		return new EvlModule();
 	}
-
-//	@Override
-////	public IModel getModel(Path mmaemiliaFilePath) throws Exception {
-//	public IModel getModel() {
-////		return createEmfModel("aemilia", mmaemiliaFilePath, EpsilonStandalone.getMetamodelPath().toString(), true, true);
-//		return model;
-//	}
 
 	public EpsilonStandalone setModel(Path mmaemiliaFilePath) {
 		model.add(createEmfModel("aemilia", mmaemiliaFilePath, this.metamodelPath.toString(), true, true));
@@ -76,11 +50,19 @@ public class EVLStandalone extends EpsilonStandalone {
 			System.err.println("Error in Performance antipattern detection using the file " + model.toString());
 			e.printStackTrace();
 		}
-		return ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
+		int pas = ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
+		return pas;
 	}
 
 	@Override
 	public void preProcess() {
 	}
-
+	
+//	@Override
+//	public void clearMemory() {
+//		super.clearMemory();
+//		((EvlModule)this.module).getPre().clear();
+//		((EvlModule)this.module).getContext().dispose();
+//	}
+	
 }

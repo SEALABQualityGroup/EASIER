@@ -1,33 +1,33 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
-import org.apache.commons.math3.exception.NotPositiveException;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.UseCase;
-import org.eclipse.uml2.uml.Message;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import logicalSpecification.Action;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
@@ -39,47 +39,42 @@ import logicalSpecification.actions.UML.impl.UMLMoveOperationActionImpl;
 
 public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements RefactoringAction {
 
-	private final static Path eolModulePath;
+	private final static String eolModulePath;
 
 	private final static double VALUE_COST = 1.23;
 
-	private final UMLRSolution solution;
-
-//	private Operation targetObject;
+	private final String sourceModelPath;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-refactoringLibrary", "easier-ref-operations", "mv_op_comp.eol");
+				"easier-refactoringLibrary", "easier-ref-operations", "mv_op_comp.eol").toString();
 	}
 
-	public static Path getEolModulePath() {
-		return eolModulePath;
-	}
+	public UMLMvOperationToComp(UMLRSolution sol) {
 
-	public UMLMvOperationToComp(RSolution sol) {
-		this.solution = (UMLRSolution) sol;
+		sourceModelPath = sol.getModelPath().toString();
 
-		umlOpToMove = getRandomOperation();
-		umlTargetComp = getRandomComponent();
+		umlOpToMove = getRandomOperation(sol);
+		umlTargetComp = getRandomComponent(sol);
 
-		cost = calculateCost();
+		cost = calculateCost(sol);
 		numOfChanges = cost;
-			
+
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
 
-	private double calculateCost() {
-		long msgs = this.solution.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
-				.map(Message.class::cast).filter(m -> umlOpToMove.equals(m.getSignature())).count();
+	private double calculateCost(final UMLRSolution sol) {
+		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
+				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
 		return msgs * VALUE_COST;
 	}
 
 	// retrieves a random operation from the source model
-	private Operation getRandomOperation() {
-		org.eclipse.uml2.uml.Package dynamicView = getPackage("dynamic_view");
+	private Operation getRandomOperation(UMLRSolution sol) {
+		org.eclipse.uml2.uml.Package dynamicView = getPackage("dynamic_view", sol);
 
 		List<Object> usecases = new ArrayList<>(
 				EcoreUtil.getObjectsByType(dynamicView.getOwnedElements(), UMLPackage.Literals.USE_CASE));
@@ -102,13 +97,13 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	 * Returns the specific package identified by @param
 	 * 
 	 * @param pkgName is the name of the package
+	 * @param sol
 	 * @return
 	 */
-	private org.eclipse.uml2.uml.Package getPackage(final String pkgName) {
+	private org.eclipse.uml2.uml.Package getPackage(final String pkgName, final UMLRSolution sol) {
 
 		org.eclipse.uml2.uml.Model rootPackage = null;
-		for (Object pkg : EcoreUtil.getObjectsByType(solution.getDirtyIModel().allContents(),
-				UMLPackage.Literals.PACKAGE)) {
+		for (Object pkg : EcoreUtil.getObjectsByType(sol.getDirtyIModel().allContents(), UMLPackage.Literals.PACKAGE)) {
 			if (pkg instanceof org.eclipse.uml2.uml.Model) {
 				rootPackage = (org.eclipse.uml2.uml.Model) pkg;
 				break;
@@ -126,16 +121,15 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		return returnPackage;
 	}
 
-	private Component getRandomComponent() {
+	private Component getRandomComponent(UMLRSolution sol) {
 
-		Package staticView = getPackage("static_view");
+		Package staticView = getPackage("static_view", sol);
 
 		List<Object> cmps = new ArrayList<>(
 				EcoreUtil.getObjectsByType(staticView.getOwnedElements(), UMLPackage.Literals.COMPONENT));
 		Component cmp = null;
 		do {
 			cmp = (Component) cmps.get(JMetalRandom.getInstance().nextInt(0, cmps.size() - 1));
-			System.out.println(cmp.toString());
 		} while (cmp.getOperations().contains(umlOpToMove));
 
 		return cmp;
@@ -145,39 +139,45 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	public void execute() {
 
 		EOLStandalone executor = new EOLStandalone();
-		executor.setModel(solution.getIModel());
-		executor.setSource(eolModulePath);
-		executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName")
-				.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
 
 		try {
-			executor.execute();
-		} catch (Exception e) {
-			System.err.println("Error in execution the eolmodule " + eolModulePath);
-			e.printStackTrace();
-		}
+			EasierUmlModel contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
+			contextModel.setStoredOnDisposal(true);
 
+			executor.setModel(contextModel);
+			executor.setSource(Paths.get(eolModulePath));
+			executor.setParameter(umlOpToMove.getName(), "String", "targetOperationName")
+					.setParameter(umlTargetComp.getName(), "String", "targetComponentName");
+
+			executor.execute();
+		} catch (EolRuntimeException e) {
+			System.err.println("Error in execution the eolmodule " + eolModulePath);
+//			e.printStackTrace();
+		}catch(URISyntaxException e2) {
+			e2.printStackTrace();
+		}
+		executor.clearMemory();
+		executor = null;
 	}
 
 	@Override
 	public void createPreCondition() {
-		PreCondition preCondition = solution.getManager().createPreCondition();
+		PreCondition preCondition = Manager.createPreCondition();
 
-		FOLSpecification specification = solution.getManager()
-				.createFOLSpectification("MvOperationToComponentPreCondition");
+		FOLSpecification specification = Manager.createFOLSpectification("MvOperationToComponentPreCondition");
 
-		ExistsOperator existsOpInOperations = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
+		ExistsOperator existsOpInOperations = Manager.createExistsInCollectionOperator(getOpToMoveSVP(),
 				getAllOpsMVP());
 
-		ExistsOperator existsTargetInComponents = solution.getManager()
-				.createExistsInCollectionOperator(getTargetCompSVP(), getAllCompsMVP());
+		ExistsOperator existsTargetInComponents = Manager.createExistsInCollectionOperator(getTargetCompSVP(),
+				getAllCompsMVP());
 
-		ExistsOperator existsOpInOpsOfTarget = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
+		ExistsOperator existsOpInOpsOfTarget = Manager.createExistsInCollectionOperator(getOpToMoveSVP(),
 				getAllTargetCompOpsMVP());
 
-		NotOperator notExistsOpInOpsOfTarget = solution.getManager().createNotOperator(existsOpInOpsOfTarget);
+		NotOperator notExistsOpInOpsOfTarget = Manager.createNotOperator(existsOpInOpsOfTarget);
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
+		AndOperator andRoot = Manager.createAndOperator();
 		andRoot.getArguments().add(existsOpInOperations);
 		andRoot.getArguments().add(existsTargetInComponents);
 		andRoot.getArguments().add(notExistsOpInOpsOfTarget);
@@ -189,19 +189,15 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	@Override
 	public void createPostCondition() {
-		PostCondition postCondition = solution.getManager().createPostCondition();
-		FOLSpecification specification = solution.getManager()
-				.createFOLSpectification("MvOperationToComponentPostCondition");
+		PostCondition postCondition = Manager.createPostCondition();
+		FOLSpecification specification = Manager.createFOLSpectification("MvOperationToComponentPostCondition");
 
-//		ExistsOperator existsCompInComponents = solution.getManager().createExistsInCollectionOperator(getTargetCompSVP(),
-//				getAllOpsMVP());
-		ExistsOperator existsTargetInComponents = solution.getManager()
-				.createExistsInCollectionOperator(getTargetCompSVP(), getAllCompsMVP());
-		ExistsOperator existsOpInOpsOfTarget = solution.getManager().createExistsInCollectionOperator(getOpToMoveSVP(),
+		ExistsOperator existsTargetInComponents = Manager.createExistsInCollectionOperator(getTargetCompSVP(),
+				getAllCompsMVP());
+		ExistsOperator existsOpInOpsOfTarget = Manager.createExistsInCollectionOperator(getOpToMoveSVP(),
 				getAllTargetCompOpsMVP());
 
-		AndOperator andRoot = solution.getManager().createAndOperator();
-//		andRoot.getArguments().add(existsOpInOperations);
+		AndOperator andRoot = Manager.createAndOperator();
 		andRoot.getArguments().add(existsTargetInComponents);
 		andRoot.getArguments().add(existsOpInOpsOfTarget);
 
@@ -215,29 +211,20 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	public void setParameters() {
 		List<Parameter> moveOpParams = new ArrayList<>();
 
-		setOpToMoveSVP(solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getOperationQuery(getUmlOpToMove())));
+		setOpToMoveSVP(Manager.createSingleValueParameter(UMLOclStringManager.getOperationQuery(getUmlOpToMove())));
 		moveOpParams.add(getOpToMoveSVP());
 
-		setTargetCompSVP(solution.getManager().createSingleValueParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getComponentQuery(getUmlTargetComp())));
+		setTargetCompSVP(Manager.createSingleValueParameter(UMLOclStringManager.getComponentQuery(getUmlTargetComp())));
 		moveOpParams.add(getTargetCompSVP());
 
-		setAllOpsMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllOperationsQuery()));
+		setAllOpsMVP(Manager.createMultipleValuedParameter(UMLOclStringManager.getAllOperationsQuery()));
 		moveOpParams.add(getAllOpsMVP());
 
-		setAllCompsMVP(solution.getManager().createMultipleValuedParameter(
-				((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getAllComponentsQuery()));
+		setAllCompsMVP(Manager.createMultipleValuedParameter(UMLOclStringManager.getAllComponentsQuery()));
 		moveOpParams.add(getAllCompsMVP());
 
-		setAllTargetCompOpsMVP(solution.getManager().createMultipleValuedParameter(
-				(((UMLOclStringManager) this.solution.getManager().getMetamodelManager().getOclStringManager())
-						.getOperationsOfQuery(getUmlTargetComp()))));
+		setAllTargetCompOpsMVP(
+				Manager.createMultipleValuedParameter(UMLOclStringManager.getOperationsOfQuery(getUmlTargetComp())));
 		moveOpParams.add(getAllTargetCompOpsMVP());
 
 		getParameters().addAll(moveOpParams);
@@ -245,13 +232,12 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	@Override
 	public RefactoringAction clone(RSolution solution) {
-		UMLMvOperationToComp cloned = new UMLMvOperationToComp(solution);
+		UMLMvOperationToComp cloned = new UMLMvOperationToComp((UMLRSolution) solution);
 
 		cloned.setNumOfChanges(this.getNumOfChanges());
 		cloned.setCost(this.getCost());
 		cloned.setName(this.getName());
-
-		cloned.cleanUp();
+		
 		cloned.umlOpToMove = this.umlOpToMove;
 		cloned.umlTargetComp = this.umlTargetComp;
 
@@ -262,26 +248,35 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		return cloned;
 	}
 
-	public boolean equals(Object op) {
-
-		if (op.getClass() != this.getClass())
-			return false;
-
-		final UMLMvOperationToComp act = (UMLMvOperationToComp) op;
-
-		if (!this.getUmlOpToMove().getName().equals(act.getUmlOpToMove().getName())
-				|| !this.getUmlTargetComp().getName().equals(act.getUmlTargetComp().getName()))
-			return false;
-		return true;
-	}
-
-	// the action doesn't create new element in the model
-	public void cleanUp() {
-	}
 
 	@Override
 	public String toString() {
 		return "Move Operation --> " + umlOpToMove.getName() + " to Component -->  " + umlTargetComp.getName();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sourceModelPath == null) ? 0 : sourceModelPath.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UMLMvOperationToComp other = (UMLMvOperationToComp) obj;
+		if (sourceModelPath == null) {
+			if (other.sourceModelPath != null)
+				return false;
+		} else if (!sourceModelPath.equals(other.sourceModelPath))
+			return false;
+		return true;
 	}
 
 }

@@ -3,6 +3,8 @@ package it.univaq.disim.sealab.metaheuristic.refactoring.operator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.OclManager;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.MultipleValuedParameter;
@@ -12,31 +14,31 @@ import logicalSpecification.impl.ExistsOperatorImpl;
 
 public class ExistsRefactoringOperator extends ExistsOperatorImpl implements RefactoringOperator{
 	
-	protected OclManager oclManager;
+//	protected OclManager oclManager;
 	
 	public ExistsRefactoringOperator() {
 		super();
 	}
 
-	public ExistsRefactoringOperator(SingleValuedParameter parameter, MultipleValuedParameter collection, OclManager oclMgr) {
+	public ExistsRefactoringOperator(SingleValuedParameter parameter, MultipleValuedParameter collection) {
 		super();
 		this.element = parameter;
 		this.collection = collection;
-		this.oclManager = oclMgr;
+//		this.oclManager = oclMgr;
 	}
 
-	public ExistsRefactoringOperator(MultipleValuedParameter collection, OclManager oclMgr) {
+	public ExistsRefactoringOperator(MultipleValuedParameter collection) {
 		super();
 		this.collection = collection;
-		this.oclManager = oclMgr;
+//		this.oclManager = oclMgr;
 	}
 	
 	public boolean evaluateOperator(Object contextualElement, Object obj) {
 //		throws ParserException {
 		if (obj == null)
 			return false;
-		List<Object> coll = (List<Object>) oclManager.evaluateOCL(this.getCollection().getResolvingExpr(),
-				contextualElement);
+		List<Object> coll = (List<Object>) OclManager.evaluateOCL(this.getCollection().getResolvingExpr(),
+				(EObject)contextualElement);
 		boolean found = false;
 		
 		if (coll != null && contextualElement != null) {
@@ -75,11 +77,4 @@ public class ExistsRefactoringOperator extends ExistsOperatorImpl implements Ref
 		}
 		return false;
 	}
-
-	@Override
-	public boolean evaluateOperator() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }

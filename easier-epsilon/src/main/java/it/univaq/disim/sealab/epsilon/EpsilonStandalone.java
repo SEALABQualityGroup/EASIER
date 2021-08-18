@@ -2,7 +2,6 @@ package it.univaq.disim.sealab.epsilon;
 
 import java.io.IOException;
 import java.io.InputStream;
-//import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +14,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.xmi.impl.GenericXMLResourceFactoryImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.emc.emf.EmfModelFactory;
 import org.eclipse.epsilon.emc.emf.xml.XmlModel;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -26,6 +26,7 @@ import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.eclipse.epsilon.eol.types.EolModelElementType;
+import org.eclipse.uml2.common.util.CacheAdapter;
 
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 
@@ -61,8 +62,6 @@ public abstract class EpsilonStandalone {
 		return this;
 	}
 
-	public abstract EpsilonStandalone setModel(Path modelFilePath);
-
 	public EpsilonStandalone setModel(IModel m) {
 		model.add(m);
 		return this;
@@ -88,7 +87,7 @@ public abstract class EpsilonStandalone {
 		module.getContext().getModelRepository().dispose();
 	}
 
-	public void execute() throws Exception {
+	public void execute() throws EolRuntimeException {
 
 		doExecute();
 
@@ -98,7 +97,7 @@ public abstract class EpsilonStandalone {
 		module.getContext().getModelRepository().dispose();
 	}
 
-	public EpsilonStandalone setModule(IEolModule mod) {
+	public EpsilonStandalone setModule(EolModule mod) {
 		module = mod;
 		return this;
 	}
@@ -111,7 +110,7 @@ public abstract class EpsilonStandalone {
 		return model;
 	}
 
-	protected void doExecute() throws EolRuntimeException{
+	protected void doExecute() throws EolRuntimeException {
 		try {
 			module.parse(getSource().toFile());
 		} catch (Exception e) {
@@ -127,19 +126,13 @@ public abstract class EpsilonStandalone {
 		}
 
 		model.forEach(m -> module.getContext().getModelRepository().addModel(m));
-//		module.getContext().getModelRepository().add(model);
 
 		for (Variable parameter : parameters) {
 			module.getContext().getFrameStack().put(parameter);
 		}
 
 		preProcess();
-//		try {
-			result = execute(module);
-//		} catch (EolRuntimeException e) {
-//			System.err.println("[ERROR] the execution of " + source.toString() + " has thrown a runtime exception!");
-//			e.printStackTrace();
-//		}
+		result = execute(module);
 	}
 
 	public Path getMetamodelPath() {
@@ -220,30 +213,17 @@ public abstract class EpsilonStandalone {
 	 * @throws EolModelLoadingException
 	 * @throws URISyntaxException
 	 */
-	public static EasierUmlModel createUmlModel(String name, Path model, String metamodelURI, boolean readOnLoad,
-			boolean storedOnDisposal) throws EolModelLoadingException, URISyntaxException {
+	public static EasierUmlModel createUmlModel(String model) throws EolModelLoadingException, URISyntaxException {
+		CachedResourceSet.getCache().clear();
+
 		EasierUmlModel emfModel = new EasierUmlModel();
 
-		/*
-		 * it seems no longer to be needed
-		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(MARTEPackage.eNS_URI,
-		 * URI.createURI(
-		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.profile.uml")
-		 * );
-		 * 
-		 * UMLPlugin.getEPackageNsURIToProfileLocationMap().put(GQAMPackage.eNS_URI,
-		 * URI.createURI(
-		 * "/home/peo/git/sealab/uml2lqn/org.univaq.uml2lqn/UMLModel/MARTE.MARTE_AnalysisModel.GQAM.profile.uml"
-		 * ));
-		 */
-
 		StringProperties properties = new StringProperties();
-		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, true);
+		properties.put(EmfModel.PROPERTY_NAME, "UML");
+		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, false);
 		properties.put(EmfModel.PROPERTY_EXPAND, true);
-		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model.toString()));
-//		properties.put(EmfModel.PROPERTY_MODEL_FILE, model.toString());
-		properties.put(EmfModel.PROPERTY_METAMODEL_URI, "http://www.eclipse.org/papyrus/GQAM/1");//,http://com.masdes.dam/profiles/Core/1.0");
+		properties.put(EmfModel.PROPERTY_MODEL_URI, URI.createFileURI(model));
+		properties.put(EmfModel.PROPERTY_METAMODEL_URI, null);// ,http://com.masdes.dam/profiles/Core/1.0");
 		properties.put(EmfModel.PROPERTY_CACHED, false);
 		properties.put(EmfModel.PROPERTY_CONCURRENT, false);
 		properties.put(EmfModel.PROPERTY_READONLOAD, true);
@@ -253,7 +233,6 @@ public abstract class EpsilonStandalone {
 
 		// reading the epsilon source code
 		emfModel.load(properties, (IRelativePathResolver) null);
-		
 
 		return emfModel;
 	}
@@ -264,7 +243,6 @@ public abstract class EpsilonStandalone {
 		XmlModel xmlModel = new XmlModel();
 
 		try {
-//			xmlModel.setFile(Utility.getFileFromResource(xmlFilePath));
 			StringProperties properties = new StringProperties();
 			properties.put(XmlModel.PROPERTY_NAME, name);
 			properties.put(XmlModel.PROPERTY_XSD_URI, xsdURI);
@@ -275,15 +253,6 @@ public abstract class EpsilonStandalone {
 
 			properties.put(XmlModel.PROPERTY_MODEL_URI,
 					org.eclipse.emf.common.util.URI.createFileURI(xmlFilePath.toString()));
-
-//			xmlModel.setName(name);
-//			xmlModel.setReadOnLoad(false);
-//			xmlModel.setStoredOnDisposal(true);
-//			xmlModel.setModelFile(xmlFilePath.toString());
-//			xmlModel.setExpand(true);
-//			xmlModel.setMetamodelFile(lqnXSD);
-
-//			xmlModel.load();
 
 			xmlModel.load(properties, (IRelativePathResolver) null);
 
@@ -315,13 +284,6 @@ public abstract class EpsilonStandalone {
 		ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap().put("lqxo",
 				new GenericXMLResourceFactoryImpl());
 
-		// Load the XML document
-//		model.setName(name);
-//		model.setReadOnLoad(readOnLoad);
-//		model.setStoredOnDisposal(storeOnDisposal);
-//		model.setCachingEnabled(cached);
-//		model.setFile(xmlFilePath.toFile());
-
 		StringProperties properties = new StringProperties();
 		properties.put(PlainXmlModel.PROPERTY_NAME, name);
 		properties.put(PlainXmlModel.PROPERTY_FILE, xmlFilePath.toString());
@@ -330,7 +292,6 @@ public abstract class EpsilonStandalone {
 
 		try {
 			model.load(properties);
-//			model.load();
 		} catch (EolModelLoadingException ex) {
 			ex.printStackTrace();
 		}
@@ -339,6 +300,20 @@ public abstract class EpsilonStandalone {
 
 	public IEolModule getModule() {
 		return module;
+	}
+
+	public synchronized void clearMemory() {
+		
+		this.getModule().getImports().clear();
+		this.getModule().getComments().clear();
+		this.module.getOperations().clear();
+		this.module.getChildren().clear();
+		
+		this.getModule().getContext().dispose();
+		this.getModule().getContext().getModelRepository().dispose();
+		this.getModule().getContext().getFrameStack().dispose();
+
+		
 	}
 
 }

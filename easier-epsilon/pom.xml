@@ -11,7 +11,7 @@
 	<name>Easier Epsilon Module</name>
 
 	<properties>
-		<epsilon.version>2.2.0-SNAPSHOT</epsilon.version>
+		<epsilon.version>2.2.0</epsilon.version>
 		<epsilon.scope>compile</epsilon.scope>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -80,7 +80,7 @@
 		<dependency>
 			<groupId>es.unizar.profiles</groupId>
 			<artifactId>com.masdes.dam.static.profile</artifactId>
-			<version>0.13.1-SNAPSHOT</version>
+			<version>0.13.1.201801221725</version>
 		</dependency>
 
 		<!-- <dependency> -->
@@ -132,21 +132,21 @@
 			<version>1.2.0.201803031506</version>
 		</dependency>
 
-		<dependency>
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.standard</artifactId>
 			<version>1.0.0.v20150202-0947</version>
-		</dependency>
-		<dependency>
+		</dependency-->
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l3</artifactId>
 			<version>1.1.0-v20130902-0826</version>
-		</dependency>
-		<dependency>
+		</dependency-->
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab.profiles</groupId>
 			<artifactId>uml.l2</artifactId>
 			<version>1.1.0-v20130902-0826</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 
 	<repositories>

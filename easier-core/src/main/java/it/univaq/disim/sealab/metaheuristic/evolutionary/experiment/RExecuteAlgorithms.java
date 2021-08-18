@@ -4,37 +4,34 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
-public class RExecuteAlgorithms<S extends RSolution, Result> {
+public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> {
 
-	private Experiment<S, Result> experiment;
-	private final Controller controller;
-	private List<Map.Entry<Algorithm<Result>, Long>> computingTimes;
+	protected RExperiment<S, Result> experiment;
+	protected List<Map.Entry<Algorithm<Result>, long[]>> computingTimes;
 
 	/** Constructor */
-	public RExecuteAlgorithms(RExperiment<S, Result> exp, final Controller ctr) {
-		// super(configuration);
+	public RExecuteAlgorithms(RExperiment<S, Result> exp) {
 		this.experiment = exp;
-		this.controller = ctr;
 	}
 
 	public RExecuteAlgorithms<S, Result> run() {
@@ -43,39 +40,81 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism",
 				"" + this.experiment.getNumberOfCores());
-
+		
 		computingTimes = new ArrayList<>();
 
-		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-			final int id = i;
+//		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
+//			final int id = i;
 
-			System.out.println("Indepentent Runs");
-			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
+//			System.out.println("Indepentent Runs");
+//			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
 
 			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
 			// algorithm.runAlgorithm(id, experiment));
 			// TODO if parallelStream is set, it throws NPE after a while
 			computingTimes.addAll(experiment.getAlgorithmList().stream()
-					.map(algorithm -> getComputingTime(algorithm, id)).collect(Collectors.toList()));
+//					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm, id)).collect(Collectors.toList()));
+					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm)).collect(Collectors.toList()));
 
-			FileUtils.moveTmpFile(controller.getConfigurator().getTmpFolder(), controller.getPermanentTmpFolder());
-		}
+			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
+			
+			// removes old solutions
+//			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
+//				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
+//			}
+			
+//		}
+		
+		
+		
 		return this;
 	}
 
-	private Map.Entry<Algorithm<Result>, Long> getComputingTime(ExperimentAlgorithm<S, Result> algorithm, int id) {
+	/**
+	 * It returns an Algorithm and its computational time along with total and free memory stats
+	 * It flushes experiment data to "algo-perf-stats.csv" file within the output folder
+	 * @param algorithm
+	 * @param id
+	 * @return
+	 */
+	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(RExperimentAlgorithm<S, Result> algorithm) {
+		long total = Runtime.getRuntime().totalMemory();
 		long initTime = System.currentTimeMillis();
-		algorithm.runAlgorithm(id, this.experiment);
+	
+//		algorithm.runAlgorithm(id, this.experiment);
+//		algorithm.runAlgorithm(this.experiment, id);
+		algorithm.runAlgorithm(this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
-		return new AbstractMap.SimpleEntry<Algorithm<Result>, Long>(algorithm.getAlgorithm(), computingTime);// new
+		long free = Runtime.getRuntime().freeMemory();
+	
+//		if(!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
+//			
+//			try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
+//		    	writer.write("algorithm,problem_tag,execution_time(ms),total_memory(B),free_memory(B)");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		String line = String.format("%s,%s,%s,%s,%s\n", algorithm.getAlgorithmTag(), algorithm.getProblemTag(), computingTime, total, free);
+//		
+//	    try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
+//	    	writer.append(line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+				
+		
+//		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
+		return new AbstractMap.SimpleEntry<Algorithm<Result>, long[]>(algorithm.getAlgorithm(), new long[]{computingTime, total, free});// new
 	}
 
-	private void prepareOutputDirectory() {
+	protected void prepareOutputDirectory() {
 		if (experimentDirectoryDoesNotExist()) {
 			createExperimentDirectory();
 		}
 	}
-
+	
 	private boolean experimentDirectoryDoesNotExist() {
 		boolean result;
 		File experimentDirectory;
@@ -97,7 +136,17 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		if (experimentDirectory.exists()) {
 			experimentDirectory.delete();
 		}
-
+		
+		if(Files.exists(Configurator.eINSTANCE.getTmpFolder()))
+			Configurator.eINSTANCE.getTmpFolder().toFile().delete();
+		
+		try {
+			Files.createDirectories(Configurator.eINSTANCE.getTmpFolder());
+		} catch (IOException e) {
+			System.err.println("Error while creating tmp folder");
+			e.printStackTrace();
+		}
+	
 		boolean result;
 		result = new File(experiment.getExperimentBaseDirectory()).mkdirs();
 		setReportFilePath();
@@ -109,7 +158,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 
 	private Path setReportFilePath() {
 
-		Path tmp = controller.getConfigurator().getOutputFolder().resolve(controller.getReportFileName());
+		Path tmp = Configurator.eINSTANCE.getOutputFolder().resolve(Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv"));
 		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
 		Path relErrorLog = tmp.getParent().resolve("relErrorLog.csv");
 		Path backErrorLog = tmp.getParent().resolve("backAnnErrorLog.csv");
@@ -147,7 +196,7 @@ public class RExecuteAlgorithms<S extends RSolution, Result> {
 		return tmp;
 	}
 
-	public List<Map.Entry<Algorithm<Result>, Long>> getComputingTimes() {
+	public List<Map.Entry<Algorithm<Result>, long[]>> getComputingTimes() {
 		return computingTimes;
 	}
 }

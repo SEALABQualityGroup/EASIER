@@ -1,38 +1,29 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.ObjectInputStream.GetField;
 import java.nio.file.Path;
-import java.rmi.UnexpectedException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.ocl.ParserException;
-import org.uma.jmetal.solution.impl.AbstractGenericSolution;
+import org.uma.jmetal.solution.AbstractSolution;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 
-public abstract class RSolution extends AbstractGenericSolution<RSequence, RProblem<?>> {
+public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected Path modelPath;
+	
+	protected Path modelPath, sourceModelPath;
 	
 	protected boolean refactored;
 	protected boolean crossovered;
 	protected boolean mutated;
-	
-	protected ResourceSet resourceSet;
-	protected Manager manager;
-	protected Controller controller;
-	
-	protected EObject model;
 	
 	protected static int SOLUTION_COUNTER = 0;
 	
@@ -41,32 +32,51 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	protected double perfQ;
 	protected int numPAs;
 	protected double reliability;
+	public static final int VARIABLE_INDEX;
 	
-	protected RSolution[] parents;
+	protected RSolution<T>[] parents;
 	
 	public static int MutationCounter = 0;
 	public static int XOverCounter = 0;
-
-	protected RSolution(RProblem<?> problem) {
-		super(problem);
-		crossovered = false;
-		mutated = false;
-		refactored = false;
+	
+	protected int allowed_failures, length_of_refactorings;
+	protected String problemName;
+	
+	
+	static {
+		VARIABLE_INDEX = 0;
+	}
+	
+	protected RSolution(int numberOfVariables, int numberOfObjectives) {
+		super(numberOfVariables, numberOfObjectives);
+	}
+	
+	protected RSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
+		this(numberOfVariables, numberOfObjectives);
+		
+		allowed_failures = p.allowed_failures;
+		length_of_refactorings = p.length_of_refactorings;
+		sourceModelPath = p.getSourceModelPath();
+		problemName = p.getName();
+		
 	}
 
-//	public abstract Controller getController();
+	/** Constructor */
+	  protected RSolution(
+	      int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
+		  super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+		  
+	  }	
+	
 
-	public abstract RProblem<?> getProblem();
+//	public RSolution(RProblem<T> p) {
+////		super(problem);
+//		problem = p;
+//		crossovered = false;
+//		mutated = false;
+//		refactored = false;
+//	}
 
-	public abstract int getLength();
-
-//	public abstract EObject getModel();
-
-//	public abstract void setParents(RSolution s1, RSolution s2);
-
-	public abstract void updateModel();
-
-	public abstract void updateThresholds();
 
 	public abstract void countingPAs();
 
@@ -77,15 +87,16 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public abstract void applyTransformation();
 	public abstract void computeReliability();
 
-	public abstract boolean alter(int i) throws UnexpectedException, ParserException;
-
-//	public abstract Manager getManager();
+	public abstract boolean alter(int i);
 
 	public abstract void invokeSolver();
-
-//	public abstract List<Resource> getResources();
+	public abstract boolean isFeasible(Refactoring ref);
 	
-	public abstract RefactoringAction getActionAt(int index);
+	public abstract void freeMemory();
+
+	public RefactoringAction getActionAt(int index) {
+		return ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().get(index);
+	}
 
 	public Path getModelPath() {
 		return modelPath;
@@ -93,6 +104,10 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	
 	public double getReliability() {
 		return reliability;
+	}
+	
+	public Path getSourceModelPath() {
+		return sourceModelPath;
 	}
 	
 	public void setRefactored() {
@@ -122,7 +137,6 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	}
 	
 	public double getPerfQ() {
-		// perfQ = evaluatePerformance();
 		return perfQ;
 	}
 
@@ -132,7 +146,7 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 
 	public double getNumOfChanges() {
 		double changes = 0.0;
-		Refactoring r = this.getVariableValue(0).getRefactoring();
+		Refactoring r = (Refactoring) this.getVariable(0);
 		for (RefactoringAction action : r.getActions()) {
 			changes += action.getNumOfChanges();
 		}
@@ -146,41 +160,17 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 	public int getName() {
 		return name;
 	}
-
-	public Manager getManager() {
-		return this.manager;
-	}
-
-	public Controller getController() {
-		return this.controller;
-	}
-
-	public ResourceSet getResourceSet() {
-		return resourceSet;
-	}
-
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
 	
+	public String getProblemName() {
+		return problemName;
+	}
+
 	public static synchronized int getCounter() {
 		return SOLUTION_COUNTER++;
 	}
 
 	public void setName() {
 		this.name = getCounter();
-	}
-	
-	public EObject getModel() {
-		return model;
-	}
-	
-	public List<Resource> getResources() {
-		return this.getResourceSet().getResources();
-	}
-	
-	public void save() {
-		manager.getMetamodelManager().save(this);
 	}
 	
 	protected void resetParents() {
@@ -199,24 +189,81 @@ public abstract class RSolution extends AbstractGenericSolution<RSequence, RProb
 		this.parents[1] = parent2;
 	}
 	
-	public boolean equals(Object sol) {
-		
-		if(this.getName() == (((RSolution)sol).getName()))
+	/**
+	 * Prints a VAR file
+	 */
+	public String getVariableString(int index) {
+		String strValue = this.getName() + ";";
+
+		List<Double> objs = new ArrayList<>();
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			objs.add(getObjective(i));
+		}
+
+		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
+		strValue += ";";
+		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toString())
+				.collect(Collectors.joining(","));
+		return strValue;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (crossovered ? 1231 : 1237);
+		result = prime * result + ((modelPath == null) ? 0 : modelPath.hashCode());
+		result = prime * result + (mutated ? 1231 : 1237);
+		result = prime * result + name;
+		result = prime * result + numPAs;
+		result = prime * result + Arrays.hashCode(parents);
+		long temp;
+		temp = Double.doubleToLongBits(perfQ);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (refactored ? 1231 : 1237);
+		result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
+		temp = Double.doubleToLongBits(reliability);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		
-		if(this.getVariableValue(0).getRefactoring().equals(((RSolution)sol).getVariableValue(0).getRefactoring()))
-			return true;
-		
-		return false;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RSolution other = (RSolution) obj;
+		if (crossovered != other.crossovered)
+			return false;
+		if (modelPath == null) {
+			if (other.modelPath != null)
+				return false;
+		} else if (!modelPath.equals(other.modelPath))
+			return false;
+		if (mutated != other.mutated)
+			return false;
+		if (name != other.name)
+			return false;
+		if (numPAs != other.numPAs)
+			return false;
+		if (!Arrays.equals(parents, other.parents))
+			return false;
+		if (Double.doubleToLongBits(perfQ) != Double.doubleToLongBits(other.perfQ))
+			return false;
+		if (refactored != other.refactored)
+			return false;
+		if (getVariable(VARIABLE_INDEX) == null) {
+			if (other.getVariable(VARIABLE_INDEX) != null)
+				return false;
+		} else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
+			return false;
+		if (Double.doubleToLongBits(reliability) != Double.doubleToLongBits(other.reliability))
+			return false;
+		return true;
 	}
 	
-//	@Override
-//	public double getObjective(int j) {
-//		return (j == 0 && !getController().getConfigurator().isWorsen()) ? (-1 * super.getObjective(j))
-//				: super.getObjective(j);
-//		/*
-//		 * if(j == 0 && !getController().getConfigurator().isWorsen()) return (-1 *
-//		 * super.getObjective(j)); return super.getObjective(j);
-//		 */
-//	}
+	
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+
 import logicalSpecification.AndOperator;
 import logicalSpecification.LogicalSpecificationFactory;
 import logicalSpecification.Operator;
@@ -61,6 +63,7 @@ public class AndRefactoringOperator extends AndOperatorImpl implements Refactori
 		return null;
 	}
 
+	@Override
 	public boolean evaluateOperator(Object contextualElement) {// throws ParserException {
 		// System.out.print("AND(");
 		boolean app = true;
@@ -99,13 +102,13 @@ public class AndRefactoringOperator extends AndOperatorImpl implements Refactori
 		return listRefactoringOperators;
 	}
 
-	@Override
-	public boolean evaluateOperator() {
-		// TODO Auto-generated method stub
-		for(RefactoringOperator op : listRefactoringOperators) {
-			if(!op.evaluateOperator())
-				return false;
-		}
-		return true;
-	}
+//	@Override
+//	public boolean evaluateOperator() {
+//		// TODO Auto-generated method stub
+//		for(RefactoringOperator op : listRefactoringOperators) {
+//			if(!op.evaluateOperator())
+//				return false;
+//		}
+//		return true;
+//	}
 }

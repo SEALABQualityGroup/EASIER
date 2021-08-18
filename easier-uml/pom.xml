@@ -17,14 +17,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
@@ -53,25 +45,13 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
+						<id>make-assembly</id> <!-- this is used for inheritance merges-->
+						<phase>package</phase> <!-- bind to the packaging phase-->
 						<goals>
 							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>it.univaq.disim.sealab.metaheuristic.Launcher</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -154,21 +134,12 @@
 			<version>1.2.0.201803031506</version>
 		</dependency>
 
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.standard</artifactId>
-			<version>1.0.0.v20150202-0947</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l3</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
-		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>uml.l2</artifactId>
-			<version>1.1.0-v20130902-0826</version>
-		</dependency>
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.standard</artifactId> 
+			<version>1.0.0.v20150202-0947</version> </dependency -->
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.l3</artifactId> 
+			<version>1.1.0-v20130902-0826</version> </dependency -->
+		<!--dependency> <groupId>it.univaq.disim.sealab.profiles</groupId> <artifactId>uml.l2</artifactId> 
+			<version>1.1.0-v20130902-0826</version> </dependency -->
 
 		<!-- Dependency to ECLIPSE -->
 		<!-- <dependency> -->

@@ -1,8 +1,5 @@
 package it.univaq.disim.sealab.easier.managers.uml;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,29 +10,20 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Device;
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.UMLPlugin;
-import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.Controller;
-import it.univaq.disim.sealab.metaheuristic.managers.uml.UMLMetamodelManager;
 
 public class TestUMLManager {
 
@@ -54,8 +42,7 @@ public class TestUMLManager {
 		pathToModel = Paths
 				.get("/home/peo/git/sealab/easier/easier-uml/src/main/resources/models/agv/automatedGuidedVehicle.uml");
 
-		umlIModel = (EasierUmlModel) EpsilonStandalone.createUmlModel("UML", pathToModel, UMLPackage.eNS_URI, true,
-				false);
+		umlIModel = (EasierUmlModel) EpsilonStandalone.createUmlModel(pathToModel.toString());
 
 		resourceSet = umlIModel.getResource().getResourceSet();
 	}

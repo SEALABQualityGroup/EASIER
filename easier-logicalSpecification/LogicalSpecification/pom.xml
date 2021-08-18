@@ -28,9 +28,9 @@
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.uml -->
 		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
+			<groupId>it.univaq.disim.sealab.uml</groupId>
 			<artifactId>org.eclipse.uml2.uml</artifactId>
-			<version>5.0.1.v20140910-1354</version>
+			<version>5.5.0.v20181203-1331</version>
 		</dependency>
 
 		<dependency>
@@ -40,17 +40,17 @@
 			<scope>compile</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.6</version>
-		</dependency>
+		</dependency-->
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.ocl/org.eclipse.ocl -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.eclipse.ocl</groupId>
 			<artifactId>org.eclipse.ocl</artifactId>
 			<version>3.4.2.v20140725-2242</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 </project>

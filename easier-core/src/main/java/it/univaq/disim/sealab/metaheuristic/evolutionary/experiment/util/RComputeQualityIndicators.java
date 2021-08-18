@@ -6,6 +6,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 //it under the terms of the GNU Lesser General Public License as published by
 //the Free Software Foundation, either version 3 of the License, or
@@ -32,21 +35,21 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.component.ExperimentComponent;
+import org.uma.jmetal.lab.experiment.component.impl.ExecuteAlgorithms;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
+import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.qualityindicator.QualityIndicator;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.experiment.Experiment;
-import org.uma.jmetal.util.experiment.ExperimentComponent;
-import org.uma.jmetal.util.experiment.component.ExecuteAlgorithms;
-import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
-import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.imp.ArrayFront;
+import org.uma.jmetal.util.front.impl.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
-import org.uma.jmetal.util.point.util.PointSolution;
+import org.uma.jmetal.util.point.PointSolution;
 
 /**
  * This class computes the {@link QualityIndicator}s of an experiment. Once the
@@ -60,9 +63,12 @@ import org.uma.jmetal.util.point.util.PointSolution;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class RComputeQualityIndicators<S extends Solution<?>, Result> implements ExperimentComponent {
+public class RComputeQualityIndicators<S extends Solution<?>, Result extends List<S>> implements ExperimentComponent {
 
 	private final Experiment<S, Result> experiment;
+	private Map<String, List<Double>> qualityIndicatorsMap;
+
+	String qualityIndicatorFile;
 
 	public RComputeQualityIndicators(Experiment<S, Result> experiment) {
 		this.experiment = experiment;
@@ -70,62 +76,65 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 
 	@Override
 	public void run() throws IOException {
+		experiment.removeDuplicatedAlgorithms();
+		resetIndicatorFiles();
+
 		for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
 			JMetalLogger.logger.info("Computing indicator: " + indicator.getName());
 
 			for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
 				String algorithmDirectory;
 				algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/" + algorithm.getAlgorithmTag();
-
-				for (int problemId = 0; problemId < experiment.getProblemList().size(); problemId++) {
-					String problemDirectory = algorithmDirectory + "/"
-							+ experiment.getProblemList().get(problemId).getTag();
+				for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+					String problemDirectory = algorithmDirectory + "/" + problem.getTag();
 
 					String referenceFrontDirectory = experiment.getReferenceFrontDirectory();
-					String referenceFrontName = referenceFrontDirectory + "/"
-							+ experiment.getReferenceFrontFileNames().get(problemId);
+
+					String referenceFrontName = referenceFrontDirectory + "/" + problem.getReferenceFront();
 
 					JMetalLogger.logger.info("RF: " + referenceFrontName);
 
-					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName));
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName), ",");
 
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
 
-					try {
-						Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+					String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
 
-						String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
-						resetFile(qualityIndicatorFile);
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
 
-						indicator.setReferenceParetoFront(normalizedReferenceFront);
-						for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-							String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName()
-									+ i + ".tsv";
-
-							if (new File(frontFileName).exists()) { // in case of a not completed execution
-
-								Front front = new ArrayFront(frontFileName);
-
-								Front normalizedFront = frontNormalizer.normalize(front);
-								List<PointSolution> normalizedPopulation = FrontUtils
-										.convertFrontToSolutionList(normalizedFront);
-								Double indicatorValue = (Double) indicator.evaluate((List<S>) normalizedPopulation);
-								JMetalLogger.logger.info(indicator.getName() + ": " + indicatorValue);
-
-								writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
-							}
+					double[] indicatorValues = new double[experiment.getIndependentRuns()];
+					IntStream.range(0, experiment.getIndependentRuns()).forEach(run -> {
+						String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + run
+								+ ".csv";
+						Front front = null;
+						try {
+							front = new ArrayFront(frontFileName, ",");
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
 						}
-					} catch (JMetalException e) {
-						e.printStackTrace();
+						Front normalizedFront = frontNormalizer.normalize(front);
+						List<PointSolution> normalizedPopulation = FrontUtils
+								.convertFrontToSolutionList(normalizedFront);
+						Double indicatorValue = indicator.evaluate((List<S>) normalizedPopulation);
+						JMetalLogger.logger.info(indicator.getName() + ": " + indicatorValue);
+						indicatorValues[run] = indicatorValue;
+					});
+
+					for (double indicatorValue : indicatorValues) {
+						writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
 					}
 				}
 			}
 		}
-		try {
-			findBestIndicatorFronts(experiment);
-		} catch (JMetalException e) {
-			e.printStackTrace();
-		}
+		findBestIndicatorFronts(experiment);
+		writeSummaryFile(experiment);
+	}
+
+	
+
+	public Map<String, List<Double>> getIndicatorsMap() {
+		return qualityIndicatorsMap;
 	}
 
 	public String removeSolID(String frontFileName) {
@@ -144,10 +153,9 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 		try (BufferedReader reader = new BufferedReader(new FileReader(frontFileName));
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile))) {
 			while ((readLine = reader.readLine()) != null) {
-				if (readLine.contains("perfQ")) {
-
-				} else {
-					String line = readLine.split(" ", 2)[1];
+				if (!readLine.contains("perfQ")) {
+//				} else {
+					String line = readLine.split(",", 2)[1];
 					writer.write(line);
 					writer.newLine();
 				}
@@ -168,6 +176,24 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 			throw new JMetalException("Error writing indicator file" + ex);
 		}
 	}
+	
+	  /**
+	   * Deletes the files containing the indicator values if the exist.
+	   */
+	  private void resetIndicatorFiles() {
+	    for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
+	      for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
+	        for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+	          String algorithmDirectory;
+	          algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/" + algorithm.getAlgorithmTag();
+	          String problemDirectory = algorithmDirectory + "/" + problem.getTag();
+	          String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
+
+	          resetFile(qualityIndicatorFile);
+	        }
+	      }
+	    }
+	  }
 
 	/**
 	 * Deletes a file or directory if it does exist
@@ -272,6 +298,49 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result> implements
 					}
 				}
 			}
+		}
+	}
+
+	private void writeSummaryFile(Experiment<S, Result> experiment) {
+		JMetalLogger.logger.info("Writing org.uma.jmetal.experiment summary file");
+		String headerOfCSVFile = "Algorithm,Problem,IndicatorName,ExecutionId,IndicatorValue";
+		String csvFileName = this.experiment.getExperimentBaseDirectory() + "/QualityIndicatorSummary.csv";
+		resetFile(csvFileName);
+
+		try (FileWriter os = new FileWriter(csvFileName, true)) {
+			os.write("" + headerOfCSVFile + "\n");
+
+			for (GenericIndicator<?> indicator : experiment.getIndicatorList()) {
+				for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
+					String algorithmDirectory;
+					algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/"
+							+ algorithm.getAlgorithmTag();
+
+					for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+						String indicatorFileName = algorithmDirectory + "/" + problem.getTag() + "/"
+								+ indicator.getName();
+						Path indicatorFile = Paths.get(indicatorFileName);
+						if (indicatorFile == null) {
+							throw new JMetalException("Indicator file " + indicator.getName() + " doesn't exist");
+						}
+						System.out.println("-----");
+						System.out.println(indicatorFileName);
+
+						List<String> fileArray;
+						fileArray = Files.readAllLines(indicatorFile, StandardCharsets.UTF_8);
+						System.out.println(fileArray);
+						System.out.println("++++++");
+
+						for (int i = 0; i < fileArray.size(); i++) {
+							String row = algorithm.getAlgorithmTag() + "," + problem.getTag() + ","
+									+ indicator.getName() + "," + i + "," + fileArray.get(i);
+							os.write("" + row + "\n");
+						}
+					}
+				}
+			}
+		} catch (IOException ex) {
+			throw new JMetalException("Error writing indicator file" + ex);
 		}
 	}
 }

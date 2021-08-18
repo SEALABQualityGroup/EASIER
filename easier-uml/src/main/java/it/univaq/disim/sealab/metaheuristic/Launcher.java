@@ -1,142 +1,376 @@
 package it.univaq.disim.sealab.metaheuristic;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.xsd.ecore.XSDEcoreBuilder;
+import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.ExperimentBuilder;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateLatexTablesWithStatistics;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateWilcoxonTestTablesWithR;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
+import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
+import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.mutation.MutationOperator;
+import org.uma.jmetal.operator.selection.SelectionOperator;
+import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
+import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
 import com.beust.jcommander.JCommander;
 
+import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
+import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
+import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
+import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLController;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperiment;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentAlgorithm;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.RExperimentBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.UMLRExecuteAlgorithms;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.GenerateLatexTablesWithComputingTime;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RComputeQualityIndicators;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RGenerateReferenceParetoFront;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
-import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class Launcher {
+
+	private static Map<String, List<Double>> qualityIndicatorsMap;
+
+	static {
+		qualityIndicatorsMap = new HashMap<>();
+	}
 
 	public static void main(String[] args) {
 
 		JCommander jc = new JCommander();
 
-		Configurator config = new Configurator();
-		jc.addObject(config);
+		jc.addObject(Configurator.eINSTANCE);
 		jc.parse(args);
 
 		List<Path> referenceFront = new ArrayList<>();
+		double qThreshold = 0.1;
 
-		UMLController ctr = new UMLController(config);
-		if (config.getReferenceFront() != null)
-			referenceFront = config.getReferenceFront();
+		if (Configurator.eINSTANCE.getReferenceFront() != null)
+			referenceFront = Configurator.eINSTANCE.getReferenceFront();
+
 		else {
 			List<Path> modelsPath = new ArrayList<>();
 
-			if (config.getModelsPath().get(0).toFile().isFile()) {
-				// use the solution csv file to extract more models
-				modelsPath
-						.addAll(FileUtils.extractModelPaths(config.getModelsPath().get(0), config.getMaxWorseModels()));
-			} else {
-				modelsPath.addAll(config.getModelsPath());
-			}
+			/*
+			 * if (Configurator.eINSTANCE.getModelsPath().get(0).toFile().isFile()) { // use
+			 * the solution csv file to extract more models
+			 * modelsPath.addAll(FileUtils.extractModelPaths(Configurator.eINSTANCE.
+			 * getModelsPath().get(0), Configurator.eINSTANCE.getMaxWorseModels())); } else
+			 * { modelsPath.addAll(Configurator.eINSTANCE.getModelsPath()); }
+			 */
+			modelsPath.addAll(Configurator.eINSTANCE.getModelsPath());
 			int i = 1;
+			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
+
 			for (Path m : modelsPath) {
-				System.out.println("Number of source model");
-				ProgressBar.showBar(i, modelsPath.size());
-				ctr.setUp(m);
-				List<RProblem<UMLRSolution>> rProblems = ctr.createProblems();
-				List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
+				for (int j = 0; j < eval.length; j++) {
+					System.out.println("Number of source model");
+					ProgressBar.showBar(i, modelsPath.size());
+					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
 
-				FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
-				for (String qI : config.getQualityIndicators()) {
-					GenericIndicator<UMLRSolution> ind = factory.createQualityIndicators(qI);
-					if (ind != null)
-						qIndicators.add(ind);
-					ctr.runExperiment(rProblems, qIndicators);
-					referenceFront = ctr.getReferenceFront();
+					if (!m.resolve("output.xml").toFile().exists()) {
+						Path sourceModelPath = m;
+						applyTransformation(sourceModelPath);
+						invokeSolver(sourceModelPath);
+					}
+					List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
+					FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
+					for (String qI : Configurator.eINSTANCE.getQualityIndicators()) {
+						GenericIndicator<UMLRSolution> ind = factory.createQualityIndicators(qI);
+						if (ind != null)
+							qIndicators.add(ind);
+					}
+					referenceFront = runExperiment(rProblems, qIndicators, eval[j]);
+					i++;
+
 				}
-				i++;
 			}
-		} // calculates the availability, if set in the config file
-
-//		if (config.hasAvailability()) {
-//			List<String> solIDs = UMLFileUtils.getParetoSolIDs(referenceFront);
-//			ctr.generateAvailability(solIDs);
-//		}
-
+		}
 	}
 
-//	public static void generateReferenceParetoFront(final String rPFile, final String sPF) throws Exception {
-//
-//		// File referencePareto = new File(rPFile);
-//
-//		File sPF_folder = new File(sPF);
-//
-//		NonDominatedSolutionListArchive<PointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<PointSolution>();
-//
-//		Set<File> solutions = UMLFileUtils.listFilesRecursively(sPF_folder);
-//
-//		// good way:
-//		Iterator<File> iterator = solutions.iterator();
-//		while (iterator.hasNext()) {
-//			File setElement = iterator.next();
-//			Front front = new ArrayFront(setElement.getPath());
-//			List<PointSolution> solutionList = FrontUtils.convertFrontToSolutionList(front);
-//			// GenericSolutionAttribute<PointSolution, String> solutionAttribute = new
-//			// GenericSolutionAttribute<PointSolution, String>();
-//			for (PointSolution solution : solutionList) {
-//				// solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
-//				nonDominatedSolutionArchive.add(solution);
-//			}
-//		}
-//
-//		String referenceSetFileName = rPFile + ".rf";
-//
-//		new SolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
-//				.printObjectivesToFile(referenceSetFileName);
-//
-//		// for (int i = 0; i < num_of_solutions; i++) {
-//		// String frontFileName = problemDirectory + "/" +
-//		// experiment.getOutputParetoFrontFileName() + i + ".tsv";
-//		// Front front = new ArrayFront(frontFileName);
-//		// List<PointSolution> solutionList =
-//		// FrontUtils.convertFrontToSolutionList(front);
-//		// GenericSolutionAttribute<PointSolution, String> solutionAttribute = new
-//		// GenericSolutionAttribute<PointSolution, String>();
-//		//
-//		// for (PointSolution solution : solutionList) {
-//		// solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
-//		// nonDominatedSolutionArchive.add(solution);
-//		// }
-//		// }
-//	}
+	private static void applyTransformation(Path sourceModelPath) {
 
-	/**
-	 * Print help on how to use the launcher from the command line.
-	 */
-	public static void printUsage() {
-		System.out.println("Usage: [-options] folder\n" + "  (folder containing .aem files)\n"
-				+ "where options include:\n" + "  -f		Availability (all operational components)\n"
-				+ "  -d		Availability (at least one operational component)\n"
-				+ "  -t <TTKernel> Set the path to the TTKernel executable\n" + "  -n		Number of threads\n"
-				+ "  -sp	Skip the creation of .psm files if already present\n"
-				+ "  -sa	Skip the creation of .ava files if already present\n"
-				+ "  -to    Timeout (in hours) for the computation of solutions\n"
-				+ "  -sor   use stochastic over-relaxation");
-	}
-
-	private static FileInputStream getConfigFile(String filename) throws FileNotFoundException {
+		System.out.print("Applying transformation ... ");
+		EasierUmlModel uml = null;
+		ETLStandalone executor = null;
+		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
 		try {
-			filename = new java.io.File(".").getCanonicalPath() + filename;
-		} catch (IOException e) {
+			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+		} catch (EolModelLoadingException | URISyntaxException e) {
+			System.err.println("Error in runnig the ETL transformation");
 			e.printStackTrace();
 		}
-		// logger_.info("Config_file is set to " + filename);
-		return new FileInputStream(filename);
+
+		executor = new ETLStandalone(sourceModelPath.getParent());
+		executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
+		executor.setModel(uml);
+		executor.setModel(executor.createXMLModel("LQN", sourceModelPath.getParent().resolve("output.xml"),
+				org.eclipse.emf.common.util.URI.createFileURI(Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString()),
+				false, true));
+
+		try {
+			executor.execute();
+		} catch (EolRuntimeException e) {
+			// TODO Auto-generated
+			System.err.println("Error in runnig the ETL transformation");
+			e.printStackTrace();
+		}
+		executor.clearMemory();
+
+		// finally {
+		new UMLMemoryOptimizer().cleanup();
+		uml = null;
+		executor = null;
+		// }
+		System.out.println("done");
 	}
+
+	private static void invokeSolver(Path sourceModelPath) {
+		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
+
+		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
+		Path lqnModelPath = sourceModelPath.getParent().resolve("output.xml");
+
+		XMLUtil.conformanceChecking(lqnModelPath);
+
+		// to allow cycles in the lqn model
+		final String params = "-P cycles=yes";
+
+		Process process = null;
+		try {
+			process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		process = null;
+
+		System.out.println("done");
+
+		System.out.print("Invoking the back annotator... ");
+		backAnnotation(sourceModelPath);
+		System.out.println("done");
+	}
+
+	private static void backAnnotation(Path sourceModelPath) {
+
+		EOLStandalone bckAnn = new EOLStandalone();
+		EasierUmlModel uml = null;
+
+		try {
+			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+		} catch (URISyntaxException | EolRuntimeException e) {
+			e.printStackTrace();
+		}
+
+		bckAnn.setModel(uml);
+
+		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+
+		bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
+
+		// Points to lqn schema file and stores pacakges into the global package
+		// registry
+		XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+		String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+				.resolve("lqn.xsd").toString();
+		Collection<EObject> generatedPackages = xsdEcoreBuilder
+				.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+		for (EObject generatedEObject : generatedPackages) {
+			if (generatedEObject instanceof EPackage) {
+				EPackage generatedPackage = (EPackage) generatedEObject;
+				EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+			}
+		}
+		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", sourceModelPath.getParent().resolve("output.lqxo"), true,
+				false, true));
+
+		try {
+			bckAnn.execute();
+		} catch (EolRuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		bckAnn.clearMemory();
+		new UMLMemoryOptimizer().cleanup();
+		bckAnn = null;
+
+	}
+
+	public static List<Path> runExperiment(final List<RProblem<UMLRSolution>> rProblems,
+			final List<GenericIndicator<UMLRSolution>> qualityIndicators, int eval) {
+		final int INDEPENDENT_RUNS = Configurator.eINSTANCE.getIndependetRuns(); // should be 31 or 51
+		final int CORES = 1;
+
+		List<Path> refFront = new ArrayList<>();
+
+		List<ExperimentProblem<UMLRSolution>> problemList = new ArrayList<>();
+
+		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<UMLRSolution>(problem)));
+
+		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithmList = configureAlgorithmList(problemList,
+				eval);
+
+		Path referenceFrontDirectory = Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "referenceFront");
+
+		List<String> tags = new ArrayList<>();
+
+		if (Configurator.eINSTANCE.generateRF())
+			problemList.forEach(p -> tags.add(p.getTag() + ".rf"));
+		else
+			problemList.forEach(p -> tags.add("super-reference-pareto.rf"));
+
+		for (String tag : tags) {
+			refFront.add(Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "referenceFront", tag));
+		}
+
+		ExperimentBuilder<UMLRSolution, List<UMLRSolution>> experimentBuilder = new RExperimentBuilder<UMLRSolution, List<UMLRSolution>>(
+				"Exp").setAlgorithmList(algorithmList).setProblemList(problemList)
+						.setExperimentBaseDirectory(referenceFrontDirectory.toString())
+						.setReferenceFrontDirectory(referenceFrontDirectory.toString())
+						.setIndependentRuns(INDEPENDENT_RUNS).setNumberOfCores(CORES)
+						.setOutputParetoFrontFileName("FUN").setOutputParetoSetFileName("VAR")
+						.setIndicatorList(qualityIndicators);
+
+		RExperiment<UMLRSolution, List<UMLRSolution>> experiment = ((RExperimentBuilder<UMLRSolution, List<UMLRSolution>>) experimentBuilder)
+				.setReferenceFrontFileNames(tags).build();
+		try {
+			List<Entry<Algorithm<List<UMLRSolution>>, long[]>> computingTimes = new UMLRExecuteAlgorithms<UMLRSolution, List<UMLRSolution>>(
+					experiment).run().getComputingTimes();
+
+			experiment.setComputingTime(computingTimes);
+
+			if (Configurator.eINSTANCE.generateRF())
+				new RGenerateReferenceParetoFront(experiment).run();
+
+			RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>> qualityIndicator = new RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>>(
+					experiment);
+			qualityIndicator.run();
+			qualityIndicatorsMap = qualityIndicator.getIndicatorsMap();
+
+			new GenerateLatexTablesWithComputingTime(experiment).run();
+			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+			new GenerateBoxplotsWithR<>(experiment).run();
+			new GenerateLatexTablesWithStatistics(experiment).run();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return refFront;
+
+	}
+
+	public static List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> configureAlgorithmList(
+			List<ExperimentProblem<UMLRSolution>> problemList, int eval) {
+
+		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
+		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
+				Configurator.eINSTANCE.getXoverProbabiliy());
+		final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
+				Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
+		final SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
+				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
+		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
+
+		for (int i = 0; i < problemList.size(); i++) {
+//			for (int j : Configurator.eINSTANCE.getMaxEvaluation()) {
+			for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+				NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
+						problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
+						Configurator.eINSTANCE.getPopulationSize())
+								.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
+								.setSolutionListEvaluator(solutionListEvaluator);
+
+				NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
+
+				ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+						algorithm, algorithm.getName(), problemList.get(i), j);
+
+				algorithms.add(exp);
+			}
+		}
+
+		/*
+		 * for (int i = 0; i < problemList.size(); i++) { SPEA2Builder<UMLRSolution>
+		 * spea2Builder = new CustomSPEA2Builder<UMLRSolution>(
+		 * problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+		 * .setSelectionOperator(selectionOpertor).setSolutionListEvaluator(
+		 * solutionListEvaluator)
+		 * .setMaxIterations(Configurator.eINSTANCE.getMaxEvaluation())
+		 * .setPopulationSize(Configurator.eINSTANCE.getPopulationSize());
+		 * 
+		 * SPEA2<UMLRSolution> algorithm = spea2Builder.build();
+		 * ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new
+		 * ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>( algorithm,
+		 * algorithm.getName(), problemList.get(i).getTag()); algorithms.add(exp); }
+		 */
+		return algorithms;
+	}
+
+	public static List<RProblem<UMLRSolution>> createProblems(Path modelPath, int eval) {
+
+		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
+
+//		for (Integer eval : Configurator.eINSTANCE.getMaxEvaluation()) {
+		for (Integer l : Configurator.eINSTANCE.getLength()) {
+			for (Double w : Configurator.eINSTANCE.getCloningWeight()) {
+				for (Integer mc : Configurator.eINSTANCE.getMaxCloning()) {
+					if (mc == -1)
+						mc = l; // whether mc is -1, mc will be the chromosome's length
+//						String pName = modelPath.getName(modelPath.getNameCount() - 2) + "_Length_" + String.valueOf(l)
+//								+ "_CloningWeight_" + String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
+
+					String pName = String.format("%s_Length_%d_CloningWeight_%.1f_MaxCloning_%d_MaxEval_%d",
+							modelPath.getName(modelPath.getNameCount() - 2), l, w, mc, eval);
+
+					UMLRProblem<UMLRSolution> p = new UMLRProblem<>(modelPath, l, Configurator.eINSTANCE.getActions(),
+							Configurator.eINSTANCE.getAllowedFailures(), Configurator.eINSTANCE.getPopulationSize());
+					p.setCloningWeight(w).setMaxCloning(mc).setName(pName);
+					rProblems.add(p);
+				}
+			}
+		}
+//		}
+		return rProblems;
+	}
+
 }

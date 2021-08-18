@@ -44,7 +44,7 @@ public class RArrayFront implements Front {
 		for (int i = 0; i < numberOfPoints; i++) {
 			Point point = new ArrayPoint(pointDimensions);
 			for (int j = 0; j < pointDimensions; j++) {
-				point.setDimensionValue(j, solutionList.get(i).getObjective(j));
+				point.setValue(j, solutionList.get(i).getObjective(j));
 			}
 			points[i] = point;
 		}
@@ -58,7 +58,7 @@ public class RArrayFront implements Front {
 			throw new JMetalException("The front is empty");
 		}
 		numberOfPoints = front.getNumberOfPoints();
-		pointDimensions = front.getPoint(0).getNumberOfDimensions();
+		pointDimensions = front.getPoint(0).getDimension();
 		points = new Point[numberOfPoints];
 
 		points = new Point[numberOfPoints];
@@ -76,7 +76,7 @@ public class RArrayFront implements Front {
 		for (int i = 0; i < this.numberOfPoints; i++) {
 			Point point = new ArrayPoint(pointDimensions);
 			for (int j = 0; j < pointDimensions; j++) {
-				point.setDimensionValue(j, 0.0);
+				point.setValue(j, 0.0);
 			}
 			points[i] = point;
 		}
@@ -119,11 +119,13 @@ public class RArrayFront implements Front {
 				while (tokenizer.hasMoreTokens()) {
 					if (first) {
 						first = false;
-						int ID = new Integer(tokenizer.nextToken());
+//						int ID = new Integer(tokenizer.nextToken());
+						int ID = Integer.parseInt(tokenizer.nextToken());
 						((RArrayPoint)point).setID(ID);
 					} else {
-						double value = new Double(tokenizer.nextToken());
-						point.setDimensionValue(i, value);
+//						double value = new Double(tokenizer.nextToken());
+						double value = Double.parseDouble(tokenizer.nextToken());
+						point.setValue(i, value);
 						i++;
 					}
 				}
@@ -143,7 +145,7 @@ public class RArrayFront implements Front {
 		if (numberOfPoints == 0) {
 			pointDimensions = 0;
 		} else {
-			pointDimensions = points[0].getNumberOfDimensions();
+			pointDimensions = points[0].getDimension();
 		}
 		for (int i = 0; i < numberOfPoints; i++) {
 			points[i] = list.get(i);
@@ -230,5 +232,11 @@ public class RArrayFront implements Front {
 	@Override
 	public String toString() {
 		return Arrays.toString(points);
+	}
+
+	@Override
+	public double[][] getMatrix() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
