@@ -6,6 +6,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,9 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
 import org.uma.jmetal.lab.experiment.Experiment;
 import org.uma.jmetal.lab.experiment.ExperimentBuilder;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
@@ -59,6 +63,8 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuil
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRSolutionListEvaluator;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.rnsgaii.CustomRNSGAIIBuilder;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class Launcher {
@@ -311,38 +317,49 @@ public class Launcher {
 				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
 		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
 
-		for (int i = 0; i < problemList.size(); i++) {
+		for (String algo : Configurator.eINSTANCE.getAlgorithms()) {
+			for (int i = 0; i < problemList.size(); i++) {
 //			for (int j : Configurator.eINSTANCE.getMaxEvaluation()) {
-			for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-				NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
-						problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
-						Configurator.eINSTANCE.getPopulationSize())
-								.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
-								.setSolutionListEvaluator(solutionListEvaluator);
+				if ("NSGA-II".equals(algo)) {
+					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
 
-				NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
+						NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
+								problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
+								Configurator.eINSTANCE.getPopulationSize())
+										.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
+										.setSolutionListEvaluator(solutionListEvaluator);
 
-				ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-						algorithm, algorithm.getName(), problemList.get(i), j);
+						NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
 
-				algorithms.add(exp);
+						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+								algorithm, algorithm.getName(), problemList.get(i), j);
+
+						algorithms.add(exp);
+					}
+				} else if ("SPEA2".equals(algo)) {
+
+					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+						SPEA2Builder<UMLRSolution> spea2Builder = new CustomSPEA2Builder<UMLRSolution>(
+								problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+										.setSelectionOperator(selectionOpertor)
+										.setSolutionListEvaluator(solutionListEvaluator).setMaxIterations(eval)
+										.setPopulationSize(Configurator.eINSTANCE.getPopulationSize());
+
+						SPEA2<UMLRSolution> algorithm = spea2Builder.build();
+						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+								algorithm, algorithm.getName(), problemList.get(i), j);
+						algorithms.add(exp);
+					}
+
+				} else if ("R-NSGA".equals(algo)) {
+					List<Double> interestPoints = Arrays.asList(1d,2d,3d);
+					double epsilon = 0.3;
+					RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(problemList.get(i).getProblem(),
+							crossoverOperator, mutationOperator, interestPoints, epsilon);
+				}
 			}
 		}
 
-		/*
-		 * for (int i = 0; i < problemList.size(); i++) { SPEA2Builder<UMLRSolution>
-		 * spea2Builder = new CustomSPEA2Builder<UMLRSolution>(
-		 * problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-		 * .setSelectionOperator(selectionOpertor).setSolutionListEvaluator(
-		 * solutionListEvaluator)
-		 * .setMaxIterations(Configurator.eINSTANCE.getMaxEvaluation())
-		 * .setPopulationSize(Configurator.eINSTANCE.getPopulationSize());
-		 * 
-		 * SPEA2<UMLRSolution> algorithm = spea2Builder.build();
-		 * ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new
-		 * ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>( algorithm,
-		 * algorithm.getName(), problemList.get(i).getTag()); algorithms.add(exp); }
-		 */
 		return algorithms;
 	}
 

@@ -23,9 +23,4 @@ public class CustomNSGAIIBuilder<S extends RSolution<?>> extends NSGAIIBuilder<S
 	  }
 
 
-//	public void setListEvaluator( SolutionListEvaluator<S> solutionListEvaluator) {
-//		
-//		this.setSolutionListEvaluator(solutionListEvaluator);
-//		
-//	}
 }
