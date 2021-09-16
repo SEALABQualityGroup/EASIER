@@ -123,6 +123,20 @@ public class Configurator {
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
 	private int objectives = 4;
 	
+	@Parameter(names = {"--refPoints"}, description = "List of reference points for R-NSGA algorithm")
+	private List<Double> referencePoints = new ArrayList<>();
+	
+	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
+	private double epsilon;
+	
+	public double getEpsilon() {
+		return epsilon;
+	}
+	
+	public List<Double> getReferencePoints(){
+		return referencePoints;
+	}
+	
 	public int getObjectives() {
 		return objectives;
 	}

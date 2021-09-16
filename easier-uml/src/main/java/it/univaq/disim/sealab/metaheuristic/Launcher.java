@@ -21,6 +21,7 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAII;
 import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
@@ -352,10 +353,22 @@ public class Launcher {
 					}
 
 				} else if ("R-NSGA".equals(algo)) {
-					List<Double> interestPoints = Arrays.asList(1d,2d,3d);
-					double epsilon = 0.3;
-					RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(problemList.get(i).getProblem(),
-							crossoverOperator, mutationOperator, interestPoints, epsilon);
+					if (Configurator.eINSTANCE.getReferencePoints().size()
+							% Configurator.eINSTANCE.getObjectives() == 0) {
+
+						for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+							RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(
+									problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
+									Configurator.eINSTANCE.getReferencePoints(), Configurator.eINSTANCE.getEpsilon());
+
+							RNSGAII<UMLRSolution> algorithm = rnsgaBuilder.build();
+							ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+									algorithm, algorithm.getName(), problemList.get(i), j);
+							algorithms.add(exp);
+						}
+					} else {
+						throw new RuntimeException("Reference points must be multiple of the number of objectives!!!");
+					}
 				}
 			}
 		}
