@@ -72,6 +72,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	private Path folderPath;
 
 	private EasierUmlModel dirtyIModel;
+	
+	private double[] scenarioRTs;
 
 	
 
@@ -159,6 +161,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	protected void init() {
 
 		parents = new UMLRSolution[2];
+		scenarioRTs = new double[3];
 		
 
 		this.setVariable(0, new Refactoring());
@@ -369,7 +372,6 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	 * </exec> </target>
 	 */
 	public void invokeSolver() {
-		// TODO invoke LQN solver
 		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
 		long startTime = System.currentTimeMillis();
@@ -597,6 +599,58 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		uml = null;
 
 		return value / numberOfMetrics;
+	}
+	
+	public void computeScenarioRT()
+	{
+	
+
+		/*
+		 * The updated model can have more nodes than the source node since original
+		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
+		 * the performance model. For this reason, the perfQ analyzes only the
+		 * performance metrics of the nodes common among the models
+		 */
+		EasierUmlModel source = null;
+
+		// The elements of the source model;
+		List<EObject> scenarios = null;
+		try {
+			source = (EasierUmlModel) EpsilonStandalone.createUmlModel(modelPath.toString());
+			scenarios = (List<EObject>) source.getAllOfType("UseCase");
+		} catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// The function considers only the elements having the stereotypes GaScenario
+		scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
+		try {
+
+			// for each elements of the source model, it is picked the element with the same
+			// id in the refactored one
+			int countScenario = 0;
+			for (EObject element : scenarios) {
+				Stereotype stereotype = ((Element) element).getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
+				EList<?> values = (EList<?>) ((Element) element).getValue(stereotype, "respT");
+
+				if (!values.isEmpty()) {
+					scenarioRTs[countScenario] = Double.parseDouble(values.get(0).toString());
+					countScenario ++;
+				}
+					
+			}
+		} catch (Exception e) {
+			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
+			e.printStackTrace();
+		}
+		source.dispose();
+		new UMLMemoryOptimizer().cleanup();
+//		source = null;
+
+	}
+	
+	public double[] getScenarioRTs() {
+		return scenarioRTs;
 	}
 
 	private double computePerfQValue(final Element source, final Element ref, final String stereotypeName,

@@ -12,15 +12,14 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 	private static final long serialVersionUID = 1L;
 
 	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize) {
-		super(srcFolderPath.getParent(), srcFolderPath, desired_length, length,
-				allowedFailures, populationSize);
+		super(srcFolderPath.getParent(), srcFolderPath, desired_length, length, allowedFailures, populationSize);
 	}
 
 	public UMLRProblem(SourceModel srcModel, int desired_length, int length, int allowedFailures, int populationSize) {
 		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize);
 
 	}
-	
+
 	@Override
 	public S createSolution() {
 		return (S) new UMLRSolution(this.getNumberOfVariables(), this.getNumberOfObjectives(), this);
@@ -42,30 +41,39 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 
 		UMLRSolution solution = (UMLRSolution) s;
 
-		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
-			if (i == FIRST_OBJ) {
-				final double quality = solution.getPerfQ();
-				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of perfQ --> " + quality);
-				solution.setObjective(i, (-1 * quality)); //to be maximized
-			} else if (i == SECOND_OBJ) {
-				final double numOfChanges = solution.getNumOfChanges();
-				EasierLogger.logger_
-						.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
-				solution.setObjective(i, numOfChanges);
-			} 
-			else if (i == THIRD_OBJ) {
-				final int pas = solution.getPAs();
-				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
-				solution.setObjective(i, pas);
-			} 
-			else if (i == FOURTH_OBJ) {
-				final double reliability = solution.getReliability();
-				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
-				solution.setObjective(i, (-1 * reliability));//to be maximized
-			} else {
-				System.out.println("\n" + i);
-				throw new RuntimeException("unexpected behaviour!!!");
-			}
-		}
+//		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
+//			if (i == FIRST_OBJ) {
+//				final double quality = solution.getPerfQ();
+//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of perfQ --> " + quality);
+//				solution.setObjective(i, (-1 * quality)); //to be maximized
+//			} else if (i == SECOND_OBJ) {
+//				final double numOfChanges = solution.getNumOfChanges();
+//				EasierLogger.logger_
+//						.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
+//				solution.setObjective(i, numOfChanges);
+//			} 
+//			else if (i == THIRD_OBJ) {
+//				final int pas = solution.getPAs();
+//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
+//				solution.setObjective(i, pas);
+//			} 
+//			else if (i == FOURTH_OBJ) {
+//				final double reliability = solution.getReliability();
+//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
+//				solution.setObjective(i, (-1 * reliability));//to be maximized
+//			} else {
+//				System.out.println("\n" + i);
+//				throw new RuntimeException("unexpected behaviour!!!");
+//			}
+//		}
+
+		final double reliability = solution.getReliability();
+//		EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
+		solution.setObjective(0, (-1 * reliability));// to be maximized
+		solution.setObjective(1, solution.getScenarioRTs()[0]);
+		solution.setObjective(2, solution.getScenarioRTs()[1]);
+		solution.setObjective(3, solution.getScenarioRTs()[2]);
+		EasierLogger.logger_.info(String.format("Objectives of Solution # %s have been set.", solution.getName()));
+		
 	}
 }

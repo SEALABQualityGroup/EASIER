@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.metaheuristic.evolutionary.rnsgaii;
+package it.univaq.disim.sealab.metaheuristic.evolutionary.pesaii;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.selection.SelectionOperator;
@@ -18,35 +19,31 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
-public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements EasierAlgorithm {
+public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements EasierAlgorithm {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	int _maxEvaluations;
 
-	public CustomRNSGAII(Problem<S> problem, int maxEvaluations, int populationSize, int matingPoolSize,
-			int offspringPopulationSize, CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
-			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator<S> evaluator,
-			List<Double> interestPoint, double epsilon) {
+	public CustomPESA2(Problem<S> problem, int maxEvaluations, int populationSize, int archiveSize, int biSections,
+			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
+			SolutionListEvaluator<S> evaluator) {
 
-		super(problem, maxEvaluations, populationSize, matingPoolSize, offspringPopulationSize, crossoverOperator,
-				mutationOperator, selectionOperator, evaluator, interestPoint, epsilon);
-		// TODO Auto-generated constructor stub
+		super((Problem<S>) problem, maxEvaluations, populationSize, archiveSize, biSections, crossoverOperator,
+				mutationOperator, evaluator);
+		_maxEvaluations = maxEvaluations;
 	}
+
+//	@Override protected boolean isStoppingConditionReached() {
+//		
+//		return evaluations > maxEvaluations;
+//	}
 
 	@Override
 	public void run() {
-		durationMeasure.reset();
-		durationMeasure.start();
-
-//		super.run();
-		_run();
-
-		durationMeasure.stop();
-	}
-
-	public void _run() {
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
 
@@ -64,11 +61,14 @@ public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements
 
 		this.setPopulation(createInitialPopulation());
 		this.setPopulation(evaluatePopulation(this.getPopulation()));
+		
+		int _evaluations = this.getMaxPopulationSize();
+		
 		initProgress();
 		while (!isStoppingConditionReached()) {
 
 			System.out.println(this.getName());
-			ProgressBar.showBar(evaluations.get().intValue(), maxEvaluations );
+			ProgressBar.showBar(_evaluations/getMaxPopulationSize(), _maxEvaluations/getMaxPopulationSize());
 
 			long freeBefore = Runtime.getRuntime().freeMemory();
 			long totalBefore = Runtime.getRuntime().totalMemory();
@@ -97,14 +97,16 @@ public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements
 			}
 
 			updateProgress();
+			_evaluations += this.getMaxPopulationSize();
 
 		}
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		for (S sol : this.getPopulation()) {
+			sol.setParents(null, null);
+		}
+		this.getPopulation().clear();
 	}
 
 }

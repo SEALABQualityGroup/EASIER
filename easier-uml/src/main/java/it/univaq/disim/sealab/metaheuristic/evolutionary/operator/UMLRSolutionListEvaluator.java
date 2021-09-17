@@ -9,7 +9,7 @@ import org.uma.jmetal.problem.Problem;
 import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
-public class UMLRSolutionListEvaluator <S extends RSolution>extends RSolutionListEvaluator<S> {
+public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolutionListEvaluator<S> {
 	
 	
 	/**
@@ -37,9 +37,10 @@ public class UMLRSolutionListEvaluator <S extends RSolution>extends RSolutionLis
 			sol.executeRefactoring();
 			sol.applyTransformation();
 			sol.invokeSolver();
-			sol.countingPAs();
-			sol.evaluatePerformance();
+//			sol.countingPAs();
+//			sol.evaluatePerformance();
 			sol.computeReliability();
+			sol.computeScenarioRT();
 			problem.evaluate(sol);
 		});
 		

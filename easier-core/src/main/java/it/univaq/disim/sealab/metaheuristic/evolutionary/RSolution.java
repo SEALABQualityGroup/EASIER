@@ -86,6 +86,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 
 	public abstract void applyTransformation();
 	public abstract void computeReliability();
+	public abstract void computeScenarioRT();
 
 	public abstract boolean alter(int i);
 

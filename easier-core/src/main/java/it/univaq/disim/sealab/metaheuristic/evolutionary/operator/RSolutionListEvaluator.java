@@ -9,8 +9,12 @@ import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
-@SuppressWarnings("serial")
-public class RSolutionListEvaluator<S extends RSolution> implements SolutionListEvaluator<S> {
+public class RSolutionListEvaluator<S extends RSolution<?>> implements SolutionListEvaluator<S> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public RSolutionListEvaluator() {
 	}

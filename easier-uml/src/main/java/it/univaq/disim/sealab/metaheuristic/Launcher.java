@@ -21,6 +21,9 @@ import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2Builder;
+import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAII;
 import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
@@ -63,6 +66,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii.CustomNSGAIIBuil
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RMutation;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRSolutionListEvaluator;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.pesaii.CustomPESA2Builder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.rnsgaii.CustomRNSGAIIBuilder;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.spea2.CustomSPEA2Builder;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
@@ -352,10 +356,33 @@ public class Launcher {
 					}
 
 				} else if ("R-NSGA".equals(algo)) {
-					List<Double> interestPoints = Arrays.asList(1d,2d,3d);
-					double epsilon = 0.3;
-					RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(problemList.get(i).getProblem(),
-							crossoverOperator, mutationOperator, interestPoints, epsilon);
+					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+						List<Double> interestPoints = Arrays.asList(1d, 2d, 3d);
+						double epsilon = 0.3;
+						RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(
+								problemList.get(i).getProblem(), crossoverOperator, mutationOperator, interestPoints,
+								epsilon);
+
+						RNSGAII<UMLRSolution> algorithm = rnsgaBuilder.build();
+						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+								algorithm, algorithm.getName(), problemList.get(i), j);
+						algorithms.add(exp);
+					}
+				} else if ("PESA2".equals(algo)) {
+					// as reported at https://github.com/jMetal/jMetal/blob/master/jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/pesa2/PESA2Builder.java
+					// we set biSection to 5, and populationSize = archiveSize
+					int biSections = 5; 
+					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
+						PESA2Builder<UMLRSolution> pesaBuilder = new CustomPESA2Builder<UMLRSolution>(
+								problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
+										.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
+										.setArchiveSize(Configurator.eINSTANCE.getPopulationSize())
+										.setBisections(biSections).setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize()).setSolutionListEvaluator(solutionListEvaluator);
+						PESA2<UMLRSolution> algorithm = pesaBuilder.build();
+						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
+								algorithm, algorithm.getName(), problemList.get(i), j);
+						algorithms.add(exp);
+					}
 				}
 			}
 		}
