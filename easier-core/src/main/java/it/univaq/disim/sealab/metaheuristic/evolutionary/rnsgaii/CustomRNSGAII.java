@@ -40,13 +40,15 @@ public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements
 		durationMeasure.reset();
 		durationMeasure.start();
 
-//		super.run();
 		_run();
 
 		durationMeasure.stop();
 	}
 
-	public void _run() {
+	/**
+	 * it comes from
+	 */
+	private void _run() {
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
 
@@ -68,7 +70,8 @@ public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements
 		while (!isStoppingConditionReached()) {
 
 			System.out.println(this.getName());
-			ProgressBar.showBar(evaluations.get().intValue(), maxEvaluations );
+			ProgressBar.showBar((int) (evaluations.get() / getMaxPopulationSize()),
+					(maxEvaluations / getMaxPopulationSize()));
 
 			long freeBefore = Runtime.getRuntime().freeMemory();
 			long totalBefore = Runtime.getRuntime().totalMemory();
@@ -103,8 +106,10 @@ public class CustomRNSGAII<S extends RSolution<?>> extends RNSGAII<S> implements
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		for (S sol : this.getPopulation()) {
+			sol.setParents(null, null);
+		}
+		this.getPopulation().clear();
 	}
 
 }

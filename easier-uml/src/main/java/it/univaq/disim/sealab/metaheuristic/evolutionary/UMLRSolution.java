@@ -591,7 +591,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				}
 			}
 		} catch (Exception e) {
-			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
+			System.err.println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
 			e.printStackTrace();
 		}
 		uml.dispose();
