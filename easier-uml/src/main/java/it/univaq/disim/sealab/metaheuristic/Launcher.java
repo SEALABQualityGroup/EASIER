@@ -6,7 +6,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,6 @@ import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAII;
 import org.uma.jmetal.algorithm.multiobjective.rnsgaii.RNSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
-import org.uma.jmetal.lab.experiment.Experiment;
 import org.uma.jmetal.lab.experiment.ExperimentBuilder;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateLatexTablesWithStatistics;
@@ -357,39 +355,46 @@ public class Launcher {
 
 				} else if ("R-NSGA".equals(algo)) {
 
-					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-						List<Double> interestPoints = Arrays.asList(1d, 2d, 3d);
 					if (Configurator.eINSTANCE.getReferencePoints().size()
 							% Configurator.eINSTANCE.getObjectives() == 0) {
 
 						for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
 							RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(
 									problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
-									Configurator.eINSTANCE.getReferencePoints(), Configurator.eINSTANCE.getEpsilon());
+									Configurator.eINSTANCE.getReferencePoints(), Configurator.eINSTANCE.getEpsilon())
+											.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
+											.setMatingPoolSize(Configurator.eINSTANCE.getPopulationSize())
+											.setOffspringPopulationSize(Configurator.eINSTANCE.getPopulationSize())
+											.setSolutionListEvaluator(solutionListEvaluator)
+											.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize());
 
 							RNSGAII<UMLRSolution> algorithm = rnsgaBuilder.build();
 							ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
 									algorithm, algorithm.getName(), problemList.get(i), j);
 							algorithms.add(exp);
 						}
+					} else {
+						throw new RuntimeException("Reference points must be multiple of the number of objectives!!!");
+
 					}
+
 				} else if ("PESA2".equals(algo)) {
-					// as reported at https://github.com/jMetal/jMetal/blob/master/jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/pesa2/PESA2Builder.java
+					// as reported at
+					// https://github.com/jMetal/jMetal/blob/master/jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/pesa2/PESA2Builder.java
 					// we set biSection to 5, and populationSize = archiveSize
-					int biSections = 5; 
+					int biSections = 5;
 					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
 						PESA2Builder<UMLRSolution> pesaBuilder = new CustomPESA2Builder<UMLRSolution>(
 								problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
 										.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
 										.setArchiveSize(Configurator.eINSTANCE.getPopulationSize())
-										.setBisections(biSections).setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize()).setSolutionListEvaluator(solutionListEvaluator);
+										.setBisections(biSections)
+										.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
+										.setSolutionListEvaluator(solutionListEvaluator);
 						PESA2<UMLRSolution> algorithm = pesaBuilder.build();
 						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
 								algorithm, algorithm.getName(), problemList.get(i), j);
 						algorithms.add(exp);
-
-					} else {
-						throw new RuntimeException("Reference points must be multiple of the number of objectives!!!");
 
 					}
 				}

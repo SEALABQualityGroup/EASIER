@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -72,10 +73,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	private Path folderPath;
 
 	private EasierUmlModel dirtyIModel;
-	
-	private double[] scenarioRTs;
 
-	
+	private double[] scenarioRTs;
 
 	private final static String refactoringLibraryModule, uml2lqnModule;
 	private final static String GQAM_NAMESPACE;
@@ -88,10 +87,10 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
 	}
-	
+
 	public UMLRSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
 		super(numberOfVariables, numberOfObjectives, p);
-		
+
 		setName();
 		ID = UUID.randomUUID();
 		resetParents();
@@ -101,11 +100,11 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	public UMLRSolution(UMLRSolution s) {
 		super(s.getNumberOfVariables(), s.getNumberOfObjectives());
-		
+
 		this.allowed_failures = s.allowed_failures;
 		this.length_of_refactorings = s.length_of_refactorings;
 		this.sourceModelPath = s.sourceModelPath;
-		
+
 		setName();
 		ID = UUID.randomUUID();
 
@@ -125,7 +124,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	public UMLRSolution(UMLRSolution s1, UMLRSolution s2, int point, boolean left) {
 		super(s1.getNumberOfVariables(), s1.getNumberOfObjectives());
-		
+
 		this.allowed_failures = s1.allowed_failures;
 		this.length_of_refactorings = s1.length_of_refactorings;
 		this.sourceModelPath = s1.sourceModelPath;
@@ -162,7 +161,6 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		parents = new UMLRSolution[2];
 		scenarioRTs = new double[3];
-		
 
 		this.setVariable(0, new Refactoring());
 
@@ -197,7 +195,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				if (num_failures >= allowed_failures) {
 					// START OVER
 					num_failures = 0;
-					this.setVariable(VARIABLE_INDEX,  new Refactoring());
+					this.setVariable(VARIABLE_INDEX, new Refactoring());
 					// EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached...
 					// Created an empty refactoring!", problem.allowed_failures));
 				}
@@ -210,7 +208,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	protected boolean tryRandomPush() throws UnexpectedException, EolRuntimeException {
 
-		Refactoring temporary_ref = ((Refactoring)getVariable(VARIABLE_INDEX)).clone(this);
+		Refactoring temporary_ref = ((Refactoring) getVariable(VARIABLE_INDEX)).clone(this);
 
 		RefactoringAction candidate;
 		do {
@@ -264,8 +262,6 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		return false;
 	}
-
-	
 
 	protected void copyRefactoringVariable(Refactoring variableValue, RSolution<Refactoring> sol) {
 		this.setVariable(VARIABLE_INDEX, variableValue.clone(this));
@@ -591,7 +587,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				}
 			}
 		} catch (Exception e) {
-			System.err.println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
+			System.err
+					.println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
 			e.printStackTrace();
 		}
 		uml.dispose();
@@ -600,10 +597,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		return value / numberOfMetrics;
 	}
-	
-	public void computeScenarioRT()
-	{
-	
+
+	@Override
+	public void computeScenarioRT() {
 
 		/*
 		 * The updated model can have more nodes than the source node since original
@@ -612,6 +608,13 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		 * performance metrics of the nodes common among the models
 		 */
 		EasierUmlModel source = null;
+
+		// Represent the reference point index of each UML scenario
+		final int rebook_index = 0;
+		final int update_user_index = 1;
+		final int login_index = 2;
+
+		int scenarioIndex = 0;
 
 		// The elements of the source model;
 		List<EObject> scenarios = null;
@@ -628,16 +631,24 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 			// for each elements of the source model, it is picked the element with the same
 			// id in the refactored one
-			int countScenario = 0;
 			for (EObject element : scenarios) {
 				Stereotype stereotype = ((Element) element).getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
 				EList<?> values = (EList<?>) ((Element) element).getValue(stereotype, "respT");
 
 				if (!values.isEmpty()) {
-					scenarioRTs[countScenario] = Double.parseDouble(values.get(0).toString());
-					countScenario ++;
+					if ("Rebook a ticket".equals(((UseCase) element).getName())) {
+						scenarioIndex = rebook_index;
+					} else if ("Update user details".equals(((UseCase) element).getName())) {
+						scenarioIndex = update_user_index;
+					} else if ("Login".equals(((UseCase) element).getName())) {
+						scenarioIndex = login_index;
+					} else {
+						throw new RuntimeException("Scenario name does not support yet!");
+					}
+
+					scenarioRTs[scenarioIndex] = Double.parseDouble(values.get(0).toString());
 				}
-					
+
 			}
 		} catch (Exception e) {
 			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
@@ -645,10 +656,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		}
 		source.dispose();
 		new UMLMemoryOptimizer().cleanup();
-//		source = null;
-
 	}
-	
+
 	public double[] getScenarioRTs() {
 		return scenarioRTs;
 	}
@@ -810,8 +819,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		result = prime * result + VARIABLE_INDEX;
 		result = prime * result + ((dirtyIModel == null) ? 0 : dirtyIModel.hashCode());
 		result = prime * result + ((folderPath == null) ? 0 : folderPath.hashCode());
-		result = prime * result
-				+ ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
+		result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
 		return result;
 	}
 
