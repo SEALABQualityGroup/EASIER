@@ -607,7 +607,6 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		 * the performance model. For this reason, the perfQ analyzes only the
 		 * performance metrics of the nodes common among the models
 		 */
-		EasierUmlModel source = null;
 
 		// Represent the reference point index of each UML scenario
 		final int rebook_index = 0;
@@ -618,16 +617,13 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		// The elements of the source model;
 		List<EObject> scenarios = null;
-		try {
-			source = (EasierUmlModel) EpsilonStandalone.createUmlModel(modelPath.toString());
-			scenarios = (List<EObject>) source.getAllOfType("UseCase");
-		} catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
-			e.printStackTrace();
-		}
 
 		// The function considers only the elements having the stereotypes GaScenario
-		scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
+		EasierUmlModel uml = null;
 		try {
+			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+			scenarios = (List<EObject>) uml.getAllOfType("UseCase");
+			scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
 
 			// for each elements of the source model, it is picked the element with the same
 			// id in the refactored one
@@ -654,7 +650,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
 			e.printStackTrace();
 		}
-		source.dispose();
+		uml.dispose();
 		new UMLMemoryOptimizer().cleanup();
 	}
 
