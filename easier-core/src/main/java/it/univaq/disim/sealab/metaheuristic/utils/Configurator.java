@@ -121,8 +121,8 @@ public class Configurator {
 			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
 	
-	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
-	private String uml2lqn;
+//	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
+//	private String uml2lqn;
 	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
 	private int objectives = 4;
@@ -161,9 +161,9 @@ public class Configurator {
 		return objectives;
 	}
 
-	public Path getUml2Lqn() {
-		return Paths.get(uml2lqn);
-	}
+//	public Path getUml2Lqn() {
+//		return Paths.get(uml2lqn);
+//	}
 
 	public int getMaxWorseModels() {
 		if (maxWorseModels == null) {
