@@ -276,6 +276,10 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	public String toString() {
 		return "Cloning --> " + targetObject.getName() + " with -->  " + umlClonedNode.getName();
 	}
+	
+	public String toCSV() {
+		return String.format("UMLCloneNode,%s,%s,", targetObject.getName(), umlClonedNode.getName());
+	}
 
 	@Override
 	public int hashCode() {
