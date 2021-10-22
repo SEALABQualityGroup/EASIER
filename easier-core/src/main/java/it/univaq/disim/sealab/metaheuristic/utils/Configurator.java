@@ -5,8 +5,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.converters.IParameterSplitter;
 
 public class Configurator {
 
@@ -128,6 +132,22 @@ public class Configurator {
 	
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
 	private double epsilon;
+	
+	
+	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
+	private List<String> brfs_list;
+	
+	public List<String> getBrfList(){
+		return brfs_list;
+	}
+	
+	public double getBRF(String key) {
+		for (String s : brfs_list)
+			if(s.split(":")[0].contains(key))			
+				return Double.parseDouble(s.split(":")[1]);
+		return 1.23d;
+	}
+	
 	
 	public double getEpsilon() {
 		return epsilon;
@@ -274,4 +294,11 @@ public class Configurator {
 		return 0;
 	}
 
+	
+	public static class SemiColonSplitter implements IParameterSplitter {
+	    public List<String> split(String value) {
+	      return Arrays.asList(value.split(";"));
+	    }
+	}
+	
 }

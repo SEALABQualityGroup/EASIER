@@ -1,6 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic;
 
 import java.io.IOException;
+import java.io.ObjectInputFilter.Config;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -105,9 +106,9 @@ public class Launcher {
 			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
 
 			for (Path m : modelsPath) {
+				System.out.println("Number of source model");
+				ProgressBar.showBar(i, modelsPath.size());
 				for (int j = 0; j < eval.length; j++) {
-					System.out.println("Number of source model");
-					ProgressBar.showBar(i, modelsPath.size());
 					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
 
 					if (!m.resolve("output.xml").toFile().exists()) {
@@ -123,9 +124,10 @@ public class Launcher {
 							qIndicators.add(ind);
 					}
 					referenceFront = runExperiment(rProblems, qIndicators, eval[j]);
-					i++;
-
+					new UMLMemoryOptimizer().cleanup();
+					System.gc();
 				}
+				i++;
 			}
 		}
 	}
@@ -418,8 +420,12 @@ public class Launcher {
 //						String pName = modelPath.getName(modelPath.getNameCount() - 2) + "_Length_" + String.valueOf(l)
 //								+ "_CloningWeight_" + String.valueOf(w) + "_MaxCloning_" + String.valueOf(mc);
 
-					String pName = String.format("%s_Length_%d_CloningWeight_%.1f_MaxCloning_%d_MaxEval_%d",
-							modelPath.getName(modelPath.getNameCount() - 2), l, w, mc, eval);
+					String brf = Configurator.eINSTANCE.getBrfList().toString().replace(":", "_").replace(",", "__")
+							.replace(" ", "").replace("[", "").replace("]", "");
+					String pName = String.format("%s_BRF_%s_MaxEval_%d",
+							modelPath.getName(modelPath.getNameCount() - 2), brf, eval);
+//					String pName = String.format("%s_Length_%d_CloningWeight_%.1f_MaxCloning_%d_MaxEval_%d",
+//							modelPath.getName(modelPath.getNameCount() - 2), l, w, mc, eval);
 
 					UMLRProblem<UMLRSolution> p = new UMLRProblem<>(modelPath, l, Configurator.eINSTANCE.getActions(),
 							Configurator.eINSTANCE.getAllowedFailures(), Configurator.eINSTANCE.getPopulationSize());
