@@ -70,6 +70,7 @@ public class RExperimentAlgorithm<S extends RSolution<?>, Result extends List<S>
 					.setFunFileOutputContext(new DefaultFileOutputContext(funFile, ",")).print();
 		} catch (Exception exception) {
 			JMetalLogger.logger.warning("Execution failed: " + funFile + " has not been created.");
+			exception.printStackTrace();
 		}
 	}
 
