@@ -111,7 +111,7 @@ public class Launcher {
 				for (int j = 0; j < eval.length; j++) {
 					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
 
-					if (!m.resolve("output.xml").toFile().exists()) {
+					if (!m.getParent().resolve("output.xml").toFile().exists()) {
 						Path sourceModelPath = m;
 						applyTransformation(sourceModelPath);
 						invokeSolver(sourceModelPath);
@@ -156,7 +156,6 @@ public class Launcher {
 		try {
 			executor.execute();
 		} catch (EolRuntimeException e) {
-			// TODO Auto-generated
 			System.err.println("Error in runnig the ETL transformation");
 			e.printStackTrace();
 		}

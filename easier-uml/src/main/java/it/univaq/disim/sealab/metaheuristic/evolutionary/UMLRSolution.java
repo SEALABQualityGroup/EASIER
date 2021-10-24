@@ -161,8 +161,11 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		parents = new UMLRSolution[2];
 		scenarioRTs = new double[3];
-
-		this.setVariable(0, new Refactoring());
+		
+		
+		Refactoring refactoring = new Refactoring();
+		refactoring.setSolutionID(this.getName());
+		this.setVariable(0, refactoring);
 
 		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
 				String.valueOf(getName()));
@@ -195,7 +198,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				if (num_failures >= allowed_failures) {
 					// START OVER
 					num_failures = 0;
-					this.setVariable(VARIABLE_INDEX, new Refactoring());
+					Refactoring refactoring = new Refactoring();
+					refactoring.setSolutionID(this.getName());
+					this.setVariable(VARIABLE_INDEX, refactoring);
 					// EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached...
 					// Created an empty refactoring!", problem.allowed_failures));
 				}

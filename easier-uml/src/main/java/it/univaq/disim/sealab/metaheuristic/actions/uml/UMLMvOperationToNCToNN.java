@@ -284,5 +284,9 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		return "Move Operation --> " + umlOpToMove.getName() + " to New Component --> " + umlTargetComp.getName()
 				+ " deployed to a New Node -->" + umlTargetNode.getName();
 	}
+	
+	public String toCSV(){
+		return String.format("Move_Operation_New_Component_New_Node,%s,%s,%s",umlOpToMove.getName(),umlTargetComp.getName(),umlTargetNode.getName());
+	}
 
 }

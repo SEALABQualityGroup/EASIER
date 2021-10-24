@@ -268,6 +268,11 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 			nodes += " " + n.getName();
 		return "Moving --> " + umlCompToMove.getName() + " to --> " + nodes;
 	}
+	
+	public String toCSV()
+	{
+		return String.format("Move_Component_New_Node,%s,%s,",umlCompToMove.getName(),umlTargetNodes.get(0).getName()); 
+	}
 
 	@Override
 	public int hashCode() {

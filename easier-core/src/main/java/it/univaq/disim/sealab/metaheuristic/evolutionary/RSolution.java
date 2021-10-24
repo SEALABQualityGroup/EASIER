@@ -11,6 +11,7 @@ import org.uma.jmetal.solution.AbstractSolution;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 
+
 public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
 	/**
@@ -194,6 +195,9 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	 * Prints a VAR file
 	 */
 	public String getVariableString(int index) {
+		
+		
+		
 		String strValue = this.getName() + ";";
 
 		List<Double> objs = new ArrayList<>();
@@ -203,7 +207,8 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 
 		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
 		strValue += ";";
-		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toString())
+		strValue += getName() +",";
+		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toCSV())
 				.collect(Collectors.joining(","));
 		return strValue;
 	}

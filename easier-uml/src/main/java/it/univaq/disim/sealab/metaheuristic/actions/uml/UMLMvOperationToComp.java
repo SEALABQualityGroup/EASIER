@@ -254,6 +254,12 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	public String toString() {
 		return "Move Operation --> " + umlOpToMove.getName() + " to Component -->  " + umlTargetComp.getName();
 	}
+	
+	
+	public String toCSV()
+	{
+		return String.format("Move_Operation_Component,%s,%s,", umlOpToMove.getName(),umlTargetComp.getName());
+	}
 
 	@Override
 	public int hashCode() {
