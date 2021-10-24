@@ -92,8 +92,8 @@ public class RGenerateReferenceParetoFrontTest {
 		String referenceSetFileName = outputDirectoryName + "/" + problemTag + ".rf";
 		referenceFrontFileNames.add(problemTag + ".rf");
 
-		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
-				.printObjectivesToFile(referenceSetFileName);
+//		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
+//				.printObjectivesToFile(referenceSetFileName);
 
 		writeFilesWithTheSolutionsContributedByEachAlgorithm(outputDirectoryName, problemTag,
 				nonDominatedSolutionArchive.getSolutionList());
@@ -134,8 +134,8 @@ public class RGenerateReferenceParetoFrontTest {
 				}
 			}
 
-			new RSolutionListOutput(solutionsPerAlgorithm)
-					.printObjectivesToFile(outputDirectoryName + "/" + problemName + "." + algorithmTags[j] + ".rf");
+//			new RSolutionListOutput(solutionsPerAlgorithm)
+//					.printObjectivesToFile(outputDirectoryName + "/" + problemName + "." + algorithmTags[j] + ".rf");
 		}
 	}
 

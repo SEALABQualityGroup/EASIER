@@ -27,13 +27,14 @@ public class RGenerateReferenceParetoTest {
 		List<String> referenceFronts;
 		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
-		String problemName = "solution_with_pas_rel_095";
-		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/tuning";
-		try (Stream<Path> walk = Files.walk(Paths.get(
-				String.format("%s/%s/referenceFront", problemFolderName, problemName)))) {
+//		String problemName = "train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_72";
+//		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/performance_comparison/nsga_72/";
+		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/performance_comparison";
+		try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))){
+				//String.format("%s/%s/referenceFront", problemFolderName, problemName)))) {
 			referenceFronts = walk.filter(p -> !Files.isDirectory(p)) // not a directory
 					.map(p -> p.toString())// .toLowerCase()) // convert path to string
-					.filter(f -> f.endsWith("rf") && !f.contains("NSGAII")) // check end with
+					.filter(f -> f.endsWith("csv") && f.contains("reference_pareto")) // check end with
 					.collect(Collectors.toList()); // collect all matched to a List
 		}
 
@@ -47,7 +48,7 @@ public class RGenerateReferenceParetoTest {
 
 					if (!sCurrentLine.contains("solID")) {
 
-						String[] split = sCurrentLine.split(" ");
+						String[] split = sCurrentLine.split(",");
 
 						ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0]))
 								.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs + 1)))));
@@ -66,19 +67,18 @@ public class RGenerateReferenceParetoTest {
 			nonDominatedSolutionArchive.add(solution);
 		}
 
-		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String.format(
-				"/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/super-reference-pareto.rf",
-				problemName));
+//		new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(problemFolderName+"/super-reference-pareto.csv");
+//				String.format("/mnt/store/research/easier/uml_case_studies/tuning/%s/referenceFront/super-reference-pareto.rf",problemName));
 
 	}
 
 	@Test
 	public void generateParetoPerProblem() throws IOException {
 
-		List<String> varSolutions;
+		List<String> funSolutions;
 
-		String[] problemName = { "solution_with_pas_rel_095" };
-		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/tuning";
+		String[] problemName = { "pesa_" };
+		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/performance_comparison";
 
 		int[] evals = { 72, 82, 102 };
 
@@ -87,49 +87,49 @@ public class RGenerateReferenceParetoTest {
 			for (int i = 0; i < evals.length; i++) {
 
 				String solutionFolder = String.format(
-						"%s/%s/referenceFront/Exp/data/NSGAII/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d",
-						problemFolderName, problemName[j], evals[i]);
+						"%s/%s%d/Exp/data/PESA2/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d",
+						problemFolderName, problemName[j], evals[i],evals[i]);
 
 				NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
 				try (Stream<Path> walk = Files.walk(Paths.get(solutionFolder))) {
-					varSolutions = walk.filter(p -> !Files.isDirectory(p)) // not a directory
+					funSolutions = walk.filter(p -> !Files.isDirectory(p)) // not a directory
 							.map(p -> p.toString())// .toLowerCase()) // convert path to string
-							.filter(f -> f.endsWith("tsv") && f.contains("VAR") && !f.contains("IGD+")) // check end
+							.filter(f -> f.endsWith("csv") && f.contains("FUN") && !f.contains("IGD+")) // check end
 																										// with
 							.collect(Collectors.toList()); // collect all matched to a List
 				}
 
-				for (String varFileName : varSolutions) {
+				for (String sol : funSolutions) {
 
-					List<RPointSolution> ptSolutionList = generateRPointSolutionList(varFileName);
+					List<RPointSolution> ptSolutionList = generateRPointSolutionList(sol);
 					GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
 
 					for (RPointSolution solution : ptSolutionList) {
-						solutionAttribute.setAttribute(solution, "NSGAII");
+						solutionAttribute.setAttribute(solution, "PESA2");
 						nonDominatedSolutionArchive.add(solution);
 					}
 				}
 
-				new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String
-						.format("%s/%s/referenceFront/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d.rf",
-								problemFolderName, problemName[j], evals[i]));
+//				new RSolutionListOutput(nonDominatedSolutionArchive.getSolutionList()).printObjectivesToFile(String
+//						.format("%s/%s%d/train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_%d_gen.rf",
+//								problemFolderName, problemName[j], evals[i], evals[i]));
 			}
 		}
 //		}
 	}
 
-	public List<RPointSolution> generateRPointSolutionList(String varFileName) {
+	public List<RPointSolution> generateRPointSolutionList(String sol) {
 
 		List<RPointSolution> ptList = new ArrayList<>();
 
-		try (BufferedReader br = new BufferedReader(new FileReader(varFileName))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(sol))) {
 
 			String sCurrentLine;
 			final int numObjs = 4;
 			while ((sCurrentLine = br.readLine()) != null) {
 
-				String[] split = sCurrentLine.split(";");
+				String[] split = sCurrentLine.split(",");
 
 				ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0]))
 						.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs + 1)))));

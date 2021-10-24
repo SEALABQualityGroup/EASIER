@@ -56,7 +56,7 @@ public class UMLRSolutionTest {
 		int populationSize = 4;
 		int number_of_action = 5;
 		
-		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+		String modelpath = "/mnt/develop/git/sealab/easier/easier-uml2lqnCaseStudy/train-ticket/train-ticket.uml";
 		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 	}
@@ -65,6 +65,7 @@ public class UMLRSolutionTest {
 	@Test
 	public void coutingPAs() {
 		solution.countingPAs();
+		System.out.println(solution.getPAs());
 	}
 	
 	@Test
