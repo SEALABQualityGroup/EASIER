@@ -178,7 +178,7 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 					String[] split = sCurrentLine.split(",");
 
 					ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0]))
-							.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs)))));
+							.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs+1)))));
 				}
 			}
 		} catch (IOException | NumberFormatException e) {

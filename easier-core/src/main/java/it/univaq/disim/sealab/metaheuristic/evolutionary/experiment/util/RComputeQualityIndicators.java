@@ -153,7 +153,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 		try (BufferedReader reader = new BufferedReader(new FileReader(frontFileName));
 				BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile))) {
 			while ((readLine = reader.readLine()) != null) {
-				if (!readLine.contains("perfQ")) {
+				if (!readLine.contains("solID")) {
 //				} else {
 					String line = readLine.split(",", 2)[1];
 					writer.write(line);
