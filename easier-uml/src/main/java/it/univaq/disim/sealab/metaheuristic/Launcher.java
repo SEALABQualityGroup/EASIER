@@ -409,6 +409,8 @@ public class Launcher {
 	public static List<RProblem<UMLRSolution>> createProblems(Path modelPath, int eval) {
 
 		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
+		
+		float probPas = Configurator.eINSTANCE.getProbPas();
 
 //		for (Integer eval : Configurator.eINSTANCE.getMaxEvaluation()) {
 		for (Integer l : Configurator.eINSTANCE.getLength()) {
@@ -421,8 +423,8 @@ public class Launcher {
 
 					String brf = Configurator.eINSTANCE.getBrfList().toString().replace(":", "_").replace(",", "__")
 							.replace(" ", "").replace("[", "").replace("]", "");
-					String pName = String.format("%s_BRF_%s_MaxEval_%d",
-							modelPath.getName(modelPath.getNameCount() - 2), brf, eval);
+					String pName = String.format("%s__BRF_%s__MaxEval_%d__ProbPAs_%.2f",
+							modelPath.getName(modelPath.getNameCount() - 2), brf, eval, probPas);
 //					String pName = String.format("%s_Length_%d_CloningWeight_%.1f_MaxCloning_%d_MaxEval_%d",
 //							modelPath.getName(modelPath.getNameCount() - 2), l, w, mc, eval);
 

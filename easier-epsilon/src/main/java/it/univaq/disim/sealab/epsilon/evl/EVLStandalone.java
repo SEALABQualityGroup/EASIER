@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.execute.context.Variable;
+import org.eclipse.epsilon.eol.types.EolModelElementType;
 import org.eclipse.epsilon.evl.EvlModule;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
@@ -45,6 +48,7 @@ public class EVLStandalone extends EpsilonStandalone {
 	
 	public int getPAs() {
 		try {
+			preProcess();
 			execute();
 		} catch (Exception e) {
 			System.err.println("Error in Performance antipattern detection using the file " + model.toString());
@@ -56,6 +60,7 @@ public class EVLStandalone extends EpsilonStandalone {
 
 	@Override
 	public void preProcess() {
+				
 	}
 	
 //	@Override

@@ -345,6 +345,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		pasCounter.setModel(uml);
 		pasCounter.setSource(Paths.get(refactoringLibraryModule));
 		
+		// set the prob to be perf antipatterns
 		pasCounter.setParameter(0.95, "float", "prob_to_be_pa");
 
 		numPAs = pasCounter.getPAs();

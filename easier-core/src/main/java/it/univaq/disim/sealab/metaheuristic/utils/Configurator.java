@@ -136,6 +136,9 @@ public class Configurator {
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
 	private List<String> brfs_list;
+
+	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
+	private float probPas;
 	
 	public List<String> getBrfList(){
 		return brfs_list;
@@ -299,6 +302,11 @@ public class Configurator {
 	    public List<String> split(String value) {
 	      return Arrays.asList(value.split(";"));
 	    }
+	}
+
+
+	public float getProbPas() {
+		return probPas;
 	}
 	
 }
