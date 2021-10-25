@@ -105,7 +105,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 
 					double[] indicatorValues = new double[experiment.getIndependentRuns()];
 					IntStream.range(0, experiment.getIndependentRuns()).forEach(run -> {
-						String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + run
+						String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + run + problem.getTag()
 								+ ".csv";
 						Front front = null;
 						try {
