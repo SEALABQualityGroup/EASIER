@@ -104,6 +104,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		this.allowed_failures = s.allowed_failures;
 		this.length_of_refactorings = s.length_of_refactorings;
 		this.sourceModelPath = s.sourceModelPath;
+		this.problemName = s.getProblemName();
 
 		setName();
 		ID = UUID.randomUUID();
@@ -128,6 +129,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		this.allowed_failures = s1.allowed_failures;
 		this.length_of_refactorings = s1.length_of_refactorings;
 		this.sourceModelPath = s1.sourceModelPath;
+		this.problemName = s1.getProblemName();
 
 		setName();
 		ID = UUID.randomUUID();
