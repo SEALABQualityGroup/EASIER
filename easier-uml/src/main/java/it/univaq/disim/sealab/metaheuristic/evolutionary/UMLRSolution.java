@@ -161,8 +161,11 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		parents = new UMLRSolution[2];
 		scenarioRTs = new double[3];
-
-		this.setVariable(0, new Refactoring());
+		
+		
+		Refactoring refactoring = new Refactoring();
+		refactoring.setSolutionID(this.getName());
+		this.setVariable(0, refactoring);
 
 		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
 				String.valueOf(getName()));
@@ -195,7 +198,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				if (num_failures >= allowed_failures) {
 					// START OVER
 					num_failures = 0;
-					this.setVariable(VARIABLE_INDEX, new Refactoring());
+					Refactoring refactoring = new Refactoring();
+					refactoring.setSolutionID(this.getName());
+					this.setVariable(VARIABLE_INDEX, refactoring);
 					// EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached...
 					// Created an empty refactoring!", problem.allowed_failures));
 				}
@@ -339,6 +344,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		}
 		pasCounter.setModel(uml);
 		pasCounter.setSource(Paths.get(refactoringLibraryModule));
+		
+		// set the prob to be perf antipatterns
+		pasCounter.setParameter(0.95, "float", "prob_to_be_pa");
 
 		numPAs = pasCounter.getPAs();
 
@@ -477,8 +485,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			// Points to lqn schema file and stores pacakges into the global package
 			// registry
 			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
-			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
-					.resolve("lqn.xsd").toString();
+//			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
+//					.resolve("lqn.xsd").toString();
+			String schema = Paths.get(uml2lqnModule,"lqnxsd", "lqn.xsd").toString();
 			Collection<EObject> generatedPackages = xsdEcoreBuilder
 					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
 			for (EObject generatedEObject : generatedPackages) {

@@ -14,6 +14,7 @@ public class Refactoring {
 
 	private List<RefactoringAction> actions;
 	private logicalSpecification.Refactoring _refactoring;
+	private int solutionID;
 
 	public Refactoring() {
 		setRefactoring(LogicalSpecificationFactory.eINSTANCE.createRefactoring());
@@ -34,6 +35,10 @@ public class Refactoring {
 		}
 
 		return newRefactoring;
+	}
+	
+	public void setSolutionID(int id) {
+		solutionID = id;
 	}
 
 	public void setPre(PreCondition pre) {
@@ -131,7 +136,9 @@ public class Refactoring {
 	@Override
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
-		getActions().forEach(action -> strBuilder.append(action.toString()).append(","));
+//		getActions().forEach(action -> strBuilder.append(action.toString()).append(","));
+		final int solutionID = this.solutionID;
+		getActions().forEach(action -> strBuilder.append(solutionID).append(",").append(action.toCSV()).append("\n"));
 		return strBuilder.toString();
 	}
 

@@ -12,6 +12,7 @@ import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util.RSolutionListOutput;
 
 public class RExperimentAlgorithm<S extends RSolution<?>, Result extends List<S>>
 		extends ExperimentAlgorithm<S, Result> {
@@ -55,16 +56,27 @@ public class RExperimentAlgorithm<S extends RSolution<?>, Result extends List<S>
 			}
 		}
 
-		String funFile = outputDirectoryName + "/" + experimentData.getOutputParetoFrontFileName() + super.getRunId()
-				+ ".csv";
-		String varFile = outputDirectoryName + "/" + experimentData.getOutputParetoSetFileName() + super.getRunId()
-				+ ".csv";
+//		ticket_BRF_clone_1.23__moc_1.23__mcnn_1.23__moncnn_1.23_MaxEval_4_ProbPAs_50/80/95
+
+
+		
+		
+		
+		String funFile = outputDirectoryName + "/" + experimentData.getOutputParetoFrontFileName() + super.getRunId();
+//				+ ".csv";
+		String varFile = outputDirectoryName + "/" + experimentData.getOutputParetoSetFileName() + super.getRunId();
+//				+ ".csv";
 		JMetalLogger.logger.info(" Running algorithm: " + super.getAlgorithmTag() + ", problem: "
 				+ super.getProblemTag() + ", run: " + super.getRunId() + ", funFile: " + funFile);
 
 		try {
 			super.getAlgorithm().run();
 			Result population = super.getAlgorithm().getResult();
+			
+			String suffix = "__" + population.get(0).getProblemName() + ".csv";
+			
+			funFile += suffix;
+			varFile += suffix;
 
 			new RSolutionListOutput(population).setVarFileOutputContext(new DefaultFileOutputContext(varFile, ","))
 					.setFunFileOutputContext(new DefaultFileOutputContext(funFile, ",")).print();

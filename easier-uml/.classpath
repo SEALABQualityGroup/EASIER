@@ -29,9 +29,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/easier-core"/>
-	<classpathentry kind="src" path="/easier-epsilon"/>
-	<classpathentry kind="src" path="/it.univaq.sealab.umlreliability"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

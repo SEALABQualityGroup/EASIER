@@ -5,8 +5,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.converters.IParameterSplitter;
 
 public class Configurator {
 
@@ -117,8 +121,8 @@ public class Configurator {
 			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
 	
-	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
-	private String uml2lqn;
+//	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
+//	private String uml2lqn;
 	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
 	private int objectives = 4;
@@ -128,6 +132,25 @@ public class Configurator {
 	
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
 	private double epsilon;
+	
+	
+	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
+	private List<String> brfs_list;
+
+	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
+	private float probPas;
+	
+	public List<String> getBrfList(){
+		return brfs_list;
+	}
+	
+	public double getBRF(String key) {
+		for (String s : brfs_list)
+			if(s.split(":")[0].contains(key))			
+				return Double.parseDouble(s.split(":")[1]);
+		return 1.23d;
+	}
+	
 	
 	public double getEpsilon() {
 		return epsilon;
@@ -141,9 +164,9 @@ public class Configurator {
 		return objectives;
 	}
 
-	public Path getUml2Lqn() {
-		return Paths.get(uml2lqn);
-	}
+//	public Path getUml2Lqn() {
+//		return Paths.get(uml2lqn);
+//	}
 
 	public int getMaxWorseModels() {
 		if (maxWorseModels == null) {
@@ -274,4 +297,16 @@ public class Configurator {
 		return 0;
 	}
 
+	
+	public static class SemiColonSplitter implements IParameterSplitter {
+	    public List<String> split(String value) {
+	      return Arrays.asList(value.split(";"));
+	    }
+	}
+
+
+	public float getProbPas() {
+		return probPas;
+	}
+	
 }

@@ -42,19 +42,30 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 
 		UMLRSolution solution = (UMLRSolution) s;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 926f9eacee6f2aaa24b017c964026170d4062c1e
 //		solution.setObjective(0, (-1 * reliability));// to be maximized
 //		solution.setObjective(1, solution.getScenarioRTs()[0]);
 //		solution.setObjective(2, solution.getScenarioRTs()[1]);
 //		solution.setObjective(3, solution.getScenarioRTs()[2]);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 926f9eacee6f2aaa24b017c964026170d4062c1e
 		solution.setObjective(0, (-1 * solution.getPerfQ())); // to be maximized
 		solution.setObjective(1, solution.getNumOfChanges());
 		solution.setObjective(2, solution.getPAs());
 		solution.setObjective(3, (-1 * solution.getReliability())); // to be maximized
 
+<<<<<<< HEAD
 
 		EasierLogger.logger_.info(String.format("Objectives of Solution # %s have been set.", solution.getName()));
+=======
+		EasierLogger.logger_.info(String.format("Objectives of Solution # %s have been set.", solution.getName()));
+
+>>>>>>> 926f9eacee6f2aaa24b017c964026170d4062c1e
 	}
 }

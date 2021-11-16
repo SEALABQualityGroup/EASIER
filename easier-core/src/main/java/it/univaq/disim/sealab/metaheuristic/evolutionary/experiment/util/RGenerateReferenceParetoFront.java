@@ -62,49 +62,51 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 		this.experiment = experimentConfiguration;
 		experiment.removeDuplicatedAlgorithms();
 	}
-	
+
 	/**
-	   * The run() method creates de output directory and compute the fronts
-	   */
-	  @Override
-	  public void run() throws IOException {
-	    String outputDirectoryName = experiment.getReferenceFrontDirectory() ;
+	 * The run() method creates de output directory and compute the fronts
+	 */
+	@Override
+	public void run() throws IOException {
+		String outputDirectoryName = experiment.getReferenceFrontDirectory();
 
-	    createOutputDirectory(outputDirectoryName) ;
+		createOutputDirectory(outputDirectoryName);
 
-	    List<String> referenceFrontFileNames = new LinkedList<>() ;
-	    for (ExperimentProblem<?> problem : experiment.getProblemList()) {
-	      NonDominatedSolutionListArchive<PointSolution> nonDominatedSolutionArchive =
-	          new NonDominatedSolutionListArchive<PointSolution>() ;
+		List<String> referenceFrontFileNames = new LinkedList<>();
+		for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+			NonDominatedSolutionListArchive<PointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<PointSolution>();
 
-	      for (ExperimentAlgorithm<?,?> algorithm : experiment.getAlgorithmList()) {
-	        String problemDirectory = experiment.getExperimentBaseDirectory() + "/data/" +
-	            algorithm.getAlgorithmTag() + "/" + problem.getTag() ;
+			for (ExperimentAlgorithm<?, ?> algorithm : experiment.getAlgorithmList()) {
+				String problemDirectory = experiment.getExperimentBaseDirectory() + "/data/"
+						+ algorithm.getAlgorithmTag() + "/" + problem.getTag();
 
-	        for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-	          String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() +
-	              i + ".csv";
+				for (int i = 0; i < experiment.getIndependentRuns(); i++) {
+					String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + i;// +
+																													// ".csv";
+					frontFileName += "__" + problem.getTag() + ".csv";
+
 //	          Front front = new ArrayFront(frontFileName, ",") ;
-	          List<RPointSolution> solutionList = generateRPointSolutionList(frontFileName);//FrontUtils.convertFrontToSolutionList(front) ;
-	          
-	          GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>()  ;
+					List<RPointSolution> solutionList = generateRPointSolutionList(frontFileName);// FrontUtils.convertFrontToSolutionList(front)
+																									// ;
 
-	          for (RPointSolution solution : solutionList) {
-	            solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
-	            nonDominatedSolutionArchive.add(solution) ;
-	          }
-	        }
-	      }
-	      String referenceSetFileName = outputDirectoryName + "/" + problem.getTag() + ".csv" ;
-	      referenceFrontFileNames.add(problem.getTag() + ".csv");
-	      new SolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
-	          .printObjectivesToFile(referenceSetFileName, ",");
+					GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
 
-	      writeFilesWithTheSolutionsContributedByEachAlgorithm(outputDirectoryName, problem,
-	          nonDominatedSolutionArchive.getSolutionList()) ;
-	    }
+					for (RPointSolution solution : solutionList) {
+						solutionAttribute.setAttribute(solution, algorithm.getAlgorithmTag());
+						nonDominatedSolutionArchive.add(solution);
+					}
+				}
+			}
+			String referenceSetFileName = outputDirectoryName + "/" + problem.getTag() + ".csv";
+			referenceFrontFileNames.add(problem.getTag() + ".csv");
+			new SolutionListOutput(nonDominatedSolutionArchive.getSolutionList())
+					.printObjectivesToFile(referenceSetFileName, ",");
 
-	  }
+			writeFilesWithTheSolutionsContributedByEachAlgorithm(outputDirectoryName, problem,
+					nonDominatedSolutionArchive.getSolutionList());
+		}
+
+	}
 
 //	/**
 //	 * The run() method creates de output directory and compute the fronts
@@ -172,10 +174,12 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 			final int numObjs = Configurator.eINSTANCE.getObjectives();
 			while ((sCurrentLine = br.readLine()) != null) {
 
-				String[] split = sCurrentLine.split(",");
+				if (!sCurrentLine.contains("solID")) {
+					String[] split = sCurrentLine.split(",");
 
-				ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0])).setPointSolution(
-						Arrays.asList((Arrays.copyOfRange(split, 1, numObjs)))));
+					ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0]))
+							.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs+1)))));
+				}
 			}
 		} catch (IOException | NumberFormatException e) {
 			e.printStackTrace();
@@ -194,27 +198,23 @@ public class RGenerateReferenceParetoFront implements ExperimentComponent {
 		return outputDirectory;
 	}
 
-	private void writeFilesWithTheSolutionsContributedByEachAlgorithm(
-		      String outputDirectoryName, ExperimentProblem<?> problem,
-		      List<PointSolution> nonDominatedSolutions) throws IOException {
-		    GenericSolutionAttribute<PointSolution, String> solutionAttribute = new GenericSolutionAttribute<PointSolution, String>()  ;
+	private void writeFilesWithTheSolutionsContributedByEachAlgorithm(String outputDirectoryName,
+			ExperimentProblem<?> problem, List<PointSolution> nonDominatedSolutions) throws IOException {
+		GenericSolutionAttribute<PointSolution, String> solutionAttribute = new GenericSolutionAttribute<PointSolution, String>();
 
-		    for (ExperimentAlgorithm<?, ?> algorithm : experiment.getAlgorithmList()) {
-		      List<PointSolution> solutionsPerAlgorithm = new ArrayList<>() ;
-		      for (PointSolution solution : nonDominatedSolutions) {
-		        if (algorithm.getAlgorithmTag().equals(solutionAttribute.getAttribute(solution))) {
-		          solutionsPerAlgorithm.add(solution) ;
-		        }
-		      }
+		for (ExperimentAlgorithm<?, ?> algorithm : experiment.getAlgorithmList()) {
+			List<PointSolution> solutionsPerAlgorithm = new ArrayList<>();
+			for (PointSolution solution : nonDominatedSolutions) {
+				if (algorithm.getAlgorithmTag().equals(solutionAttribute.getAttribute(solution))) {
+					solutionsPerAlgorithm.add(solution);
+				}
+			}
 
-		      new SolutionListOutput(solutionsPerAlgorithm)
-		          .printObjectivesToFile(
-		              outputDirectoryName + "/" + problem.getTag() + "." +
-		                  algorithm.getAlgorithmTag() + ".csv", ","
-		          );
-		    }
-		  }
-	
+			new SolutionListOutput(solutionsPerAlgorithm).printObjectivesToFile(
+					outputDirectoryName + "/" + problem.getTag() + "." + algorithm.getAlgorithmTag() + ".csv", ",");
+		}
+	}
+
 //	private void writeFilesWithTheSolutionsContributedByEachAlgorithm(String outputDirectoryName, Problem<?> problem,
 //			List<RPointSolution> nonDominatedSolutions) throws IOException {
 //		GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();

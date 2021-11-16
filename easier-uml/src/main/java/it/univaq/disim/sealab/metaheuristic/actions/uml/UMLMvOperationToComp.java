@@ -2,15 +2,12 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Message;
@@ -28,6 +25,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
 import logicalSpecification.FOLSpecification;
@@ -41,7 +39,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 
 	private final static String eolModulePath;
 
-	private final static double VALUE_COST = 1.23;
+	private final static double BFR = 1.23;
 
 	private final String sourceModelPath;
 
@@ -69,7 +67,10 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	private double calculateCost(final UMLRSolution sol) {
 		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
 				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
-		return msgs * VALUE_COST;
+
+		double brf = Configurator.eINSTANCE.getBRF("moc");
+
+		return msgs * brf;
 	}
 
 	// retrieves a random operation from the source model
@@ -252,6 +253,12 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	@Override
 	public String toString() {
 		return "Move Operation --> " + umlOpToMove.getName() + " to Component -->  " + umlTargetComp.getName();
+	}
+	
+	
+	public String toCSV()
+	{
+		return String.format("Move_Operation_Component,%s,%s,", umlOpToMove.getName(),umlTargetComp.getName());
 	}
 
 	@Override

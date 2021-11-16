@@ -3,6 +3,7 @@
  */
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import java.io.ObjectInputFilter.Config;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -26,6 +27,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
@@ -41,7 +43,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 	private final static Path eolModulePath;
 
-	private final static double VALUE_COST = 1.23;
+	private final static double BRF = 1.23;
 
 	private final String sourceModelPath;
 
@@ -82,8 +84,10 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		int artSize = 0;
 
 		targetObject.getDeployments().stream().flatMap(d -> d.getDeployedArtifacts().stream()).count();
+		
+		double brf = Configurator.eINSTANCE.getBRF("clone");
 
-		return (cpSize + artSize) * VALUE_COST;
+		return (cpSize + artSize) * brf;
 
 	}
 
@@ -271,6 +275,10 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	@Override
 	public String toString() {
 		return "Cloning --> " + targetObject.getName() + " with -->  " + umlClonedNode.getName();
+	}
+	
+	public String toCSV() {
+		return String.format("UMLCloneNode,%s,%s,", targetObject.getName(), umlClonedNode.getName());
 	}
 
 	@Override
