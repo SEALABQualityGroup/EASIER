@@ -50,7 +50,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	private Node umlTargetNode;
 
 	static {
-		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(),
 				"easier-refactoringLibrary", "easier-ref-operations", "mv_op_nc_nn.eol").toString();
 	}
 

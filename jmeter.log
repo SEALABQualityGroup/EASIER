@@ -1,0 +1,22 @@
+2021-10-26 14:43:33,795 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2021-10-26 14:43:33,823 INFO o.a.j.JMeter: Loading user properties from: /opt/jmeter/bin/user.properties
+2021-10-26 14:43:33,824 INFO o.a.j.JMeter: Loading system properties from: /opt/jmeter/bin/system.properties
+2021-10-26 14:43:33,832 INFO o.a.j.JMeter: Copyright (c) 1998-2021 The Apache Software Foundation
+2021-10-26 14:43:33,832 INFO o.a.j.JMeter: Version 5.4.1
+2021-10-26 14:43:33,832 INFO o.a.j.JMeter: java.version=11.0.12
+2021-10-26 14:43:33,832 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: os.name=Linux
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: os.arch=amd64
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: os.version=5.10.36-2-MANJARO
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: file.encoding=UTF-8
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: java.awt.headless=null
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: Max memory     =1073741824
+2021-10-26 14:43:33,833 INFO o.a.j.JMeter: Available Processors =8
+2021-10-26 14:43:33,844 INFO o.a.j.JMeter: Default Locale=English (EN)
+2021-10-26 14:43:33,845 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2021-10-26 14:43:33,845 INFO o.a.j.JMeter: JMeterHome=/opt/jmeter
+2021-10-26 14:43:33,845 INFO o.a.j.JMeter: user.dir  =/home/xeder/Desktop/projects/EASIER
+2021-10-26 14:43:33,845 INFO o.a.j.JMeter: PWD       =/home/xeder/Desktop/projects/EASIER
+2021-10-26 14:43:33,845 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: xeder-workstation FullName: xeder-workstation
+2021-10-26 14:43:34,207 INFO o.a.j.JMeter: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
+2021-10-26 14:43:35,049 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties

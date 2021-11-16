@@ -22,25 +22,14 @@ public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolution
 //		ExecutorService executor = Executors.newFixedThreadPool(solutionList.size());
 		ExecutorService executor = Executors.newFixedThreadPool(1);
 
-		/*
-		 * for (S sol : solutionList) { sol.executeRefactoring();
-		 * sol.applyTransformation(); // TODO shall be moved to a multithreaded version
-		 * sol.invokeSolver();
-		 * 
-		 * 
-		 * sol.countingPAs(); sol.evaluatePerformance(); sol.computeReliability();
-		 * 
-		 * problem.evaluate(sol); }
-		 */
-
 		solutionList.stream().forEach(sol -> {
 			sol.executeRefactoring();
 			sol.applyTransformation();
 			sol.invokeSolver();
-//			sol.countingPAs();
-//			sol.evaluatePerformance();
+			sol.countingPAs();
+			sol.evaluatePerformance();
 			sol.computeReliability();
-			sol.computeScenarioRT();
+//			sol.computeScenarioRT();
 			problem.evaluate(sol);
 		});
 		

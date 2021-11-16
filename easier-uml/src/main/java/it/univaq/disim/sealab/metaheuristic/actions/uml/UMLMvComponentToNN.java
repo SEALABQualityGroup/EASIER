@@ -47,7 +47,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 	private final String sourceModelPath;
 
 	static {
-		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), 
 				"easier-refactoringLibrary", "easier-ref-operations", "mv_comp_nn.eol");
 	}
 

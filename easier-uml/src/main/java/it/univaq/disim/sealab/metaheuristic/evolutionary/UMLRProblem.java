@@ -39,41 +39,22 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 	 */
 	public void evaluate(S s) {
 
+
 		UMLRSolution solution = (UMLRSolution) s;
 
-//		for (int i = 0; i < this.getNumberOfObjectives(); i++) {
-//			if (i == FIRST_OBJ) {
-//				final double quality = solution.getPerfQ();
-//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of perfQ --> " + quality);
-//				solution.setObjective(i, (-1 * quality)); //to be maximized
-//			} else if (i == SECOND_OBJ) {
-//				final double numOfChanges = solution.getNumOfChanges();
-//				EasierLogger.logger_
-//						.info("SOLUTION #" + solution.getName() + ": Total number of #changes --> " + numOfChanges);
-//				solution.setObjective(i, numOfChanges);
-//			} 
-//			else if (i == THIRD_OBJ) {
-//				final int pas = solution.getPAs();
-//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total number of PAs --> " + pas);
-//				solution.setObjective(i, pas);
-//			} 
-//			else if (i == FOURTH_OBJ) {
-//				final double reliability = solution.getReliability();
-//				EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
-//				solution.setObjective(i, (-1 * reliability));//to be maximized
-//			} else {
-//				System.out.println("\n" + i);
-//				throw new RuntimeException("unexpected behaviour!!!");
-//			}
-//		}
 
-		final double reliability = solution.getReliability();
-//		EasierLogger.logger_.info("SOLUTION #" + solution.getName() + ": Total reliability --> " + reliability);
-		solution.setObjective(0, (-1 * reliability));// to be maximized
-		solution.setObjective(1, solution.getScenarioRTs()[0]);
-		solution.setObjective(2, solution.getScenarioRTs()[1]);
-		solution.setObjective(3, solution.getScenarioRTs()[2]);
+//		solution.setObjective(0, (-1 * reliability));// to be maximized
+//		solution.setObjective(1, solution.getScenarioRTs()[0]);
+//		solution.setObjective(2, solution.getScenarioRTs()[1]);
+//		solution.setObjective(3, solution.getScenarioRTs()[2]);
+
+
+		solution.setObjective(0, (-1 * solution.getPerfQ())); // to be maximized
+		solution.setObjective(1, solution.getNumOfChanges());
+		solution.setObjective(2, solution.getPAs());
+		solution.setObjective(3, (-1 * solution.getReliability())); // to be maximized
+
+
 		EasierLogger.logger_.info(String.format("Objectives of Solution # %s have been set.", solution.getName()));
-		
 	}
 }

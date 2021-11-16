@@ -135,8 +135,12 @@ public class Launcher {
 		System.out.print("Applying transformation ... ");
 		EasierUmlModel uml = null;
 		ETLStandalone executor = null;
-		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+		
+		System.out.println(FileSystems.getDefault().getPath("").toAbsolutePath().toString());
+
+		String uml2lqnDir = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+		String uml2lqnModule = Paths.get(uml2lqnDir, "easier-uml2lqn", "org.univaq.uml2lqn").toString();
+
 		try {
 			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
 		} catch (EolModelLoadingException | URISyntaxException e) {
@@ -161,7 +165,7 @@ public class Launcher {
 		executor.clearMemory();
 
 		// finally {
-		new UMLMemoryOptimizer().cleanup();
+		//new UMLMemoryOptimizer().cleanup();
 		uml = null;
 		executor = null;
 		// }
@@ -209,8 +213,8 @@ public class Launcher {
 
 		bckAnn.setModel(uml);
 
-		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+		String uml2lqnDir = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+		String uml2lqnModule = Paths.get(uml2lqnDir, "easier-uml2lqn", "org.univaq.uml2lqn").toString();
 
 		bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
 
@@ -239,7 +243,7 @@ public class Launcher {
 		}
 
 		bckAnn.clearMemory();
-		new UMLMemoryOptimizer().cleanup();
+		// new UMLMemoryOptimizer().cleanup();
 		bckAnn = null;
 
 	}

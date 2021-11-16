@@ -92,8 +92,10 @@ public class EasierUmlModel extends UmlModel {
 	 */
 	private ResourceSet initMARTE(ResourceSet resourceSet) {
 		final URI marteURI = URI.createURI(getClass().getResource("/marte").toString());
+
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI(MARTE_BASE_PATHMAP),
 				marteURI.appendSegment(""));
+
 		final String MARTE_PROFILES_PATHMAP = MARTE_BASE_PATHMAP + MARTE_PROFILE;
 		
 		// NFP

@@ -80,9 +80,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	private final static String GQAM_NAMESPACE;
 
 	static {
-		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(),
 				"easier-refactoringLibrary", "evl", "AP-UML-MARTE.evl").toString();
-		uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(),
 				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
 
 		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";

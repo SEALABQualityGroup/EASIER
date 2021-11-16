@@ -46,7 +46,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	private final String sourceModelPath;
 
 	static {
-		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(),
 				"easier-refactoringLibrary", "easier-ref-operations", "mv_op_comp.eol").toString();
 	}
 

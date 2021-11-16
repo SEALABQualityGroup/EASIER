@@ -50,7 +50,7 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 	private SingleValuedParameter umlNodeToCloneSVP, umlClonedNodeSVP;
 
 	static {
-		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), 
 				"easier-refactoringLibrary", "easier-ref-operations", "clone_node.eol");
 	}
 

@@ -23,6 +23,11 @@
 			<name>eclipse repo</name>
 			<url>https://repo.eclipse.org/content/groups/releases/</url>
 		</repository>
+		<!--
+		<repository>
+			<id>org.eclipse.uml2.uml</id>
+			<url>https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.uml</url>
+		</repository> -->
 	</repositories>
 
 	<dependencies>
@@ -31,8 +36,7 @@
 			<groupId>it.univaq.disim.sealab.uml</groupId>
 			<artifactId>org.eclipse.uml2.uml</artifactId>
 			<version>5.5.0.v20181203-1331</version>
-		</dependency>
-
+		</dependency> 
 		<dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemiliaMetamodel</artifactId>

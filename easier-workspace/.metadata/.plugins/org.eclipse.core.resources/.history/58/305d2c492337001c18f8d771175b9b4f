@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lqn-model name="Model">
+  <processor multiplicity="1" name="CashBox">
+        
+    <task multiplicity="1" name="CashBoxController" replication="1">
+            
+      <entry name="cashBoxBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="saleStartedApplication" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="cashDeskBesStart"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="saleStartedEventPrinter" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="printerDeskBesStart"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="startStartEventCashDesk" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="guiBes0"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="BarCodeScanner">
+        
+    <task multiplicity="1" name="ScannerController" replication="1">
+            
+      <entry name="scannerBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="productBarCodeMessage" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="cashDeskBes1"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="EnterpriseClient">
+        
+    <task multiplicity="1" name="GUIReporting" replication="1">
+            
+      <entry name="guiReporting_bes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getmttreport_message" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="appReporting_bes"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task multiplicity="1" name="GUIStore" replication="1">
+            
+      <entry name="guiStoreBes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="rollinReceivedOrderMessage" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="appStoreBes"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task name="EnterpriseManager" replication="1" scheduling="ref">
+            
+      <entry name="enterpriseManager_bes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="create_rep_message" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="guiReporting_bes"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task name="StockManager" replication="1" scheduling="ref">
+            
+      <entry name="stockManagerBes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="enterOrderIDMessage" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="guiStoreBes"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="StoreServer">
+        
+    <task multiplicity="1" name="Inventory" replication="1">
+            
+      <entry name="inventoryBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getProductWithStockItem" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task multiplicity="1" name="AppStore" replication="1">
+            
+      <entry name="appStoreBes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getTransactionContextMessage" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="persistanceBes"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="queryOrderByIdMessage" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="dataStoreBes0"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="queryStockItem" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="dataStoreBes1"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="EnterpriseServer">
+        
+    <task multiplicity="1" name="DataStore" replication="1">
+            
+      <entry name="dataStoreBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="queryOrderByIdMessage" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="dataStoreBes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="queryStockItem" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task multiplicity="1" name="Enterprise" replication="1">
+            
+      <entry name="getEnterprise_bes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getmttd_message" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="getEnterprise_bes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="get_enterprise_message" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task multiplicity="1" name="Reporting" replication="1">
+            
+      <entry name="appReporting_bes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="get_transaction_report" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="persistance_bes"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="get_enterprise_message" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="getEnterprise_bes0"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="getmttd_message" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="getEnterprise_bes1"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task multiplicity="1" name="Persistence" replication="1">
+            
+      <entry name="persistanceBes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getTransactionContextMessage" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="persistance_bes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="get_transaction_report" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="CashDeskPC">
+        
+    <task multiplicity="1" name="CashDeskApplication" replication="1">
+            
+      <entry name="cashDeskBes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="getProductWithStockItem" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="inventoryBes0"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="printRunningTotal" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="printerBes1"/>
+                      
+          </activity>
+                    
+          <activity host-demand-mean="1.0" name="printRunningTotal" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="guiBes1"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="stopSaleBes">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="stopSale" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="cashDeskBesStart">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="saleStartedApplication" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+        
+    <task name="Cashier" replication="1" scheduling="ref">
+            
+      <entry name="cashierBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="startSale" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="cashBoxBes0"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="CashierBes2">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="stopSale" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="stopSaleBes"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="cashierBes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="scanProduct" phase="1">
+                        
+            <synch-call calls-mean="1.0" dest="scannerBes0"/>
+                      
+          </activity>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="Printer">
+        
+    <task multiplicity="1" name="PrinterController" replication="1">
+            
+      <entry name="printerBes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="printRunningTotal" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="printerDeskBesStart">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="saleStartedEventPrinter" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+  <processor multiplicity="1" name="LightDisplay">
+        
+    <task multiplicity="1" name="CashDeskGUI" replication="1">
+            
+      <entry name="guiBes0">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="startStartEventCashDesk" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+            
+      <entry name="guiBes1">
+                
+        <entry-phase-activities>
+                    
+          <activity host-demand-mean="1.0" name="printRunningTotal" phase="1"/>
+                  
+        </entry-phase-activities>
+              
+      </entry>
+          
+    </task>
+      
+  </processor>
+</lqn-model>

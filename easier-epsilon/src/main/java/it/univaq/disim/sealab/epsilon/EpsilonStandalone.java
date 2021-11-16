@@ -241,7 +241,6 @@ public abstract class EpsilonStandalone {
 			boolean storeOnDisposal) {
 		// Load the XML document
 		XmlModel xmlModel = new XmlModel();
-
 		try {
 			StringProperties properties = new StringProperties();
 			properties.put(XmlModel.PROPERTY_NAME, name);
