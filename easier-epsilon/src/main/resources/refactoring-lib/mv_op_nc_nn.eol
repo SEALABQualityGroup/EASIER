@@ -32,11 +32,12 @@ var sourceComponent : Component = self.getOwner();
 targetComp.cloneAppliedStereotypesFrom(sourceComponent); //clono gli stessi stereotipi del componente sorgente	
 targetComp.moveInterfacesRealizationFrom(sourceComponent, self);
 	
-var listOfUsedProvidedInterfaces : List(Interface) = sourceComponent.getAllUsedIntefacesRequiredsBy(self);
+// var listOfUsedProvidedInterfaces : List(Interface) = sourceComponent.getAllUsedIntefacesRequiredsBy(self);
 	
 //deploy
 targetComp.deployOn(targetNode);
 
+sourceComponent.println("sc: ");
 if(sourceComponent.getNodes().isEmpty()){
 	sourceComponent.getName().println("[ERROR] The Component is not deployed !!!");
 }

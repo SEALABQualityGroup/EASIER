@@ -2,12 +2,14 @@ package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Interaction;
@@ -27,7 +29,6 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
@@ -42,7 +43,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 
 	private final static String eolModulePath;
 
-	private final static double BRF = 1.80;
+	private final static double VALUE_COST = 1.80;
 
 	private final String sourceModelPath;
 
@@ -73,10 +74,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	private double calculateCost(final UMLRSolution sol) {
 		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
 				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
-		
-		double brf = Configurator.eINSTANCE.getBRF("moncnn");
-
-		return msgs * brf;
+		return msgs * VALUE_COST;
 	}
 
 	// creates a new Node within the model
@@ -283,10 +281,6 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	public String toString() {
 		return "Move Operation --> " + umlOpToMove.getName() + " to New Component --> " + umlTargetComp.getName()
 				+ " deployed to a New Node -->" + umlTargetNode.getName();
-	}
-	
-	public String toCSV(){
-		return String.format("Move_Operation_New_Component_New_Node,%s,%s,%s",umlOpToMove.getName(),umlTargetComp.getName(),umlTargetNode.getName());
 	}
 
 }

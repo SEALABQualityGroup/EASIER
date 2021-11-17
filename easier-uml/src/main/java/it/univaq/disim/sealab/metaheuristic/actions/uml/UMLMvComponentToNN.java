@@ -13,6 +13,7 @@ import java.util.Random;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Node;
@@ -27,7 +28,6 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.managers.ocl.uml.UMLOclStringManager;
-import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 import logicalSpecification.AndOperator;
 import logicalSpecification.ExistsOperator;
@@ -42,7 +42,7 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 
 	private final static Path eolModulePath;
 
-	private final static double BFR = 1.23;
+	private final static double VALUE_COST = 1.23;
 
 	private final String sourceModelPath;
 
@@ -78,11 +78,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		int intUsage = umlCompToMove.getUsedInterfaces().size();
 		int intReal = umlCompToMove.getInterfaceRealizations().size();
 		int ops = umlCompToMove.getOperations().size();
-		
-		
-		double brf = Configurator.eINSTANCE.getBRF("mcnn");
 
-		return (intUsage + intReal + ops) * brf;
+		return (intUsage + intReal + ops) * VALUE_COST;
 	}
 
 	// Creates a new random Node on which the component will be deployed on
@@ -267,11 +264,6 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		for (Node n : umlTargetNodes)
 			nodes += " " + n.getName();
 		return "Moving --> " + umlCompToMove.getName() + " to --> " + nodes;
-	}
-	
-	public String toCSV()
-	{
-		return String.format("Move_Component_New_Node,%s,%s,",umlCompToMove.getName(),umlTargetNodes.get(0).getName()); 
 	}
 
 	@Override
