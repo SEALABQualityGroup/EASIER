@@ -26,7 +26,7 @@ public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolution
 			sol.executeRefactoring();
 			sol.applyTransformation();
 			sol.invokeSolver();
-			sol.countingPAs();
+			//sol.countingPAs();
 			sol.evaluatePerformance();
 			sol.computeReliability();
 //			sol.computeScenarioRT();

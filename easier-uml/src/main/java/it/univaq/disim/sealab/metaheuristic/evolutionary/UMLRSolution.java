@@ -477,10 +477,13 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			// Points to lqn schema file and stores pacakges into the global package
 			// registry
 			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+			
 			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
 					.resolve("lqn.xsd").toString();
+
 			Collection<EObject> generatedPackages = xsdEcoreBuilder
 					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
+
 			for (EObject generatedEObject : generatedPackages) {
 				if (generatedEObject instanceof EPackage) {
 					EPackage generatedPackage = (EPackage) generatedEObject;
