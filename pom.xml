@@ -18,6 +18,7 @@
 		<module>easier-refactoringLibrary</module>
 		<module>easier-uml2lqnCaseStudy</module>
 		<module>easier-reliability</module>
+		<module>easier-aemiliaMetamodel/metamodel</module>
 	</modules>
 	<properties>
 		<emf.version>2.15.0</emf.version>
