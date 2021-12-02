@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
@@ -348,9 +349,12 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		pasCounter.setSource(Paths.get(refactoringLibraryModule));
 		
 		// set the prob to be perf antipatterns
-		pasCounter.setParameter(0.95, "float", "prob_to_be_pa");
+//		pasCounter.setParameter(0.95, "float", "prob_to_be_pa");
+		
+		pasCounter.setParameter(Configurator.eINSTANCE.getProbPas(), "float", "prob_to_be_pa");
 
 		numPAs = pasCounter.getPAs();
+		System.out.format("countingPAs execution time: %s", (System.currentTimeMillis() - startTime));
 
 		uml = null;
 		pasCounter.clearMemory();
