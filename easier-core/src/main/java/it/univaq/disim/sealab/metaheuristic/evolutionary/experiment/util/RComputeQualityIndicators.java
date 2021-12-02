@@ -78,6 +78,8 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 	public void run() throws IOException {
 		experiment.removeDuplicatedAlgorithms();
 		resetIndicatorFiles();
+		
+		String suffix = "__" + experiment.getProblemList().get(0).getTag();
 
 		for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
 			JMetalLogger.logger.info("Computing indicator: " + indicator.getName());
@@ -94,22 +96,22 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 
 					JMetalLogger.logger.info("RF: " + referenceFrontName);
 
-					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName), ",");
+					Front referenceFront = new ArrayFront(referenceFrontName, ",");
 
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
 
-					String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
+					String qualityIndicatorFile = problemDirectory + "/" + indicator.getName() + suffix;
 
 					indicator.setReferenceParetoFront(normalizedReferenceFront);
 
 					double[] indicatorValues = new double[experiment.getIndependentRuns()];
 					IntStream.range(0, experiment.getIndependentRuns()).forEach(run -> {
-						String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + run + problem.getTag()
-								+ ".csv";
+						String frontFileName = problemDirectory + "/" + experiment.getOutputParetoFrontFileName() + run
+								+ "__" + problem.getTag() + ".csv";
 						Front front = null;
 						try {
-							front = new ArrayFront(frontFileName, ",");
+							front = new ArrayFront(removeSolID(frontFileName), ",");
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
 						}
@@ -130,8 +132,6 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 		findBestIndicatorFronts(experiment);
 		writeSummaryFile(experiment);
 	}
-
-	
 
 	public Map<String, List<Double>> getIndicatorsMap() {
 		return qualityIndicatorsMap;
@@ -176,24 +176,25 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 			throw new JMetalException("Error writing indicator file" + ex);
 		}
 	}
-	
-	  /**
-	   * Deletes the files containing the indicator values if the exist.
-	   */
-	  private void resetIndicatorFiles() {
-	    for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
-	      for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
-	        for (ExperimentProblem<?> problem : experiment.getProblemList()) {
-	          String algorithmDirectory;
-	          algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/" + algorithm.getAlgorithmTag();
-	          String problemDirectory = algorithmDirectory + "/" + problem.getTag();
-	          String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
 
-	          resetFile(qualityIndicatorFile);
-	        }
-	      }
-	    }
-	  }
+	/**
+	 * Deletes the files containing the indicator values if the exist.
+	 */
+	private void resetIndicatorFiles() {
+		for (GenericIndicator<S> indicator : experiment.getIndicatorList()) {
+			for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
+				for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+					String algorithmDirectory;
+					algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/"
+							+ algorithm.getAlgorithmTag();
+					String problemDirectory = algorithmDirectory + "/" + problem.getTag();
+					String qualityIndicatorFile = problemDirectory + "/" + indicator.getName();
+
+					resetFile(qualityIndicatorFile);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Deletes a file or directory if it does exist
@@ -232,7 +233,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 				algorithmDirectory = experiment.getExperimentBaseDirectory() + "/data/" + algorithm.getAlgorithmTag();
 
 				for (ExperimentProblem<?> problem : experiment.getProblemList()) {
-					String indicatorFileName = algorithmDirectory + "/" + problem.getTag() + "/" + indicator.getName();
+					String indicatorFileName = algorithmDirectory + "/" + problem.getTag() + "/" + indicator.getName() + "__" + problem.getTag();
 					Path indicatorFile = Paths.get(indicatorFileName);
 					if (indicatorFile != null && Files.exists(indicatorFile)) {
 
@@ -262,36 +263,53 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 						String bestVarFileName;
 						String medianFunFileName;
 						String medianVarFileName;
+						
+						final String suffix = "__" + problem.getTag();
 
 						String outputDirectory = algorithmDirectory + "/" + problem.getTag();
 
-						bestFunFileName = outputDirectory + "/BEST_" + indicator.getName() + "_FUN.tsv";
-						bestVarFileName = outputDirectory + "/BEST_" + indicator.getName() + "_VAR.tsv";
-						medianFunFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_FUN.tsv";
-						medianVarFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_VAR.tsv";
+						bestFunFileName = outputDirectory + "/BEST_" + indicator.getName() + "_FUN" + suffix;
+						bestVarFileName = outputDirectory + "/BEST_" + indicator.getName() + "_VAR" + suffix;
+						medianFunFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_FUN" + suffix;
+						medianVarFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_VAR" + suffix;
+
+						String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+								+ list.get(list.size() - 1).getRight();// + ".tsv";
+						String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+								+ list.get(list.size() - 1).getRight();// + ".csv";
+
 						if (indicator.isTheLowerTheIndicatorValueTheBetter()) {
-							String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-									+ list.get(0).getRight() + ".tsv";
-							String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-									+ list.get(0).getRight() + ".tsv";
+							bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+									+ list.get(0).getRight();// + ".tsv";
+							bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+									+ list.get(0).getRight();// + ".tsv";
 
-							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
-							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
-						} else {
-							String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-									+ list.get(list.size() - 1).getRight() + ".tsv";
-							String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-									+ list.get(list.size() - 1).getRight() + ".tsv";
-
-							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
-							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
+//							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
+//							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
 						}
+						
+//						else {
+//							String bestFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
+//									+ list.get(list.size() - 1).getRight() + ".tsv";
+//							String bestVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
+//									+ list.get(list.size() - 1).getRight() + ".tsv";
+//
+//							Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
+//							Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
+//						}
+						
+						
+						bestFunFile += suffix + ".csv";
+						bestVarFile += suffix + ".csv";
+
+						Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName), REPLACE_EXISTING);
+						Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName), REPLACE_EXISTING);
 
 						int medianIndex = list.size() / 2;
 						String medianFunFile = outputDirectory + "/" + experiment.getOutputParetoFrontFileName()
-								+ list.get(medianIndex).getRight() + ".tsv";
+								+ list.get(medianIndex).getRight() + suffix + ".csv";
 						String medianVarFile = outputDirectory + "/" + experiment.getOutputParetoSetFileName()
-								+ list.get(medianIndex).getRight() + ".tsv";
+								+ list.get(medianIndex).getRight() + suffix + ".csv";
 
 						Files.copy(Paths.get(medianFunFile), Paths.get(medianFunFileName), REPLACE_EXISTING);
 						Files.copy(Paths.get(medianVarFile), Paths.get(medianVarFileName), REPLACE_EXISTING);
@@ -317,8 +335,9 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 							+ algorithm.getAlgorithmTag();
 
 					for (ExperimentProblem<?> problem : experiment.getProblemList()) {
+						String suffix = "__" + problem.getTag();
 						String indicatorFileName = algorithmDirectory + "/" + problem.getTag() + "/"
-								+ indicator.getName();
+								+ indicator.getName() + suffix;
 						Path indicatorFile = Paths.get(indicatorFileName);
 						if (indicatorFile == null) {
 							throw new JMetalException("Indicator file " + indicator.getName() + " doesn't exist");
