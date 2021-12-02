@@ -296,10 +296,10 @@ public class Launcher {
 			qualityIndicator.run();
 			qualityIndicatorsMap = qualityIndicator.getIndicatorsMap();
 
-			new GenerateLatexTablesWithComputingTime(experiment).run();
-			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-			new GenerateBoxplotsWithR<>(experiment).run();
-			new GenerateLatexTablesWithStatistics(experiment).run();
+//			new GenerateLatexTablesWithComputingTime(experiment).run();
+//			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+//			new GenerateBoxplotsWithR<>(experiment).run();
+//			new GenerateLatexTablesWithStatistics(experiment).run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
