@@ -125,7 +125,7 @@ public class Configurator {
 //	private String uml2lqn;
 	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
-	private int objectives = 4;
+	private int objectives;
 	
 	@Parameter(names = {"--refPoints"}, description = "List of reference points for R-NSGA algorithm")
 	private List<Double> referencePoints = new ArrayList<>();
@@ -139,7 +139,7 @@ public class Configurator {
 
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
 	private float probPas;
-	
+
 	public List<String> getBrfList(){
 		return brfs_list;
 	}
