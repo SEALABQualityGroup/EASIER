@@ -110,10 +110,10 @@ public class RSolutionListOutput {
 			String header;
 			// without PAs
 			if (Configurator.eINSTANCE.getObjectives() == 4)
-				header = String.format("solID%sperfQ%s#changes%spas%sreliability%s", separator, separator, separator,
+				header = String.format("solID%sperfQ%s#changes%spas%sreliability", separator, separator, separator,
 						separator, separator);
 			else
-				header = String.format("solID%sperfQ%s#changes%sreliability%s", context.getSeparator(),
+				header = String.format("solID%sperfQ%s#changes%sreliability", context.getSeparator(),
 						context.getSeparator(), context.getSeparator(), context.getSeparator());
 			bufferedWriter.write(header);
 			bufferedWriter.newLine();
@@ -121,12 +121,13 @@ public class RSolutionListOutput {
 				int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
 				for (int i = 0; i < solutionList.size(); i++) {
 					bufferedWriter.write(solutionList.get(i).getName() + separator);
-					for (int j = 0; j < numberOfObjectives; j++) {
+					for (int j = 0; j < numberOfObjectives-1; j++) {
 //						if (j == 0 && !RPointSolution.isWorsen())
 //							bufferedWriter.write((-1 * solutionList.get(i).getObjective(j)) + context.getSeparator());
 //						else
 						bufferedWriter.write(solutionList.get(i).getObjective(j) + separator);
 					}
+					bufferedWriter.write(""+solutionList.get(i).getObjective(numberOfObjectives - 1));
 					bufferedWriter.newLine();
 				}
 			}

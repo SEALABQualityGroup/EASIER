@@ -294,7 +294,7 @@ public class Launcher {
 			RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>> qualityIndicator = new RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>>(
 					experiment);
 			qualityIndicator.run();
-			qualityIndicatorsMap = qualityIndicator.getIndicatorsMap();
+//			qualityIndicatorsMap = qualityIndicator.getIndicatorsMap();
 
 //			new GenerateLatexTablesWithComputingTime(experiment).run();
 //			new GenerateWilcoxonTestTablesWithR<>(experiment).run();

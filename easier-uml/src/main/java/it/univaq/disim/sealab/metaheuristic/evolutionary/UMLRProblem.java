@@ -2,6 +2,7 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
 
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
 
 public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
@@ -41,15 +42,14 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 
 		UMLRSolution solution = (UMLRSolution) s;
 
-//		solution.setObjective(0, (-1 * reliability));// to be maximized
-//		solution.setObjective(1, solution.getScenarioRTs()[0]);
-//		solution.setObjective(2, solution.getScenarioRTs()[1]);
-//		solution.setObjective(3, solution.getScenarioRTs()[2]);
-
 		solution.setObjective(0, (-1 * solution.getPerfQ())); // to be maximized
 		solution.setObjective(1, solution.getNumOfChanges());
-		solution.setObjective(2, solution.getPAs());
-		solution.setObjective(3, (-1 * solution.getReliability())); // to be maximized
+		if(Configurator.eINSTANCE.getProbPas() != 0) {
+			solution.setObjective(2, solution.getPAs());
+			solution.setObjective(3, (-1 * solution.getReliability())); // to be maximized
+		}else {
+			solution.setObjective(2, (-1 * solution.getReliability())); // to be maximized
+		}
 
 		EasierLogger.logger_.info(String.format("Objectives of Solution # %s have been set.", solution.getName()));
 

@@ -8,6 +8,7 @@ import org.uma.jmetal.problem.Problem;
 
 import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolutionListEvaluator<S> {
 	
@@ -26,7 +27,8 @@ public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolution
 			sol.executeRefactoring();
 			sol.applyTransformation();
 			sol.invokeSolver();
-			sol.countingPAs();
+			if(Configurator.eINSTANCE.getProbPas() != 0)
+				sol.countingPAs();
 			sol.evaluatePerformance();
 			sol.computeReliability();
 //			sol.computeScenarioRT();
