@@ -1,5 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.experiment.util;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,16 +9,28 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
+import org.uma.jmetal.lab.experiment.Experiment;
+import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
+import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.impl.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontNormalizer;
@@ -49,8 +63,9 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	@Test
 	public void run() throws FileNotFoundException {
 
-		String baseDir = "/mnt/store/research/easier/uml_case_studies/performance_comparison";
-		String[] algorithms = { "nsga_", "spea_", "pesa_" };
+		//String baseDir = "/mnt/store/research/easier/uml_case_studies/performance_comparison";
+		String baseDir = "/home/peo/workspaces/Easier_SEAA/paretos/seaa_jist_si";
+		String[] algorithms = { "nsga_"};//, "spea_", "pesa_" };
 		int[] iterations = { 72, 82, 102 };
 		String referenceFrontName = "/mnt/store/research/easier/uml_case_studies/performance_comparison/super-reference-pareto.csv";
 		for (GenericIndicator<S> indicator : qIndicators) {
@@ -135,5 +150,4 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 			throw new JMetalException("Error writing indicator file" + ex);
 		}
 	}
-
 }
