@@ -121,9 +121,6 @@ public class Configurator {
 			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
 	
-//	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
-//	private String uml2lqn;
-	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
 	private int objectives = 4;
 	
@@ -132,13 +129,19 @@ public class Configurator {
 	
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
 	private double epsilon;
-	
+
+	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget." )
+	private boolean searchBudget;
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
 	private List<String> brfs_list;
 
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
 	private float probPas;
+	
+	public boolean isSearchBudget() {
+		return searchBudget;
+	}
 	
 	public List<String> getBrfList(){
 		return brfs_list;
@@ -163,10 +166,6 @@ public class Configurator {
 	public int getObjectives() {
 		return objectives;
 	}
-
-//	public Path getUml2Lqn() {
-//		return Paths.get(uml2lqn);
-//	}
 
 	public int getMaxWorseModels() {
 		if (maxWorseModels == null) {

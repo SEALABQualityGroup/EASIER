@@ -270,6 +270,15 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 			return false;
 		return true;
 	}
-	
-	
+
+	/**
+	 * Check if two RSolutions have the same objectives values.
+	 * If a local minimum/maximum is reached then the two solutions will have the same objective values
+	 * @param rSolution
+	 * @return true if two solutions have the same objective values, false otherwise
+	 */
+	public boolean isLocalOptmimalPoint(RSolution<?> rSolution) {
+		return this.getPAs() == rSolution.getPAs() && this.getReliability() == rSolution.getReliability()
+				&& this.getNumOfChanges() == rSolution.getNumOfChanges() && this.getPerfQ() == rSolution.getPerfQ();
+	}
 }
