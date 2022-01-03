@@ -18,15 +18,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.uma.jmetal.lab.experiment.Experiment;
-import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
-import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
@@ -37,8 +36,6 @@ import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.PointSolution;
 
-import com.beust.jcommander.Strings;
-
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 
@@ -46,8 +43,22 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 	List<GenericIndicator<S>> qIndicators;
 
+	private String baseDir, objectivesDir, qiDir, referenceFrontDir;
+	private String[] problemNames, evals, brfs, probPas;
+
 	@Before
 	public void setup() {
+
+		baseDir = "/home/peo/git/sealab/seaa2021_jist_si_data/data";
+		objectivesDir = baseDir + "/objectives";
+		qiDir = baseDir + "/quality_indicators";
+		referenceFrontDir = baseDir + "/reference_paretos";
+
+		problemNames = new String[] { "train-ticket", "simplified-cocome" };
+		probPas = new String[] { "95", "80", "55" };
+		evals = new String[] { "72", "82", "102" };
+		brfs = new String[] { "moc_1.64", "moc_1.23" };
+
 		List<String> qualityIndicators = Arrays.asList("SPREAD", "IGD+", "IGD", "EPSILON", "HYPER_VOLUME",
 				"GENERALIZED_SPREAD");
 
@@ -61,56 +72,683 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	}
 
 	@Test
-	public void run() throws FileNotFoundException {
-
-		//String baseDir = "/mnt/store/research/easier/uml_case_studies/performance_comparison";
-		String baseDir = "/home/peo/workspaces/Easier_SEAA/paretos/seaa_jist_si";
-		String[] algorithms = { "nsga_"};//, "spea_", "pesa_" };
-		int[] iterations = { 72, 82, 102 };
-		String referenceFrontName = "/mnt/store/research/easier/uml_case_studies/performance_comparison/super-reference-pareto.csv";
+	public void computeQIperNoProbPasNoPasTest() throws FileNotFoundException {
 		for (GenericIndicator<S> indicator : qIndicators) {
-			for (int a = 0; a < algorithms.length; a++) {
-				for (int i = 0; i < iterations.length; i++) {
+			for (final String pName : problemNames) {
+				Path referenceFrontName = null;
+				try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+					referenceFrontName = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains("super_pareto")
+									&& path.toString().contains("ProbPAs_0.00"))
+							.findFirst().orElse(null);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
 
-//					String referenceFrontName = String.format("%s/%s%d__reference_pareto.csv", baseDir, algorithms[a],
-//							iterations[i]);
-					
-					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName), ",");
+				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+				indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+				for (String brf : brfs) {
+					for (String e : evals) {
+						List<Path> frontFileNames = null;
+						try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+							frontFileNames = walk.filter(Files::isRegularFile)
+									.filter(path -> path.toString().endsWith(".csv") && path.toString().contains("FUN")
+											&& path.toString().contains(pName)
+											&& path.toString().contains("ProbPAs_0.00") && path.toString().contains(brf)
+											&& path.toString().contains("MaxEval_" + e))
+									.collect(Collectors.toList());
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						String qualityIndicatorFile = String.format(
+								"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.00__super_pareto__ProbPAs_0.00.csv", qiDir,
+								indicator.getName(), pName, brf, e);
+
+						resetFile(qualityIndicatorFile);
+						writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperProbPasPasTest() throws FileNotFoundException {
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String probPa : probPas) {
+					Path referenceFrontName = null;
+					try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+						referenceFrontName = walk.filter(Files::isRegularFile)
+								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+										&& path.toString().contains("super_pareto")
+										&& path.toString().contains("ProbPAs_0." + probPa))
+								.findFirst().orElse(null);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
-					
-					String qualityIndicatorFile = String.format("%s/new_%s%d__%s.csv", baseDir, algorithms[a],
-							iterations[i], indicator.getName());
+
 					indicator.setReferenceParetoFront(normalizedReferenceFront);
-					
-					double[] indicatorValues = new double[3];
-					final String algo = algorithms[a];
-					final int iteration = iterations[i];
-					IntStream.range(0, 3).forEach(run -> {
-						String frontFileName = String.format("%s/%s%d__FUN%d.csv", baseDir, algo,
-								iteration,run);
-						Front front = null;
-						try {
-							front = new ArrayFront(removeSolID(frontFileName), ",");
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
+
+					for (String brf : brfs) {
+						for (String e : evals) {
+							for (String pa : probPas) {
+								List<Path> frontFileNames = null;
+								try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+									frontFileNames = walk.filter(Files::isRegularFile)
+											.filter(path -> path.toString().endsWith(".csv")
+													&& path.toString().contains("FUN")
+													&& path.toString().contains(pName)
+													&& path.toString().contains("ProbPAs_0." + pa)
+													&& path.toString().contains(brf)
+													&& path.toString().contains("MaxEval_" + e))
+											.collect(Collectors.toList());
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+								String qualityIndicatorFile = String.format(
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, probPa);
+
+								resetFile(qualityIndicatorFile);
+
+								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+							}
 						}
-						Front normalizedFront = frontNormalizer.normalize(front);
-						List<PointSolution> normalizedPopulation = FrontUtils
-								.convertFrontToSolutionList(normalizedFront);
-						Double indicatorValue = indicator.evaluate((List<S>) normalizedPopulation);
-						indicatorValues[run] = indicatorValue;
-					});
-					
-					for (double indicatorValue : indicatorValues) {
-						writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
 					}
+				}
+			}
+		}
+
+	}
+
+	private void writeQualityIndicator(List<Path> frontFileNames, FrontNormalizer frontNormalizer,
+			GenericIndicator<S> indicator, String qualityIndicatorFile) {
+		double[] indicatorValues = new double[frontFileNames.size()];
+		int run = 0;
+		for (Path frontFileName : frontFileNames) {
+			Front front = null;
+			try {
+				front = new ArrayFront(removeSolID(frontFileName.toString()), ",");
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			Front normalizedFront = frontNormalizer.normalize(front);
+			List<PointSolution> normalizedPopulation = FrontUtils.convertFrontToSolutionList(normalizedFront);
+			indicatorValues[run] = indicator.evaluate((List<S>) normalizedPopulation);
+			run++;
+		}
+		for (double indicatorValue : indicatorValues) {
+			writeQualityIndicatorValueToFile(indicatorValue, qualityIndicatorFile);
+		}
+	}
+
+	@Test
+	public void computeQIperProblemNoPasTest() throws FileNotFoundException {
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				Path referenceFrontName = null;
+				try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+					referenceFrontName = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains("super_pareto__No_PAs"))
+							.findFirst().orElse(null);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+
+				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+				indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+				for (String brf : brfs) {
+					for (String e : evals) {
+						List<Path> frontFileNames = null;
+						try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+							frontFileNames = walk.filter(Files::isRegularFile)
+									.filter(path -> path.toString().endsWith(".csv") && path.toString().contains("FUN")
+											&& path.toString().contains(pName)
+											&& path.toString().contains("ProbPAs_0.00") && path.toString().contains(brf)
+											&& path.toString().contains("MaxEval_" + e))
+									.collect(Collectors.toList());
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						String qualityIndicatorFile = String.format(
+								"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.00__super_pareto__No_PAs.csv", qiDir,
+								indicator.getName(), pName, brf, e);
+
+						resetFile(qualityIndicatorFile);
+
+						writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperProblemPasTest() throws FileNotFoundException {
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				Path referenceFrontName = null;
+				try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+					referenceFrontName = walk
+							.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".rf")
+									&& path.toString().contains(pName) && path.toString().contains("super_pareto__PAs"))
+							.findFirst().orElse(null);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+
+				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+				indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+				for (String brf : brfs) {
+					for (String e : evals) {
+						for (String pa : probPas) {
+							List<Path> frontFileNames = null;
+							try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+								frontFileNames = walk.filter(Files::isRegularFile)
+										.filter(path -> path.toString().endsWith(".csv")
+												&& path.toString().contains("FUN") && path.toString().contains(pName)
+												&& path.toString().contains("ProbPAs_0." + pa)
+												&& path.toString().contains(brf)
+												&& path.toString().contains("MaxEval_" + e))
+										.collect(Collectors.toList());
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+							String qualityIndicatorFile = String.format(
+									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__PAs.csv", qiDir,
+									indicator.getName(), pName, brf, e, pa);
+
+							resetFile(qualityIndicatorFile);
+							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperBRFNoPasTest() throws FileNotFoundException {
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String BRF : brfs) {
+					Path referenceFrontName = null;
+					try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+						referenceFrontName = walk.filter(Files::isRegularFile)
+								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+										&& path.toString().contains(BRF) && path.toString().contains("No_PAs")
+										&& path.toString().contains("super_pareto"))
+								.findFirst().orElse(null);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+					for (String brf : brfs) {
+						for (String e : evals) {
+							List<Path> frontFileNames = null;
+							try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+								frontFileNames = walk.filter(Files::isRegularFile)
+										.filter(path -> path.toString().endsWith(".csv")
+												&& path.toString().contains("FUN") && path.toString().contains(pName)
+												&& path.toString().contains("ProbPAs_0.00")
+												&& path.toString().contains(brf)
+												&& path.toString().contains("MaxEval_" + e))
+										.collect(Collectors.toList());
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+							String qualityIndicatorFile = String.format(
+									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.00__super_pareto__BRF_%s__No_PAs.csv",
+									qiDir, indicator.getName(), pName, brf, e, BRF);
+
+							resetFile(qualityIndicatorFile);
+							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperBRFPasTest() throws FileNotFoundException {
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String BRF : brfs) {
+					Path referenceFrontName = null;
+					try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+						referenceFrontName = walk.filter(Files::isRegularFile)
+								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+										&& path.toString().contains(BRF) && !path.toString().contains("No_PAs")
+										&& path.toString().contains("super_pareto"))
+								.findFirst().orElse(null);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+					for (String brf : brfs) {
+						for (String e : evals) {
+							for (String pa : probPas) {
+								List<Path> frontFileNames = null;
+								try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+									frontFileNames = walk.filter(Files::isRegularFile)
+											.filter(path -> path.toString().endsWith(".csv")
+													&& path.toString().contains("FUN")
+													&& path.toString().contains(pName)
+													&& path.toString().contains("ProbPAs_0." + pa)
+													&& path.toString().contains(brf)
+													&& path.toString().contains("MaxEval_" + e))
+											.collect(Collectors.toList());
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+								String qualityIndicatorFile = String.format(
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__BRF_%s__PAs.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, BRF);
+
+								resetFile(qualityIndicatorFile);
+								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperEvalNoPasTest() throws FileNotFoundException {
+
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String eval : evals) {
+
+					Path referenceFrontName = null;
+					try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+						referenceFrontName = walk.filter(Files::isRegularFile)
+								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+										&& path.toString().contains("MaxEval_" + eval)
+										&& path.toString().contains("No_PAs")
+										&& path.toString().contains("super_pareto"))
+								.findFirst().orElse(null);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+					for (String brf : brfs) {
+						for (String e : evals) {
+							List<Path> frontFileNames = null;
+							try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+								frontFileNames = walk.filter(Files::isRegularFile)
+										.filter(path -> path.toString().endsWith(".csv")
+												&& path.toString().contains("FUN") && path.toString().contains(pName)
+												&& path.toString().contains("ProbPAs_0.00")
+												&& path.toString().contains(brf)
+												&& path.toString().contains("MaxEval_" + e))
+										.collect(Collectors.toList());
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+							String qualityIndicatorFile = String.format(
+									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.00__super_pareto__MaxEval_%s__No_PAs.csv",
+									qiDir, indicator.getName(), pName, brf, e, eval);
+
+							resetFile(qualityIndicatorFile);
+							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+						}
+					}
+				}
+
+			}
+		}
+
+	}
+
+	@Test
+	public void computeQIperEvalPasTest() throws FileNotFoundException {
+
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String eval : evals) {
+
+					Path referenceFrontName = null;
+					try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+						referenceFrontName = walk.filter(Files::isRegularFile)
+								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+										&& path.toString().contains("MaxEval_" + eval)
+										&& !path.toString().contains("No_PAs")
+										&& path.toString().contains("super_pareto"))
+								.findFirst().orElse(null);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+					for (String brf : brfs) {
+						for (String e : evals) {
+							for (String pa : probPas) {
+								List<Path> frontFileNames = null;
+								try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+									frontFileNames = walk.filter(Files::isRegularFile)
+											.filter(path -> path.toString().endsWith(".csv")
+													&& path.toString().contains("FUN")
+													&& path.toString().contains(pName)
+													&& path.toString().contains("ProbPAs_0." + pa)
+													&& path.toString().contains(brf)
+													&& path.toString().contains("MaxEval_" + e))
+											.collect(Collectors.toList());
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+								String qualityIndicatorFile = String.format(
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__MaxEval_%s__PAs.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, eval);
+
+								resetFile(qualityIndicatorFile);
+								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+
+							}
+						}
+					}
+
 				}
 			}
 
 		}
 	}
-	
+
+	@SuppressWarnings("resource")
+	@Test
+	public void generateQiPAsCSV() throws IOException {
+		String qualityIndicatorFile = String.format("%s/qi.csv", qiDir); // qi__train-ticket.csv
+		String header = "case_study,brf,max_eval,prob_pas,q_indicator,value";
+
+		FileWriter os;
+		os = new FileWriter(qualityIndicatorFile, true);
+		os.write(header + "\n");
+		
+
+		for (GenericIndicator<S> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+
+				Path referenceFrontName = null;
+				try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
+					referenceFrontName = walk
+							.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".rf")
+									&& path.toString().contains(pName) && path.toString().contains("super_pareto__PAs"))
+							.findFirst().orElse(null);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+
+				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString()), ",");
+				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+
+				indicator.setReferenceParetoFront(normalizedReferenceFront);
+
+				for (String brf : brfs) {
+					for (String e : evals) {
+						for (String pa : probPas) {
+							List<Path> frontFileNames = null;
+							try (Stream<Path> walk = Files.walk(Paths.get(objectivesDir))) {
+								frontFileNames = walk.filter(Files::isRegularFile)
+										.filter(path -> path.toString().endsWith(".csv")
+												&& path.toString().contains("FUN") && path.toString().contains(pName)
+												&& path.toString().contains("ProbPAs_0." + pa)
+												&& path.toString().contains(brf)
+												&& path.toString().contains("MaxEval_" + e))
+										.collect(Collectors.toList());
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+							double[] indicatorValues = new double[frontFileNames.size()];
+							int run = 0;
+							for (Path frontFileName : frontFileNames) {
+								Front front = null;
+								try {
+									front = new ArrayFront(removeSolID(frontFileName.toString()), ",");
+								} catch (FileNotFoundException e1) {
+									e1.printStackTrace();
+								}
+								Front normalizedFront = frontNormalizer.normalize(front);
+								List<PointSolution> normalizedPopulation = FrontUtils.convertFrontToSolutionList(normalizedFront);
+								indicatorValues[run] = indicator.evaluate((List<S>) normalizedPopulation);
+								run++;
+							}
+							
+							String line = String.format("%s,%s,%s,%s,%s,",pName,brf,e,pa,indicator.getName());
+							
+							for (int i = 0; i < indicatorValues.length; i++){
+								try {
+									os.write(line + indicatorValues[i]+ "\n");
+								} catch (IOException ex) {
+									throw new JMetalException("Error writing indicator file" + ex);
+								}
+							}
+//							os.write(line + indicatorValues[indicatorValues.length-1]+"\n");
+						}
+					}
+				}
+
+			}
+
+		}
+		os.close();
+	}
+
+	/**
+	 * Deletes a file or directory if it does exist
+	 * 
+	 * @param file
+	 */
+	private void resetFile(String file) {
+		File f = new File(file);
+		if (f.exists()) {
+			JMetalLogger.logger.info("File " + file + " exist.");
+
+			if (f.isDirectory()) {
+				JMetalLogger.logger.info("File " + file + " is a directory. Deleting directory.");
+				if (f.delete()) {
+					JMetalLogger.logger.info("Directory successfully deleted.");
+				} else {
+					JMetalLogger.logger.info("Error deleting directory.");
+				}
+			} else {
+				JMetalLogger.logger.info("File " + file + " is a file. Deleting file.");
+				if (f.delete()) {
+					JMetalLogger.logger.info("File succesfully deleted.");
+				} else {
+					JMetalLogger.logger.info("Error deleting file.");
+				}
+			}
+		} else {
+			JMetalLogger.logger.info("File " + file + " does NOT exist.");
+		}
+	}
+
+	/**
+	 * DA valutare come vengono calcolati gli indicatori sopra
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	@Ignore
+	public void findBestIndicatorFrontsTest() throws IOException {
+
+		for (GenericIndicator<?> indicator : qIndicators) {
+			for (final String pName : problemNames) {
+				for (final String eval : evals) {
+					for (String brf : brfs) {
+						for (String e : evals) {
+							for (String pa : probPas) {
+
+								final String suffix = String.format("__BRF_%s__MaxEval_%s__ProbPAs_0.%s", brf, e, pa);
+
+								String qualityIndicatorFile = String.format(
+										"%s/%s__%s%s__super_pareto__MaxEval_%s__PAs.csv", qiDir, indicator.getName(),
+										pName, suffix, eval);
+
+								Path indicatorFile = Paths.get(qualityIndicatorFile);
+
+								if (indicatorFile != null && Files.exists(indicatorFile)) {
+
+									List<String> fileArray;
+									fileArray = Files.readAllLines(indicatorFile, StandardCharsets.UTF_8);
+
+									List<Pair<Double, Integer>> list = new ArrayList<>();
+
+									for (int i = 0; i < fileArray.size(); i++) {
+										Pair<Double, Integer> pair = new ImmutablePair<>(
+												Double.parseDouble(fileArray.get(i)), i);
+										list.add(pair);
+									}
+
+									Collections.sort(list, new Comparator<Pair<Double, Integer>>() {
+										@Override
+										public int compare(Pair<Double, Integer> pair1, Pair<Double, Integer> pair2) {
+											if (Math.abs(pair1.getLeft()) > Math.abs(pair2.getLeft())) {
+												return 1;
+											} else if (Math.abs(pair1.getLeft()) < Math.abs(pair2.getLeft())) {
+												return -1;
+											} else {
+												return 0;
+											}
+										}
+									});
+									String bestFunFileName;
+									String bestVarFileName;
+									String medianFunFileName;
+									String medianVarFileName;
+
+									String outputDirectory = qiDir;
+
+									bestFunFileName = outputDirectory + "/BEST_" + indicator.getName() + "_FUN"
+											+ suffix;
+									bestVarFileName = outputDirectory + "/BEST_" + indicator.getName() + "_VAR"
+											+ suffix;
+									medianFunFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_FUN"
+											+ suffix;
+									medianVarFileName = outputDirectory + "/MEDIAN_" + indicator.getName() + "_VAR"
+											+ suffix;
+
+									String bestFunFile = outputDirectory + "/FUN"
+//											+ experiment.getOutputParetoFrontFileName()
+											+ list.get(list.size() - 1).getRight();// + ".tsv";
+									String bestVarFile = outputDirectory + "/VAR" // +
+																					// experiment.getOutputParetoSetFileName()
+											+ list.get(list.size() - 1).getRight();// + ".csv";
+
+									if (indicator.isTheLowerTheIndicatorValueTheBetter()) {
+										bestFunFile = outputDirectory + "/FUN" // +
+																				// experiment.getOutputParetoFrontFileName()
+												+ list.get(0).getRight();// + ".tsv";
+										bestVarFile = outputDirectory + "/VAR" // +
+																				// experiment.getOutputParetoSetFileName()
+												+ list.get(0).getRight();// + ".tsv";
+
+										bestFunFile += suffix + ".csv";
+										bestVarFile += suffix + ".csv";
+
+										Files.copy(Paths.get(bestFunFile), Paths.get(bestFunFileName),
+												REPLACE_EXISTING);
+										Files.copy(Paths.get(bestVarFile), Paths.get(bestVarFileName),
+												REPLACE_EXISTING);
+
+										int medianIndex = list.size() / 2;
+										String medianFunFile = outputDirectory + "/FUN"
+//											+ experiment.getOutputParetoFrontFileName()
+												+ list.get(medianIndex).getRight() + suffix + ".csv";
+										String medianVarFile = outputDirectory + "/VAR"
+//											+ experiment.getOutputParetoSetFileName() + list.get(medianIndex).getRight()
+												+ suffix + ".csv";
+
+										Files.copy(Paths.get(medianFunFile), Paths.get(medianFunFileName),
+												REPLACE_EXISTING);
+										Files.copy(Paths.get(medianVarFile), Paths.get(medianVarFileName),
+												REPLACE_EXISTING);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public String removeSolID(String frontFileName) {
 
 		File tmpFile;
@@ -139,7 +777,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		}
 		return tmpFileName;
 	}
-	
+
 	private void writeQualityIndicatorValueToFile(Double indicatorValue, String qualityIndicatorFile) {
 		FileWriter os;
 		try {

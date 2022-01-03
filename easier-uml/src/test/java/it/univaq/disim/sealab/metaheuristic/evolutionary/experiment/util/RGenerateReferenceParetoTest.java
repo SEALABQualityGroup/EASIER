@@ -26,55 +26,258 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class RGenerateReferenceParetoTest {
 
-	@Test
-	public void generateSuperReferenceParetoTest() throws IOException {
+	private NonDominatedSolutionListArchive<RPointSolution> extractNonDominatedArchive(List<Path> paths,
+			int objectives) {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+		for (Path path : paths) {
 
-//		new RGenerateReferenceParetoFront(experiment).run();
+			List<RPointSolution> ptSolutionList = generateRPointSolutionList(path.toString(), objectives);
+			GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
+
+			for (RPointSolution solution : ptSolutionList) {
+				solutionAttribute.setAttribute(solution, "NSGAII");
+				nonDominatedSolutionArchive.add(solution);
+			}
+		}
+		return nonDominatedSolutionArchive;
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByProbPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			for (final String probPa : probPas) {
+				int objectives = 4;
+				if ("00".equals(probPa))
+					objectives = 3;
+
+				try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+					referenceFronts = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains("ProbPAs_0." + probPa)
+									&& !path.toString().contains("super_pareto"))
+							.collect(Collectors.toList());
+				}
+
+				nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+				printObjectivesToFile(getFileWriter(
+						String.format("%s/%s__super_pareto__ProbPAs_0.%s.rf", problemFolderName, pName, probPa)),
+						nonDominatedSolutionArchive.getSolutionList(), objectives);
+			}
+		}
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByProblemNoPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			int objectives = 3;
+
+			try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+				referenceFronts = walk.filter(Files::isRegularFile)
+						.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+								&& path.toString().contains("ProbPAs_0.00")
+								&& !path.toString().contains("super_pareto"))
+						.collect(Collectors.toList());
+			}
+
+			nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+			printObjectivesToFile(
+					getFileWriter(
+							String.format("%s/%s__super_pareto__No_PAs.rf", problemFolderName, pName)),
+					nonDominatedSolutionArchive.getSolutionList(), objectives);
+		}
+	}
+	
+	@Test
+	public void generateSuperReferenceParetoGroupByProblemPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			int objectives = 4;
+
+			try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+				referenceFronts = walk.filter(Files::isRegularFile)
+						.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+								&& !path.toString().contains("ProbPAs_0.00")
+								&& !path.toString().contains("super_pareto"))
+						.collect(Collectors.toList());
+			}
+
+			nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+			printObjectivesToFile(
+					getFileWriter(
+							String.format("%s/%s__super_pareto__PAs.rf", problemFolderName, pName)),
+					nonDominatedSolutionArchive.getSolutionList(), objectives);
+		}
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByBRFNoPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			for (final String brf : brfs) {
+				int objectives = 3;
+				try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+					referenceFronts = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains(brf) && path.toString().contains("ProbPAs_0.00")
+									&& !path.toString().contains("super_pareto"))
+							.collect(Collectors.toList());
+				}
+
+				nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+				printObjectivesToFile(
+						getFileWriter(
+								String.format("%s/%s__super_pareto__BRF_%s__No_PAs.rf", problemFolderName, pName, brf)),
+						nonDominatedSolutionArchive.getSolutionList(), objectives);
+			}
+		}
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByBRFPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			for (final String brf : brfs) {
+				int objectives = 4;
+				try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+					referenceFronts = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains(brf) && !path.toString().contains("ProbPAs_0.00")
+									&& !path.toString().contains("super_pareto"))
+							.collect(Collectors.toList());
+				}
+
+				nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+				printObjectivesToFile(
+						getFileWriter(
+								String.format("%s/%s__super_pareto__BRF_%s__PAs.rf", problemFolderName, pName, brf)),
+						nonDominatedSolutionArchive.getSolutionList(), objectives);
+			}
+		}
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByEvalNoPasTest() throws IOException {
+		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
+
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
+		List<Path> referenceFronts;
+
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
+
+		String[] brfs = { "moc_1.64", "moc_1.23" };
+
+		for (final String pName : problemName) {
+			for (final String eval : evals) {
+				int objectives = 3;
+				try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+					referenceFronts = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains(eval) && path.toString().contains("ProbPAs_0.00")
+									&& !path.toString().contains("super_pareto"))
+							.collect(Collectors.toList());
+				}
+
+				nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+				printObjectivesToFile(getFileWriter(
+						String.format("%s/%s__super_pareto__MaxEval_%s__No_PAs.rf", problemFolderName, pName, eval)),
+						nonDominatedSolutionArchive.getSolutionList(), objectives);
+			}
+		}
+	}
+
+	@Test
+	public void generateSuperReferenceParetoGroupByEvalPasTest() throws IOException {
 
 		List<RPointSolution> ptList = new ArrayList<>();
 		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
-//		String problemName = "train-ticket_Length_4_CloningWeight_1.5_MaxCloning_3_MaxEval_72";
-//		String problemFolderName = "/mnt/store/research/easier/uml_case_studies/performance_comparison/nsga_72/";
-		String problemFolderName = "/home/peo/workspaces/Easier_SEAA/paretos/seaa_jist_si";
+		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos/";
 		List<Path> referenceFronts;
-		try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
-			referenceFronts = walk.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".rf"))
-					.collect(Collectors.toList());
-		}
-		for (Path front : referenceFronts) {
 
-			try (BufferedReader br = new BufferedReader(new FileReader(front.toString()))) {
+		String[] problemName = { "simplified-cocome", "train-ticket" };
+		String[] evals = { "72", "82", "102" };
+		String[] probPas = { "55", "80", "95", "00" };
 
-				String sCurrentLine;
-				final int numObjs = 4;
-				while ((sCurrentLine = br.readLine()) != null) {
+		String[] brfs = { "moc_1.64", "moc_1.23" };
 
-					if (!sCurrentLine.contains("solID")) {
-
-						String[] split = sCurrentLine.split(",");
-						if (split.length == numObjs + 1) {
-
-							ptList.add(new RPointSolution(numObjs).setID(Integer.parseInt(split[0]))
-									.setPointSolution(Arrays.asList((Arrays.copyOfRange(split, 1, numObjs + 1)))));
-						}
-					}
+		for (final String pName : problemName) {
+			for (final String eval : evals) {
+				int objectives = 4;
+				try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+					referenceFronts = walk.filter(Files::isRegularFile)
+							.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
+									&& path.toString().contains(eval) && !path.toString().contains("ProbPAs_0.00")
+									&& !path.toString().contains("super_pareto"))
+							.collect(Collectors.toList());
 				}
 
-			} catch (IOException | NumberFormatException e) {
-				e.printStackTrace();
+				nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
+
+				printObjectivesToFile(getFileWriter(
+						String.format("%s/%s__super_pareto__MaxEval_%s__PAs.rf", problemFolderName, pName, eval)),
+						nonDominatedSolutionArchive.getSolutionList(), objectives);
 			}
 		}
-
-		GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
-
-		for (RPointSolution solution : ptList) {
-			solutionAttribute.setAttribute(solution, "NSGAII");
-			nonDominatedSolutionArchive.add(solution);
-		}
-
-		printObjectivesToFile(getFileWriter(String.format("%s/super-reference-pareto.rf", problemFolderName)),
-				nonDominatedSolutionArchive.getSolutionList());
 	}
 
 	@Test
@@ -83,7 +286,7 @@ public class RGenerateReferenceParetoTest {
 		List<Path> funSolutions;
 
 //		String[] problemName = { "simplified-cocome", "train-ticket"};
-		String[] problemName = { "simplified-cocome"};
+		String[] problemName = { "simplified-cocome" };
 
 		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/objectives";
 		String referenceParetoFolder = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos";
@@ -107,8 +310,7 @@ public class RGenerateReferenceParetoTest {
 						try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
 							funSolutions = walk.filter(Files::isRegularFile)
 									.filter(path -> path.toString().endsWith(".csv") && path.toString().contains("FUN")
-											&& path.toString().contains(pName)
-											&& path.toString().contains("" + eval)
+											&& path.toString().contains(pName) && path.toString().contains("" + eval)
 											&& path.toString().contains("ProbPAs_0." + probPa)
 											&& path.toString().contains(brf))
 									.collect(Collectors.toList());
@@ -129,7 +331,7 @@ public class RGenerateReferenceParetoTest {
 						printObjectivesToFile(getFileWriter(String.format(
 								"%s/%s__BRF_clone_1.23__%s__mcnn_1.45__moncnn_1.80__MaxEval_%d__ProbPAs_0.%d__Algo_nsgaii.rf",
 								referenceParetoFolder, pName, brf, eval, probPa)),
-								nonDominatedSolutionArchive.getSolutionList());
+								nonDominatedSolutionArchive.getSolutionList(), objectives);
 					}
 				}
 			}
@@ -172,14 +374,15 @@ public class RGenerateReferenceParetoTest {
 		return new BufferedWriter(outputStreamWriter);
 	}
 
-	public void printObjectivesToFile(BufferedWriter bufferedWriter, List<RPointSolution> solutionList) {
+	public void printObjectivesToFile(BufferedWriter bufferedWriter, List<RPointSolution> solutionList,
+			int objectives) {
 
 		String separator = ",";
 
 		try {
 			// prints the header of the file
 			String header;
-			if (Configurator.eINSTANCE.getObjectives() == 4)
+			if (objectives == 4)
 				header = String.format("solID%sperfQ%s#changes%spas%sreliability", separator, separator, separator,
 						separator);
 			else
