@@ -273,7 +273,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 
 	/**
 	 * Check if two RSolutions have the same objectives values.
-	 * If a local minimum/maximum is reached then the two solutions will have the same objective values
+	 * If a local minimum/maximum is reached then the two solutions should have the same objective values
 	 * @param rSolution
 	 * @return true if two solutions have the same objective values, false otherwise
 	 */

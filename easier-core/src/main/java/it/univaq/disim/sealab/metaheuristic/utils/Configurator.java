@@ -5,9 +5,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections4.map.HashedMap;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.IParameterSplitter;
@@ -130,8 +127,8 @@ public class Configurator {
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
 	private double epsilon;
 
-	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget." )
-	private boolean searchBudget;
+	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget. It supports: byTime, byPrematureConvergence, byBoth" )
+	private String searchBudget;
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
 	private List<String> brfs_list;
@@ -139,9 +136,32 @@ public class Configurator {
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
 	private float probPas;
 	
-	public boolean isSearchBudget() {
-		return searchBudget;
+	@Parameter(names = {"-sbTimeTh","--searchBudgetTimeThreshold"}, description = "The search budget stopping criterion by time.")
+	private long searchBudgetTimeThreshold = 3_600_000;
+	
+	@Parameter(names = {"-sbPCTh","--searchBudgetPrematureConvergenceThreshold"}, description = "The search budget stopping criterion by premature convergence.")
+	private int searchBudgetPrematureConvergenceThreshold = 3;
+	
+	public long getStoppingCriterionTimeThreshold() {
+		return searchBudgetTimeThreshold;
 	}
+	
+	public int getStoppingCriterionPrematureConvergenceThreshold() {
+		return searchBudgetPrematureConvergenceThreshold;
+	}
+	
+	public boolean isSearchBudgetByTime() {
+		return searchBudget.equals("byTime");
+	}
+	
+	public boolean isSearchBudgetByPrematureConvergence() {
+		return searchBudget.equals("byPrematureConvergence");
+	}
+	
+	public boolean isSearchBudgetByPrematureConvergenceAndTime() {
+		return searchBudget.equals("byBoth");
+	}
+	
 	
 	public List<String> getBrfList(){
 		return brfs_list;
