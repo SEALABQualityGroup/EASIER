@@ -119,7 +119,7 @@ public class Configurator {
 	private String maxWorseModels;
 	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
-	private int objectives = 4;
+	private int objectives;
 	
 	@Parameter(names = {"--refPoints"}, description = "List of reference points for R-NSGA algorithm")
 	private List<Double> referencePoints = new ArrayList<>();

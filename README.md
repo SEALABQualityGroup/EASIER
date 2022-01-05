@@ -1,5 +1,14 @@
 # EASIER: an Evolutionary Approach for multi-objective Software archItecturE Refactoring
 
+```bash
+git clone git@github.com:SEALABQualityGroup/EASIER.git
+cd EASIER
+git checkout devUML
+git submodule update --init --recursive
+./mvn-install.sh
+mvn install -pl easier-uml -am -DskipTests
+```
+
 maven repository hosted by [bintray](https://bintray.com/sealabqualitygroup/maven-repository)
 
 ## Publications

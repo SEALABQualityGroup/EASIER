@@ -73,9 +73,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>it.univaq.disim.sealab.emf</groupId>
+			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-			<version>2.15.0.v20180706-1146</version>
+			<version>2.15.0</version>
 		</dependency>
 
 		<!-- <dependency> -->
@@ -85,9 +85,9 @@
 		<!-- </dependency> -->
 
 		<dependency>
-			<groupId>it.univaq.disim.sealab.emf</groupId>
+			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
-			<version>2.11.0.v20180706-1146</version>
+			<version>2.11.0</version>
 		</dependency>
 
 		<!-- Dependency to UML -->
@@ -110,17 +110,16 @@
 		</dependency>
 
 		<dependency>
-			<groupId>it.univaq.disim.sealab.uml</groupId>
+			<groupId>it.univaq.disim.sealab.uml.profiles</groupId>
 			<artifactId>org.eclipse.uml2.uml.profile.standard</artifactId>
 			<version>1.5.0.v20181203-1331</version>
 		</dependency>
+
 		<dependency>
-			<groupId>it.univaq.disim.sealab.eclipse</groupId>
+			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 			<version>3.8.300</version>
 		</dependency>
-
-
 
 		<dependency>
 			<groupId>it.univaq.disim.sealab.uml</groupId>
@@ -129,8 +128,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>it.univaq.disim.sealab.profiles</groupId>
-			<artifactId>marte</artifactId>
+			<groupId>it.univaq.disim.sealab.uml.profiles</groupId>
+			<artifactId>org.eclipse.papyrus.marte.static.profile</artifactId>
 			<version>1.2.0.201803031506</version>
 		</dependency>
 
