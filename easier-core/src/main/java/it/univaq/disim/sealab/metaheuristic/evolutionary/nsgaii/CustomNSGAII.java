@@ -46,8 +46,8 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 	/**
 	 * Support multiple stopping criteria.
-	 * byTime the computing threshold is set to 1 h
-	 * byPrematureConvergence the premature convergence is set to 3 consecutive populations with the same objectives
+	 * byTime the default computing threshold is set to 1 h
+	 * byPrematureConvergence the default premature convergence is set to 3 consecutive populations with the same objectives
 	 * byBoth using byTime and byPrematureConvergence
 	 * classic using the number of evaluation
 	 */
