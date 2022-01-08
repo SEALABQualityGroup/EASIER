@@ -57,12 +57,12 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		long currentComputingTime = System.currentTimeMillis() - iterationStartingTime;
 
 		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
-			return evaluations > maxEvaluations || currentComputingTime > durationThreshold;
+			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) //byPrematureConvergence
-			return evaluations > maxEvaluations || localMinima > prematureConvergenceThreshold;
+			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
-			return evaluations > maxEvaluations || localMinima > prematureConvergenceThreshold || currentComputingTime > durationThreshold;
-		return evaluations > maxEvaluations; // classic
+			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold || currentComputingTime > durationThreshold;
+		return super.isStoppingConditionReached(); // classic
 
 	}
 

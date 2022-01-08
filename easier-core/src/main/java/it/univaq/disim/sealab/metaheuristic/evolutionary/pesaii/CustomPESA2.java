@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
@@ -27,6 +28,12 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 	private static final long serialVersionUID = 1L;
 	
 	int _maxEvaluations;
+	
+	private long durationThreshold, iterationStartingTime;
+	private int localMinima, prematureConvergenceThreshold;
+
+	private List<RSolution<?>> oldPopulation;
+
 
 	public CustomPESA2(Problem<S> problem, int maxEvaluations, int populationSize, int archiveSize, int biSections,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
@@ -35,12 +42,33 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 		super((Problem<S>) problem, maxEvaluations, populationSize, archiveSize, biSections, crossoverOperator,
 				mutationOperator, evaluator);
 		_maxEvaluations = maxEvaluations;
+		
+		durationThreshold = Configurator.eINSTANCE.getStoppingCriterionTimeThreshold();
+		prematureConvergenceThreshold = Configurator.eINSTANCE.getStoppingCriterionPrematureConvergenceThreshold();
+		oldPopulation = new ArrayList<RSolution<?>>();
+		localMinima = 0;
 	}
 
-//	@Override protected boolean isStoppingConditionReached() {
-//		
-//		return evaluations > maxEvaluations;
-//	}
+	/**
+	 * Support multiple stopping criteria.
+	 * byTime the default computing threshold is set to 1 h
+	 * byPrematureConvergence the default premature convergence is set to 3 consecutive populations with the same objectives
+	 * byBoth using byTime and byPrematureConvergence
+	 * classic using the number of evaluation
+	 */
+	@Override
+	protected boolean isStoppingConditionReached() {
+		long currentComputingTime = System.currentTimeMillis() - iterationStartingTime;
+
+		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
+			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) //byPrematureConvergence
+			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold;
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
+			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold || currentComputingTime > durationThreshold;
+		return super.isStoppingConditionReached();
+	}
+	
 
 	@Override
 	public void run() {

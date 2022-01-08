@@ -113,7 +113,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		resetParents();
 		init();
 
-		this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX), this);
+		this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX));
 
 		for (int i = 0; i < s.getNumberOfObjectives(); i++) {
 			this.setObjective(i, s.getObjective(i));
@@ -271,7 +271,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		return false;
 	}
 
-	protected void copyRefactoringVariable(Refactoring variableValue, RSolution<Refactoring> sol) {
+	protected void copyRefactoringVariable(Refactoring variableValue) {
 		this.setVariable(VARIABLE_INDEX, variableValue.clone(this));
 	}
 
@@ -282,18 +282,20 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
 
-		Refactoring ref = new Refactoring();
+//		Refactoring ref = new Refactoring();
 
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
-				ref.getActions().add(j, _new);
+				this.getVariable(0).getActions().add(j, _new);
+//				ref.getActions().add(j, _new);
 			}
 			for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
-				ref.getActions().add(j, _new);
+				this.getVariable(0).getActions().add(j, _new);
+//				ref.getActions().add(j, _new);
 			}
-			this.setVariable(VARIABLE_INDEX, ref);
+//			this.setVariable(VARIABLE_INDEX, ref);
 		} catch (IndexOutOfBoundsException e) {
 			EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
 			e.printStackTrace();
