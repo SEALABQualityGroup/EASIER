@@ -69,6 +69,44 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 		return super.isStoppingConditionReached();
 	}
 	
+	
+	@Override
+	protected void initProgress() {
+		super.initProgress();
+		iterationStartingTime = System.currentTimeMillis();
+		oldPopulation = (List<RSolution<?>>) this.getPopulation(); // store the initial population
+	}
+
+	@Override
+	protected void updateProgress() {
+		super.updateProgress();
+		
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()
+				|| Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) {
+			 
+			// create a joined list of the current population and the old one
+			List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
+			joinedPopulation.addAll(population);
+			
+			int countedSameObjectives = 0;
+			for (int i = 0; i < joinedPopulation.size() - 1; i++) {
+				if (!joinedPopulation.get(i).isLocalOptmimalPoint(joinedPopulation.get(i + 1))) {
+					localMinima = 0;
+					break;
+				}
+				countedSameObjectives++;
+			}
+
+			// update oldPopulation to the current population 
+			oldPopulation = (List<RSolution<?>>) population; 
+			
+			// check if all solutions within the joined list have the same objective values
+			if (countedSameObjectives == joinedPopulation.size())
+				localMinima++;
+
+		}
+	}
+	
 
 	@Override
 	public void run() {
