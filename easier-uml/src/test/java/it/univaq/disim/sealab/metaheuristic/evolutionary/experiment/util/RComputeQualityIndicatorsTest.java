@@ -45,6 +45,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 	private String baseDir, objectivesDir, qiDir, referenceFrontDir;
 	private String[] problemNames, evals, brfs, probPas;
+	String newRel = "__new_rel";
 
 	@Before
 	public void setup() {
@@ -54,7 +55,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		qiDir = baseDir + "/quality_indicators";
 		referenceFrontDir = baseDir + "/reference_paretos";
 
-		problemNames = new String[] { "train-ticket", "simplified-cocome" };
+		problemNames = new String[] { "train-ticket", "simplified-cocome", "simplified-cocome-newrel" };
+//		problemNames = new String[] { "simplified-cocome" };
 		probPas = new String[] { "95", "80", "55" };
 		evals = new String[] { "72", "82", "102" };
 		brfs = new String[] { "moc_1.64", "moc_1.23" };
@@ -71,6 +73,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void computeQIperNoProbPasNoPasTest() throws FileNotFoundException {
 		for (GenericIndicator<S> indicator : qIndicators) {
@@ -131,7 +134,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 						referenceFrontName = walk.filter(Files::isRegularFile)
 								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
 										&& path.toString().contains("super_pareto")
-										&& path.toString().contains("ProbPAs_0." + probPa))
+										&& path.toString().contains("ProbPAs_0." + probPa)
+										&& path.toString().contains(newRel))
 								.findFirst().orElse(null);
 					} catch (IOException e2) {
 						e2.printStackTrace();
@@ -154,7 +158,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 													&& path.toString().contains(pName)
 													&& path.toString().contains("ProbPAs_0." + pa)
 													&& path.toString().contains(brf)
-													&& path.toString().contains("MaxEval_" + e))
+													&& path.toString().contains("MaxEval_" + e)
+													&& path.toString().contains(newRel))
 											.collect(Collectors.toList());
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
@@ -162,8 +167,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 								}
 
 								String qualityIndicatorFile = String.format(
-										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
-										qiDir, indicator.getName(), pName, brf, e, pa, probPa);
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s%s.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, probPa, newRel);
 
 								resetFile(qualityIndicatorFile);
 
@@ -199,6 +204,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void computeQIperProblemNoPasTest() throws FileNotFoundException {
 		for (GenericIndicator<S> indicator : qIndicators) {
@@ -257,7 +263,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 				try (Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir))) {
 					referenceFrontName = walk
 							.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".rf")
-									&& path.toString().contains(pName) && path.toString().contains("super_pareto__PAs"))
+									&& path.toString().contains(pName) && path.toString().contains("super_pareto__PAs")
+									&& path.toString().contains(newRel))
 							.findFirst().orElse(null);
 				} catch (IOException e2) {
 					e2.printStackTrace();
@@ -279,7 +286,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 												&& path.toString().contains("FUN") && path.toString().contains(pName)
 												&& path.toString().contains("ProbPAs_0." + pa)
 												&& path.toString().contains(brf)
-												&& path.toString().contains("MaxEval_" + e))
+												&& path.toString().contains("MaxEval_" + e)
+												&& path.toString().contains(newRel))
 										.collect(Collectors.toList());
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
@@ -287,8 +295,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 							}
 
 							String qualityIndicatorFile = String.format(
-									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__PAs.csv", qiDir,
-									indicator.getName(), pName, brf, e, pa);
+									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__PAs%s.csv", qiDir,
+									indicator.getName(), pName, brf, e, pa, newRel);
 
 							resetFile(qualityIndicatorFile);
 							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
@@ -301,6 +309,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 	}
 
+	@Ignore
 	@Test
 	public void computeQIperBRFNoPasTest() throws FileNotFoundException {
 		for (GenericIndicator<S> indicator : qIndicators) {
@@ -364,7 +373,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 						referenceFrontName = walk.filter(Files::isRegularFile)
 								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
 										&& path.toString().contains(BRF) && !path.toString().contains("No_PAs")
-										&& path.toString().contains("super_pareto"))
+										&& path.toString().contains("super_pareto")
+										&& path.toString().contains(newRel))
 								.findFirst().orElse(null);
 					} catch (IOException e2) {
 						e2.printStackTrace();
@@ -387,7 +397,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 													&& path.toString().contains(pName)
 													&& path.toString().contains("ProbPAs_0." + pa)
 													&& path.toString().contains(brf)
-													&& path.toString().contains("MaxEval_" + e))
+													&& path.toString().contains("MaxEval_" + e)
+													&& path.toString().contains(newRel))
 											.collect(Collectors.toList());
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
@@ -395,8 +406,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 								}
 
 								String qualityIndicatorFile = String.format(
-										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__BRF_%s__PAs.csv",
-										qiDir, indicator.getName(), pName, brf, e, pa, BRF);
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__BRF_%s__PAs%s.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, BRF,newRel);
 
 								resetFile(qualityIndicatorFile);
 								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
@@ -410,6 +421,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 	}
 
+	@Ignore
 	@Test
 	public void computeQIperEvalNoPasTest() throws FileNotFoundException {
 
@@ -480,7 +492,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 								.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName)
 										&& path.toString().contains("MaxEval_" + eval)
 										&& !path.toString().contains("No_PAs")
-										&& path.toString().contains("super_pareto"))
+										&& path.toString().contains("super_pareto")
+										&& path.toString().contains(newRel))
 								.findFirst().orElse(null);
 					} catch (IOException e2) {
 						e2.printStackTrace();
@@ -503,7 +516,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 													&& path.toString().contains(pName)
 													&& path.toString().contains("ProbPAs_0." + pa)
 													&& path.toString().contains(brf)
-													&& path.toString().contains("MaxEval_" + e))
+													&& path.toString().contains("MaxEval_" + e)
+													&& path.toString().contains(newRel))
 											.collect(Collectors.toList());
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
@@ -511,8 +525,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 								}
 
 								String qualityIndicatorFile = String.format(
-										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__MaxEval_%s__PAs.csv",
-										qiDir, indicator.getName(), pName, brf, e, pa, eval);
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__MaxEval_%s__PAs%s.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, eval, newRel);
 
 								resetFile(qualityIndicatorFile);
 								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
@@ -530,7 +544,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	@SuppressWarnings("resource")
 	@Test
 	public void generateQiPAsCSV() throws IOException {
-		String qualityIndicatorFile = String.format("%s/qi.csv", qiDir); // qi__train-ticket.csv
+		String qualityIndicatorFile = String.format("%s/qi%s.csv", qiDir, newRel); // qi__train-ticket.csv
 		String header = "case_study,brf,max_eval,prob_pas,q_indicator,value";
 
 		FileWriter os;
@@ -567,7 +581,8 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 												&& path.toString().contains("FUN") && path.toString().contains(pName)
 												&& path.toString().contains("ProbPAs_0." + pa)
 												&& path.toString().contains(brf)
-												&& path.toString().contains("MaxEval_" + e))
+												&& path.toString().contains("MaxEval_" + e)
+												&& path.toString().contains(newRel))
 										.collect(Collectors.toList());
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
