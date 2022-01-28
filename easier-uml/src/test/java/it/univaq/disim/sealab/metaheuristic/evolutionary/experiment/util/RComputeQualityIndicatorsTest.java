@@ -28,9 +28,6 @@ import org.checkerframework.checker.fenum.qual.FenumBottom;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.uma.jmetal.lab.experiment.Experiment;
-import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
-import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
@@ -104,43 +101,43 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	public void computeQIperProbPasPasTest() throws IOException {
 		for (GenericIndicator<S> indicator : qIndicators) {
 			for (final String pName : problemNames) {
-				for (final String probPa : probPas) {
-					Path referenceFrontName = null;
+				for(String probPa : probPas) {
+				Path referenceFrontName = null;
 
-					referenceFrontName = extractReferenceParetos(pName).stream()
-							.filter(path -> path.toString().contains("ProbPAs_0." + probPa)).findFirst().orElse(null);
+				referenceFrontName = extractReferenceParetos(pName).stream()
+						.filter(path -> path.toString().contains("ProbPAs_0." + probPa)).findFirst().orElse(null);
 
-					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString(), false), ",");
-					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
-					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString(), false), ",");
+				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
 
-					indicator.setReferenceParetoFront(normalizedReferenceFront);
+				indicator.setReferenceParetoFront(normalizedReferenceFront);
 
-					for (String brf : brfs) {
-						for (String e : evals) {
-							for (String pa : probPas) {
-								List<Path> frontFileNames = null;
+				for (String brf : brfs) {
+					for (String e : evals) {
+						for (String pa : probPas) {
+							List<Path> frontFileNames = null;
 
-								frontFileNames = extractReferenceFronts(pName).stream()
-										.filter(path -> path.toString().contains("ProbPAs_0." + pa)
-												&& path.toString().contains(brf)
-												&& path.toString().contains("MaxEval_" + e))
-										.collect(Collectors.toList());
+							frontFileNames = extractReferenceFronts(pName).stream()
+									.filter(path -> path.toString().contains("ProbPAs_0." + pa)
+											&& path.toString().contains(brf)
+											&& path.toString().contains("MaxEval_" + e))
+									.collect(Collectors.toList());
 
-								String qualityIndicatorFile = String.format(
-										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
-										qiDir, indicator.getName(), pName, brf, e, pa, probPa);
+							String qualityIndicatorFile = String.format(
+									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
+									qiDir, indicator.getName(), pName, brf, e, pa, probPa);
 
-								resetFile(qualityIndicatorFile);
+							resetFile(qualityIndicatorFile);
 
-								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
 
-							}
 						}
 					}
 				}
 			}
 		}
+	}
 
 	}
 
@@ -440,15 +437,16 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 										line, qualityIndicatorFile, true);
 
 							}
-
 						}
 					}
 				}
+
 			}
 
 		}
-
 	}
+
+
 
 	@SuppressWarnings("resource")
 	@Test
