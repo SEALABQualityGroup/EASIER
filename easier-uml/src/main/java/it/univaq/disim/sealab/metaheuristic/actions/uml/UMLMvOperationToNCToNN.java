@@ -45,6 +45,8 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 	private final static double BRF = 1.80;
 
 	private final String sourceModelPath;
+	
+	private long msgs;
 
 	private Node umlTargetNode;
 
@@ -60,19 +62,26 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		umlOpToMove = getRandomOperation(sol);
 		umlTargetComp = createNewComponent(sol);
 		umlTargetNode = createNewNode(sol);
-
-		cost = calculateCost(sol);
-		numOfChanges = cost;
+		
+		msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
+				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
+		
+		cost = numOfChanges = calculateCost();
+		//numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
+	
+	public double getNumOfChanges() {
+		return numOfChanges;
+	}
 
-	private double calculateCost(final UMLRSolution sol) {
-		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
-				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
+	private double calculateCost() {
+//		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
+//				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
 		
 		double brf = Configurator.eINSTANCE.getBRF("moncnn");
 

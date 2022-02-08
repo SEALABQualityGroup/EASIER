@@ -42,6 +42,8 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 	private final static double BFR = 1.23;
 
 	private final String sourceModelPath;
+	
+	private long msgs;
 
 	static {
 		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -55,18 +57,25 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		umlOpToMove = getRandomOperation(sol);
 		umlTargetComp = getRandomComponent(sol);
 
-		cost = calculateCost(sol);
-		numOfChanges = cost;
+		msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
+				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
+		
+		cost = numOfChanges = calculateCost();
+		//numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
+	
+	public double getNumOfChanges() {
+		return numOfChanges;
+	}
 
-	private double calculateCost(final UMLRSolution sol) {
-		long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
-				.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
+	private double calculateCost() {
+		//long msgs = sol.getDirtyIModel().allContents().stream().filter(Message.class::isInstance)
+			//	.map(Message.class::cast).filter(m -> getUmlOpToMove().equals(m.getSignature())).count();
 
 		double brf = Configurator.eINSTANCE.getBRF("moc");
 

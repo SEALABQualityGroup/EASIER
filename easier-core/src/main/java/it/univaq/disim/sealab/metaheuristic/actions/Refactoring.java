@@ -95,12 +95,16 @@ public class Refactoring {
 	}
 
 	public Double getNumOfChanges() {
+		return this._refactoring.getNumOfChanges();
+	}
+	
+	public void computeNumOfChanges() {
 		double numOfChanges = 0.0;
 		for (RefactoringAction a : getActions()) {
 			numOfChanges += a.getNumOfChanges();
 		}
 		setNumOfChanges(numOfChanges);
-		return numOfChanges;
+//		return numOfChanges;
 	}
 
 	@Override
