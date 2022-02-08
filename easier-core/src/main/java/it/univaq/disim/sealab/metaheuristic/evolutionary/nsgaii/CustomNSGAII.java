@@ -21,28 +21,47 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 @SuppressWarnings("serial")
 public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements EasierAlgorithm {
 
-	
 	/**
-	 * Constructor
-	 * matingPopulationSize = offspringPopulationSize = populationSize as used in NSGAIIBuilder
+	 * Constructor matingPopulationSize = offspringPopulationSize = populationSize
+	 * as used in NSGAIIBuilder
 	 */
 	public CustomNSGAII(Problem<S> problem, int maxIterations, int populationSize,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
-			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator <S> evaluator) {
-		super((Problem<S>)problem, maxIterations, populationSize, populationSize, populationSize, crossoverOperator, mutationOperator, selectionOperator,
-				evaluator);
+			SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator<S> evaluator) {
+		super((Problem<S>) problem, maxIterations, populationSize, populationSize, populationSize, crossoverOperator,
+				mutationOperator, selectionOperator, evaluator);
 	}
-	
+
 //	@Override protected boolean isStoppingConditionReached() {
 //		
 //		return evaluations > maxEvaluations;
 //	}
-	
+
+	/*
+	 * Prints to CSV each generated population
+	 * "algorithm,problem_tag,solID,perfQ,#changes,pas,reliability"
+	 * 
+	 */
+	private void populationToCsV() {
+		super.updateProgress();
+
+		try (BufferedWriter writer = new BufferedWriter(
+				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv").toString(), true))) {
+			for (RSolution<?> sol : population) {
+				writer.write(this.getName() + ',' + this.getProblem().getName() + ',' + sol.toCSV());
+				writer.newLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	@Override
 	public void run() {
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
-		
+
 		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
 
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
@@ -55,31 +74,42 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			}
 		}
 
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv"))) {
+
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv").toString()))) {
+				writer.write("algorithm,problem_tag,solID,perfQ,#changes,pas,reliability");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		this.setPopulation(createInitialPopulation());
 		this.setPopulation(evaluatePopulation(this.getPopulation()));
 		initProgress();
 		while (!isStoppingConditionReached()) {
 
 			System.out.println(this.getName());
-			ProgressBar.showBar((evaluations/getMaxPopulationSize()), (maxEvaluations/getMaxPopulationSize()));
-			
+			ProgressBar.showBar((evaluations / getMaxPopulationSize()), (maxEvaluations / getMaxPopulationSize()));
+
 			long freeBefore = Runtime.getRuntime().freeMemory();
 			long totalBefore = Runtime.getRuntime().totalMemory();
 
 			long initTime = System.currentTimeMillis();
-			
+
 			matingPopulation = selection(this.getPopulation());
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
-			
+
 			long computingTime = System.currentTimeMillis() - initTime;
 
 			long freeAfter = Runtime.getRuntime().freeMemory();
 			long totalAfter = Runtime.getRuntime().totalMemory();
 
-			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(), computingTime,
-					totalBefore, freeBefore, totalAfter, freeAfter);
+			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					computingTime, totalBefore, freeBefore, totalAfter, freeAfter);
 
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
 					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString(), true))) {
@@ -90,21 +120,21 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			}
 
 			updateProgress();
+			populationToCsV();
 
 		}
 	}
-	
-	
+
 	@Override
 	public String getDescription() {
 		return "Nondominated Sorting Genetic Algorithm version II. Version using measures";
 	}
-	
+
 	public void clear() {
-		for(S  sol : this.getPopulation()) {
+		for (S sol : this.getPopulation()) {
 			sol.setParents(null, null);
 		}
 		this.getPopulation().clear();
 	}
-	
+
 }

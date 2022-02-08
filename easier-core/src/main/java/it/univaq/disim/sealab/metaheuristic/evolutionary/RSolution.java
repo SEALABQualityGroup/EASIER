@@ -1,5 +1,9 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +14,7 @@ import org.uma.jmetal.solution.AbstractSolution;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 
 public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
@@ -59,7 +64,6 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 		length_of_refactorings = p.length_of_refactorings;
 		sourceModelPath = p.getSourceModelPath();
 		problemName = p.getName();
-		
 	}
 
 	/** Constructor */
@@ -271,5 +275,12 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 		return true;
 	}
 	
-	
+
+	/*
+	 * Returns the solution data as a CSV format
+	 * "solID,perfQ,#changes,pas,reliability"
+	 */
+	public String toCSV() {
+		return String.format("%s,%s,%s,%s,%s", this.getName(), this.perfQ, this.getNumOfChanges(), this.numPAs, this.reliability);
+	}	
 }
