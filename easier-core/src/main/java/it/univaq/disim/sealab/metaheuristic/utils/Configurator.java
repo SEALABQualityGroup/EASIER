@@ -131,7 +131,7 @@ public class Configurator {
 	private String searchBudget;
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
-	private List<String> brfs_list;
+	private List<String> brfs_list = Arrays.asList(new String[] {"1.23", "1.23", "1.23", "1.23"});
 
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
 	private float probPas;
@@ -142,12 +142,20 @@ public class Configurator {
 	@Parameter(names = {"-sbPCTh","--searchBudgetPrematureConvergenceThreshold"}, description = "The search budget stopping criterion by premature convergence.")
 	private int searchBudgetPrematureConvergenceThreshold = 3;
 	
+	//It is a positional List where: 0=ePas,1=eRel,2=ePerfQ,3=eChanges
+	@Parameter(names = {"-sbPCEpsilon", "--searchBudgetPrematureConvergenceEpsilon"}, description = "The epsilon neighborhood for Premature Convergence.")
+	private List<Double> optimalPointEpsilon = new ArrayList<>(Arrays.asList(1d,1.01d,1.01d,1.03d));
+	
 	public long getStoppingCriterionTimeThreshold() {
 		return searchBudgetTimeThreshold;
 	}
 	
 	public int getStoppingCriterionPrematureConvergenceThreshold() {
 		return searchBudgetPrematureConvergenceThreshold;
+	}
+	
+	public String getSearchBudgetType() {
+		return searchBudget;
 	}
 	
 	public boolean isSearchBudgetByTime() {
@@ -326,6 +334,10 @@ public class Configurator {
 
 	public float getProbPas() {
 		return probPas;
+	}
+
+	public double[] getLocalOptimalPointEpsilon() {
+		return optimalPointEpsilon.stream().mapToDouble(Number::doubleValue).toArray();
 	}
 	
 }

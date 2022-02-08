@@ -45,11 +45,10 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	}
 
 	/**
-	 * Support multiple stopping criteria.
-	 * byTime the default computing threshold is set to 1 h
-	 * byPrematureConvergence the default premature convergence is set to 3 consecutive populations with the same objectives
-	 * byBoth using byTime and byPrematureConvergence
-	 * classic using the number of evaluation
+	 * Support multiple stopping criteria. byTime the default computing threshold is
+	 * set to 1 h byPrematureConvergence the default premature convergence is set to
+	 * 3 consecutive populations with the same objectives byBoth using byTime and
+	 * byPrematureConvergence classic using the number of evaluation
 	 */
 	@Override
 	protected boolean isStoppingConditionReached() {
@@ -58,10 +57,11 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
 			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
-		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) //byPrematureConvergence
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) // byPrematureConvergence
 			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
-			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold || currentComputingTime > durationThreshold;
+			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold
+					|| currentComputingTime > durationThreshold;
 		return super.isStoppingConditionReached(); // classic
 
 	}
@@ -76,14 +76,14 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	@Override
 	protected void updateProgress() {
 		super.updateProgress();
-		
+
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()
 				|| Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) {
-			 
+
 			// create a joined list of the current population and the old one
 			List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
 			joinedPopulation.addAll(population);
-			
+
 			int countedSameObjectives = 0;
 			for (int i = 0; i < joinedPopulation.size() - 1; i++) {
 				if (!joinedPopulation.get(i).isLocalOptmimalPoint(joinedPopulation.get(i + 1))) {
@@ -93,11 +93,13 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 				countedSameObjectives++;
 			}
 
-			// update oldPopulation to the current population 
-			oldPopulation = (List<RSolution<?>>) population; 
-			
+			// update oldPopulation to the current population
+			oldPopulation = (List<RSolution<?>>) population;
+
 			// check if all solutions within the joined list have the same objective values
-			if (countedSameObjectives == joinedPopulation.size())
+//			if (countedSameObjectives == joinedPopulation.size() - 1)
+			float percentageOfLocalSolution = 0.50f;
+			if (countedSameObjectives / joinedPopulation.size() > percentageOfLocalSolution)
 				localMinima++;
 
 		}
@@ -114,6 +116,16 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))) {
 				writer.write(
 						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
+				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
 				writer.newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -156,6 +168,16 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 			updateProgress();
 
+		}
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
+			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					Configurator.eINSTANCE.getSearchBudgetType(), evaluations, maxEvaluations);
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

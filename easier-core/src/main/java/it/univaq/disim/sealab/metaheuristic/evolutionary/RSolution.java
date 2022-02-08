@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.uma.jmetal.solution.AbstractSolution;
+import org.uma.jmetal.util.JMetalLogger;
 
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
@@ -18,57 +19,53 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	protected Path modelPath, sourceModelPath;
-	
+
 	protected boolean refactored;
 	protected boolean crossovered;
 	protected boolean mutated;
-	
+
 	protected static int SOLUTION_COUNTER = 0;
-	
+
 	protected int name;
-	
+
 	protected double perfQ;
 	protected int numPAs;
 	protected double reliability;
 	public static final int VARIABLE_INDEX;
-	
+
 	protected RSolution<T>[] parents;
-	
+
 	public static int MutationCounter = 0;
 	public static int XOverCounter = 0;
-	
+
 	protected int allowed_failures, length_of_refactorings;
 	protected String problemName;
-	
-	
+
 	static {
 		VARIABLE_INDEX = 0;
 	}
-	
+
 	protected RSolution(int numberOfVariables, int numberOfObjectives) {
 		super(numberOfVariables, numberOfObjectives);
 	}
-	
+
 	protected RSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
 		this(numberOfVariables, numberOfObjectives);
-		
+
 		allowed_failures = p.allowed_failures;
 		length_of_refactorings = p.length_of_refactorings;
 		sourceModelPath = p.getSourceModelPath();
 		problemName = p.getName();
-		
+
 	}
 
 	/** Constructor */
-	  protected RSolution(
-	      int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
-		  super(numberOfVariables, numberOfObjectives, numberOfConstraints);
-		  
-	  }	
-	
+	protected RSolution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
+		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+
+	}
 
 //	public RSolution(RProblem<T> p) {
 ////		super(problem);
@@ -78,7 +75,6 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 //		refactored = false;
 //	}
 
-
 	public abstract void countingPAs();
 
 	public abstract double evaluatePerformance();
@@ -86,14 +82,17 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	public abstract void executeRefactoring();
 
 	public abstract void applyTransformation();
+
 	public abstract void computeReliability();
+
 	public abstract void computeScenarioRT();
 
 	public abstract boolean alter(int i);
 
 	public abstract void invokeSolver();
+
 	public abstract boolean isFeasible(Refactoring ref);
-	
+
 	public abstract void freeMemory();
 
 	public RefactoringAction getActionAt(int index) {
@@ -103,23 +102,23 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	public Path getModelPath() {
 		return modelPath;
 	}
-	
+
 	public double getReliability() {
 		return reliability;
 	}
-	
+
 	public Path getSourceModelPath() {
 		return sourceModelPath;
 	}
-	
+
 	public void setRefactored() {
 		this.refactored = true;
 	}
-	
+
 	public boolean isRefactored() {
 		return refactored;
 	}
-	
+
 	public void setCrossovered() {
 		this.crossovered = true;
 		XOverCounter++;
@@ -129,7 +128,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 		this.mutated = true;
 		MutationCounter++;
 	}
-	
+
 	public boolean isMutated() {
 		return mutated;
 	}
@@ -137,7 +136,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	public boolean isCrossovered() {
 		return crossovered;
 	}
-	
+
 	public double getPerfQ() {
 		return perfQ;
 	}
@@ -146,23 +145,28 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 		this.perfQ = perfQ;
 	}
 
-	public double getNumOfChanges() {
-		double changes = 0.0;
-		Refactoring r = (Refactoring) this.getVariable(0);
-		for (RefactoringAction action : r.getActions()) {
-			changes += action.getNumOfChanges();
-		}
-		return changes;
+	public Double getNumOfChanges() {
+		return ((Refactoring) this.getVariable(0)).getNumOfChanges();
 	}
 	
+	public void computeNumOfChanges() {
+//		double changes = 0.0;
+		((Refactoring) this.getVariable(0)).computeNumOfChanges();
+		
+//		for (RefactoringAction action : r.getActions()) {
+//			changes += action.getNumOfChanges();
+//		}
+//		return changes;
+	}
+
 	public int getPAs() {
 		return numPAs;
 	}
-	
+
 	public int getName() {
 		return name;
 	}
-	
+
 	public String getProblemName() {
 		return problemName;
 	}
@@ -174,30 +178,28 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	public void setName() {
 		this.name = getCounter();
 	}
-	
+
 	protected void resetParents() {
 		if (this.parents != null) {
 			this.parents[0] = null;
 			this.parents[1] = null;
 		}
 	}
-	
+
 	public RSolution[] getParents() {
 		return parents;
 	}
-	
+
 	public void setParents(RSolution parent1, RSolution parent2) {
 		this.parents[0] = parent1;
 		this.parents[1] = parent2;
 	}
-	
+
 	/**
 	 * Prints a VAR file
 	 */
 	public String getVariableString(int index) {
-		
-		
-		
+
 		String strValue = this.getName() + ";";
 
 		List<Double> objs = new ArrayList<>();
@@ -207,7 +209,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 
 		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
 		strValue += ";";
-		strValue += getName() +",";
+		strValue += getName() + ",";
 		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toCSV())
 				.collect(Collectors.joining(","));
 		return strValue;
@@ -272,13 +274,33 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	}
 
 	/**
-	 * Check if two RSolutions have the same objectives values.
-	 * If a local minimum/maximum is reached then the two solutions should have the same objective values
+	 * Check if two RSolutions have the same objectives values. If a local
+	 * minimum/maximum is reached then the two solutions should have the same
+	 * objective values
+	 * 
 	 * @param rSolution
 	 * @return true if two solutions have the same objective values, false otherwise
 	 */
 	public boolean isLocalOptmimalPoint(RSolution<?> rSolution) {
-		return this.getPAs() == rSolution.getPAs() && this.getReliability() == rSolution.getReliability()
-				&& this.getNumOfChanges() == rSolution.getNumOfChanges() && this.getPerfQ() == rSolution.getPerfQ();
+		double ePas = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[0];
+		double eRel = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[1];
+		double ePerfQ = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[2];
+		double eChanges = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[3];
+
+		System.out.println(String.format("[byPrematureConvergence] ePas:%s; eRel:%s; ePerfQ:%s; eChanges:%s",
+				ePas, eRel, ePerfQ, eChanges));
+		System.out.println(String.format("[byPrematureConvergence] SolID %s -- Pas:%s; Rel:%s; PerfQ:%s; Changes:%s", this.getName(),
+				this.getPAs(), this.getReliability(), this.getPerfQ(), this.getNumOfChanges()));
+		System.out.println(String.format("[byPrematureConvergence] SolID %s -- Pas:%s; Rel:%s; PerfQ:%s; Changes:%s", rSolution.getName(),
+				rSolution.getPAs(), rSolution.getReliability(), rSolution.getPerfQ(), rSolution.getNumOfChanges()));
+
+		return (Math.abs(this.getPAs()) <= Math.abs(rSolution.getPAs()) + ePas
+				&& Math.abs(this.getPAs()) >= Math.abs(rSolution.getPAs()) - ePas)
+				&& (Math.abs(this.getNumOfChanges()) <= Math.abs(rSolution.getNumOfChanges()) * eChanges
+						&& Math.abs(this.getNumOfChanges()) >= Math.abs(rSolution.getNumOfChanges()) / eChanges)
+				&& (Math.abs(this.getPerfQ()) <= Math.abs(rSolution.getPerfQ()) * ePerfQ
+						&& Math.abs(this.getPerfQ()) >= Math.abs(rSolution.getPerfQ()) / ePerfQ)
+				&& (Math.abs(this.getReliability()) <= Math.abs(rSolution.getReliability()) * eRel
+						&& Math.abs(this.getReliability()) >= Math.abs(rSolution.getReliability()) / eRel);
 	}
 }
