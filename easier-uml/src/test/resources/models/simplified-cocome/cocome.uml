@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Core="http://com.masdes.dam/profiles/Core/1.0" xmlns:GQAM="http://www.eclipse.org/papyrus/GQAM/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://com.masdes.dam/profiles/Core/1.0 http://com.masdes.dam/profiles/DAM/1.0#//Core http://www.eclipse.org/papyrus/GQAM/1 http://www.eclipse.org/papyrus/MARTE/1#//GQAM">
+  <uml:Model xmi:id="eee_1045467100313_135436_1" name="cocome" visibility="public" URI="" viewpoint="">
+    <packagedElement xmi:type="uml:Package" xmi:id="_19_0_4_6590219_1607905901959_157584_4797" name="dynamic_view" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Actor" xmi:id="_19_0_4_6590219_1607905996930_251053_4867" name="Customer" visibility="public"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_19_0_4_6590219_1607906151075_656518_4983" name="ProcessSale" visibility="public" classifierBehavior="_19_0_4_6590219_1607906335738_49002_5097">
+        <ownedBehavior xmi:type="uml:Interaction" xmi:id="_19_0_4_6590219_1607906335738_49002_5097" name="ProcessSale" visibility="public" isReentrant="true">
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608319582254_754104_7444" name="" visibility="private" type="_19_0_4_6590219_1607906284021_628140_5049"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608320628861_42548_7586" name="" visibility="private" type="_19_0_4_6590219_1608224330627_104439_5233"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608321080759_422456_7626" name="" visibility="private" type="_19_0_4_6590219_1608224296259_314289_5105"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608322116793_438984_7668" name="" visibility="private" type="_19_0_4_6590219_1608224377753_42205_5297"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608322213158_194528_7710" name="" visibility="private" type="_19_0_4_6590219_1608224325977_824414_5201"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608323192154_191838_7843" name="" visibility="private" type="_19_0_4_6590219_1608224334512_255038_5265"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1608323213140_876560_7886" name="" visibility="private" type="_19_0_4_6590219_1610813117028_251741_7512"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608319582251_392737_7443" name="CashierLifeline" visibility="public" represents="_19_0_4_6590219_1608319582254_754104_7444" coveredBy="_19_0_4_6590219_1608394607297_388813_4973 _19_0_4_6590219_1608391853067_883770_4899 _19_0_4_6590219_1608496804185_319296_5162 _19_0_4_6590219_1608487285631_142916_6791 _19_0_4_6590219_1608320424610_615178_7522 _19_0_4_6590219_1608393775133_276819_4963 _19_0_4_6590219_1608484615950_780211_6672 _19_0_4_6590219_1608484621583_741719_6684 _19_0_4_6590219_1608497267968_895835_5187"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608320628860_376339_7585" name="CashBoxControllerLifeline" visibility="public" represents="_19_0_4_6590219_1608320628861_42548_7586" coveredBy="_19_0_4_6590219_1608392176917_904744_4928 _19_0_4_6590219_1608392055884_592823_4909 _19_0_4_6590219_1608320424614_213754_7523 _19_0_4_6590219_1608486925415_271114_6778 _19_0_4_6590219_1608321199276_209545_7640 _19_0_4_6590219_1608392167355_162444_4916 _19_0_4_6590219_1608392311478_934309_4935 _19_0_4_6590219_1608392988335_843879_4947 _19_0_4_6590219_1608393775131_491261_4962"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608321080759_666431_7625" name="CashDeskLifeline" visibility="public" represents="_19_0_4_6590219_1608321080759_422456_7626" coveredBy="_19_0_4_6590219_1608397530105_225735_5105 _19_0_4_6590219_1608397533851_229873_5117 _19_0_4_6590219_1608392055883_165579_4908 _19_0_4_6590219_1608396547636_701856_5071 _19_0_4_6590219_1608497160725_573253_5173 _19_0_4_6590219_1608321199277_568650_7641 _19_0_4_6590219_1608391853062_647103_4894 _19_0_4_6590219_1608484615969_823096_6679 _19_0_4_6590219_1608484615951_837529_6673 _19_0_4_6590219_1608484621581_490485_6683 _19_0_4_6590219_1608395006047_95839_5003 _19_0_4_6590219_1608395251509_438050_5016 _19_0_4_6590219_1608396532234_865493_5055 _19_0_4_6590219_1608397138191_150317_5081 _19_0_4_6590219_1608397154000_822827_5096"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608322116792_602082_7667" name="PrinterLifeline" visibility="public" represents="_19_0_4_6590219_1608322116793_438984_7668" coveredBy="_19_0_4_6590219_1608397153996_511435_5095 _19_0_4_6590219_1608392167367_640160_4923 _19_0_4_6590219_1608397138194_361186_5082 _19_0_4_6590219_1608397138216_53154_5090 _19_0_4_6590219_1608392176915_396986_4927 _19_0_4_6590219_1608392167357_520205_4917"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608322213158_788373_7709" name="GUILifeline" visibility="public" represents="_19_0_4_6590219_1608322213158_194528_7710" coveredBy="_19_0_4_6590219_1608392311490_303720_4942 _19_0_4_6590219_1608392311479_752075_4936 _19_0_4_6590219_1608392988334_993332_4946 _19_0_4_6590219_1608397530120_738236_5112 _19_0_4_6590219_1608397530106_977513_5106 _19_0_4_6590219_1608397533850_225994_5116"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608323192153_292398_7842" name="ScannerLifeline" visibility="public" represents="_19_0_4_6590219_1608323192154_191838_7843" coveredBy="_19_0_4_6590219_1608487555727_303856_6797 _19_0_4_6590219_1608394607298_118553_4974 _19_0_4_6590219_1608497267966_846948_5186 _19_0_4_6590219_1608395251511_961929_5017 _19_0_4_6590219_1608395006046_344316_5002"/>
+          <lifeline xmi:id="_19_0_4_6590219_1608323213139_170357_7885" name="InventoryLifeline" visibility="public" represents="_19_0_4_6590219_1608323213140_876560_7886" coveredBy="_19_0_4_6590219_1608396532235_984934_5056 _19_0_4_6590219_1608396547635_242931_5070 _19_0_4_6590219_1608396532247_640713_5066"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608320424610_615178_7522" name="startSaleSend" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608320424580_683830_7521"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608320424614_213754_7523" name="startSaleReceive" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608320424580_683830_7521"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608321199276_209545_7640" name="startedSaleSend" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608321199273_318136_7639"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608321199277_568650_7641" name="startedSaleReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608321199273_318136_7639"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392055883_165579_4908" name="appSaleAckSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608392055882_130326_4907"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392055884_592823_4909" name="appSaleAckReceive" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608392055882_130326_4907"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392167355_162444_4916" name="printerStartedEventSend" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608392167353_852218_4915"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392167357_520205_4917" name="printerStartedEventReceive" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" message="_19_0_4_6590219_1608392167353_852218_4915"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392176915_396986_4927" name="printerStartSaleAckSend" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" message="_19_0_4_6590219_1608392176913_181426_4926"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392176917_904744_4928" name="printerStartSaleAckReceive" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608392176913_181426_4926"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392311478_934309_4935" name="guiStartedEventSend" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608392311475_559630_4934"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392311479_752075_4936" name="guiStartedEventReceive" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" message="_19_0_4_6590219_1608392311475_559630_4934"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392988334_993332_4946" name="guiStartSaleAckSend" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" message="_19_0_4_6590219_1608392988330_755519_4945"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608392988335_843879_4947" name="guiStartSaleAckReceive" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608392988330_755519_4945"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608393775131_491261_4962" name="saleStartedSend" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" message="_19_0_4_6590219_1608393775128_495684_4961"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608393775133_276819_4963" name="saleStartedReceive" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608393775128_495684_4961"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608394607297_388813_4973" name="scanProductSend" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608394607294_291422_4972"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608394607298_118553_4974" name="scanProductReceive" visibility="public" covered="_19_0_4_6590219_1608323192153_292398_7842" message="_19_0_4_6590219_1608394607294_291422_4972"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608395006046_344316_5002" name="productBarSend" visibility="public" covered="_19_0_4_6590219_1608323192153_292398_7842" message="_19_0_4_6590219_1608395006043_227134_5001"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608395006047_95839_5003" name="productBarCodeReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608395006043_227134_5001"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608395251509_438050_5016" name="appScanAckSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608395251506_63426_5015"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608395251511_961929_5017" name="appScanAckReceive" visibility="public" covered="_19_0_4_6590219_1608323192153_292398_7842" message="_19_0_4_6590219_1608395251506_63426_5015"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608396532234_865493_5055" name="getProductSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608396532231_459966_5054"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608396532235_984934_5056" name="getProductReceive" visibility="public" covered="_19_0_4_6590219_1608323213139_170357_7885" message="_19_0_4_6590219_1608396532231_459966_5054"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608396547635_242931_5070" name="getProductAckSend" visibility="public" covered="_19_0_4_6590219_1608323213139_170357_7885" message="_19_0_4_6590219_1608396547633_966813_5069"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608396547636_701856_5071" name="getProductAckReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608396547633_966813_5069"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397138191_150317_5081" name="printRunningTotalPrinterSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608397138187_936831_5080"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397138194_361186_5082" name="printRunningTotalPrinterReceive" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" message="_19_0_4_6590219_1608397138187_936831_5080"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397153996_511435_5095" name="printerSendAck" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" message="_19_0_4_6590219_1608397153993_116560_5094"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397154000_822827_5096" name="printAckReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608397153993_116560_5094"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397530105_225735_5105" name="printRunningTotalSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608397530102_826181_5104"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397530106_977513_5106" name="printRunningTotalReceive" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" message="_19_0_4_6590219_1608397530102_826181_5104"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397533850_225994_5116" name="printScannerAckSend" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" message="_19_0_4_6590219_1608397533847_996440_5115"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608397533851_229873_5117" name="printScannerAckReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608397533847_996440_5115"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608497267966_846948_5186" name="scannedAckSend" visibility="public" covered="_19_0_4_6590219_1608323192153_292398_7842" message="_19_0_4_6590219_1608497267963_516882_5185"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608497267968_895835_5187" name="scannedAckReceive" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608497267963_516882_5185"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608484615950_780211_6672" name="stopSaleSend" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608484615947_366057_6671"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608484615951_837529_6673" name="stopSaleReceive" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608484615947_366057_6671"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608484621581_490485_6683" name="stopSaleAckSend" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" message="_19_0_4_6590219_1608484621579_948025_6682"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1608484621583_741719_6684" name="stopSaleAckReceive" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" message="_19_0_4_6590219_1608484621579_948025_6682"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608391853062_647103_4894" name="cashDeskBesStart" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" finish="_19_0_4_6590219_1608392055883_165579_4908" start="_19_0_4_6590219_1608321199277_568650_7641"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608391853067_883770_4899" name="cashierBes0" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" finish="_19_0_4_6590219_1608393775133_276819_4963" start="_19_0_4_6590219_1608320424610_615178_7522"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608392167367_640160_4923" name="printerDeskBesStart" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" finish="_19_0_4_6590219_1608392176915_396986_4927" start="_19_0_4_6590219_1608392167357_520205_4917"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608392311490_303720_4942" name="guiBes0" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" finish="_19_0_4_6590219_1608392988334_993332_4946" start="_19_0_4_6590219_1608392311479_752075_4936"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608484615969_823096_6679" name="stopSaleBes" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" finish="_19_0_4_6590219_1608484621581_490485_6683" start="_19_0_4_6590219_1608484615951_837529_6673"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608486925415_271114_6778" name="cashBoxBes0" visibility="public" covered="_19_0_4_6590219_1608320628860_376339_7585" finish="_19_0_4_6590219_1608393775131_491261_4962" start="_19_0_4_6590219_1608320424614_213754_7523"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608496804185_319296_5162" name="CashierBes2" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" finish="_19_0_4_6590219_1608484621583_741719_6684" start="_19_0_4_6590219_1608484615950_780211_6672"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608487555727_303856_6797" name="scannerBes0" visibility="public" covered="_19_0_4_6590219_1608323192153_292398_7842" finish="_19_0_4_6590219_1608497267966_846948_5186" start="_19_0_4_6590219_1608394607298_118553_4974"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608487285631_142916_6791" name="cashierBes1" visibility="public" covered="_19_0_4_6590219_1608319582251_392737_7443" finish="_19_0_4_6590219_1608497267968_895835_5187" start="_19_0_4_6590219_1608394607297_388813_4973"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608497160725_573253_5173" name="cashDeskBes1" visibility="public" covered="_19_0_4_6590219_1608321080759_666431_7625" finish="_19_0_4_6590219_1608397533851_229873_5117" start="_19_0_4_6590219_1608395006047_95839_5003"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608397138216_53154_5090" name="printerBes1" visibility="public" covered="_19_0_4_6590219_1608322116792_602082_7667" finish="_19_0_4_6590219_1608397153996_511435_5095" start="_19_0_4_6590219_1608397138194_361186_5082"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608397530120_738236_5112" name="guiBes1" visibility="public" covered="_19_0_4_6590219_1608322213158_788373_7709" finish="_19_0_4_6590219_1608397533850_225994_5116" start="_19_0_4_6590219_1608397530106_977513_5106"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1608396532247_640713_5066" name="inventoryBes0" visibility="public" covered="_19_0_4_6590219_1608323213139_170357_7885" finish="_19_0_4_6590219_1608396547635_242931_5070" start="_19_0_4_6590219_1608396532235_984934_5056"/>
+          <message xmi:id="_19_0_4_6590219_1608320424580_683830_7521" name="startSale" visibility="public" receiveEvent="_19_0_4_6590219_1608320424614_213754_7523" sendEvent="_19_0_4_6590219_1608320424610_615178_7522" signature="_19_0_4_6590219_1635412204419_531709_5781"/>
+          <message xmi:id="_19_0_4_6590219_1608321199273_318136_7639" name="saleStartedApplication" visibility="public" receiveEvent="_19_0_4_6590219_1608321199277_568650_7641" sendEvent="_19_0_4_6590219_1608321199276_209545_7640" signature="_19_0_4_6590219_1608391015697_854744_4876"/>
+          <message xmi:id="_19_0_4_6590219_1608392055882_130326_4907" name="startedSaleAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608392055884_592823_4909" sendEvent="_19_0_4_6590219_1608392055883_165579_4908"/>
+          <message xmi:id="_19_0_4_6590219_1608392167353_852218_4915" name="saleStartedEventPrinter" visibility="public" receiveEvent="_19_0_4_6590219_1608392167357_520205_4917" sendEvent="_19_0_4_6590219_1608392167355_162444_4916" signature="_19_0_4_6590219_1608391099207_890624_4877"/>
+          <message xmi:id="_19_0_4_6590219_1608392176913_181426_4926" name="printerStartSaleAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608392176917_904744_4928" sendEvent="_19_0_4_6590219_1608392176915_396986_4927"/>
+          <message xmi:id="_19_0_4_6590219_1608392311475_559630_4934" name="startStartEventCashDesk" visibility="public" receiveEvent="_19_0_4_6590219_1608392311479_752075_4936" sendEvent="_19_0_4_6590219_1608392311478_934309_4935" signature="_19_0_4_6590219_1608391123672_331765_4879"/>
+          <message xmi:id="_19_0_4_6590219_1608392988330_755519_4945" name="guiStartSaleAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608392988335_843879_4947" sendEvent="_19_0_4_6590219_1608392988334_993332_4946"/>
+          <message xmi:id="_19_0_4_6590219_1608393775128_495684_4961" name="saleStarted" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608393775133_276819_4963" sendEvent="_19_0_4_6590219_1608393775131_491261_4962"/>
+          <message xmi:id="_19_0_4_6590219_1608394607294_291422_4972" name="scanProduct" visibility="public" receiveEvent="_19_0_4_6590219_1608394607298_118553_4974" sendEvent="_19_0_4_6590219_1608394607297_388813_4973" signature="_19_0_4_6590219_1635412217176_803758_5782"/>
+          <message xmi:id="_19_0_4_6590219_1608395006043_227134_5001" name="productBarCodeMessage" visibility="public" receiveEvent="_19_0_4_6590219_1608395006047_95839_5003" sendEvent="_19_0_4_6590219_1608395006046_344316_5002" signature="_19_0_4_6590219_1608395181158_68525_5011"/>
+          <message xmi:id="_19_0_4_6590219_1608395251506_63426_5015" name="appScanAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608395251511_961929_5017" sendEvent="_19_0_4_6590219_1608395251509_438050_5016"/>
+          <message xmi:id="_19_0_4_6590219_1608396532231_459966_5054" name="getProductWithStockItem" visibility="public" receiveEvent="_19_0_4_6590219_1608396532235_984934_5056" sendEvent="_19_0_4_6590219_1608396532234_865493_5055" signature="_19_0_4_6590219_1635414204493_149782_6540"/>
+          <message xmi:id="_19_0_4_6590219_1608396547633_966813_5069" name="getProductAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608396547636_701856_5071" sendEvent="_19_0_4_6590219_1608396547635_242931_5070"/>
+          <message xmi:id="_19_0_4_6590219_1608397138187_936831_5080" name="printRunningTotalPrinter" visibility="public" receiveEvent="_19_0_4_6590219_1608397138194_361186_5082" sendEvent="_19_0_4_6590219_1608397138191_150317_5081" signature="_19_0_4_6590219_1635414232925_238294_6541"/>
+          <message xmi:id="_19_0_4_6590219_1608397153993_116560_5094" name="printerAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608397154000_822827_5096" sendEvent="_19_0_4_6590219_1608397153996_511435_5095"/>
+          <message xmi:id="_19_0_4_6590219_1608397530102_826181_5104" name="printRunningTotalDesk" visibility="public" receiveEvent="_19_0_4_6590219_1608397530106_977513_5106" sendEvent="_19_0_4_6590219_1608397530105_225735_5105" signature="_19_0_4_6590219_1635414256307_15844_6542"/>
+          <message xmi:id="_19_0_4_6590219_1608397533847_996440_5115" name="printScannerAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608397533851_229873_5117" sendEvent="_19_0_4_6590219_1608397533850_225994_5116"/>
+          <message xmi:id="_19_0_4_6590219_1608497267963_516882_5185" name="scannedAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608497267968_895835_5187" sendEvent="_19_0_4_6590219_1608497267966_846948_5186"/>
+          <message xmi:id="_19_0_4_6590219_1608484615947_366057_6671" name="stopSale" visibility="public" receiveEvent="_19_0_4_6590219_1608484615951_837529_6673" sendEvent="_19_0_4_6590219_1608484615950_780211_6672" signature="_19_0_4_6590219_1608415349991_720591_5163"/>
+          <message xmi:id="_19_0_4_6590219_1608484621579_948025_6682" name="stopSaleAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1608484621583_741719_6684" sendEvent="_19_0_4_6590219_1608484621581_490485_6683"/>
+        </ownedBehavior>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_19_0_4_6590219_1607906164699_384169_5000" name="" visibility="public" memberEnd="_19_0_4_6590219_1607906164699_410438_5001 _19_0_4_6590219_1607906164700_538406_5002" navigableOwnedEnd="_19_0_4_6590219_1607906164699_410438_5001 _19_0_4_6590219_1607906164700_538406_5002">
+        <ownedEnd xmi:id="_19_0_4_6590219_1607906164699_410438_5001" name="" visibility="private" type="_19_0_4_6590219_1607906151075_656518_4983" association="_19_0_4_6590219_1607906164699_384169_5000"/>
+        <ownedEnd xmi:id="_19_0_4_6590219_1607906164700_538406_5002" name="" visibility="private" type="_19_0_4_6590219_1607905996930_251053_4867" association="_19_0_4_6590219_1607906164699_384169_5000"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_19_0_4_6590219_1607906284021_628140_5049" name="Cashier" visibility="public"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_19_0_4_6590219_1607906294988_628590_5073" name="" visibility="public" memberEnd="_19_0_4_6590219_1607906294988_264463_5074 _19_0_4_6590219_1607906294989_107491_5075" navigableOwnedEnd="_19_0_4_6590219_1607906294988_264463_5074 _19_0_4_6590219_1607906294989_107491_5075">
+        <ownedEnd xmi:id="_19_0_4_6590219_1607906294988_264463_5074" name="" visibility="private" type="_19_0_4_6590219_1607906151075_656518_4983" association="_19_0_4_6590219_1607906294988_628590_5073"/>
+        <ownedEnd xmi:id="_19_0_4_6590219_1607906294989_107491_5075" name="" visibility="private" type="_19_0_4_6590219_1607906284021_628140_5049" association="_19_0_4_6590219_1607906294988_628590_5073"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_19_0_4_6590219_1610721551633_955443_5174" name="StockManager" visibility="public"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_19_0_4_6590219_1610721622988_849744_5197" name="ReceivedOrderedProducts" visibility="public" classifierBehavior="_19_0_4_6590219_1610721958415_776897_5226">
+        <ownedBehavior xmi:type="uml:Interaction" xmi:id="_19_0_4_6590219_1610721958415_776897_5226" name="ReceivedOrderedProducts" visibility="public" isReentrant="true">
+          <ownedAttribute xmi:id="_19_0_4_6590219_1610721991287_901310_5270" name="" visibility="private" type="_19_0_4_6590219_1610721551633_955443_5174"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635414410442_734453_6574" name="" visibility="private" type="_19_0_4_6590219_1610831498155_629702_8637"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635414434234_547019_6585" name="" visibility="private" type="_19_0_4_6590219_1610797411592_152537_5623"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635414458817_924581_6596" name="" visibility="private" type="_19_0_4_6590219_1610795043293_418907_5410"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635414472693_847316_6607" name="" visibility="private" type="_19_0_4_6590219_1610794847449_917360_5376"/>
+          <lifeline xmi:id="_19_0_4_6590219_1610721991282_951936_5269" name="stockManager" visibility="public" represents="_19_0_4_6590219_1610721991287_901310_5270" coveredBy="_19_0_4_6590219_1610878676875_744186_5206 _19_0_4_6590219_1610878735702_815571_5214 _19_0_4_6590219_1610833633837_498099_9069"/>
+          <lifeline xmi:id="_19_0_4_6590219_1610795774398_899734_5485" name="DataStoreLifeline" visibility="public" represents="_19_0_4_6590219_1635414458817_924581_6596" coveredBy="_19_0_4_6590219_1610878735695_546010_5212 _19_0_4_6590219_1610835552863_437895_9178 _19_0_4_6590219_1610878735712_319131_5217 _19_0_4_6590219_1610834998110_283734_9140 _19_0_4_6590219_1610835008326_231864_9148 _19_0_4_6590219_1610835567179_644646_9186"/>
+          <lifeline xmi:id="_19_0_4_6590219_1610795777206_702379_5502" name="PersistenceLifelineROP" visibility="public" represents="_19_0_4_6590219_1635414472693_847316_6607" coveredBy="_19_0_4_6590219_1610878735715_419399_5218 _19_0_4_6590219_1610834747664_650529_9110 _19_0_4_6590219_1610834766128_300189_9118"/>
+          <lifeline xmi:id="_19_0_4_6590219_1610797748418_669596_5642" name="appStore_lifeline" visibility="public" represents="_19_0_4_6590219_1635414434234_547019_6585" coveredBy="_19_0_4_6590219_1610834747663_348520_9109 _19_0_4_6590219_1610835552862_817788_9177 _19_0_4_6590219_1610835658174_443174_9194 _19_0_4_6590219_1610834409704_369303_9100 _19_0_4_6590219_1610834766129_26083_9119 _19_0_4_6590219_1610878735699_802369_5213 _19_0_4_6590219_1610834998109_324554_9139 _19_0_4_6590219_1610835008327_743531_9149 _19_0_4_6590219_1610835567179_115422_9187"/>
+          <lifeline xmi:id="_19_0_4_6590219_1610833250873_928925_9054" name="guiStore_lifeline" visibility="public" represents="_19_0_4_6590219_1635414410442_734453_6574" coveredBy="_19_0_4_6590219_1610878735690_658444_5211 _19_0_4_6590219_1610833633838_426114_9070 _19_0_4_6590219_1610834409703_666103_9099 _19_0_4_6590219_1610835658175_13526_9195 _19_0_4_6590219_1610878676871_130212_5205"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610833633837_498099_9069" name="enterOrderSend" visibility="public" covered="_19_0_4_6590219_1610721991282_951936_5269" message="_19_0_4_6590219_1610833633836_631777_9068"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610833633838_426114_9070" name="enterOrderReceive" visibility="public" covered="_19_0_4_6590219_1610833250873_928925_9054" message="_19_0_4_6590219_1610833633836_631777_9068"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834409703_666103_9099" name="rollinSend" visibility="public" covered="_19_0_4_6590219_1610833250873_928925_9054" message="_19_0_4_6590219_1610834409702_667234_9098"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834409704_369303_9100" name="rollinReceive" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610834409702_667234_9098"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834747663_348520_9109" name="getTransactionSend" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610834747660_42006_9108"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834747664_650529_9110" name="getTransactionReceive" visibility="public" covered="_19_0_4_6590219_1610795777206_702379_5502" message="_19_0_4_6590219_1610834747660_42006_9108"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834766128_300189_9118" name="transactionAckSend" visibility="public" covered="_19_0_4_6590219_1610795777206_702379_5502" message="_19_0_4_6590219_1610834766126_306599_9117"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834766129_26083_9119" name="transactionAckReceive" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610834766126_306599_9117"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834998109_324554_9139" name="queryOrderSend" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610834998109_91037_9138"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610834998110_283734_9140" name="queryOrderReceive" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" message="_19_0_4_6590219_1610834998109_91037_9138"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835008326_231864_9148" name="productOrderAckSend" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" message="_19_0_4_6590219_1610835008324_829168_9147"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835008327_743531_9149" name="productOrderAckReceive" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610835008324_829168_9147"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835552862_817788_9177" name="queryStockItemSend" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610835552859_63840_9176"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835552863_437895_9178" name="queryStockItemReceive" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" message="_19_0_4_6590219_1610835552859_63840_9176"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835567179_644646_9186" name="queryStockItemAckSend" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" message="_19_0_4_6590219_1610835567177_681945_9185"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835567179_115422_9187" name="queryStockItemAckReceive" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610835567177_681945_9185"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835658174_443174_9194" name="appAckSend" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" message="_19_0_4_6590219_1610835658172_323660_9193"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610835658175_13526_9195" name="appAckReceive" visibility="public" covered="_19_0_4_6590219_1610833250873_928925_9054" message="_19_0_4_6590219_1610835658172_323660_9193"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610878676871_130212_5205" name="ackEndSend" visibility="public" covered="_19_0_4_6590219_1610833250873_928925_9054" message="_19_0_4_6590219_1610878676861_921313_5204"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1610878676875_744186_5206" name="ackEndReceive" visibility="public" covered="_19_0_4_6590219_1610721991282_951936_5269" message="_19_0_4_6590219_1610878676861_921313_5204"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735690_658444_5211" name="guiStoreBes" visibility="public" covered="_19_0_4_6590219_1610833250873_928925_9054" finish="_19_0_4_6590219_1610878676871_130212_5205" start="_19_0_4_6590219_1610833633838_426114_9070"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735699_802369_5213" name="appStoreBes" visibility="public" covered="_19_0_4_6590219_1610797748418_669596_5642" finish="_19_0_4_6590219_1610835658174_443174_9194" start="_19_0_4_6590219_1610834409704_369303_9100"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735702_815571_5214" name="stockManagerBes" visibility="public" covered="_19_0_4_6590219_1610721991282_951936_5269" finish="_19_0_4_6590219_1610878676875_744186_5206" start="_19_0_4_6590219_1610833633837_498099_9069"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735712_319131_5217" name="dataStoreBes0" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" finish="_19_0_4_6590219_1610835008326_231864_9148" start="_19_0_4_6590219_1610834998110_283734_9140"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735715_419399_5218" name="persistenceBes" visibility="public" covered="_19_0_4_6590219_1610795777206_702379_5502" finish="_19_0_4_6590219_1610834766128_300189_9118" start="_19_0_4_6590219_1610834747664_650529_9110"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1610878735695_546010_5212" name="dataStoreBes1" visibility="public" covered="_19_0_4_6590219_1610795774398_899734_5485" finish="_19_0_4_6590219_1610835567179_644646_9186" start="_19_0_4_6590219_1610835552863_437895_9178"/>
+          <message xmi:id="_19_0_4_6590219_1610833633836_631777_9068" name="enterOrderIDMessage" visibility="public" receiveEvent="_19_0_4_6590219_1610833633838_426114_9070" sendEvent="_19_0_4_6590219_1610833633837_498099_9069" signature="_19_0_4_6590219_1610833445604_87453_9066"/>
+          <message xmi:id="_19_0_4_6590219_1610834409702_667234_9098" name="rollinReceivedOrderMessage" visibility="public" receiveEvent="_19_0_4_6590219_1610834409704_369303_9100" sendEvent="_19_0_4_6590219_1610834409703_666103_9099" signature="_19_0_4_6590219_1610834131443_971156_9087"/>
+          <message xmi:id="_19_0_4_6590219_1610834747660_42006_9108" name="getTransactionContextMessage" visibility="public" receiveEvent="_19_0_4_6590219_1610834747664_650529_9110" sendEvent="_19_0_4_6590219_1610834747663_348520_9109" signature="_19_0_4_6590219_1610834733340_890966_9106"/>
+          <message xmi:id="_19_0_4_6590219_1610834766126_306599_9117" name="transactionAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1610834766129_26083_9119" sendEvent="_19_0_4_6590219_1610834766128_300189_9118"/>
+          <message xmi:id="_19_0_4_6590219_1610834998109_91037_9138" name="queryOrderByIdMessage" visibility="public" receiveEvent="_19_0_4_6590219_1610834998110_283734_9140" sendEvent="_19_0_4_6590219_1610834998109_324554_9139" signature="_19_0_4_6590219_1610834943075_773174_9135"/>
+          <message xmi:id="_19_0_4_6590219_1610835008324_829168_9147" name="productOrderAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1610835008327_743531_9149" sendEvent="_19_0_4_6590219_1610835008326_231864_9148"/>
+          <message xmi:id="_19_0_4_6590219_1610835552859_63840_9176" name="queryStockItem" visibility="public" receiveEvent="_19_0_4_6590219_1610835552863_437895_9178" sendEvent="_19_0_4_6590219_1610835552862_817788_9177" signature="_19_0_4_6590219_1610835397342_208713_9174"/>
+          <message xmi:id="_19_0_4_6590219_1610835567177_681945_9185" name="queryStockItemAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1610835567179_115422_9187" sendEvent="_19_0_4_6590219_1610835567179_644646_9186"/>
+          <message xmi:id="_19_0_4_6590219_1610835658172_323660_9193" name="appAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1610835658175_13526_9195" sendEvent="_19_0_4_6590219_1610835658174_443174_9194"/>
+          <message xmi:id="_19_0_4_6590219_1610878676861_921313_5204" name="ackEnd" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1610878676875_744186_5206" sendEvent="_19_0_4_6590219_1610878676871_130212_5205"/>
+        </ownedBehavior>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_19_0_4_6590219_1610721675019_273870_5215" name="" visibility="public" memberEnd="_19_0_4_6590219_1610721675019_498722_5216 _19_0_4_6590219_1610721675020_335847_5217" navigableOwnedEnd="_19_0_4_6590219_1610721675019_498722_5216 _19_0_4_6590219_1610721675020_335847_5217">
+        <ownedEnd xmi:id="_19_0_4_6590219_1610721675019_498722_5216" name="" visibility="private" type="_19_0_4_6590219_1610721622988_849744_5197" association="_19_0_4_6590219_1610721675019_273870_5215"/>
+        <ownedEnd xmi:id="_19_0_4_6590219_1610721675020_335847_5217" name="" visibility="private" type="_19_0_4_6590219_1610721551633_955443_5174" association="_19_0_4_6590219_1610721675019_273870_5215"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_19_0_4_6590219_1635066634604_144263_5184" name="ShowDeliveryReports" visibility="public" classifierBehavior="_19_0_4_6590219_1635066728065_196507_5236">
+        <ownedBehavior xmi:type="uml:Interaction" xmi:id="_19_0_4_6590219_1635066728065_196507_5236" name="ShowStockReports" visibility="public" isReentrant="true">
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635066762172_17562_5299" name="" visibility="private" type="_19_0_4_6590219_1635066670743_219957_5199"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635067044812_384334_5363" name="" visibility="private" type="_19_0_4_6590219_1610831488532_617508_8611"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635067069192_264899_5396" name="" visibility="private" type="_19_0_4_6590219_1610797405345_570476_5608"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635067104507_845244_5452" name="" visibility="private" type="_19_0_4_6590219_1610794847449_917360_5376"/>
+          <ownedAttribute xmi:id="_19_0_4_6590219_1635067332293_694584_5475" name="" visibility="private" type="_19_0_4_6590219_1610794744351_779837_5339"/>
+          <lifeline xmi:id="_19_0_4_6590219_1635066762169_315521_5298" name="enterpriseManager_lifeline" visibility="public" represents="_19_0_4_6590219_1635066762172_17562_5299" coveredBy="_19_0_4_6590219_1635067358920_710751_5490 _19_0_4_6590219_1635071461777_388582_5637 _19_0_4_6590219_1635071011126_520893_5626"/>
+          <lifeline xmi:id="_19_0_4_6590219_1635067044811_194246_5362" name="guiReporting_lifeline" visibility="public" represents="_19_0_4_6590219_1635067044812_384334_5363" coveredBy="_19_0_4_6590219_1635067401054_122397_5508 _19_0_4_6590219_1635071011124_844817_5625 _19_0_4_6590219_1635067358923_895436_5491 _19_0_4_6590219_1635071461774_986784_5635 _19_0_4_6590219_1635067531535_827212_5590"/>
+          <lifeline xmi:id="_19_0_4_6590219_1635067069192_14631_5395" name="reporting_lifeline" visibility="public" represents="_19_0_4_6590219_1635067069192_264899_5396" coveredBy="_19_0_4_6590219_1635067510672_17792_5572 _19_0_4_6590219_1635071461784_929411_5640 _19_0_4_6590219_1635067401055_608931_5509 _19_0_4_6590219_1635067416916_339939_5517 _19_0_4_6590219_1635067420911_959211_5527 _19_0_4_6590219_1635067439934_200918_5534 _19_0_4_6590219_1635067442673_86515_5544 _19_0_4_6590219_1635067518459_861227_5582 _19_0_4_6590219_1635067531534_629141_5589"/>
+          <lifeline xmi:id="_19_0_4_6590219_1635067104507_10361_5451" name="PersistenceLifelineSSR" visibility="public" represents="_19_0_4_6590219_1635067104507_845244_5452" coveredBy="_19_0_4_6590219_1635067420910_497945_5526 _19_0_4_6590219_1635071461769_887504_5633 _19_0_4_6590219_1635067416918_144595_5518"/>
+          <lifeline xmi:id="_19_0_4_6590219_1635067332292_682146_5474" name="enterprise_lifeline" visibility="public" represents="_19_0_4_6590219_1635067332293_694584_5475" coveredBy="_19_0_4_6590219_1635067518457_806307_5581 _19_0_4_6590219_1635071461772_875137_5634 _19_0_4_6590219_1635067439936_141669_5535 _19_0_4_6590219_1635067442672_515296_5543 _19_0_4_6590219_1635071461775_629123_5636 _19_0_4_6590219_1635067510673_859859_5573"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067358920_710751_5490" name="create_report_send" visibility="public" covered="_19_0_4_6590219_1635066762169_315521_5298" message="_19_0_4_6590219_1635067358916_145932_5489"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067358923_895436_5491" name="create_report_receive" visibility="public" covered="_19_0_4_6590219_1635067044811_194246_5362" message="_19_0_4_6590219_1635067358916_145932_5489"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067401054_122397_5508" name="getmtt_report_send" visibility="public" covered="_19_0_4_6590219_1635067044811_194246_5362" message="_19_0_4_6590219_1635067401051_994702_5507"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067401055_608931_5509" name="getmtt_report_receive" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067401051_994702_5507"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067416916_339939_5517" name="get_transaction_send" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067416913_482128_5516"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067416918_144595_5518" name="get_transaction_receive" visibility="public" covered="_19_0_4_6590219_1635067104507_10361_5451" message="_19_0_4_6590219_1635067416913_482128_5516"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067420910_497945_5526" name="transaction_send" visibility="public" covered="_19_0_4_6590219_1635067104507_10361_5451" message="_19_0_4_6590219_1635067420907_831287_5525"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067420911_959211_5527" name="transaction_receive" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067420907_831287_5525"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067439934_200918_5534" name="get_enterprise_send" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067439931_318463_5533"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067439936_141669_5535" name="get_enterprise_receive" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" message="_19_0_4_6590219_1635067439931_318463_5533"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067442672_515296_5543" name="enterprise_send" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" message="_19_0_4_6590219_1635067442669_642633_5542"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067442673_86515_5544" name="enterprise_receive" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067442669_642633_5542"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067510672_17792_5572" name="getmtt_send" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067510669_758500_5571"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067510673_859859_5573" name="getmtt_receive" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" message="_19_0_4_6590219_1635067510669_758500_5571"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067518457_806307_5581" name="timetodelivery_send" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" message="_19_0_4_6590219_1635067518454_447166_5580"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067518459_861227_5582" name="timetodelivery_receive" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067518454_447166_5580"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067531534_629141_5589" name="report_result_ack_send" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" message="_19_0_4_6590219_1635067531531_252702_5588"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635067531535_827212_5590" name="report_result_ack_receive" visibility="public" covered="_19_0_4_6590219_1635067044811_194246_5362" message="_19_0_4_6590219_1635067531531_252702_5588"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635071011124_844817_5625" name="enterprise_ack_send" visibility="public" covered="_19_0_4_6590219_1635067044811_194246_5362" message="_19_0_4_6590219_1635071011121_858183_5624"/>
+          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_19_0_4_6590219_1635071011126_520893_5626" name="enterprise_ack_receive" visibility="public" covered="_19_0_4_6590219_1635066762169_315521_5298" message="_19_0_4_6590219_1635071011121_858183_5624"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461769_887504_5633" name="PersistenceBesSSR" visibility="public" covered="_19_0_4_6590219_1635067104507_10361_5451" finish="_19_0_4_6590219_1635067420910_497945_5526" start="_19_0_4_6590219_1635067416918_144595_5518"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461772_875137_5634" name="getEnterprise_bes0" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" finish="_19_0_4_6590219_1635067442672_515296_5543" start="_19_0_4_6590219_1635067439936_141669_5535"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461774_986784_5635" name="guiReportingBES" visibility="public" covered="_19_0_4_6590219_1635067044811_194246_5362" finish="_19_0_4_6590219_1635071011124_844817_5625" start="_19_0_4_6590219_1635067358923_895436_5491"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461777_388582_5637" name="enterpriseManagerBES" visibility="public" covered="_19_0_4_6590219_1635066762169_315521_5298" finish="_19_0_4_6590219_1635071011126_520893_5626" start="_19_0_4_6590219_1635067358920_710751_5490"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461784_929411_5640" name="appReportingBes" visibility="public" covered="_19_0_4_6590219_1635067069192_14631_5395" finish="_19_0_4_6590219_1635067531534_629141_5589" start="_19_0_4_6590219_1635067401055_608931_5509"/>
+          <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_19_0_4_6590219_1635071461775_629123_5636" name="getEnterprise_bes1" visibility="public" covered="_19_0_4_6590219_1635067332292_682146_5474" finish="_19_0_4_6590219_1635067518457_806307_5581" start="_19_0_4_6590219_1635067510673_859859_5573"/>
+          <message xmi:id="_19_0_4_6590219_1635067358916_145932_5489" name="create_rep_message" visibility="public" messageSort="asynchCall" receiveEvent="_19_0_4_6590219_1635067358923_895436_5491" sendEvent="_19_0_4_6590219_1635067358920_710751_5490" signature="_19_0_4_6590219_1635070426438_928016_5601"/>
+          <message xmi:id="_19_0_4_6590219_1635067401051_994702_5507" name="getmttreport_message" visibility="public" receiveEvent="_19_0_4_6590219_1635067401055_608931_5509" sendEvent="_19_0_4_6590219_1635067401054_122397_5508" signature="_19_0_4_6590219_1635067622580_127575_5595"/>
+          <message xmi:id="_19_0_4_6590219_1635067416913_482128_5516" name="get_transaction_report" visibility="public" receiveEvent="_19_0_4_6590219_1635067416918_144595_5518" sendEvent="_19_0_4_6590219_1635067416916_339939_5517" signature="_19_0_4_6590219_1635067648139_553120_5596"/>
+          <message xmi:id="_19_0_4_6590219_1635067420907_831287_5525" name="transaction" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1635067420911_959211_5527" sendEvent="_19_0_4_6590219_1635067420910_497945_5526"/>
+          <message xmi:id="_19_0_4_6590219_1635067439931_318463_5533" name="get_enterprise_message" visibility="public" receiveEvent="_19_0_4_6590219_1635067439936_141669_5535" sendEvent="_19_0_4_6590219_1635067439934_200918_5534" signature="_19_0_4_6590219_1635067674792_576210_5597"/>
+          <message xmi:id="_19_0_4_6590219_1635067442669_642633_5542" name="enterprise" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1635067442673_86515_5544" sendEvent="_19_0_4_6590219_1635067442672_515296_5543"/>
+          <message xmi:id="_19_0_4_6590219_1635067510669_758500_5571" name="getmttd_message" visibility="public" receiveEvent="_19_0_4_6590219_1635067510673_859859_5573" sendEvent="_19_0_4_6590219_1635067510672_17792_5572" signature="_19_0_4_6590219_1635067732321_866040_5598"/>
+          <message xmi:id="_19_0_4_6590219_1635067518454_447166_5580" name="timeToDelivery" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1635067518459_861227_5582" sendEvent="_19_0_4_6590219_1635067518457_806307_5581"/>
+          <message xmi:id="_19_0_4_6590219_1635067531531_252702_5588" name="reportResult" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1635067531535_827212_5590" sendEvent="_19_0_4_6590219_1635067531534_629141_5589"/>
+          <message xmi:id="_19_0_4_6590219_1635071011121_858183_5624" name="enterpriseAck" visibility="public" messageSort="reply" receiveEvent="_19_0_4_6590219_1635071011126_520893_5626" sendEvent="_19_0_4_6590219_1635071011124_844817_5625"/>
+        </ownedBehavior>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_19_0_4_6590219_1635066670743_219957_5199" name="EnterpriseManager" visibility="public"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_19_0_4_6590219_1635066678892_921097_5223" name="" visibility="public" memberEnd="_19_0_4_6590219_1635066678892_507833_5224 _19_0_4_6590219_1635066678893_230436_5225" navigableOwnedEnd="_19_0_4_6590219_1635066678892_507833_5224 _19_0_4_6590219_1635066678893_230436_5225">
+        <ownedEnd xmi:id="_19_0_4_6590219_1635066678892_507833_5224" name="" visibility="private" type="_19_0_4_6590219_1635066634604_144263_5184" association="_19_0_4_6590219_1635066678892_921097_5223"/>
+        <ownedEnd xmi:id="_19_0_4_6590219_1635066678893_230436_5225" name="" visibility="private" type="_19_0_4_6590219_1635066670743_219957_5199" association="_19_0_4_6590219_1635066678892_921097_5223"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_19_0_4_6590219_1608222035162_737986_4831" name="static_view" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610794744351_779837_5339" name="Enterprise" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1635067674792_576210_5597" name="getEnterpriseByID" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635067732321_866040_5598" name="getMeanTimeToDelivery" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610794847449_917360_5376" name="Persistence" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1610834733340_890966_9106" name="getTransactionContext" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635067648139_553120_5596" name="getTransaction" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610795043293_418907_5410" name="DataStore" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1610834943075_773174_9135" name="queryOrderById" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1610835397342_208713_9174" name="queryStockItem" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610797405345_570476_5608" name="Reporting" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1635067622580_127575_5595" name="getMeanTimeToDeliveryReport" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610797411592_152537_5623" name="AppStore" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1610834131443_971156_9087" name="rollInReceivedOrder" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1610834855572_723859_9124" name="beginTransaction" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610813117028_251741_7512" name="Inventory" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1635414204493_149782_6540" name="getProductWithStockItem" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610831488532_617508_8611" name="GUIReporting" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1635070426438_928016_5601" name="createReport" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1610831498155_629702_8637" name="GUIStore" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1610833445604_87453_9066" name="enterOrderID" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1610833657758_371088_9077" name="pressButton" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1608224330627_104439_5233" name="CashBoxController" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1608390837539_756633_4875" name="notifySale" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635412204419_531709_5781" name="startSale" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1608224296259_314289_5105" name="CashDeskApplication" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1608391015697_854744_4876" name="saleStartedEvent" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608395181158_68525_5011" name="productBarCodeScannedEvent" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608415349991_720591_5163" name="stopSale" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1608224334512_255038_5265" name="ScannerController" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1608391100773_524546_4878" name="saleStartedEvent" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608394968218_782147_4999" name="checkBarCode" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635412217176_803758_5782" name="scanProduct" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1608224325977_824414_5201" name="CashDeskGUI" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1608391123672_331765_4879" name="saleStartedEvent" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635414256307_15844_6542" name="printRunningTotal" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_19_0_4_6590219_1608224377753_42205_5297" name="PrinterController" visibility="public">
+        <ownedOperation xmi:id="_19_0_4_6590219_1608391099207_890624_4877" name="saleStartedEvent" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1635414232925_238294_6541" name="printRunningTotal" visibility="public"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_19_0_4_6590219_1608222043732_646404_4832" name="deployment_view" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608319838623_792193_7470" name="CashBox" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608458237424_533627_5091" name="" visibility="private" type="_19_0_4_6590219_1608457570984_61974_4989" association="_19_0_4_6590219_1608458237423_149732_5089">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608458255309_808155_5115" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458255310_619992_5116" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608390783056_2220_4874" name="startSale" visibility="public"/>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608486904261_383058_6745" name="startSale" visibility="public"/>
+        <deployment xmi:id="_19_0_4_6590219_1608462730680_728050_6224" name="" visibility="public" client="_19_0_4_6590219_1608319838623_792193_7470" supplier="_19_0_4_6590219_1608462730677_204183_6223" deployedArtifact="_19_0_4_6590219_1608462730677_204183_6223"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608322856516_142581_7761" name="BarCodeScanner" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608458244639_172998_5104" name="" visibility="private" type="_19_0_4_6590219_1608457570984_61974_4989" association="_19_0_4_6590219_1608458244638_895130_5102">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608458269724_189056_5123" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458269725_597463_5124" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_19_0_4_6590219_1608394809876_133954_4986" name="scanProduct" visibility="public"/>
+        <deployment xmi:id="_19_0_4_6590219_1608462903066_98338_6248" name="" visibility="public" client="_19_0_4_6590219_1608322856516_142581_7761" supplier="_19_0_4_6590219_1608462903063_609743_6247" deployedArtifact="_19_0_4_6590219_1608462903063_609743_6247"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608456937443_868552_4884" name="EnterpriseClient" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457718372_748232_5059" name="" visibility="private" type="_19_0_4_6590219_1608456969048_555924_4940" association="_19_0_4_6590219_1608457718372_914110_5058">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608458149662_16816_5081" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458149662_87548_5082" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1610881879549_520778_5298" name="" visibility="public" client="_19_0_4_6590219_1608456937443_868552_4884" supplier="_19_0_4_6590219_1610881879546_300359_5297" deployedArtifact="_19_0_4_6590219_1610881879546_300359_5297"/>
+        <deployment xmi:id="_19_0_4_6590219_1610882769342_538370_5409" name="" visibility="public" client="_19_0_4_6590219_1608456937443_868552_4884" supplier="_19_0_4_6590219_1610882769337_26909_5408" deployedArtifact="_19_0_4_6590219_1610882769337_26909_5408"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608456952976_511212_4912" name="StoreServer" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457635753_692621_5021" name="" visibility="private" type="_19_0_4_6590219_1608457570984_61974_4989" association="_19_0_4_6590219_1608457635753_568208_5020">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608457643187_810295_5029" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457643188_415549_5030" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457711811_996726_5046" name="" visibility="private" type="_19_0_4_6590219_1608456969048_555924_4940" association="_19_0_4_6590219_1608457711811_797266_5045">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608457745945_462231_5075" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457735489_642972_5068" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1610881542688_957519_5242" name="" visibility="public" client="_19_0_4_6590219_1608456952976_511212_4912" supplier="_19_0_4_6590219_1610881542681_95737_5241" deployedArtifact="_19_0_4_6590219_1610881542681_95737_5241"/>
+        <deployment xmi:id="_19_0_4_6590219_1610883358008_903023_5442" name="" visibility="public" client="_19_0_4_6590219_1608456952976_511212_4912" supplier="_19_0_4_6590219_1610883358005_701918_5441" deployedArtifact="_19_0_4_6590219_1610883358005_701918_5441"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608456969048_555924_4940" name="EnterpriseServer" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457711812_218062_5047" name="" visibility="private" type="_19_0_4_6590219_1608456952976_511212_4912" association="_19_0_4_6590219_1608457711811_797266_5045">
+          <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457747764_500898_5076" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457737240_759534_5072" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457718373_789586_5060" name="" visibility="private" type="_19_0_4_6590219_1608456937443_868552_4884" association="_19_0_4_6590219_1608457718372_914110_5058">
+          <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458147774_121983_5077" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458147775_884572_5078" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1610882400044_457886_5350" name="" visibility="public" client="_19_0_4_6590219_1608456969048_555924_4940" supplier="_19_0_4_6590219_1610882400041_162346_5349" deployedArtifact="_19_0_4_6590219_1610882400041_162346_5349"/>
+        <deployment xmi:id="_19_0_4_6590219_1610882591042_699712_5373" name="" visibility="public" client="_19_0_4_6590219_1608456969048_555924_4940" supplier="_19_0_4_6590219_1610882591039_441966_5372" deployedArtifact="_19_0_4_6590219_1610882591039_441966_5372"/>
+        <deployment xmi:id="_19_0_4_6590219_1635072644883_468454_5655" name="" visibility="public" client="_19_0_4_6590219_1608456969048_555924_4940" supplier="_19_0_4_6590219_1635072644877_10314_5654" deployedArtifact="_19_0_4_6590219_1635072644877_10314_5654"/>
+        <deployment xmi:id="_19_0_4_6590219_1635072873903_177501_5679" name="" visibility="public" client="_19_0_4_6590219_1608456969048_555924_4940" supplier="_19_0_4_6590219_1635072873899_462780_5678" deployedArtifact="_19_0_4_6590219_1635072873899_462780_5678"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608457570984_61974_4989" name="CashDeskPC" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608457635754_165453_5022" name="" visibility="private" type="_19_0_4_6590219_1608456952976_511212_4912" association="_19_0_4_6590219_1608457635753_568208_5020">
+          <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457645350_875367_5033" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608457645351_161560_5034" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608458237423_874592_5090" name="" visibility="private" type="_19_0_4_6590219_1608319838623_792193_7470" association="_19_0_4_6590219_1608458237423_149732_5089">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608458252915_793205_5111" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458252915_266997_5112" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608458244638_510483_5103" name="" visibility="private" type="_19_0_4_6590219_1608322856516_142581_7761" association="_19_0_4_6590219_1608458244638_895130_5102">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608458267643_858788_5119" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608458267644_419190_5120" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608463073832_940708_6325" name="" visibility="private" type="_19_0_4_6590219_1608463033514_144762_6270" association="_19_0_4_6590219_1608463073832_325819_6324">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608463123265_933749_6337" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608463123266_405375_6338" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608463461095_460750_6375" name="" visibility="private" type="_19_0_4_6590219_1608463450358_752238_6342" association="_19_0_4_6590219_1608463461094_201246_6373">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608463511842_215150_6409" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608463511843_479041_6410" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1608462640469_317719_6201" name="" visibility="public" client="_19_0_4_6590219_1608457570984_61974_4989" supplier="_19_0_4_6590219_1608462640466_564394_6200" deployedArtifact="_19_0_4_6590219_1608462640466_564394_6200"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608457635753_568208_5020" name="" visibility="public" memberEnd="_19_0_4_6590219_1608457635753_692621_5021 _19_0_4_6590219_1608457635754_165453_5022"/>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608457711811_797266_5045" name="" visibility="public" memberEnd="_19_0_4_6590219_1608457711811_996726_5046 _19_0_4_6590219_1608457711812_218062_5047"/>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608457718372_914110_5058" name="" visibility="public" memberEnd="_19_0_4_6590219_1608457718372_748232_5059 _19_0_4_6590219_1608457718373_789586_5060"/>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608458237423_149732_5089" name="" visibility="public" memberEnd="_19_0_4_6590219_1608458237423_874592_5090 _19_0_4_6590219_1608458237424_533627_5091"/>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608458244638_895130_5102" name="" visibility="public" memberEnd="_19_0_4_6590219_1608458244638_510483_5103 _19_0_4_6590219_1608458244639_172998_5104"/>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1608462640466_564394_6200" name="CashDeskApplication" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1608462653762_669794_6221" name="" visibility="public" client="_19_0_4_6590219_1608462640466_564394_6200" supplier="_19_0_4_6590219_1608224296259_314289_5105" utilizedElement="_19_0_4_6590219_1608224296259_314289_5105"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1608462730677_204183_6223" name="CashBoxController" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1608464279868_832480_6466" name="" visibility="public" client="_19_0_4_6590219_1608462730677_204183_6223" supplier="_19_0_4_6590219_1608224330627_104439_5233" utilizedElement="_19_0_4_6590219_1608224330627_104439_5233"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1608462903063_609743_6247" name="ScannerController" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1608465591433_648632_6467" name="" visibility="public" client="_19_0_4_6590219_1608462903063_609743_6247" supplier="_19_0_4_6590219_1608224334512_255038_5265" utilizedElement="_19_0_4_6590219_1608224334512_255038_5265"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608463033514_144762_6270" name="Printer" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608463073832_877959_6326" name="" visibility="private" type="_19_0_4_6590219_1608457570984_61974_4989" association="_19_0_4_6590219_1608463073832_325819_6324">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608463121097_102210_6333" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608463121098_6528_6334" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1608463042756_363436_6299" name="" visibility="public" client="_19_0_4_6590219_1608463033514_144762_6270" supplier="_19_0_4_6590219_1608463042751_820793_6298" deployedArtifact="_19_0_4_6590219_1608463042751_820793_6298"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1608463042751_820793_6298" name="PrinterController" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1608463057584_161966_6319" name="" visibility="public" client="_19_0_4_6590219_1608463042751_820793_6298" supplier="_19_0_4_6590219_1608224377753_42205_5297" utilizedElement="_19_0_4_6590219_1608224377753_42205_5297"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608463073832_325819_6324" name="" visibility="public" memberEnd="_19_0_4_6590219_1608463073832_940708_6325 _19_0_4_6590219_1608463073832_877959_6326"/>
+      <packagedElement xmi:type="uml:Node" xmi:id="_19_0_4_6590219_1608463450358_752238_6342" name="LightDisplay" visibility="public">
+        <ownedAttribute xmi:id="_19_0_4_6590219_1608463461095_637874_6374" name="" visibility="private" type="_19_0_4_6590219_1608457570984_61974_4989" association="_19_0_4_6590219_1608463461094_201246_6373">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_4_6590219_1608463509893_221247_6405" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_4_6590219_1608463509894_152392_6406" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <deployment xmi:id="_19_0_4_6590219_1608463469388_305773_6384" name="" visibility="public" client="_19_0_4_6590219_1608463450358_752238_6342" supplier="_19_0_4_6590219_1608463469384_672235_6383" deployedArtifact="_19_0_4_6590219_1608463469384_672235_6383"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_19_0_4_6590219_1608463461094_201246_6373" name="" visibility="public" memberEnd="_19_0_4_6590219_1608463461095_637874_6374 _19_0_4_6590219_1608463461095_460750_6375"/>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1608463469384_672235_6383" name="CashDeskGUI" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1608463496606_51821_6404" name="" visibility="public" client="_19_0_4_6590219_1608463469384_672235_6383" supplier="_19_0_4_6590219_1608224325977_824414_5201" utilizedElement="_19_0_4_6590219_1608224325977_824414_5201"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610881542681_95737_5241" name="ApplicationStore" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610882711720_898948_5404" name="" visibility="public" client="_19_0_4_6590219_1610881542681_95737_5241" supplier="_19_0_4_6590219_1610797411592_152537_5623" utilizedElement="_19_0_4_6590219_1610797411592_152537_5623"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610881879546_300359_5297" name="GUIReporting" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610881925533_927307_5318" name="" visibility="public" client="_19_0_4_6590219_1610881879546_300359_5297" supplier="_19_0_4_6590219_1610831488532_617508_8611" utilizedElement="_19_0_4_6590219_1610831488532_617508_8611"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610882400041_162346_5349" name="Persistence" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610882511892_750696_5370" name="" visibility="public" client="_19_0_4_6590219_1610882400041_162346_5349" supplier="_19_0_4_6590219_1610794847449_917360_5376" utilizedElement="_19_0_4_6590219_1610794847449_917360_5376"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610882591039_441966_5372" name="DataStore" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610882612542_923923_5393" name="" visibility="public" client="_19_0_4_6590219_1610882591039_441966_5372" supplier="_19_0_4_6590219_1610795043293_418907_5410" utilizedElement="_19_0_4_6590219_1610795043293_418907_5410"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610882769337_26909_5408" name="GUIStore" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610882790518_967787_5429" name="" visibility="public" client="_19_0_4_6590219_1610882769337_26909_5408" supplier="_19_0_4_6590219_1610831498155_629702_8637" utilizedElement="_19_0_4_6590219_1610831498155_629702_8637"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1610883358005_701918_5441" name="Inventory" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1610883495933_569319_5462" name="" visibility="public" client="_19_0_4_6590219_1610883358005_701918_5441" supplier="_19_0_4_6590219_1610813117028_251741_7512" utilizedElement="_19_0_4_6590219_1610813117028_251741_7512"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1635072644877_10314_5654" name="Enterprise" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1635072713343_258822_5676" name="" visibility="public" client="_19_0_4_6590219_1635072644877_10314_5654" supplier="_19_0_4_6590219_1610794744351_779837_5339" utilizedElement="_19_0_4_6590219_1610794744351_779837_5339"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Artifact" xmi:id="_19_0_4_6590219_1635072873899_462780_5678" name="Reporting" visibility="public" fileName="">
+        <manifestation xmi:id="_19_0_4_6590219_1635072895837_830583_5699" name="" visibility="public" client="_19_0_4_6590219_1635072873899_462780_5678" supplier="_19_0_4_6590219_1610797405345_570476_5608" utilizedElement="_19_0_4_6590219_1610797405345_570476_5608"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="__3sbsEe6EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="__3tCwEe6EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/MARTE/1#//GQAM"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://Papyrus_PROFILES/MARTE.profile.uml#_4bV20APMEdyuUt-4qHuVvQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_IHiyAEe7EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="_IHjZEEe7EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://com.masdes.dam/profiles/DAM/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://DAM_PROFILES/DAM.profile.uml#_dYZGQOI-EeKRk-i8_Z91aQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_IHlOQEe7EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="_IHlOQUe7EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://com.masdes.dam/profiles/DAM/1.0#//Core"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://DAM_PROFILES/DAM.profile.uml#_DchGAOSiEeKuSu-I2xDxSA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_IHnDcEe7EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="_IHnDcUe7EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://com.masdes.dam/profiles/DAM/1.0#//Redundancy"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://DAM_PROFILES/DAM.profile.uml#_9t6vAOSiEeKuSu-I2xDxSA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_IHo4oEe7EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="_IHo4oUe7EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://com.masdes.dam/profiles/DAM/1.0#//Threats"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://DAM_PROFILES/DAM.profile.uml#_G1-xoOShEeKuSu-I2xDxSA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_IHqGwEe7EeyCl42b9jYMuQ">
+      <eAnnotations xmi:id="_IHqt0Ee7EeyCl42b9jYMuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://com.masdes.dam/profiles/DAM/1.0#//Maintenance"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://DAM_PROFILES/DAM.profile.uml#_rsXqkOShEeKuSu-I2xDxSA"/>
+    </profileApplication>
+  </uml:Model>
+  <GQAM:GaScenario xmi:id="_RRGXgEe7EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1607906151075_656518_4983" root="_tx5egEe7EeyCl42b9jYMuQ">
+    <throughput>0.07585388720830388</throughput>
+    <respT>13.18324</respT>
+  </GQAM:GaScenario>
+  <GQAM:GaWorkloadEvent xmi:id="_bQYrIEe7EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608319582251_392737_7443"/>
+  <GQAM:GaStep xmi:id="_tx5egEe7EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608320424580_683830_7521" base_Message="_19_0_4_6590219_1608320424580_683830_7521">
+    <msgSize>2</msgSize>
+    <respT>5.15171</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_yyWgoEe7EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608321199273_318136_7639" base_Message="_19_0_4_6590219_1608321199273_318136_7639">
+    <msgSize>2</msgSize>
+    <respT>1</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_3O5kcEe7EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608392167353_852218_4915" base_Message="_19_0_4_6590219_1608392167353_852218_4915">
+    <msgSize>6</msgSize>
+    <respT>1</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_IJjHsEe8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608392311475_559630_4934" base_Message="_19_0_4_6590219_1608392311475_559630_4934">
+    <msgSize>2</msgSize>
+    <respT>4.15171</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_Z5mo8Ee8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608394607294_291422_4972" base_Message="_19_0_4_6590219_1608394607294_291422_4972">
+    <msgSize>4</msgSize>
+    <respT>6.03153</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_k-2fEEe8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608395006043_227134_5001" base_Message="_19_0_4_6590219_1608395006043_227134_5001">
+    <msgSize>1</msgSize>
+    <respT>5.03153</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_sSrSAEe8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608396532231_459966_5054" base_Message="_19_0_4_6590219_1608396532231_459966_5054">
+    <msgSize>3</msgSize>
+    <respT>1.03153</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_9acrQEe8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608397530102_826181_5104" base_Message="_19_0_4_6590219_1608397530102_826181_5104">
+    <msgSize>7</msgSize>
+    <respT>4.03153</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_-gpeUEe8EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608397138187_936831_5080" base_Message="_19_0_4_6590219_1608397138187_936831_5080">
+    <msgSize>3</msgSize>
+    <respT>1</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_FQFx0Ee9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1608484615947_366057_6671" base_Message="_19_0_4_6590219_1608484615947_366057_6671">
+    <msgSize>6</msgSize>
+    <respT>1</respT>
+  </GQAM:GaStep>
+  <GQAM:GaWorkloadEvent xmi:id="_gerqEEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610721991282_951936_5269"/>
+  <GQAM:GaScenario xmi:id="_jno_EEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610721622988_849744_5197" root="_mkcHYEe9EeyCl42b9jYMuQ">
+    <throughput>0.12147996613138545</throughput>
+    <respT>8.23181</respT>
+  </GQAM:GaScenario>
+  <GQAM:GaStep xmi:id="_mkcHYEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610833633836_631777_9068" base_Message="_19_0_4_6590219_1610833633836_631777_9068">
+    <msgSize>2</msgSize>
+    <respT>8.23181</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_uE62QEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610834409702_667234_9098" base_Message="_19_0_4_6590219_1610834409702_667234_9098">
+    <msgSize>3</msgSize>
+    <respT>6.94683</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_8MwToEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610834747660_42006_9108" base_Message="_19_0_4_6590219_1610834747660_42006_9108">
+    <msgSize>1</msgSize>
+    <respT>1.42215</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="__k7JUEe9EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610834998109_91037_9138" base_Message="_19_0_4_6590219_1610834998109_91037_9138">
+    <msgSize>4</msgSize>
+    <respT>1.38914</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_DJbK0Ee-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1610835552859_63840_9176" base_Message="_19_0_4_6590219_1610835552859_63840_9176">
+    <msgSize>3</msgSize>
+    <respT>5.66183</respT>
+  </GQAM:GaStep>
+  <GQAM:GaScenario xmi:id="_azHY8Ee-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635066634604_144263_5184" root="_kMoGAEe-EeyCl42b9jYMuQ">
+    <throughput>0.09339248190520663</throughput>
+    <respT>10.7075</respT>
+  </GQAM:GaScenario>
+  <GQAM:GaWorkloadEvent xmi:id="_hDPTMEe-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635066762169_315521_5298"/>
+  <GQAM:GaStep xmi:id="_kMoGAEe-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635067358916_145932_5489" base_Message="_19_0_4_6590219_1635067358916_145932_5489">
+    <msgSize>2</msgSize>
+    <respT>10.7075</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_rA_80Ee-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635067401051_994702_5507" base_Message="_19_0_4_6590219_1635067401051_994702_5507">
+    <msgSize>4</msgSize>
+    <respT>9.39061</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_usO4cEe-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635067416913_482128_5516" base_Message="_19_0_4_6590219_1635067416913_482128_5516">
+    <msgSize>1</msgSize>
+    <respT>1.42215</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_xmEzYEe-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635067439931_318463_5533" base_Message="_19_0_4_6590219_1635067439931_318463_5533">
+    <msgSize>4</msgSize>
+    <respT>1.45543</respT>
+  </GQAM:GaStep>
+  <GQAM:GaStep xmi:id="_0tR04Ee-EeyCl42b9jYMuQ" base_NamedElement="_19_0_4_6590219_1635067510669_758500_5571" base_Message="_19_0_4_6590219_1635067510669_758500_5571">
+    <msgSize>3</msgSize>
+    <respT>1.45543</respT>
+  </GQAM:GaStep>
+  <GQAM:GaExecHost xmi:id="_A4wTQEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608319838623_792193_7470">
+    <utilization>0.0758539</utilization>
+  </GQAM:GaExecHost>
+  <GQAM:GaExecHost xmi:id="_GBDp0Ee_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608322856516_142581_7761">
+    <utilization>0.0758539</utilization>
+  </GQAM:GaExecHost>
+  <GQAM:GaExecHost xmi:id="_HrDtgEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608456937443_868552_4884">
+    <utilization>0.429743</utilization>
+  </GQAM:GaExecHost>
+  <GQAM:GaExecHost xmi:id="_IoT_8Ee_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608456952976_511212_4912">
+    <utilization>0.197333</utilization>
+  </GQAM:GaExecHost>
+  <GQAM:GaExecHost xmi:id="_J6nVUEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608456969048_555924_4940">
+    <utilization>0.737996</utilization>
+  </GQAM:GaExecHost>
+  <GQAM:GaExecHost xmi:id="_LYNUsEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608457570984_61974_4989">
+    <utilization>0.455123</utilization>
+  </GQAM:GaExecHost>
+  <Core:DaConnector xmi:id="_NWJoEEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608457635753_568208_5020">
+    <failure xmi:id="_SSQVsEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.56</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <Core:DaConnector xmi:id="_OivXAEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608457711811_797266_5045">
+    <failure xmi:id="_UCZdoEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.22</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <Core:DaConnector xmi:id="_PexhcEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608458237423_149732_5089">
+    <failure xmi:id="_Z49BUEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.2</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <Core:DaConnector xmi:id="_QU2N0Ee_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608457718372_914110_5058">
+    <failure xmi:id="_XiL-QEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.5</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <Core:DaConnector xmi:id="_RUMyAEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608458244638_895130_5102">
+    <failure xmi:id="_bZ7r4Ee_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.67</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <GQAM:GaExecHost xmi:id="_eGAQkEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608463033514_144762_6270">
+    <utilization>0.151708</utilization>
+  </GQAM:GaExecHost>
+  <Core:DaConnector xmi:id="_fZIsYEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608463073832_325819_6324">
+    <failure xmi:id="_f1J6AEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.4</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <GQAM:GaExecHost xmi:id="_iVS7gEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608463450358_752238_6342">
+    <utilization>0.151708</utilization>
+  </GQAM:GaExecHost>
+  <Core:DaConnector xmi:id="_joj6MEe_EeyCl42b9jYMuQ" base_Association="_19_0_4_6590219_1608463461094_201246_6373">
+    <failure xmi:id="_kFZAIEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.44</occurrenceProb>
+    </failure>
+  </Core:DaConnector>
+  <Core:DaComponent xmi:id="_pE18sEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610794744351_779837_5339">
+    <failure xmi:id="_qSmwUEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.4</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_szicAEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610794847449_917360_5376">
+    <failure xmi:id="_6g0rYEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.4</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_tjHe0Ee_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610795043293_418907_5410">
+    <failure xmi:id="_9xmfoEe_EeyCl42b9jYMuQ">
+      <occurrenceProb>0.56</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_udYHoEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610797405345_570476_5608">
+    <failure xmi:id="_AMB6sEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.55</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_vpfVcEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610797411592_152537_5623">
+    <failure xmi:id="_CGD-cEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.66</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_wsK6cEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610813117028_251741_7512">
+    <failure xmi:id="_D_SJ4EfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.22</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_xsdSwEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610831488532_617508_8611">
+    <failure xmi:id="_Fx7MMEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.66</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_yixPsEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1610831498155_629702_8637">
+    <failure xmi:id="_H0fg4EfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.22</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_zgGaoEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608224330627_104439_5233">
+    <failure xmi:id="_Jsx4MEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.78</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_0dny0Ee_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608224296259_314289_5105">
+    <failure xmi:id="_LqSGsEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.78</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_1oBJYEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608224334512_255038_5265">
+    <failure xmi:id="_NVN-gEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.44</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_2i5dQEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608224325977_824414_5201">
+    <failure xmi:id="_PYZ-QEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.45</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+  <Core:DaComponent xmi:id="_3-46IEe_EeyCl42b9jYMuQ" base_Classifier="_19_0_4_6590219_1608224377753_42205_5297">
+    <failure xmi:id="_RVD4MEfAEeyCl42b9jYMuQ">
+      <occurrenceProb>0.33</occurrenceProb>
+    </failure>
+  </Core:DaComponent>
+</xmi:XMI>
