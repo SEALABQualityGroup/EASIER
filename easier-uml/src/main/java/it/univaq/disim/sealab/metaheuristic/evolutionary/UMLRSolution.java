@@ -867,5 +867,15 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			return false;
 		return true;
 	}
+	
+	// Set Reliability. 
+	// If the rel param is greater than 1 reliability is set to 1
+	public void setReliability(double rel) {
+		this.reliability = rel < 1 ? rel : 1;
+	}
+	
+	public void setPAs(int pas) {
+		this.numPAs = pas;
+	}
 
 }

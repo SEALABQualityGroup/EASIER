@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -19,6 +21,7 @@ import org.junit.runner.Description;
 public class UMLRSolutionTest {
 
 	private UMLRSolution solution, solution2;
+	UMLRProblem<RSolution<?>> p;
 
 	private static void logInfo(Description description, String status, long nanos) {
 		String testName = description.getMethodName();
@@ -57,7 +60,7 @@ public class UMLRSolutionTest {
 		int number_of_action = 5;
 
 		String modelpath = getClass().getResource("/models/train-ticket/train-ticket.uml").getFile();
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action,
+		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action,
 				allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 		solution2 = (UMLRSolution) p.createSolution();
@@ -87,13 +90,13 @@ public class UMLRSolutionTest {
 	@Test
 	public void isLocalOptmimalPointPerfQOutOfRangeShouldReturnFalseTest() {
 		solution.setPerfQ(0);
-		solution2.setPerfQ(30);
+		solution2.setPerfQ(0);
 
 		solution.reliability = 0;
 		solution2.reliability = 0;
 
 		solution.numPAs = 0;
-		solution2.numPAs = 0;
+		solution2.numPAs = 4;
 
 		solution.getVariable(0).setNumOfChanges(0);
 		solution2.getVariable(0).setNumOfChanges(0);
@@ -122,7 +125,7 @@ public class UMLRSolutionTest {
 
 		assertTrue(solution.isLocalOptmimalPoint(solution2));
 	}
-
+	
 	@Test
 	public void coutingPAs() {
 		solution.countingPAs();
