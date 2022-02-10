@@ -54,7 +54,7 @@ public class Configurator {
 	private boolean cleaningTmp = false;
 
 	@Parameter(names = { "-outF", "--outputFolder" }, required = true, description = "Set the output root folder")
-	private String outputFolder;
+	private String outputFolder="/tmp/easier-output-test";
 
 	@Parameter(names = { "-maxEval", "--maxEvaluation" }, required = true, description = "Set the maximum evaluations")
 	private List<Integer> maxEval;
@@ -135,10 +135,10 @@ public class Configurator {
 	
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
-	private List<String> brfs_list;
+	private List<String> brfs_list = List.of("1.23","1.23","1.23","1.23");
 
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
-	private float probPas;
+	private double probPas=0.95;
 
 	public List<String> getBrfList(){
 		return brfs_list;
@@ -305,7 +305,7 @@ public class Configurator {
 	}
 
 
-	public float getProbPas() {
+	public Double getProbPas() {
 		return probPas;
 	}
 	
