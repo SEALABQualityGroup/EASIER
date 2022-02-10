@@ -30,9 +30,9 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 	int _maxEvaluations;
 	
 	private long durationThreshold, iterationStartingTime;
-	private int localMinima, prematureConvergenceThreshold;
+	private float prematureConvergenceThreshold;
 
-	private List<RSolution<?>> oldPopulation;
+	private List<S> oldPopulation;
 
 
 	public CustomPESA2(Problem<S> problem, int maxEvaluations, int populationSize, int archiveSize, int biSections,
@@ -45,8 +45,7 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 		
 		durationThreshold = Configurator.eINSTANCE.getStoppingCriterionTimeThreshold();
 		prematureConvergenceThreshold = Configurator.eINSTANCE.getStoppingCriterionPrematureConvergenceThreshold();
-		oldPopulation = new ArrayList<RSolution<?>>();
-		localMinima = 0;
+		oldPopulation = new ArrayList<S>();
 	}
 
 	/**
@@ -63,9 +62,9 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
 			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) //byPrematureConvergence
-			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold;
+			return super.isStoppingConditionReached() || isStagnantState();
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
-			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold || currentComputingTime > durationThreshold;
+			return super.isStoppingConditionReached() || isStagnantState() || currentComputingTime > durationThreshold;
 		return super.isStoppingConditionReached();
 	}
 	
@@ -74,39 +73,27 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 	protected void initProgress() {
 		super.initProgress();
 		iterationStartingTime = System.currentTimeMillis();
-		oldPopulation = (List<RSolution<?>>) this.getPopulation(); // store the initial population
+		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 	}
+	
+	public boolean isStagnantState() {
 
-	@Override
-	protected void updateProgress() {
-		super.updateProgress();
-		
-		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()
-				|| Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) {
-			 
-			// create a joined list of the current population and the old one
-			List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
-			joinedPopulation.addAll(population);
-			
-			int countedSameObjectives = 0;
-			for (int i = 0; i < joinedPopulation.size() - 1; i++) {
-				if (!joinedPopulation.get(i).isLocalOptmimalPoint(joinedPopulation.get(i + 1))) {
-					localMinima = 0;
+		int countedSameObjectives = 0;
+		for (int i = 0; i < oldPopulation.size(); i++) {
+			for (int j = 0; j < population.size(); j++) {
+				if (!oldPopulation.get(i).isLocalOptmimalPoint(population.get(j))) {
 					break;
 				}
 				countedSameObjectives++;
 			}
-
-			// update oldPopulation to the current population 
-			oldPopulation = (List<RSolution<?>>) population; 
-			
-			// check if all solutions within the joined list have the same objective values
-			if (countedSameObjectives == joinedPopulation.size())
-				localMinima++;
-
 		}
-	}
-	
+
+		// update oldPopulation to the current population
+		oldPopulation = (List<S>) population;
+
+		// check if all solutions within the joined list have the same objective values
+		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
+	}	
 
 	@Override
 	public void run() {

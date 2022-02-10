@@ -23,9 +23,10 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements EasierAlgorithm {
 
 	private long durationThreshold, iterationStartingTime;
-	private int localMinima, prematureConvergenceThreshold;
+	private float prematureConvergenceThreshold;
 
-	private List<RSolution<?>> oldPopulation;
+	// It will be exploited to identify stagnant situation
+	List<S> oldPopulation;
 
 	/**
 	 * Constructor matingPopulationSize = offspringPopulationSize = populationSize
@@ -39,9 +40,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 		durationThreshold = Configurator.eINSTANCE.getStoppingCriterionTimeThreshold();
 		prematureConvergenceThreshold = Configurator.eINSTANCE.getStoppingCriterionPrematureConvergenceThreshold();
-		oldPopulation = new ArrayList<RSolution<?>>();
-		localMinima = 0;
-
+		oldPopulation = new ArrayList<S>();
 	}
 
 	/**
@@ -58,9 +57,10 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
 			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) // byPrematureConvergence
-			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold;
+			return super.isStoppingConditionReached() || isStagnantState();
+																										// computeStagnantState
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
-			return super.isStoppingConditionReached() || localMinima > prematureConvergenceThreshold
+			return super.isStoppingConditionReached() || isStagnantState()
 					|| currentComputingTime > durationThreshold;
 		return super.isStoppingConditionReached(); // classic
 
@@ -70,39 +70,29 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	protected void initProgress() {
 		super.initProgress();
 		iterationStartingTime = System.currentTimeMillis();
-		oldPopulation = (List<RSolution<?>>) this.getPopulation(); // store the initial population
+		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 	}
 
-	@Override
-	protected void updateProgress() {
-		super.updateProgress();
+	public boolean isStagnantState() {
+		// create a joined list of the current population and the old one
+//		List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
+//		joinedPopulation.addAll(population);
 
-		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()
-				|| Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) {
-
-			// create a joined list of the current population and the old one
-			List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
-			joinedPopulation.addAll(population);
-
-			int countedSameObjectives = 0;
-			for (int i = 0; i < joinedPopulation.size() - 1; i++) {
-				if (!joinedPopulation.get(i).isLocalOptmimalPoint(joinedPopulation.get(i + 1))) {
-					localMinima = 0;
+		int countedSameObjectives = 0;
+		for (int i = 0; i < oldPopulation.size(); i++) {
+			for (int j = 0; j < population.size(); j++) {
+				if (!oldPopulation.get(i).isLocalOptmimalPoint(population.get(j))) {
 					break;
 				}
 				countedSameObjectives++;
 			}
-
-			// update oldPopulation to the current population
-			oldPopulation = (List<RSolution<?>>) population;
-
-			// check if all solutions within the joined list have the same objective values
-//			if (countedSameObjectives == joinedPopulation.size() - 1)
-			float percentageOfLocalSolution = 0.50f;
-			if (countedSameObjectives / joinedPopulation.size() > percentageOfLocalSolution)
-				localMinima++;
-
 		}
+
+		// update oldPopulation to the current population
+		oldPopulation = (List<S>) population;
+
+		// check if all solutions within the joined list have the same objective values
+		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
 	}
 
 	@Override
@@ -121,7 +111,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
 					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
@@ -165,11 +155,11 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			
 			updateProgress();
 
 		}
-		
+
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
 				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
 			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
