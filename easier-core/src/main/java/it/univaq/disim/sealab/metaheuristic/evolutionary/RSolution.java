@@ -287,13 +287,6 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 		double ePerfQ = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[2];
 		double eChanges = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[3];
 
-		System.out.println(String.format("[byPrematureConvergence] ePas:%s; eRel:%s; ePerfQ:%s; eChanges:%s",
-				ePas, eRel, ePerfQ, eChanges));
-		System.out.println(String.format("[byPrematureConvergence] SolID %s -- Pas:%s; Rel:%s; PerfQ:%s; Changes:%s", this.getName(),
-				this.getPAs(), this.getReliability(), this.getPerfQ(), this.getNumOfChanges()));
-		System.out.println(String.format("[byPrematureConvergence] SolID %s -- Pas:%s; Rel:%s; PerfQ:%s; Changes:%s", rSolution.getName(),
-				rSolution.getPAs(), rSolution.getReliability(), rSolution.getPerfQ(), rSolution.getNumOfChanges()));
-
 		return (Math.abs(this.getPAs()) <= Math.abs(rSolution.getPAs()) + ePas
 				&& Math.abs(this.getPAs()) >= Math.abs(rSolution.getPAs()) - ePas)
 				&& (Math.abs(this.getNumOfChanges()) <= Math.abs(rSolution.getNumOfChanges()) * eChanges
