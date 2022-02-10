@@ -7,19 +7,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -79,6 +78,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	private final static String refactoringLibraryModule, uml2lqnModule;
 	private final static String GQAM_NAMESPACE;
+
+	private Map<String, Map<String, Double>> extractFuzzyValues;
 
 	static {
 		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -164,8 +165,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		parents = new UMLRSolution[2];
 		scenarioRTs = new double[3];
-		
-		
+
 		Refactoring refactoring = new Refactoring();
 		refactoring.setSolutionID(this.getName());
 		this.setVariable(0, refactoring);
@@ -330,7 +330,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	}
 
 	/**
-	 * This method counts the number of Performance Antipatterns (PAs) Shall invoke
+	 * This method counts the number of Performance Antipatterns (PAs) invoking
 	 * the PADRE perf-detection file
 	 */
 	public void countingPAs() {
@@ -342,28 +342,57 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		try {
 			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 		} catch (EolModelLoadingException | URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		pasCounter.setModel(uml);
 		pasCounter.setSource(Paths.get(refactoringLibraryModule));
-		
-		// set the prob to be perf antipatterns
-//		pasCounter.setParameter(0.95, "float", "prob_to_be_pa");
-		
-		pasCounter.setParameter(Configurator.eINSTANCE.getProbPas(), "float", "prob_to_be_pa");
 
-		numPAs = pasCounter.getPAs();
-		System.out.format("countingPAs execution time: %s", (System.currentTimeMillis() - startTime));
+		// set the prob to be perf antipatterns
+		double fuzzyThreshold = Configurator.eINSTANCE.getProbPas();
+		pasCounter.setParameter(fuzzyThreshold, "float", "prob_to_be_pa");
+
+		extractFuzzyValues = pasCounter.extractFuzzyValues();
+
+		int nPas = 0;
+		String line = "";
+		// Count performance antipatterns and build a string for the next csv storing
+		for (String pas : extractFuzzyValues.keySet()) {
+			Map<String, Double> mPaf = extractFuzzyValues.get(pas);
+			for (String targetElement : mPaf.keySet()) {
+				double fuzzy = mPaf.get(targetElement);
+				line += String.format("%s,%s,%s,%.4f\n", this.name, pas, targetElement, fuzzy);
+				if (fuzzy > fuzzyThreshold) {
+					nPas++;
+				}
+			}
+		}
+
+		// save performance antipatterns data in a CSV file
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(
+					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString()))) {
+				writer.write("solID,pas,target,fuzzy");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try (BufferedWriter writer = new BufferedWriter(
+				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString(),true))) {
+			writer.write(line);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		numPAs = nPas;
+
+		long duration = System.currentTimeMillis() - startTime;
+		System.out.println(String.format(" execution time: %s ms", duration));
 
 		uml = null;
 		pasCounter.clearMemory();
 		new UMLMemoryOptimizer().cleanup();
 		pasCounter = null;
-		long duration = System.currentTimeMillis() - startTime;
-		System.out.println(String.format("countingPAs execution time: %s", duration));
-
-		System.out.println("done");
 	}
 
 	/*
@@ -493,7 +522,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
 //			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
 //					.resolve("lqn.xsd").toString();
-			String schema = Paths.get(uml2lqnModule,"lqnxsd", "lqn.xsd").toString();
+			String schema = Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString();
 			Collection<EObject> generatedPackages = xsdEcoreBuilder
 					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
 			for (EObject generatedEObject : generatedPackages) {
