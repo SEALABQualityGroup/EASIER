@@ -140,17 +140,17 @@ public class Configurator {
 	private long searchBudgetTimeThreshold = 3_600_000;
 	
 	@Parameter(names = {"-sbPCTh","--searchBudgetPrematureConvergenceThreshold"}, description = "The search budget stopping criterion by premature convergence.")
-	private int searchBudgetPrematureConvergenceThreshold = 3;
+	private float searchBudgetPrematureConvergenceThreshold = 0.50f;
 	
 	//It is a positional List where: 0=ePas,1=eRel,2=ePerfQ,3=eChanges
 	@Parameter(names = {"-sbPCEpsilon", "--searchBudgetPrematureConvergenceEpsilon"}, description = "The epsilon neighborhood for Premature Convergence.")
-	private List<Double> optimalPointEpsilon = new ArrayList<>(Arrays.asList(1d,1.01d,1.01d,1.03d));
+	private List<Double> optimalPointEpsilon = List.of(1d,1.15d,1.15d,1.3d);
 	
 	public long getStoppingCriterionTimeThreshold() {
 		return searchBudgetTimeThreshold;
 	}
 	
-	public int getStoppingCriterionPrematureConvergenceThreshold() {
+	public float getStoppingCriterionPrematureConvergenceThreshold() {
 		return searchBudgetPrematureConvergenceThreshold;
 	}
 	
