@@ -1,5 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
 import java.util.concurrent.TimeUnit;
@@ -50,14 +52,14 @@ public class UMLRSolutionTest {
 	
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws URISyntaxException {
 		int allowedFailures = 100;
 		int desired_length = 4;
 		int populationSize = 4;
 		int number_of_action = 5;
 		
-		String modelpath = "/mnt/develop/git/sealab/easier/easier-uml2lqnCaseStudy/train-ticket/train-ticket.uml";
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
+		Path modelpath = Paths.get(getClass().getResource("/models/simplified-cocome/cocome.uml").toURI());
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(modelpath, desired_length, number_of_action, allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 	}
 	
