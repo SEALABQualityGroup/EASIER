@@ -59,7 +59,7 @@ public class UMLRSolutionTest {
 		int populationSize = 4;
 		int number_of_action = 5;
 
-		String modelpath = getClass().getResource("/models/train-ticket/train-ticket.uml").getFile();
+		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
 		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action,
 				allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
@@ -151,6 +151,13 @@ public class UMLRSolutionTest {
 	public void computeReliability() {
 		solution.computeReliability();
 	}
+	
+	@Test
+	public void applyTransformationTest() {
+		solution.applyTransformation();
+		solution.invokeSolver();
+	}
+	
 
 	@After
 	public void tearDown() {
