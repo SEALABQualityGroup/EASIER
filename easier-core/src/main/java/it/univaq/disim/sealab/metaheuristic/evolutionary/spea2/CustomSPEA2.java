@@ -94,7 +94,7 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 		}
 
 		// update oldPopulation to the current population
-		oldPopulation = (List<S>) population;
+		oldPopulation = new ArrayList<S>(population);
 
 		// check if all solutions within the joined list have the same objective values
 		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
@@ -111,6 +111,16 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))) {
 				writer.write(
 						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
+				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
 				writer.newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -150,6 +160,16 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 
 			updateProgress();
 
+		}
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
+			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					Configurator.eINSTANCE.getSearchBudgetType(), iterations, maxIterations);
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

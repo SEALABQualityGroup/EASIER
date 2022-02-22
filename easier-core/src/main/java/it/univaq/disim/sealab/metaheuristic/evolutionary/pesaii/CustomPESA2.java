@@ -111,6 +111,16 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 				e.printStackTrace();
 			}
 		}
+		
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
+				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		this.setPopulation(createInitialPopulation());
 		this.setPopulation(evaluatePopulation(this.getPopulation()));
@@ -152,6 +162,16 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 			updateProgress();
 			_evaluations += this.getMaxPopulationSize();
 
+		}
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
+			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					Configurator.eINSTANCE.getSearchBudgetType(), _evaluations / getMaxPopulationSize(), _maxEvaluations / getMaxPopulationSize());
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

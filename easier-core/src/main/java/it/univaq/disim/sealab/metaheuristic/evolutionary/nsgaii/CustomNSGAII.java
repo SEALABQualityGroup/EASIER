@@ -163,7 +163,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
 				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
 			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					Configurator.eINSTANCE.getSearchBudgetType(), evaluations, maxEvaluations);
+					Configurator.eINSTANCE.getSearchBudgetType(), evaluations / getMaxPopulationSize(), maxEvaluations / getMaxPopulationSize());
 			writer.write(line);
 			writer.newLine();
 		} catch (IOException e) {
