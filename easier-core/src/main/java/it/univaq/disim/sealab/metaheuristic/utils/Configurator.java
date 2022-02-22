@@ -29,7 +29,7 @@ public class Configurator {
 	private List<String> modelsPath = new ArrayList<>();
 
 	@Parameter(names = { "--solver" }, description = "Set the solver {TTKernel, LQN} path")
-	private String solver;
+	private String solver = "/usr/local/bin/lqns";
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
 	private String paretoFront;
