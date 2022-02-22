@@ -132,7 +132,7 @@ public class Launcher {
 		}
 	}
 
-	private static void applyTransformation(Path sourceModelPath) {
+	static void applyTransformation(Path sourceModelPath) {
 
 		System.out.print("Applying transformation ... ");
 		EasierUmlModel uml = null;
@@ -169,7 +169,7 @@ public class Launcher {
 		System.out.println("done");
 	}
 
-	private static void invokeSolver(Path sourceModelPath) {
+	static void invokeSolver(Path sourceModelPath) {
 		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
 		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
