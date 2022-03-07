@@ -73,7 +73,7 @@ public class RExperimentAlgorithm<S extends RSolution<?>, Result extends List<S>
 			super.getAlgorithm().run();
 			Result population = super.getAlgorithm().getResult();
 			
-			String suffix = "__" + population.get(0).getProblemName() + ".csv";
+			String suffix = "__" + ((RSolution<?>)population.get(0)).getProblemName() + ".csv";
 			
 			funFile += suffix;
 			varFile += suffix;

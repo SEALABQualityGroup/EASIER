@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.naming.InitialContext;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -50,6 +52,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.uml.RefactoringActionFactory
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
 import it.univaq.sealab.umlreliability.UMLReliability;
@@ -114,7 +117,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		resetParents();
 		init();
 
-		this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX), this);
+		this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX));
 
 		for (int i = 0; i < s.getNumberOfObjectives(); i++) {
 			this.setObjective(i, s.getObjective(i));
@@ -271,7 +274,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		return false;
 	}
 
-	protected void copyRefactoringVariable(Refactoring variableValue, RSolution<Refactoring> sol) {
+	protected void copyRefactoringVariable(Refactoring variableValue) {
 		this.setVariable(VARIABLE_INDEX, variableValue.clone(this));
 	}
 
@@ -282,18 +285,20 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
 
-		Refactoring ref = new Refactoring();
+//		Refactoring ref = new Refactoring();
 
 		try {
 			for (int j = 0; j < point; j++) {
 				RefactoringAction _new = s1.getActionAt(j).clone(this);
-				ref.getActions().add(j, _new);
+				this.getVariable(0).getActions().add(j, _new);
+//				ref.getActions().add(j, _new);
 			}
 			for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
 				RefactoringAction _new = s2.getActionAt(j).clone(this);
-				ref.getActions().add(j, _new);
+				this.getVariable(0).getActions().add(j, _new);
+//				ref.getActions().add(j, _new);
 			}
-			this.setVariable(VARIABLE_INDEX, ref);
+//			this.setVariable(VARIABLE_INDEX, ref);
 		} catch (IndexOutOfBoundsException e) {
 			EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
 			e.printStackTrace();
@@ -387,6 +392,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		numPAs = nPas;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,counting_pas,%s,%s","NSGA",problemName,getName(),getName(),duration));
 		System.out.println(String.format(" execution time: %s ms", duration));
 
 		uml = null;
@@ -460,6 +466,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		process = null;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s","NSGA",problemName,getName(),duration));
 		System.out.println(String.format("invokeSolver execution time: %s", duration));
 		System.out.println("done");
 
@@ -467,6 +474,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		startTime = System.currentTimeMillis();
 		backAnnotation();
 		duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s","NSGA",problemName,getName(),duration));
 		System.out.println(String.format("backAnnotation execution time: %s", duration));
 		System.out.println("done");
 	}
@@ -559,7 +567,10 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	public double evaluatePerformance() {
 		System.out.print("Counting perfQ ... ");
+		long initTime = System.currentTimeMillis();
 		perfQ = perfQ();
+		long durationTime = System.currentTimeMillis() - initTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s","NSGA",problemName,getName(),durationTime));
 		System.out.println("done");
 		return perfQ;
 	}
@@ -779,6 +790,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		executor = null;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s","NSGA",problemName,getName(),duration));
 		System.out.println(String.format("%s done", duration));
 	}
 
@@ -787,16 +799,17 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		for (RefactoringAction a : ref.getActions()) {
 
+			long initialTime = System.nanoTime();
 			try {
 				a.execute();
 			} catch (UnsupportedOperationException e) {
 				e.printStackTrace();// TODO: handle exception
 			}
+			long durationTime = System.nanoTime() - initialTime;
+			new FileUtils().refactoringStatsDumpToCSV(String.format("%s,%s",a.toCSV(),durationTime));
 		}
 		this.setRefactored();
-
 		new UMLMemoryOptimizer().cleanup();
-
 	}
 
 	public EasierUmlModel getDirtyIModel() {
@@ -809,6 +822,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
 		UMLReliability uml = null;
+		long initTime = System.currentTimeMillis();
 		try {
 			uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
 			reliability = new Reliability(uml.getScenarios()).compute();
@@ -837,6 +851,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				System.out.println(e1.getMessage());
 			}
 		}
+		long durationTime = System.currentTimeMillis() - initTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,reliability,%s","NSGA",problemName,durationTime));
+		
 		new UMLMemoryOptimizer().cleanup();
 		uml = null;
 		System.out.println("done");
@@ -893,6 +910,16 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		} else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
 			return false;
 		return true;
+	}
+	
+	// Set Reliability. 
+	// If the rel param is greater than 1 reliability is set to 1
+	public void setReliability(double rel) {
+		this.reliability = rel < 1 ? rel : 1;
+	}
+	
+	public void setPAs(int pas) {
+		this.numPAs = pas;
 	}
 
 }

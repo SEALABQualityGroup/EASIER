@@ -14,15 +14,16 @@ public class Refactoring {
 
 	private List<RefactoringAction> actions;
 	private logicalSpecification.Refactoring _refactoring;
-	private int solutionID;
+	private int solutionID = -1;
 
 	public Refactoring() {
 		setRefactoring(LogicalSpecificationFactory.eINSTANCE.createRefactoring());
 		actions = new ArrayList<>();
 	}
 
-	public Refactoring clone(RSolution sol) {
+	public Refactoring clone(RSolution<?> sol) {
 		Refactoring newRefactoring = new Refactoring();
+		newRefactoring.solutionID = sol.getName();
 
 		newRefactoring.setCost(this.getCost());
 //		newRefactoring.setNumOfChanges(this.getNumOfChanges());
@@ -94,12 +95,16 @@ public class Refactoring {
 	}
 
 	public Double getNumOfChanges() {
+		return this._refactoring.getNumOfChanges();
+	}
+	
+	public void computeNumOfChanges() {
 		double numOfChanges = 0.0;
 		for (RefactoringAction a : getActions()) {
 			numOfChanges += a.getNumOfChanges();
 		}
 		setNumOfChanges(numOfChanges);
-		return numOfChanges;
+//		return numOfChanges;
 	}
 
 	@Override

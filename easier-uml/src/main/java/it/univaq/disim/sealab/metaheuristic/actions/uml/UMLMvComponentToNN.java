@@ -64,13 +64,17 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		umlCompToMove = getRandomComponent(sol);
 		umlTargetNodes.add(createNewNode(sol));
 
-		cost = calculateCost();
-		numOfChanges = cost;
+		cost = numOfChanges = calculateCost();
+		//numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
+	}
+	
+	public double getNumOfChanges() {
+		return numOfChanges;
 	}
 
 	private double calculateCost() {

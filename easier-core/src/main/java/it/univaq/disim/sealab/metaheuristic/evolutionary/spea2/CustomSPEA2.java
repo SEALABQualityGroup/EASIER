@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
@@ -26,6 +27,11 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private long durationThreshold, iterationStartingTime;
+	private float prematureConvergenceThreshold;
+
+	private List<S> oldPopulation;
+	
 	/**
 	 * Constructor
 	 * distance to the k-th individual
@@ -38,13 +44,60 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 		// k = sqrt(population.size()), but a value of k = 1 is recommended. 
 		super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator, evaluator, 1);
 		
+		durationThreshold = Configurator.eINSTANCE.getStoppingCriterionTimeThreshold();
+		prematureConvergenceThreshold = Configurator.eINSTANCE.getStoppingCriterionPrematureConvergenceThreshold();
+		oldPopulation = new ArrayList<S>();
+		
 	}
-
+	
+	
+	/**
+	 * Support multiple stopping criteria.
+	 * byTime the default computing threshold is set to 1 h
+	 * byPrematureConvergence the default premature convergence is set to 3 consecutive populations with the same objectives
+	 * byBoth using byTime and byPrematureConvergence
+	 * classic using the number of evaluation
+	 */
 	@Override
 	protected boolean isStoppingConditionReached() {
 		System.out.println(getName());
 		ProgressBar.showBar(iterations, maxIterations);
+		long currentComputingTime = System.currentTimeMillis() - iterationStartingTime;
+
+		if (Configurator.eINSTANCE.isSearchBudgetByTime()) // byTime
+			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) //byPrematureConvergence
+			return super.isStoppingConditionReached() || isStagnantState();
+		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
+			return super.isStoppingConditionReached() || isStagnantState() || currentComputingTime > durationThreshold;
 		return super.isStoppingConditionReached();
+	}
+	
+	@Override
+	protected void initProgress() {
+		super.initProgress();
+		iterationStartingTime = System.currentTimeMillis();
+		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
+	}
+
+	
+	public boolean isStagnantState() {
+
+		int countedSameObjectives = 0;
+		for (int i = 0; i < oldPopulation.size(); i++) {
+			for (int j = 0; j < population.size(); j++) {
+				if (!oldPopulation.get(i).isLocalOptmimalPoint(population.get(j))) {
+					break;
+				}
+				countedSameObjectives++;
+			}
+		}
+
+		// update oldPopulation to the current population
+		oldPopulation = new ArrayList<S>(population);
+
+		// check if all solutions within the joined list have the same objective values
+		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
 	}
 	
 	@Override
@@ -58,6 +111,16 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))) {
 				writer.write(
 						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
+				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
 				writer.newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -97,6 +160,16 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 
 			updateProgress();
 
+		}
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
+			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					Configurator.eINSTANCE.getSearchBudgetType(), iterations, maxIterations);
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

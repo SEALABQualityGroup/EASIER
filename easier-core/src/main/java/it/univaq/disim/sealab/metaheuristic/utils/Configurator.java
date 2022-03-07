@@ -5,9 +5,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections4.map.HashedMap;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.IParameterSplitter;
@@ -32,7 +29,7 @@ public class Configurator {
 	private List<String> modelsPath = new ArrayList<>();
 
 	@Parameter(names = { "--solver" }, description = "Set the solver {TTKernel, LQN} path")
-	private String solver;
+	private String solver = "/usr/local/bin/lqns";
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
 	private String paretoFront;
@@ -121,9 +118,6 @@ public class Configurator {
 			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
 	private String maxWorseModels;
 	
-//	@Parameter(names = { "--uml2lqn" }, description = "It points to the folder of the UML-2-LQN project")
-//	private String uml2lqn;
-	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
 	private int objectives;
 	
@@ -132,7 +126,9 @@ public class Configurator {
 	
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
 	private double epsilon;
-	
+
+	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget. It supports: byTime, byPrematureConvergence, byBoth" )
+	private String searchBudget;
 	
 	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
 	private List<String> brfs_list = List.of("1.23","1.23","1.23","1.23");
@@ -140,6 +136,41 @@ public class Configurator {
 	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
 	private double probPas=0.95;
 
+	@Parameter(names = {"-sbTimeTh","--searchBudgetTimeThreshold"}, description = "The search budget stopping criterion by time.")
+	private long searchBudgetTimeThreshold = 3_600_000;
+	
+	@Parameter(names = {"-sbPCTh","--searchBudgetPrematureConvergenceThreshold"}, description = "The search budget stopping criterion by premature convergence.")
+	private float searchBudgetPrematureConvergenceThreshold = 0.50f;
+	
+	//It is a positional List where: 0=ePas,1=eRel,2=ePerfQ,3=eChanges
+	@Parameter(names = {"-sbPCEpsilon", "--searchBudgetPrematureConvergenceEpsilon"}, description = "The epsilon neighborhood for Premature Convergence.")
+	private List<Double> optimalPointEpsilon = List.of(1d,1.15d,1.15d,1.3d);
+	
+	public long getStoppingCriterionTimeThreshold() {
+		return searchBudgetTimeThreshold;
+	}
+	
+	public float getStoppingCriterionPrematureConvergenceThreshold() {
+		return searchBudgetPrematureConvergenceThreshold;
+	}
+	
+	public String getSearchBudgetType() {
+		return searchBudget;
+	}
+	
+	public boolean isSearchBudgetByTime() {
+		return searchBudget.equals("byTime");
+	}
+	
+	public boolean isSearchBudgetByPrematureConvergence() {
+		return searchBudget.equals("byPrematureConvergence");
+	}
+	
+	public boolean isSearchBudgetByPrematureConvergenceAndTime() {
+		return searchBudget.equals("byBoth");
+	}
+	
+	
 	public List<String> getBrfList(){
 		return brfs_list;
 	}
@@ -163,10 +194,6 @@ public class Configurator {
 	public int getObjectives() {
 		return objectives;
 	}
-
-//	public Path getUml2Lqn() {
-//		return Paths.get(uml2lqn);
-//	}
 
 	public int getMaxWorseModels() {
 		if (maxWorseModels == null) {
@@ -307,6 +334,10 @@ public class Configurator {
 
 	public Double getProbPas() {
 		return probPas;
+	}
+
+	public double[] getLocalOptimalPointEpsilon() {
+		return optimalPointEpsilon.stream().mapToDouble(Number::doubleValue).toArray();
 	}
 	
 }
