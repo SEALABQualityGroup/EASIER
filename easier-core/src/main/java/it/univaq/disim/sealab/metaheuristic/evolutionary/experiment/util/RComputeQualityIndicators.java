@@ -96,7 +96,7 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 
 					JMetalLogger.logger.info("RF: " + referenceFrontName);
 
-					Front referenceFront = new ArrayFront(referenceFrontName, ",");
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName), ",");
 
 					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
@@ -323,10 +323,12 @@ public class RComputeQualityIndicators<S extends Solution<?>, Result extends Lis
 		JMetalLogger.logger.info("Writing org.uma.jmetal.experiment summary file");
 		String headerOfCSVFile = "Algorithm,Problem,IndicatorName,ExecutionId,IndicatorValue";
 		String csvFileName = this.experiment.getExperimentBaseDirectory() + "/QualityIndicatorSummary.csv";
-		resetFile(csvFileName);
-
+//		resetFile(csvFileName);
+		
 		try (FileWriter os = new FileWriter(csvFileName, true)) {
-			os.write("" + headerOfCSVFile + "\n");
+			if(new File(csvFileName).length() == 0) {
+				os.write("" + headerOfCSVFile + "\n");
+			}
 
 			for (GenericIndicator<?> indicator : experiment.getIndicatorList()) {
 				for (ExperimentAlgorithm<?, Result> algorithm : experiment.getAlgorithmList()) {
