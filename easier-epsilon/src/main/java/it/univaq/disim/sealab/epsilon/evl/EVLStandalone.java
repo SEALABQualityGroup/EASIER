@@ -2,12 +2,13 @@ package it.univaq.disim.sealab.epsilon.evl;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.execute.context.Variable;
-import org.eclipse.epsilon.eol.types.EolModelElementType;
+import org.eclipse.epsilon.eol.types.EolSequence;
 import org.eclipse.epsilon.evl.EvlModule;
+import org.eclipse.epsilon.evl.dom.Constraint;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 
@@ -19,7 +20,6 @@ public class EVLStandalone extends EpsilonStandalone {
 	 */
 	public EVLStandalone() {
 		module = new EvlModule();
-		
 		model = new ArrayList<>();
 	}
 
@@ -38,15 +38,12 @@ public class EVLStandalone extends EpsilonStandalone {
 	}
 
 	/**
+	 * It returns a map of unsatisfied constraints in descending order.
 	 * 
-	 * @param mmaemiliaFilePath
-	 * @return
+	 * @return A sorted entry of Constraints with the number of unsatisfied
+	 *         instances, in descending order.
 	 */
-	public int getPAs(Path mmaemiliaFilePath, Path rulePath) {
-		return getPAs();
-	}
-	
-	public int getPAs() {
+	public Map<Constraint, Integer> getUnsatisfiedConstraints() {
 		try {
 			preProcess();
 			execute();
@@ -54,20 +51,57 @@ public class EVLStandalone extends EpsilonStandalone {
 			System.err.println("Error in Performance antipattern detection using the file " + model.toString());
 			e.printStackTrace();
 		}
-		int pas = ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
-		return pas;
+
+		return ((EvlModule) this.module).getContext().getUnsatisfiedConstraintsBySize();
+
+//		int pas = ((EvlModule) this.module).getContext().getUnsatisfiedConstraints().size();
+//		return pas;
+	}
+
+	/**
+	 * Extracts a map<performance antipattern type, map<target.name, fuzzy_value>>
+	 * 	  
+	 * @return map<performance antipattern type, map<target.name, fuzzy_value>>
+	 */
+	public Map<String, Map<String, Double>> extractFuzzyValues() {
+		try {
+			preProcess();
+			execute();
+		} catch (Exception e) {
+			System.err.println("Error in Performance antipattern detection using the file " + model.toString());
+			e.printStackTrace();
+		}
+
+		org.eclipse.epsilon.eol.types.EolMap<?, ?> mapOfPas = ((org.eclipse.epsilon.eol.types.EolMap<?, ?>) ((EvlModule) this.module)
+				.getContext().getFrameStack().get("fuzzy_values").getValue());
+
+		Map<String, Map<String, Double>> perfAntippaternsClassification = new HashMap<>();
+		for (Object key : mapOfPas.keySet()) {
+			Map<String, Double> perfAntipatternMap = new HashMap<>();	
+			org.eclipse.epsilon.eol.types.EolSequence<?> antipattern = (EolSequence<?>) mapOfPas.get(key);
+			
+			for(Object detail : antipattern) {
+				String modelElement = (String) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).keySet().stream().findFirst().get();
+				double fuzzyValue = (double) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).get(modelElement);
+				perfAntipatternMap.put(modelElement, fuzzyValue < 1 ? fuzzyValue : 1);
+			}
+			perfAntippaternsClassification.put((String)key, perfAntipatternMap);
+		}
+		
+		return perfAntippaternsClassification;
+
 	}
 
 	@Override
 	public void preProcess() {
-				
+
 	}
-	
+
 //	@Override
 //	public void clearMemory() {
 //		super.clearMemory();
 //		((EvlModule)this.module).getPre().clear();
 //		((EvlModule)this.module).getContext().dispose();
 //	}
-	
+
 }

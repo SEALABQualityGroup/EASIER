@@ -410,7 +410,7 @@ public class Launcher {
 
 		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
 		
-		float probPas = Configurator.eINSTANCE.getProbPas();
+		double probPas = Configurator.eINSTANCE.getProbPas();
 
 //		for (Integer eval : Configurator.eINSTANCE.getMaxEvaluation()) {
 		for (Integer l : Configurator.eINSTANCE.getLength()) {

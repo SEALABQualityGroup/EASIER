@@ -41,24 +41,4 @@ public class EpsilonHelper {
 
 	}
 
-	/**
-	 * 
-	 * @param mmaemiliaFilePath
-	 * @param ruleFilePath
-	 * @return
-	 */
-	public static int aemiliaPasChecker(Path mmaemiliaFilePath, Path ruleFilePath) {
-		 EVLStandalone module = new EVLStandalone();
-		 try {
-			module.setMetamodelPath(Paths.get("/tmp/mmAemilia.ecore"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 module.setModel(mmaemiliaFilePath);
-		 module.setSource(ruleFilePath);
-		 
-		 return module.getPAs(null, null);
-	}
-
 }
