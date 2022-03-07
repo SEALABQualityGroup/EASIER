@@ -68,22 +68,25 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 
 		umlClonedNode = createNewNode(sol);
 
-		cost = calculateCost();
-		numOfChanges = cost;
+		cost = numOfChanges = calculateCost();
+		//numOfChanges = cost;
 
 		setParameters();
 		createPreCondition();
 		createPostCondition();
 
 	}
+	
+	public double getNumOfChanges() {
+		return numOfChanges;
+//		return calculateCost();
+	}
 
 	private double calculateCost() {
 
 		int cpSize = targetObject.getCommunicationPaths().size();
 
-		int artSize = 0;
-
-		targetObject.getDeployments().stream().flatMap(d -> d.getDeployedArtifacts().stream()).count();
+		int artSize = (int) targetObject.getDeployments().stream().flatMap(d -> d.getDeployedArtifacts().stream()).count();
 		
 		double brf = Configurator.eINSTANCE.getBRF("clone");
 
