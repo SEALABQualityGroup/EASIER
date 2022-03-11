@@ -78,6 +78,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	private EasierUmlModel dirtyIModel;
 
 	private double[] scenarioRTs;
+	
+	private String algorithm;
 
 	private final static String refactoringLibraryModule, uml2lqnModule;
 	private final static String GQAM_NAMESPACE;
@@ -176,6 +178,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
 				String.valueOf(getName()));
 		modelPath = folderPath.resolve(getName() + ".uml");
+		
+		algorithm = this.problemName.split("__")[0];
 
 		try {
 			org.apache.commons.io.FileUtils.copyFile(sourceModelPath.toFile(), modelPath.toFile());
@@ -570,7 +574,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		long initTime = System.currentTimeMillis();
 		perfQ = perfQ();
 		long durationTime = System.currentTimeMillis() - initTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s","NSGA",problemName,getName(),durationTime));
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s",algorithm,problemName,getName(),durationTime));
 		System.out.println("done");
 		return perfQ;
 	}
@@ -790,7 +794,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		executor = null;
 
 		long duration = System.currentTimeMillis() - startTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s","NSGA",problemName,getName(),duration));
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s",algorithm,problemName,getName(),duration));
 		System.out.println(String.format("%s done", duration));
 	}
 
@@ -852,7 +856,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 			}
 		}
 		long durationTime = System.currentTimeMillis() - initTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,reliability,%s","NSGA",problemName,durationTime));
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s",algorithm,problemName,durationTime));
 		
 		new UMLMemoryOptimizer().cleanup();
 		uml = null;

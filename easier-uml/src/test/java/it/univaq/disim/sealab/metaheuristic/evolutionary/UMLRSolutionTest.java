@@ -70,7 +70,7 @@ public class UMLRSolutionTest {
 
 		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
 		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
-		p.setName("testing_problem");
+		p.setName("simplified-cocome__BRF_clone_1.23__moc_1.64__mcnn_1.45__moncnn_1.80__MaxEval_102__ProbPAs_0.95");
 		solution = (UMLRSolution) p.createSolution();
 		solution2 = (UMLRSolution) p.createSolution();
 	}
@@ -192,8 +192,8 @@ public class UMLRSolutionTest {
 	@After
 	public void tearDown() throws IOException {
 		solution = null;
-		if(Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv")))
-				Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
+//		if(Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv")))
+//				Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
 		
 	}
 
