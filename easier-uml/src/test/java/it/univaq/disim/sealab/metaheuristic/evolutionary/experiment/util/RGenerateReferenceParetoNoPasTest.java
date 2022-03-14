@@ -26,9 +26,9 @@ import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class RGenerateReferenceParetoNoPasTest {
-	
-	String newRel = "-newrel"; 
-			
+
+	String newRel = "-newrel";
+
 	private NonDominatedSolutionListArchive<RPointSolution> extractNonDominatedArchive(List<Path> paths,
 			int objectives) {
 		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
@@ -72,12 +72,11 @@ public class RGenerateReferenceParetoNoPasTest {
 			nonDominatedSolutionArchive = extractNonDominatedArchive(referenceFronts, objectives);
 
 			printObjectivesToFile(
-					getFileWriter(
-							String.format("%s/%s__super_pareto__No_PAs.rf", problemFolderName, pName)),
+					getFileWriter(String.format("%s/%s__super_pareto__No_PAs.rf", problemFolderName, pName)),
 					nonDominatedSolutionArchive.getSolutionList(), objectives);
 		}
 	}
-	
+
 	@Test
 	public void generateSuperReferenceParetoGroupByBRFNoPasTest() throws IOException {
 		NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
@@ -150,34 +149,39 @@ public class RGenerateReferenceParetoNoPasTest {
 
 		List<Path> funSolutions;
 
-//		String[] problemName = { "simplified-cocome", "train-ticket"};
-		String[] problemName = { "simplified-cocome" };
+		String[] problemName = { "simplified-cocome", "train-ticket" };
 
-		String problemFolderName = "/home/peo/git/sealab/seaa2021_jist_si_data/data/objectives";
-		String referenceParetoFolder = "/home/peo/git/sealab/seaa2021_jist_si_data/data/reference_paretos";
+		String problemFolderName = "/home/peo/git/sealab/2022-seaa-data/data/by_time/";
+		String referenceParetoFolder = problemFolderName + "/reference_paretos";
 
-		String[] brfs = { "moc_1.64", "moc_1.23" };
-		
+		String[] algoSuffixs = new String[] { "__Algo_nsgaii", "__Algo_spea2", "__Algo_pesa2" };
+		String[] searchBudgets = new String[] { "sb_900000", "sb_3600000", "sb_1800000" };
+
+		String[] brfs = { "moc_1.64" };// , "moc_1.23" };
+
 		int[] evals = { 72, 82, 102 };
-		int[] probPas = { 55, 80, 95, 0 };
+//		int[] probPas = { 55, 80, 95, 0 };
+		int[] probPas = { 95 };
 
 		for (final String pName : problemName) {
 			for (final int eval : evals) {
-				for (final int probPa : probPas) {
+//				for (final int probPa : probPas) {
 					int objectives = 4;
-					if (probPa == 0) {
-						objectives = 3;
-					}
-					for (final String brf : brfs) {
+//					if (probPa == 0) {
+//						objectives = 3;
+//					}
+//					for (final String brf : brfs) {
+				for (String sBudget : searchBudgets) {
+					for (String suffix : algoSuffixs) {
 
 						NonDominatedSolutionListArchive<RPointSolution> nonDominatedSolutionArchive = new NonDominatedSolutionListArchive<RPointSolution>();
 
-						try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName))) {
+						try (Stream<Path> walk = Files.walk(Paths.get(problemFolderName+"/objectives"))) {
 							funSolutions = walk.filter(Files::isRegularFile)
 									.filter(path -> path.toString().endsWith(".csv") && path.toString().contains("FUN")
 											&& path.toString().contains(pName) && path.toString().contains("" + eval)
-											&& path.toString().contains("ProbPAs_0." + probPa)
-											&& path.toString().contains(brf) && path.toString().contains(newRel))
+											&& path.toString().contains("ProbPAs_0." + probPas[0])
+											&& path.toString().contains(sBudget) && path.toString().contains(suffix))
 									.collect(Collectors.toList());
 						}
 
@@ -188,16 +192,18 @@ public class RGenerateReferenceParetoNoPasTest {
 							GenericSolutionAttribute<RPointSolution, String> solutionAttribute = new GenericSolutionAttribute<RPointSolution, String>();
 
 							for (RPointSolution solution : ptSolutionList) {
-								solutionAttribute.setAttribute(solution, "NSGAII");
+								solutionAttribute.setAttribute(solution, suffix);
 								nonDominatedSolutionArchive.add(solution);
 							}
 						}
 
 						printObjectivesToFile(getFileWriter(String.format(
-								"%s/%s__BRF_clone_1.23__%s__mcnn_1.45__moncnn_1.80__MaxEval_%d__ProbPAs_0.%d%s__Algo_nsgaii.rf",
-								referenceParetoFolder, pName, brf, eval, probPa, newRel)),
+								"%s/%s__BRF_%s__MaxEval_%d__ProbPAs_0.%d__%s%s.rf",
+								referenceParetoFolder, pName, brfs[0], eval, probPas[0], sBudget, suffix)),
 								nonDominatedSolutionArchive.getSolutionList(), objectives);
 					}
+//					}
+//					}
 				}
 			}
 		}

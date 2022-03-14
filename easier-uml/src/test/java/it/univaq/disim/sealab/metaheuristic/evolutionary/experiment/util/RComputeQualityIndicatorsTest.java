@@ -46,20 +46,23 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	List<GenericIndicator<S>> qIndicators;
 
 	private String baseDir, objectivesDir, qiDir, referenceFrontDir;
-	private String[] problemNames, evals, brfs, probPas;
+	private String[] problemNames, evals, brfs, probPas, algoSuffixs, search_budgets;
 
 	@Before
 	public void setup() {
 
-		baseDir = "/home/peo/git/sealab/seaa2021_jist_si_data/data";
+		baseDir = "/home/peo/git/sealab/2022-seaa-data/data/by_time";
 		objectivesDir = baseDir + "/objectives";
 		qiDir = baseDir + "/quality_indicators";
 		referenceFrontDir = baseDir + "/reference_paretos";
 
-		problemNames = new String[] { "train-ticket", "simplified-cocome", "simplified-cocome-newrel" };
-		probPas = new String[] { "95", "80", "55" };
+		problemNames = new String[] { "train-ticket", "simplified-cocome" };// , "simplified-cocome-newrel" };
+		probPas = new String[] { "95" };// , "80", "55" };
 		evals = new String[] { "72", "82", "102" };
-		brfs = new String[] { "moc_1.64", "moc_1.23" };
+		brfs = new String[] { "moc_1.64" };// , "moc_1.23" };
+
+		algoSuffixs = new String[] { "nsgaii", "spea2", "pesa2" };
+		search_budgets = new String[] { "sb_900000", "sb_3600000", "sb_1800000" };
 
 		List<String> qualityIndicators = Arrays.asList("IGD+", "EPSILON", "HYPER_VOLUME", "GENERALIZED_SPREAD");
 
@@ -78,7 +81,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir));
 		referenceFronts = walk.filter(Files::isRegularFile)
 				.filter(path -> path.toString().endsWith(".rf") && path.toString().contains(pName + "_")
-						&& path.toString().contains("super_pareto") && !path.toString().contains("No_PAs"))
+						&& path.toString().contains("super_pareto"))// && !path.toString().contains("No_PAs"))
 				.collect(Collectors.toList());
 		walk.close();
 		return referenceFronts;
@@ -101,43 +104,43 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	public void computeQIperProbPasPasTest() throws IOException {
 		for (GenericIndicator<S> indicator : qIndicators) {
 			for (final String pName : problemNames) {
-				for(String probPa : probPas) {
-				Path referenceFrontName = null;
+				for (String probPa : probPas) {
+					Path referenceFrontName = null;
 
-				referenceFrontName = extractReferenceParetos(pName).stream()
-						.filter(path -> path.toString().contains("ProbPAs_0." + probPa)).findFirst().orElse(null);
+					referenceFrontName = extractReferenceParetos(pName).stream()
+							.filter(path -> path.toString().contains("ProbPAs_0." + probPa)).findFirst().orElse(null);
 
-				Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString(), false), ",");
-				FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
-				Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
+					Front referenceFront = new ArrayFront(removeSolID(referenceFrontName.toString(), false), ",");
+					FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
+					Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
 
-				indicator.setReferenceParetoFront(normalizedReferenceFront);
+					indicator.setReferenceParetoFront(normalizedReferenceFront);
 
-				for (String brf : brfs) {
-					for (String e : evals) {
-						for (String pa : probPas) {
-							List<Path> frontFileNames = null;
+					for (String brf : brfs) {
+						for (String e : evals) {
+							for (String pa : probPas) {
+								List<Path> frontFileNames = null;
 
-							frontFileNames = extractReferenceFronts(pName).stream()
-									.filter(path -> path.toString().contains("ProbPAs_0." + pa)
-											&& path.toString().contains(brf)
-											&& path.toString().contains("MaxEval_" + e))
-									.collect(Collectors.toList());
+								frontFileNames = extractReferenceFronts(pName).stream()
+										.filter(path -> path.toString().contains("ProbPAs_0." + pa)
+												&& path.toString().contains(brf)
+												&& path.toString().contains("MaxEval_" + e))
+										.collect(Collectors.toList());
 
-							String qualityIndicatorFile = String.format(
-									"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
-									qiDir, indicator.getName(), pName, brf, e, pa, probPa);
+								String qualityIndicatorFile = String.format(
+										"%s/%s__%s__BRF_%s__MaxEval_%s__ProbPAs_0.%s__super_pareto__ProbPAs_0.%s.csv",
+										qiDir, indicator.getName(), pName, brf, e, pa, probPa);
 
-							resetFile(qualityIndicatorFile);
+								resetFile(qualityIndicatorFile);
 
-							writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
+								writeQualityIndicator(frontFileNames, frontNormalizer, indicator, qualityIndicatorFile);
 
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
 	}
 
@@ -341,7 +344,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 	@Test
 	public void generateQiOptimalParetoCSV() throws IOException {
 		String qualityIndicatorFile = String.format("%s/qi__optimal.csv", qiDir); // qi__train-ticket.csv
-		String header = "case_study,brf,max_eval,prob_pas,q_indicator,value";
+		String header = "case_study,brf,max_eval,prob_pas,search_budget,algorithm,q_indicator,value";
 
 		FileWriter os;
 		os = new FileWriter(qualityIndicatorFile, false);
@@ -351,7 +354,7 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 		Path optimalFrontName;
 
 		for (final String pName : problemNames) {
-			Stream<Path> walk = Files.walk(Paths.get(referenceFrontDir));
+			Stream<Path> walk = Files.walk(Paths.get(baseDir + "/optimal_paretos/"));
 			optimalFrontName = walk
 					.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".rf")
 							&& path.toString().contains("optimal_pareto") && path.toString().contains(pName + "_"))
@@ -362,27 +365,30 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 			FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
 			Front normalizedReferenceFront = frontNormalizer.normalize(referenceFront);
 
-			List<String> auxList = new ArrayList<String>(Arrays.asList(probPas));
-			auxList.add("00");
-			probPas = null;
-			probPas = auxList.toArray(String[]::new);
+//			List<String> auxList = new ArrayList<String>(Arrays.asList(probPas));
+//			auxList.add("00");
+//			probPas = null;
+//			probPas = auxList.toArray(String[]::new);
 
-			for (String brf : brfs) {
-				for (String e : evals) {
-					for (String pa : probPas) {
+			for (String suffix : algoSuffixs) {
+				for (String sBudget : search_budgets) {
+					for (String e : evals) {
+//						for (String pa : probPas) {
 						List<Path> frontFileNames = null;
 
 						frontFileNames = extractReferenceFronts(pName).stream()
-								.filter(path -> path.toString().contains("ProbPAs_0." + pa)
-										&& path.toString().contains(brf) && path.toString().contains("MaxEval_" + e))
+								.filter(path -> path.toString().contains("ProbPAs_0." + probPas[0])
+										&& path.toString().contains(brfs[0]) && path.toString().contains("MaxEval_" + e)
+										&& path.toString().contains("Algo_"+suffix)
+										&& path.toString().contains(sBudget))
 								.collect(Collectors.toList());
 
-						String line = String.format("%s,%s,%s,%s,", pName, brf, e, pa);
+						String line = String.format("%s,%s,%s,%s,%s,%s,", pName, brfs[0], e, probPas[0], sBudget, suffix);
 						writeQualityIndicatorValues(frontNormalizer, normalizedReferenceFront, frontFileNames, line,
-								qualityIndicatorFile, true);
+								qualityIndicatorFile, false);
 
 					}
-
+//					}
 				}
 			}
 
@@ -445,8 +451,6 @@ public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 		}
 	}
-
-
 
 	@SuppressWarnings("resource")
 	@Test
