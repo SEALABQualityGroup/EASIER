@@ -54,10 +54,9 @@ public class UMLRSolutionTest {
 		int allowedFailures = 100;
 		int desired_length = 4;
 		int populationSize = 4;
-		int number_of_action = 5;
 		
-		String modelpath = "/mnt/develop/git/sealab/easier/easier-uml2lqnCaseStudy/train-ticket/train-ticket.uml";
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
+		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 	}
 	
