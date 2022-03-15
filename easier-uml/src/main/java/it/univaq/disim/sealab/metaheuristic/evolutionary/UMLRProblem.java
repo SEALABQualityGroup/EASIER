@@ -12,12 +12,12 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UMLRProblem(Path srcFolderPath, int desired_length, int length, int allowedFailures, int populationSize) {
-		super(srcFolderPath.getParent(), srcFolderPath, desired_length, length, allowedFailures, populationSize);
+	public UMLRProblem(Path srcFolderPath, int desired_length, int allowedFailures, int populationSize) {
+		super(srcFolderPath.getParent(), srcFolderPath, desired_length, allowedFailures, populationSize);
 	}
 
-	public UMLRProblem(SourceModel srcModel, int desired_length, int length, int allowedFailures, int populationSize) {
-		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, length, allowedFailures, populationSize);
+	public UMLRProblem(SourceModel srcModel, int desired_length, int allowedFailures, int populationSize) {
+		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, allowedFailures, populationSize);
 
 	}
 

@@ -18,7 +18,7 @@ public class RefactoringActionFactoryTest {
 	@Before
 	public void init() {
 		
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get("/tmp"), 4, 4, 10, 4);
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get("/tmp"), 4, 10, 4);
 		sol = (UMLRSolution) p.createSolution();
 	}
 	

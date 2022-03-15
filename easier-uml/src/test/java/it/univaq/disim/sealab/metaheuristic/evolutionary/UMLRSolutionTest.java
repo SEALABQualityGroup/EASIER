@@ -66,11 +66,9 @@ public class UMLRSolutionTest {
 		int allowedFailures = 100;
 		int desired_length = 4;
 		int populationSize = 4;
-		int number_of_action = 5;
-
-		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
-		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
-		p.setName("simplified-cocome__BRF_clone_1.23__moc_1.64__mcnn_1.45__moncnn_1.80__MaxEval_102__ProbPAs_0.95");
+		
+		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
 		solution = (UMLRSolution) p.createSolution();
 		solution2 = (UMLRSolution) p.createSolution();
 	}
@@ -175,7 +173,7 @@ public class UMLRSolutionTest {
 		LineNumberReader lnr = new LineNumberReader(
 				new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_composition.csv").toString()));
 		lnr.lines().count();
-		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength().get(0) + 1);
+		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength() + 1);
 		Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_composition.csv"));
 	}
 	
@@ -185,7 +183,7 @@ public class UMLRSolutionTest {
 		LineNumberReader lnr = new LineNumberReader(
 				new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_stats.csv").toString()));
 		lnr.lines().count();
-		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength().get(0) + 1);
+		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength() + 1);
 		Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_stats.csv"));
 	}
 

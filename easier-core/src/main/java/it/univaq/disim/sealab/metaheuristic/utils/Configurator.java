@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic.utils;
 
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,12 +20,6 @@ public class Configurator {
 	@Parameter(names = { "-h", "--help" }, help = true)
 	private boolean help;
 
-	@Parameter(names = { "-sor" }, description = "Use stochastic over-relaxation", arity = 0)
-	private boolean sor = false;
-
-	@Parameter(names = { "-e", "--experiment" }, description = "Execute experiment")
-	private boolean experiment = true;
-
 	@Parameter(names = { "-m", "--models" }, required = true, description = "List of models")
 	private List<String> modelsPath = new ArrayList<>();
 
@@ -33,16 +28,6 @@ public class Configurator {
 
 	@Parameter(names = { "-p", "--pareto" }, description = "Give the Reference pareto front file path")
 	private String paretoFront;
-
-	@Parameter(names = { "--maxCloning" }, description = "Set the max number of clones within a sequence")
-	private List<Integer> maxCloning = Arrays.asList(3);
-
-	@Parameter(names = { "--cloningWeight" }, description = "Set the architectural distance weight for a clone action")
-	private List<Double> cloningWeight = Arrays.asList(1.5);
-
-	@Parameter(names = {
-			"--constChangesWeight" }, description = "Set the architectural distance weight for a const change action")
-	private double constChangesWeight = 1;
 
 	@Parameter(names = { "-r", "--independent_runs" }, description = "Set the number of independent runs")
 	private int independetRuns = 31;
@@ -69,73 +54,39 @@ public class Configurator {
 			"--distributionIndex" }, description = "Set the distribution index for the mutation operator")
 	private double distributionIndex = 20;
 
-	@Parameter(names = { "-l", "--sequenceLength" }, description = "Set the length of a sequence")
-	private List<Integer> length = Arrays.asList(4);
+	@Parameter(names = { "-l", "--sequenceLength" }, description = "The length of a sequence")
+	private int length = 4;
 
 	@Parameter(names = { "-af", "--allowedFaiulures" }, description = "Set the maximunm number of failures")
 	private int aw = 100;
 
-	@Parameter(names = { "-a", "--actions" }, description = "Set the number of available actions")
-	private int actions = 5; // clone, removeClone, const change, probability, size
-
 	@Parameter(names = { "-tmpF", "--tempFolder" }, required = true, description = "It is the temporary file folder")
 	private String tmpF = "/tmp/easier-test";
 
-	@Parameter(names = { "-oclTemplate",
-			"--oclTemplateFolder" }, required = true, description = "It is the ocl rule template file")
-	private String oclTemplate;
-
-	@Parameter(names = { "-evlTemplate",
-			"--evlTemplateFolder" }, required = true, description = "It is the evl template file")
-	private String evlTemplate;
-
-	@Parameter(names = { "-ava",
-			"--availability" }, description = "Enables availability calculattion over pareto solutions")
-	private boolean ava = false;
-
-	@Parameter(names = { "-wr", "--workloadRange" }, description = "Enables workload rage")
-	private int wr = -1;
-
 	@Parameter(names = { "-algo", "--algorithm" }, required = true, description = "List of algorithms")
-	private List<String> algorithms = new ArrayList<>();
+	private String algorithm = "nsgaii";
 
-	@Parameter(names = { "-qI", "--qualityIndicator" }, required = true, description = "List of quality indicators")
-	private List<String> qI = new ArrayList<>();
+	@Parameter(names = { "-qI", "--quality_indicator" }, required = true, description = "List of quality indicators")
+	private List<String> qI = List.of("SPREAD","IGD+","EPSILON","HYPER_VOLUME","GENERALIZED_SPREAD");
 
 	@Parameter(names = { "-rf", "--refereceFront" }, description = "The absolut path to the reference front file (.rf)")
 	private List<String> referenceFront;
 
-	@Parameter(names = { "--genRF" }, description = "It allows the generation of reference front by tsv files")
+	@Parameter(names = { "-genRF", "--generate_reference_front" }, description = "It allows the generation of reference front by FUN files")
 	private boolean generateRF = false;
-
-	@Parameter(names = { "--worsen" }, description = "It enables the generation of worsen models")
-	private boolean worsen = false;
-
-	@Parameter(names = { "-mmp", "--metamodel-path" }, description = "It points to the metamodel file")
-	private String metamodelPath;
-
-	@Parameter(names = { "--maxWorseModels",
-			"-mwm" }, description = "It describes the maximum number of worse models extracted from the csv file, linked by --models paramter")
-	private String maxWorseModels;
 	
 	@Parameter(names = {"--objectives", "--objs"}, description = "Number of objectives" )
-	private int objectives;
+	private int objectives = 4;
 	
-	@Parameter(names = {"--refPoints"}, description = "List of reference points for R-NSGA algorithm")
+	@Parameter(names = {"--ref_points"}, description = "List of reference points for R-NSGA algorithm")
 	private List<Double> referencePoints = new ArrayList<>();
 	
 	@Parameter(names = {"--epsilon"},  description = "The epsilon value for the R-NSGA algorithm")
-	private double epsilon;
-
-	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget. It supports: byTime, byPrematureConvergence, byBoth" )
-	private String searchBudget;
+	private double epsilon = 0.3d;
 	
-	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
-	private List<String> brfs_list = List.of("1.23","1.23","1.23","1.23");
-
-	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
-	private double probPas=0.95;
-
+	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget. It supports: byTime, byPrematureConvergence, byBoth" )
+	private String searchBudget = "byTime";
+	
 	@Parameter(names = {"-sbTimeTh","--searchBudgetTimeThreshold"}, description = "The search budget stopping criterion by time.")
 	private long searchBudgetTimeThreshold = 3_600_000;
 	
@@ -145,6 +96,12 @@ public class Configurator {
 	//It is a positional List where: 0=ePas,1=eRel,2=ePerfQ,3=eChanges
 	@Parameter(names = {"-sbPCEpsilon", "--searchBudgetPrematureConvergenceEpsilon"}, description = "The epsilon neighborhood for Premature Convergence.")
 	private List<Double> optimalPointEpsilon = List.of(1d,1.15d,1.15d,1.3d);
+	
+	@Parameter(names = {"-brf","--baselineRefactoringFactor"},  splitter = SemiColonSplitter.class, description = "The ordered list of baseline refactoring factors of Refactoring actions")
+	private List<String> brfs_list = List.of("1.23","1.23","1.23","1.23");
+	
+	@Parameter(names = {"-probPAS","--probToBePerfAntipattern"}, description = "The probability to be a performance antipattern")
+	private double probPas = 0.95f;
 	
 	public long getStoppingCriterionTimeThreshold() {
 		return searchBudgetTimeThreshold;
@@ -182,6 +139,18 @@ public class Configurator {
 		return 1.23d;
 	}
 	
+	public String getSearchBudget() {
+		return searchBudget;
+	}
+	
+	public String getSearchBudgetThreshold() {
+		if("searchBudgetPrematureConvergenceThreshold".equals(searchBudget))
+			return String.valueOf(searchBudgetPrematureConvergenceThreshold);
+		if ("byBoth".equals(searchBudget))
+			return String.valueOf(searchBudgetTimeThreshold) + "-" +  String.valueOf(searchBudgetPrematureConvergenceThreshold);
+		return String.valueOf(searchBudgetTimeThreshold);		
+	}
+	
 	
 	public double getEpsilon() {
 		return epsilon;
@@ -195,20 +164,6 @@ public class Configurator {
 		return objectives;
 	}
 
-	public int getMaxWorseModels() {
-		if (maxWorseModels == null) {
-			maxWorseModels = "5";
-			EasierLogger.logger_
-					.warning("[WARNING] the max number of worse models has been set to default value --> 5");
-
-		}
-		return Integer.valueOf(maxWorseModels);
-	}
-
-	public Path getMetamodelPath() {
-		return Paths.get(metamodelPath);
-	}
-
 	public List<Path> getReferenceFront() {
 		List<Path> paths = new ArrayList<>();
 		if (referenceFront == null)
@@ -216,10 +171,6 @@ public class Configurator {
 		for (String s : referenceFront)
 			paths.add(Paths.get(s));
 		return paths;
-	}
-
-	public boolean isWorsen() {
-		return worsen;
 	}
 
 	public boolean generateRF() {
@@ -230,39 +181,19 @@ public class Configurator {
 		return qI;
 	}
 
-	public List<String> getAlgorithms() {
-		return algorithms;
-	}
-
-	public int getWorkloadRange() {
-		return wr;
-	}
-
-	public boolean hasAvailability() {
-		return ava;
-	}
-
-	public Path getOclTemplate() {
-		return Paths.get(oclTemplate);
-	}
-
-	public synchronized Path getEVLTemplate() {
-		return Paths.get(evlTemplate);
+	public String getAlgorithm() {
+		return algorithm;
 	}
 
 	public Path getTmpFolder() {
 		return Paths.get(tmpF);
 	}
 
-	public int getActions() {
-		return actions;
-	}
-
 	public int getAllowedFailures() {
 		return aw;
 	}
 
-	public List<Integer> getLength() {
+	public int getLength() {
 		return length;
 	}
 
@@ -290,29 +221,12 @@ public class Configurator {
 		return independetRuns;
 	}
 
-	public double getConstChangesWeight() {
-		return constChangesWeight;
-	}
-
-	public List<Double> getCloningWeight() {
-		return cloningWeight;
-	}
-
-	public List<Integer> getMaxCloning() {
-		return maxCloning;
-	}
-
-	public boolean getExperiment() {
-		return experiment;
-	}
-
-	public boolean isSor() {
-		return sor;
-	}
-
 	public List<Path> getModelsPath() {
 		List<Path> paths = new ArrayList<>();
-		modelsPath.forEach(m -> paths.add(Paths.get(m)));
+		
+		modelsPath.forEach(m -> paths.add(Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..", "easier-uml2lqnCaseStudy", m)));
+		
+//		modelsPath.forEach(m -> paths.add(Paths.get(m)));
 		return paths;
 	}
 

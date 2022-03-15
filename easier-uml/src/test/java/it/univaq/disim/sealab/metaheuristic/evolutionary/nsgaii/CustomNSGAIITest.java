@@ -50,10 +50,9 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 		int allowedFailures = 100;
 		int desired_length = 4;
 		int populationSize = 4;
-		int number_of_action = 5;
 
 		String modelpath = getClass().getResource("/models/train-ticket/train-ticket.uml").getFile();
-		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action, allowedFailures, populationSize);
+		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
 		p.setName("problem_for_testing");
 
 		NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(p, crossoverOperator,
