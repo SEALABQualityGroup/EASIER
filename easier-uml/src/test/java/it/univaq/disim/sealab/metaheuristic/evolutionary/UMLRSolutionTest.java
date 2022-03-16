@@ -1,14 +1,15 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.net.URISyntaxException;
-import java.nio.file.Path;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -19,6 +20,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
+
+import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class UMLRSolutionTest {
 
@@ -59,12 +62,10 @@ public class UMLRSolutionTest {
 		int allowedFailures = 100;
 		int desired_length = 4;
 		int populationSize = 4;
-		int number_of_action = 5;
-
-
+		
 		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
-		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, number_of_action,
-				allowedFailures, populationSize);
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
+		p.setName("simplied-cocome__test");
 		solution = (UMLRSolution) p.createSolution();
 		solution2 = (UMLRSolution) p.createSolution();
 	}
@@ -121,18 +122,21 @@ public class UMLRSolutionTest {
 		solution.getVariable(0).setNumOfChanges(10);
 		solution2.getVariable(0).setNumOfChanges(10);
 
-		System.out.println(String.format("[Solution] perfQ: %s; rel: %s; numPas: %s; numChanges: %s",
-				solution.getPerfQ(), solution.getReliability(), solution.getPAs(), solution.getVariable(0).getNumOfChanges()));
-		System.out.println(String.format("[Solution2] perfQ: %s; rel: %s; numPas: %s; numChanges: %s",
-				solution2.getPerfQ(), solution2.getReliability(), solution2.getPAs(), solution2.getVariable(0).getNumOfChanges()));
+		System.out
+				.println(String.format("[Solution] perfQ: %s; rel: %s; numPas: %s; numChanges: %s", solution.getPerfQ(),
+						solution.getReliability(), solution.getPAs(), solution.getVariable(0).getNumOfChanges()));
+		System.out.println(
+				String.format("[Solution2] perfQ: %s; rel: %s; numPas: %s; numChanges: %s", solution2.getPerfQ(),
+						solution2.getReliability(), solution2.getPAs(), solution2.getVariable(0).getNumOfChanges()));
 
 		assertTrue(solution.isLocalOptmimalPoint(solution2));
 	}
-	
+
 	@Test
 	public void coutingPAs() {
 		solution.countingPAs();
-		System.out.println(solution.getPAs());
+		
+		assertTrue(solution.getPAs() == 12);
 	}
 
 	@Test
@@ -154,17 +158,39 @@ public class UMLRSolutionTest {
 	public void computeReliability() {
 		solution.computeReliability();
 	}
-	
+
 	@Test
 	public void applyTransformationTest() {
 		solution.applyTransformation();
 		solution.invokeSolver();
 	}
+
+	@Test
+	public void refactoringToCSV() throws IOException {
+		solution.refactoringToCSV();
+		LineNumberReader lnr = new LineNumberReader(
+				new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_composition.csv").toString()));
+		lnr.lines().count();
+		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength() + 1);
+		Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_composition.csv"));
+	}
 	
+	@Test
+	public void executeRefactoringTest() throws IOException {
+		solution.executeRefactoring();
+		LineNumberReader lnr = new LineNumberReader(
+				new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_stats.csv").toString()));
+		lnr.lines().count();
+		assertTrue(lnr.getLineNumber() == Configurator.eINSTANCE.getLength() + 1);
+		Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_stats.csv"));
+	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws IOException {
 		solution = null;
+		if(Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv")))
+				Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
+		
 	}
 
 }

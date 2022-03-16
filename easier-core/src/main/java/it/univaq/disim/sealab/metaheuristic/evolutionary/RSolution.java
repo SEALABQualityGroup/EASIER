@@ -11,6 +11,7 @@ import org.uma.jmetal.solution.AbstractSolution;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
@@ -275,9 +276,13 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	 * Returns the solution data as a CSV format
 	 * "solID,perfQ,#changes,pas,reliability"
 	 */
-	public String toCSV() {
+	public String objectiveToCSV() {
 		return String.format("%s,%s,%s,%s,%s", this.getName(), this.perfQ, this.getNumOfChanges(), this.numPAs,
 				this.reliability);
+	}
+	
+	public void refactoringToCSV() {
+		new FileUtils().refactoringDumpToCSV(getVariable(0).toString());
 	}
 
 	/**

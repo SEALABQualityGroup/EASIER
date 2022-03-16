@@ -17,8 +17,13 @@ public class RefactoringActionFactoryTest {
 	
 	@Before
 	public void init() {
+		int allowedFailures = 100;
+		int desired_length = 4;
+		int populationSize = 4;
 		
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get("/tmp"), 4, 4, 10, 4);
+		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
+		p.setName("agv__test");
 		sol = (UMLRSolution) p.createSolution();
 	}
 	

@@ -20,11 +20,13 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 
+@Ignore
 public class TestUMLManager {
 
 	private final ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();

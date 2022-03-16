@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GeneralizedSpread;
@@ -54,6 +55,7 @@ public class RGenerateReferenceParetoFrontTest {
 		_claz = new RGenerateReferenceParetoFront();
 	}
 
+	@Ignore
 	@Test
 	public void generateRPointSolutionList() throws IOException {
 
@@ -139,6 +141,7 @@ public class RGenerateReferenceParetoFrontTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void computeIndicators() throws FileNotFoundException {
 

@@ -1,9 +1,5 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary.nsgaii;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +14,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 @SuppressWarnings("serial")
 public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements EasierAlgorithm {
@@ -52,17 +49,12 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	 * "algorithm,problem_tag,solID,perfQ,#changes,pas,reliability"
 	 * 
 	 */
-	private void populationToCsV() {
+	void populationToCSV() {
 		super.updateProgress();
 
-		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv").toString(), true))) {
-			for (RSolution<?> sol : population) {
-				writer.write(this.getName() + ',' + this.getProblem().getName() + ',' + sol.toCSV());
-				writer.newLine();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (RSolution<?> sol : population) {
+			String line = this.getName() + ',' + this.getProblem().getName() + ',' + sol.objectiveToCSV();
+			new FileUtils().solutionDumpToCSV(line);
 		}
 	}
 
@@ -81,10 +73,9 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			return super.isStoppingConditionReached() || currentComputingTime > durationThreshold;
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergence()) // byPrematureConvergence
 			return super.isStoppingConditionReached() || isStagnantState();
-																										// computeStagnantState
+		// computeStagnantState
 		if (Configurator.eINSTANCE.isSearchBudgetByPrematureConvergenceAndTime()) // byBoth
-			return super.isStoppingConditionReached() || isStagnantState()
-					|| currentComputingTime > durationThreshold;
+			return super.isStoppingConditionReached() || isStagnantState() || currentComputingTime > durationThreshold;
 		return super.isStoppingConditionReached(); // classic
 
 	}
@@ -94,6 +85,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		super.initProgress();
 		iterationStartingTime = System.currentTimeMillis();
 		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
+		this.getPopulation().forEach(s -> s.refactoringToCSV());
 	}
 
 	public boolean isStagnantState() {
@@ -115,45 +107,14 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		oldPopulation = (List<S>) population;
 
 		// check if all solutions within the joined list have the same objective values
-		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
+		return ((double) (population.size() - countedSameObjectives / population.size())
+				/ population.size()) > prematureConvergenceThreshold;
 	}
 
 	@Override
 	public void run() {
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
-
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
-
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))) {
-				writer.write(
-						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv"))) {
-
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv").toString()))) {
-				writer.write("algorithm,problem_tag,solID,perfQ,#changes,pas,reliability");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
-				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 
 		this.setPopulation(createInitialPopulation());
 		this.setPopulation(evaluatePopulation(this.getPopulation()));
@@ -178,31 +139,23 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			long freeAfter = Runtime.getRuntime().freeMemory();
 			long totalAfter = Runtime.getRuntime().totalMemory();
 
-			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					computingTime, totalBefore, freeBefore, totalAfter, freeAfter);
-
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString(), true))) {
-				writer.append(line);
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
 			
 			updateProgress();
-			populationToCsV();
+			populationToCSV();
 
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
-			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					Configurator.eINSTANCE.getSearchBudgetType(), evaluations / getMaxPopulationSize(), maxEvaluations / getMaxPopulationSize());
-			writer.write(line);
-			writer.newLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		/* prints the number of iterations until the search budget is not reached. 
+		 * !!!Attn!!! 
+		 * evaluations / getMaxPopulationSize() -1
+		 * is required because evaluations has been updated just before checking the stopping criteria
+		 * !!!Attn!!! 
+		 */
+		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+				Configurator.eINSTANCE.getSearchBudgetType(), evaluations / getMaxPopulationSize() -1,
+				maxEvaluations / getMaxPopulationSize()));
 	}
 
 	@Override

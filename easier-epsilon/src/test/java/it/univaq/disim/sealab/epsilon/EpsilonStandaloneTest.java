@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.evl.parse.EvlParser.evlModule_return;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
@@ -45,7 +46,9 @@ public class EpsilonStandaloneTest {
 		
 	}
 	
-	
+
+	// requires the updated module
+	@Ignore
 	@Test
 	public void extractFuzzyValuesTest() {
 		evlModule.extractFuzzyValues();

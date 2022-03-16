@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.naming.InitialContext;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -50,6 +52,7 @@ import it.univaq.disim.sealab.metaheuristic.actions.uml.RefactoringActionFactory
 import it.univaq.disim.sealab.metaheuristic.managers.Manager;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
 import it.univaq.sealab.umlreliability.UMLReliability;
@@ -75,6 +78,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 	private EasierUmlModel dirtyIModel;
 
 	private double[] scenarioRTs;
+	
+	private String algorithm;
 
 	private final static String refactoringLibraryModule, uml2lqnModule;
 	private final static String GQAM_NAMESPACE;
@@ -173,6 +178,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
 				String.valueOf(getName()));
 		modelPath = folderPath.resolve(getName() + ".uml");
+		
+		algorithm = this.problemName.split("__")[0];
 
 		try {
 			org.apache.commons.io.FileUtils.copyFile(sourceModelPath.toFile(), modelPath.toFile());
@@ -356,39 +363,18 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		extractFuzzyValues = pasCounter.extractFuzzyValues();
 
 		int nPas = 0;
-		String line = "";
 		// Count performance antipatterns and build a string for the next csv storing
 		for (String pas : extractFuzzyValues.keySet()) {
 			Map<String, Double> mPaf = extractFuzzyValues.get(pas);
+			numPAs += mPaf.keySet().size();
 			for (String targetElement : mPaf.keySet()) {
 				double fuzzy = mPaf.get(targetElement);
-				line += String.format("%s,%s,%s,%.4f\n", this.name, pas, targetElement, fuzzy);
-				if (fuzzy > fuzzyThreshold) {
-					nPas++;
-				}
+				new FileUtils().performanceAntipatternDumpToCSV(String.format("%s,%s,%s,%.4f", this.name, pas, targetElement, fuzzy));
 			}
 		}
-
-		// save performance antipatterns data in a CSV file
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv"))) {
-			try (BufferedWriter writer = new BufferedWriter(
-					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString()))) {
-				writer.write("solID,pas,target,fuzzy");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString(),true))) {
-			writer.write(line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		numPAs = nPas;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,counting_pas,%s,%s","NSGA",problemName,getName(),getName(),duration));
 		System.out.println(String.format(" execution time: %s ms", duration));
 
 		uml = null;
@@ -462,6 +448,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		process = null;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s","NSGA",problemName,getName(),duration));
 		System.out.println(String.format("invokeSolver execution time: %s", duration));
 		System.out.println("done");
 
@@ -469,6 +456,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		startTime = System.currentTimeMillis();
 		backAnnotation();
 		duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s","NSGA",problemName,getName(),duration));
 		System.out.println(String.format("backAnnotation execution time: %s", duration));
 		System.out.println("done");
 	}
@@ -561,7 +549,10 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 	public double evaluatePerformance() {
 		System.out.print("Counting perfQ ... ");
+		long initTime = System.currentTimeMillis();
 		perfQ = perfQ();
+		long durationTime = System.currentTimeMillis() - initTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s",algorithm,problemName,getName(),durationTime));
 		System.out.println("done");
 		return perfQ;
 	}
@@ -781,6 +772,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		executor = null;
 
 		long duration = System.currentTimeMillis() - startTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s",algorithm,problemName,getName(),duration));
 		System.out.println(String.format("%s done", duration));
 	}
 
@@ -789,16 +781,17 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
 		for (RefactoringAction a : ref.getActions()) {
 
+			long initialTime = System.nanoTime();
 			try {
 				a.execute();
 			} catch (UnsupportedOperationException e) {
 				e.printStackTrace();// TODO: handle exception
 			}
+			long durationTime = System.nanoTime() - initialTime;
+			new FileUtils().refactoringStatsDumpToCSV(String.format("%s,%s",a.toCSV(),durationTime));
 		}
 		this.setRefactored();
-
 		new UMLMemoryOptimizer().cleanup();
-
 	}
 
 	public EasierUmlModel getDirtyIModel() {
@@ -811,6 +804,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		System.out.print("Computing reliability ... ");
 		// stores the in memory model to a file
 		UMLReliability uml = null;
+		long initTime = System.currentTimeMillis();
 		try {
 			uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
 			reliability = new Reliability(uml.getScenarios()).compute();
@@ -839,6 +833,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
 				System.out.println(e1.getMessage());
 			}
 		}
+		long durationTime = System.currentTimeMillis() - initTime;
+		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s",algorithm,problemName,durationTime));
+		
 		new UMLMemoryOptimizer().cleanup();
 		uml = null;
 		System.out.println("done");
