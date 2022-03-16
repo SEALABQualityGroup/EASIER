@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.solution.Solution;
@@ -28,6 +29,7 @@ import com.beust.jcommander.Strings;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.factory.FactoryBuilder;
 
+@Ignore
 public class RComputeQualityIndicatorsTest<S extends Solution> {
 
 	List<GenericIndicator<S>> qIndicators;
