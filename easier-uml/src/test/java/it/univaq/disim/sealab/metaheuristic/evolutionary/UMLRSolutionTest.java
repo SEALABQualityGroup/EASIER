@@ -1,25 +1,22 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.FileNotFoundException;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.junit.After;
 import org.junit.AssumptionViolatedException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Stopwatch;
@@ -67,8 +64,9 @@ public class UMLRSolutionTest {
 		int desired_length = 4;
 		int populationSize = 4;
 		
-		String modelpath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
 		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
+		p.setName("simplied-cocome__test");
 		solution = (UMLRSolution) p.createSolution();
 		solution2 = (UMLRSolution) p.createSolution();
 	}
@@ -138,7 +136,8 @@ public class UMLRSolutionTest {
 	@Test
 	public void coutingPAs() {
 		solution.countingPAs();
-		System.out.println(solution.getPAs());
+		
+		assertTrue(solution.getPAs() == 12);
 	}
 
 	@Test
@@ -190,8 +189,8 @@ public class UMLRSolutionTest {
 	@After
 	public void tearDown() throws IOException {
 		solution = null;
-//		if(Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv")))
-//				Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
+		if(Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv")))
+				Files.delete(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
 		
 	}
 

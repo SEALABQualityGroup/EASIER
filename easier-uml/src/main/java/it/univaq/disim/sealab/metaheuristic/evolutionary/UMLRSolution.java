@@ -363,37 +363,15 @@ public class UMLRSolution extends RSolution<Refactoring> {
 		extractFuzzyValues = pasCounter.extractFuzzyValues();
 
 		int nPas = 0;
-		String line = "";
 		// Count performance antipatterns and build a string for the next csv storing
 		for (String pas : extractFuzzyValues.keySet()) {
 			Map<String, Double> mPaf = extractFuzzyValues.get(pas);
+			numPAs += mPaf.keySet().size();
 			for (String targetElement : mPaf.keySet()) {
 				double fuzzy = mPaf.get(targetElement);
-				line += String.format("%s,%s,%s,%.4f\n", this.name, pas, targetElement, fuzzy);
-				if (fuzzy > fuzzyThreshold) {
-					nPas++;
-				}
+				new FileUtils().performanceAntipatternDumpToCSV(String.format("%s,%s,%s,%.4f", this.name, pas, targetElement, fuzzy));
 			}
 		}
-
-		// save performance antipatterns data in a CSV file
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv"))) {
-			try (BufferedWriter writer = new BufferedWriter(
-					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString()))) {
-				writer.write("solID,pas,target,fuzzy");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("pas_details_dump.csv").toString(),true))) {
-			writer.write(line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		numPAs = nPas;
 
 		long duration = System.currentTimeMillis() - startTime;
 		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,counting_pas,%s,%s","NSGA",problemName,getName(),getName(),duration));
