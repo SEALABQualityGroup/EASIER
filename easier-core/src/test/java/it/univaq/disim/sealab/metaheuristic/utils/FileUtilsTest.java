@@ -24,7 +24,7 @@ public class FileUtilsTest {
 	@Test
 	public void solutionDumpTestIfDumpFileContains2Lines() throws IOException {
 		String line = "NSGA-II,problemTest,1,0.15,7,9,0.99";
-		//new FileUtils().solutionDumpToCSV(line);		
+		new FileUtils().solutionDumpToCSV(line);		
 		LineNumberReader lnr = new LineNumberReader(new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv").toString()));
 		lnr.lines().count();
 		assertTrue(lnr.getLineNumber() == 2);
@@ -35,7 +35,7 @@ public class FileUtilsTest {
 	@Test
 	public void searchBudgetDumpTestIfDumpFileContains2Lines() throws IOException {
 		String line = "NSGAII,simplified-cocome__BRF_clone_1.23__moc_1.23__mcnn_1.23__moncnn_1.23__MaxEval_12__ProbPAs_0.00,byPrematureConvergence,1,12";
-		//new FileUtils().searchBudgetDumpToCSV(line);		
+		new FileUtils().searchBudgetDumpToCSV(line);		
 		LineNumberReader lnr = new LineNumberReader(new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()));
 		lnr.lines().count();
 		assertTrue(lnr.getLineNumber() == 2);
@@ -45,7 +45,7 @@ public class FileUtilsTest {
 	@Test
 	public void algoPerfDumpDumpTestIfDumpFileContains2Lines() throws IOException {
 		String line = "PESA2,simplified-cocome__BRF_clone_1.23__moc_1.64__mcnn_1.45__moncnn_1.80__MaxEval_102__ProbPAs_0.95,86805,622854144,449879328,1363148800,969885368";
-		//new FileUtils().algoPerfStatsDumpToCSV(line);		
+		new FileUtils().algoPerfStatsDumpToCSV(line);		
 		LineNumberReader lnr = new LineNumberReader(new FileReader(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()));
 		lnr.lines().count();
 		assertTrue(lnr.getLineNumber() == 2);

@@ -277,7 +277,7 @@ public class FileUtils {
 	 * @param line is the CVS conversion of a RSolution
 	 */
 	public void solutionDumpToCSV(String line) {
-		String fileName = "search_budget_stats.csv";
+		String fileName = "solution_dump.csv";
 		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
 
 			try (BufferedWriter writer = new BufferedWriter(
@@ -431,6 +431,34 @@ public class FileUtils {
 					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
 				writer.write(
 						"algorithm,problem,solID,step,exec_time(milliSec)");
+				writer.newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+				Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Prints the line into the performance_antipatter_dump.csv file.
+	 * The header of the file is
+	 * "algorithm,problem_tag,performance_antipattern,target_element,fuzziness"
+	 * @param line is the CSV representation of the performance antipatern data
+	 */
+	public void performanceAntipatternDumpToCSV(String line) {
+		String fileName = "performance_antipatter_dump.csv";
+		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
+				writer.write("algorithm,problem_tag,performance_antipattern,target_element,fuzziness");
 				writer.newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
