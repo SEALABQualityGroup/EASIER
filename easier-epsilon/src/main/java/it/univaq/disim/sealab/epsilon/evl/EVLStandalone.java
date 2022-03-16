@@ -78,18 +78,22 @@ public class EVLStandalone extends EpsilonStandalone {
 		Map<String, Map<String, Double>> perfAntippaternsClassification = new HashMap<>();
 		for (Object key : mapOfPas.keySet()) {
 			Map<String, Double> perfAntipatternMap = new HashMap<>();	
-			org.eclipse.epsilon.eol.types.EolSequence<?> antipattern = (EolSequence<?>) mapOfPas.get(key);
+//			org.eclipse.epsilon.eol.types.EolSequence<?> antipattern = (EolSequence<?>) mapOfPas.get(key);
+			org.eclipse.epsilon.eol.types.EolMap<?, ?> antipatternMap = ((org.eclipse.epsilon.eol.types.EolMap<?, ?>) mapOfPas.get(key));
 			
-			for(Object detail : antipattern) {
-				String modelElement = (String) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).keySet().stream().findFirst().get();
-				double fuzzyValue = (double) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).get(modelElement);
-				perfAntipatternMap.put(modelElement, fuzzyValue < 1 ? fuzzyValue : 1);
+			for(Object modelElement : antipatternMap.keySet()) {
+				double fuzzyValue = (double) antipatternMap.get(modelElement);
+				perfAntipatternMap.put((String) modelElement, fuzzyValue < 1 ? fuzzyValue : 1);
 			}
+			
+//			for(Object detail : antipattern.keySet()) {
+//				String modelElement = (String) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).keySet().stream().findFirst().get();
+//				double fuzzyValue = (double) ((org.eclipse.epsilon.eol.types.EolMap<?, ?>)detail).get(modelElement);
+//				perfAntipatternMap.put(modelElement, fuzzyValue < 1 ? fuzzyValue : 1);
+//			}
 			perfAntippaternsClassification.put((String)key, perfAntipatternMap);
 		}
-		
 		return perfAntippaternsClassification;
-
 	}
 
 	@Override
