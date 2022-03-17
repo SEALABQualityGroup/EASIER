@@ -85,7 +85,7 @@ public class Configurator {
 	private double epsilon = 0.3d;
 	
 	@Parameter(names = {"-SB" , "--search-budget"}, description = "It enables the search budget. It supports: byTime, byPrematureConvergence, byBoth" )
-	private String searchBudget = "byTime";
+	private String searchBudget = "none";
 	
 	@Parameter(names = {"-sbTimeTh","--searchBudgetTimeThreshold"}, description = "The search budget stopping criterion by time.")
 	private long searchBudgetTimeThreshold = 3_600_000;
