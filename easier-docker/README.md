@@ -13,5 +13,5 @@ docker build -t easier:<tag> -f easier-docker/Dockerfile
 
 ```bash
 cd ..
-docker run --mount type=bind,source=/mnt/data/<tag>,target=$outputFolder [conig file URL]
+docker run -v /mnt/data/<tag>:$outputFolder [conig file URL]
 ```
