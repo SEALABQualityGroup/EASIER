@@ -1,4 +1,4 @@
 #!/bin/bash
 
 wget -O config.ini $1
-java -jar easier.jar @./config.ini
+java -Xmx12g -jar easier.jar @./config.ini
