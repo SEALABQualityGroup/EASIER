@@ -2,6 +2,8 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 public interface EasierAlgorithm {
 
-	public void clear();
-	
+	void clear();
+	void populationToCSV();
+	boolean isStoppingConditionReached();
+	boolean isStagnantState();
 }

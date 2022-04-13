@@ -39,19 +39,12 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		oldPopulation = new ArrayList<S>();
 	}
 
-//	@Override protected boolean isStoppingConditionReached() {
-//		
-//		return evaluations > maxEvaluations;
-//	}
-
 	/*
 	 * Prints to CSV each generated population
 	 * "algorithm,problem_tag,solID,perfQ,#changes,pas,reliability"
 	 * 
 	 */
-	void populationToCSV() {
-		super.updateProgress();
-
+	public void populationToCSV() {
 		for (RSolution<?> sol : population) {
 			String line = this.getName() + ',' + this.getProblem().getName() + ',' + sol.objectiveToCSV();
 			new FileUtils().solutionDumpToCSV(line);
@@ -65,7 +58,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	 * byPrematureConvergence classic using the number of evaluation
 	 */
 	@Override
-	protected boolean isStoppingConditionReached() {
+	public boolean isStoppingConditionReached() {
 
 		long currentComputingTime = System.currentTimeMillis() - iterationStartingTime;
 
@@ -89,9 +82,6 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	}
 
 	public boolean isStagnantState() {
-		// create a joined list of the current population and the old one
-//		List<RSolution<?>> joinedPopulation = new ArrayList<>(oldPopulation);
-//		joinedPopulation.addAll(population);
 
 		int countedSameObjectives = 0;
 		for (int i = 0; i < oldPopulation.size(); i++) {
@@ -139,23 +129,22 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 			long freeAfter = Runtime.getRuntime().freeMemory();
 			long totalAfter = Runtime.getRuntime().totalMemory();
 
-			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
-			
+			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+					this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+
 			updateProgress();
 			populationToCSV();
-
 		}
 
-		/* prints the number of iterations until the search budget is not reached. 
-		 * !!!Attn!!! 
-		 * evaluations / getMaxPopulationSize() -1
-		 * is required because evaluations has been updated just before checking the stopping criteria
-		 * !!!Attn!!! 
+		/*
+		 * prints the number of iterations until the search budget is not reached.
+		 * !!!Attn!!! evaluations / getMaxPopulationSize() -1 is required because
+		 * iterations has been updated just before checking the stopping criteria
+		 * !!!Attn!!!
 		 */
-		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-				Configurator.eINSTANCE.getSearchBudgetType(), evaluations / getMaxPopulationSize() -1,
-				maxEvaluations / getMaxPopulationSize()));
+		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), Configurator.eINSTANCE.getSearchBudgetType(),
+				evaluations / getMaxPopulationSize() - 1, maxEvaluations / getMaxPopulationSize()));
 	}
 
 	@Override
