@@ -32,6 +32,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRSolutionLi
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
+
 public class CustomNSGAIITest<S extends RSolution<?>> {
 	UMLRProblem<UMLRSolution> p;
 
