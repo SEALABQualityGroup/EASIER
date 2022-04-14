@@ -133,44 +133,6 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 	@Override
 	public void run() {
-		/*
-		List<S> offspringPopulation;
-		List<S> matingPopulation;
-
-		this.setPopulation(createInitialPopulation());
-		this.setPopulation(evaluatePopulation(this.getPopulation()));
-		initProgress();
-		while (!isStoppingConditionReached()) {
-
-			//MOVED at the end of updateProgress
-//			System.out.println(this.getName());
-//			ProgressBar.showBar((evaluations / getMaxPopulationSize()), (maxEvaluations / getMaxPopulationSize()));
-
-			// MOVED into initProgress
-//			long freeBefore = Runtime.getRuntime().freeMemory();
-//			long totalBefore = Runtime.getRuntime().totalMemory();
-//
-//			long initTime = System.currentTimeMillis();
-
-			matingPopulation = selection(this.getPopulation());
-			offspringPopulation = reproduction(matingPopulation);
-			offspringPopulation = evaluatePopulation(offspringPopulation);
-			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
-
-			// MOVED into updateProgress method
-//			long computingTime = System.currentTimeMillis() - initTime;
-//
-//			long freeAfter = Runtime.getRuntime().freeMemory();
-//			long totalAfter = Runtime.getRuntime().totalMemory();
-//
-//			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
-//					this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
-
-			updateProgress();
-//			populationToCSV(); move into the updateProgress method
-		}
-		*/
-		
 		super.run();
 		/*
 		 * prints the number of iterations until the search budget is not reached.

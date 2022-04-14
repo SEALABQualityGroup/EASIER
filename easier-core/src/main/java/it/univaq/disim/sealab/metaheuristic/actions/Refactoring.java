@@ -2,6 +2,7 @@ package it.univaq.disim.sealab.metaheuristic.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -137,18 +138,31 @@ public class Refactoring {
 			return false;
 		return true;
 	}
-	
-	@Override
-	public String toString() {
+
+	/**
+	 * Prints for each action a semicolon separated line
+	 * solID,action.toCSV()
+	 *
+	 * @return
+	 */
+	public String toCSV() {
 		StringBuilder strBuilder = new StringBuilder();
-//		getActions().forEach(action -> strBuilder.append(action.toString()).append(","));
 		final int solutionID = this.solutionID;
 		for(int i = 0; i < getActions().size()-1; i++ ){
 			strBuilder.append(solutionID).append(",").append(getActions().get(i).toCSV()).append("\n");
 		}
 		strBuilder.append(solutionID).append(",").append(getActions().get(getActions().size()-1).toCSV());
-//		getActions().forEach(action -> strBuilder.append(solutionID).append(",").append(action.toCSV()).append("\n"));
 		return strBuilder.toString();
+	}
+
+	/**
+	 * Prints a single semicolon line with actions belong to the refactoring
+	 * @return
+	 */
+	@Override
+	public String toString(){
+		return getActions().stream().map(act -> act.toCSV())
+				.collect(Collectors.joining(";"));
 	}
 
 }

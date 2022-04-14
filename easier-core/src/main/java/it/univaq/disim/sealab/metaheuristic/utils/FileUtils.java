@@ -276,26 +276,6 @@ public class FileUtils {
 		String header = "algorithm,problem_tag,solID,perfQ,#changes,pas,reliability";
 		
 		dumpToFile(fileName, header, line);
-		
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//
-//			try (BufferedWriter writer = new BufferedWriter(
-//					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write("algorithm,problem_tag,solID,perfQ,#changes,pas,reliability");
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		try (BufferedWriter writer = new BufferedWriter(
-//				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
 	}
 
 	/**
@@ -309,25 +289,6 @@ public class FileUtils {
 		String header = "algorithm,problem_tag,search_budget,iteration,max_iteration";
 		
 		dumpToFile(fileName, header, line);
-		
-		
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//			try (BufferedWriter writer = new BufferedWriter(
-//					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write("algorithm,problem_tag,search_budget,iteration,max_iteration");
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		try (BufferedWriter writer = new BufferedWriter(
-//				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -342,27 +303,6 @@ public class FileUtils {
 		String header = "algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)";
 		
 		dumpToFile(fileName, header, line);
-		
-		
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//
-//			try (BufferedWriter writer = new BufferedWriter(
-//					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write(
-//						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		try (BufferedWriter writer = new BufferedWriter(
-//				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -376,26 +316,7 @@ public class FileUtils {
 		String header = "solID,operation,target,to,where";
 		
 		dumpToFile(fileName, header, line);
-		
-//
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//
-//			try (BufferedWriter writer = new BufferedWriter(
-//					new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write("solID,operation,target,to,where");
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		try (BufferedWriter writer = new BufferedWriter(
-//				new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-////			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+
 	}
 
 	/**
@@ -410,24 +331,6 @@ public class FileUtils {
 
 		dumpToFile(fileName, header, line);
 
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//
-//			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write();
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//				Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -442,24 +345,6 @@ public class FileUtils {
 
 		dumpToFile(fileName, header, line);
 
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//
-//			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write();
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//				Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -475,23 +360,6 @@ public class FileUtils {
 
 		dumpToFile(fileName, header, line);
 
-//		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
-//			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-//				writer.write();
-//				writer.newLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-
-//		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-//				Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString(), true))) {
-//			writer.write(line);
-//			writer.newLine();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -505,9 +373,26 @@ public class FileUtils {
 	public void backAnnotationErrorLogToCSV(String line) {
 		String fileName = "back_annotation_error_log.csv";
 		String header = "solID,message,actions";
-
 		dumpToFile(fileName, header, line);
 
+	}
+
+	public void etlErrorLogToCSv(String line){
+		String fileName = "etlErrorLog.csv";
+		String header = "solID;message;actions";
+		dumpToFile(fileName, header, line);
+	}
+
+	public void reliabilityErrorLogToCSV(String line){
+		String fileName = "relErrorLog.csv";
+		String header ="solID;message;actions";
+		dumpToFile(fileName, header, line);
+	}
+
+	public void failedSolutionLogToCSV(String line){
+		String fileName = "reportFailedSolution.csv";
+		String header = "solID;lqn_solver_message;actions";
+		dumpToFile(fileName,header,line);
 	}
 
 	/**

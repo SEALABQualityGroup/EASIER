@@ -54,22 +54,18 @@ public class ProgressBar {
     
     
     public static void showBar(final int actual, final int max) {
-    	int j = actual;
-    	
+
     	final float percentage = ((float) actual / max) * 100;
     	
 		String bar ="Run " + actual + " over " + max;
 
 		bar +="\n[";
-		j = (int) (80 * percentage)/100;
+		int j = (int) (80 * percentage)/100;
 		while (j > 0) {
 			bar += "=";
 			j--;
 		}
-		
-//		j = actual;
-//		int blank = max > 80 ? 80 : max;
-		
+
 		j = 80 - ((int) (80 * percentage)/100);
 		
 		while (j > 0) {
