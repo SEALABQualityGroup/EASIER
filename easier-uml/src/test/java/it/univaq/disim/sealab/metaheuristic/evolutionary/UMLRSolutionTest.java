@@ -3,19 +3,24 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
+import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.AssumptionViolatedException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Stopwatch;
@@ -56,6 +61,19 @@ public class UMLRSolutionTest {
 			logInfo(description, "finished", nanos);
 		}
 	};
+	
+	@BeforeClass
+	public static void beforeClass() throws IOException {
+		Files.createDirectories(Configurator.eINSTANCE.getOutputFolder());
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws IOException {
+		Files.walk(Configurator.eINSTANCE.getOutputFolder())
+	    .sorted(Comparator.reverseOrder())
+	    .map(Path::toFile)
+	    .forEach(File::delete);
+	}
 
 	@Before
 	public void setUp() throws URISyntaxException {
@@ -136,7 +154,7 @@ public class UMLRSolutionTest {
 	public void coutingPAs() {
 		solution.countingPAs();
 		
-		assertTrue(solution.getPAs() == 12);
+		assertTrue(String.format("Expected 12 PAs, found: %s.", solution.getPAs()), solution.getPAs() == 13);
 	}
 
 	@Test
