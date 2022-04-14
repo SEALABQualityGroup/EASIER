@@ -2,12 +2,18 @@
  */
 package logicalSpecification.actions.UML.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.uml2.uml.Artifact;
+import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.Operation;
+
 import logicalSpecification.LogicalSpecificationPackage;
-
-import logicalSpecification.actions.AEmilia.AEmiliaPackage;
-
-import logicalSpecification.actions.AEmilia.impl.AEmiliaPackageImpl;
-
 import logicalSpecification.actions.UML.UMLAddAction;
 import logicalSpecification.actions.UML.UMLAddComponentAction;
 import logicalSpecification.actions.UML.UMLAddNodeAction;
@@ -21,25 +27,9 @@ import logicalSpecification.actions.UML.UMLMoveAction;
 import logicalSpecification.actions.UML.UMLMoveComponentAction;
 import logicalSpecification.actions.UML.UMLMoveOperationAction;
 import logicalSpecification.actions.UML.UMLPackage;
-
 import logicalSpecification.antipatterns.performance.PerformancePackage;
-
 import logicalSpecification.antipatterns.performance.impl.PerformancePackageImpl;
-
 import logicalSpecification.impl.LogicalSpecificationPackageImpl;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.uml2.uml.Artifact;
-import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Node;
-import org.eclipse.uml2.uml.Operation;
 
 /**
  * <!-- begin-user-doc -->
@@ -210,21 +200,17 @@ public class UMLPackageImpl extends EPackageImpl implements UMLPackage {
 		// Obtain or create and register interdependencies
 		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
 		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(registeredPackage instanceof LogicalSpecificationPackageImpl ? registeredPackage : LogicalSpecificationPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
 		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
 		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theUMLPackage.createPackageContents();
 		theLogicalSpecificationPackage.createPackageContents();
-		theAEmiliaPackage.createPackageContents();
 		thePerformancePackage.createPackageContents();
 
 		// Initialize created meta-data
 		theUMLPackage.initializePackageContents();
 		theLogicalSpecificationPackage.initializePackageContents();
-		theAEmiliaPackage.initializePackageContents();
 		thePerformancePackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
