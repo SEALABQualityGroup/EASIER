@@ -30,10 +30,12 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 
 	int _maxEvaluations;
 
-	private long durationThreshold, iterationStartingTime;
+	private long durationThreshold, iterationStartingTime, initTime, freeBefore, totalBefore;
 	private float prematureConvergenceThreshold;
 
 	List<S> oldPopulation;
+
+	private int _evaluations;
 
 	public CustomPESA2(Problem<S> problem, int maxEvaluations, int populationSize, int archiveSize, int biSections,
 			CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
@@ -70,7 +72,15 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 	@Override
 	protected void initProgress() {
 		super.initProgress();
+		_evaluations = this.getMaxPopulationSize();
+
+		this.getPopulation().forEach(s -> s.refactoringToCSV());
+		
 		iterationStartingTime = System.currentTimeMillis();
+		freeBefore = Runtime.getRuntime().freeMemory();
+		totalBefore = Runtime.getRuntime().totalMemory();
+		initTime = System.currentTimeMillis();
+
 		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 	}
 
@@ -107,55 +117,79 @@ public class CustomPESA2<S extends RSolution<?>> extends PESA2<S> implements Eas
 	}
 
 	@Override
+	protected void updateProgress() {
+		super.updateProgress();
+
+		long computingTime = System.currentTimeMillis() - initTime;
+
+		long freeAfter = Runtime.getRuntime().freeMemory();
+		long totalAfter = Runtime.getRuntime().totalMemory();
+
+		new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+
+		// Store the checkpoint
+		totalBefore = totalAfter;
+		freeBefore = freeAfter;
+		initTime = computingTime;
+
+		populationToCSV();
+		_evaluations += this.getMaxPopulationSize();
+		System.out.println(this.getName());
+		ProgressBar.showBar(_evaluations / getMaxPopulationSize(), _maxEvaluations / getMaxPopulationSize());
+	}
+
+	@Override
 	public void run() {
-		List<S> offspringPopulation;
-		List<S> matingPopulation;
-
-		this.setPopulation(createInitialPopulation());
-		this.setPopulation(evaluatePopulation(this.getPopulation()));
-
-		int _evaluations = this.getMaxPopulationSize();
-
-		initProgress();
-		while (!isStoppingConditionReached()) {
-
-			System.out.println(this.getName());
-			ProgressBar.showBar(_evaluations / getMaxPopulationSize(), _maxEvaluations / getMaxPopulationSize());
-
-			long freeBefore = Runtime.getRuntime().freeMemory();
-			long totalBefore = Runtime.getRuntime().totalMemory();
-
-			long initTime = System.currentTimeMillis();
-
-			matingPopulation = selection(this.getPopulation());
-			offspringPopulation = reproduction(matingPopulation);
-			offspringPopulation = evaluatePopulation(offspringPopulation);
-			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
-
-			long computingTime = System.currentTimeMillis() - initTime;
-
-			long freeAfter = Runtime.getRuntime().freeMemory();
-			long totalAfter = Runtime.getRuntime().totalMemory();
-
-			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
-
-			updateProgress();
-			populationToCSV();
-			_evaluations += this.getMaxPopulationSize();
-
-		}
-		
-		
-		/* prints the number of iterations until the search budget is not reached. 
-		 * !!!Attn!!! 
-		 * evaluations / getMaxPopulationSize() -1
-		 * is required because iterations has been updated just before checking the stopping criteria
-		 * !!!Attn!!! 
+		/*
+		  List<S> offspringPopulation; List<S> matingPopulation;
+		  
+		  this.setPopulation(createInitialPopulation());
+		  this.setPopulation(evaluatePopulation(this.getPopulation()));
+		  
+		  int _evaluations = this.getMaxPopulationSize();
+		  
+		  initProgress(); while (!isStoppingConditionReached()) {
+		  
+		  System.out.println(this.getName()); ProgressBar.showBar(_evaluations /
+		  getMaxPopulationSize(), _maxEvaluations / getMaxPopulationSize());
+		 
+		  // MOVED into initProgres
+		  long freeBefore = Runtime.getRuntime().freeMemory(); 
+		  long totalBefore = Runtime.getRuntime().totalMemory();
+		  long initTime = System.currentTimeMillis();
+		  
+		  matingPopulation = selection(this.getPopulation()); offspringPopulation =
+		  reproduction(matingPopulation); offspringPopulation =
+		  evaluatePopulation(offspringPopulation);
+		  this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
+		  
+		  // MOVED into updateProgress method
+		  long computingTime = System.currentTimeMillis() - initTime;
+		  long freeAfter = Runtime.getRuntime().freeMemory(); 
+		  long totalAfter = Runtime.getRuntime().totalMemory();
+		  
+		  new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s",
+		  this.getName(), this.getProblem().getName(), computingTime, totalBefore,
+		  freeBefore, totalAfter, freeAfter));
+		  
+		  updateProgress(); populationToCSV(); 
+		  _evaluations += this.getMaxPopulationSize();
+		  
+		  }
 		 */
-		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-				Configurator.eINSTANCE.getSearchBudgetType(), _evaluations / getMaxPopulationSize()-1,
-				_maxEvaluations / getMaxPopulationSize()));
+
+		super.run();
+
+		/*
+		 * prints the number of iterations until the search budget is not reached.
+		 * !!!Attn!!! evaluations / getMaxPopulationSize() -1 is required because
+		 * iterations has been updated just before checking the stopping criteria
+		 * !!!Attn!!!
+		 */
+		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), Configurator.eINSTANCE.getSearchBudgetType(),
+				_evaluations / getMaxPopulationSize() - 1, _maxEvaluations / getMaxPopulationSize()));
 	}
 
 	public void clear() {

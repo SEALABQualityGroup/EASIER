@@ -19,11 +19,13 @@ import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 @SuppressWarnings("serial")
 public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements EasierAlgorithm {
 
-	private long durationThreshold, iterationStartingTime;
+	private long durationThreshold, iterationStartingTime, initTime;
 	private float prematureConvergenceThreshold;
 
 	// It will be exploited to identify stagnant situation
 	List<S> oldPopulation;
+	private long freeBefore;
+	private long totalBefore;
 
 	/**
 	 * Constructor matingPopulationSize = offspringPopulationSize = populationSize
@@ -77,8 +79,36 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 	protected void initProgress() {
 		super.initProgress();
 		iterationStartingTime = System.currentTimeMillis();
+
+		freeBefore = Runtime.getRuntime().freeMemory();
+		totalBefore = Runtime.getRuntime().totalMemory();
+
+		initTime = System.currentTimeMillis();
+
 		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 		this.getPopulation().forEach(s -> s.refactoringToCSV());
+	}
+
+	@Override
+	protected void updateProgress() {
+		super.updateProgress();
+		
+		long computingTime = System.currentTimeMillis() - initTime;
+
+		long freeAfter = Runtime.getRuntime().freeMemory();
+		long totalAfter = Runtime.getRuntime().totalMemory();
+
+		new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+		
+		// Store the checkpoint
+		totalBefore = totalAfter;
+		freeBefore = freeAfter;
+		initTime = computingTime;
+		
+		populationToCSV();
+		System.out.println(this.getName());
+		ProgressBar.showBar((evaluations / getMaxPopulationSize()), (maxEvaluations / getMaxPopulationSize()));
 	}
 
 	public boolean isStagnantState() {
@@ -103,6 +133,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 
 	@Override
 	public void run() {
+		/*
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
 
@@ -111,31 +142,36 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		initProgress();
 		while (!isStoppingConditionReached()) {
 
-			System.out.println(this.getName());
-			ProgressBar.showBar((evaluations / getMaxPopulationSize()), (maxEvaluations / getMaxPopulationSize()));
+			//MOVED at the end of updateProgress
+//			System.out.println(this.getName());
+//			ProgressBar.showBar((evaluations / getMaxPopulationSize()), (maxEvaluations / getMaxPopulationSize()));
 
-			long freeBefore = Runtime.getRuntime().freeMemory();
-			long totalBefore = Runtime.getRuntime().totalMemory();
-
-			long initTime = System.currentTimeMillis();
+			// MOVED into initProgress
+//			long freeBefore = Runtime.getRuntime().freeMemory();
+//			long totalBefore = Runtime.getRuntime().totalMemory();
+//
+//			long initTime = System.currentTimeMillis();
 
 			matingPopulation = selection(this.getPopulation());
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
 
-			long computingTime = System.currentTimeMillis() - initTime;
-
-			long freeAfter = Runtime.getRuntime().freeMemory();
-			long totalAfter = Runtime.getRuntime().totalMemory();
-
-			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
-					this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+			// MOVED into updateProgress method
+//			long computingTime = System.currentTimeMillis() - initTime;
+//
+//			long freeAfter = Runtime.getRuntime().freeMemory();
+//			long totalAfter = Runtime.getRuntime().totalMemory();
+//
+//			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+//					this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
 
 			updateProgress();
-			populationToCSV();
+//			populationToCSV(); move into the updateProgress method
 		}
-
+		*/
+		
+		super.run();
 		/*
 		 * prints the number of iterations until the search budget is not reached.
 		 * !!!Attn!!! evaluations / getMaxPopulationSize() -1 is required because
