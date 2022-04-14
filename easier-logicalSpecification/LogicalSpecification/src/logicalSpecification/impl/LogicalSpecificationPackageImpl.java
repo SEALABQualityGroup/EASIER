@@ -36,10 +36,6 @@ import logicalSpecification.SingleValuedParameter;
 import logicalSpecification.TypesEnum;
 import logicalSpecification.VoidOperator;
 
-import logicalSpecification.actions.AEmilia.AEmiliaPackage;
-
-import logicalSpecification.actions.AEmilia.impl.AEmiliaPackageImpl;
-
 import logicalSpecification.actions.UML.UMLPackage;
 
 import logicalSpecification.actions.UML.impl.UMLPackageImpl;
@@ -59,246 +55,246 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class LogicalSpecificationPackageImpl extends EPackageImpl implements LogicalSpecificationPackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass namedElementEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass refactoringEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass actionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass singleValuedParameterEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass multipleValuedParameterEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass parameterEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass conditionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass preConditionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass postConditionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass folSpecificationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass logicalOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass voidOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass forAllOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass existsOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass orOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass notOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass andOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass relationalOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass equalOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass greaterOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass greaterEqualOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass lessEqualOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass lessOperatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass operatorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass antipatternEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass loLa4RAPSRootEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass addActionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass deleteActionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass moveActionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass changeActionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum typesEnumEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EDataType modelEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory method
+	 * {@link #init init()}, which also performs initialization of the package, or
+	 * returns the registered package, if one already exists. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see logicalSpecification.LogicalSpecificationPackage#eNS_URI
 	 * @see #init()
@@ -309,51 +305,58 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and
+	 * for any others upon which it depends.
 	 *
-	 * <p>This method is used to initialize {@link LogicalSpecificationPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize
+	 * {@link LogicalSpecificationPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access
+	 * that field to obtain the package. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static LogicalSpecificationPackage init() {
-		if (isInited) return (LogicalSpecificationPackage)EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
+		if (isInited)
+			return (LogicalSpecificationPackage) EPackage.Registry.INSTANCE
+					.getEPackage(LogicalSpecificationPackage.eNS_URI);
 
 		// Obtain or create and register package
 		Object registeredLogicalSpecificationPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = registeredLogicalSpecificationPackage instanceof LogicalSpecificationPackageImpl ? (LogicalSpecificationPackageImpl)registeredLogicalSpecificationPackage : new LogicalSpecificationPackageImpl();
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = registeredLogicalSpecificationPackage instanceof LogicalSpecificationPackageImpl
+				? (LogicalSpecificationPackageImpl) registeredLogicalSpecificationPackage
+				: new LogicalSpecificationPackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
 		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl) (registeredPackage instanceof UMLPackageImpl ? registeredPackage
+				: UMLPackage.eINSTANCE);
 		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
-		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl)(registeredPackage instanceof PerformancePackageImpl ? registeredPackage : PerformancePackage.eINSTANCE);
+		PerformancePackageImpl thePerformancePackage = (PerformancePackageImpl) (registeredPackage instanceof PerformancePackageImpl
+				? registeredPackage
+				: PerformancePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theLogicalSpecificationPackage.createPackageContents();
 		theUMLPackage.createPackageContents();
-		theAEmiliaPackage.createPackageContents();
 		thePerformancePackage.createPackageContents();
 
 		// Initialize created meta-data
 		theLogicalSpecificationPackage.initializePackageContents();
 		theUMLPackage.initializePackageContents();
-		theAEmiliaPackage.initializePackageContents();
 		thePerformancePackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
@@ -365,8 +368,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getNamedElement() {
@@ -374,17 +377,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getNamedElement_Name() {
-		return (EAttribute)namedElementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) namedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getRefactoring() {
@@ -392,62 +395,62 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRefactoring_Actions() {
-		return (EReference)refactoringEClass.getEStructuralFeatures().get(0);
+		return (EReference) refactoringEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRefactoring_Pre() {
-		return (EReference)refactoringEClass.getEStructuralFeatures().get(1);
+		return (EReference) refactoringEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRefactoring_Post() {
-		return (EReference)refactoringEClass.getEStructuralFeatures().get(2);
+		return (EReference) refactoringEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRefactoring_Lola4rapsRoot() {
-		return (EReference)refactoringEClass.getEStructuralFeatures().get(3);
+		return (EReference) refactoringEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getRefactoring_Cost() {
-		return (EAttribute)refactoringEClass.getEStructuralFeatures().get(4);
+		return (EAttribute) refactoringEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getRefactoring_NumOfChanges() {
-		return (EAttribute)refactoringEClass.getEStructuralFeatures().get(5);
+		return (EAttribute) refactoringEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getRefactoring__CloneRefactoring() {
@@ -455,8 +458,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAction() {
@@ -464,71 +467,71 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getAction_NumOfChanges() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) actionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getAction_Cost() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) actionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAction_Refactoring() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(2);
+		return (EReference) actionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAction_Parameters() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(3);
+		return (EReference) actionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAction_Pre() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(4);
+		return (EReference) actionEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAction_Post() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(5);
+		return (EReference) actionEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getAction_Model() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(6);
+		return (EAttribute) actionEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAction__Execute() {
@@ -536,8 +539,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAction__Log() {
@@ -545,8 +548,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAction__SetParameters() {
@@ -554,8 +557,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAction__CreatePreCondition() {
@@ -563,8 +566,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAction__CreatePostCondition() {
@@ -572,8 +575,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getSingleValuedParameter() {
@@ -581,17 +584,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSingleValuedParameter_ExistsOperator() {
-		return (EReference)singleValuedParameterEClass.getEStructuralFeatures().get(0);
+		return (EReference) singleValuedParameterEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMultipleValuedParameter() {
@@ -599,26 +602,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMultipleValuedParameter_ForAllOperator() {
-		return (EReference)multipleValuedParameterEClass.getEStructuralFeatures().get(0);
+		return (EReference) multipleValuedParameterEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMultipleValuedParameter_ExistsOperator() {
-		return (EReference)multipleValuedParameterEClass.getEStructuralFeatures().get(1);
+		return (EReference) multipleValuedParameterEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getParameter() {
@@ -626,62 +629,62 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getParameter_Type() {
-		return (EAttribute)parameterEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) parameterEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getParameter_Action() {
-		return (EReference)parameterEClass.getEStructuralFeatures().get(1);
+		return (EReference) parameterEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getParameter_ResolvingExpr() {
-		return (EAttribute)parameterEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) parameterEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getParameter_LhsRelationalOperator() {
-		return (EReference)parameterEClass.getEStructuralFeatures().get(3);
+		return (EReference) parameterEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getParameter_RhsRelationalOperator() {
-		return (EReference)parameterEClass.getEStructuralFeatures().get(4);
+		return (EReference) parameterEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getParameter_Antipattern() {
-		return (EReference)parameterEClass.getEStructuralFeatures().get(5);
+		return (EReference) parameterEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getCondition() {
@@ -689,17 +692,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCondition_ConditionFormula() {
-		return (EReference)conditionEClass.getEStructuralFeatures().get(0);
+		return (EReference) conditionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPreCondition() {
@@ -707,26 +710,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPreCondition_Action() {
-		return (EReference)preConditionEClass.getEStructuralFeatures().get(0);
+		return (EReference) preConditionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPreCondition_Refactoring() {
-		return (EReference)preConditionEClass.getEStructuralFeatures().get(1);
+		return (EReference) preConditionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPostCondition() {
@@ -734,26 +737,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPostCondition_Action() {
-		return (EReference)postConditionEClass.getEStructuralFeatures().get(0);
+		return (EReference) postConditionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPostCondition_Refactoring() {
-		return (EReference)postConditionEClass.getEStructuralFeatures().get(1);
+		return (EReference) postConditionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getFOLSpecification() {
@@ -761,35 +764,35 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFOLSpecification_Condition() {
-		return (EReference)folSpecificationEClass.getEStructuralFeatures().get(0);
+		return (EReference) folSpecificationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFOLSpecification_RootOperator() {
-		return (EReference)folSpecificationEClass.getEStructuralFeatures().get(1);
+		return (EReference) folSpecificationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getFOLSpecification_Antipattern() {
-		return (EReference)folSpecificationEClass.getEStructuralFeatures().get(2);
+		return (EReference) folSpecificationEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getLogicalOperator() {
@@ -797,8 +800,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getLogicalOperator__Guarantees__Operator() {
@@ -806,8 +809,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getLogicalOperator__EvaluateOperator__Operator() {
@@ -815,8 +818,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVoidOperator() {
@@ -824,8 +827,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getForAllOperator() {
@@ -833,26 +836,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getForAllOperator_Collection() {
-		return (EReference)forAllOperatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) forAllOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getForAllOperator_Argument() {
-		return (EReference)forAllOperatorEClass.getEStructuralFeatures().get(1);
+		return (EReference) forAllOperatorEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getExistsOperator() {
@@ -860,35 +863,35 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getExistsOperator_Element() {
-		return (EReference)existsOperatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) existsOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getExistsOperator_Collection() {
-		return (EReference)existsOperatorEClass.getEStructuralFeatures().get(1);
+		return (EReference) existsOperatorEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getExistsOperator_Argument() {
-		return (EReference)existsOperatorEClass.getEStructuralFeatures().get(2);
+		return (EReference) existsOperatorEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getOrOperator() {
@@ -896,17 +899,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOrOperator_Arguments() {
-		return (EReference)orOperatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) orOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getNotOperator() {
@@ -914,17 +917,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getNotOperator_Argument() {
-		return (EReference)notOperatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) notOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAndOperator() {
@@ -932,17 +935,17 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAndOperator_Arguments() {
-		return (EReference)andOperatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) andOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getRelationalOperator() {
@@ -950,35 +953,35 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getRelationalOperator_Factor() {
-		return (EAttribute)relationalOperatorEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) relationalOperatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRelationalOperator_Lhs() {
-		return (EReference)relationalOperatorEClass.getEStructuralFeatures().get(1);
+		return (EReference) relationalOperatorEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getRelationalOperator_Rhs() {
-		return (EReference)relationalOperatorEClass.getEStructuralFeatures().get(2);
+		return (EReference) relationalOperatorEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEqualOperator() {
@@ -986,8 +989,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getGreaterOperator() {
@@ -995,8 +998,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getGreaterEqualOperator() {
@@ -1004,8 +1007,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getLessEqualOperator() {
@@ -1013,8 +1016,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getLessOperator() {
@@ -1022,8 +1025,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getOperator() {
@@ -1031,62 +1034,62 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_Folspecification() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(0);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_ForAlloperator() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(1);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_NotOperator() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(2);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_AndOperator() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(3);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_OrOperator() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(4);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getOperator_ExistsOperator() {
-		return (EReference)operatorEClass.getEStructuralFeatures().get(5);
+		return (EReference) operatorEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getOperator__EvaluateOperator__Object() {
@@ -1094,8 +1097,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getOperator__Guarantees__Operator() {
@@ -1103,8 +1106,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAntipattern() {
@@ -1112,35 +1115,35 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAntipattern_Lola4rapsRoot() {
-		return (EReference)antipatternEClass.getEStructuralFeatures().get(0);
+		return (EReference) antipatternEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAntipattern_Parameters() {
-		return (EReference)antipatternEClass.getEStructuralFeatures().get(1);
+		return (EReference) antipatternEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getAntipattern_Formula() {
-		return (EReference)antipatternEClass.getEStructuralFeatures().get(2);
+		return (EReference) antipatternEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__SetParametersForPartialDetection() {
@@ -1148,8 +1151,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__PartialDetection() {
@@ -1157,8 +1160,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__SetParametersForFullDetection() {
@@ -1166,8 +1169,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__FullDetection() {
@@ -1175,8 +1178,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__Log() {
@@ -1184,8 +1187,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getAntipattern__CreateFormula() {
@@ -1193,8 +1196,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getLoLa4RAPSRoot() {
@@ -1202,26 +1205,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getLoLa4RAPSRoot_Refactorings() {
-		return (EReference)loLa4RAPSRootEClass.getEStructuralFeatures().get(0);
+		return (EReference) loLa4RAPSRootEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getLoLa4RAPSRoot_Antipatterns() {
-		return (EReference)loLa4RAPSRootEClass.getEStructuralFeatures().get(1);
+		return (EReference) loLa4RAPSRootEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAddAction() {
@@ -1229,8 +1232,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getDeleteAction() {
@@ -1238,8 +1241,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMoveAction() {
@@ -1247,8 +1250,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getChangeAction() {
@@ -1256,8 +1259,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getTypesEnum() {
@@ -1265,8 +1268,8 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EDataType getmodel() {
@@ -1274,30 +1277,31 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public LogicalSpecificationFactory getLogicalSpecificationFactory() {
-		return (LogicalSpecificationFactory)getEFactoryInstance();
+		return (LogicalSpecificationFactory) getEFactoryInstance();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) return;
+		if (isCreated)
+			return;
 		isCreated = true;
 
 		// Create classes and their features
@@ -1438,21 +1442,22 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This method is
+	 * guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) return;
+		if (isInitialized)
+			return;
 		isInitialized = true;
 
 		// Initialize package
@@ -1461,13 +1466,12 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		UMLPackage theUMLPackage = (UMLPackage)EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
-		AEmiliaPackage theAEmiliaPackage = (AEmiliaPackage)EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
-		PerformancePackage thePerformancePackage = (PerformancePackage)EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
+		UMLPackage theUMLPackage = (UMLPackage) EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
+		PerformancePackage thePerformancePackage = (PerformancePackage) EPackage.Registry.INSTANCE
+				.getEPackage(PerformancePackage.eNS_URI);
 
 		// Add subpackages
 		getESubpackages().add(theUMLPackage);
-		getESubpackages().add(theAEmiliaPackage);
 		getESubpackages().add(thePerformancePackage);
 
 		// Create type parameters
@@ -1504,27 +1508,53 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		changeActionEClass.getESuperTypes().add(this.getAction());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNamedElement_Name(), ecorePackage.getEString(), "name", null, 1, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNamedElement_Name(), ecorePackage.getEString(), "name", null, 1, 1, NamedElement.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(refactoringEClass, Refactoring.class, "Refactoring", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRefactoring_Actions(), this.getAction(), this.getAction_Refactoring(), "actions", null, 0, -1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRefactoring_Pre(), this.getPreCondition(), this.getPreCondition_Refactoring(), "pre", null, 0, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRefactoring_Post(), this.getPostCondition(), this.getPostCondition_Refactoring(), "post", null, 0, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRefactoring_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Refactorings(), "lola4rapsRoot", null, 0, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRefactoring_Cost(), ecorePackage.getEDouble(), "cost", "0.0", 1, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRefactoring_NumOfChanges(), ecorePackage.getEDouble(), "numOfChanges", "0.0", 1, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(refactoringEClass, Refactoring.class, "Refactoring", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRefactoring_Actions(), this.getAction(), this.getAction_Refactoring(), "actions", null, 0, -1,
+				Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRefactoring_Pre(), this.getPreCondition(), this.getPreCondition_Refactoring(), "pre", null, 0,
+				1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRefactoring_Post(), this.getPostCondition(), this.getPostCondition_Refactoring(), "post",
+				null, 0, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRefactoring_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Refactorings(),
+				"lola4rapsRoot", null, 0, 1, Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRefactoring_Cost(), ecorePackage.getEDouble(), "cost", "0.0", 1, 1, Refactoring.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRefactoring_NumOfChanges(), ecorePackage.getEDouble(), "numOfChanges", "0.0", 1, 1,
+				Refactoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getRefactoring__CloneRefactoring(), this.getRefactoring(), "cloneRefactoring", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getRefactoring__CloneRefactoring(), this.getRefactoring(), "cloneRefactoring", 0, 1, IS_UNIQUE,
+				IS_ORDERED);
 
 		initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAction_NumOfChanges(), ecorePackage.getEDouble(), "numOfChanges", "0.0", 1, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Cost(), ecorePackage.getEDouble(), "cost", "0.0", 1, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Refactoring(), this.getRefactoring(), this.getRefactoring_Actions(), "refactoring", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Parameters(), this.getParameter(), this.getParameter_Action(), "parameters", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Pre(), this.getPreCondition(), this.getPreCondition_Action(), "pre", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Post(), this.getPostCondition(), this.getPostCondition_Action(), "post", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Model(), ecorePackage.getEJavaObject(), "model", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_NumOfChanges(), ecorePackage.getEDouble(), "numOfChanges", "0.0", 1, 1, Action.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Cost(), ecorePackage.getEDouble(), "cost", "0.0", 1, 1, Action.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Refactoring(), this.getRefactoring(), this.getRefactoring_Actions(), "refactoring",
+				null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Parameters(), this.getParameter(), this.getParameter_Action(), "parameters", null, 0,
+				-1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Pre(), this.getPreCondition(), this.getPreCondition_Action(), "pre", null, 0, 1,
+				Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Post(), this.getPostCondition(), this.getPostCondition_Action(), "post", null, 0, 1,
+				Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Model(), ecorePackage.getEJavaObject(), "model", null, 0, 1, Action.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAction__Execute(), null, "execute", 1, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1536,104 +1566,214 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 		initEOperation(getAction__CreatePostCondition(), null, "createPostCondition", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(singleValuedParameterEClass, SingleValuedParameter.class, "SingleValuedParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSingleValuedParameter_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Element(), "existsOperator", null, 0, -1, SingleValuedParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(singleValuedParameterEClass, SingleValuedParameter.class, "SingleValuedParameter", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSingleValuedParameter_ExistsOperator(), this.getExistsOperator(),
+				this.getExistsOperator_Element(), "existsOperator", null, 0, -1, SingleValuedParameter.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(multipleValuedParameterEClass, MultipleValuedParameter.class, "MultipleValuedParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMultipleValuedParameter_ForAllOperator(), this.getForAllOperator(), this.getForAllOperator_Collection(), "forAllOperator", null, 0, -1, MultipleValuedParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMultipleValuedParameter_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Collection(), "existsOperator", null, 0, -1, MultipleValuedParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(multipleValuedParameterEClass, MultipleValuedParameter.class, "MultipleValuedParameter",
+				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMultipleValuedParameter_ForAllOperator(), this.getForAllOperator(),
+				this.getForAllOperator_Collection(), "forAllOperator", null, 0, -1, MultipleValuedParameter.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMultipleValuedParameter_ExistsOperator(), this.getExistsOperator(),
+				this.getExistsOperator_Collection(), "existsOperator", null, 0, -1, MultipleValuedParameter.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(parameterEClass, Parameter.class, "Parameter", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getParameter_Type(), this.getTypesEnum(), "type", null, 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getParameter_Action(), this.getAction(), this.getAction_Parameters(), "action", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getParameter_ResolvingExpr(), ecorePackage.getEString(), "resolvingExpr", null, 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getParameter_LhsRelationalOperator(), this.getRelationalOperator(), this.getRelationalOperator_Lhs(), "lhsRelationalOperator", null, 0, -1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getParameter_RhsRelationalOperator(), this.getRelationalOperator(), this.getRelationalOperator_Rhs(), "rhsRelationalOperator", null, 0, -1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getParameter_Antipattern(), this.getAntipattern(), this.getAntipattern_Parameters(), "antipattern", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(parameterEClass, Parameter.class, "Parameter", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getParameter_Type(), this.getTypesEnum(), "type", null, 1, 1, Parameter.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getParameter_Action(), this.getAction(), this.getAction_Parameters(), "action", null, 0, 1,
+				Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getParameter_ResolvingExpr(), ecorePackage.getEString(), "resolvingExpr", null, 1, 1,
+				Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEReference(getParameter_LhsRelationalOperator(), this.getRelationalOperator(),
+				this.getRelationalOperator_Lhs(), "lhsRelationalOperator", null, 0, -1, Parameter.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getParameter_RhsRelationalOperator(), this.getRelationalOperator(),
+				this.getRelationalOperator_Rhs(), "rhsRelationalOperator", null, 0, -1, Parameter.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getParameter_Antipattern(), this.getAntipattern(), this.getAntipattern_Parameters(),
+				"antipattern", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(conditionEClass, Condition.class, "Condition", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCondition_ConditionFormula(), this.getFOLSpecification(), this.getFOLSpecification_Condition(), "conditionFormula", null, 1, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(conditionEClass, Condition.class, "Condition", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCondition_ConditionFormula(), this.getFOLSpecification(),
+				this.getFOLSpecification_Condition(), "conditionFormula", null, 1, 1, Condition.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
-		initEClass(preConditionEClass, PreCondition.class, "PreCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPreCondition_Action(), this.getAction(), this.getAction_Pre(), "action", null, 0, 1, PreCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPreCondition_Refactoring(), this.getRefactoring(), this.getRefactoring_Pre(), "refactoring", null, 0, 1, PreCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(preConditionEClass, PreCondition.class, "PreCondition", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPreCondition_Action(), this.getAction(), this.getAction_Pre(), "action", null, 0, 1,
+				PreCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPreCondition_Refactoring(), this.getRefactoring(), this.getRefactoring_Pre(), "refactoring",
+				null, 0, 1, PreCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(postConditionEClass, PostCondition.class, "PostCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPostCondition_Action(), this.getAction(), this.getAction_Post(), "action", null, 0, 1, PostCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPostCondition_Refactoring(), this.getRefactoring(), this.getRefactoring_Post(), "refactoring", null, 0, 1, PostCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(postConditionEClass, PostCondition.class, "PostCondition", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPostCondition_Action(), this.getAction(), this.getAction_Post(), "action", null, 0, 1,
+				PostCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPostCondition_Refactoring(), this.getRefactoring(), this.getRefactoring_Post(), "refactoring",
+				null, 0, 1, PostCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(folSpecificationEClass, FOLSpecification.class, "FOLSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFOLSpecification_Condition(), this.getCondition(), this.getCondition_ConditionFormula(), "condition", null, 0, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getFOLSpecification_RootOperator(), this.getOperator(), this.getOperator_Folspecification(), "rootOperator", null, 1, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getFOLSpecification_Antipattern(), this.getAntipattern(), this.getAntipattern_Formula(), "antipattern", null, 0, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(folSpecificationEClass, FOLSpecification.class, "FOLSpecification", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFOLSpecification_Condition(), this.getCondition(), this.getCondition_ConditionFormula(),
+				"condition", null, 0, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFOLSpecification_RootOperator(), this.getOperator(), this.getOperator_Folspecification(),
+				"rootOperator", null, 1, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFOLSpecification_Antipattern(), this.getAntipattern(), this.getAntipattern_Formula(),
+				"antipattern", null, 0, 1, FOLSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(logicalOperatorEClass, LogicalOperator.class, "LogicalOperator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(logicalOperatorEClass, LogicalOperator.class, "LogicalOperator", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		EOperation op = initEOperation(getLogicalOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 0, 1, IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getLogicalOperator__Guarantees__Operator(), ecorePackage.getEBoolean(),
+				"guarantees", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getLogicalOperator__EvaluateOperator__Operator(), ecorePackage.getEBoolean(), "evaluateOperator", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getLogicalOperator__EvaluateOperator__Operator(), ecorePackage.getEBoolean(),
+				"evaluateOperator", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getOperator(), "operator", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(voidOperatorEClass, VoidOperator.class, "VoidOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(voidOperatorEClass, VoidOperator.class, "VoidOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(forAllOperatorEClass, ForAllOperator.class, "ForAllOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getForAllOperator_Collection(), this.getMultipleValuedParameter(), this.getMultipleValuedParameter_ForAllOperator(), "collection", null, 1, 1, ForAllOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getForAllOperator_Argument(), this.getOperator(), this.getOperator_ForAlloperator(), "argument", null, 1, 1, ForAllOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(forAllOperatorEClass, ForAllOperator.class, "ForAllOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getForAllOperator_Collection(), this.getMultipleValuedParameter(),
+				this.getMultipleValuedParameter_ForAllOperator(), "collection", null, 1, 1, ForAllOperator.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getForAllOperator_Argument(), this.getOperator(), this.getOperator_ForAlloperator(), "argument",
+				null, 1, 1, ForAllOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(existsOperatorEClass, ExistsOperator.class, "ExistsOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getExistsOperator_Element(), this.getSingleValuedParameter(), this.getSingleValuedParameter_ExistsOperator(), "element", null, 0, 1, ExistsOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getExistsOperator_Collection(), this.getMultipleValuedParameter(), this.getMultipleValuedParameter_ExistsOperator(), "collection", null, 1, 1, ExistsOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getExistsOperator_Argument(), this.getOperator(), this.getOperator_ExistsOperator(), "argument", null, 0, 1, ExistsOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(existsOperatorEClass, ExistsOperator.class, "ExistsOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getExistsOperator_Element(), this.getSingleValuedParameter(),
+				this.getSingleValuedParameter_ExistsOperator(), "element", null, 0, 1, ExistsOperator.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExistsOperator_Collection(), this.getMultipleValuedParameter(),
+				this.getMultipleValuedParameter_ExistsOperator(), "collection", null, 1, 1, ExistsOperator.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExistsOperator_Argument(), this.getOperator(), this.getOperator_ExistsOperator(), "argument",
+				null, 0, 1, ExistsOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(orOperatorEClass, OrOperator.class, "OrOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getOrOperator_Arguments(), this.getOperator(), this.getOperator_OrOperator(), "arguments", null, 2, -1, OrOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(orOperatorEClass, OrOperator.class, "OrOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getOrOperator_Arguments(), this.getOperator(), this.getOperator_OrOperator(), "arguments", null,
+				2, -1, OrOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(notOperatorEClass, NotOperator.class, "NotOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getNotOperator_Argument(), this.getOperator(), this.getOperator_NotOperator(), "argument", null, 1, 1, NotOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(notOperatorEClass, NotOperator.class, "NotOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNotOperator_Argument(), this.getOperator(), this.getOperator_NotOperator(), "argument", null,
+				1, 1, NotOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(andOperatorEClass, AndOperator.class, "AndOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAndOperator_Arguments(), this.getOperator(), this.getOperator_AndOperator(), "arguments", null, 2, -1, AndOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(andOperatorEClass, AndOperator.class, "AndOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAndOperator_Arguments(), this.getOperator(), this.getOperator_AndOperator(), "arguments",
+				null, 2, -1, AndOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(relationalOperatorEClass, RelationalOperator.class, "RelationalOperator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRelationalOperator_Factor(), ecorePackage.getEDouble(), "factor", "1.0", 1, 1, RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRelationalOperator_Lhs(), this.getParameter(), this.getParameter_LhsRelationalOperator(), "lhs", null, 1, 1, RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRelationalOperator_Rhs(), this.getParameter(), this.getParameter_RhsRelationalOperator(), "rhs", null, 1, 1, RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(relationalOperatorEClass, RelationalOperator.class, "RelationalOperator", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getRelationalOperator_Factor(), ecorePackage.getEDouble(), "factor", "1.0", 1, 1,
+				RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEReference(getRelationalOperator_Lhs(), this.getParameter(), this.getParameter_LhsRelationalOperator(),
+				"lhs", null, 1, 1, RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRelationalOperator_Rhs(), this.getParameter(), this.getParameter_RhsRelationalOperator(),
+				"rhs", null, 1, 1, RelationalOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(equalOperatorEClass, EqualOperator.class, "EqualOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(equalOperatorEClass, EqualOperator.class, "EqualOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(greaterOperatorEClass, GreaterOperator.class, "GreaterOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(greaterOperatorEClass, GreaterOperator.class, "GreaterOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(greaterEqualOperatorEClass, GreaterEqualOperator.class, "GreaterEqualOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(greaterEqualOperatorEClass, GreaterEqualOperator.class, "GreaterEqualOperator", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(lessEqualOperatorEClass, LessEqualOperator.class, "LessEqualOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(lessEqualOperatorEClass, LessEqualOperator.class, "LessEqualOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(lessOperatorEClass, LessOperator.class, "LessOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(lessOperatorEClass, LessOperator.class, "LessOperator", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(operatorEClass, Operator.class, "Operator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getOperator_Folspecification(), this.getFOLSpecification(), this.getFOLSpecification_RootOperator(), "folspecification", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOperator_ForAlloperator(), this.getForAllOperator(), this.getForAllOperator_Argument(), "forAlloperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOperator_NotOperator(), this.getNotOperator(), this.getNotOperator_Argument(), "notOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOperator_AndOperator(), this.getAndOperator(), this.getAndOperator_Arguments(), "andOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOperator_OrOperator(), this.getOrOperator(), this.getOrOperator_Arguments(), "orOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOperator_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Argument(), "existsOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOperator_Folspecification(), this.getFOLSpecification(),
+				this.getFOLSpecification_RootOperator(), "folspecification", null, 0, 1, Operator.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEReference(getOperator_ForAlloperator(), this.getForAllOperator(), this.getForAllOperator_Argument(),
+				"forAlloperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOperator_NotOperator(), this.getNotOperator(), this.getNotOperator_Argument(), "notOperator",
+				null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOperator_AndOperator(), this.getAndOperator(), this.getAndOperator_Arguments(), "andOperator",
+				null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOperator_OrOperator(), this.getOrOperator(), this.getOrOperator_Arguments(), "orOperator",
+				null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOperator_ExistsOperator(), this.getExistsOperator(), this.getExistsOperator_Argument(),
+				"existsOperator", null, 0, 1, Operator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		op = initEOperation(getOperator__EvaluateOperator__Object(), ecorePackage.getEBoolean(), "evaluateOperator", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getOperator__EvaluateOperator__Object(), ecorePackage.getEBoolean(), "evaluateOperator", 1,
+				1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEJavaObject(), "contextualElement", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getOperator__Guarantees__Operator(), ecorePackage.getEBoolean(), "guarantees", 1, 1,
+				IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getOperator(), "op", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(antipatternEClass, Antipattern.class, "Antipattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAntipattern_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Antipatterns(), "lola4rapsRoot", null, 0, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAntipattern_Parameters(), this.getParameter(), this.getParameter_Antipattern(), "parameters", null, 0, -1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAntipattern_Formula(), this.getFOLSpecification(), this.getFOLSpecification_Antipattern(), "formula", null, 1, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(antipatternEClass, Antipattern.class, "Antipattern", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAntipattern_Lola4rapsRoot(), this.getLoLa4RAPSRoot(), this.getLoLa4RAPSRoot_Antipatterns(),
+				"lola4rapsRoot", null, 0, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAntipattern_Parameters(), this.getParameter(), this.getParameter_Antipattern(), "parameters",
+				null, 0, -1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAntipattern_Formula(), this.getFOLSpecification(), this.getFOLSpecification_Antipattern(),
+				"formula", null, 1, 1, Antipattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getAntipattern__SetParametersForPartialDetection(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAntipattern__SetParametersForPartialDetection(), null, "setParametersForPartialDetection", 1,
+				1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getAntipattern__PartialDetection(), null, "partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getAntipattern__SetParametersForFullDetection(), null, "setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getAntipattern__SetParametersForFullDetection(), null, "setParametersForFullDetection", 1, 1,
+				IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getAntipattern__FullDetection(), null, "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1641,17 +1781,26 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 
 		initEOperation(getAntipattern__CreateFormula(), null, "createFormula", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(loLa4RAPSRootEClass, LoLa4RAPSRoot.class, "LoLa4RAPSRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getLoLa4RAPSRoot_Refactorings(), this.getRefactoring(), this.getRefactoring_Lola4rapsRoot(), "refactorings", null, 0, -1, LoLa4RAPSRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getLoLa4RAPSRoot_Antipatterns(), this.getAntipattern(), this.getAntipattern_Lola4rapsRoot(), "antipatterns", null, 0, -1, LoLa4RAPSRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(loLa4RAPSRootEClass, LoLa4RAPSRoot.class, "LoLa4RAPSRoot", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getLoLa4RAPSRoot_Refactorings(), this.getRefactoring(), this.getRefactoring_Lola4rapsRoot(),
+				"refactorings", null, 0, -1, LoLa4RAPSRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLoLa4RAPSRoot_Antipatterns(), this.getAntipattern(), this.getAntipattern_Lola4rapsRoot(),
+				"antipatterns", null, 0, -1, LoLa4RAPSRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(addActionEClass, AddAction.class, "AddAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(addActionEClass, AddAction.class, "AddAction", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(deleteActionEClass, DeleteAction.class, "DeleteAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(deleteActionEClass, DeleteAction.class, "DeleteAction", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(moveActionEClass, MoveAction.class, "MoveAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(moveActionEClass, MoveAction.class, "MoveAction", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(changeActionEClass, ChangeAction.class, "ChangeAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(changeActionEClass, ChangeAction.class, "ChangeAction", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(typesEnumEEnum, TypesEnum.class, "TypesEnum");
@@ -1667,4 +1816,4 @@ public class LogicalSpecificationPackageImpl extends EPackageImpl implements Log
 		createResource(eNS_URI);
 	}
 
-} //LogicalSpecificationPackageImpl
+} // LogicalSpecificationPackageImpl

@@ -4,10 +4,6 @@ package logicalSpecification.antipatterns.performance.impl;
 
 import logicalSpecification.LogicalSpecificationPackage;
 
-import logicalSpecification.actions.AEmilia.AEmiliaPackage;
-
-import logicalSpecification.actions.AEmilia.impl.AEmiliaPackageImpl;
-
 import logicalSpecification.actions.UML.UMLPackage;
 
 import logicalSpecification.actions.UML.impl.UMLPackageImpl;
@@ -31,57 +27,57 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class PerformancePackageImpl extends EPackageImpl implements PerformancePackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass performanceAntipatternEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass blobPAEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass cpsPAEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass pafPAEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass epPAEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory method
+	 * {@link #init init()}, which also performs initialization of the package, or
+	 * returns the registered package, if one already exists. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see logicalSpecification.antipatterns.performance.PerformancePackage#eNS_URI
 	 * @see #init()
@@ -92,52 +88,57 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and
+	 * for any others upon which it depends.
 	 *
-	 * <p>This method is used to initialize {@link PerformancePackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize {@link PerformancePackage#eINSTANCE} when
+	 * that field is accessed. Clients should not invoke it directly. Instead, they
+	 * should simply access that field to obtain the package. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static PerformancePackage init() {
-		if (isInited) return (PerformancePackage)EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
+		if (isInited)
+			return (PerformancePackage) EPackage.Registry.INSTANCE.getEPackage(PerformancePackage.eNS_URI);
 
 		// Obtain or create and register package
 		Object registeredPerformancePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		PerformancePackageImpl thePerformancePackage = registeredPerformancePackage instanceof PerformancePackageImpl ? (PerformancePackageImpl)registeredPerformancePackage : new PerformancePackageImpl();
+		PerformancePackageImpl thePerformancePackage = registeredPerformancePackage instanceof PerformancePackageImpl
+				? (PerformancePackageImpl) registeredPerformancePackage
+				: new PerformancePackageImpl();
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
 		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
-		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl)(registeredPackage instanceof LogicalSpecificationPackageImpl ? registeredPackage : LogicalSpecificationPackage.eINSTANCE);
+		LogicalSpecificationPackageImpl theLogicalSpecificationPackage = (LogicalSpecificationPackageImpl) (registeredPackage instanceof LogicalSpecificationPackageImpl
+				? registeredPackage
+				: LogicalSpecificationPackage.eINSTANCE);
 		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(UMLPackage.eNS_URI);
-		UMLPackageImpl theUMLPackage = (UMLPackageImpl)(registeredPackage instanceof UMLPackageImpl ? registeredPackage : UMLPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(AEmiliaPackage.eNS_URI);
-		AEmiliaPackageImpl theAEmiliaPackage = (AEmiliaPackageImpl)(registeredPackage instanceof AEmiliaPackageImpl ? registeredPackage : AEmiliaPackage.eINSTANCE);
+		UMLPackageImpl theUMLPackage = (UMLPackageImpl) (registeredPackage instanceof UMLPackageImpl ? registeredPackage
+				: UMLPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		thePerformancePackage.createPackageContents();
 		theLogicalSpecificationPackage.createPackageContents();
 		theUMLPackage.createPackageContents();
-		theAEmiliaPackage.createPackageContents();
 
 		// Initialize created meta-data
 		thePerformancePackage.initializePackageContents();
 		theLogicalSpecificationPackage.initializePackageContents();
 		theUMLPackage.initializePackageContents();
-		theAEmiliaPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		thePerformancePackage.freeze();
@@ -148,8 +149,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPerformanceAntipattern() {
@@ -157,8 +158,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBlobPA() {
@@ -166,125 +167,125 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_numClientConnectsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(0);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_numSupplierConnectsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(1);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_numSentMsgsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(2);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_numReceivedMsgsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(3);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_hwUtilSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(4);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_F_netUtilSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(5);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_maxClientConnectsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(6);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_maxSupplierConnectsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(7);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_maxSentMsgsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(8);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_maxReceivedMsgsSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(9);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_maxHwUtilSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(10);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getBlobPA_T_minNetUtilSVP() {
-		return (EReference)blobPAEClass.getEStructuralFeatures().get(11);
+		return (EReference) blobPAEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBlobPA_ContextualElement() {
-		return (EAttribute)blobPAEClass.getEStructuralFeatures().get(12);
+		return (EAttribute) blobPAEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__SetParametersForPartialDetection__double_double_double_double() {
@@ -292,8 +293,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__SetParametersForFullDetection__double_double_double_double_double_double() {
@@ -301,8 +302,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__CreateFormula() {
@@ -310,8 +311,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__PartialDetection__double_double_double_double() {
@@ -319,8 +320,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__FullDetection__double_double_double_double_double_double() {
@@ -328,8 +329,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getBlobPA__Log() {
@@ -337,8 +338,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getCpsPA() {
@@ -346,89 +347,89 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_F_queueLengthSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(0);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_F_overUtilSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(1);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_F_underUtilSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(2);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_F_opDemandMVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(3);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_T_maxQueueLengthSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(4);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_T_maxOverUtilSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(5);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_T_minUnderUtilSVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(6);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getCpsPA_T_maxOpDemandMVP() {
-		return (EReference)cpsPAEClass.getEStructuralFeatures().get(7);
+		return (EReference) cpsPAEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getCpsPA_ContextualElement() {
-		return (EAttribute)cpsPAEClass.getEStructuralFeatures().get(8);
+		return (EAttribute) cpsPAEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__SetParametersForPartialDetection__double() {
@@ -436,8 +437,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__SetParametersForFullDetection__double_double_double_double() {
@@ -445,8 +446,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__CreateFormula() {
@@ -454,8 +455,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__PartialDetection__double() {
@@ -463,8 +464,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__FullDetection__double_double_double_double() {
@@ -472,8 +473,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getCpsPA__Log() {
@@ -481,8 +482,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPafPA() {
@@ -490,89 +491,89 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_F_resDemandMVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(0);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_F_opProbExecSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(1);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_F_hwUtilSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(2);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_F_serviceThroughputSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(3);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_T_maxResDemandMVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(4);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_T_opProbExecSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(5);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_T_maxHwUtilSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(6);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPafPA_T_minServiceThroughputSVP() {
-		return (EReference)pafPAEClass.getEStructuralFeatures().get(7);
+		return (EReference) pafPAEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPafPA_ContextualElement() {
-		return (EAttribute)pafPAEClass.getEStructuralFeatures().get(8);
+		return (EAttribute) pafPAEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__SetParametersForPartialDetection__double_double() {
@@ -580,8 +581,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__SetParametersForFullDetection__double_double_double_double() {
@@ -589,8 +590,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__CreateFormula() {
@@ -598,8 +599,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__PartialDetection__double_double() {
@@ -607,8 +608,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__FullDetection__double_double_double_double() {
@@ -616,8 +617,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getPafPA__Log() {
@@ -625,8 +626,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEpPA() {
@@ -634,125 +635,125 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_overDemandMVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(0);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_underDemandMVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(1);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_overDemandProbSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(2);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_demandSumProbSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(3);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_underDemandProbSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(4);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_hwUtilSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(5);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_F_serviceResponseTimeSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(6);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_T_maxOverDemandMVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(7);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_T_minUnderDemandMVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(8);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_T_demandsProbSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(9);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_T_maxHwUtilSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(10);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEpPA_T_maxServiceResponseTimeSVP() {
-		return (EReference)epPAEClass.getEStructuralFeatures().get(11);
+		return (EReference) epPAEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getEpPA_ContextualElement() {
-		return (EAttribute)epPAEClass.getEStructuralFeatures().get(12);
+		return (EAttribute) epPAEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__SetParametersForPartialDetection__double_double_double() {
@@ -760,8 +761,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__SetParametersForFullDetection__double_double_double_double_double() {
@@ -769,8 +770,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__CreateFormula() {
@@ -778,8 +779,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__PartialDetection__double_double_double() {
@@ -787,8 +788,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__FullDetection__double_double_double_double_double() {
@@ -796,8 +797,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EOperation getEpPA__Log() {
@@ -805,30 +806,31 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PerformanceFactory getPerformanceFactory() {
-		return (PerformanceFactory)getEFactoryInstance();
+		return (PerformanceFactory) getEFactoryInstance();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) return;
+		if (isCreated)
+			return;
 		isCreated = true;
 
 		// Create classes and their features
@@ -849,7 +851,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		createEReference(blobPAEClass, BLOB_PA__TMIN_NET_UTIL_SVP);
 		createEAttribute(blobPAEClass, BLOB_PA__CONTEXTUAL_ELEMENT);
 		createEOperation(blobPAEClass, BLOB_PA___SET_PARAMETERS_FOR_PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE);
-		createEOperation(blobPAEClass, BLOB_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE);
+		createEOperation(blobPAEClass,
+				BLOB_PA___SET_PARAMETERS_FOR_FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(blobPAEClass, BLOB_PA___CREATE_FORMULA);
 		createEOperation(blobPAEClass, BLOB_PA___PARTIAL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE);
 		createEOperation(blobPAEClass, BLOB_PA___FULL_DETECTION__DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE_DOUBLE);
@@ -912,21 +915,22 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This method is
+	 * guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) return;
+		if (isInitialized)
+			return;
 		isInitialized = true;
 
 		// Initialize package
@@ -935,7 +939,8 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		LogicalSpecificationPackage theLogicalSpecificationPackage = (LogicalSpecificationPackage)EPackage.Registry.INSTANCE.getEPackage(LogicalSpecificationPackage.eNS_URI);
+		LogicalSpecificationPackage theLogicalSpecificationPackage = (LogicalSpecificationPackage) EPackage.Registry.INSTANCE
+				.getEPackage(LogicalSpecificationPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -949,30 +954,59 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		epPAEClass.getESuperTypes().add(this.getPerformanceAntipattern());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(performanceAntipatternEClass, PerformanceAntipattern.class, "PerformanceAntipattern", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(performanceAntipatternEClass, PerformanceAntipattern.class, "PerformanceAntipattern", IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(blobPAEClass, BlobPA.class, "BlobPA", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBlobPA_F_numClientConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_numClientConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_F_numSupplierConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_numSupplierConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_F_numSentMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_numSentMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_F_numReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_numReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_hwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_F_netUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_netUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_maxClientConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxClientConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_maxSupplierConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxSupplierConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_maxSentMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxSentMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_maxReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBlobPA_T_minNetUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minNetUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBlobPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_numClientConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "F_numClientConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_numSupplierConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "F_numSupplierConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_numSentMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_numSentMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_numReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "F_numReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_hwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_F_netUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_netUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_maxClientConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "T_maxClientConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_maxSupplierConnectsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "T_maxSupplierConnectsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_maxSentMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxSentMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_maxReceivedMsgsSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "T_maxReceivedMsgsSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxHwUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBlobPA_T_minNetUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_minNetUtilSVP", null, 1, 1, BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBlobPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1,
+				BlobPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
-		EOperation op = initEOperation(getBlobPA__SetParametersForPartialDetection__double_double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getBlobPA__SetParametersForPartialDetection__double_double_double_double(), null,
+				"setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSupplierConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSentMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxReceivedMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getBlobPA__SetParametersForFullDetection__double_double_double_double_double_double(), null, "setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getBlobPA__SetParametersForFullDetection__double_double_double_double_double_double(), null,
+				"setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSupplierConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSentMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -982,13 +1016,15 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 		initEOperation(getBlobPA__CreateFormula(), null, "createFormula", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getBlobPA__PartialDetection__double_double_double_double(), ecorePackage.getEInt(), "partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getBlobPA__PartialDetection__double_double_double_double(), ecorePackage.getEInt(),
+				"partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSupplierConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSentMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxReceivedMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getBlobPA__FullDetection__double_double_double_double_double_double(), ecorePackage.getEInt(), "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getBlobPA__FullDetection__double_double_double_double_double_double(),
+				ecorePackage.getEInt(), "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxClientConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSupplierConnects", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxSentMsgs", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -999,20 +1035,40 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEOperation(getBlobPA__Log(), null, "log", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(cpsPAEClass, CpsPA.class, "CpsPA", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCpsPA_F_queueLengthSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_queueLengthSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_F_overUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_overUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_F_underUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_underUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_F_opDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "F_opDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_T_maxQueueLengthSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxQueueLengthSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_T_maxOverUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxOverUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_T_minUnderUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minUnderUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCpsPA_T_maxOpDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_maxOpDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCpsPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_F_queueLengthSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_queueLengthSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_F_overUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_overUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_F_underUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_underUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_F_opDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"F_opDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_T_maxQueueLengthSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxQueueLengthSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_T_maxOverUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxOverUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_T_minUnderUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_minUnderUtilSVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCpsPA_T_maxOpDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"T_maxOpDemandMVP", null, 1, 1, CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCpsPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1,
+				CpsPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
-		op = initEOperation(getCpsPA__SetParametersForPartialDetection__double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCpsPA__SetParametersForPartialDetection__double(), null,
+				"setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOpDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCpsPA__SetParametersForFullDetection__double_double_double_double(), null, "setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCpsPA__SetParametersForFullDetection__double_double_double_double(), null,
+				"setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxQueueLength", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1020,10 +1076,12 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 		initEOperation(getCpsPA__CreateFormula(), null, "createFormula", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCpsPA__PartialDetection__double(), ecorePackage.getEInt(), "partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCpsPA__PartialDetection__double(), ecorePackage.getEInt(), "partialDetection", 1, 1,
+				IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOpDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCpsPA__FullDetection__double_double_double_double(), ecorePackage.getEInt(), "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCpsPA__FullDetection__double_double_double_double(), ecorePackage.getEInt(),
+				"fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxQueueLength", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1032,21 +1090,41 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEOperation(getCpsPA__Log(), null, "log", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(pafPAEClass, PafPA.class, "PafPA", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPafPA_F_resDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "F_resDemandMVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_F_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_hwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_F_serviceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_serviceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_T_maxResDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_maxResDemandMVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_T_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPafPA_T_minServiceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_minServiceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPafPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_F_resDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"F_resDemandMVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_F_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_hwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_F_serviceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "F_serviceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_T_maxResDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"T_maxResDemandMVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_T_opProbExecSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_opProbExecSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxHwUtilSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPafPA_T_minServiceThroughputSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "T_minServiceThroughputSVP", null, 1, 1, PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPafPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1,
+				PafPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
-		op = initEOperation(getPafPA__SetParametersForPartialDetection__double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getPafPA__SetParametersForPartialDetection__double_double(), null,
+				"setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_opProbExec", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getPafPA__SetParametersForFullDetection__double_double_double_double(), null, "setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getPafPA__SetParametersForFullDetection__double_double_double_double(), null,
+				"setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_opProbExec", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxHwUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1054,11 +1132,13 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 		initEOperation(getPafPA__CreateFormula(), null, "createFormula", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getPafPA__PartialDetection__double_double(), ecorePackage.getEInt(), "partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getPafPA__PartialDetection__double_double(), ecorePackage.getEInt(), "partialDetection", 1,
+				1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_opProbExec", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getPafPA__FullDetection__double_double_double_double(), ecorePackage.getEInt(), "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getPafPA__FullDetection__double_double_double_double(), ecorePackage.getEInt(),
+				"fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxResDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_opProbExec", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxHwUtil", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1067,26 +1147,54 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEOperation(getPafPA__Log(), null, "log", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(epPAEClass, EpPA.class, "EpPA", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEpPA_F_overDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "F_overDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_underDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "F_underDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_overDemandProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_overDemandProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_demandSumProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_demandSumProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_underDemandProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_underDemandProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_hwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_F_serviceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "F_serviceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_T_maxOverDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_maxOverDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_T_minUnderDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null, "T_minUnderDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_T_demandsProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_demandsProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxHwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpPA_T_maxServiceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null, "T_maxServiceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEpPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_overDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"F_overDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_underDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"F_underDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_overDemandProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_overDemandProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_demandSumProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_demandSumProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_underDemandProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_underDemandProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_hwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"F_hwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_F_serviceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "F_serviceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_T_maxOverDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"T_maxOverDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_T_minUnderDemandMVP(), theLogicalSpecificationPackage.getMultipleValuedParameter(), null,
+				"T_minUnderDemandMVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_T_demandsProbSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_demandsProbSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_T_maxHwUtilSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(), null,
+				"T_maxHwUtilSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpPA_T_maxServiceResponseTimeSVP(), theLogicalSpecificationPackage.getSingleValuedParameter(),
+				null, "T_maxServiceResponseTimeSVP", null, 1, 1, EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEpPA_ContextualElement(), ecorePackage.getEJavaObject(), "contextualElement", null, 1, 1,
+				EpPA.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
-		op = initEOperation(getEpPA__SetParametersForPartialDetection__double_double_double(), null, "setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getEpPA__SetParametersForPartialDetection__double_double_double(), null,
+				"setParametersForPartialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_demandsProb", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getEpPA__SetParametersForFullDetection__double_double_double_double_double(), null, "setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getEpPA__SetParametersForFullDetection__double_double_double_double_double(), null,
+				"setParametersForFullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_demandsProb", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1095,12 +1203,14 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 
 		initEOperation(getEpPA__CreateFormula(), null, "createFormula", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getEpPA__PartialDetection__double_double_double(), ecorePackage.getEInt(), "partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getEpPA__PartialDetection__double_double_double(), ecorePackage.getEInt(),
+				"partialDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_demandsProb", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getEpPA__FullDetection__double_double_double_double_double(), ecorePackage.getEInt(), "fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getEpPA__FullDetection__double_double_double_double_double(), ecorePackage.getEInt(),
+				"fullDetection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_maxOverDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_minUnderDemand", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEDouble(), "T_demandsProb", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1110,4 +1220,4 @@ public class PerformancePackageImpl extends EPackageImpl implements PerformanceP
 		initEOperation(getEpPA__Log(), null, "log", 1, 1, IS_UNIQUE, IS_ORDERED);
 	}
 
-} //PerformancePackageImpl
+} // PerformancePackageImpl

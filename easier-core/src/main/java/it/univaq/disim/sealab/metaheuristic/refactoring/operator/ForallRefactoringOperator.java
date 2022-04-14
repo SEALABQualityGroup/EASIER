@@ -20,10 +20,6 @@ import logicalSpecification.NotOperator;
 import logicalSpecification.Operator;
 import logicalSpecification.OrOperator;
 import logicalSpecification.impl.ForAllOperatorImpl;
-import metamodel.mmaemilia.ArchiElemInstance;
-import metamodel.mmaemilia.Attachment;
-import metamodel.mmaemilia.InputInteraction;
-import metamodel.mmaemilia.OutputInteraction;
 
 public class ForallRefactoringOperator extends ForAllOperatorImpl implements RefactoringOperator{
 
@@ -40,16 +36,6 @@ public class ForallRefactoringOperator extends ForAllOperatorImpl implements Ref
 		if (OclManager.evaluateOCL(this.getCollection().getResolvingExpr(), (EObject) contextualElement) instanceof HashSet<?>) {
 			HashSet<Object> hashSetRes = (HashSet<Object>) OclManager
 					.evaluateOCL(this.getCollection().getResolvingExpr(), (EObject) contextualElement);
-			for (Object object : hashSetRes) {
-				if (object instanceof ArchiElemInstance)
-					coll.add((ArchiElemInstance) object);
-				else if (object instanceof InputInteraction)
-					coll.add((InputInteraction) object);
-				else if (object instanceof OutputInteraction)
-					coll.add((OutputInteraction) object);
-				else if (object instanceof Attachment)
-					coll.add((Attachment) object);
-			}
 		}
 		// } else {
 		// List<Object> coll = (List<Object>)

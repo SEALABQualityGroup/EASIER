@@ -33,12 +33,12 @@
 			<version>5.5.0.v20181203-1331</version>
 		</dependency>
 
-		<dependency>
+		<!--dependency>
 			<groupId>it.univaq.disim.sealab</groupId>
 			<artifactId>aemiliaMetamodel</artifactId>
 			<version>${easier.aemiliaMetamodel.version}</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency-->
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<!--dependency>
 			<groupId>org.apache.commons</groupId>

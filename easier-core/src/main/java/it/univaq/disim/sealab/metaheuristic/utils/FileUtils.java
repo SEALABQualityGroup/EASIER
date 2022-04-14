@@ -22,11 +22,7 @@ import java.util.Set;
 
 import org.apache.commons.text.StringSubstitutor;
 
-import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
-import logicalSpecification.actions.AEmilia.AEmiliaCloneAEIAction;
-import logicalSpecification.actions.AEmilia.AEmiliaConstChangesAction;
 
 public class FileUtils {
 
@@ -116,41 +112,41 @@ public class FileUtils {
 		}
 	}
 
-	public static void writeAnalyzableFile(final RSolution solution) {
-		try (FileWriter analyzableCSV = new FileWriter(
-				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "pareto",
-						solution.getProblemName() + "_analyzableResults.csv").toFile(),
-				true)) {
-
-			List<String> line = new ArrayList<String>();
-			/*String solID = "( "
-					+ Configurator.eINSTANCE.getMaxEvaluation() / Configurator.eINSTANCE.getPopulationSize()
-					+ "-" + Configurator.eINSTANCE.getPopulationSize() + " ) " + ":" + solution.getName();*/
-			line.add(String.valueOf(solution.getName()));
-			line.add(String.valueOf(solution.getPerfQ()));
-			line.add(String.valueOf(solution.getNumOfChanges()));
-			line.add(String.valueOf(solution.getPAs()));
-
-			final Refactoring ref = (Refactoring) solution.getVariable(0);
-
-			for (RefactoringAction action : ref.getActions()) {
-				if (action.getName() == null)
-					action.setName(action.getClass().getSimpleName());
-
-				String target = action instanceof AEmiliaConstChangesAction
-						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
-						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
-				String factor = action instanceof AEmiliaConstChangesAction
-						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
-						: "NULL";
-				line.addAll(Arrays.asList(target, factor));
-
-			}
-			CSVUtils.writeLine(analyzableCSV, line);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void writeAnalyzableFile(final RSolution solution) {
+//		try (FileWriter analyzableCSV = new FileWriter(
+//				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "pareto",
+//						solution.getProblemName() + "_analyzableResults.csv").toFile(),
+//				true)) {
+//
+//			List<String> line = new ArrayList<String>();
+//			/*String solID = "( "
+//					+ Configurator.eINSTANCE.getMaxEvaluation() / Configurator.eINSTANCE.getPopulationSize()
+//					+ "-" + Configurator.eINSTANCE.getPopulationSize() + " ) " + ":" + solution.getName();*/
+//			line.add(String.valueOf(solution.getName()));
+//			line.add(String.valueOf(solution.getPerfQ()));
+//			line.add(String.valueOf(solution.getNumOfChanges()));
+//			line.add(String.valueOf(solution.getPAs()));
+//
+//			final Refactoring ref = (Refactoring) solution.getVariable(0);
+//
+//			for (RefactoringAction action : ref.getActions()) {
+//				if (action.getName() == null)
+//					action.setName(action.getClass().getSimpleName());
+//
+//				String target = action instanceof AEmiliaConstChangesAction
+//						? ((AEmiliaConstChangesAction) action).getSourceConstInit().getName()
+//						: ((AEmiliaCloneAEIAction) action).getSourceAEI().getInstanceName();
+//				String factor = action instanceof AEmiliaConstChangesAction
+//						? Double.toString(((AEmiliaConstChangesAction) action).getFactorOfChange())
+//						: "NULL";
+//				line.addAll(Arrays.asList(target, factor));
+//
+//			}
+//			CSVUtils.writeLine(analyzableCSV, line);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static synchronized void moveTmpFile(final Path sourceFolder, final Path destFolder) {
 		destFolder.toFile().mkdirs();
