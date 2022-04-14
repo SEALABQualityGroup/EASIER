@@ -253,12 +253,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
             while (j < tr.getActions().size()) {
                 Action a2 = tr.getActions().get(j);
                 if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
-                    /*
-                     * EasierLogger.logger_
-                     * .warning("Multi-modification of the same operation for Solution #" +
-                     * this.getName() + "!"); EasierLogger.logger_.warning(String.
-                     * format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));
-                     */
+
                     return false;
                 }
                 j++;
@@ -429,19 +424,24 @@ public class UMLRSolution extends RSolution<Refactoring> {
             System.err.println("Solution # " + this.name);
             System.err.println(lqnError);
             getVariable(VARIABLE_INDEX).getActions().forEach(System.out::println);
-            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
-                String line = String.valueOf(this.name) + ";";
 
-                line += lqnError;
-                line += ";";
-                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-                        .collect(Collectors.joining(","));
-                line += "\n";
-                bw.append(line);
-            } catch (IOException e1) {
-                System.out.println(e1.getMessage());
-            }
+            String line = this.name + "," + lqnError + "," + getVariable(VARIABLE_INDEX).toString();
+
+            new FileUtils().failedSolutionLogToCSV(line);
+
+//            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+//            try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
+//                String line = String.valueOf(this.name) + ";";
+//
+//                line += lqnError;
+//                line += ";";
+//                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+//                        .collect(Collectors.joining(","));
+//                line += "\n";
+//                bw.append(line);
+//            } catch (IOException e1) {
+//                System.out.println(e1.getMessage());
+//            }
             e.printStackTrace();
         }
 
@@ -526,20 +526,24 @@ public class UMLRSolution extends RSolution<Refactoring> {
             bckAnn.execute();
 
         } catch (URISyntaxException | EolRuntimeException e) {
-            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-            try (BufferedWriter bw = new BufferedWriter(
-                    new FileWriter(reportFilePath.getParent().resolve("backAnnErrorLog.csv").toFile(), true))) {
-                String line = String.valueOf(this.name) + ";";
+            String line = this.name + "," + e.getMessage() + "," + getVariable(VARIABLE_INDEX).toString();
 
-                line += e.getMessage();
-                line += ";";
-                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-                        .collect(Collectors.joining(","));
-                line += "\n";
-                bw.append(line);
-            } catch (IOException e1) {
-                System.out.println(e1.getMessage());
-            }
+            new FileUtils().backAnnotationErrorLogToCSV(line);
+
+//            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+//            try (BufferedWriter bw = new BufferedWriter(
+//                    new FileWriter(reportFilePath.getParent().resolve("backAnnErrorLog.csv").toFile(), true))) {
+//                String line = String.valueOf(this.name) + ";";
+//
+//                line += e.getMessage();
+//                line += ";";
+//                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+//                        .collect(Collectors.joining(","));
+//                line += "\n";
+//                bw.append(line);
+//            } catch (IOException e1) {
+//                System.out.println(e1.getMessage());
+//            }
             e.printStackTrace();
         }
         bckAnn.clearMemory();
@@ -749,22 +753,27 @@ public class UMLRSolution extends RSolution<Refactoring> {
             executor.clearMemory();
 
         } catch (URISyntaxException | EolRuntimeException e) {
-            System.err.println("Error in runnig the ETL transformation");
+            System.err.println("Error when running the ETL transformation");
 
-            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-            try (BufferedWriter bw = new BufferedWriter(
-                    new FileWriter(reportFilePath.getParent().resolve("etlErrorLog.csv").toFile(), true))) {
-                String line = String.valueOf(this.name) + ";";
+            String eolError = ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
+            String line = this.name + "," + eolError + "," + getVariable(VARIABLE_INDEX).toString();
 
-                line += ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
-                line += ";";
-                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-                        .collect(Collectors.joining(","));
-                line += "\n";
-                bw.append(line);
-            } catch (IOException e1) {
-                System.out.println(e1.getMessage());
-            }
+            new FileUtils().etlErrorLogToCSv(line);
+
+//            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+//            try (BufferedWriter bw = new BufferedWriter(
+//                    new FileWriter(reportFilePath.getParent().resolve("etlErrorLog.csv").toFile(), true))) {
+//                String line = String.valueOf(this.name) + ";";
+//
+//                line += ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
+//                line += ";";
+//                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+//                        .collect(Collectors.joining(","));
+//                line += "\n";
+//                bw.append(line);
+//            } catch (IOException e1) {
+//                System.out.println(e1.getMessage());
+//            }
             e.printStackTrace();
         }
         new UMLMemoryOptimizer().cleanup();
@@ -818,20 +827,22 @@ public class UMLRSolution extends RSolution<Refactoring> {
             }
         } catch (MissingTagException e) {
             System.err.println("Error in computing the reliability");
+            String line = this.name + "," + e.getMessage() + "," + getVariable(VARIABLE_INDEX).toString();
 
-            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-            try (BufferedWriter bw = new BufferedWriter(
-                    new FileWriter(reportFilePath.getParent().resolve("relErrorLog.csv").toFile(), true))) {
-                String line = String.valueOf(this.name) + ";";
-                line += e.getMessage() + ";";
-                line += ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().stream().map(act -> act.toString())
-                        .collect(Collectors.joining(","));
-                line += "\n";
-                bw.append(line);
-
-            } catch (IOException e1) {
-                System.out.println(e1.getMessage());
-            }
+            new FileUtils().reliabilityErrorLogToCSV(line);
+//            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+//            try (BufferedWriter bw = new BufferedWriter(
+//                    new FileWriter(reportFilePath.getParent().resolve("relErrorLog.csv").toFile(), true))) {
+//                String line = String.valueOf(this.name) + ";";
+//                line += e.getMessage() + ";";
+//                line += ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().stream().map(act -> act.toString())
+//                        .collect(Collectors.joining(","));
+//                line += "\n";
+//                bw.append(line);
+//
+//            } catch (IOException e1) {
+//                System.out.println(e1.getMessage());
+//            }
         }
         long durationTime = System.currentTimeMillis() - initTime;
         new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s", algorithm, problemName, durationTime));

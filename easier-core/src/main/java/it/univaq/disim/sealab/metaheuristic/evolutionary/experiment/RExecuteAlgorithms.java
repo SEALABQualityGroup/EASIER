@@ -47,30 +47,13 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 
 		computingTimes = new ArrayList<>();
 
-//		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
-//			final int id = i;
-
-//			System.out.println("Indepentent Runs");
-//			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
-
-		// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
-		// algorithm.runAlgorithm(id, experiment));
 		// TODO if parallelStream is set, it throws NPE after a while
 		computingTimes.addAll(experiment.getAlgorithmList().stream()
-//					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm, id)).collect(Collectors.toList()));
 				.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result>) algorithm))
 				.collect(Collectors.toList()));
 
 		FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(),
 				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
-
-		// removes old solutions
-//			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
-//				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
-//			}
-
-//		}
-
 		return this;
 	}
 
@@ -80,37 +63,14 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 	 * the output folder
 	 * 
 	 * @param algorithm
-	 * @param id
 	 * @return
 	 */
 	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(RExperimentAlgorithm<S, Result> algorithm) {
 		long total = Runtime.getRuntime().totalMemory();
 		long initTime = System.currentTimeMillis();
-
-//		algorithm.runAlgorithm(id, this.experiment);
-//		algorithm.runAlgorithm(this.experiment, id);
 		algorithm.runAlgorithm(this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
 		long free = Runtime.getRuntime().freeMemory();
-
-//		if(!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
-//			
-//			try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
-//		    	writer.write("algorithm,problem_tag,execution_time(ms),total_memory(B),free_memory(B)");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		String line = String.format("%s,%s,%s,%s,%s\n", algorithm.getAlgorithmTag(), algorithm.getProblemTag(), computingTime, total, free);
-//		
-//	    try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
-//	    	writer.append(line);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
-//		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
 		return new AbstractMap.SimpleEntry<Algorithm<Result>, long[]>(algorithm.getAlgorithm(),
 				new long[] { computingTime, total, free });// new
 	}
@@ -121,17 +81,6 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 			createExperimentDirectory();
 		}
 	}
-
-	/*
-	 * private boolean experimentDirectoryDoesNotExist() { boolean result; File
-	 * experimentDirectory;
-	 * 
-	 * experimentDirectory = new File(experiment.getExperimentBaseDirectory()); if
-	 * (experimentDirectory.exists() && experimentDirectory.isDirectory()) { result
-	 * = false; } else { result = true; }
-	 * 
-	 * return result; }
-	 */
 
 	/**
 	 * First empty tmp and experiment base DIRs,
@@ -161,47 +110,6 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 			throw new JMetalException(String.format("Error creating experiment and temp directories: %s \t %s",
 					experiment.getExperimentBaseDirectory(), Configurator.eINSTANCE.getTmpFolder()));
 		}
-	}
-
-	private Path setReportFilePath() {
-
-		Path tmp = Configurator.eINSTANCE.getOutputFolder()
-				.resolve(Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv"));
-		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
-		Path relErrorLog = tmp.getParent().resolve("relErrorLog.csv");
-		Path backErrorLog = tmp.getParent().resolve("backAnnErrorLog.csv");
-
-		String header = "solID;lqn_solver_message;actions\n";
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(tmp.toFile(), true))) {
-			bw.append(header);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-
-		header = "solID;message;actions\n";
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(etlErrorLog.toFile(), true))) {
-			bw.append(header);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-
-		header = "solID;message;actions\n";
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(relErrorLog.toFile(), true))) {
-			bw.append(header);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(backErrorLog.toFile(), true))) {
-			bw.append(header);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-
-		return tmp;
 	}
 
 	public List<Map.Entry<Algorithm<Result>, long[]>> getComputingTimes() {

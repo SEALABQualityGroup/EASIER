@@ -282,7 +282,7 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 	}
 	
 	public void refactoringToCSV() {
-		new FileUtils().refactoringDumpToCSV(getVariable(0).toString());
+		new FileUtils().refactoringDumpToCSV(((Refactoring)getVariable(0)).toCSV());
 	}
 
 	/**
