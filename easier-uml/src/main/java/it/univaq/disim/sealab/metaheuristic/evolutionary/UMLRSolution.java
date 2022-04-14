@@ -62,846 +62,846 @@ import logicalSpecification.FOLSpecification;
 
 /**
  * @author peo
- *
  */
 public class UMLRSolution extends RSolution<Refactoring> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private UUID ID;
+    private UUID ID;
 
-	private Path folderPath;
+    private Path folderPath;
 
-	private EasierUmlModel dirtyIModel;
+    private EasierUmlModel dirtyIModel;
 
-	private double[] scenarioRTs;
-	
-	private String algorithm;
+    private double[] scenarioRTs;
 
-	private final static String refactoringLibraryModule, uml2lqnModule;
-	private final static String GQAM_NAMESPACE;
+    private String algorithm;
 
-	private Map<String, Map<String, Double>> extractFuzzyValues;
+    private final static String refactoringLibraryModule, uml2lqnModule;
+    private final static String GQAM_NAMESPACE;
 
-	static {
-		refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-refactoringLibrary", "evl", "AP-UML-MARTE.evl").toString();
-		uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
+    private Map<String, Map<String, Double>> extractFuzzyValues;
 
-		GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
-	}
+    static {
+        refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+                "easier-refactoringLibrary", "evl", "AP-UML-MARTE.evl").toString();
+        uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+                "easier-uml2lqn", "org.univaq.uml2lqn").toString();
 
-	public UMLRSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
-		super(numberOfVariables, numberOfObjectives, p);
+        GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
+    }
 
-		setName();
-		ID = UUID.randomUUID();
-		resetParents();
-		init();
-		this.createRandomRefactoring();
-	}
+    public UMLRSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
+        super(numberOfVariables, numberOfObjectives, p);
 
-	public UMLRSolution(UMLRSolution s) {
-		super(s.getNumberOfVariables(), s.getNumberOfObjectives());
+        setName();
+        ID = UUID.randomUUID();
+        resetParents();
+        init();
+        this.createRandomRefactoring();
+    }
 
-		this.allowed_failures = s.allowed_failures;
-		this.length_of_refactorings = s.length_of_refactorings;
-		this.sourceModelPath = s.sourceModelPath;
-		this.problemName = s.getProblemName();
+    public UMLRSolution(UMLRSolution s) {
+        super(s.getNumberOfVariables(), s.getNumberOfObjectives());
 
-		setName();
-		ID = UUID.randomUUID();
+        this.allowed_failures = s.allowed_failures;
+        this.length_of_refactorings = s.length_of_refactorings;
+        this.sourceModelPath = s.sourceModelPath;
+        this.problemName = s.getProblemName();
 
-		resetParents();
-		init();
+        setName();
+        ID = UUID.randomUUID();
 
-		this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX));
+        resetParents();
+        init();
 
-		for (int i = 0; i < s.getNumberOfObjectives(); i++) {
-			this.setObjective(i, s.getObjective(i));
-		}
+        this.copyRefactoringVariable((Refactoring) s.getVariable(VARIABLE_INDEX));
 
-		this.attributes = s.attributes;
-		this.setAttribute(CrowdingDistance.class, s.getAttribute(CrowdingDistance.class));
+        for (int i = 0; i < s.getNumberOfObjectives(); i++) {
+            this.setObjective(i, s.getObjective(i));
+        }
 
-	}
+        this.attributes = s.attributes;
+        this.setAttribute(CrowdingDistance.class, s.getAttribute(CrowdingDistance.class));
 
-	public UMLRSolution(UMLRSolution s1, UMLRSolution s2, int point, boolean left) {
-		super(s1.getNumberOfVariables(), s1.getNumberOfObjectives());
+    }
 
-		this.allowed_failures = s1.allowed_failures;
-		this.length_of_refactorings = s1.length_of_refactorings;
-		this.sourceModelPath = s1.sourceModelPath;
-		this.problemName = s1.getProblemName();
+    public UMLRSolution(UMLRSolution s1, UMLRSolution s2, int point, boolean left) {
+        super(s1.getNumberOfVariables(), s1.getNumberOfObjectives());
 
-		setName();
-		ID = UUID.randomUUID();
+        this.allowed_failures = s1.allowed_failures;
+        this.length_of_refactorings = s1.length_of_refactorings;
+        this.sourceModelPath = s1.sourceModelPath;
+        this.problemName = s1.getProblemName();
 
-		init();
+        setName();
+        ID = UUID.randomUUID();
 
-		for (int i = 0; i < s1.getNumberOfVariables(); i++) {
-			if (i == VARIABLE_INDEX) {
-				if (left) {
-					this.createChild(s1, s2, point);
-				} else {
-					this.createChild(s2, s1, point);
-				}
-			} else {
-				try {
-					throw new UnexpectedException("Should not happen");
-				} catch (UnexpectedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        init();
 
-		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-			this.setObjective(i, s1.getObjective(i));
-		}
+        for (int i = 0; i < s1.getNumberOfVariables(); i++) {
+            if (i == VARIABLE_INDEX) {
+                if (left) {
+                    this.createChild(s1, s2, point);
+                } else {
+                    this.createChild(s2, s1, point);
+                }
+            } else {
+                try {
+                    throw new UnexpectedException("Should not happen");
+                } catch (UnexpectedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
-		this.setAttribute(CrowdingDistance.class, 0.0);
-	}
+        for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
+            this.setObjective(i, s1.getObjective(i));
+        }
 
-	protected void init() {
+        this.setAttribute(CrowdingDistance.class, 0.0);
+    }
 
-		parents = new UMLRSolution[2];
-		scenarioRTs = new double[3];
+    protected void init() {
 
-		Refactoring refactoring = new Refactoring();
-		refactoring.setSolutionID(this.getName());
-		this.setVariable(0, refactoring);
+        parents = new UMLRSolution[2];
+        scenarioRTs = new double[3];
 
-		folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
-				String.valueOf(getName()));
-		modelPath = folderPath.resolve(getName() + ".uml");
-		
-		algorithm = this.problemName.split("__")[0];
+        Refactoring refactoring = new Refactoring();
+        refactoring.setSolutionID(this.getName());
+        this.setVariable(0, refactoring);
 
-		try {
-			org.apache.commons.io.FileUtils.copyFile(sourceModelPath.toFile(), modelPath.toFile());
+        folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
+                String.valueOf(getName()));
+        modelPath = folderPath.resolve(getName() + ".uml");
 
-			try {
-				dirtyIModel = EOLStandalone.createUmlModel(modelPath.toString());
-			} catch (EolModelLoadingException | URISyntaxException e) {
-				e.printStackTrace();
-			}
+        algorithm = this.problemName.split("__")[0];
 
-		} catch (IOException e) {
-			System.out.println("[ERROR] The problem's model copy generated an error!!!");
-			e.printStackTrace();
-		}
+        try {
+            org.apache.commons.io.FileUtils.copyFile(sourceModelPath.toFile(), modelPath.toFile());
 
-	}
+            try {
+                dirtyIModel = EOLStandalone.createUmlModel(modelPath.toString());
+            } catch (EolModelLoadingException | URISyntaxException e) {
+                e.printStackTrace();
+            }
 
-	protected void createRandomRefactoring() {
+        } catch (IOException e) {
+            System.out.println("[ERROR] The problem's model copy generated an error!!!");
+            e.printStackTrace();
+        }
 
-		int num_failures = 0;
+    }
 
-		do {
-			try {
-				if (!tryRandomPush())
-					num_failures++;
-				if (num_failures >= allowed_failures) {
-					// START OVER
-					num_failures = 0;
-					Refactoring refactoring = new Refactoring();
-					refactoring.setSolutionID(this.getName());
-					this.setVariable(VARIABLE_INDEX, refactoring);
-					// EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached...
-					// Created an empty refactoring!", problem.allowed_failures));
-				}
-			} catch (UnexpectedException | EolRuntimeException e) {
-				e.printStackTrace();
-			}
-		} while (((Refactoring) getVariable(VARIABLE_INDEX)).getActions().size() < length_of_refactorings);
-		this.setAttribute(CrowdingDistance.class, 0.0);
-	}
+    protected void createRandomRefactoring() {
 
-	protected boolean tryRandomPush() throws UnexpectedException, EolRuntimeException {
+        int num_failures = 0;
 
-		Refactoring temporary_ref = ((Refactoring) getVariable(VARIABLE_INDEX)).clone(this);
+        do {
+            try {
+                if (!tryRandomPush())
+                    num_failures++;
+                if (num_failures >= allowed_failures) {
+                    // START OVER
+                    num_failures = 0;
+                    Refactoring refactoring = new Refactoring();
+                    refactoring.setSolutionID(this.getName());
+                    this.setVariable(VARIABLE_INDEX, refactoring);
+                    // EasierLogger.logger_.warning(String.format("Allowed failures '%s' reached...
+                    // Created an empty refactoring!", problem.allowed_failures));
+                }
+            } catch (UnexpectedException | EolRuntimeException e) {
+                e.printStackTrace();
+            }
+        } while (((Refactoring) getVariable(VARIABLE_INDEX)).getActions().size() < length_of_refactorings);
+        this.setAttribute(CrowdingDistance.class, 0.0);
+    }
 
-		RefactoringAction candidate;
-		do {
-			candidate = RefactoringActionFactory.getRandomAction(this);
-		} while (candidate == null);
+    protected boolean tryRandomPush() throws UnexpectedException, EolRuntimeException {
 
-		temporary_ref.getActions().add(candidate);
+        Refactoring temporary_ref = ((Refactoring) getVariable(VARIABLE_INDEX)).clone(this);
 
-		if (this.isFeasible(temporary_ref)) {
-			((Refactoring) getVariable(VARIABLE_INDEX)).getActions().add(candidate);
-			return true;
-		} else {
-			dirtyIModel.deleteElement(candidate);
-		}
-		return false;
+        RefactoringAction candidate;
+        do {
+            candidate = RefactoringActionFactory.getRandomAction(this);
+        } while (candidate == null);
 
-	}
+        temporary_ref.getActions().add(candidate);
 
-	public boolean isFeasible() {
-		return isFeasible(getVariable(VARIABLE_INDEX));
-	}
+        if (this.isFeasible(temporary_ref)) {
+            ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().add(candidate);
+            return true;
+        } else {
+            dirtyIModel.deleteElement(candidate);
+        }
+        return false;
 
-	public boolean isFeasible(Refactoring tr) {
+    }
 
-		// Finds multiple modification of the same target element
-		for (RefactoringAction a : tr.getActions()) {
-			int j = 0;
-			while (j < tr.getActions().size()) {
-				Action a2 = tr.getActions().get(j);
-				if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
-					/*
-					 * EasierLogger.logger_
-					 * .warning("Multi-modification of the same operation for Solution #" +
-					 * this.getName() + "!"); EasierLogger.logger_.warning(String.
-					 * format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));
-					 */
-					return false;
-				}
-				j++;
-			}
-		}
+    public boolean isFeasible() {
+        return isFeasible(getVariable(VARIABLE_INDEX));
+    }
 
-		FOLSpecification app = Manager.calculatePreCondition(tr).getConditionFormula();
-		try {
-			return Manager.evaluateFOL(app, (EObject) dirtyIModel.allContents().toArray()[0]);
-		} catch (ParserException e) {
-			EasierLogger.logger_
-					.info("Precondition of Solution # " + this.getName() + " has generated a Parser Exception!");
-			e.printStackTrace();
-		}
+    public boolean isFeasible(Refactoring tr) {
 
-		return false;
-	}
+        // Finds multiple modification of the same target element
+        for (RefactoringAction a : tr.getActions()) {
+            int j = 0;
+            while (j < tr.getActions().size()) {
+                Action a2 = tr.getActions().get(j);
+                if (a.equals(a2) && j != tr.getActions().indexOf(a)) {
+                    /*
+                     * EasierLogger.logger_
+                     * .warning("Multi-modification of the same operation for Solution #" +
+                     * this.getName() + "!"); EasierLogger.logger_.warning(String.
+                     * format("Action '%s' is equal to Action '%s'", a.toString(), a2.toString()));
+                     */
+                    return false;
+                }
+                j++;
+            }
+        }
 
-	protected void copyRefactoringVariable(Refactoring variableValue) {
-		this.setVariable(VARIABLE_INDEX, variableValue.clone(this));
-	}
+        FOLSpecification app = Manager.calculatePreCondition(tr).getConditionFormula();
+        try {
+            return Manager.evaluateFOL(app, (EObject) dirtyIModel.allContents().toArray()[0]);
+        } catch (ParserException e) {
+            EasierLogger.logger_
+                    .info("Precondition of Solution # " + this.getName() + " has generated a Parser Exception!");
+            e.printStackTrace();
+        }
 
-	@Override
-	public Solution<Refactoring> copy() {
-		return new UMLRSolution(this);
-	}
+        return false;
+    }
 
-	protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
+    protected void copyRefactoringVariable(Refactoring variableValue) {
+        this.setVariable(VARIABLE_INDEX, variableValue.clone(this));
+    }
+
+    @Override
+    public Solution<Refactoring> copy() {
+        return new UMLRSolution(this);
+    }
+
+    protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
 
 //		Refactoring ref = new Refactoring();
 
-		try {
-			for (int j = 0; j < point; j++) {
-				RefactoringAction _new = s1.getActionAt(j).clone(this);
-				this.getVariable(0).getActions().add(j, _new);
+        try {
+            for (int j = 0; j < point; j++) {
+                RefactoringAction _new = s1.getActionAt(j).clone(this);
+                this.getVariable(0).getActions().add(j, _new);
 //				ref.getActions().add(j, _new);
-			}
-			for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
-				RefactoringAction _new = s2.getActionAt(j).clone(this);
-				this.getVariable(0).getActions().add(j, _new);
+            }
+            for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
+                RefactoringAction _new = s2.getActionAt(j).clone(this);
+                this.getVariable(0).getActions().add(j, _new);
 //				ref.getActions().add(j, _new);
-			}
+            }
 //			this.setVariable(VARIABLE_INDEX, ref);
-		} catch (IndexOutOfBoundsException e) {
-			EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
-			e.printStackTrace();
-		}
-	}
+        } catch (IndexOutOfBoundsException e) {
+            EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public boolean alter(int i) {
+    @Override
+    public boolean alter(int i) {
 
-		Refactoring temporary_ref = getVariable(VARIABLE_INDEX).clone(this);
+        Refactoring temporary_ref = getVariable(VARIABLE_INDEX).clone(this);
 
-		RefactoringAction candidate;
-		do {
-			candidate = RefactoringActionFactory.getRandomAction(this);
-		} while (candidate == null);
+        RefactoringAction candidate;
+        do {
+            candidate = RefactoringActionFactory.getRandomAction(this);
+        } while (candidate == null);
 
-		temporary_ref.getActions().set(i, candidate);
+        temporary_ref.getActions().set(i, candidate);
 
-		if (this.isFeasible(temporary_ref)) {
-			temporary_ref = null;
-			getVariable(VARIABLE_INDEX).getActions().remove(i);
-			getVariable(VARIABLE_INDEX).getActions().add(i, candidate);
-			return true;
-		} else {
-			try {
-				dirtyIModel.deleteElement(candidate);
-			} catch (EolRuntimeException e) {
-				e.printStackTrace();
-			}
-			temporary_ref = null;
-		}
-		return false;
+        if (this.isFeasible(temporary_ref)) {
+            temporary_ref = null;
+            getVariable(VARIABLE_INDEX).getActions().remove(i);
+            getVariable(VARIABLE_INDEX).getActions().add(i, candidate);
+            return true;
+        } else {
+            try {
+                dirtyIModel.deleteElement(candidate);
+            } catch (EolRuntimeException e) {
+                e.printStackTrace();
+            }
+            temporary_ref = null;
+        }
+        return false;
 
-	}
+    }
 
-	/**
-	 * This method counts the number of Performance Antipatterns (PAs) invoking
-	 * the PADRE perf-detection file
-	 */
-	public void countingPAs() {
+    /**
+     * This method counts the number of Performance Antipatterns (PAs) invoking
+     * the PADRE perf-detection file
+     */
+    public void countingPAs() {
 
-		System.out.print("Counting PAs (it may take a while) ... ");
-		long startTime = System.currentTimeMillis();
-		EVLStandalone pasCounter = new EVLStandalone();
-		EasierUmlModel uml = null;
-		try {
-			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
-		} catch (EolModelLoadingException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-		pasCounter.setModel(uml);
-		pasCounter.setSource(Paths.get(refactoringLibraryModule));
+        System.out.print("Counting PAs (it may take a while) ... ");
+        long startTime = System.currentTimeMillis();
+        EVLStandalone pasCounter = new EVLStandalone();
+//		EasierUmlModel uml = null;
+        try (EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString())) {
+//			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+            pasCounter.setModel(uml);
 
-		// set the prob to be perf antipatterns
-		double fuzzyThreshold = Configurator.eINSTANCE.getProbPas();
-		pasCounter.setParameter(fuzzyThreshold, "float", "prob_to_be_pa");
+            pasCounter.setSource(Paths.get(refactoringLibraryModule));
 
-		extractFuzzyValues = pasCounter.extractFuzzyValues();
+            // set the prob to be perf antipatterns
+            double fuzzyThreshold = Configurator.eINSTANCE.getProbPas();
+            pasCounter.setParameter(fuzzyThreshold, "float", "prob_to_be_pa");
 
-		int nPas = 0;
-		// Count performance antipatterns and build a string for the next csv storing
-		for (String pas : extractFuzzyValues.keySet()) {
-			Map<String, Double> mPaf = extractFuzzyValues.get(pas);
-			numPAs += mPaf.keySet().size();
-			for (String targetElement : mPaf.keySet()) {
-				double fuzzy = mPaf.get(targetElement);
-				new FileUtils().performanceAntipatternDumpToCSV(String.format("%s,%s,%s,%.4f", this.name, pas, targetElement, fuzzy));
-			}
-		}
+            extractFuzzyValues = pasCounter.extractFuzzyValues();
+        } catch (EolModelLoadingException | URISyntaxException e) {
+            e.printStackTrace();
+        }
 
-		long duration = System.currentTimeMillis() - startTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,counting_pas,%s,%s","NSGA",problemName,getName(),getName(),duration));
-		System.out.println(String.format(" execution time: %s ms", duration));
+        int nPas = 0;
+        // Count performance antipatterns and build a string for the next csv storing
+        for (String pas : extractFuzzyValues.keySet()) {
+            Map<String, Double> mPaf = extractFuzzyValues.get(pas);
+            numPAs += mPaf.keySet().size();
+            for (String targetElement : mPaf.keySet()) {
+                double fuzzy = mPaf.get(targetElement);
+                new FileUtils().performanceAntipatternDumpToCSV(String.format("%s,%s,%s,%.4f", this.name, pas, targetElement, fuzzy));
+            }
+        }
 
-		uml = null;
-		pasCounter.clearMemory();
-		new UMLMemoryOptimizer().cleanup();
-		pasCounter = null;
-	}
+        long duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,counting_pas,%s,%s", "NSGA", problemName, getName(), getName(), duration));
+        System.out.println(String.format(" execution time: %s ms", duration));
 
-	/*
-	 * From the ANT scripts target name="ChangeRoot" depends="LoadModels">
-	 * <epsilon.xml.loadModel name="PlainLQN" file="${output}/${name}.xml"
-	 * read="true" store="true"/> <epsilon.eol src="changeRoot.eol"> <model
-	 * ref="PlainLQN"/> </epsilon.eol>
-	 * 
-	 * <epsilon.storeModel model="PlainLQN"/> <!-- <eclipse.refreshLocal
-	 * resource="${output}/output.xml" depth="infinite"/> -->
-	 * 
-	 * </target>
-	 * 
-	 * <target name="Solver" depends="ChangeRoot"> <exec
-	 * executable="${executableAbsPath}"> <arg value="${output}/${name}.xml"/>
-	 * </exec> </target>
-	 */
-	public void invokeSolver() {
-		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
+//		uml = null;
+        pasCounter.clearMemory();
+        new UMLMemoryOptimizer().cleanup();
+        pasCounter = null;
+    }
 
-		long startTime = System.currentTimeMillis();
+    /*
+     * From the ANT scripts target name="ChangeRoot" depends="LoadModels">
+     * <epsilon.xml.loadModel name="PlainLQN" file="${output}/${name}.xml"
+     * read="true" store="true"/> <epsilon.eol src="changeRoot.eol"> <model
+     * ref="PlainLQN"/> </epsilon.eol>
+     *
+     * <epsilon.storeModel model="PlainLQN"/> <!-- <eclipse.refreshLocal
+     * resource="${output}/output.xml" depth="infinite"/> -->
+     *
+     * </target>
+     *
+     * <target name="Solver" depends="ChangeRoot"> <exec
+     * executable="${executableAbsPath}"> <arg value="${output}/${name}.xml"/>
+     * </exec> </target>
+     */
+    public void invokeSolver() {
+        System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
-		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
-		Path lqnModelPath = this.folderPath.resolve("output.xml");
+        long startTime = System.currentTimeMillis();
 
-		XMLUtil.conformanceChecking(lqnModelPath);
+        Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
+        Path lqnModelPath = this.folderPath.resolve("output.xml");
 
-		// to allow cycles in the lqn model
-		final String params = "-P cycles=yes";
+        XMLUtil.conformanceChecking(lqnModelPath);
 
-		Process process = null;
-		try {
-			process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+        // to allow cycles in the lqn model
+        final String params = "-P cycles=yes";
 
-		try {
-			if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
-				throw new Exception("[ERROR] the lqn solver has genered an error.");
-			}
-		} catch (Exception e) {
-			final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
-					.map(act -> act.toString()).collect(Collectors.joining(","));
-			System.err.println("Solution # " + this.name);
-			System.err.println(lqnError);
-			getVariable(VARIABLE_INDEX).getActions().forEach(System.out::println);
-			final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-			try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
-				String line = String.valueOf(this.name) + ";";
+        Process process = null;
+        try {
+            process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
-				line += lqnError;
-				line += ";";
-				line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-						.collect(Collectors.joining(","));
-				line += "\n";
-				bw.append(line);
-			} catch (IOException e1) {
-				System.out.println(e1.getMessage());
-			}
-			e.printStackTrace();
-		}
+        try {
+            if (!this.folderPath.resolve("output.lqxo").toFile().exists()) {
+                throw new Exception("[ERROR] the lqn solver has genered an error.");
+            }
+        } catch (Exception e) {
+            final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
+                    .map(act -> act.toString()).collect(Collectors.joining(","));
+            System.err.println("Solution # " + this.name);
+            System.err.println(lqnError);
+            getVariable(VARIABLE_INDEX).getActions().forEach(System.out::println);
+            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(reportFilePath.toFile(), true))) {
+                String line = String.valueOf(this.name) + ";";
 
-		process = null;
+                line += lqnError;
+                line += ";";
+                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+                        .collect(Collectors.joining(","));
+                line += "\n";
+                bw.append(line);
+            } catch (IOException e1) {
+                System.out.println(e1.getMessage());
+            }
+            e.printStackTrace();
+        }
 
-		long duration = System.currentTimeMillis() - startTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s","NSGA",problemName,getName(),duration));
-		System.out.println(String.format("invokeSolver execution time: %s", duration));
-		System.out.println("done");
+        process = null;
 
-		System.out.print("Invoking the back annotator... ");
-		startTime = System.currentTimeMillis();
-		backAnnotation();
-		duration = System.currentTimeMillis() - startTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s","NSGA",problemName,getName(),duration));
-		System.out.println(String.format("backAnnotation execution time: %s", duration));
-		System.out.println("done");
-	}
+        long duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s", "NSGA", problemName, getName(), duration));
+        System.out.println(String.format("invokeSolver execution time: %s", duration));
+        System.out.println("done");
 
-	// Vincenzo's solution
-	/*
-	 * public static PlainXmlModel loadXMLModel(String name, String model, String
-	 * path) throws EolModelLoadingException {
-	 * 
-	 * PlainXmlModel resource = new PlainXmlModel();
-	 * ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap() .put("xml",
-	 * new GenericXMLResourceFactoryImpl());
-	 * 
-	 * StringProperties properties = new StringProperties();
-	 * properties.put(PlainXmlModel.PROPERTY_NAME, name);
-	 * properties.put(PlainXmlModel.PROPERTY_FILE, model);
-	 * properties.put(PlainXmlModel.PROPERTY_READONLOAD, true);
-	 * properties.put("type", "xml");
-	 * 
-	 * resource.load(properties); return resource; }
-	 * 
-	 * String xmlModel =
-	 * Paths.get(MinimalExample.class.getResource("/output/agv.xml") .toURI())
-	 * .toString();
-	 * 
-	 * String schema = Paths.get(MinimalExample.class.getResource("/lqnxsd/lqn.xsd")
-	 * .toURI()) .toString();
-	 * 
-	 * XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder(); Collection<EObject>
-	 * generatedPackages = xsdEcoreBuilder.generate(URI.createURI(schema));
-	 * 
-	 * // register the packages loaded from XSD for (EObject generatedEObject :
-	 * generatedPackages) { if (generatedEObject instanceof EPackage) { EPackage
-	 * generatedPackage = (EPackage) generatedEObject;
-	 * EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(),
-	 * generatedPackage); } }
-	 * 
-	 * PlainXmlModel resource = loadXMLModel("LQN", xmlModel, "/output/agv.xml");
-	 */
-	private void backAnnotation() {
+        System.out.print("Invoking the back annotator... ");
+        startTime = System.currentTimeMillis();
+        backAnnotation();
+        duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", "NSGA", problemName, getName(), duration));
+        System.out.println(String.format("backAnnotation execution time: %s", duration));
+        System.out.println("done");
+    }
 
-		EOLStandalone bckAnn = new EOLStandalone();
+    // Vincenzo's solution
+    /*
+     * public static PlainXmlModel loadXMLModel(String name, String model, String
+     * path) throws EolModelLoadingException {
+     *
+     * PlainXmlModel resource = new PlainXmlModel();
+     * ResourceFactoryRegistryImpl.INSTANCE.getExtensionToFactoryMap() .put("xml",
+     * new GenericXMLResourceFactoryImpl());
+     *
+     * StringProperties properties = new StringProperties();
+     * properties.put(PlainXmlModel.PROPERTY_NAME, name);
+     * properties.put(PlainXmlModel.PROPERTY_FILE, model);
+     * properties.put(PlainXmlModel.PROPERTY_READONLOAD, true);
+     * properties.put("type", "xml");
+     *
+     * resource.load(properties); return resource; }
+     *
+     * String xmlModel =
+     * Paths.get(MinimalExample.class.getResource("/output/agv.xml") .toURI())
+     * .toString();
+     *
+     * String schema = Paths.get(MinimalExample.class.getResource("/lqnxsd/lqn.xsd")
+     * .toURI()) .toString();
+     *
+     * XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder(); Collection<EObject>
+     * generatedPackages = xsdEcoreBuilder.generate(URI.createURI(schema));
+     *
+     * // register the packages loaded from XSD for (EObject generatedEObject :
+     * generatedPackages) { if (generatedEObject instanceof EPackage) { EPackage
+     * generatedPackage = (EPackage) generatedEObject;
+     * EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(),
+     * generatedPackage); } }
+     *
+     * PlainXmlModel resource = loadXMLModel("LQN", xmlModel, "/output/agv.xml");
+     */
+    private void backAnnotation() {
 
-		try {
-			EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+        EOLStandalone bckAnn = new EOLStandalone();
 
-			bckAnn.setModel(uml);
+        try (EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString())) {
+//			EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
-			bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
+            bckAnn.setModel(uml);
 
-			// Points to lqn schema file and stores pacakges into the global package
-			// registry
-			XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
+            bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
+
+            // Points to lqn schema file and stores pacakges into the global package
+            // registry
+            XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
 //			String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
 //					.resolve("lqn.xsd").toString();
-			String schema = Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString();
-			Collection<EObject> generatedPackages = xsdEcoreBuilder
-					.generate(org.eclipse.emf.common.util.URI.createURI(schema));
-			for (EObject generatedEObject : generatedPackages) {
-				if (generatedEObject instanceof EPackage) {
-					EPackage generatedPackage = (EPackage) generatedEObject;
-					EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
-				}
-			}
-			bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
+            String schema = Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString();
+            Collection<EObject> generatedPackages = xsdEcoreBuilder
+                    .generate(org.eclipse.emf.common.util.URI.createURI(schema));
+            for (EObject generatedEObject : generatedPackages) {
+                if (generatedEObject instanceof EPackage) {
+                    EPackage generatedPackage = (EPackage) generatedEObject;
+                    EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
+                }
+            }
+            bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", folderPath.resolve("output.lqxo"), true, false, true));
 
-			bckAnn.execute();
+            bckAnn.execute();
 
-		} catch (URISyntaxException | EolRuntimeException e) {
-			final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-			try (BufferedWriter bw = new BufferedWriter(
-					new FileWriter(reportFilePath.getParent().resolve("backAnnErrorLog.csv").toFile(), true))) {
-				String line = String.valueOf(this.name) + ";";
+        } catch (URISyntaxException | EolRuntimeException e) {
+            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(reportFilePath.getParent().resolve("backAnnErrorLog.csv").toFile(), true))) {
+                String line = String.valueOf(this.name) + ";";
 
-				line += e.getMessage();
-				line += ";";
-				line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-						.collect(Collectors.joining(","));
-				line += "\n";
-				bw.append(line);
-			} catch (IOException e1) {
-				System.out.println(e1.getMessage());
-			}
-			e.printStackTrace();
-		}
-		bckAnn.clearMemory();
-		new UMLMemoryOptimizer().cleanup();
-		bckAnn = null;
-	}
+                line += e.getMessage();
+                line += ";";
+                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+                        .collect(Collectors.joining(","));
+                line += "\n";
+                bw.append(line);
+            } catch (IOException e1) {
+                System.out.println(e1.getMessage());
+            }
+            e.printStackTrace();
+        }
+        bckAnn.clearMemory();
+        new UMLMemoryOptimizer().cleanup();
+        bckAnn = null;
+    }
 
-	public double evaluatePerformance() {
-		System.out.print("Counting perfQ ... ");
-		long initTime = System.currentTimeMillis();
-		perfQ = perfQ();
-		long durationTime = System.currentTimeMillis() - initTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s",algorithm,problemName,getName(),durationTime));
-		System.out.println("done");
-		return perfQ;
-	}
+    public double evaluatePerformance() {
+        System.out.print("Counting perfQ ... ");
+        long initTime = System.currentTimeMillis();
+        perfQ = perfQ();
+        long durationTime = System.currentTimeMillis() - initTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,perfQ,%s", algorithm, problemName, getName(), durationTime));
+        System.out.println("done");
+        return perfQ;
+    }
 
-	/**
-	 *
-	 * @param source
-	 * @param refactored
-	 * @return
-	 * @throws EolModelElementTypeNotFoundException
-	 */
-	private double perfQ() {
+    /**
+     * Compute the performance quality indicator as described in
+     *
+     * @return
+     * @throws EolModelElementTypeNotFoundException
+     * @url{https://doi.org/10.1109/ICSA-C.2018.00006}
+     */
+    private double perfQ() {
 
-		/*
-		 * The updated model can have more nodes than the source node since original
-		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
-		 * the performance model. For this reason, the perfQ analyzes only the
-		 * performance metrics of the nodes common among the models
-		 */
-		EasierUmlModel source = null;
+        /*
+         * The updated model can have more nodes than the source node since original
+         * nodes can be cloned. The benefits of cloning nodes is taken into account by
+         * the performance model. For this reason, the perfQ analyzes only the
+         * performance metrics of the nodes common among the models
+         */
+//		EasierUmlModel source = null;
 
-		// The lists used to store the elements of both models
-		List<EObject> sourceElements = new ArrayList<EObject>();
+        // The lists used to store the elements of both models
+        List<EObject> sourceElements = new ArrayList<EObject>();
 
-		// The elements of the source model;
-		List<EObject> nodes = null;
-		List<EObject> scenarios = null;
-		try {
-			source = (EasierUmlModel) EpsilonStandalone.createUmlModel(sourceModelPath.toString());
-			nodes = (List<EObject>) source.getAllOfType("Node");
-			scenarios = (List<EObject>) source.getAllOfType("UseCase");
-		} catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
-			e.printStackTrace();
-		}
+        // The elements of the source model;
+        List<EObject> nodes = null;
+        List<EObject> scenarios = null;
+        try (EasierUmlModel source = (EasierUmlModel) EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+             EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString())) {
+//			source = (EasierUmlModel) EpsilonStandalone.createUmlModel(sourceModelPath.toString());
+            nodes = (List<EObject>) source.getAllOfType("Node");
+            scenarios = (List<EObject>) source.getAllOfType("UseCase");
 
-		// Variable representing the perfQ value
-		double value = 0d;
 
-		// The function considers only the elements having the stereotypes GaExecHosta
-		// and GaScenario
-		nodes = filterByStereotype(nodes, GQAM_NAMESPACE + "GaExecHost");
-		scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
+            // The function considers only the elements having the stereotypes GaExecHosta
+            // and GaScenario
+            nodes = filterByStereotype(nodes, GQAM_NAMESPACE + "GaExecHost");
+            scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
+            sourceElements.addAll(scenarios);
+            sourceElements.addAll(nodes);
+//        } catch (EolModelLoadingException | URISyntaxException | EolModelElementTypeNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
-		sourceElements.addAll(scenarios);
-		sourceElements.addAll(nodes);
+            int numberOfMetrics = 0;
+//		EasierUmlModel uml = null;
+//        try (EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString())) {
+//			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
 
-		int numberOfMetrics = 0;
-		EasierUmlModel uml = null;
-		try {
-			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+            // for each elements of the source model, it is picked the element with the same
+            // id in the refactored one
 
-			// for each elements of the source model, it is picked the element with the same
-			// id in the refactored one
+            // Variable representing the perfQ value
+            double value = 0d;
+            for (EObject element : sourceElements) {
+                String id = getXmiId(source, element);
+                EObject correspondingElement = (EObject) uml.getElementById(id);
 
-			for (EObject element : sourceElements) {
-				String id = getXmiId(source, element);
-				EObject correspondingElement = (EObject) uml.getElementById(id);
+                if (element instanceof UseCase) {
+                    value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
+                            "respT");
+                    value += computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
+                            "throughput");
+                    numberOfMetrics += 2;
+                } else if (element instanceof Node) {
+                    value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaExecHost",
+                            "utilization");
+                    numberOfMetrics++;
+                }
+            }
+            uml.dispose();
+            new UMLMemoryOptimizer().cleanup();
+//			uml = null;
+            return value / numberOfMetrics;
+        } catch (Exception e) {
+            System.err
+                    .println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
-				if (element instanceof UseCase) {
-					value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
-							"respT");
-					value += computePerfQValue((Element) element, (Element) correspondingElement, "GaScenario",
-							"throughput");
-					numberOfMetrics += 2;
-				} else if (element instanceof Node) {
-					value += -1 * computePerfQValue((Element) element, (Element) correspondingElement, "GaExecHost",
-							"utilization");
-					numberOfMetrics++;
-				}
-			}
-		} catch (Exception e) {
-			System.err
-					.println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
-			e.printStackTrace();
-		}
-		uml.dispose();
-		new UMLMemoryOptimizer().cleanup();
-		uml = null;
+    @Override
+    public void computeScenarioRT() {
 
-		return value / numberOfMetrics;
-	}
+        /*
+         * The updated model can have more nodes than the source node since original
+         * nodes can be cloned. The benefits of cloning nodes is taken into account by
+         * the performance model. For this reason, the perfQ analyzes only the
+         * performance metrics of the nodes common among the models
+         */
 
-	@Override
-	public void computeScenarioRT() {
+        // Represent the reference point index of each UML scenario
+        final int rebook_index = 0;
+        final int update_user_index = 1;
+        final int login_index = 2;
 
-		/*
-		 * The updated model can have more nodes than the source node since original
-		 * nodes can be cloned. The benefits of cloning nodes is taken into account by
-		 * the performance model. For this reason, the perfQ analyzes only the
-		 * performance metrics of the nodes common among the models
-		 */
+        int scenarioIndex = 0;
 
-		// Represent the reference point index of each UML scenario
-		final int rebook_index = 0;
-		final int update_user_index = 1;
-		final int login_index = 2;
+        // The elements of the source model;
+        List<EObject> scenarios = null;
 
-		int scenarioIndex = 0;
+        // The function considers only the elements having the stereotypes GaScenario
+//        EasierUmlModel uml = null;
+        try (EasierUmlModel uml = EpsilonStandalone.createUmlModel(modelPath.toString())) {
+//            uml = EpsilonStandalone.createUmlModel(modelPath.toString());
+            scenarios = (List<EObject>) uml.getAllOfType("UseCase");
+            scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
 
-		// The elements of the source model;
-		List<EObject> scenarios = null;
+            // for each elements of the source model, it is picked the element with the same
+            // id in the refactored one
+            for (EObject element : scenarios) {
+                Stereotype stereotype = ((Element) element).getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
+                EList<?> values = (EList<?>) ((Element) element).getValue(stereotype, "respT");
 
-		// The function considers only the elements having the stereotypes GaScenario
-		EasierUmlModel uml = null;
-		try {
-			uml = EpsilonStandalone.createUmlModel(modelPath.toString());
-			scenarios = (List<EObject>) uml.getAllOfType("UseCase");
-			scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
+                if (!values.isEmpty()) {
+                    if ("Rebook a ticket".equals(((UseCase) element).getName())) {
+                        scenarioIndex = rebook_index;
+                    } else if ("Update user details".equals(((UseCase) element).getName())) {
+                        scenarioIndex = update_user_index;
+                    } else if ("Login".equals(((UseCase) element).getName())) {
+                        scenarioIndex = login_index;
+                    } else {
+                        throw new RuntimeException("Scenario name does not support yet!");
+                    }
 
-			// for each elements of the source model, it is picked the element with the same
-			// id in the refactored one
-			for (EObject element : scenarios) {
-				Stereotype stereotype = ((Element) element).getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
-				EList<?> values = (EList<?>) ((Element) element).getValue(stereotype, "respT");
+                    scenarioRTs[scenarioIndex] = Double.parseDouble(values.get(0).toString());
+                }
 
-				if (!values.isEmpty()) {
-					if ("Rebook a ticket".equals(((UseCase) element).getName())) {
-						scenarioIndex = rebook_index;
-					} else if ("Update user details".equals(((UseCase) element).getName())) {
-						scenarioIndex = update_user_index;
-					} else if ("Login".equals(((UseCase) element).getName())) {
-						scenarioIndex = login_index;
-					} else {
-						throw new RuntimeException("Scenario name does not support yet!");
-					}
+            }
+            uml.dispose();
+            new UMLMemoryOptimizer().cleanup();
+        } catch (Exception e) {
+            System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
+            e.printStackTrace();
+        }
+    }
 
-					scenarioRTs[scenarioIndex] = Double.parseDouble(values.get(0).toString());
-				}
+    public double[] getScenarioRTs() {
+        return scenarioRTs;
+    }
 
-			}
-		} catch (Exception e) {
-			System.err.println(String.format("Solution # '%s' has trown an error while computing PerfQ!!!", this.name));
-			e.printStackTrace();
-		}
-		uml.dispose();
-		new UMLMemoryOptimizer().cleanup();
-	}
+    private double computePerfQValue(final Element source, final Element ref, final String stereotypeName,
+                                     final String tag) {
 
-	public double[] getScenarioRTs() {
-		return scenarioRTs;
-	}
+        Stereotype stereotype = source.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
+        EList<?> values = (EList<?>) source.getValue(stereotype, tag);
 
-	private double computePerfQValue(final Element source, final Element ref, final String stereotypeName,
-			final String tag) {
+        double sourceValue = 0d;
+        if (!values.isEmpty())
+            sourceValue = Double.parseDouble(values.get(0).toString());
 
-		Stereotype stereotype = source.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
-		EList<?> values = (EList<?>) source.getValue(stereotype, tag);
+        stereotype = ref.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
+        values = (EList<?>) ref.getValue(stereotype, tag);
 
-		double sourceValue = 0d;
-		if (!values.isEmpty())
-			sourceValue = Double.parseDouble(values.get(0).toString());
+        double refValue = 0d;
+        if (!values.isEmpty())
+            refValue = Double.parseDouble(values.get(0).toString());
 
-		stereotype = ref.getAppliedStereotype(GQAM_NAMESPACE + stereotypeName);
-		values = (EList<?>) ref.getValue(stereotype, tag);
+        return (refValue + sourceValue) == 0 ? 0d : (refValue - sourceValue) / (refValue + sourceValue);
+    }
 
-		double refValue = 0d;
-		if (!values.isEmpty())
-			refValue = Double.parseDouble(values.get(0).toString());
+    private List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
+        return elements.stream().filter(e -> ((Element) e).getAppliedStereotype(stereotypeNamespace) != null)
+                .collect(Collectors.toList());
+    }
 
-		return (refValue + sourceValue) == 0 ? 0d : (refValue - sourceValue) / (refValue + sourceValue);
-	}
+    private String getXmiId(EmfModel model, EObject element) {
+        return ((XMLResource) model.getResource()).getID(element);
+    }
 
-	private List<EObject> filterByStereotype(Collection<EObject> elements, String stereotypeNamespace) {
-		return elements.stream().filter(e -> ((Element) e).getAppliedStereotype(stereotypeNamespace) != null)
-				.collect(Collectors.toList());
-	}
+    /**
+     * Invokes the ETL engine in order to run the UML2LQN transformation.
+     */
+    public void applyTransformation() {
 
-	private String getXmiId(EmfModel model, EObject element) {
-		return ((XMLResource) model.getResource()).getID(element);
-	}
+        System.out.print("Applying transformation in ... ");
+        long startTime = System.currentTimeMillis();
+//        EasierUmlModel uml = null;
+        ETLStandalone executor = null;
+        try (EasierUmlModel uml = EpsilonStandalone.createUmlModel(this.modelPath.toString())) {
+//            uml = EpsilonStandalone.createUmlModel(this.modelPath.toString());
 
-	/**
-	 * Invokes the ETL engine in order to run the UML2LQN transformation.
-	 */
-	public void applyTransformation() {
+            executor = new ETLStandalone(this.modelPath.getParent());
+            executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
+            executor.setModel(uml);
+            executor.setModel(
+                    executor.createXMLModel(
+                            "LQN", this.modelPath.getParent().resolve("output.xml"), org.eclipse.emf.common.util.URI
+                                    .createFileURI(Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString()),
+                            false, true));
 
-		System.out.print("Applying transformation in ... ");
-		long startTime = System.currentTimeMillis();
-		EasierUmlModel uml = null;
-		ETLStandalone executor = null;
-		try {
-			uml = EpsilonStandalone.createUmlModel(this.modelPath.toString());
+            executor.execute();
+            executor.clearMemory();
 
-			executor = new ETLStandalone(this.modelPath.getParent());
-			executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
-			executor.setModel(uml);
-			executor.setModel(
-					executor.createXMLModel(
-							"LQN", this.modelPath.getParent().resolve("output.xml"), org.eclipse.emf.common.util.URI
-									.createFileURI(Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString()),
-							false, true));
+        } catch (URISyntaxException | EolRuntimeException e) {
+            System.err.println("Error in runnig the ETL transformation");
 
-			executor.execute();
-			executor.clearMemory();
+            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(reportFilePath.getParent().resolve("etlErrorLog.csv").toFile(), true))) {
+                String line = String.valueOf(this.name) + ";";
 
-		} catch (URISyntaxException | EolRuntimeException e) {
-			System.err.println("Error in runnig the ETL transformation");
+                line += ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
+                line += ";";
+                line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
+                        .collect(Collectors.joining(","));
+                line += "\n";
+                bw.append(line);
+            } catch (IOException e1) {
+                System.out.println(e1.getMessage());
+            }
+            e.printStackTrace();
+        }
+        new UMLMemoryOptimizer().cleanup();
+//        uml = null;
+        executor = null;
 
-			final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-			try (BufferedWriter bw = new BufferedWriter(
-					new FileWriter(reportFilePath.getParent().resolve("etlErrorLog.csv").toFile(), true))) {
-				String line = String.valueOf(this.name) + ";";
+        long duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s", algorithm, problemName, getName(), duration));
+        System.out.println(String.format("%s done", duration));
+    }
 
-				line += ((EolRuntimeException) e).getReason() + " at line " + ((EolRuntimeException) e).getLine();
-				line += ";";
-				line += getVariable(VARIABLE_INDEX).getActions().stream().map(act -> act.toString())
-						.collect(Collectors.joining(","));
-				line += "\n";
-				bw.append(line);
-			} catch (IOException e1) {
-				System.out.println(e1.getMessage());
-			}
-			e.printStackTrace();
-		}
-		new UMLMemoryOptimizer().cleanup();
-		uml = null;
-		executor = null;
+    public void executeRefactoring() {
+        final Refactoring ref = getVariable(VARIABLE_INDEX);
 
-		long duration = System.currentTimeMillis() - startTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s",algorithm,problemName,getName(),duration));
-		System.out.println(String.format("%s done", duration));
-	}
+        for (RefactoringAction a : ref.getActions()) {
 
-	public void executeRefactoring() {
-		final Refactoring ref = getVariable(VARIABLE_INDEX);
+            long initialTime = System.nanoTime();
+            try {
+                a.execute();
+            } catch (UnsupportedOperationException e) {
+                e.printStackTrace();// TODO: handle exception
+            }
+            long durationTime = System.nanoTime() - initialTime;
+            new FileUtils().refactoringStatsDumpToCSV(String.format("%s,%s", a.toCSV(), durationTime));
+        }
+        this.setRefactored();
+        new UMLMemoryOptimizer().cleanup();
+    }
 
-		for (RefactoringAction a : ref.getActions()) {
+    public EasierUmlModel getDirtyIModel() {
+        return dirtyIModel;
+    }
 
-			long initialTime = System.nanoTime();
-			try {
-				a.execute();
-			} catch (UnsupportedOperationException e) {
-				e.printStackTrace();// TODO: handle exception
-			}
-			long durationTime = System.nanoTime() - initialTime;
-			new FileUtils().refactoringStatsDumpToCSV(String.format("%s,%s",a.toCSV(),durationTime));
-		}
-		this.setRefactored();
-		new UMLMemoryOptimizer().cleanup();
-	}
+    @Override
+    public void computeReliability() {
 
-	public EasierUmlModel getDirtyIModel() {
-		return dirtyIModel;
-	}
+        System.out.print("Computing reliability ... ");
+        // stores the in memory model to a file
+        UMLReliability uml = null;
+        long initTime = System.currentTimeMillis();
+        try {
+            uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
+            reliability = new Reliability(uml.getScenarios()).compute();
 
-	@Override
-	public void computeReliability() {
+            ResourceSet rs = uml.getModel().eResource().getResourceSet();
+            while (rs.getResources().size() > 0) {
+                Resource res = rs.getResources().get(0);
+                res.eAdapters().clear();
+                res.unload();
+                rs.getResources().remove(res);
+            }
+        } catch (MissingTagException e) {
+            System.err.println("Error in computing the reliability");
 
-		System.out.print("Computing reliability ... ");
-		// stores the in memory model to a file
-		UMLReliability uml = null;
-		long initTime = System.currentTimeMillis();
-		try {
-			uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
-			reliability = new Reliability(uml.getScenarios()).compute();
+            final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
+            try (BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(reportFilePath.getParent().resolve("relErrorLog.csv").toFile(), true))) {
+                String line = String.valueOf(this.name) + ";";
+                line += e.getMessage() + ";";
+                line += ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().stream().map(act -> act.toString())
+                        .collect(Collectors.joining(","));
+                line += "\n";
+                bw.append(line);
 
-			ResourceSet rs = uml.getModel().eResource().getResourceSet();
-			while (rs.getResources().size() > 0) {
-				Resource res = rs.getResources().get(0);
-				res.eAdapters().clear();
-				res.unload();
-				rs.getResources().remove(res);
-			}
-		} catch (MissingTagException e) {
-			System.err.println("Error in computing the reliability");
+            } catch (IOException e1) {
+                System.out.println(e1.getMessage());
+            }
+        }
+        long durationTime = System.currentTimeMillis() - initTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s", algorithm, problemName, durationTime));
 
-			final Path reportFilePath = Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv");
-			try (BufferedWriter bw = new BufferedWriter(
-					new FileWriter(reportFilePath.getParent().resolve("relErrorLog.csv").toFile(), true))) {
-				String line = String.valueOf(this.name) + ";";
-				line += e.getMessage() + ";";
-				line += ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().stream().map(act -> act.toString())
-						.collect(Collectors.joining(","));
-				line += "\n";
-				bw.append(line);
+        new UMLMemoryOptimizer().cleanup();
+        uml = null;
+        System.out.println("done");
 
-			} catch (IOException e1) {
-				System.out.println(e1.getMessage());
-			}
-		}
-		long durationTime = System.currentTimeMillis() - initTime;
-		new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s",algorithm,problemName,durationTime));
-		
-		new UMLMemoryOptimizer().cleanup();
-		uml = null;
-		System.out.println("done");
+    }
 
-	}
+    @Override
+    public void freeMemory() {
+        if (dirtyIModel != null) {
+            dirtyIModel.dispose();
+        }
+        System.out.println(String.format("Solution '%s' cleaned", this.name));
+    }
 
-	@Override
-	public void freeMemory() {
-		if (dirtyIModel != null) {
-			dirtyIModel.dispose();
-		}
-		System.out.println(String.format("Solution '%s' cleaned", this.name));
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((ID == null) ? 0 : ID.hashCode());
+        result = prime * result + VARIABLE_INDEX;
+        result = prime * result + ((dirtyIModel == null) ? 0 : dirtyIModel.hashCode());
+        result = prime * result + ((folderPath == null) ? 0 : folderPath.hashCode());
+        result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
+        return result;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((ID == null) ? 0 : ID.hashCode());
-		result = prime * result + VARIABLE_INDEX;
-		result = prime * result + ((dirtyIModel == null) ? 0 : dirtyIModel.hashCode());
-		result = prime * result + ((folderPath == null) ? 0 : folderPath.hashCode());
-		result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UMLRSolution other = (UMLRSolution) obj;
+        if (ID == null) {
+            if (other.ID != null)
+                return false;
+        } else if (!ID.equals(other.ID))
+            return false;
+        if (dirtyIModel == null) {
+            if (other.dirtyIModel != null)
+                return false;
+        } else if (!dirtyIModel.equals(other.dirtyIModel))
+            return false;
+        if (folderPath == null) {
+            if (other.folderPath != null)
+                return false;
+        } else if (!folderPath.equals(other.folderPath))
+            return false;
+        if (getVariable(VARIABLE_INDEX) == null) {
+            if (other.getVariable(VARIABLE_INDEX) != null)
+                return false;
+        } else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
+            return false;
+        return true;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UMLRSolution other = (UMLRSolution) obj;
-		if (ID == null) {
-			if (other.ID != null)
-				return false;
-		} else if (!ID.equals(other.ID))
-			return false;
-		if (dirtyIModel == null) {
-			if (other.dirtyIModel != null)
-				return false;
-		} else if (!dirtyIModel.equals(other.dirtyIModel))
-			return false;
-		if (folderPath == null) {
-			if (other.folderPath != null)
-				return false;
-		} else if (!folderPath.equals(other.folderPath))
-			return false;
-		if (getVariable(VARIABLE_INDEX) == null) {
-			if (other.getVariable(VARIABLE_INDEX) != null)
-				return false;
-		} else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
-			return false;
-		return true;
-	}
-	
-	// Set Reliability. 
-	// If the rel param is greater than 1 reliability is set to 1
-	public void setReliability(double rel) {
-		this.reliability = rel < 1 ? rel : 1;
-	}
-	
-	public void setPAs(int pas) {
-		this.numPAs = pas;
-	}
+    // Set Reliability.
+    // If the rel param is greater than 1 reliability is set to 1
+    public void setReliability(double rel) {
+        this.reliability = rel < 1 ? rel : 1;
+    }
+
+    public void setPAs(int pas) {
+        this.numPAs = pas;
+    }
 
 }

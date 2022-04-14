@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.lab.experiment.Experiment;
@@ -138,10 +139,16 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 	 * finally create both directories
 	 */
 	private void createExperimentDirectory() {
-		try {
-			Files.walk(Paths.get(experiment.getExperimentBaseDirectory())).sorted(Comparator.reverseOrder())
+
+		try(Stream<Path> walker = Files.walk(Paths.get(experiment.getExperimentBaseDirectory()))) {
+			walker.sorted(Comparator.reverseOrder())
 					.map(Path::toFile).forEach(File::delete);
-			Files.walk(Configurator.eINSTANCE.getTmpFolder()).sorted(Comparator.reverseOrder()).map(Path::toFile)
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try(Stream<Path> walker = Files.walk(Configurator.eINSTANCE.getTmpFolder())){
+			walker.sorted(Comparator.reverseOrder()).map(Path::toFile)
 					.forEach(File::delete);
 		} catch (IOException e1) {
 			e1.printStackTrace();
