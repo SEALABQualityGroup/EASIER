@@ -4,11 +4,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputFilter.Config;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +43,7 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 
 		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism",
 				"" + this.experiment.getNumberOfCores());
-		
+
 		computingTimes = new ArrayList<>();
 
 //		for (int i = 0; i < experiment.getIndependentRuns(); i++) {
@@ -49,30 +52,32 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 //			System.out.println("Indepentent Runs");
 //			ProgressBar.showBar(i + 1, experiment.getIndependentRuns());
 
-			// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
-			// algorithm.runAlgorithm(id, experiment));
-			// TODO if parallelStream is set, it throws NPE after a while
-			computingTimes.addAll(experiment.getAlgorithmList().stream()
+		// experiment.getAlgorithmList().parallelStream().forEach(algorithm ->
+		// algorithm.runAlgorithm(id, experiment));
+		// TODO if parallelStream is set, it throws NPE after a while
+		computingTimes.addAll(experiment.getAlgorithmList().stream()
 //					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm, id)).collect(Collectors.toList()));
-					.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result> )algorithm)).collect(Collectors.toList()));
+				.map(algorithm -> getComputingTime((RExperimentAlgorithm<S, Result>) algorithm))
+				.collect(Collectors.toList()));
 
-			FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(), Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
-			
-			// removes old solutions
+		FileUtils.moveTmpFile(Configurator.eINSTANCE.getTmpFolder(),
+				Paths.get(Configurator.eINSTANCE.getOutputFolder().toString(), "tmp"));
+
+		// removes old solutions
 //			for(ExperimentAlgorithm<S, Result> expAlg : experiment.getAlgorithmList()) {
 //				((EasierAlgorithm)expAlg.getAlgorithm()).clear();
 //			}
-			
+
 //		}
-		
-		
-		
+
 		return this;
 	}
 
 	/**
-	 * It returns an Algorithm and its computational time along with total and free memory stats
-	 * It flushes experiment data to "algo-perf-stats.csv" file within the output folder
+	 * It returns an Algorithm and its computational time along with total and free
+	 * memory stats It flushes experiment data to "algo-perf-stats.csv" file within
+	 * the output folder
+	 * 
 	 * @param algorithm
 	 * @param id
 	 * @return
@@ -80,13 +85,13 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 	protected Map.Entry<Algorithm<Result>, long[]> getComputingTime(RExperimentAlgorithm<S, Result> algorithm) {
 		long total = Runtime.getRuntime().totalMemory();
 		long initTime = System.currentTimeMillis();
-	
+
 //		algorithm.runAlgorithm(id, this.experiment);
 //		algorithm.runAlgorithm(this.experiment, id);
 		algorithm.runAlgorithm(this.experiment);
 		long computingTime = System.currentTimeMillis() - initTime;
 		long free = Runtime.getRuntime().freeMemory();
-	
+
 //		if(!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
 //			
 //			try(BufferedWriter writer = new BufferedWriter(new FileWriter(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))){
@@ -103,62 +108,58 @@ public class RExecuteAlgorithms<S extends RSolution<?>, Result extends List<S>> 
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-				
-		
+
 //		((EasierAlgorithm)algorithm.getAlgorithm()).clear();
-		return new AbstractMap.SimpleEntry<Algorithm<Result>, long[]>(algorithm.getAlgorithm(), new long[]{computingTime, total, free});// new
+		return new AbstractMap.SimpleEntry<Algorithm<Result>, long[]>(algorithm.getAlgorithm(),
+				new long[] { computingTime, total, free });// new
 	}
 
 	protected void prepareOutputDirectory() {
-		if (experimentDirectoryDoesNotExist()) {
+		Path expBaseDir = Paths.get(experiment.getExperimentBaseDirectory());
+		if (!Files.exists(expBaseDir)) {
 			createExperimentDirectory();
 		}
 	}
-	
-	private boolean experimentDirectoryDoesNotExist() {
-		boolean result;
-		File experimentDirectory;
 
-		experimentDirectory = new File(experiment.getExperimentBaseDirectory());
-		if (experimentDirectory.exists() && experimentDirectory.isDirectory()) {
-			result = false;
-		} else {
-			result = true;
-		}
+	/*
+	 * private boolean experimentDirectoryDoesNotExist() { boolean result; File
+	 * experimentDirectory;
+	 * 
+	 * experimentDirectory = new File(experiment.getExperimentBaseDirectory()); if
+	 * (experimentDirectory.exists() && experimentDirectory.isDirectory()) { result
+	 * = false; } else { result = true; }
+	 * 
+	 * return result; }
+	 */
 
-		return result;
-	}
-
+	/**
+	 * First empty tmp and experiment base DIRs,
+	 * then remove directories
+	 * finally create both directories
+	 */
 	private void createExperimentDirectory() {
-		File experimentDirectory;
-		experimentDirectory = new File(experiment.getExperimentBaseDirectory());
-
-		if (experimentDirectory.exists()) {
-			experimentDirectory.delete();
-		}
-		
-		if(Files.exists(Configurator.eINSTANCE.getTmpFolder()))
-			Configurator.eINSTANCE.getTmpFolder().toFile().delete();
-		
 		try {
+			Files.walk(Paths.get(experiment.getExperimentBaseDirectory())).sorted(Comparator.reverseOrder())
+					.map(Path::toFile).forEach(File::delete);
+			Files.walk(Configurator.eINSTANCE.getTmpFolder()).sorted(Comparator.reverseOrder()).map(Path::toFile)
+					.forEach(File::delete);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
+			Files.createDirectories(Paths.get(experiment.getExperimentBaseDirectory()));
 			Files.createDirectories(Configurator.eINSTANCE.getTmpFolder());
 		} catch (IOException e) {
-			System.err.println("Error while creating tmp folder");
-			e.printStackTrace();
-		}
-	
-		boolean result;
-		result = new File(experiment.getExperimentBaseDirectory()).mkdirs();
-		setReportFilePath();
-		if (!result) {
-			throw new JMetalException(
-					"Error creating experiment directory: " + experiment.getExperimentBaseDirectory());
+			throw new JMetalException(String.format("Error creating experiment and temp directories: %s \t %s",
+					experiment.getExperimentBaseDirectory(), Configurator.eINSTANCE.getTmpFolder()));
 		}
 	}
 
 	private Path setReportFilePath() {
 
-		Path tmp = Configurator.eINSTANCE.getOutputFolder().resolve(Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv"));
+		Path tmp = Configurator.eINSTANCE.getOutputFolder()
+				.resolve(Configurator.eINSTANCE.getOutputFolder().resolve("reportFailedSolution.csv"));
 		Path etlErrorLog = tmp.getParent().resolve("etlErrorLog.csv");
 		Path relErrorLog = tmp.getParent().resolve("relErrorLog.csv");
 		Path backErrorLog = tmp.getParent().resolve("backAnnErrorLog.csv");
