@@ -42,8 +42,8 @@ public class LauncherTest {
 		Launcher launcher = new Launcher();
 
 		List<RProblem<UMLRSolution>> rProblems = Launcher.createProblems(Paths.get(modelPath), eval);
-
-		assertTrue("model__BRF_1.23__1.23__1.23__1.23__MaxEval_12__ProbPAs_0.95__sb_byTime_sbth_3600000__Algo_nsgaii"
+		
+		assertTrue("model__BRF_1.23__1.23__1.23__1.23__MaxEval_12__ProbPAs_0.95__sb_none_sbth_3600000__Algo_nsgaii"
 				.equals(rProblems.get(0).getName()));
 
 	}
