@@ -143,7 +143,11 @@ public class Refactoring {
 		StringBuilder strBuilder = new StringBuilder();
 //		getActions().forEach(action -> strBuilder.append(action.toString()).append(","));
 		final int solutionID = this.solutionID;
-		getActions().forEach(action -> strBuilder.append(solutionID).append(",").append(action.toCSV()).append("\n"));
+		for(int i = 0; i < getActions().size()-1; i++ ){
+			strBuilder.append(solutionID).append(",").append(getActions().get(i).toCSV()).append("\n");
+		}
+		strBuilder.append(solutionID).append(",").append(getActions().get(getActions().size()-1).toCSV());
+//		getActions().forEach(action -> strBuilder.append(solutionID).append(",").append(action.toCSV()).append("\n"));
 		return strBuilder.toString();
 	}
 
