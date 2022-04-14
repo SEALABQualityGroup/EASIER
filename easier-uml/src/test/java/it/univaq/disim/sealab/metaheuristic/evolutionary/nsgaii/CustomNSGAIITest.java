@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -12,12 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
@@ -66,7 +67,7 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 		p.setName("problem_for_testing");
 
 		NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(p, crossoverOperator,
-				mutationOperator, Configurator.eINSTANCE.getPopulationSize()).setMaxEvaluations(72)
+				mutationOperator, Configurator.eINSTANCE.getPopulationSize()).setMaxEvaluations(4)
 				.setSolutionListEvaluator(solutionListEvaluator);
 
 		algorithm = (CustomNSGAII<UMLRSolution>) customNSGABuilder.build();
@@ -74,11 +75,17 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 
 	@AfterClass
 	public static void tearDownClass() throws IOException {
-		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"));
+		/*Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"));
 		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("solution_dump.csv"));
 		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("refactoring_stats.csv"));
-		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));
-		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder());
+		Files.deleteIfExists(Configurator.eINSTANCE.getOutputFolder().resolve("process_step_stats.csv"));*/
+		
+		
+		Files.walk(Configurator.eINSTANCE.getOutputFolder())
+	    .sorted(Comparator.reverseOrder())
+	    .map(Path::toFile)
+	    .forEach(File::delete);
+		
 	}
 	
 	
@@ -178,17 +185,5 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 	@Test
 	public void runTest() throws IOException {
 		algorithm.run();
-
-		Path output = Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv");
-		assertTrue("The algo_perf_stats.csv should exist", Files.exists(output));
-		
-		String header = "algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)";
-		try (BufferedReader br = new BufferedReader(new FileReader(output.toFile()))) {
-		    String line = br.readLine();
-		    System.out.println(line);
-		    assertEquals(header, line); //The first must be the header
-		}
-		
-		
 	}
 }
