@@ -18,6 +18,7 @@ import it.univaq.disim.sealab.metaheuristic.evolutionary.EasierAlgorithm;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
+import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements EasierAlgorithm {
 
@@ -30,7 +31,13 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	private long durationThreshold, iterationStartingTime;
 	private float prematureConvergenceThreshold;
 
-	private List<S> oldPopulation;
+	List<S> oldPopulation;
+
+	private long freeBefore;
+
+	private long totalBefore;
+
+	private long initTime;
 	
 	/**
 	 * Constructor
@@ -59,7 +66,7 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	 * classic using the number of evaluation
 	 */
 	@Override
-	protected boolean isStoppingConditionReached() {
+	public boolean isStoppingConditionReached() {
 		System.out.println(getName());
 		ProgressBar.showBar(iterations, maxIterations);
 		long currentComputingTime = System.currentTimeMillis() - iterationStartingTime;
@@ -76,10 +83,36 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	@Override
 	protected void initProgress() {
 		super.initProgress();
+		this.getPopulation().forEach(s -> s.refactoringToCSV());
+
 		iterationStartingTime = System.currentTimeMillis();
+		freeBefore = Runtime.getRuntime().freeMemory();
+		totalBefore = Runtime.getRuntime().totalMemory();
+		initTime = System.currentTimeMillis();
+		
 		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 	}
 
+	@Override
+	public void updateProgress() {
+		super.updateProgress();
+
+		long computingTime = System.currentTimeMillis() - initTime;
+		long freeAfter = Runtime.getRuntime().freeMemory();
+		long totalAfter = Runtime.getRuntime().totalMemory();
+
+		new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+
+		// Store the checkpoint
+		totalBefore = totalAfter;
+		freeBefore = freeAfter;
+		initTime = computingTime;
+
+		populationToCSV();
+		System.out.println(this.getName());
+		ProgressBar.showBar(iterations / getMaxPopulationSize(), maxIterations / getMaxPopulationSize());
+	}
 	
 	public boolean isStagnantState() {
 
@@ -100,77 +133,68 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 		return ((double) (population.size() - countedSameObjectives / population.size()) / population.size()) > prematureConvergenceThreshold;
 	}
 	
+	
+	/*
+	 * Prints to CSV each generated population
+	 * "algorithm,problem_tag,solID,perfQ,#changes,pas,reliability"
+	 * 
+	 */
+	public void populationToCSV() {
+		for (RSolution<?> sol : population) {
+			String line = this.getName() + ',' + this.getProblem().getName() + ',' + sol.objectiveToCSV();
+			new FileUtils().solutionDumpToCSV(line);
+		}
+	}
+	
 	@Override
 	public void run() {
+		/*
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
 		
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv"))) {
-
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString()))) {
-				writer.write(
-						"algorithm,problem_tag,execution_time(ms),total_memory_before(B),free_memory_before(B),total_memory_after(B),free_memory_after(B)");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv"))) {
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString()))) {
-				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
 		this.setPopulation(createInitialPopulation());
 		this.setPopulation(evaluatePopulation(this.getPopulation()));
 		initProgress();
 		while (!isStoppingConditionReached()) {
 
-			long freeBefore = Runtime.getRuntime().freeMemory();
-			long totalBefore = Runtime.getRuntime().totalMemory();
-
-			long initTime = System.currentTimeMillis();
+			// MOVED into initProgress
+//			long freeBefore = Runtime.getRuntime().freeMemory();
+//			long totalBefore = Runtime.getRuntime().totalMemory();
+//
+//			long initTime = System.currentTimeMillis();
 			
 			matingPopulation = selection(this.getPopulation());
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
 			
-			long computingTime = System.currentTimeMillis() - initTime;
+			// MOVED into updateProgress
+//			long computingTime = System.currentTimeMillis() - initTime;
+//
+//			long freeAfter = Runtime.getRuntime().freeMemory();
+//			long totalAfter = Runtime.getRuntime().totalMemory();
 
-			long freeAfter = Runtime.getRuntime().freeMemory();
-			long totalAfter = Runtime.getRuntime().totalMemory();
+//			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(), computingTime,
+//					totalBefore, freeBefore, totalAfter, freeAfter);
 
-			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(), computingTime,
-					totalBefore, freeBefore, totalAfter, freeAfter);
+//			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+//					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
 
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Configurator.eINSTANCE.getOutputFolder().resolve("algo_perf_stats.csv").toString(), true))) {
-				writer.append(line);
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			updateProgress();
+//			populationToCSV();
 
-			updateProgress();
-
-		}
+		}*/
 		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(
-				Configurator.eINSTANCE.getOutputFolder().resolve("search_budget_stats.csv").toString(), true))) {
-			String line = String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					Configurator.eINSTANCE.getSearchBudgetType(), iterations, maxIterations);
-			writer.write(line);
-			writer.newLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		super.run();
+		
+		/* prints the number of iterations until the search budget is not reached. 
+		 * !!!Attn!!! 
+		 * iteration -1
+		 * is required because iterations has been updated just before checking the stopping criteria
+		 * !!!Attn!!! 
+		 */
+		new FileUtils().searchBudgetDumpToCSV(String.format("%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+				Configurator.eINSTANCE.getSearchBudgetType(), iterations-1, maxIterations));
 	}
 
 	public void clear() {

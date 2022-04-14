@@ -311,7 +311,7 @@ public class FileUtils {
 		if (!Files.exists(Configurator.eINSTANCE.getOutputFolder().resolve(fileName))) {
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(
 					Configurator.eINSTANCE.getOutputFolder().resolve(fileName).toString()))) {
-				writer.write("algorithm,problem_tag,search_busget,iteration,max_iteration");
+				writer.write("algorithm,problem_tag,search_budget,iteration,max_iteration");
 				writer.newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
