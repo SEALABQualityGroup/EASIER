@@ -32,6 +32,12 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	private float prematureConvergenceThreshold;
 
 	List<S> oldPopulation;
+
+	private long freeBefore;
+
+	private long totalBefore;
+
+	private long initTime;
 	
 	/**
 	 * Constructor
@@ -77,10 +83,36 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	@Override
 	protected void initProgress() {
 		super.initProgress();
+		this.getPopulation().forEach(s -> s.refactoringToCSV());
+
 		iterationStartingTime = System.currentTimeMillis();
+		freeBefore = Runtime.getRuntime().freeMemory();
+		totalBefore = Runtime.getRuntime().totalMemory();
+		initTime = System.currentTimeMillis();
+		
 		oldPopulation = (List<S>) this.getPopulation(); // store the initial population
 	}
 
+	@Override
+	public void updateProgress() {
+		super.updateProgress();
+
+		long computingTime = System.currentTimeMillis() - initTime;
+		long freeAfter = Runtime.getRuntime().freeMemory();
+		long totalAfter = Runtime.getRuntime().totalMemory();
+
+		new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(),
+				this.getProblem().getName(), computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+
+		// Store the checkpoint
+		totalBefore = totalAfter;
+		freeBefore = freeAfter;
+		initTime = computingTime;
+
+		populationToCSV();
+		System.out.println(this.getName());
+		ProgressBar.showBar(iterations / getMaxPopulationSize(), maxIterations / getMaxPopulationSize());
+	}
 	
 	public boolean isStagnantState() {
 
@@ -116,6 +148,7 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 	
 	@Override
 	public void run() {
+		/*
 		List<S> offspringPopulation;
 		List<S> matingPopulation;
 		
@@ -124,31 +157,35 @@ public class CustomSPEA2<S extends RSolution<?>> extends SPEA2<S> implements Eas
 		initProgress();
 		while (!isStoppingConditionReached()) {
 
-			long freeBefore = Runtime.getRuntime().freeMemory();
-			long totalBefore = Runtime.getRuntime().totalMemory();
-
-			long initTime = System.currentTimeMillis();
+			// MOVED into initProgress
+//			long freeBefore = Runtime.getRuntime().freeMemory();
+//			long totalBefore = Runtime.getRuntime().totalMemory();
+//
+//			long initTime = System.currentTimeMillis();
 			
 			matingPopulation = selection(this.getPopulation());
 			offspringPopulation = reproduction(matingPopulation);
 			offspringPopulation = evaluatePopulation(offspringPopulation);
 			this.setPopulation(replacement(this.getPopulation(), offspringPopulation));
 			
-			long computingTime = System.currentTimeMillis() - initTime;
+			// MOVED into updateProgress
+//			long computingTime = System.currentTimeMillis() - initTime;
+//
+//			long freeAfter = Runtime.getRuntime().freeMemory();
+//			long totalAfter = Runtime.getRuntime().totalMemory();
 
-			long freeAfter = Runtime.getRuntime().freeMemory();
-			long totalAfter = Runtime.getRuntime().totalMemory();
+//			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(), computingTime,
+//					totalBefore, freeBefore, totalAfter, freeAfter);
 
-			String line = String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(), computingTime,
-					totalBefore, freeBefore, totalAfter, freeAfter);
+//			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
+//					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
 
-			new FileUtils().algoPerfStatsDumpToCSV(String.format("%s,%s,%s,%s,%s,%s,%s", this.getName(), this.getProblem().getName(),
-					computingTime, totalBefore, freeBefore, totalAfter, freeAfter));
+//			updateProgress();
+//			populationToCSV();
 
-			updateProgress();
-			populationToCSV();
-
-		}
+		}*/
+		
+		super.run();
 		
 		/* prints the number of iterations until the search budget is not reached. 
 		 * !!!Attn!!! 
