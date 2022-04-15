@@ -161,7 +161,7 @@ public class UMLRSolutionTest {
     public void countingPAs() {
         solution.countingPAs();
 
-        assertTrue(String.format("Expected 12 PAs, found: %s.", solution.getPAs()), solution.getPAs() == 13);
+        assertTrue(String.format("Expected 12 PAs \t found: %s.", solution.getPAs()), solution.getPAs() == 13);
     }
 
     @Test
@@ -184,11 +184,11 @@ public class UMLRSolutionTest {
         solution.computeReliability();
     }
 
-    @Test
-    public void applyTransformationTest() {
-        solution.applyTransformation();
-        solution.invokeSolver();
-    }
+//    @Test
+//    public void applyTransformationTest() {
+//        solution.applyTransformation();
+//        solution.invokeSolver();
+//    }
 
     @Test
     public void refactoringToCSV() throws IOException {

@@ -39,7 +39,7 @@ public class Configurator {
 	private String outputFolder="/tmp/easier-output-test";
 
 	@Parameter(names = { "-maxEval", "--maxEvaluation" }, required = true, description = "Set the maximum evaluations")
-	private List<Integer> maxEval;
+	private List<Integer> maxEval = List.of(72);
 
 	@Parameter(names = { "-popSize", "--populationSize" }, required = true, description = "Set the population size")
 	private int popSize = 2;
