@@ -1,13 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnexpectedException;
@@ -18,11 +13,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.naming.InitialContext;
-
+import it.univaq.disim.sealab.easier.uml.utils.WorkflowUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -35,16 +28,13 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UseCase;
-import org.eclipse.xsd.ecore.XSDEcoreBuilder;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
 
 import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
-import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
-import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.epsilon.evl.EVLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
@@ -394,6 +384,38 @@ public class UMLRSolution extends RSolution<Refactoring> {
      * </exec> </target>
      */
     public void invokeSolver() {
+
+        long startTime = System.currentTimeMillis();
+        try {
+            new WorkflowUtils().invokeSolver(this.folderPath);
+        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//            final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
+//                    .map(act -> act.toString()).collect(Collectors.joining(","));
+//            System.err.println("Solution # " + this.name);
+//            System.err.println(lqnError);
+//            getVariable(VARIABLE_INDEX).getActions().forEach(System.out::println);
+
+            String line = this.name + "," + e.getMessage() + "," + getVariable(VARIABLE_INDEX).toString();
+
+            new FileUtils().failedSolutionLogToCSV(line);
+        }
+
+        long duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s", "NSGA", problemName, getName(), duration));
+        System.out.println(String.format("invokeSolver execution time: %s", duration));
+        System.out.println("done");
+
+
+        System.out.print("Invoking the back annotator... ");
+        startTime = System.currentTimeMillis();
+        new WorkflowUtils().backAnnotation(modelPath);
+        duration = System.currentTimeMillis() - startTime;
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", "NSGA", problemName, getName(), duration));
+        System.out.println(String.format("backAnnotation execution time: %s", duration));
+        System.out.println("done");
+
+        /*
         System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
         long startTime = System.currentTimeMillis();
@@ -459,6 +481,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
         new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", "NSGA", problemName, getName(), duration));
         System.out.println(String.format("backAnnotation execution time: %s", duration));
         System.out.println("done");
+         */
     }
 
     // Vincenzo's solution
@@ -496,6 +519,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
      *
      * PlainXmlModel resource = loadXMLModel("LQN", xmlModel, "/output/agv.xml");
      */
+    /*
     private void backAnnotation() {
 
         EOLStandalone bckAnn = new EOLStandalone();
@@ -549,7 +573,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
         bckAnn.clearMemory();
         new UMLMemoryOptimizer().cleanup();
         bckAnn = null;
-    }
+    }*/
 
     public double evaluatePerformance() {
         System.out.print("Counting perfQ ... ");
@@ -733,6 +757,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
      */
     public void applyTransformation() {
 
+        new WorkflowUtils().applyTransformation(this.modelPath);
+        /*
         System.out.print("Applying transformation in ... ");
         long startTime = System.currentTimeMillis();
 //        EasierUmlModel uml = null;
@@ -783,6 +809,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
         long duration = System.currentTimeMillis() - startTime;
         new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,uml2lqn,%s", algorithm, problemName, getName(), duration));
         System.out.println(String.format("%s done", duration));
+         */
     }
 
     public void executeRefactoring() {
