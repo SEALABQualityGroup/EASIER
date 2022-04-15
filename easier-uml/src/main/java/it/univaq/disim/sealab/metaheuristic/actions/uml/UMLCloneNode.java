@@ -320,16 +320,16 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 				return false;
 		} else if (!umlClonedNode.equals(other.umlClonedNode))
 			return false;
-		if (umlClonedNodeSVP == null) {
-			if (other.umlClonedNodeSVP != null)
-				return false;
-		} else if (!umlClonedNodeSVP.equals(other.umlClonedNodeSVP))
-			return false;
-		if (umlNodeToCloneSVP == null) {
-			if (other.umlNodeToCloneSVP != null)
-				return false;
-		} else if (!umlNodeToCloneSVP.equals(other.umlNodeToCloneSVP))
-			return false;
+//		if (umlClonedNodeSVP == null) {
+//			if (other.umlClonedNodeSVP != null)
+//				return false;
+//		} else if (!umlClonedNodeSVP.equals(other.umlClonedNodeSVP))
+//			return false;
+//		if (umlNodeToCloneSVP == null) {
+//			if (other.umlNodeToCloneSVP != null)
+//				return false;
+//		} else if (!umlNodeToCloneSVP.equals(other.umlNodeToCloneSVP))
+//			return false;
 		return true;
 	}
 

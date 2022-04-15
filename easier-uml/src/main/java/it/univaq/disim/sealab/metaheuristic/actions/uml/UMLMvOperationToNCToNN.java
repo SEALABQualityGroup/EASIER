@@ -298,4 +298,42 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		return String.format("Move_Operation_New_Component_New_Node,%s,%s,%s",umlOpToMove.getName(),umlTargetComp.getName(),umlTargetNode.getName());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UMLMvOperationToNCToNN other = (UMLMvOperationToNCToNN) obj;
+		if (sourceModelPath == null) {
+			if (other.sourceModelPath != null)
+				return false;
+		}
+//		else if (!sourceModelPath.equals(other.sourceModelPath))
+//			return false;
+		if (umlTargetComp == null) {
+			if (other.umlTargetComp != null)
+				return false;
+		} else if (!umlTargetComp.equals(other.umlTargetComp))
+			return false;
+		if (umlTargetNode == null) {
+			if (other.umlTargetNode != null)
+				return false;
+		} else if (!umlTargetNode.equals(other.umlTargetNode))
+			return false;
+//		if (umlClonedNodeSVP == null) {
+//			if (other.umlClonedNodeSVP != null)
+//				return false;
+//		} else if (!umlClonedNodeSVP.equals(other.umlClonedNodeSVP))
+//			return false;
+//		if (umlNodeToCloneSVP == null) {
+//			if (other.umlNodeToCloneSVP != null)
+//				return false;
+//		} else if (!umlNodeToCloneSVP.equals(other.umlNodeToCloneSVP))
+//			return false;
+		return true;
+	}
+
 }

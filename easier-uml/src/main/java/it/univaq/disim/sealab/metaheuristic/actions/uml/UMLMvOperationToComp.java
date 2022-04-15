@@ -287,11 +287,14 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		if (getClass() != obj.getClass())
 			return false;
 		UMLMvOperationToComp other = (UMLMvOperationToComp) obj;
-		if (sourceModelPath == null) {
-			if (other.sourceModelPath != null)
-				return false;
-		} else if (!sourceModelPath.equals(other.sourceModelPath))
+		if (sourceModelPath == null && other.sourceModelPath != null)
 			return false;
+		if(!this.umlTargetComp.equals(other.umlTargetComp))
+			return false;
+		if(!this.umlOpToMove.equals(other.umlOpToMove))
+			return false;
+//		else if (!sourceModelPath.equals(other.sourceModelPath))
+//			return false;
 		return true;
 	}
 
