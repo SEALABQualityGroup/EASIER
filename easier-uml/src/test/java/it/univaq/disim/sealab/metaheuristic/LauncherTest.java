@@ -1,5 +1,6 @@
 package it.univaq.disim.sealab.metaheuristic;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Path;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
@@ -19,52 +21,49 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class LauncherTest {
 
-	String modelPath;
+    Path modelPath;
 
-	@Before
-	public void setUp() {
+    @Before
+    public void setUp() {
 
-		modelPath = getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile();
+        modelPath = Paths.get(getClass().getResource("/models/model/automatedGuidedVehicle.uml").getFile());
 
-	}
-	
-	@Test
-	public void invokeSolverTest() {
-		Path modelPath = Paths.get(getClass().getResource("/models/simplified-cocome/cocome.uml").getFile());
-		Launcher.applyTransformation(modelPath);
-		Launcher.invokeSolver(modelPath);  
-	}
+    }
 
-	@Test
-	public void createProblemsTest() {
-		int eval = 12;
+//	@Test
+//	@Ignore
+//	public void invokeSolverTest() {
+//		Path modelPath = Paths.get(getClass().getResource("/models/simplified-cocome/cocome.uml").getFile());
+////		Launcher.applyTransformation(modelPath);
+//		Launcher.invokeSolver(modelPath);
+//	}
 
-		Launcher launcher = new Launcher();
+    @Test
+    public void createProblemsTest() {
+        int eval = 12;
+        List<RProblem<UMLRSolution>> rProblems = Launcher.createProblems(modelPath, eval);
+        String expectedProblemName = "model__BRF_1.23__1.23__1.23__1.23__MaxEval_12__ProbPAs_0.95__sb_none_sbth_3600000__Algo_nsgaii";
+        assertEquals(String.format("Expected %s problems \t created %s.", 1, rProblems), 1, rProblems.size());
+        assertEquals(String.format("Exptected problem name %s \t generated %s", expectedProblemName, rProblems.get(0).getName()),
+                expectedProblemName, rProblems.get(0).getName());
+    }
 
-		List<RProblem<UMLRSolution>> rProblems = Launcher.createProblems(Paths.get(modelPath), eval);
-		
-		assertTrue("model__BRF_1.23__1.23__1.23__1.23__MaxEval_12__ProbPAs_0.95__sb_none_sbth_3600000__Algo_nsgaii"
-				.equals(rProblems.get(0).getName()));
+    @Test
+    public void configureAlgorithmListTest() {
+        int eval = 12;
+        List<ExperimentProblem<UMLRSolution>> problemList = new ArrayList<>();
+        Launcher.createProblems(modelPath, eval)
+                .forEach(problem -> problemList.add(new ExperimentProblem<UMLRSolution>(problem)));
 
-	}
+        List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algoList = Launcher
+                .configureAlgorithmList(problemList, eval);
 
-	@Test
-	public void configureAlgorithmListTest() {
+        assertTrue(algoList.size() == Configurator.eINSTANCE.getIndependetRuns());
 
-		int eval = 12;
-		List<ExperimentProblem<UMLRSolution>> problemList = new ArrayList<>();
-		Launcher.createProblems(Paths.get(modelPath), eval)
-				.forEach(problem -> problemList.add(new ExperimentProblem<UMLRSolution>(problem)));
+    }
 
-		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algoList = Launcher
-				.configureAlgorithmList(problemList, eval);
-
-		assertTrue(algoList.size() == Configurator.eINSTANCE.getIndependetRuns());
-
-	}
-
-	@After
-	public void tearDown() {
-	}
+    @After
+    public void tearDown() {
+    }
 
 }
