@@ -295,11 +295,18 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		if (getClass() != obj.getClass())
 			return false;
 		UMLMvComponentToNN other = (UMLMvComponentToNN) obj;
-		if (sourceModelPath == null) {
-			if (other.sourceModelPath != null)
+		if (sourceModelPath == null && other.sourceModelPath != null)
 				return false;
-		} else if (!sourceModelPath.equals(other.sourceModelPath))
+		if(!this.umlCompToMove.equals(other.umlCompToMove))
 			return false;
+		if(this.umlTargetNodes.size() != other.umlTargetNodes.size())
+			return false;
+		for(int i = 0; i < umlTargetNodes.size(); i++){
+			if(!this.umlTargetNodes.get(i).equals(other.umlTargetNodes.get(i)))
+				return false;
+		}
+//		 else if (!sourceModelPath.equals(other.sourceModelPath))
+//			return false;
 		return true;
 	}
 
