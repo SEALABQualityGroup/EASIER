@@ -83,8 +83,10 @@ public class Launcher {
 			for (Path m : modelsPath) {
 				System.out.println("Number of source model");
 				ProgressBar.showBar(i, modelsPath.size());
+				List<RProblem<UMLRSolution>> rProblems	= new ArrayList<>();
 				for (int j = 0; j < eval.length; j++) {
-					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
+//					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
+					rProblems.add(createProblems(m, eval[j]));
 
 					if (!m.getParent().resolve("output.xml").toFile().exists()) {
 						new WorkflowUtils().applyTransformation(m);
@@ -107,7 +109,7 @@ public class Launcher {
 	}
 
 	static void invokeSolver(Path sourceModelPath) {
-		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
+		System.out.print("Invoking LQN Solver ... ");
 
 		try {
 			new WorkflowUtils().invokeSolver(sourceModelPath.getParent());
@@ -185,15 +187,24 @@ public class Launcher {
 			List<ExperimentProblem<UMLRSolution>> problemList, int eval) {
 
 		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
+		FactoryBuilder<UMLRSolution> fBuilder = new FactoryBuilder<UMLRSolution>();
 		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
 				Configurator.eINSTANCE.getXoverProbabiliy());
-		final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
-				Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
-		final SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
-				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
 		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
 
 		String algo = Configurator.eINSTANCE.getAlgorithm();
+
+		for(ExperimentProblem<UMLRSolution> expProblem : problemList) {
+			algorithms.addAll(fBuilder.configureAlgorithmList(expProblem,eval,crossoverOperator,solutionListEvaluator, algo));
+		}
+
+//		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
+//				Configurator.eINSTANCE.getXoverProbabiliy());
+//		final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
+//				Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
+//		final SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
+//				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
+/*
 		for (int i = 0; i < problemList.size(); i++) {
 			if ("nsgaii".equals(algo)) {
 				for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
@@ -270,15 +281,15 @@ public class Launcher {
 
 				}
 			}
-		}
+		}*/
 
 		return algorithms;
 
 	}
 
-	public static List<RProblem<UMLRSolution>> createProblems(Path modelPath, int eval) {
+	public static RProblem<UMLRSolution> createProblems(Path modelPath, int eval) {
 
-		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
+//		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
 		double probPas = Configurator.eINSTANCE.getProbPas();
 
 		String brf = Configurator.eINSTANCE.getBrfList().toString().replace(":", "_").replace(",", "__")
@@ -291,8 +302,9 @@ public class Launcher {
 		UMLRProblem<UMLRSolution> p = new UMLRProblem<>(modelPath, Configurator.eINSTANCE.getLength(), Configurator.eINSTANCE.getAllowedFailures(),
 				Configurator.eINSTANCE.getPopulationSize());
 		p.setName(pName);
-		rProblems.add(p);
-		return rProblems;
+		return p;
+//		rProblems.add(p);
+//		return rProblems;
 	}
 
 }
