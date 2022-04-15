@@ -1,22 +1,14 @@
 package it.univaq.disim.sealab.metaheuristic;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.xsd.ecore.XSDEcoreBuilder;
+import it.univaq.disim.sealab.easier.uml.utils.WorkflowUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
@@ -40,11 +32,6 @@ import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import com.beust.jcommander.JCommander;
 
 import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
-import it.univaq.disim.sealab.easier.uml.utils.XMLUtil;
-import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
-import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
-import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
-import it.univaq.disim.sealab.epsilon.etl.ETLStandalone;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.ProgressBar;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
@@ -73,7 +60,7 @@ public class Launcher {
 		qualityIndicatorsMap = new HashMap<>();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		JCommander jc = new JCommander();
 
@@ -89,13 +76,6 @@ public class Launcher {
 		else {
 			List<Path> modelsPath = new ArrayList<>();
 
-			/*
-			 * if (Configurator.eINSTANCE.getModelsPath().get(0).toFile().isFile()) { // use
-			 * the solution csv file to extract more models
-			 * modelsPath.addAll(FileUtils.extractModelPaths(Configurator.eINSTANCE.
-			 * getModelsPath().get(0), Configurator.eINSTANCE.getMaxWorseModels())); } else
-			 * { modelsPath.addAll(Configurator.eINSTANCE.getModelsPath()); }
-			 */
 			modelsPath.addAll(Configurator.eINSTANCE.getModelsPath());
 			int i = 1;
 			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
@@ -107,9 +87,8 @@ public class Launcher {
 					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
 
 					if (!m.getParent().resolve("output.xml").toFile().exists()) {
-						Path sourceModelPath = m;
-						applyTransformation(sourceModelPath);
-						invokeSolver(sourceModelPath);
+						new WorkflowUtils().applyTransformation(m);
+						new WorkflowUtils().invokeSolver(m);
 					}
 					List<GenericIndicator<UMLRSolution>> qIndicators = new ArrayList<>();
 					FactoryBuilder<UMLRSolution> factory = new FactoryBuilder<>();
@@ -127,116 +106,20 @@ public class Launcher {
 		}
 	}
 
-	static void applyTransformation(Path sourceModelPath) {
-
-		System.out.print("Applying transformation ... ");
-		EasierUmlModel uml = null;
-		ETLStandalone executor = null;
-		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
-		try {
-			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
-		} catch (EolModelLoadingException | URISyntaxException e) {
-			System.err.println("Error in runnig the ETL transformation");
-			e.printStackTrace();
-		}
-
-		executor = new ETLStandalone(sourceModelPath.getParent());
-		executor.setSource(Paths.get(uml2lqnModule, "uml2lqn.etl"));
-		executor.setModel(uml);
-		executor.setModel(executor.createXMLModel("LQN", sourceModelPath.getParent().resolve("output.xml"),
-				org.eclipse.emf.common.util.URI.createFileURI(Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString()),
-				false, true));
-
-		try {
-			executor.execute();
-		} catch (EolRuntimeException e) {
-			System.err.println("Error in runnig the ETL transformation");
-			e.printStackTrace();
-		}
-		executor.clearMemory();
-
-		// finally {
-		new UMLMemoryOptimizer().cleanup();
-		uml = null;
-		executor = null;
-		// }
-		System.out.println("done");
-	}
-
 	static void invokeSolver(Path sourceModelPath) {
 		System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
 
-		Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
-		Path lqnModelPath = sourceModelPath.getParent().resolve("output.xml");
-
-		XMLUtil.conformanceChecking(lqnModelPath);
-
-		// to allow cycles in the lqn model
-		final String params = "-P cycles=yes";
-
-		Process process = null;
 		try {
-			process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
+			new WorkflowUtils().invokeSolver(sourceModelPath.getParent());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
-		process = null;
 
 		System.out.println("done");
 
 		System.out.print("Invoking the back annotator... ");
-		backAnnotation(sourceModelPath);
+		new WorkflowUtils().backAnnotation(sourceModelPath);
 		System.out.println("done");
-	}
-
-	private static void backAnnotation(Path sourceModelPath) {
-
-		EOLStandalone bckAnn = new EOLStandalone();
-		EasierUmlModel uml = null;
-
-		try {
-			uml = EpsilonStandalone.createUmlModel(sourceModelPath.toString());
-		} catch (URISyntaxException | EolRuntimeException e) {
-			e.printStackTrace();
-		}
-
-		bckAnn.setModel(uml);
-
-		String uml2lqnModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-uml2lqn", "org.univaq.uml2lqn").toString();
-
-		bckAnn.setSource(Paths.get(uml2lqnModule, "backAnnotation.eol"));
-
-		// Points to lqn schema file and stores pacakges into the global package
-		// registry
-		XSDEcoreBuilder xsdEcoreBuilder = new XSDEcoreBuilder();
-		String schema = Paths.get(uml2lqnModule, "lqnxsd", "lqn.xsd").toString();
-//		String schema = Configurator.eINSTANCE.getUml2Lqn().resolve("org.univaq.uml2lqn").resolve("lqnxsd")
-//				.resolve("lqn.xsd").toString();
-		Collection<EObject> generatedPackages = xsdEcoreBuilder
-				.generate(org.eclipse.emf.common.util.URI.createURI(schema));
-		for (EObject generatedEObject : generatedPackages) {
-			if (generatedEObject instanceof EPackage) {
-				EPackage generatedPackage = (EPackage) generatedEObject;
-				EPackage.Registry.INSTANCE.put(generatedPackage.getNsURI(), generatedPackage);
-			}
-		}
-		bckAnn.setModel(bckAnn.createPlainXMLModel("LQXO", sourceModelPath.getParent().resolve("output.lqxo"), true,
-				false, true));
-
-		try {
-			bckAnn.execute();
-		} catch (EolRuntimeException e) {
-			e.printStackTrace();
-		}
-
-		bckAnn.clearMemory();
-		new UMLMemoryOptimizer().cleanup();
-		bckAnn = null;
-
 	}
 
 	public static List<Path> runExperiment(final List<RProblem<UMLRSolution>> rProblems,
@@ -288,12 +171,7 @@ public class Launcher {
 			RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>> qualityIndicator = new RComputeQualityIndicators<UMLRSolution, List<UMLRSolution>>(
 					experiment);
 			qualityIndicator.run();
-//			qualityIndicatorsMap = qualityIndicator.getIndicatorsMap();
 
-//			new GenerateLatexTablesWithComputingTime(experiment).run();
-//			new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-//			new GenerateBoxplotsWithR<>(experiment).run();
-//			new GenerateLatexTablesWithStatistics(experiment).run();
 
 		} catch (Exception e) {
 			e.printStackTrace();
