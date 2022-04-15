@@ -55,10 +55,6 @@ public class WorkflowUtils {
     }
 
     public void invokeSolver(Path folderPath) throws Exception {
-//        System.out.print("Invoking LQN Solver ... ");// Remove comments for the real invocation");
-
-//        long startTime = System.currentTimeMillis();
-
         Path lqnSolverPath = Configurator.eINSTANCE.getSolver();
         Path lqnModelPath = folderPath.resolve("output.xml");
 
@@ -71,45 +67,18 @@ public class WorkflowUtils {
         try {
             process = new ProcessBuilder(lqnSolverPath.toString(), params, lqnModelPath.toString()).start();
             process.waitFor();
-        } catch (IOException | InterruptedException e) {
+
+            if (!Files.exists(folderPath.resolve("output.lqxo"))) {
+                final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
+                        .map(act -> act.toString()).collect(Collectors.joining(","));
+                throw new Exception(lqnError);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e1){
+            e1.printStackTrace();
+            Thread.currentThread().interrupt();
         }
-
-//    try {
-        if (!Files.exists(folderPath.resolve("output.lqxo"))) {
-            final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
-                    .map(act -> act.toString()).collect(Collectors.joining(","));
-            throw new Exception(lqnError);
-        }
-//        } catch (Exception e) {
-//            final String lqnError = new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
-//                    .map(act -> act.toString()).collect(Collectors.joining(","));
-//            System.err.println("Solution # " + this.name);
-//            System.err.println(lqnError);
-//            getVariable(VARIABLE_INDEX).getActions().forEach(System.out::println);
-//
-//            String line = this.name + "," + lqnError + "," + getVariable(VARIABLE_INDEX).toString();
-//
-//            new FileUtils().failedSolutionLogToCSV(line);
-//
-////
-//            e.printStackTrace();
-//        }
-
-        process = null;
-
-//        long duration = System.currentTimeMillis() - startTime;
-//        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s", "NSGA", problemName, getName(), duration));
-//        System.out.println(String.format("invokeSolver execution time: %s", duration));
-//        System.out.println("done");
-
-//        System.out.print("Invoking the back annotator... ");
-//        startTime = System.currentTimeMillis();
-//        backAnnotation();
-//        duration = System.currentTimeMillis() - startTime;
-//        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", "NSGA", problemName, getName(), duration));
-//        System.out.println(String.format("backAnnotation execution time: %s", duration));
-//        System.out.println("done");
     }
 
     public void backAnnotation(Path sourceModelPath) {
