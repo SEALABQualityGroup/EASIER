@@ -68,6 +68,7 @@ public class UMLMvOperationToNCToNN extends UMLMoveOperationActionImpl implement
 		
 		cost = numOfChanges = calculateCost();
 		//numOfChanges = cost;
+		name = "Move_Operation_New_Component_New_Node";
 
 		setParameters();
 		createPreCondition();

@@ -71,6 +71,8 @@ public class UMLCloneNode extends UMLAddNodeActionImpl implements RefactoringAct
 		cost = numOfChanges = calculateCost();
 		//numOfChanges = cost;
 
+		name = "UMLCloneNode";
+
 		setParameters();
 		createPreCondition();
 		createPostCondition();
