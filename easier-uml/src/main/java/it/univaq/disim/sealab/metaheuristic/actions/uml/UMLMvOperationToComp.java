@@ -62,6 +62,7 @@ public class UMLMvOperationToComp extends UMLMoveOperationActionImpl implements 
 		
 		cost = numOfChanges = calculateCost();
 		//numOfChanges = cost;
+		name = "Move_Operation_Component";
 
 		setParameters();
 		createPreCondition();

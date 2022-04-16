@@ -67,6 +67,8 @@ public class UMLMvComponentToNN extends UMLMoveComponentActionImpl implements Re
 		cost = numOfChanges = calculateCost();
 		//numOfChanges = cost;
 
+		name = "Move_Component_New_Node";
+
 		setParameters();
 		createPreCondition();
 		createPostCondition();
