@@ -131,7 +131,7 @@
 			<artifactId>logicalSpecification</artifactId>
 			<version>0.6</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 	<properties>
 		<jmetal-version>5.10</jmetal-version>
 	</properties>
