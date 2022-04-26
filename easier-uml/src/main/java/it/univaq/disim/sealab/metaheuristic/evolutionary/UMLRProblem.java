@@ -12,22 +12,19 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UMLRProblem(Path srcFolderPath, int desired_length, int allowedFailures, int populationSize) {
-		super(srcFolderPath.getParent(), srcFolderPath, desired_length, allowedFailures, populationSize);
+	public UMLRProblem(Path srcModelPath, String name) {
+		super(srcModelPath);
+		this.setName(name);
 	}
 
-	public UMLRProblem(SourceModel srcModel, int desired_length, int allowedFailures, int populationSize) {
-		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, allowedFailures, populationSize);
-
-	}
+//	public UMLRProblem(SourceModel srcModel, int desired_length, int allowedFailures, int populationSize) {
+//		super(srcModel.getSourceFolder(), srcModel.getModel(), desired_length, allowedFailures, populationSize);
+//
+//	}
 
 	@Override
 	public S createSolution() {
-		return (S) new UMLRSolution(this.getNumberOfVariables(), this.getNumberOfObjectives(), this);
-	}
-
-	public Path getSourceModelPath() {
-		return sourceModelPath;
+		return (S) new UMLRSolution(sourceModelPath, getName());
 	}
 
 	@Override
@@ -43,7 +40,7 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 		UMLRSolution solution = (UMLRSolution) s;
 
 		solution.setObjective(0, (-1 * solution.getPerfQ())); // to be maximized
-		solution.setObjective(1, solution.getNumOfChanges());
+		solution.setObjective(1, solution.getArchitecturalChanges());
 		if(Configurator.eINSTANCE.getProbPas() != 0) {
 			solution.setObjective(2, solution.getPAs());
 			solution.setObjective(3, (-1 * solution.getReliability())); // to be maximized
