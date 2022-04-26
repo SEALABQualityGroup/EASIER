@@ -103,7 +103,7 @@ public class FileUtils {
 			line.clear();
 			line.add(String.valueOf(rSolution.getName()));
 			line.add(String.valueOf(rSolution.getPerfQ()));
-			line.add(String.valueOf(rSolution.getNumOfChanges()));
+			line.add(String.valueOf(rSolution.getArchitecturalChanges()));
 			line.add(String.valueOf(rSolution.getPAs()));
 			CSVUtils.writeLine(fw, line);
 		} catch (IOException e) {
