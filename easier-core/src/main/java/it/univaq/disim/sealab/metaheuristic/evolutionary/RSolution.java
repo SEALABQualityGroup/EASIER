@@ -15,56 +15,55 @@ import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 
 public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGenericSolution<Refactoring, RProblem<?>> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	protected Path modelPath, sourceModelPath;
+    protected Path modelPath, sourceModelPath;
 
-	protected boolean refactored;
-	protected boolean crossovered;
-	protected boolean mutated;
+    protected boolean refactored;
+    protected boolean crossovered;
+    protected boolean mutated;
 
-	protected static int SOLUTION_COUNTER = 0;
+    protected static int SOLUTION_COUNTER = 0;
 
-	protected int name;
+    protected int name;
 
-	protected double perfQ;
-	protected int numPAs;
-	protected double reliability;
-	public static final int VARIABLE_INDEX;
+    protected double perfQ;
+    protected int numPAs;
+    protected double reliability;
+    protected double architecturalChanges;
+    public static final int VARIABLE_INDEX;
 
-	protected RSolution<T>[] parents;
+    protected RSolution<T>[] parents;
 
-	public static int MutationCounter = 0;
-	public static int XOverCounter = 0;
+    public static int MutationCounter = 0;
+    public static int XOverCounter = 0;
 
-	protected int allowed_failures, length_of_refactorings;
-	protected String problemName;
+    protected int allowedFailures;
+    protected int refactoringLength;
+    protected String problemName;
 
-	static {
-		VARIABLE_INDEX = 0;
-	}
+    static {
+        VARIABLE_INDEX = 0;
+    }
 
-	protected RSolution(int numberOfVariables, int numberOfObjectives) {
-		super(numberOfVariables, numberOfObjectives);
-	}
+    protected RSolution(Path srcModelPath, String pName) {
+        super(1, Configurator.eINSTANCE.getObjectives());
+        allowedFailures = Configurator.eINSTANCE.getAllowedFailures();
+        refactoringLength = Configurator.eINSTANCE.getLength();
+        sourceModelPath = srcModelPath;
+        problemName = pName;
+    }
 
-	protected RSolution(int numberOfVariables, int numberOfObjectives, RProblem<?> p) {
-		this(numberOfVariables, numberOfObjectives);
-
-		allowed_failures = p.allowed_failures;
-		length_of_refactorings = p.length_of_refactorings;
-		sourceModelPath = p.getSourceModelPath();
-		problemName = p.getName();
-	}
-
-	/** Constructor */
-	protected RSolution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
-		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
-
-	}
+    /**
+     * Constructor
+     */
+//    protected RSolution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints, RProblem<?> p) {
+//        super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+//
+//    }
 
 //	public RSolution(RProblem<T> p) {
 ////		super(problem);
@@ -73,239 +72,213 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
 //		mutated = false;
 //		refactored = false;
 //	}
+    public abstract void countingPAs();
 
-	public abstract void countingPAs();
+    public abstract double evaluatePerformance();
 
-	public abstract double evaluatePerformance();
+    public abstract void executeRefactoring();
 
-	public abstract void executeRefactoring();
+    public abstract void applyTransformation();
 
-	public abstract void applyTransformation();
+    public abstract void computeReliability();
 
-	public abstract void computeReliability();
+    public abstract void computeArchitecturalChanges();
 
-	public abstract void computeScenarioRT();
+    public abstract void computeScenarioRT();
 
-	public abstract boolean alter(int i);
+    public abstract boolean alter(int i);
 
-	public abstract void invokeSolver();
+    public abstract void invokeSolver();
 
-	public abstract boolean isFeasible(Refactoring ref);
+    public abstract boolean isFeasible();
 
-	public abstract void freeMemory();
+    public RefactoringAction getActionAt(int index) {
+        return ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().get(index);
+    }
 
-	public RefactoringAction getActionAt(int index) {
-		return ((Refactoring) getVariable(VARIABLE_INDEX)).getActions().get(index);
-	}
+    public Path getModelPath() {
+        return modelPath;
+    }
 
-	public Path getModelPath() {
-		return modelPath;
-	}
+    public double getReliability() {
+        return reliability;
+    }
 
-	public double getReliability() {
-		return reliability;
-	}
+    public Path getSourceModelPath() {
+        return sourceModelPath;
+    }
 
-	public Path getSourceModelPath() {
-		return sourceModelPath;
-	}
+    public void setRefactored() {
+        this.refactored = true;
+    }
 
-	public void setRefactored() {
-		this.refactored = true;
-	}
+    public boolean isRefactored() {
+        return refactored;
+    }
 
-	public boolean isRefactored() {
-		return refactored;
-	}
+    public void setCrossovered() {
+        this.crossovered = true;
+        XOverCounter++;
+    }
 
-	public void setCrossovered() {
-		this.crossovered = true;
-		XOverCounter++;
-	}
+    public void setMutated() {
+        this.mutated = true;
+        MutationCounter++;
+    }
 
-	public void setMutated() {
-		this.mutated = true;
-		MutationCounter++;
-	}
+    public boolean isMutated() {
+        return mutated;
+    }
 
-	public boolean isMutated() {
-		return mutated;
-	}
+    public boolean isCrossovered() {
+        return crossovered;
+    }
 
-	public boolean isCrossovered() {
-		return crossovered;
-	}
+    public double getPerfQ() {
+        return perfQ;
+    }
 
-	public double getPerfQ() {
-		return perfQ;
-	}
+    public void setPerfQ(float perfQ) {
+        this.perfQ = perfQ;
+    }
 
-	public void setPerfQ(float perfQ) {
-		this.perfQ = perfQ;
-	}
+    public int getPAs() {
+        return numPAs;
+    }
 
-	public Double getNumOfChanges() {
-		return ((Refactoring) this.getVariable(0)).getNumOfChanges();
-	}
+    public int getName() {
+        return name;
+    }
 
-	public void computeNumOfChanges() {
-//		double changes = 0.0;
-		((Refactoring) this.getVariable(0)).computeNumOfChanges();
+    public String getProblemName() {
+        return problemName;
+    }
 
-//		for (RefactoringAction action : r.getActions()) {
-//			changes += action.getNumOfChanges();
-//		}
-//		return changes;
-	}
+    public static synchronized int getCounter() {
+        return SOLUTION_COUNTER++;
+    }
 
-	public int getPAs() {
-		return numPAs;
-	}
+    public void setName() {
+        this.name = getCounter();
+    }
 
-	public int getName() {
-		return name;
-	}
+    protected void resetParents() {
+        if (this.parents != null) {
+            this.parents[0] = null;
+            this.parents[1] = null;
+        }
+    }
 
-	public String getProblemName() {
-		return problemName;
-	}
+    public RSolution[] getParents() {
+        return parents;
+    }
 
-	public static synchronized int getCounter() {
-		return SOLUTION_COUNTER++;
-	}
+    public void setParents(RSolution parent1, RSolution parent2) {
+        this.parents[0] = parent1;
+        this.parents[1] = parent2;
+    }
 
-	public void setName() {
-		this.name = getCounter();
-	}
+    /**
+     * Prints a VAR file
+     */
+    public String getVariableString(int index) {
 
-	protected void resetParents() {
-		if (this.parents != null) {
-			this.parents[0] = null;
-			this.parents[1] = null;
-		}
-	}
+        String strValue = this.getName() + ";";
 
-	public RSolution[] getParents() {
-		return parents;
-	}
+        List<Double> objs = new ArrayList<>();
+        for (int i = 0; i < getNumberOfObjectives(); i++) {
+            objs.add(getObjective(i));
+        }
 
-	public void setParents(RSolution parent1, RSolution parent2) {
-		this.parents[0] = parent1;
-		this.parents[1] = parent2;
-	}
+        strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
+        strValue += ";";
+        strValue += getName() + ",";
+        strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toCSV())
+                .collect(Collectors.joining(","));
+        return strValue;
+    }
 
-	/**
-	 * Prints a VAR file
-	 */
-	public String getVariableString(int index) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+//		if (!super.equals(obj))
+//			return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RSolution<T> other = (RSolution<T>) obj;
+        if (crossovered != other.crossovered)
+            return false;
+        if (modelPath == null ^ other.modelPath == null) {
+            return false;
+        } //else if (!modelPath.equals(other.modelPath))
+//			return false;
+        if (mutated != other.mutated)
+            return false;
+//		if (name != other.name)
+//			return false;
+        if (numPAs != other.numPAs)
+            return false;
+        if (Double.doubleToLongBits(perfQ) != Double.doubleToLongBits(other.perfQ))
+            return false;
+//		if (refactored != other.refactored)
+//			return false;
+        if (Double.doubleToLongBits(reliability) != Double.doubleToLongBits(other.reliability))
+            return false;
+        if (parents.length != other.parents.length)
+            return false;
+        for (int i = 0; i < parents.length; i++) {
+            if (parents[i] != other.parents[i]) {
+                return false;
+            }
+        }
+//        if (!Arrays.equals(parents, other.parents))
+//            return false;
+        if (getVariable(VARIABLE_INDEX) == null ^ other.getVariable(VARIABLE_INDEX) == null){
+                return false;
+        } else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
+            return false;
+        return true;
+    }
 
-		String strValue = this.getName() + ";";
+    public double getArchitecturalChanges() {
+        return architecturalChanges;
+    }
 
-		List<Double> objs = new ArrayList<>();
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			objs.add(getObjective(i));
-		}
+    /*
+     * Returns the solution data as a CSV format
+     * "solID,perfQ,#changes,pas,reliability"
+     */
+    public String objectiveToCSV() {
+        return String.format("%s,%s,%s,%s,%s", this.getName(), this.perfQ, this.getArchitecturalChanges(), this.numPAs,
+                this.reliability);
+    }
 
-		strValue += objs.stream().map(o -> String.valueOf(o)).collect(Collectors.joining(";"));
-		strValue += ";";
-		strValue += getName() + ",";
-		strValue += ((Refactoring) this.getVariable(0)).getActions().stream().map(act -> act.toCSV())
-				.collect(Collectors.joining(","));
-		return strValue;
-	}
+    public void refactoringToCSV() {
+        new FileUtils().refactoringDumpToCSV(((Refactoring) getVariable(0)).toCSV());
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + (crossovered ? 1231 : 1237);
-		result = prime * result + ((modelPath == null) ? 0 : modelPath.hashCode());
-		result = prime * result + (mutated ? 1231 : 1237);
-		result = prime * result + name;
-		result = prime * result + numPAs;
-		result = prime * result + Arrays.hashCode(parents);
-		long temp;
-		temp = Double.doubleToLongBits(perfQ);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + (refactored ? 1231 : 1237);
-		result = prime * result + ((getVariable(VARIABLE_INDEX) == null) ? 0 : getVariable(VARIABLE_INDEX).hashCode());
-		temp = Double.doubleToLongBits(reliability);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
+    /**
+     * Check if two RSolutions have the same objectives values. If a local
+     * minimum/maximum is reached then the two solutions should have the same
+     * objective values
+     *
+     * @param rSolution
+     * @return true if two solutions have the same objective values, false otherwise
+     */
+    public boolean isLocalOptmimalPoint(RSolution<?> rSolution) {
+        double ePas = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[0];
+        double eRel = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[1];
+        double ePerfQ = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[2];
+        double eChanges = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[3];
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		RSolution other = (RSolution) obj;
-		if (crossovered != other.crossovered)
-			return false;
-		if (modelPath == null) {
-			if (other.modelPath != null)
-				return false;
-		} else if (!modelPath.equals(other.modelPath))
-			return false;
-		if (mutated != other.mutated)
-			return false;
-		if (name != other.name)
-			return false;
-		if (numPAs != other.numPAs)
-			return false;
-		if (!Arrays.equals(parents, other.parents))
-			return false;
-		if (Double.doubleToLongBits(perfQ) != Double.doubleToLongBits(other.perfQ))
-			return false;
-		if (refactored != other.refactored)
-			return false;
-		if (getVariable(VARIABLE_INDEX) == null) {
-			if (other.getVariable(VARIABLE_INDEX) != null)
-				return false;
-		} else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
-			return false;
-		if (Double.doubleToLongBits(reliability) != Double.doubleToLongBits(other.reliability))
-			return false;
-		return true;
-	}
-
-	/*
-	 * Returns the solution data as a CSV format
-	 * "solID,perfQ,#changes,pas,reliability"
-	 */
-	public String objectiveToCSV() {
-		return String.format("%s,%s,%s,%s,%s", this.getName(), this.perfQ, this.getNumOfChanges(), this.numPAs,
-				this.reliability);
-	}
-	
-	public void refactoringToCSV() {
-		new FileUtils().refactoringDumpToCSV(((Refactoring)getVariable(0)).toCSV());
-	}
-
-	/**
-	 * Check if two RSolutions have the same objectives values. If a local
-	 * minimum/maximum is reached then the two solutions should have the same
-	 * objective values
-	 * 
-	 * @param rSolution
-	 * @return true if two solutions have the same objective values, false otherwise
-	 */
-	public boolean isLocalOptmimalPoint(RSolution<?> rSolution) {
-		double ePas = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[0];
-		double eRel = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[1];
-		double ePerfQ = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[2];
-		double eChanges = Configurator.eINSTANCE.getLocalOptimalPointEpsilon()[3];
-
-		return (Math.abs(this.getPAs()) <= Math.abs(rSolution.getPAs()) + ePas
-				&& Math.abs(this.getPAs()) >= Math.abs(rSolution.getPAs()) - ePas)
-				&& (Math.abs(this.getNumOfChanges()) <= Math.abs(rSolution.getNumOfChanges()) * eChanges
-						&& Math.abs(this.getNumOfChanges()) >= Math.abs(rSolution.getNumOfChanges()) / eChanges)
-				&& (Math.abs(this.getPerfQ()) <= Math.abs(rSolution.getPerfQ()) * ePerfQ
-						&& Math.abs(this.getPerfQ()) >= Math.abs(rSolution.getPerfQ()) / ePerfQ)
-				&& (Math.abs(this.getReliability()) <= Math.abs(rSolution.getReliability()) * eRel
-						&& Math.abs(this.getReliability()) >= Math.abs(rSolution.getReliability()) / eRel);
-	}
+        return (Math.abs(this.getPAs()) <= Math.abs(rSolution.getPAs()) + ePas
+                && Math.abs(this.getPAs()) >= Math.abs(rSolution.getPAs()) - ePas)
+                && (Math.abs(this.getArchitecturalChanges()) <= Math.abs(rSolution.getArchitecturalChanges()) * eChanges
+                && Math.abs(this.getArchitecturalChanges()) >= Math.abs(rSolution.getArchitecturalChanges()) / eChanges)
+                && (Math.abs(this.getPerfQ()) <= Math.abs(rSolution.getPerfQ()) * ePerfQ
+                && Math.abs(this.getPerfQ()) >= Math.abs(rSolution.getPerfQ()) / ePerfQ)
+                && (Math.abs(this.getReliability()) <= Math.abs(rSolution.getReliability()) * eRel
+                && Math.abs(this.getReliability()) >= Math.abs(rSolution.getReliability()) / eRel);
+    }
 }
