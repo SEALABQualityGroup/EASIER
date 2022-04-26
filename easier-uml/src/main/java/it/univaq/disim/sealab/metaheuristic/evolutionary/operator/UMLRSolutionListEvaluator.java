@@ -31,7 +31,7 @@ public class UMLRSolutionListEvaluator <S extends RSolution<?>>extends RSolution
 				sol.countingPAs();
 			sol.evaluatePerformance();
 			sol.computeReliability();
-			sol.computeNumOfChanges();
+			sol.computeArchitecturalChanges();
 //			sol.computeScenarioRT();
 			problem.evaluate(sol);
 		});
