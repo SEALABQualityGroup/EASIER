@@ -41,7 +41,7 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 	UMLRProblem<UMLRSolution> p;
 
 	List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
-	final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
+	final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover(
 			Configurator.eINSTANCE.getXoverProbabiliy());
 	final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
 			Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
@@ -63,8 +63,7 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 		int populationSize = 4;
 
 		String modelpath = getClass().getResource("/models/train-ticket/train-ticket.uml").getFile();
-		p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
-		p.setName("problem_for_testing");
+		p = new UMLRProblem<>(Paths.get(modelpath), "problem_for_testing");
 
 		NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(p, crossoverOperator,
 				mutationOperator, Configurator.eINSTANCE.getPopulationSize()).setMaxEvaluations(4)
@@ -91,60 +90,60 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 	
 	@Test
 	public void isLocalOptimalPointSolutionWithListOfSolution() {
-		List<UMLRSolution> solutions = new ArrayList<UMLRSolution>();
+		List<UMLRSolution> solutions = new ArrayList<>();
 		int i = 0;
 		while (i < 2) {
-			UMLRSolution sol = (UMLRSolution) p.createSolution();
+			UMLRSolution sol = p.createSolution();
 			sol.setPerfQ(-10);
 			sol.setReliability(-10);
 			sol.setPAs(0);
-			sol.getVariable(0).setNumOfChanges(10);
-			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
 			solutions.add(sol);
 			i++;
 		}
 
 		algorithm.setPopulation(solutions);
-		((CustomNSGAII<UMLRSolution>) algorithm).oldPopulation = solutions;
+		algorithm.oldPopulation = solutions;
 
-		assertFalse(((CustomNSGAII<UMLRSolution>) algorithm).isStagnantState());
+		assertFalse(algorithm.isStagnantState());
 	}
 
 	@Test
 	public void isLocalOptimalPointSolutionWithListOfSolutionShouldReturnFalse() {
-		List<UMLRSolution> solutions = new ArrayList<UMLRSolution>();
+		List<UMLRSolution> solutions = new ArrayList<>();
 		int i = 0;
 		while (i < 2) {
-			UMLRSolution sol = (UMLRSolution) p.createSolution();
+			UMLRSolution sol = p.createSolution();
 			sol.setPerfQ(-10);
 			sol.setReliability(-10);
 			sol.setPAs(0);
-			sol.getVariable(0).setNumOfChanges(10);
-			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
 			solutions.add(sol);
 			i++;
 		}
 		algorithm.setPopulation(solutions);
 
-		solutions = new ArrayList<UMLRSolution>();
+		solutions = new ArrayList<>();
 
 		i = 0;
 		while (i < 2) {
-			UMLRSolution sol = (UMLRSolution) p.createSolution();
+			UMLRSolution sol = p.createSolution();
 			sol.setPerfQ(-10);
 			sol.setReliability(-10);
 			sol.setPAs(0);
 			if (i % 2 == 0)
 				sol.setPAs(10);
-			sol.getVariable(0).setNumOfChanges(10);
-			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
+//			sol.getVariable(0).setNumOfChanges(10);
 			solutions.add(sol);
 			i++;
 		}
 
-		((CustomNSGAII<UMLRSolution>) algorithm).oldPopulation = solutions;
+		algorithm.oldPopulation = solutions;
 
-		assertFalse(((CustomNSGAII<UMLRSolution>) algorithm).isStagnantState());
+		assertFalse(algorithm.isStagnantState());
 	}
 
 	@Test
@@ -153,7 +152,7 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 		sol.setPerfQ(-10);
 		sol.setReliability(-10);
 		sol.setPAs(0);
-		sol.getVariable(0).setNumOfChanges(10);
+//		sol.getVariable(0).setNumOfChanges(10);
 		algorithm.setPopulation(List.of(sol));
 
 		algorithm.updateProgress();
