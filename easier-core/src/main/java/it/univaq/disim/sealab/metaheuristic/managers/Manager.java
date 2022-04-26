@@ -36,27 +36,27 @@ public abstract class Manager {
 		return uri;
 	}
 
-	public static PreCondition calculatePreCondition(Refactoring r) {
-		PreCondition res = null;
-		if (r != null) {
-			if (r.getActions() != null) {
-				if (r.getActions().size() == 1)
-					res = r.getActions().get(0).getPre();
-				if (r.getActions().size() > 1) {
-					res = r.getActions().get(0).getPre();
-					AndOperator resAnd = createAndOperator();
-					for (int i = 1; i < r.getActions().size(); i++) {
-						resAnd.getArguments()
-								.addAll(((AndOperator) calculatePreCondition(res, r.getActions().get(i).getPre(),
-										r.getActions().get(i - 1).getPost()).getConditionFormula().getRootOperator())
-												.getArguments());
-						res.getConditionFormula().setRootOperator(resAnd);
-					}
-				}
-			}
-		}
-		return res;
-	}
+//	public static PreCondition calculatePreCondition(Refactoring r) {
+//		PreCondition res = null;
+//		if (r != null) {
+//			if (r.getActions() != null) {
+//				if (r.getActions().size() == 1)
+//					res = r.getActions().get(0).getPre();
+//				if (r.getActions().size() > 1) {
+//					res = r.getActions().get(0).getPre();
+//					AndOperator resAnd = createAndOperator();
+//					for (int i = 1; i < r.getActions().size(); i++) {
+//						resAnd.getArguments()
+//								.addAll(((AndOperator) calculatePreCondition(res, r.getActions().get(i).getPre(),
+//										r.getActions().get(i - 1).getPost()).getConditionFormula().getRootOperator())
+//												.getArguments());
+//						res.getConditionFormula().setRootOperator(resAnd);
+//					}
+//				}
+//			}
+//		}
+//		return res;
+//	}
 
 	public static PreCondition calculatePreCondition(PreCondition pre1, PreCondition pre2, PostCondition post1) {
 		PreCondition res = null;
@@ -108,18 +108,18 @@ public abstract class Manager {
 		return res;
 	}
 
-	public PostCondition calculatePostCondition(Refactoring r) {
-
-		if (r == null || r.getActions() == null)
-			return null;
-		if (r.getActions().size() == 1)
-			return r.getActions().get(0).getPost();
-		PostCondition res = r.getActions().get(0).getPost();
-		for (int i = 1; i < r.getActions().size() - 1; i++) {
-			res = reducePostCondition(calculatePostCondition(res, r.getActions().get(i).getPost()));
-		}
-		return res;
-	}
+//	public PostCondition calculatePostCondition(Refactoring r) {
+//
+//		if (r == null || r.getActions() == null)
+//			return null;
+//		if (r.getActions().size() == 1)
+//			return r.getActions().get(0).getPost();
+//		PostCondition res = r.getActions().get(0).getPost();
+//		for (int i = 1; i < r.getActions().size() - 1; i++) {
+//			res = reducePostCondition(calculatePostCondition(res, r.getActions().get(i).getPost()));
+//		}
+//		return res;
+//	}
 
 	public PostCondition reducePostCondition(PostCondition post) {
 		PostCondition res = post;
