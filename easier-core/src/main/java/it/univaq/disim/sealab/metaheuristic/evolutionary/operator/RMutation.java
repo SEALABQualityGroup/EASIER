@@ -16,11 +16,9 @@ public class RMutation<S extends RSolution<?>> implements MutationOperator<S> {
 	
 	private static final double DEFAULT_PROBABILITY = 0.01;
 	private static final double DEFAULT_DISTRIBUTION_INDEX = 20.0;
-	private double distributionIndex;
-	private double mutationProbability;
+	private final double distributionIndex;
+	private final double mutationProbability;
 	private RepairRSolution solutionRepair;
-
-	private JMetalRandom randomGenerator;
 
 	/** Constructor */
 	public RMutation() {
@@ -46,27 +44,12 @@ public class RMutation<S extends RSolution<?>> implements MutationOperator<S> {
 		}
 		this.mutationProbability = mutationProbability;
 		this.distributionIndex = distributionIndex;
-		this.setSolutionRepair(solutionRepair);
 
-		randomGenerator = JMetalRandom.getInstance();
 	}
 
 	/* Getters */
 	public double getMutationProbability() {
 		return mutationProbability;
-	}
-
-	public double getDistributionIndex() {
-		return distributionIndex;
-	}
-
-	/* Setters */
-	public void setMutationProbability(double probability) {
-		this.mutationProbability = probability;
-	}
-
-	public void setDistributionIndex(double distributionIndex) {
-		this.distributionIndex = distributionIndex;
 	}
 
 	/** Execute() method */
@@ -84,11 +67,11 @@ public class RMutation<S extends RSolution<?>> implements MutationOperator<S> {
 	private void doMutation(double probability, S solution, int allowed_failures) {
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			if (randomGenerator.nextDouble() <= probability) {
+			if (JMetalRandom.getInstance().nextDouble() <= probability) {
 				boolean altered = false;
 				int num_failures = 0;
 				while (!altered) {
-					if (solution.alter(randomGenerator.nextInt(0,
+					if (solution.alter(JMetalRandom.getInstance().nextInt(0,
 							((Refactoring) solution.getVariable(0)).getActions().size() - 1))) {
 						solution.setMutated();
 						break;
@@ -102,11 +85,5 @@ public class RMutation<S extends RSolution<?>> implements MutationOperator<S> {
 		}
 	}
 
-	public RepairRSolution getSolutionRepair() {
-		return solutionRepair;
-	}
 
-	public void setSolutionRepair(RepairRSolution solutionRepair) {
-		this.solutionRepair = solutionRepair;
-	}
 }
