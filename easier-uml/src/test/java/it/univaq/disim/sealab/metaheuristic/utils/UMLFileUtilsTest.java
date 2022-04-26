@@ -37,8 +37,7 @@ public class UMLFileUtilsTest {
 		int populationSize = 4;
 		
 		String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
-		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
-		p.setName("simplied-cocome__test");
+		UMLRProblem<RSolution<?>> p = new UMLRProblem<>(Paths.get(modelpath),"simplied-cocome__test");
 		sol = (UMLRSolution) p.createSolution();
 	}	
 	
