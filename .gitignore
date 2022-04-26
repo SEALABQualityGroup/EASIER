@@ -11,3 +11,4 @@ easier-replaction-package/
 jMetal.log
 jMetal.log*
 hs_err_pid*
+*.out
