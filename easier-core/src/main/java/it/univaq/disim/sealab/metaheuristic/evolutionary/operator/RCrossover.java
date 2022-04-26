@@ -19,41 +19,56 @@ import org.uma.jmetal.util.JMetalException;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 
+import java.util.List;
+
 public abstract class RCrossover<S extends RSolution<?>> implements CrossoverOperator<S> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	protected double crossoverProbability;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/** Constructor */
-	public RCrossover(double crossoverProbability) {
-		if (crossoverProbability < 0) {
-			throw new JMetalException("Crossover probability is negative: " + crossoverProbability);
-		}
-		this.crossoverProbability = crossoverProbability;
-//		randomGenerator = JMetalRandom.getInstance();
-//		controller = ctrl;
-	}
+    protected double crossoverProbability;
 
-	/* Getter */
-	public double getCrossoverProbability() {
-		return crossoverProbability;
-	}
+    /**
+     * Constructor
+     */
+    public RCrossover(double crossoverProbability) {
+        if (crossoverProbability < 0) {
+            throw new JMetalException("Crossover probability is negative: " + crossoverProbability);
+        }
+        this.crossoverProbability = crossoverProbability;
+    }
+
+    @Override
+    public List<S> execute(List<S> solutions) {
+        if(solutions == null) {
+            throw new RuntimeException("The Xover Operator requires not null solutions");
+        }
+        if(solutions.size() != 2) {
+            throw new RuntimeException("There must be two Parents instead of " + solutions.size());
+        }
+        return doCrossover(crossoverProbability, solutions.get(0), solutions.get(1));
+    }
+
+    public abstract List<S> doCrossover(double xOverProb, S parent1, S parent2);
+
+    /* Getter */
+    public double getCrossoverProbability() {
+        return crossoverProbability;
+    }
 
 
-	@Override
-	public int getNumberOfRequiredParents() {
-		// TODO Auto-generated method stub
-		return 2;
-	}
+    @Override
+    public int getNumberOfRequiredParents() {
+        // TODO Auto-generated method stub
+        return 2;
+    }
 
-	@Override
-	public int getNumberOfGeneratedChildren() {
-		// TODO Auto-generated method stub
-		return 4;
-	}
+    @Override
+    public int getNumberOfGeneratedChildren() {
+        // TODO Auto-generated method stub
+        return 4;
+    }
 
 }
