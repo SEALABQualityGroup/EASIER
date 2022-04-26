@@ -1,25 +1,34 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
+import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
-import org.junit.Before;
-import org.junit.Test;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.junit.jupiter.api.Test;
 
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 
 public class RefactoringActionTest {
 
     UMLRProblem<UMLRSolution> p;
-    protected RefactoringAction action;
+    protected RefactoringAction action, oldAction;
     protected UMLRSolution solution;
 
     protected String generatedCSV;
 
     protected int numberOfCSVField;
     protected String actionName;
+    protected String expectedType;
+    protected Map<String, Set<String>> expectedName;
 
     public void setUp() throws Exception {
         int allowedFailures = 100;
@@ -27,8 +36,7 @@ public class RefactoringActionTest {
         int populationSize = 4;
 
         String modelpath = getClass().getResource("/models/simplified-cocome/cocome.uml").getFile();
-        p = new UMLRProblem<>(Paths.get(modelpath), desired_length, allowedFailures, populationSize);
-        p.setName("simplied-cocome__test");
+        p = new UMLRProblem<>(Paths.get(modelpath), "simplied-cocome__test");
         solution = p.createSolution();
 
     }
@@ -36,15 +44,50 @@ public class RefactoringActionTest {
     public void testToCSV() {
         generatedCSV = action.toCSV();
         System.out.println(generatedCSV);
-        assertEquals(String.format("Expected length %s \t generated %s", numberOfCSVField, generatedCSV.split(",").length),numberOfCSVField, generatedCSV.split(",").length);
-        assertEquals(String.format("Expected first entry %s \t generated %s", actionName, action.getName()), actionName, generatedCSV.split(",")[0]);
+        assertEquals(numberOfCSVField, generatedCSV.split(",").length,
+                String.format("Expected length %s \t generated %s", numberOfCSVField, generatedCSV.split(",").length));
+        assertEquals(actionName, generatedCSV.split(",")[0], String.format("Expected first entry %s \t generated %s", actionName, action.getName()));
     }
 
     public void testEquals() {
         RefactoringAction action2 = action;
         assertEquals(action, action2);
 
-        action2 = action.clone(solution);
-        assertEquals(action,action2);
+        action2 = action.clone();
+        assertEquals(action, action2);
+
+    }
+
+    public void testExecute() {
+        action.execute();
+
+    }
+
+
+    public void testGetTargetType() {
+        assertEquals(expectedType, action.getTargetType(), String.format("Expected target type %s \t found %s",
+                expectedType, action.getTargetType()));
+    }
+
+    public void testGetTargetElement() {
+        assertEquals(expectedName, action.getTargetElements(), String.format("Expected target name %s \t found %s",
+                expectedName, action.getTargetType()));
+    }
+
+    public void testClone() {
+//        RefactoringAction clonedAction = action.clone(solution);
+        RefactoringAction clonedAction = (RefactoringAction) action.clone();
+        assertEquals(action, clonedAction);
+    }
+
+    void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+
+        Collection<?> modelContents =
+                EOLStandalone.createUmlModel(solution.getModelPath().toString()).allContents();
+
+        double archChanges = action.computeArchitecturalChanges(modelContents);
+
+        assertNotEquals(0, archChanges, "Expected arcChanges != 0");
+
     }
 }
