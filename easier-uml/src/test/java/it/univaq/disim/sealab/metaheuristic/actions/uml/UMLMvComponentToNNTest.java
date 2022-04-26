@@ -1,22 +1,33 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import java.net.URISyntaxException;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class UMLMvComponentToNNTest extends RefactoringActionTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
-        action = new UMLMvComponentToNN(solution);
+        oldAction = new UMLMvComponentToNN(solution.getModelPath().toString(), solution.getAvailableElements());
+        action = new UMLMvComponentToNN(solution.getSourceModelPath().toString(), solution.getAvailableElements());
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @Test
+    public void testConstructor() {
+        String targetComponent = action.getTargetElements().get(UMLRSolution.SupportedType.COMPONENT.toString()).iterator().next();
+        String createdElement = action.getCreatedElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
+        String availableElements = solution.getAvailableElements().get(UMLRSolution.SupportedType.NODE.toString()).toString();
+        System.out.printf("Expected %s \t found %s", availableElements, createdElement);
+        assertTrue(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(createdElement)), "Expected created node not in the available elements");
     }
 
     @Test
@@ -27,4 +38,30 @@ public class UMLMvComponentToNNTest extends RefactoringActionTest {
 
     }
 
+    @Test
+    public void testExecute() {
+        super.testExecute();
+    }
+
+    @Test
+    public void testGetTargetType() {
+        expectedType = UMLRSolution.SupportedType.COMPONENT.toString();
+        super.testGetTargetType();
+    }
+
+    @Test
+    public void testGetTargetElement() {
+        expectedName = action.getTargetElements();
+        super.testGetTargetElement();
+    }
+
+    @Test
+    public void testClone() {
+        super.testClone();
+    }
+
+    @Test
+    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+        super.testComputeArchitecturalChanges();
+    }
 }
