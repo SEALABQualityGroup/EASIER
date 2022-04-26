@@ -1,24 +1,36 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
-import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
-import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
-import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
+import java.net.URISyntaxException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class UMLCloneNodeTest extends RefactoringActionTest {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
-        action = new UMLCloneNode(solution);
+        oldAction = new UMLCloneNode(solution.getModelPath().toString(), solution.getAvailableElements());
+        action = new UMLCloneNode(solution.getSourceModelPath().toString(), solution.getAvailableElements());
+
+    }
+
+    @Test
+    public void testConstructor(){
+        String targetNode = action.getTargetElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
+        assertFalse(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(targetNode)),
+                String.format("Expected target node %s belongs to the availableElements.", targetNode));
+
+        String createdNode =
+                action.getCreatedElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
+        assertTrue(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(createdNode)),
+                String.format("Expected created node %s does not belong to the availableElements.", createdNode));
     }
 
     @Test
@@ -28,5 +40,39 @@ public class UMLCloneNodeTest extends RefactoringActionTest {
         numberOfCSVField = 3;
         actionName = "UMLCloneNode";
         super.testToCSV();
+    }
+
+    @Test
+    public void testExecute(){
+        super.testExecute();
+    }
+
+    @Test
+    public void testGetTargetType(){
+        expectedType = UMLRSolution.SupportedType.NODE.toString();
+        super.testGetTargetType();
+    }
+
+    @Test
+    public void testEquals(){
+        super.testEquals();
+    }
+
+
+
+    @Test
+    public void testGetTargetElement(){
+        expectedName = action.getTargetElements();
+        super.testGetTargetElement();
+    }
+
+    @Test
+    public void testClone(){
+        super.testClone();
+    }
+
+    @Test
+    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+        super.testComputeArchitecturalChanges();
     }
 }
