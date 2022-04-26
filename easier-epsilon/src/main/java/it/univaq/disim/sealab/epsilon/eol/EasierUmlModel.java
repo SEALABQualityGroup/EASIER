@@ -164,14 +164,6 @@ public class EasierUmlModel extends UmlModel {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((resourceSet == null) ? 0 : resourceSet.hashCode());
-        return result;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
