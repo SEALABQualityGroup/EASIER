@@ -52,7 +52,7 @@ public class FactoryBuilderTest {
         problemList.add(new ExperimentProblem<UMLRSolution>(Launcher.createProblems(modelPath, eval)));
 
         ExperimentProblem<UMLRSolution> experimentProblem = problemList.get(0);
-        CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<UMLRSolution>(Configurator.eINSTANCE.getXoverProbabiliy());
+        CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover(Configurator.eINSTANCE.getXoverProbabiliy());
         SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new RSolutionListEvaluator<UMLRSolution>();
         String algo = "nsgaii";
 
