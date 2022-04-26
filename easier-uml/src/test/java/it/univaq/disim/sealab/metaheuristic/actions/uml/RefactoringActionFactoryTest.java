@@ -1,4 +1,4 @@
-package it.univaq.disim.sealab.actions.uml;
+package it.univaq.disim.sealab.metaheuristic.actions;
 
 import java.nio.file.Paths;
 
