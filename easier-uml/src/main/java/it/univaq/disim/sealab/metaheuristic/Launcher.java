@@ -54,12 +54,6 @@ import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 
 public class Launcher {
 
-	private static Map<String, List<Double>> qualityIndicatorsMap;
-
-	static {
-		qualityIndicatorsMap = new HashMap<>();
-	}
-
 	public static void main(String[] args) throws Exception {
 
 		JCommander jc = new JCommander();
@@ -74,9 +68,8 @@ public class Launcher {
 			referenceFront = Configurator.eINSTANCE.getReferenceFront();
 
 		else {
-			List<Path> modelsPath = new ArrayList<>();
 
-			modelsPath.addAll(Configurator.eINSTANCE.getModelsPath());
+			List<Path> modelsPath = new ArrayList<>(Configurator.eINSTANCE.getModelsPath());
 			int i = 1;
 			int[] eval = Configurator.eINSTANCE.getMaxEvaluation().stream().mapToInt(e -> e).toArray();
 
@@ -85,7 +78,6 @@ public class Launcher {
 				ProgressBar.showBar(i, modelsPath.size());
 				List<RProblem<UMLRSolution>> rProblems	= new ArrayList<>();
 				for (int j = 0; j < eval.length; j++) {
-//					List<RProblem<UMLRSolution>> rProblems = createProblems(m, eval[j]);
 					rProblems.add(createProblems(m, eval[j]));
 
 					if (!m.getParent().resolve("output.xml").toFile().exists()) {
@@ -108,22 +100,6 @@ public class Launcher {
 		}
 	}
 
-	static void invokeSolver(Path sourceModelPath) {
-		System.out.print("Invoking LQN Solver ... ");
-
-		try {
-			new WorkflowUtils().invokeSolver(sourceModelPath.getParent());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		System.out.println("done");
-
-		System.out.print("Invoking the back annotator... ");
-		new WorkflowUtils().backAnnotation(sourceModelPath);
-		System.out.println("done");
-	}
-
 	public static List<Path> runExperiment(final List<RProblem<UMLRSolution>> rProblems,
 			final List<GenericIndicator<UMLRSolution>> qualityIndicators, int eval) {
 		final int INDEPENDENT_RUNS = Configurator.eINSTANCE.getIndependetRuns(); // should be 31 or 51
@@ -133,7 +109,7 @@ public class Launcher {
 
 		List<ExperimentProblem<UMLRSolution>> problemList = new ArrayList<>();
 
-		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<UMLRSolution>(problem)));
+		rProblems.forEach(problem -> problemList.add(new ExperimentProblem<>(problem)));
 
 		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithmList = configureAlgorithmList(problemList,
 				eval);
@@ -187,8 +163,8 @@ public class Launcher {
 			List<ExperimentProblem<UMLRSolution>> problemList, int eval) {
 
 		List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
-		FactoryBuilder<UMLRSolution> fBuilder = new FactoryBuilder<UMLRSolution>();
-		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
+		FactoryBuilder<UMLRSolution> fBuilder = new FactoryBuilder<>();
+		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover(
 				Configurator.eINSTANCE.getXoverProbabiliy());
 		final SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new UMLRSolutionListEvaluator<>();
 
@@ -198,98 +174,12 @@ public class Launcher {
 			algorithms.addAll(fBuilder.configureAlgorithmList(expProblem,eval,crossoverOperator,solutionListEvaluator, algo));
 		}
 
-//		final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover<>(
-//				Configurator.eINSTANCE.getXoverProbabiliy());
-//		final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
-//				Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
-//		final SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
-//				new RankingAndCrowdingDistanceComparator<UMLRSolution>());
-/*
-		for (int i = 0; i < problemList.size(); i++) {
-			if ("nsgaii".equals(algo)) {
-				for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-
-					NSGAIIBuilder<UMLRSolution> customNSGABuilder = new CustomNSGAIIBuilder<UMLRSolution>(
-							problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
-							Configurator.eINSTANCE.getPopulationSize())
-									.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
-									.setSolutionListEvaluator(solutionListEvaluator);
-
-					NSGAII<UMLRSolution> algorithm = customNSGABuilder.build();
-
-					ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-							algorithm, algorithm.getName(), problemList.get(i), j);
-
-					algorithms.add(exp);
-				}
-			} else if ("spea2".equals(algo)) {
-
-				for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-					SPEA2Builder<UMLRSolution> spea2Builder = new CustomSPEA2Builder<UMLRSolution>(
-							problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-									.setSelectionOperator(selectionOpertor)
-									.setSolutionListEvaluator(solutionListEvaluator).setMaxIterations(eval)
-									.setPopulationSize(Configurator.eINSTANCE.getPopulationSize());
-
-					SPEA2<UMLRSolution> algorithm = spea2Builder.build();
-					ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-							algorithm, algorithm.getName(), problemList.get(i), j);
-					algorithms.add(exp);
-				}
-
-			} else if ("rnsga".equals(algo)) {
-
-				if (Configurator.eINSTANCE.getReferencePoints().size() % Configurator.eINSTANCE.getObjectives() == 0) {
-
-					for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-						RNSGAIIBuilder<UMLRSolution> rnsgaBuilder = new CustomRNSGAIIBuilder<UMLRSolution>(
-								problemList.get(i).getProblem(), crossoverOperator, mutationOperator,
-								Configurator.eINSTANCE.getReferencePoints(), Configurator.eINSTANCE.getEpsilon())
-										.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
-										.setMatingPoolSize(Configurator.eINSTANCE.getPopulationSize())
-										.setOffspringPopulationSize(Configurator.eINSTANCE.getPopulationSize())
-										.setSolutionListEvaluator(solutionListEvaluator)
-										.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize());
-
-						RNSGAII<UMLRSolution> algorithm = rnsgaBuilder.build();
-						ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-								algorithm, algorithm.getName(), problemList.get(i), j);
-						algorithms.add(exp);
-					}
-				} else {
-					throw new RuntimeException("Reference points must be multiple of the number of objectives!!!");
-
-				}
-
-			} else if ("pesa2".equals(algo)) {
-				// as reported at
-				// https://github.com/jMetal/jMetal/blob/master/jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/pesa2/PESA2Builder.java
-				// we set biSection to 5, and populationSize = archiveSize
-				int biSections = 5;
-				for (int j = 0; j < Configurator.eINSTANCE.getIndependetRuns(); j++) {
-					PESA2Builder<UMLRSolution> pesaBuilder = new CustomPESA2Builder<UMLRSolution>(
-							problemList.get(i).getProblem(), crossoverOperator, mutationOperator)
-									.setPopulationSize(Configurator.eINSTANCE.getPopulationSize())
-									.setArchiveSize(Configurator.eINSTANCE.getPopulationSize())
-									.setBisections(biSections)
-									.setMaxEvaluations(eval * Configurator.eINSTANCE.getPopulationSize())
-									.setSolutionListEvaluator(solutionListEvaluator);
-					PESA2<UMLRSolution> algorithm = pesaBuilder.build();
-					ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>> exp = new RExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>(
-							algorithm, algorithm.getName(), problemList.get(i), j);
-					algorithms.add(exp);
-
-				}
-			}
-		}*/
-
 		return algorithms;
 
 	}
 
 	public static RProblem<UMLRSolution> createProblems(Path modelPath, int eval) {
 
-//		List<RProblem<UMLRSolution>> rProblems = new ArrayList<>();
 		double probPas = Configurator.eINSTANCE.getProbPas();
 
 		String brf = Configurator.eINSTANCE.getBrfList().toString().replace(":", "_").replace(",", "__")
@@ -299,12 +189,7 @@ public class Launcher {
 				Configurator.eINSTANCE.getSearchBudget(), Configurator.eINSTANCE.getSearchBudgetThreshold(),
 				Configurator.eINSTANCE.getAlgorithm());
 
-		UMLRProblem<UMLRSolution> p = new UMLRProblem<>(modelPath, Configurator.eINSTANCE.getLength(), Configurator.eINSTANCE.getAllowedFailures(),
-				Configurator.eINSTANCE.getPopulationSize());
-		p.setName(pName);
-		return p;
-//		rProblems.add(p);
-//		return rProblems;
+		return new UMLRProblem<>(modelPath, pName);
 	}
 
 }
