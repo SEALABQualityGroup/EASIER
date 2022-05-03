@@ -11,14 +11,12 @@
     <modules>
         <!-- <module>easier-aemilia2text</module> -->
         <module>easier-core</module>
-        <module>easier-logicalSpecification/LogicalSpecification</module>
         <module>easier-uml</module>
         <module>easier-epsilon</module>
         <module>easier-uml2lqn</module>
         <module>easier-refactoringLibrary</module>
         <module>easier-uml2lqnCaseStudy</module>
         <module>easier-reliability</module>
-        <!--module>easier-aemiliaMetamodel/metamodel</module-->
     </modules>
     <properties>
         <emf.version>2.15.0</emf.version>
