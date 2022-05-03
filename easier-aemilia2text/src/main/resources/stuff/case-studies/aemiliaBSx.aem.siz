@@ -1,9 +1,0 @@
-Size of the functional semantic model underlying BS_Type:
-
-- 12 states: 
-  - 12 nondeadlocked, 
-  - 0 deadlocked;
-
-- 13 transitions:
-  - 13 observable,
-  - 0 invisible.
