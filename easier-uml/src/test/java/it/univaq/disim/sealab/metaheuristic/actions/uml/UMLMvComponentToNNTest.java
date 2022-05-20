@@ -1,6 +1,7 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ public class UMLMvComponentToNNTest extends RefactoringActionTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        oldAction = new UMLMvComponentToNN(solution.getModelPath().toString(), solution.getAvailableElements());
-        action = new UMLMvComponentToNN(solution.getSourceModelPath().toString(), solution.getAvailableElements());
+        oldAction = new UMLMvComponentToNN(solution.getAvailableElements(), solution.getInitialElements());
+        action = new UMLMvComponentToNN(solution.getAvailableElements(), solution.getInitialElements());
     }
 
     @Test
@@ -39,7 +40,7 @@ public class UMLMvComponentToNNTest extends RefactoringActionTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testExecute();
     }
 
@@ -61,7 +62,7 @@ public class UMLMvComponentToNNTest extends RefactoringActionTest {
     }
 
     @Test
-    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testComputeArchitecturalChanges();
     }
 }

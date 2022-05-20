@@ -1,16 +1,15 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
-import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
-import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class UMLMvOperationToNCToNNTest extends RefactoringActionTest {
@@ -19,8 +18,9 @@ public class UMLMvOperationToNCToNNTest extends RefactoringActionTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        oldAction = new UMLMvOperationToNCToNN(solution.getModelPath().toString(), solution.getAvailableElements());
-        action = new UMLMvOperationToNCToNN(solution.getSourceModelPath().toString(), solution.getAvailableElements());
+        oldAction = new UMLMvOperationToNCToNN(solution.getAvailableElements(),
+                solution.getInitialElements());
+        action = new UMLMvOperationToNCToNN(solution.getAvailableElements(), solution.getInitialElements());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UMLMvOperationToNCToNNTest extends RefactoringActionTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testExecute();
     }
 
@@ -72,7 +72,7 @@ public class UMLMvOperationToNCToNNTest extends RefactoringActionTest {
     }
 
     @Test
-    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testComputeArchitecturalChanges();
     }
 }
