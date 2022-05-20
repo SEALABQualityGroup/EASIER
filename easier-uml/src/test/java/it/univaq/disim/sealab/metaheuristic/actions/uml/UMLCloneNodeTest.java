@@ -1,13 +1,15 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class UMLCloneNodeTest extends RefactoringActionTest {
@@ -16,21 +18,19 @@ public class UMLCloneNodeTest extends RefactoringActionTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        oldAction = new UMLCloneNode(solution.getModelPath().toString(), solution.getAvailableElements());
-        action = new UMLCloneNode(solution.getSourceModelPath().toString(), solution.getAvailableElements());
+        oldAction = new UMLCloneNode(solution.getAvailableElements(), solution.getInitialElements());
+        action = new UMLCloneNode(solution.getAvailableElements(), solution.getInitialElements());
+
 
     }
 
     @Test
-    public void testConstructor(){
+    public void testConstructor() {
         String targetNode = action.getTargetElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
-        assertFalse(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(targetNode)),
-                String.format("Expected target node %s belongs to the availableElements.", targetNode));
+        assertFalse(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(targetNode)), String.format("Expected target node %s belongs to the availableElements.", targetNode));
 
-        String createdNode =
-                action.getCreatedElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
-        assertTrue(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(createdNode)),
-                String.format("Expected created node %s does not belong to the availableElements.", createdNode));
+        String createdNode = action.getCreatedElements().get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
+        assertTrue(solution.getAvailableElements().values().stream().noneMatch(set -> set.contains(createdNode)), String.format("Expected created node %s does not belong to the availableElements.", createdNode));
     }
 
     @Test
@@ -43,36 +43,35 @@ public class UMLCloneNodeTest extends RefactoringActionTest {
     }
 
     @Test
-    public void testExecute(){
+    public void testExecute() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testExecute();
     }
 
     @Test
-    public void testGetTargetType(){
+    public void testGetTargetType() {
         expectedType = UMLRSolution.SupportedType.NODE.toString();
         super.testGetTargetType();
     }
 
     @Test
-    public void testEquals(){
+    public void testEquals() {
         super.testEquals();
     }
 
 
-
     @Test
-    public void testGetTargetElement(){
+    public void testGetTargetElement() {
         expectedName = action.getTargetElements();
         super.testGetTargetElement();
     }
 
     @Test
-    public void testClone(){
+    public void testClone() {
         super.testClone();
     }
 
     @Test
-    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+    public void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException, EasierException {
         super.testComputeArchitecturalChanges();
     }
 }
