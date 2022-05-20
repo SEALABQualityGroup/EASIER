@@ -24,7 +24,10 @@ public class UMLRProblem<S extends RSolution<?>> extends RProblem<S> {
 
 	@Override
 	public S createSolution() {
-		return (S) new UMLRSolution(sourceModelPath, getName());
+		UMLRSolution sol = new UMLRSolution(sourceModelPath, getName());
+		sol.createRandomRefactoring();
+//		return (S) new UMLRSolution(sourceModelPath, getName());
+		return (S) sol;
 	}
 
 	@Override

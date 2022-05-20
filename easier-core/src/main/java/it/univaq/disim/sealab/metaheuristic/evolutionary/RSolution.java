@@ -2,7 +2,6 @@ package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +22,10 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
     protected Path modelPath, sourceModelPath;
 
     protected boolean refactored;
-    protected boolean crossovered;
+    protected boolean isCrossover;
     protected boolean mutated;
 
-    protected static int SOLUTION_COUNTER = 0;
+    public static int SOLUTION_COUNTER = 0;
 
     protected int name;
 
@@ -108,21 +107,21 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
         return sourceModelPath;
     }
 
-    public void setRefactored() {
-        this.refactored = true;
+    public void setRefactored(boolean isRefactored) {
+        this.refactored = isRefactored;
     }
 
     public boolean isRefactored() {
         return refactored;
     }
 
-    public void setCrossovered() {
-        this.crossovered = true;
+    public void setCrossovered(boolean isCrossover) {
+        this.isCrossover = isCrossover;
         XOverCounter++;
     }
 
-    public void setMutated() {
-        this.mutated = true;
+    public void setMutated(boolean isMutated) {
+        this.mutated = isMutated;
         MutationCounter++;
     }
 
@@ -130,8 +129,8 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
         return mutated;
     }
 
-    public boolean isCrossovered() {
-        return crossovered;
+    public boolean isCrossover() {
+        return isCrossover;
     }
 
     public double getPerfQ() {
@@ -202,27 +201,20 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-//		if (!super.equals(obj))
-//			return false;
         if (getClass() != obj.getClass())
             return false;
         RSolution<T> other = (RSolution<T>) obj;
-        if (crossovered != other.crossovered)
+        if (isCrossover != other.isCrossover)
             return false;
         if (modelPath == null ^ other.modelPath == null) {
             return false;
-        } //else if (!modelPath.equals(other.modelPath))
-//			return false;
+        }
         if (mutated != other.mutated)
             return false;
-//		if (name != other.name)
-//			return false;
         if (numPAs != other.numPAs)
             return false;
         if (Double.doubleToLongBits(perfQ) != Double.doubleToLongBits(other.perfQ))
             return false;
-//		if (refactored != other.refactored)
-//			return false;
         if (Double.doubleToLongBits(reliability) != Double.doubleToLongBits(other.reliability))
             return false;
         if (parents.length != other.parents.length)
@@ -232,13 +224,28 @@ public abstract class RSolution<T> extends AbstractSolution<T> {// AbstractGener
                 return false;
             }
         }
-//        if (!Arrays.equals(parents, other.parents))
-//            return false;
         if (getVariable(VARIABLE_INDEX) == null ^ other.getVariable(VARIABLE_INDEX) == null){
                 return false;
         } else if (!getVariable(VARIABLE_INDEX).equals(other.getVariable(VARIABLE_INDEX)))
             return false;
         return true;
+    }
+
+
+    public void setRefactoring(List<RefactoringAction> listOfActions){
+//
+//        Refactoring ref = new Refactoring(this.modelPath.toString());
+//        ref.setSolutionID(this.name);
+//
+//        for(RefactoringAction act : listOfActions){
+//            RefactoringAction clonedAct = act.clone();
+//            clonedAct.
+//            ref.getActions().add()
+//        }
+
+
+
+
     }
 
     public double getArchitecturalChanges() {
