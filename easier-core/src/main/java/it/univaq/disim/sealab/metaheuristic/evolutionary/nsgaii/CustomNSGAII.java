@@ -124,7 +124,7 @@ public class CustomNSGAII<S extends RSolution<?>> extends NSGAII<S> implements E
 		}
 
 		// update oldPopulation to the current population
-		oldPopulation = (List<S>) population;
+		oldPopulation = population;
 
 		// check if all solutions within the joined list have the same objective values
 		return ((double) (population.size() - countedSameObjectives / population.size())
