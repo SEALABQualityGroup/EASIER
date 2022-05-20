@@ -111,13 +111,13 @@ public class FactoryBuilder<S extends RSolution<?>> {
      */
     public List<ExperimentAlgorithm<S, List<S>>> configureAlgorithmList(
             ExperimentProblem<S> experimentProblem, int eval,
-            CrossoverOperator<S> crossoverOperator, SolutionListEvaluator<S> solutionListEvaluator,
+            CrossoverOperator<S> crossoverOperator, SolutionListEvaluator<S> solutionListEvaluator, MutationOperator<S> mutationOperator,
             String algo) {
 
         List<ExperimentAlgorithm<S, List<S>>> algorithms = new ArrayList<>();
 //        final CrossoverOperator<S> crossoverOperator = new UMLRCrossover<>(Configurator.eINSTANCE.getXoverProbabiliy());
-        final MutationOperator<S> mutationOperator = new RMutation<>(
-                Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
+//        final MutationOperator<S> mutationOperator = new RMutation<>(
+//                Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
         final SelectionOperator<List<S>, S> selectionOperator = new BinaryTournamentSelection<S>(
                 new RankingAndCrowdingDistanceComparator<S>());
 //        final SolutionListEvaluator<S> solutionListEvaluator = new SListEvaluator<>();
