@@ -58,4 +58,8 @@ class UMLRSolutionListEvaluatorTest {
         assertNotEquals(0, sol.getPerfQ(), "Expected perfq != 0");
 
     }
+
+    @Test
+    void testEvaluate() {
+    }
 }

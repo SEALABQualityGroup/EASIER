@@ -4,6 +4,7 @@ import it.univaq.disim.sealab.metaheuristic.Launcher;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.RSolutionListEvaluator;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRCrossover;
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRMutation;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 import org.junit.After;
 import org.junit.Before;
@@ -14,6 +15,7 @@ import static org.junit.Assert.*;
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.qualityindicator.impl.GenericIndicator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
@@ -53,11 +55,12 @@ public class FactoryBuilderTest {
 
         ExperimentProblem<UMLRSolution> experimentProblem = problemList.get(0);
         CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover(Configurator.eINSTANCE.getXoverProbabiliy());
-        SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new RSolutionListEvaluator<UMLRSolution>();
+        SolutionListEvaluator<UMLRSolution> solutionListEvaluator = new RSolutionListEvaluator<>();
+        MutationOperator<UMLRSolution> mutationOperator = new UMLRMutation(Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
         String algo = "nsgaii";
 
         List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> experimentAlgorithms = new FactoryBuilder<UMLRSolution>().configureAlgorithmList(
-                experimentProblem, eval, crossoverOperator, solutionListEvaluator, algo
+                experimentProblem, eval, crossoverOperator, solutionListEvaluator, mutationOperator, algo
         );
 
         assertFalse("Expected a not empty experiment algorithm list", experimentAlgorithms.isEmpty());

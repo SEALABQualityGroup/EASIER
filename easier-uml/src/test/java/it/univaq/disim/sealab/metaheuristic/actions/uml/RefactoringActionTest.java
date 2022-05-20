@@ -1,9 +1,11 @@
 package it.univaq.disim.sealab.metaheuristic.actions.uml;
 
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
+import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.junit.jupiter.api.Test;
 
@@ -58,9 +60,9 @@ public class RefactoringActionTest {
 
     }
 
-    public void testExecute() {
-        action.execute();
-
+    public void testExecute() throws URISyntaxException, EolModelLoadingException, EasierException {
+        EasierUmlModel model = EOLStandalone.createUmlModel(solution.getModelPath().toString());
+        action.execute(model);
     }
 
 
@@ -80,12 +82,13 @@ public class RefactoringActionTest {
         assertEquals(action, clonedAction);
     }
 
-    void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException {
+    void testComputeArchitecturalChanges() throws URISyntaxException, EolModelLoadingException, EasierException {
 
         Collection<?> modelContents =
                 EOLStandalone.createUmlModel(solution.getModelPath().toString()).allContents();
 
         double archChanges = action.computeArchitecturalChanges(modelContents);
+        System.out.println(""+archChanges);
 
         assertNotEquals(0, archChanges, "Expected arcChanges != 0");
 

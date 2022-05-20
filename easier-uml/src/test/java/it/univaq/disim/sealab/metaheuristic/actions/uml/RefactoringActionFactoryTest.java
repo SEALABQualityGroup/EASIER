@@ -33,7 +33,7 @@ public class RefactoringActionFactoryTest {
 	
 	@Test
 	public void getRandomActionTest() {
-		RefactoringAction action = RefactoringActionFactory.getRandomAction(sol);
+		RefactoringAction action = RefactoringActionFactory.getRandomAction(sol.getAvailableElements(), sol.getInitialElements());
 		assertNotNull(action);
 		assertFalse(action.getTargetElements().values().stream().flatMap(Set::stream).collect(Collectors.toSet()).isEmpty());
 	}

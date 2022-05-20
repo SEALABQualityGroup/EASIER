@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import it.univaq.disim.sealab.metaheuristic.evolutionary.operator.UMLRMutation;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -43,7 +44,7 @@ public class CustomNSGAIITest<S extends RSolution<?>> {
 	List<ExperimentAlgorithm<UMLRSolution, List<UMLRSolution>>> algorithms = new ArrayList<>();
 	final CrossoverOperator<UMLRSolution> crossoverOperator = new UMLRCrossover(
 			Configurator.eINSTANCE.getXoverProbabiliy());
-	final MutationOperator<UMLRSolution> mutationOperator = new RMutation<>(
+	final MutationOperator<UMLRSolution> mutationOperator = new UMLRMutation(
 			Configurator.eINSTANCE.getMutationProbability(), Configurator.eINSTANCE.getDistributionIndex());
 	final SelectionOperator<List<UMLRSolution>, UMLRSolution> selectionOpertor = new BinaryTournamentSelection<UMLRSolution>(
 			new RankingAndCrowdingDistanceComparator<UMLRSolution>());

@@ -9,8 +9,6 @@ import it.univaq.disim.sealab.metaheuristic.actions.uml.UMLMvOperationToNCToNN;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRProblem;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.UMLRSolution;
-import logicalSpecification.PreCondition;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +17,6 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class ManagerTest {
 
@@ -40,10 +36,10 @@ public class ManagerTest {
         solution = (UMLRSolution) p.createSolution();
 
         actions = new ArrayList<>();
-        actions.add(new UMLCloneNode(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvComponentToNN(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvOperationToComp(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvOperationToNCToNN(solution.getModelPath().toString(), solution.getAvailableElements()));
+        actions.add(new UMLCloneNode(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvComponentToNN(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvOperationToComp(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvOperationToNCToNN(solution.getAvailableElements(), solution.getInitialElements()));
 
     }
 
@@ -56,10 +52,10 @@ public class ManagerTest {
     private List<RefactoringAction> extractActions(UMLRSolution solution) {
 
         List<RefactoringAction> actions = new ArrayList<>();
-        actions.add(new UMLCloneNode(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvComponentToNN(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvOperationToComp(solution.getModelPath().toString(), solution.getAvailableElements()));
-        actions.add(new UMLMvOperationToNCToNN(solution.getModelPath().toString(), solution.getAvailableElements()));
+        actions.add(new UMLCloneNode(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvComponentToNN(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvOperationToComp(solution.getAvailableElements(), solution.getInitialElements()));
+        actions.add(new UMLMvOperationToNCToNN(solution.getAvailableElements(), solution.getInitialElements()));
 
         return actions;
     }
