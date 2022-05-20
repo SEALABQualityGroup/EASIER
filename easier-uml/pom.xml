@@ -155,19 +155,14 @@
         <!-- </dependency> -->
 
 
-        <dependency>
-            <groupId>it.univaq.disim.sealab</groupId>
-            <artifactId>logicalSpecification</artifactId>
-            <version>0.6</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>it.univaq.disim.sealab</groupId>-->
+<!--            <artifactId>logicalSpecification</artifactId>-->
+<!--            <version>0.6</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>it.univaq.disim.sealab</groupId>
             <artifactId>easier-core</artifactId>
-            <version>0.6.3</version>
-        </dependency>
-        <dependency>
-            <groupId>it.univaq.disim.sealab</groupId>
-            <artifactId>easier-epsilon</artifactId>
             <version>0.6.3</version>
         </dependency>
         <dependency>
