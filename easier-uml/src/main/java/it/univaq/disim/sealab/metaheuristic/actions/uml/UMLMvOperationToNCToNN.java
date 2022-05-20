@@ -4,7 +4,9 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.uml2.uml.Component;
@@ -31,11 +33,12 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
 
     private final static double BRF = 1.80;
 
-    private final String sourceModelPath;
     private String name;
     private double numOfChanges;
 
     private long msgs;
+
+    private boolean isIndependent = true;
 
     Map<String, Set<String>> targetElements = new HashMap<>();
     Map<String, Set<String>> createdElements = new HashMap<>();
@@ -45,15 +48,21 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
                 "easier-refactoringLibrary", "easier-ref-operations", "mv_op_nc_nn.eol").toString();
     }
 
-    public UMLMvOperationToNCToNN(String sourceModel, Map<String, Set<String>> availableElements) {
+    public UMLMvOperationToNCToNN(){
+        name = "moncnn";
+    }
 
-        sourceModelPath = sourceModel;
+    public UMLMvOperationToNCToNN(Map<String, Set<String>> availableElements, Map<String,
+            Set<String>> initialElements) {
+        this();
+
         Set<String> availableOperations = availableElements.get(UMLRSolution.SupportedType.OPERATION.toString());
 
         Set<String> targetElement = new HashSet<>();
         targetElement.add(availableOperations.stream().skip(new Random().nextInt(availableOperations.size())).findFirst().orElse(null));
         targetElements.put(UMLRSolution.SupportedType.OPERATION.toString(), targetElement);
 
+        setIndependent(initialElements);
         Set<String> createdElements = new HashSet<>();
         createdElements.add("New-Node_" + generateHash());
         this.createdElements.put(UMLRSolution.SupportedType.NODE.toString(), Set.copyOf(createdElements));
@@ -75,6 +84,22 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
         return msgs;
     }
 
+    @Override
+    public void setIndependent(Map<String, Set<String>> initialElements) {
+        Set<String> candidateTargetValues =
+                this.getTargetElements().values().stream().flatMap(Set::stream).collect(Collectors.toSet());
+        Set<String> flattenSourceElement =
+                initialElements.values().stream().flatMap(Set::stream).collect(Collectors.toSet());
+
+        if (!flattenSourceElement.containsAll(candidateTargetValues))
+            isIndependent = false;
+    }
+
+    @Override
+    public boolean isIndependent() {
+        return isIndependent;
+    }
+
     private String generateHash() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
@@ -85,13 +110,13 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
     }
 
     @Override
-    public void execute() throws RuntimeException {
+    public void execute(EasierUmlModel contextModel ) throws RuntimeException, EasierException {
 
         EOLStandalone executor = new EOLStandalone();
 
         try {
-            EasierUmlModel contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
-            contextModel.setStoredOnDisposal(true);
+//            EasierUmlModel contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
+//            contextModel.setStoredOnDisposal(true);
 
             executor.setModel(contextModel);
             executor.setSource(Paths.get(eolModulePath));
@@ -111,10 +136,7 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
             String message = String.format("Error in execution the eolmodule %s%n", eolModulePath);
 //            message += String.format("No Node called \t %s %n", targetObject.getName());
             message += e.getMessage();
-            throw new RuntimeException(message);
-        } catch (URISyntaxException e) {
-            String message = String.format("ERROR while reading the model \t %s %n", sourceModelPath);
-            throw new RuntimeException(message);
+            throw new EasierException(message);
         }
 
         executor.clearMemory();
@@ -178,10 +200,6 @@ public class UMLMvOperationToNCToNN implements RefactoringAction {
         if (getClass() != obj.getClass())
             return false;
         UMLMvOperationToNCToNN other = (UMLMvOperationToNCToNN) obj;
-        if (sourceModelPath == null) {
-            if (other.sourceModelPath != null)
-                return false;
-        }
 
         if (!targetElements.equals(other.targetElements))
             return false;

@@ -8,7 +8,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
@@ -23,161 +25,169 @@ import org.eclipse.uml2.uml.Node;
 
 public class UMLCloneNode implements RefactoringAction {
 
-	private final static Path eolModulePath;
+    private final static Path eolModulePath;
 
-	private final static double BRF = 1.23;
+    private final static double BRF = 1.23;
 
-	private String sourceModelPath;
-	private double numOfChanges;
-	private final String name;
+    private double numOfChanges;
+    private final String name;
 
-	Map<String, Set<String>> targetElements = new HashMap<>();
-	Map<String, Set<String>> createdElements = new HashMap<>();
+    private boolean isIndependent = true;
 
-	static {
-		eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
-				"easier-refactoringLibrary", "easier-ref-operations", "clone_node.eol");
-	}
+    Map<String, Set<String>> targetElements = new HashMap<>();
+    Map<String, Set<String>> createdElements = new HashMap<>();
 
-	public UMLCloneNode(String modelPath, Map<String, Set<String>> availableElements) {
-		this();
+    static {
+        eolModulePath = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
+                "easier-refactoringLibrary", "easier-ref-operations", "clone_node.eol");
+    }
 
-		sourceModelPath = modelPath;
-		Set<String> availableNode = availableElements.get(UMLRSolution.SupportedType.NODE.toString());
-		Set<String> targetElement = new HashSet<>();
-		targetElement.add(availableNode.stream().skip(new Random().nextInt(availableNode.size())).findFirst().orElse(null));
-		targetElements.put(UMLRSolution.SupportedType.NODE.toString(), targetElement);
-		String clonedNode = targetElement.iterator().next() + "_" + generateHash();
-		createdElements.put(UMLRSolution.SupportedType.NODE.toString(),
-				Set.of(clonedNode));
-	}
+    public UMLCloneNode(Map<String, Set<String>> availableElements, Map<String, Set<String>> sourceElements) {
+        this();
 
-	public UMLCloneNode() {
-		name = "UMLCloneNode";
-	}
+        Set<String> availableNode = availableElements.get(UMLRSolution.SupportedType.NODE.toString());
+        Set<String> targetElement = new HashSet<>();
+        targetElement.add(availableNode.stream().skip(new Random().nextInt(availableNode.size())).findFirst().orElse(null));
+        targetElements.put(UMLRSolution.SupportedType.NODE.toString(), targetElement);
+        // check whether the action is using an element created by another action
+        setIndependent(sourceElements);
+        String clonedNode = targetElement.iterator().next() + "_" + generateHash();
+        createdElements.put(UMLRSolution.SupportedType.NODE.toString(),
+                Set.of(clonedNode));
+    }
 
-	public double computeArchitecturalChanges(Collection<?> modelContents) {
+    public UMLCloneNode() {
+        name = "clone";
+    }
 
-		Node targetObject =
-				(Node) modelContents.stream().filter(Node.class::isInstance).
-						map(NamedElement.class::cast).
-						filter(ne -> ne.getName().equals(targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next())).findFirst().get();
+    public double computeArchitecturalChanges(Collection<?> modelContents) throws EasierException {
 
-		int cpSize = targetObject.getCommunicationPaths().size();
+        Node targetObject = modelContents.stream().filter(Node.class::isInstance).
+                map(Node.class::cast).
+                filter(ne -> ne.getName().equals(targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next())).findFirst().orElse(null);
 
-		int artSize = (int) targetObject.getDeployments().stream().mapToLong(d -> d.getDeployedArtifacts().size()).sum();
+        if (targetObject == null)
+            throw new EasierException("Error when computing the architectural changes of " + this.getName());
 
-		return (cpSize + artSize);
 
-	}
+        int cpSize = targetObject.getCommunicationPaths().size();
 
-	private String generateHash() {
-		int leftLimit = 97; // letter 'a'
-		int rightLimit = 122; // letter 'z'
-		int targetStringLength = 10;
+        int artSize = (int) targetObject.getDeployments().stream().mapToLong(d -> d.getDeployedArtifacts().size()).sum();
 
-		return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-	}
+        return (cpSize + artSize);
 
-	@Override
-	public void execute() throws RuntimeException {
-		EOLStandalone executor = new EOLStandalone();
+    }
 
-		EasierUmlModel contextModel;
-		try {
-			contextModel = EpsilonStandalone.createUmlModel(sourceModelPath);
-			contextModel.setStoredOnDisposal(true);
+    @Override
+    public void setIndependent(Map<String, Set<String>> sourceElements) {
+        Set<String> candidateTargetValues =
+                this.getTargetElements().values().stream().flatMap(Set::stream).collect(Collectors.toSet());
+        Set<String> flattenSourceElement =
+                sourceElements.values().stream().flatMap(Set::stream).collect(Collectors.toSet());
 
-			executor.setModel(contextModel);
-			executor.setSource(eolModulePath);
+        if (!flattenSourceElement.containsAll(candidateTargetValues))
+            isIndependent = false;
+    }
 
-			executor.setParameter(targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(), "String", "targetNodeName");
-			executor.setParameter(createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(), "String", "clonedNodeName");
+    @Override
+    public boolean isIndependent() {
+        return isIndependent;
+    }
 
-			executor.execute();
-		} catch (EolRuntimeException e) {
-			String message = String.format("Error in execution the eolmodule %s%n", eolModulePath);
-			message += e.getMessage();
-			throw new RuntimeException(message);
-		}catch (URISyntaxException e) {
-			String message = String.format("ERROR while reading the model \t %s %n", sourceModelPath);
-			throw new RuntimeException(message);
-		}
+    private String generateHash() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
 
-		executor.clearMemory();
-		executor = null;
-	}
+        return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+    }
 
-	@Override
-	public RefactoringAction clone() {
-		try {
-			return (RefactoringAction) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public void execute(EasierUmlModel contextModel) throws EasierException {
+        EOLStandalone executor = new EOLStandalone();
 
-	@Override
-	public String getTargetType() {
-		return UMLRSolution.SupportedType.NODE.toString();
-	}
+        try {
+            executor.setModel(contextModel);
+            executor.setSource(eolModulePath);
 
-	@Override
-	public Map<String, Set<String>> getTargetElements() {
-		return targetElements;
-	}
+            executor.setParameter(targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(), "String", "targetNodeName");
+            executor.setParameter(createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(), "String", "clonedNodeName");
 
-	@Override
-	public Map<String, Set<String>> getCreatedElements() {
-		return createdElements;
-	}
+            executor.execute();
+        } catch (EolRuntimeException e) {
+            String message = String.format("Error in execution the eolmodule %s%n ", eolModulePath);
+            message += e.getMessage();
+            throw new EasierException(message);
+        }
+        executor.clearMemory();
+    }
 
-	@Override
-	public String toString() {
-		return "Cloning --> " + targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next() + " " +
-				"with -->  " + createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
-	}
-	
-	public String toCSV() {
-		return String.format("UMLCloneNode,%s,%s,",
-				targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(),
-				createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next());
-	}
+    @Override
+    public RefactoringAction clone() {
+        try {
+            return (RefactoringAction) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getTargetType() {
+        return UMLRSolution.SupportedType.NODE.toString();
+    }
 
-	@Override
-	public double getArchitecturalChanges() {
-		return numOfChanges;
-	}
+    @Override
+    public Map<String, Set<String>> getTargetElements() {
+        return targetElements;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UMLCloneNode other = (UMLCloneNode) obj;
-		if (sourceModelPath == null) {
-			if (other.sourceModelPath != null)
-				return false;
-		}
+    @Override
+    public Map<String, Set<String>> getCreatedElements() {
+        return createdElements;
+    }
 
-		if (!targetElements.equals(other.targetElements))
-			return false;
+    @Override
+    public String toString() {
+        return "Cloning --> " + targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next() + " " +
+                "with -->  " + createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next();
+    }
 
-		for (String k : createdElements.keySet()) {
-			if (!other.createdElements.get(k).iterator().next().equals(createdElements.get(k).iterator().next())) {
-				return false;
-			}
-		}
+    public String toCSV() {
+        return String.format("UMLCloneNode,%s,%s,",
+                targetElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next(),
+                createdElements.get(UMLRSolution.SupportedType.NODE.toString()).iterator().next());
+    }
 
-		return true;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getArchitecturalChanges() {
+        return numOfChanges;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UMLCloneNode other = (UMLCloneNode) obj;
+
+        if (!targetElements.equals(other.targetElements))
+            return false;
+
+        for (String k : createdElements.keySet()) {
+            if (!other.createdElements.get(k).iterator().next().equals(createdElements.get(k).iterator().next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
