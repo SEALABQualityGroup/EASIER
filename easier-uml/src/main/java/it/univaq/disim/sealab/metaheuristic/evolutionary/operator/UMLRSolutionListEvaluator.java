@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 
 import org.uma.jmetal.problem.Problem;
 
-import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.metaheuristic.evolutionary.RSolution;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
 

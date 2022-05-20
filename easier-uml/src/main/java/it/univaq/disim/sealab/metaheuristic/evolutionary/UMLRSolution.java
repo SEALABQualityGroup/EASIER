@@ -1,31 +1,8 @@
 package it.univaq.disim.sealab.metaheuristic.evolutionary;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.rmi.UnexpectedException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import it.univaq.disim.sealab.easier.uml.utils.WorkflowUtils;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
-import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.uml2.uml.*;
-import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
-
-import it.univaq.disim.sealab.easier.uml.utils.UMLMemoryOptimizer;
+import it.univaq.disim.sealab.easier.utils.uml.UMLMemoryOptimizer;
+import it.univaq.disim.sealab.easier.utils.uml.UMLUtil;
+import it.univaq.disim.sealab.easier.utils.WorkflowUtils;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
@@ -34,12 +11,34 @@ import it.univaq.disim.sealab.metaheuristic.actions.Refactoring;
 import it.univaq.disim.sealab.metaheuristic.actions.RefactoringAction;
 import it.univaq.disim.sealab.metaheuristic.actions.uml.RefactoringActionFactory;
 import it.univaq.disim.sealab.metaheuristic.utils.Configurator;
-import it.univaq.disim.sealab.metaheuristic.utils.EasierLogger;
+import it.univaq.disim.sealab.metaheuristic.utils.EasierException;
 import it.univaq.disim.sealab.metaheuristic.utils.FileUtils;
 import it.univaq.sealab.umlreliability.MissingTagException;
 import it.univaq.sealab.umlreliability.Reliability;
 import it.univaq.sealab.umlreliability.UMLReliability;
 import it.univaq.sealab.umlreliability.model.UMLModelPapyrus;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.uml2.uml.*;
+import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.util.JMetalLogger;
+import org.uma.jmetal.util.solutionattribute.impl.CrowdingDistance;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.rmi.UnexpectedException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author peo
@@ -50,41 +49,9 @@ public class UMLRSolution extends RSolution<Refactoring> {
      *
      */
     private static final long serialVersionUID = 1L;
-
-    private Path folderPath;
-
-    private double[] scenarioRTs;
-
-    private String algorithm;
-
     private final static String refactoringLibraryModule, uml2lqnModule;
     private final static String GQAM_NAMESPACE;
-
-    Map<String, Set<String>> targetRefactoringElement;
-    Map<String, Set<String>> createdRefactoringElement;
-
-    public enum SupportedType {
-        NODE {
-            @Override
-            public String toString() {
-                return "node";
-            }
-        },
-        COMPONENT {
-            @Override
-            public String toString() {
-                return "component";
-            }
-        },
-        OPERATION {
-            @Override
-            public String toString() {
-                return "operation";
-            }
-        }
-    }
-
-    private Map<String, Map<String, Double>> extractFuzzyValues;
+    public static int FAILED_CROSSOVER = 0;
 
     static {
         refactoringLibraryModule = Paths.get(FileSystems.getDefault().getPath("").toAbsolutePath().toString(), "..",
@@ -95,18 +62,26 @@ public class UMLRSolution extends RSolution<Refactoring> {
         GQAM_NAMESPACE = "MARTE::MARTE_AnalysisModel::GQAM::";
     }
 
+    Map<String, Set<String>> initialElements;
+    Map<String, Set<String>> targetRefactoringElement;
+    Map<String, Set<String>> createdRefactoringElement;
+    private Path folderPath;
+    private double[] scenarioRTs;
+    private String algorithm;
+    private Map<String, Map<String, Double>> extractFuzzyValues;
+
     public UMLRSolution(Path sourceModelPath, String problemName) {
         super(sourceModelPath, problemName);
 
         init();
-        this.createRandomRefactoring();
+//        this.createRandomRefactoring();
     }
 
     public UMLRSolution(UMLRSolution s) {
         this(s.sourceModelPath, s.problemName);
 
         // to clear the created refactoring while constructing the object
-        initMap();
+//        initMap();
 
         for (String k : s.targetRefactoringElement.keySet()) {
             targetRefactoringElement.get(k).addAll(s.targetRefactoringElement.get(k));
@@ -116,7 +91,16 @@ public class UMLRSolution extends RSolution<Refactoring> {
             createdRefactoringElement.get(k).addAll(s.createdRefactoringElement.get(k));
         }
 
-        this.setVariable(0, s.getVariable(0).clone());
+        // create a new refactoring and clone refactoring actions from the source solution
+        Refactoring ref = new Refactoring(this.getModelPath().toString());
+        ref.setSolutionID(this.getName());
+        ref.getActions().addAll(s.getVariable(0).getActions().stream().map(RefactoringAction::clone).collect(Collectors.toList()));
+        this.setVariable(0, ref);
+
+        this.perfQ = s.perfQ;
+        this.reliability = s.reliability;
+        this.architecturalChanges = s.architecturalChanges;
+        this.numPAs = s.numPAs;
 
         for (int i = 0; i < s.getNumberOfObjectives(); i++) {
             this.setObjective(i, s.getObjective(i));
@@ -127,74 +111,79 @@ public class UMLRSolution extends RSolution<Refactoring> {
 
     }
 
-    protected UMLRSolution createChild(UMLRSolution parent, int point) {
-
-        UMLRSolution child = new UMLRSolution(this.sourceModelPath, this.problemName);
-        child.allowedFailures = this.allowedFailures;
-        child.refactoringLength = this.refactoringLength;
-
-        child.setParents(this, parent);
-
-        for (String k : this.createdRefactoringElement.keySet()) {
-            this.createdRefactoringElement.get(k).forEach(v -> child.createdRefactoringElement.get(k).add(v));
-            parent.createdRefactoringElement.get(k).forEach(v -> child.createdRefactoringElement.get(k).add(v));
-        }
-
-        for (String k : this.targetRefactoringElement.keySet()) {
-            this.targetRefactoringElement.get(k).forEach(v -> child.targetRefactoringElement.get(k).add(v));
-            parent.targetRefactoringElement.get(k).forEach(v -> child.targetRefactoringElement.get(k).add(v));
-        }
-
-        for (int j = 0; j < point; j++) {
-            RefactoringAction _new = this.getActionAt(j).clone();
-            child.getVariable(0).getActions().add(j, _new);
-        }
-        for (int j = point; j < refactoringLength; j++) {
-            RefactoringAction _new = parent.getActionAt(j).clone();
-            child.getVariable(0).getActions().add(j, _new);
-        }
-        if (child.isFeasible())
-            return child;
-        return null;
-
-    }
-
-
-    /**
-     * Create two children from the calling object (this) and the parent param.
-     * <ul>
-     *     <li>Child 1: first point actions from this, and the last length - point actions from parent </li>
-     *     <li>Child 2: first point actions from parent, and the last length - point actions from this </li>
-     *
-     * </ul>
-     *
-     * @param parent exploited during the mating process
-     * @param point  is the point where split the chromosome of this and parent
-     * @return an ArrayList of two UMLRSolutions generated by the mating process
-     */
-    public List<UMLRSolution> createChildren(UMLRSolution parent, int point) {
-        List<UMLRSolution> children = new ArrayList<>(2);
-        children.add(this.createChild(parent, point));
-        children.add(parent.createChild(this, point));
-
-        if (children.stream().anyMatch(Objects::isNull))
-            throw new RuntimeException("At least one null child has been created");
-
-        return children;
-    }
-
     /**
      * Initialize the internal maps for storing available and generated elements
      */
     void initMap() {
         targetRefactoringElement = new HashMap<>();
         createdRefactoringElement = new HashMap<>();
+        initialElements = new HashMap<>();
         for (String k : List.of(SupportedType.NODE.toString(), SupportedType.COMPONENT.toString(),
                 SupportedType.OPERATION.toString())) {
             this.targetRefactoringElement.put(k, new HashSet<>());
             this.createdRefactoringElement.put(k, new HashSet<>());
         }
     }
+
+//    protected UMLRSolution createChild(UMLRSolution parent, int point) {
+//
+//        UMLRSolution child = new UMLRSolution(this.sourceModelPath, this.problemName);
+//        child.allowedFailures = this.allowedFailures;
+//        child.refactoringLength = this.refactoringLength;
+//
+//        child.setParents(this, parent);
+//
+//        // the child can use the created element by the two parents
+//        for (String k : this.createdRefactoringElement.keySet()) {
+//            this.createdRefactoringElement.get(k).forEach(v -> child.createdRefactoringElement.get(k).add(v));
+//            parent.createdRefactoringElement.get(k).forEach(v -> child.createdRefactoringElement.get(k).add(v));
+//        }
+//
+//        // the child can use the target element of the two parents
+//        for (String k : this.targetRefactoringElement.keySet()) {
+//            this.targetRefactoringElement.get(k).forEach(v -> child.targetRefactoringElement.get(k).add(v));
+//            parent.targetRefactoringElement.get(k).forEach(v -> child.targetRefactoringElement.get(k).add(v));
+//        }
+//
+//        // create the child by combining the two parents using the crossover point
+//        for (int j = 0; j < point; j++) {
+//            RefactoringAction _new = this.getActionAt(j).clone();
+//            child.getVariable(0).getActions().add(j, _new);
+//        }
+//        for (int j = point; j < refactoringLength; j++) {
+//            RefactoringAction _new = parent.getActionAt(j).clone();
+//            child.getVariable(0).getActions().add(j, _new);
+//        }
+//        // whether the child is not feasible returns null
+//        if (!child.isFeasible())
+//            return null;
+//
+//        return child;
+//    }
+
+
+//    /**
+//     * Create two children from the calling object (this) and the parent param.
+//     * <ul>
+//     *     <li>Child 1: first point actions from this, and the last length - point actions from parent </li>
+//     *     <li>Child 2: first point actions from parent, and the last length - point actions from this </li>
+//     *
+//     * </ul>
+//     *
+//     * @param parent exploited during the mating process
+//     * @param point  is the point where split the chromosome of this and parent
+//     * @return an ArrayList of two UMLRSolutions generated by the mating process
+//     */
+//    public List<UMLRSolution> createChildren(UMLRSolution parent, int point) {
+//        List<UMLRSolution> children = new ArrayList<>(2);
+//        children.add(this.createChild(parent, point));
+//        children.add(parent.createChild(this, point));
+//
+//        if (children.stream().anyMatch(Objects::isNull))
+//            throw new RuntimeException("At least one null child has been created");
+//
+//        return children;
+//    }
 
     protected void init() {
 
@@ -204,21 +193,27 @@ public class UMLRSolution extends RSolution<Refactoring> {
         this.setName();
 
         initMap();
-        Refactoring refactoring = new Refactoring();
-        refactoring.setSolutionID(this.name);
-        this.setVariable(0, refactoring);
-
         folderPath = Paths.get(Configurator.eINSTANCE.getTmpFolder().toString(), String.valueOf((getName() / 100)),
                 String.valueOf(getName()));
         modelPath = folderPath.resolve(getName() + ".uml");
+        Refactoring refactoring = new Refactoring(modelPath.toString());
+        refactoring.setSolutionID(this.name);
+        this.setVariable(0, refactoring);
 
-        algorithm = this.problemName.split("__")[0];
+
+        algorithm = this.problemName.substring(this.problemName.lastIndexOf('_') + 1);
 
         try {
             org.apache.commons.io.FileUtils.copyFile(sourceModelPath.toFile(), modelPath.toFile());
-            targetRefactoringElement.put(SupportedType.NODE.toString(), new HashSet<>(getNodes()));
-            targetRefactoringElement.put(SupportedType.COMPONENT.toString(), new HashSet<>(getComponents()));
-            targetRefactoringElement.put(SupportedType.OPERATION.toString(), new HashSet<>(getOperations()));
+            Set<String> nodes = getNodes();
+            Set<String> components = getComponents();
+            Set<String> operations = getOperations();
+            initialElements.put(SupportedType.NODE.toString(), Collections.unmodifiableSet(nodes));
+            initialElements.put(SupportedType.COMPONENT.toString(), Collections.unmodifiableSet(components));
+            initialElements.put(SupportedType.OPERATION.toString(), Collections.unmodifiableSet(operations));
+            targetRefactoringElement.put(SupportedType.NODE.toString(), new HashSet<>(nodes));
+            targetRefactoringElement.put(SupportedType.COMPONENT.toString(), new HashSet<>(components));
+            targetRefactoringElement.put(SupportedType.OPERATION.toString(), new HashSet<>(operations));
         } catch (IOException e) {
             System.out.println("[ERROR] The problem's model copy generated an error!!!");
             e.printStackTrace();
@@ -228,7 +223,12 @@ public class UMLRSolution extends RSolution<Refactoring> {
     }
 
     Set<String> getOperations() {
+        return UMLUtil.getElementsInPackage(modelPath.toString(), UMLPackage.Literals.MESSAGE)
+                .stream().map(Message.class::cast).filter(msg -> !msg.getMessageSort().toString().equals("reply"))
+                .map(Message::getSignature).map(NamedElement::getName).collect(Collectors.toSet());
 
+
+        /*
         try (EasierUmlModel dirtyIModel = EOLStandalone.createUmlModel(modelPath.toString())) {
             org.eclipse.uml2.uml.Package dynamicView = null;
             for (Object pkg : EcoreUtil.getObjectsByType(dirtyIModel.allContents(), UMLPackage.Literals.PACKAGE)) {
@@ -252,14 +252,14 @@ public class UMLRSolution extends RSolution<Refactoring> {
                     map(Message::getSignature).map(NamedElement::getName).collect(Collectors.toSet());
         } catch (EolModelLoadingException | URISyntaxException e) {
             throw new RuntimeException("Error while loading the model.");
-        }
+        }*/
     }
 
-
     Set<String> getComponents() {
+        return UMLUtil.getElementsInPackage(modelPath.toString(), UMLPackage.Literals.COMPONENT)
+                .stream().map(NamedElement.class::cast).map(NamedElement::getName).collect(Collectors.toSet());
 
-
-        try (EasierUmlModel model = EOLStandalone.createUmlModel(modelPath.toString())) {
+        /*try (EasierUmlModel model = EOLStandalone.createUmlModel(modelPath.toString())) {
             org.eclipse.uml2.uml.Package staticView = null;
             for (Object pkg : EcoreUtil.getObjectsByType(model.allContents(),
                     UMLPackage.Literals.PACKAGE)) {
@@ -275,10 +275,15 @@ public class UMLRSolution extends RSolution<Refactoring> {
             return comps.stream().map(component -> (Component) component).map(NamedElement::getName).collect(Collectors.toSet());
         } catch (URISyntaxException | EolModelLoadingException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     Set<String> getNodes() {
+
+        return UMLUtil.getElementsInPackage(modelPath.toString(), UMLPackage.Literals.NODE)
+                .stream().map(NamedElement.class::cast).map(NamedElement::getName).collect(Collectors.toSet());
+
+        /*
         try (EasierUmlModel model = EOLStandalone.createUmlModel(modelPath.toString())) {
             org.eclipse.uml2.uml.Package deploymentView = null;
             org.eclipse.uml2.uml.Model rootPackage = null;
@@ -302,10 +307,10 @@ public class UMLRSolution extends RSolution<Refactoring> {
             return nodes.stream().map(node -> (Node) node).map(NamedElement::getName).collect(Collectors.toSet());
         } catch (URISyntaxException | EolModelLoadingException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
-    protected void createRandomRefactoring() {
+    public void createRandomRefactoring() {
 
         int num_failures = 0;
 
@@ -323,14 +328,55 @@ public class UMLRSolution extends RSolution<Refactoring> {
         this.setAttribute(CrowdingDistance.class, 0.0);
     }
 
+    /**
+     * Return @return true, if @param listOfActions is made up of independent refactoring actions,
+     *
+     * @return false otherwise
+     */
+    public boolean isIndependent(List<RefactoringAction> listOfActions) {
+        if (listOfActions.size() == 1) {
+            RefactoringAction act = listOfActions.get(0);
+            for (String k : act.getTargetElements().keySet()) {
+                for (String elemName : act.getTargetElements().get(k)) {
+
+                    // check if the target element of a refactoring action is within the original set of elements
+                    if (!initialElements.get(k).contains(elemName))
+                        return false;
+                }
+            }
+        } else {
+            for (int i = 0; i < listOfActions.size(); i++) {
+                RefactoringAction act = listOfActions.get(i);
+                for (int j = i + 1; j < listOfActions.size(); j++) {
+
+                    // only use independent actions
+                    if (listOfActions.get(j).isIndependent()) {
+                        for (String k : act.getCreatedElements().keySet()) {
+
+                            // check whether an action target element type is equal to the created type of a previous
+                            // refactoring action
+                            if (listOfActions.get(j).getTargetElements().get(k) != null) {
+                                for (String elemName : listOfActions.get(j).getTargetElements().get(k)) {
+
+                                    // check whether a target element of a refactoring action belongs to the created
+                                    // elements of previous refactoring actions
+                                    if (act.getCreatedElements().get(k).contains(elemName))
+                                        return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     boolean tryRandomPush() throws UnexpectedException, EolRuntimeException {
-
-
         RefactoringAction candidate;
         do {
-            candidate = RefactoringActionFactory.getRandomAction(this);
+            candidate = RefactoringActionFactory.getRandomAction(this.getAvailableElements(), this.getInitialElements());
         } while (candidate == null);
-
         getVariable(0).getActions().add(candidate);
         if (!this.isFeasible()) {
             getVariable(0).getActions().remove(candidate);
@@ -350,7 +396,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
     }
 
     public boolean isFeasible() {
-        return isFeasible(getVariable(VARIABLE_INDEX));
+        return getVariable(VARIABLE_INDEX).isFeasible();
     }
 
     private boolean isFeasible(Refactoring tr) {
@@ -378,32 +424,16 @@ public class UMLRSolution extends RSolution<Refactoring> {
         return new UMLRSolution(this);
     }
 
-    protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
-
-        try {
-            for (int j = 0; j < point; j++) {
-                RefactoringAction _new = s1.getActionAt(j).clone();
-                this.getVariable(0).getActions().add(j, _new);
-            }
-            for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
-                RefactoringAction _new = s2.getActionAt(j).clone();
-                this.getVariable(0).getActions().add(j, _new);
-            }
-        } catch (IndexOutOfBoundsException e) {
-            EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
-            e.printStackTrace();
-        }
-    }
-
     boolean doAlter(int i, RefactoringAction candidate) {
 
         // save the original solution and substitute it with the new one
         RefactoringAction preAlterAction = getVariable(0).getActions().get(i);
 
-        // Stash the created and target element of the action target of the alter operation
+        // Stash the created and target elements of the action target of the alter operation
         // for a possible rollback
         Map<String, Set<String>> preAlterCreatedElement = new HashMap<>();
         Map<String, Set<String>> preAlterTargetElement = new HashMap<>();
+
         for (String k : preAlterAction.getCreatedElements().keySet()) {
             Set<String> tmpSet = this.createdRefactoringElement.get(k);
             tmpSet =
@@ -439,13 +469,29 @@ public class UMLRSolution extends RSolution<Refactoring> {
         return true;
     }
 
+//    protected void createChild(UMLRSolution s1, UMLRSolution s2, int point) {
+//
+//        try {
+//            for (int j = 0; j < point; j++) {
+//                RefactoringAction _new = s1.getActionAt(j).clone();
+//                this.getVariable(0).getActions().add(j, _new);
+//            }
+//            for (int j = point; j < s2.getVariable(VARIABLE_INDEX).getActions().size(); j++) {
+//                RefactoringAction _new = s2.getActionAt(j).clone();
+//                this.getVariable(0).getActions().add(j, _new);
+//            }
+//        } catch (IndexOutOfBoundsException e) {
+//            EasierLogger.logger_.warning("POINT SIZE ERROR: " + Integer.toString(point));
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public boolean alter(int i) {
 
         RefactoringAction candidate;
         do {
-            candidate = RefactoringActionFactory.getRandomAction(this);
+            candidate = RefactoringActionFactory.getRandomAction(this.getAvailableElements(), this.getInitialElements());
         } while (candidate == null);
 
         return doAlter(i, candidate);
@@ -522,7 +568,8 @@ public class UMLRSolution extends RSolution<Refactoring> {
         }
 
         long duration = System.currentTimeMillis() - startTime;
-        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s", "NSGA", problemName, getName(), duration));
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,invoke_solver,%s", algorithm, problemName,
+                getName(), duration));
         System.out.println(String.format("invokeSolver execution time: %s", duration));
         System.out.println("done");
 
@@ -531,12 +578,19 @@ public class UMLRSolution extends RSolution<Refactoring> {
         startTime = System.currentTimeMillis();
         new WorkflowUtils().backAnnotation(modelPath);
         duration = System.currentTimeMillis() - startTime;
-        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", "NSGA", problemName, getName(), duration));
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,lqn2uml,%s", algorithm, problemName,
+                getName(), duration));
         System.out.println(String.format("backAnnotation execution time: %s", duration));
         System.out.println("done");
 
     }
 
+    /**
+     * @return the performance quality indicator as described in
+     * <a href="https://doi.org/10.1109/ICSA.2018.00020">https://doi.org/10.1109/ICSA.2018.00020</a>
+     *
+     * @throws EolModelElementTypeNotFoundException when the perfQ cannot be computed
+     */
     public double evaluatePerformance() {
         System.out.print("Counting perfQ ... ");
         long initTime = System.currentTimeMillis();
@@ -547,13 +601,6 @@ public class UMLRSolution extends RSolution<Refactoring> {
         return perfQ;
     }
 
-    /**
-     * Compute the performance quality indicator as described in
-     * https://doi.org/10.1109/ICSA.2018.00020
-     *
-     * @return
-     * @throws EolModelElementTypeNotFoundException
-     */
     private double perfQ() {
 
         /*
@@ -609,32 +656,31 @@ public class UMLRSolution extends RSolution<Refactoring> {
             new UMLMemoryOptimizer().cleanup();
             return value / numberOfMetrics;
         } catch (Exception e) {
-            System.err
-                    .println(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!", this.name));
+            JMetalLogger.logger.severe(String.format("Solution # '%s' has thrown an error while computing PerfQ!!!",
+                    this.name));
             e.printStackTrace();
         }
         return 0;
     }
 
-
     @Override
     public void computeArchitecturalChanges() {
 
-        try(EasierUmlModel model = EOLStandalone.createUmlModel(modelPath.toString())){
+        try (EasierUmlModel model = EOLStandalone.createUmlModel(modelPath.toString())) {
 
-            for(RefactoringAction action : getVariable(0).getActions()){
+            for (RefactoringAction action : getVariable(0).getActions()) {
 
                 double brf = Configurator.eINSTANCE.getBRF(action.getName());
+                double aw = action.computeArchitecturalChanges(model.allContents());
 
-                for(String k : action.getTargetElements().keySet()){
-                    action.computeArchitecturalChanges(model.allContents());
-                }
-
-                double aw = 0d;
-
+                architecturalChanges += brf * aw;
             }
 
-        }catch (URISyntaxException | EolModelLoadingException e) {
+        } catch (URISyntaxException | EolModelLoadingException e) {
+            throw new RuntimeException(e);
+        } catch (RuntimeException eRun) {
+            JMetalLogger.logger.severe(eRun.getMessage());
+        } catch (EasierException e) {
             throw new RuntimeException(e);
         }
 
@@ -666,7 +712,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
             scenarios = (List<EObject>) uml.getAllOfType("UseCase");
             scenarios = filterByStereotype(scenarios, GQAM_NAMESPACE + "GaScenario");
 
-            // for each elements of the source model, it is picked the element with the same
+            // for each element of the source model, it is picked the element with the same
             // id in the refactored one
             for (EObject element : scenarios) {
                 Stereotype stereotype = ((Element) element).getAppliedStereotype(GQAM_NAMESPACE + "GaScenario");
@@ -739,19 +785,18 @@ public class UMLRSolution extends RSolution<Refactoring> {
     public void executeRefactoring() {
         final Refactoring ref = getVariable(VARIABLE_INDEX);
 
-        for (RefactoringAction a : ref.getActions()) {
-
-            long initialTime = System.nanoTime();
-            try {
-                a.execute();
-            } catch (UnsupportedOperationException e) {
-                e.printStackTrace();// TODO: handle exception
-            }
-            long durationTime = System.nanoTime() - initialTime;
-            new FileUtils().refactoringStatsDumpToCSV(String.format("%s,%s", a.toCSV(), durationTime));
-        }
-        this.setRefactored();
+        this.setRefactored(ref.execute());
         new UMLMemoryOptimizer().cleanup();
+    }
+
+    @Override
+    public void setRefactored(boolean isRefactored) {
+        super.setRefactored(isRefactored);
+
+        // If the solution is a xOvered solution, and it cannot be applied to the model
+        // the FAILED_CROSSOVER counter is increased
+        if (!isRefactored && isCrossover())
+            FAILED_CROSSOVER++;
     }
 
     @Override
@@ -763,7 +808,7 @@ public class UMLRSolution extends RSolution<Refactoring> {
         long initTime = System.currentTimeMillis();
         try {
             uml = new UMLReliability(new UMLModelPapyrus(modelPath.toString()).getModel());
-            reliability = new Reliability(uml.getScenarios()).compute();
+            setReliability(new Reliability(uml.getScenarios()).compute());
 
             ResourceSet rs = uml.getModel().eResource().getResourceSet();
             while (rs.getResources().size() > 0) {
@@ -773,13 +818,14 @@ public class UMLRSolution extends RSolution<Refactoring> {
                 rs.getResources().remove(res);
             }
         } catch (MissingTagException e) {
-            System.err.println("Error in computing the reliability");
+            JMetalLogger.logger.severe("Error in computing the reliability");
             String line = this.name + "," + e.getMessage() + "," + getVariable(VARIABLE_INDEX).toString();
 
             new FileUtils().reliabilityErrorLogToCSV(line);
         }
         long durationTime = System.currentTimeMillis() - initTime;
-        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,reliability,%s", algorithm, problemName, durationTime));
+        new FileUtils().processStepStatsDumpToCSV(String.format("%s,%s,%s,reliability,%s", algorithm, problemName,
+                getName(), durationTime));
 
         new UMLMemoryOptimizer().cleanup();
         uml = null;
@@ -840,13 +886,40 @@ public class UMLRSolution extends RSolution<Refactoring> {
     }
 
     /**
-     * Returns the immutable map of elements which have been
-     * targeted of any feasible refactoring action
-     *
-     * @return the immutable map of available target elements for new refactoring actions
+     * @return the immutable map of available elements that next refactoring action
+     * could use as target element.
      */
     public Map<String, Set<String>> getAvailableElements() {
         return Map.copyOf(targetRefactoringElement);
     }
+
+    /**
+     * @return the immutable map of initial elements
+     */
+    public Map<String, Set<String>> getInitialElements() {
+        return Map.copyOf(initialElements);
+    }
+
+    public enum SupportedType {
+        NODE {
+            @Override
+            public String toString() {
+                return "node";
+            }
+        },
+        COMPONENT {
+            @Override
+            public String toString() {
+                return "component";
+            }
+        },
+        OPERATION {
+            @Override
+            public String toString() {
+                return "operation";
+            }
+        }
+    }
+
 
 }
