@@ -1,5 +1,6 @@
-package it.univaq.disim.sealab.easier.uml.utils;
+package it.univaq.disim.sealab.easier.utils;
 
+import it.univaq.disim.sealab.easier.utils.uml.UMLMemoryOptimizer;
 import it.univaq.disim.sealab.epsilon.EpsilonStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EOLStandalone;
 import it.univaq.disim.sealab.epsilon.eol.EasierUmlModel;
